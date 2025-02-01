@@ -11,7 +11,12 @@
   padding-top: 10vh;
   overflow: hidden;
   text-align: left;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
+  background: linear-gradient(
+      to right,
+      rgba(39, 39, 39, 0.9),
+      rgba(39, 39, 39, 0)
+    ),
+    url("../../Images/Header.jpg") center top;
   background-size: cover;
 }
 .home__name {
@@ -224,7 +229,12 @@ footer:hover {
 .project__project-image {
   height: 30vh;
   width: 100%;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
+  background: linear-gradient(
+      to right,
+      rgba(39, 39, 39, 0.9),
+      rgba(39, 39, 39, 0)
+    ),
+    url("../../Images/Header.jpg") center top;
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -313,7 +323,12 @@ footer:hover {
   overflow: hidden;
   align-items: center;
   text-align: left;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
+  background: linear-gradient(
+      to right,
+      rgba(39, 39, 39, 0.9),
+      rgba(39, 39, 39, 0)
+    ),
+    url("../../Images/Header.jpg") center top;
   background-size: cover;
 }
 .contact .contact-list {
@@ -395,7 +410,12 @@ footer:hover {
 .certification .certification__certification-image {
   height: 50vh;
   width: 100%;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
+  background: linear-gradient(
+      to right,
+      rgba(39, 39, 39, 0.9),
+      rgba(39, 39, 39, 0)
+    ),
+    url("../../Images/Header.jpg") center top;
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -427,7 +447,9 @@ footer:hover {
   color: #272727;
   margin: 20px 20px;
 }
-.certification .col-md-5 h1, .certification .col-md-5 h2, .certification .col-md-5 h6 {
+.certification .col-md-5 h1,
+.certification .col-md-5 h2,
+.certification .col-md-5 h6 {
   display: inline-block;
 }
 
@@ -506,8 +528,14 @@ body {
   footer {
     display: none;
   }
-  .home, .contact {
-    background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
+  .home,
+  .contact {
+    background: linear-gradient(
+        to right,
+        rgba(39, 39, 39, 0.9),
+        rgba(39, 39, 39, 0)
+      ),
+      url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
-}/*# sourceMappingURL=main.css.map */
+} /*# sourceMappingURL=main.css.map */
