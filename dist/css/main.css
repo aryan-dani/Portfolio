@@ -364,10 +364,14 @@ footer:hover {
   color: rgb(215, 230, 230);
   transform: translateY(-3px);
 }
+.project .project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 2rem;
+}
 .project .Projects {
   background-color: aliceblue;
-  width: 60vw;
-  margin: 2rem auto 0 auto;
   padding: 0.5rem;
   border-radius: 8px;
   box-sizing: border-box;
@@ -422,6 +426,11 @@ footer:hover {
   color: #272727;
 }
 
+@media screen and (max-width: 768px) {
+  .project .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
 footer {
   background-color: #272727;
   color: aliceblue;
