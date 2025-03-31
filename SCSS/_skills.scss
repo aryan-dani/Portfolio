@@ -233,9 +233,9 @@
     // Special styling for "All" category
     &.active-all {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 2rem;
     }
   }
   
@@ -253,18 +253,18 @@
     
     // Special styling for "All" category
     .active-all & {
-      height: 160px; // Even smaller for "All" view
+      height: 170px;
     
       &.expanded {
-        height: 240px; // Smaller expanded height for "All" view
+        height: 250px;
       }
     
       h3 {
-        font-size: 1.2rem; // Smaller heading for "All" view
+        font-size: 1.3rem;
       }
     
       i {
-        font-size: 2.5rem; // Smaller icons for "All" view
+        font-size: 3rem;
       }
     }
     

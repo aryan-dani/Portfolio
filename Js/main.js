@@ -615,16 +615,48 @@ function initSkillsPageAnimations() {
                 
                 // If "All" is selected, show all skill groups with special formatting
                 if (category === 'all') {
-                    skillGroups.forEach((group, index) => {
-                        setTimeout(() => {
-                            group.classList.add('active');
-                            group.classList.add('active-all'); // Add special class for "All" view
-                            group.style.opacity = '1';
-                            group.style.transform = 'translateY(0)';
-                            animateSkillCards(group);
-                        }, 100 * (index + 1));
+                    // Create a container for all skills if it doesn't exist
+                    let allSkillsContainer = document.getElementById('all-skills');
+                    if (!allSkillsContainer) {
+                        allSkillsContainer = document.createElement('div');
+                        allSkillsContainer.id = 'all-skills';
+                        allSkillsContainer.className = 'skills__group';
+                        document.querySelector('.skills__container').appendChild(allSkillsContainer);
+                    }
+                    
+                    // Clear the all skills container
+                    allSkillsContainer.innerHTML = '';
+                    
+                    // Collect all skill cards from different categories
+                    let allCards = [];
+                    skillGroups.forEach(group => {
+                        if (group.id !== 'all-skills') {
+                            const cards = group.querySelectorAll('.skills__card');
+                            cards.forEach(card => {
+                                allCards.push(card.cloneNode(true));
+                            });
+                        }
                     });
+                    
+                    // Add all cards to the all skills container
+                    allCards.forEach(card => {
+                        allSkillsContainer.appendChild(card);
+                    });
+                    
+                    // Show the all skills container with proper spacing
+                    allSkillsContainer.classList.add('active', 'active-all');
+                    setTimeout(() => {
+                        allSkillsContainer.style.opacity = '1';
+                        allSkillsContainer.style.transform = 'translateY(0)';
+                        animateSkillCards(allSkillsContainer);
+                    }, 100);
                 } else {
+                    // Hide the all skills container if it exists
+                    const allSkillsContainer = document.getElementById('all-skills');
+                    if (allSkillsContainer) {
+                        allSkillsContainer.classList.remove('active', 'active-all');
+                    }
+                    
                     // Show selected skill group with animation
                     const selectedGroup = document.getElementById(category);
                     if (selectedGroup) {

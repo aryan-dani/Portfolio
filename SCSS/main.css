@@ -1860,9 +1860,9 @@ footer {
 }
 .skills__group.active-all {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.8rem;
+  margin-bottom: 2rem;
 }
 .skills__card {
   border-radius: 15px;
@@ -1878,16 +1878,16 @@ footer {
   position: relative;
 }
 .active-all .skills__card {
-  height: 160px;
+  height: 170px;
 }
 .active-all .skills__card.expanded {
-  height: 240px;
+  height: 250px;
 }
 .active-all .skills__card h3 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 .active-all .skills__card i {
-  font-size: 2.5rem;
+  font-size: 3rem;
 }
 .skills__card.expanded {
   height: 260px;
