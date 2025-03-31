@@ -1,0 +1,99 @@
+@use 'config' as *;
+
+.home {
+  height: 100%;
+  padding-left: 3vh;
+  padding-top: 10vh;
+  overflow: hidden;
+  text-align: left;
+  background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../../Images/Header.jpg") center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  &__name {
+    margin-top: 0.4rem;
+    font-weight: 700;
+    transition: transform $transition-speed ease;
+
+    &:hover {
+      cursor: default;
+      transform: translateY(-3px);
+    }
+
+    &--last {
+      color: $primary-color;
+      transition: transform $transition-speed ease;
+
+      &:hover {
+        cursor: default;
+        transform: translateY(-3px);
+      }
+    }
+  }
+
+  h2 {
+    background-color: $secondary-color;
+    color: $primary-color;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0.3rem;
+    padding: 0.1rem 0.5rem;
+    display: inline-block;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba($primary-color, 0.2);
+    transition: transform $transition-speed ease;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  .social-icons {
+    .link-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+  
+      .link-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: transform $transition-speed ease;
+  
+        &:hover {
+          cursor: default;
+          transform: translateY(-3px);
+        }
+  
+        a {
+          margin: 0.5rem 0;
+          font-weight: 700;
+          font-size: 1.2rem;
+          text-decoration: none;
+          transition: color $transition-speed ease;
+        }
+  
+        span {
+          color: $primary-color;
+          background-color: $secondary-color;
+          padding: 0.2rem 0.4rem;
+          border-radius: 8px;
+          transition: background-color $transition-speed ease;
+  
+          &:hover {
+            background-color: #555;
+            transition: all $transition-speed ease-in-out;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .home {
+    padding-left: 1rem;
+    padding-top: 8vh;
+  }
+}

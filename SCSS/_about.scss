@@ -1,0 +1,67 @@
+@use 'config' as *;
+
+.about {
+  height: 100%;
+  padding-top: 2vh;
+  overflow: hidden;
+  align-items: center;
+  text-align: left;
+  background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../../Images/Header.jpg") center top;
+  background-size: cover;
+  border-radius: 8px;
+
+  .about-list {
+    margin-top: 2%;
+    margin-left: 3%;
+  }
+
+  .about-details {
+    font-size: 1rem;
+    display: inline-block;
+    background-color: $primary-color;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: transform $transition-speed ease;
+
+    &:hover {
+      cursor: default;
+      transform: translateY(-3px);
+    }
+  }
+
+  h2 {
+    display: inline-block;
+    background-color: $secondary-color;
+    color: $primary-color;
+    font-weight: 800;
+    padding: 0.1rem 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1rem;
+    width: 35rem;
+    margin-left: 4px;
+  }
+
+  .contact-email {
+    width: 20rem;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0.3rem;
+    color: $primary-color;
+    background-color: $secondary-color;
+    border-radius: 8px;
+    transition: transform $transition-speed ease;
+
+    &:hover {
+      cursor: default;
+      transform: translateY(-3px);
+    }
+  }
+}

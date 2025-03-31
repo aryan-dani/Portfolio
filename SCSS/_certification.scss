@@ -1,0 +1,69 @@
+@use 'config' as *;
+
+.certification {
+  #heading {
+    font-weight: 900;
+    margin: 50px 0 5px;
+    color: $primary-color;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: $secondary-color;
+    display: inline-block;
+    transition: transform $transition-speed ease;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  p {
+    background-color: $secondary-color;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 10px;
+    color: $primary-color;
+    transition: transform $transition-speed ease;
+
+    &:hover {
+      cursor: default;
+      transform: translateY(-3px);
+    }
+  }
+
+  .certificate-content {
+    background-color: $secondary-color;
+    border-radius: 8px;
+    transition: transform $transition-speed ease;
+
+    &:hover {
+      cursor: default;
+      transform: translateY(-7px);
+    }
+
+    .text-secondary {
+      padding: 10px;
+      padding-bottom: 0px;
+    }
+
+    h3 {
+      color: $primary-color;
+      margin-left: 10px;
+    }
+
+    .certificate-links {
+      margin-left: 3px;
+    }
+
+    .certificate-link {
+      background-color: $primary-color;
+      border-radius: 8px;
+      padding: 5px;
+      margin: 0px 5px;
+    }
+
+    p {
+      margin-left: 8px;
+    }
+  }
+}

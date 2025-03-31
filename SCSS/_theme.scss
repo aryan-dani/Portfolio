@@ -1,0 +1,64 @@
+@use 'config' as *;
+
+html {
+  font-size: 16px;
+  @media (max-width: 1200px) {
+    font-size: 15px;
+  }
+  @media (max-width: 992px) {
+    font-size: 14px;
+  }
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 576px) {
+    font-size: 12px;
+  }
+}
+
+body {
+  background-color: $primary-color;
+  color: #fff;
+  height: 100vh;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.text-secondary {
+  color: $primary-color;
+}
+
+header {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  padding: 1rem;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+}
+
+footer {
+  font-size: 1rem;
+  position: fixed;
+  bottom: 0.2rem;
+  right: 0.6rem;
+  color: #fff;
+}
+
+@media screen and (max-width: 500px) {
+  footer {
+    display: none;
+  }
+  .home, .contact {
+    background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../../Images/Header_Phone.jpg") center top;
+    background-size: cover;
+  }
+}

@@ -1,0 +1,146 @@
+@use 'config' as *;
+
+.project {
+  h2 {
+    font-weight: 900;
+    margin-bottom: 5px;
+    transition: transform $transition-speed ease;
+
+    &:hover {
+      cursor: default;
+      transform: translateY(-3px);
+    }
+  }
+
+  &__project-image {
+    height: 30vh;
+    width: 100%;
+    background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../../Images/Header.jpg") center top;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+
+    h2 {
+      display: inline-block;
+      font-size: 1.5rem;
+      background-color: $secondary-color;
+      padding: 0rem 1rem;
+      border-radius: 8px;
+    }
+
+    p {
+      text-align: justify;
+      background-color: $primary-color;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      width: 61%;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      transition: transform $transition-speed ease;
+
+      &:hover {
+        background-color: $primary-color;
+        color: rgb(215, 230, 230);
+        transform: translateY(-3px);
+      }
+    }
+  }
+
+  // New grid container for project cards
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 2rem; // optional spacing
+  }
+
+  .Projects {
+    background-color: $secondary-color;
+    padding: 0.5rem;
+    border-radius: 8px;
+    box-sizing: border-box;
+    border-bottom: solid 8px #555;
+
+    h2 {
+      display: inline-block;
+      color: $secondary-color;
+      background-color: $primary-color;
+      padding: 0px 0.3rem;
+      border-radius: 8px;
+    }
+
+    h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0px;
+      display: block;
+      transition: transform $transition-speed ease;
+
+      &:hover {
+        cursor: default;
+        transform: translateY(-3px);
+      }
+    }
+
+    .project-links {
+      a {
+        margin: 5px 0px;
+        color: $primary-color;
+        display: inline-block;
+        background-color: rgb(215, 230, 230);
+        padding: 0.1rem 0.4rem;
+        border-radius: 8px;
+        transition: transform $transition-speed ease;
+
+        &:hover {
+          background-color: $primary-color;
+          color: rgb(215, 230, 230);
+          transform: translateY(-3px);
+        }
+      }
+    }
+
+    h6 {
+      display: inline-block;
+      color: $secondary-color;
+      font-size: 0.7rem;
+      background-color: $primary-color;
+      padding: 0.1rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      transition: transform $transition-speed ease;
+
+      &:hover {
+        cursor: default;
+        transform: translateY(-3px);
+      }
+    }
+
+    .content {
+      color: $primary-color;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .project {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+footer {
+  background-color: $primary-color;
+  color: $secondary-color;
+  padding: 0.4rem;
+  gap: 0.5rem;
+  border-radius: 0.8rem;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
