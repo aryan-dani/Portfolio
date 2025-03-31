@@ -2,7 +2,7 @@
 
 .menu-btn {
   position: absolute;
-  z-index: 3;
+  z-index: 101; // Increased z-index to be above the nav
   right: 1rem;
   top: 1rem;
   height: 1.25rem;
@@ -74,6 +74,7 @@
   transition: all 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  z-index: 100; // Ensure menu is above all content
   
   &.open {
     visibility: visible;
@@ -95,8 +96,8 @@
     list-style: none;
     padding: 1rem;
     padding-left: 0px;
-    border-bottom: 2px solid rgba($secondary-color, 0.2);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    // Removing box-shadow to eliminate the black line
+    box-shadow: none;
     transform: translateY(-100%);
     transition: transform 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
     
@@ -120,15 +121,33 @@
         color: $secondary-color;
         position: relative;
         
+        // Replace the simple underline with a modern indicator
         &::after {
           content: '';
           position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background: $secondary-color;
-          animation: shimmer 2s infinite;
+          bottom: -6px;
+          left: 4vh;
+          width: 30px;
+          height: 3px;
+          background: linear-gradient(to right, 
+            rgba($secondary-color, 0.8) 0%, 
+            rgba($secondary-color, 0.8) 30%, 
+            rgba($secondary-color, 0.3) 70%, 
+            transparent 100%
+          );
+          border-radius: 3px;
+          box-shadow: 0 0 8px rgba($secondary-color, 0.5);
+          transition: all 0.3s ease;
+        }
+        
+        &:hover::after {
+          width: 40px;
+          background: linear-gradient(to right, 
+            rgba($secondary-color, 0.9) 0%,
+            rgba($secondary-color, 0.9) 60%,
+            rgba($secondary-color, 0.3) 90%,
+            transparent 100%
+          );
         }
       }
       
@@ -145,15 +164,19 @@
         position: relative;
         overflow: hidden;
         
+        // Replace the hover underline with a more sophisticated effect
         &::before {
           content: '';
           position: absolute;
-          bottom: -3px;
+          bottom: -6px;
           left: 4vh;
-          width: 0;
-          height: 2px;
-          background-color: $secondary-color;
-          transition: width 0.3s ease;
+          width: 6px;
+          height: 3px;
+          background-color: rgba($secondary-color, 0.5);
+          border-radius: 3px;
+          opacity: 0;
+          transform: translateX(-10px);
+          transition: all 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
         }
         
         &:hover {
@@ -161,7 +184,13 @@
           transform: translateY(-2px);
           
           &::before {
-            width: 70%;
+            opacity: 1;
+            width: 30px;
+            transform: translateX(0);
+            background: linear-gradient(to right,
+              rgba($secondary-color, 0.8) 0%,
+              rgba($secondary-color, 0.4) 100%
+            );
           }
         }
       }

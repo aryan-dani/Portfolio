@@ -17,20 +17,6 @@
   background-attachment: fixed;
   position: relative;
 }
-.home::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px), radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 30px 30px;
-  background-position: 0 0, 15px 15px;
-  animation: gradientBackground 8s ease infinite;
-  z-index: 0;
-  pointer-events: none;
-}
 .home .content-wrapper {
   position: relative;
   z-index: 1;
@@ -44,14 +30,7 @@
   animation: slideInUp 0.8s ease forwards;
 }
 .home__name::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 3px;
-  background: linear-gradient(90deg, aliceblue, transparent);
-  animation: typewriter 1.5s 1s forwards;
+  display: none;
 }
 .home__name:hover {
   cursor: default;
@@ -65,25 +44,9 @@
   -webkit-background-clip: text;
   animation: pulse 3s infinite;
 }
-.home__name--last::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  border-radius: 50%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  z-index: -1;
-}
 .home__name--last:hover {
   cursor: default;
   transform: translateY(-3px);
-}
-.home__name--last:hover::before {
-  opacity: 0.6;
 }
 .home h2 {
   background-color: aliceblue;
@@ -210,7 +173,7 @@
 }
 .menu-btn {
   position: absolute;
-  z-index: 3;
+  z-index: 101;
   right: 1rem;
   top: 1rem;
   height: 1.25rem;
@@ -274,6 +237,7 @@
   transition: all 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  z-index: 100;
 }
 .nav.open {
   visibility: visible;
@@ -294,8 +258,7 @@
   list-style: none;
   padding: 1rem;
   padding-left: 0px;
-  border-bottom: 2px solid rgba(240, 248, 255, 0.2);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
   transform: translateY(-100%);
   transition: transform 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
@@ -329,12 +292,18 @@
 .nav .menu-nav__item.active > a::after {
   content: "";
   position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: aliceblue;
-  animation: shimmer 2s infinite;
+  bottom: -6px;
+  left: 4vh;
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(to right, rgba(240, 248, 255, 0.8) 0%, rgba(240, 248, 255, 0.8) 30%, rgba(240, 248, 255, 0.3) 70%, transparent 100%);
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(240, 248, 255, 0.5);
+  transition: all 0.3s ease;
+}
+.nav .menu-nav__item.active > a:hover::after {
+  width: 40px;
+  background: linear-gradient(to right, rgba(240, 248, 255, 0.9) 0%, rgba(240, 248, 255, 0.9) 60%, rgba(240, 248, 255, 0.3) 90%, transparent 100%);
 }
 .nav .menu-nav__item.open {
   opacity: 1;
@@ -351,42 +320,37 @@
 .nav .menu-nav__item a::before {
   content: "";
   position: absolute;
-  bottom: -3px;
+  bottom: -6px;
   left: 4vh;
-  width: 0;
-  height: 2px;
-  background-color: aliceblue;
-  transition: width 0.3s ease;
+  width: 6px;
+  height: 3px;
+  background-color: rgba(240, 248, 255, 0.5);
+  border-radius: 3px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
 .nav .menu-nav__item a:hover {
   color: aliceblue;
   transform: translateY(-2px);
 }
 .nav .menu-nav__item a:hover::before {
-  width: 70%;
+  opacity: 1;
+  width: 30px;
+  transform: translateX(0);
+  background: linear-gradient(to right, rgba(240, 248, 255, 0.8) 0%, rgba(240, 248, 255, 0.4) 100%);
 }
 
 .jobs-layout {
   padding: 1rem;
   background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
-  background-size: cover;
+  background-size: 100% auto;
   background-repeat: no-repeat;
   background-attachment: fixed;
   position: relative;
 }
 .jobs-layout::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px), radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 30px 30px, 20px 20px;
-  background-position: 0 0, 15px 15px;
-  animation: gradientBackground 15s ease infinite alternate;
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 .jobs-layout .heading {
   display: flex;
@@ -1748,9 +1712,21 @@ main {
 footer {
   font-size: 1rem;
   position: fixed;
-  bottom: 0.2rem;
-  right: 0.6rem;
+  bottom: 0.5rem;
+  right: 1rem;
   color: #fff;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+  z-index: 20; /* Increased z-index to ensure it's above all content */
+  background-color: rgba(39, 39, 39, 0.7);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  pointer-events: auto; /* Ensure it's clickable */
+}
+footer:hover {
+  background-color: rgba(39, 39, 39, 0.9);
+  transform: translateY(-3px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
 body {

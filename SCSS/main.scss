@@ -61,9 +61,22 @@ main {
 footer {
   font-size: 1rem;
   position: fixed;
-  bottom: 0.2rem;
-  right: 0.6rem;
+  bottom: 0.5rem;
+  right: 1rem;
   color: #fff;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+  z-index: 20; /* Increased z-index to ensure it's above all content */
+  background-color: rgba($primary-color, 0.7);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  pointer-events: auto; /* Ensure it's clickable */
+  
+  &:hover {
+    background-color: rgba($primary-color, 0.9);
+    transform: translateY(-3px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  }
 }
 
 body {
