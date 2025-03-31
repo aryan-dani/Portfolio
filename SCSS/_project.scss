@@ -1,14 +1,52 @@
 @use 'config' as *;
 
 .project {
+  position: relative;
+  overflow: hidden;
+
+  // Add subtle particle backgrounds to the entire projects section
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 25px 25px;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 0;
+    animation: gradientBackground 15s ease infinite;
+  }
+  
   h2 {
     font-weight: 900;
     margin-bottom: 5px;
-    transition: transform $transition-speed ease;
+    transition: all 0.5s ease;
+    position: relative;
+    z-index: 1;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, $secondary-color, transparent);
+      transition: width 0.5s ease;
+    }
 
     &:hover {
       cursor: default;
-      transform: translateY(-3px);
+      transform: translateY(-3px) scale(1.02);
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      
+      &::after {
+        width: 100%;
+      }
     }
   }
 
@@ -22,6 +60,39 @@
     align-items: center;
     justify-content: flex-end;
     gap: 5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateZ(0);
+    transition: transform 0.5s ease;
+    
+    // Animated gradient overlay
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba($primary-color, 0.7) 0%,
+        rgba($primary-color, 0.3) 50%,
+        rgba($primary-color, 0.7) 100%
+      );
+      background-size: 300% 300%;
+      animation: gradientBackground 8s ease infinite;
+      z-index: 0;
+    }
+    
+    // Subtle parallax effect on hover
+    &:hover {
+      transform: translateZ(0) scale(1.02);
+      
+      h2, p {
+        transform: translateY(-5px);
+      }
+    }
 
     h2 {
       display: inline-block;
@@ -29,6 +100,23 @@
       background-color: $secondary-color;
       padding: 0rem 1rem;
       border-radius: 8px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s ease;
+      overflow: hidden;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -60%;
+        width: 20%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: rotate(30deg);
+        animation: shimmer 3s infinite;
+      }
     }
 
     p {
@@ -39,22 +127,29 @@
       width: 61%;
       margin-bottom: 0.5rem;
       border-radius: 8px;
-      transition: transform $transition-speed ease;
+      position: relative;
+      z-index: 1;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 
       &:hover {
         background-color: $primary-color;
         color: rgb(215, 230, 230);
-        transform: translateY(-3px);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
       }
     }
   }
 
-  // New grid container for project cards
+  // New grid container for project cards with animated entrance
   .project-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
-    margin: 2rem; // optional spacing
+    margin: 2rem;
+    position: relative;
+    z-index: 1;
+    perspective: 1000px;
   }
 
   .Projects {
@@ -63,6 +158,46 @@
     border-radius: 8px;
     box-sizing: border-box;
     border-bottom: solid 8px #555;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideInUp 0.6s forwards;
+    animation-delay: calc(var(--project-index, 0) * 0.2s);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    
+    // Glass morphism effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0) 80%
+      );
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    &:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      border-bottom-color: $secondary-color;
+      
+      &::before {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
 
     h2 {
       display: inline-block;
@@ -70,17 +205,51 @@
       background-color: $primary-color;
       padding: 0px 0.3rem;
       border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.7s ease;
+      }
+      
+      &:hover::before {
+        left: 100%;
+      }
     }
 
     h3 {
       font-size: 1.6rem;
       margin-bottom: 0px;
       display: block;
-      transition: transform $transition-speed ease;
+      transition: all 0.4s ease;
+      position: relative;
+      
+      // Gradient text underline animation
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, $primary-color, transparent);
+        transition: width 0.4s ease;
+      }
 
       &:hover {
         cursor: default;
         transform: translateY(-3px);
+        
+        &::after {
+          width: 100%;
+        }
       }
     }
 
@@ -92,12 +261,31 @@
         background-color: rgb(215, 230, 230);
         padding: 0.1rem 0.4rem;
         border-radius: 8px;
-        transition: transform $transition-speed ease;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        
+        // Inner shimmer effect
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+          transition: left 0.5s ease;
+        }
 
         &:hover {
           background-color: $primary-color;
           color: rgb(215, 230, 230);
-          transform: translateY(-3px);
+          transform: translateY(-5px) scale(1.05);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          
+          &::before {
+            left: 100%;
+          }
         }
       }
     }
@@ -110,17 +298,27 @@
       padding: 0.1rem 0.5rem;
       border-radius: 4px;
       margin-bottom: 10px;
-      transition: transform $transition-speed ease;
+      transition: all 0.3s ease;
+      transform-origin: left;
 
       &:hover {
         cursor: default;
-        transform: translateY(-3px);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
       }
     }
 
     .content {
       color: $primary-color;
+      transition: all 0.3s ease;
     }
+  }
+}
+
+// Add custom animation for each project card
+@for $i from 1 through 10 {
+  .Projects:nth-child(#{$i}) {
+    --project-index: #{$i};
   }
 }
 
@@ -138,9 +336,26 @@ footer {
   padding: 0.4rem;
   gap: 0.5rem;
   border-radius: 0.8rem;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease;
+  }
 
   &:hover {
     text-decoration: underline;
     cursor: pointer;
+    
+    &::before {
+      left: 100%;
+    }
   }
 }

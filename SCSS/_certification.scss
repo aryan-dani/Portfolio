@@ -1,6 +1,26 @@
 @use 'config' as *;
 
 .certification {
+  position: relative;
+  
+  // Add subtle particle background
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px, 25px 25px;
+    background-position: 0 0, 15px 15px;
+    animation: gradientBackground 20s ease infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+
   #heading {
     font-weight: 900;
     margin: 50px 0 5px;
@@ -9,10 +29,30 @@
     border-radius: 8px;
     background-color: $secondary-color;
     display: inline-block;
-    transition: transform $transition-speed ease;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: slideInUp 0.6s ease forwards;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    
+    // Shine effect
+    &::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 20%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(30deg);
+      animation: shimmer 3s infinite;
+    }
 
     &:hover {
-      transform: translateY(-3px);
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
   }
 
@@ -23,36 +63,107 @@
     margin-bottom: 30px;
     padding: 10px;
     color: $primary-color;
-    transition: transform $transition-speed ease;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: slideInUp 0.6s 0.2s ease forwards;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
     &:hover {
       cursor: default;
-      transform: translateY(-3px);
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
   }
 
   .certificate-content {
     background-color: $secondary-color;
     border-radius: 8px;
-    transition: transform $transition-speed ease;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideInUp 0.6s forwards;
+    animation-delay: calc(var(--cert-index, 0) * 0.2s + 0.4s);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    margin-bottom: 25px;
+    
+    // Glass morphism effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0) 80%
+      );
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: -1;
+    }
 
     &:hover {
       cursor: default;
-      transform: translateY(-7px);
+      transform: translateY(-15px) scale(1.03);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+      
+      &::before {
+        opacity: 1;
+        transform: scale(1);
+      }
+      
+      .text-secondary, h3, .certificate-links, p {
+        transform: translateY(-3px);
+      }
     }
 
     .text-secondary {
       padding: 10px;
       padding-bottom: 0px;
+      position: relative;
+      transition: all 0.5s ease;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 10px;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, $primary-color, transparent);
+        transition: width 0.4s ease;
+      }
+      
+      &:hover::after {
+        width: calc(100% - 20px);
+      }
     }
 
     h3 {
       color: $primary-color;
       margin-left: 10px;
+      position: relative;
+      transition: all 0.5s ease;
+      
+      // Create a glowing effect on hover
+      &:hover {
+        text-shadow: 0 0 5px rgba($primary-color, 0.5);
+      }
     }
 
     .certificate-links {
       margin-left: 3px;
+      transition: all 0.5s ease;
     }
 
     .certificate-link {
@@ -60,10 +171,43 @@
       border-radius: 8px;
       padding: 5px;
       margin: 0px 5px;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      transition: all 0.4s ease;
+      
+      // Shine effect on hover
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+      }
+      
+      &:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        
+        &::before {
+          left: 100%;
+        }
+      }
     }
 
     p {
       margin-left: 8px;
+      transition: all 0.5s ease;
     }
+  }
+}
+
+// Add staggered animations for certification cards
+@for $i from 1 through 10 {
+  .certificate-content:nth-child(#{$i + 3}) {
+    --cert-index: #{$i};
   }
 }

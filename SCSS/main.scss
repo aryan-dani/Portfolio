@@ -1,6 +1,6 @@
 @forward "config"; 
 
- // Keep forwarding config so its variables are available everywhere
+// Keep forwarding config so its variables are available everywhere
 @use "home";
 @use "menu";
 @use "jobs";
@@ -8,6 +8,7 @@
 @use "about";
 @use "certification";
 @use "theme";
+@use "animations"; // Adding the new animations file
 
 // Import config variables to use them directly in this file
 @use "config" as *;

@@ -10,24 +10,86 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  position: relative;
+  
+  // Particle overlay effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: 0 0, 15px 15px;
+    animation: gradientBackground 8s ease infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  // Content wrapper to ensure all elements are above the particle effect
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+  }
 
   &__name {
     margin-top: 0.4rem;
     font-weight: 700;
-    transition: transform $transition-speed ease;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: slideInUp 0.8s ease forwards;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, $secondary-color, transparent);
+      animation: typewriter 1.5s 1s forwards;
+    }
 
     &:hover {
       cursor: default;
-      transform: translateY(-3px);
+      animation: pulse 2s infinite;
     }
 
     &--last {
       color: $primary-color;
-      transition: transform $transition-speed ease;
+      position: relative;
+      display: inline-block;
+      background-clip: text;
+      -webkit-background-clip: text;
+      animation: pulse 3s infinite;
+      
+      // Glowing effect on hover
+      &::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border-radius: 50%;
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: -1;
+      }
 
       &:hover {
         cursor: default;
         transform: translateY(-3px);
+        
+        &::before {
+          opacity: 0.6;
+        }
       }
     }
   }
@@ -42,14 +104,38 @@
     display: inline-block;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba($primary-color, 0.2);
-    transition: transform $transition-speed ease;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: slideInUp 0.8s 0.4s forwards;
+    overflow: hidden;
+    
+    // Shine effect across text
+    &::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 20%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(30deg);
+      animation: shimmer 3s infinite;
+    }
 
     &:hover {
       transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+      animation: none; // Remove the animation that might be causing it to disappear
     }
   }
 
   .social-icons {
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: slideInUp 0.8s 0.6s forwards;
+    
     .link-list {
       list-style: none;
       padding: 0;
@@ -60,18 +146,41 @@
         align-items: center;
         gap: 10px;
         transition: transform $transition-speed ease;
+        opacity: 0;
+        transform: translateX(-20px);
+        
+        @for $i from 1 through 4 {
+          &:nth-child(#{$i}) {
+            animation: fadeInStagger 0.5s #{$i * 0.15 + 0.7}s forwards;
+          }
+        }
   
         &:hover {
           cursor: default;
           transform: translateY(-3px);
         }
   
+        i {
+          transition: transform 0.3s ease;
+          color: white; // Ensure icon is visible
+          
+          &:hover {
+            transform: rotate(15deg) scale(1.2);
+          }
+        }
+        
         a {
           margin: 0.5rem 0;
           font-weight: 700;
           font-size: 1.2rem;
           text-decoration: none;
           transition: color $transition-speed ease;
+          position: relative;
+          display: inline-block; // Ensure proper display
+          
+          &:hover {
+            color: $secondary-color; // Make sure text is visible on hover
+          }
         }
   
         span {
@@ -79,11 +188,32 @@
           background-color: $secondary-color;
           padding: 0.2rem 0.4rem;
           border-radius: 8px;
-          transition: background-color $transition-speed ease;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+          display: inline-block; // Ensure proper display
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+          }
   
           &:hover {
             background-color: #555;
-            transition: all $transition-speed ease-in-out;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            color: $secondary-color; // Ensure text is visible on hover
+            
+            &::before {
+              left: 100%;
+              transition: left 0.5s ease;
+            }
           }
         }
       }
