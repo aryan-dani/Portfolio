@@ -9,9 +9,18 @@
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="SCSS/main.css" />
   </head>
   <body>
+    <!-- Toast Notifications Container -->
+    <div class="toast-container">
+      <!-- Toasts will be added dynamically here -->
+    </div>
+
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
     <header>
       <div class="menu-btn">
         <span class="menu-btn__burger"></span>
@@ -42,13 +51,15 @@
     </header>
     <main>
       <section class="skills">
-        <h1 class="skills__heading">
+        <h1 class="skills__heading animate__animated animate__fadeInDown">
           Technical <span class="text-secondary">Skills</span>
+          <span class="pulse-effect"></span>
         </h1>
         
         <!-- Skills Categories -->
         <div class="skills__categories">
           <div class="category-tabs">
+            <button class="category-tab" data-category="all">All</button>
             <button class="category-tab active" data-category="development">Development</button>
             <button class="category-tab" data-category="design">Design</button>
             <button class="category-tab" data-category="data">Data Science</button>
@@ -253,16 +264,82 @@
           </div>
         </div>
         
+        <!-- Tech Stack Section -->
+        <div class="tech-stack">
+          <h3 class="tech-stack__heading">Tech Stack</h3>
+          <div class="tech-stack__badges">
+            <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+            <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" />
+            <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+            <img src="https://img.shields.io/badge/Google%20Cloud-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white" />
+            <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+            <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+            <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+            <img src="https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white" />
+            <img src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white" />
+            <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
+            <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
+            <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
+            <img src="https://img.shields.io/badge/SASS-CC6699?style=for-the-badge&logo=sass&logoColor=white" />
+            <img src="https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white" />
+            <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" />
+            <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" />
+            <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+            <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white" />
+            <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" />
+            <img src="https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white" />
+            <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white" />
+            <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+            <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
+          </div>
+        </div>
+        
         <!-- 3D Skills Globe -->
         <div class="skills__globe-container">
           <div class="skills__globe">
-            <div class="skills__globe-text">Hover Me</div>
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="orbit orbit-3"></div>
+            <div class="skills__globe-core">
+              <span class="ripple"></span>
+              <span class="ripple"></span>
+              <span class="ripple"></span>
+            </div>
+            <div class="skills__globe-text">Explore Skills</div>
+            <div class="globe-particles"></div>
+            <!-- Skill orbiting elements -->
+            <div class="skill-orbit" style="--orbit-rotation: 0deg;">
+              <i class="fa-brands fa-react fa-2x"></i>
+            </div>
+            <div class="skill-orbit" style="--orbit-rotation: 45deg;">
+              <i class="fa-brands fa-python fa-2x"></i>
+            </div>
+            <div class="skill-orbit" style="--orbit-rotation: 90deg;">
+              <i class="fa-brands fa-js fa-2x"></i>
+            </div>
+            <div class="skill-orbit" style="--orbit-rotation: 135deg;">
+              <i class="fa-brands fa-node-js fa-2x"></i>
+            </div>
+            <div class="skill-orbit" style="--orbit-rotation: 180deg;">
+              <i class="fa-brands fa-html5 fa-2x"></i>
+            </div>
+            <div class="skill-orbit" style="--orbit-rotation: 225deg;">
+              <i class="fa-brands fa-css3-alt fa-2x"></i>
+            </div>
+            <div class="skill-orbit" style="--orbit-rotation: 270deg;">
+              <i class="fa-solid fa-database fa-2x"></i>
+            </div>
+            <div class="skill-orbit" style="--orbit-rotation: 315deg;">
+              <i class="fa-solid fa-cloud fa-2x"></i>
+            </div>
           </div>
         </div>
         
       </section>
     </main>
     <footer>&copy; 2025 Aryan Dani. All Rights Reserved.</footer>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script src="Js/main.js"></script>
     <script
       src="https://kit.fontawesome.com/1267cf2b7d.js"
