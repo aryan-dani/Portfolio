@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skills | Aryan's Portfolio</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="SCSS/main.css" />
+  </head>
+  <body>
+    <header>
+      <div class="menu-btn">
+        <span class="menu-btn__burger"></span>
+      </div>
+
+      <nav class="nav">
+        <ul class="menu-nav">
+          <li class="menu-nav__item">
+            <a href="index.html" class="menu-nav__link"> Home </a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="jobs.html" class="menu-nav__link"> Jobs </a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="projects.html" class="menu-nav__link"> My Projects </a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="certification.html" class="menu-nav__link">Certifications</a>
+          </li>
+          <li class="menu-nav__item active">
+            <a href="skills.html" class="menu-nav__link"> Skills </a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="about.html" class="menu-nav__link"> About Me </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="skills">
+        <h1 class="skills__heading">
+          Technical <span class="text-secondary">Skills</span>
+        </h1>
+        
+        <!-- Skills Categories -->
+        <div class="skills__categories">
+          <div class="category-tabs">
+            <button class="category-tab active" data-category="development">Development</button>
+            <button class="category-tab" data-category="design">Design</button>
+            <button class="category-tab" data-category="data">Data Science</button>
+            <button class="category-tab" data-category="other">Other</button>
+          </div>
+        </div>
+        
+        <!-- Skills Container -->
+        <div class="skills__container">
+          <!-- Development Skills -->
+          <div class="skills__group active" id="development">
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-brands fa-html5 fa-4x"></i>
+                <h3>HTML5</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="95"></div>
+                </div>
+                <p>Expert level proficiency in semantic HTML5, accessibility standards, and modern markup practices.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-brands fa-css3-alt fa-4x"></i>
+                <h3>CSS3</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="90"></div>
+                </div>
+                <p>Advanced CSS animations, layouts, and responsive design. Proficient with CSS Grid and Flexbox.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-brands fa-js fa-4x"></i>
+                <h3>JavaScript</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="85"></div>
+                </div>
+                <p>Strong understanding of ES6+ features, DOM manipulation, async programming with Promises & async/await.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-brands fa-react fa-4x"></i>
+                <h3>React</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="80"></div>
+                </div>
+                <p>Experience with React hooks, context API, and state management. Familiar with Next.js framework.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-brands fa-node-js fa-4x"></i>
+                <h3>Node.js</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="75"></div>
+                </div>
+                <p>Building RESTful APIs, handling file operations, and database integration with Express.js.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Design Skills -->
+          <div class="skills__group" id="design">
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-brands fa-figma fa-4x"></i>
+                <h3>Figma</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="85"></div>
+                </div>
+                <p>UI/UX design, prototyping, and collaborative design workflows in Figma.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-solid fa-palette fa-4x"></i>
+                <h3>UI Design</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="80"></div>
+                </div>
+                <p>Color theory, typography, responsive layouts, and modern design principles.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-solid fa-paintbrush fa-4x"></i>
+                <h3>Adobe Creative Suite</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="70"></div>
+                </div>
+                <p>Photoshop, Illustrator, and Adobe XD for digital design and asset creation.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Data Science Skills -->
+          <div class="skills__group" id="data">
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-brands fa-python fa-4x"></i>
+                <h3>Python</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="85"></div>
+                </div>
+                <p>Data analysis, automation, and machine learning with Python and related libraries.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-solid fa-brain fa-4x"></i>
+                <h3>Machine Learning</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="75"></div>
+                </div>
+                <p>TensorFlow, scikit-learn, and deep learning fundamentals for AI applications.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-solid fa-database fa-4x"></i>
+                <h3>SQL & Databases</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="80"></div>
+                </div>
+                <p>Database design, complex queries, and data modeling across SQL and NoSQL systems.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Other Skills -->
+          <div class="skills__group" id="other">
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-solid fa-code-branch fa-4x"></i>
+                <h3>Git & Version Control</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="90"></div>
+                </div>
+                <p>Branching strategies, collaborative workflows, and CI/CD integration.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-solid fa-cloud fa-4x"></i>
+                <h3>Cloud Services</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="75"></div>
+                </div>
+                <p>AWS, Azure, and Google Cloud Platform for hosting, serverless functions, and more.</p>
+              </div>
+            </div>
+            
+            <div class="skills__card">
+              <div class="skills__card-front">
+                <i class="fa-solid fa-people-group fa-4x"></i>
+                <h3>Team Leadership</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="85"></div>
+                </div>
+                <p>Project management, agile methodologies, and cross-functional team collaboration.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 3D Skills Globe -->
+        <div class="skills__globe-container">
+          <div class="skills__globe">
+            <div class="skills__globe-text">Hover Me</div>
+          </div>
+        </div>
+        
+      </section>
+    </main>
+    <footer>&copy; 2025 Aryan Dani. All Rights Reserved.</footer>
+    <script src="Js/main.js"></script>
+    <script
+      src="https://kit.fontawesome.com/1267cf2b7d.js"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+  </body>
+</html>
