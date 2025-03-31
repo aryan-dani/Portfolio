@@ -11,7 +11,7 @@
   padding-top: 10vh;
   overflow: hidden;
   text-align: left;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../../Images/Header.jpg") center top;
+  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -182,7 +182,7 @@
 
 .jobs-layout {
   padding: 1rem;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../../Images/Header.jpg") center top;
+  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -334,7 +334,7 @@ footer:hover {
 .project__project-image {
   height: 30vh;
   width: 100%;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../../Images/Header.jpg") center top;
+  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -449,7 +449,7 @@ footer:hover {
   overflow: hidden;
   align-items: center;
   text-align: left;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../../Images/Header.jpg") center top;
+  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
   background-size: cover;
   border-radius: 8px;
 }
