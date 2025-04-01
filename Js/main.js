@@ -13,19 +13,56 @@ function toggleMenu()
 {
     if(!showMenu)
     {
+        // First prepare elements before showing them
+        menuNav.style.opacity = '0';
+        nav.style.visibility = 'visible';
+        
+        // Add open classes
         hamburger.classList.add('open');
         nav.classList.add('open');
         menuNav.classList.add('open');
-        navItems.forEach(item => item.classList.add('open'));
+        
+        // Animate menu items in the original order
+        setTimeout(() => {
+            menuNav.style.opacity = '1';
+            
+            // Add open class to all menu items - CSS will handle the animation timing
+            navItems.forEach(item => item.classList.add('open'));
+            
+            // Get the menu height and apply it as margin to main content
+            setTimeout(() => {
+                const menuHeight = menuNav.offsetHeight;
+                main.style.marginTop = `${menuHeight}px`;
+            }, 50);
+        }, 50);
         
         showMenu = true;
     }
     else
     {
-        hamburger.classList.remove('open');
-        nav.classList.remove('open');
-        menuNav.classList.remove('open');
+        // First fade out menu items
+        menuNav.style.opacity = '0';
+        
+        // Immediately reset margin to prevent the weird shift
+        main.style.marginTop = '0';
+        
+        // Remove open classes from menu items
         navItems.forEach(item => item.classList.remove('open'));
+        
+        // Then after a short delay, close the menu
+        setTimeout(() => {
+            hamburger.classList.remove('open');
+            nav.classList.remove('open');
+            menuNav.classList.remove('open');
+            
+            // Hide menu after animation completes
+            setTimeout(() => {
+                if (!showMenu) { // Check again in case menu was reopened
+                    nav.style.visibility = 'hidden';
+                }
+            }, 300);
+        }, 100);
+        
         showMenu = false;
     }
 }
@@ -674,7 +711,7 @@ function initSkillsPageAnimations() {
         });
     }
     
-    // Animate skill cards with staggered 3D reveal for initial active group
+    // Animate skill cards with staggered fadeIn and 3D effect for initial active group
     const activeGroup = document.querySelector('.skills__group.active');
     if (activeGroup) {
         setTimeout(() => {

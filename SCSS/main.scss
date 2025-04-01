@@ -57,6 +57,7 @@ header {
 main {
   height: 100%;
   width: 100%;
+  transition: margin-top 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 }
 
 footer {

@@ -1,8 +1,8 @@
 @use 'config' as *;
 
 .menu-btn {
-  position: absolute;
-  z-index: 101; // Increased z-index to be above the nav
+  position: fixed; // Changed from absolute to fixed to keep it in place
+  z-index: 101;
   right: 1rem;
   top: 1rem;
   height: 1.25rem;
@@ -46,12 +46,13 @@
     }
     
     &.open {
-      transform: rotate(720deg);
+      transform: rotate(180deg); // Reduced rotation for a cleaner look
       background-color: transparent;
       
       &::before {
         transform: rotate(45deg) translate(0.3125rem, 0.5rem);
         background-color: $secondary-color;
+        width: 1.75rem; // Ensure consistent width
       }
       
       &::after {
@@ -71,10 +72,10 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-100%);
-  transition: all 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   -webkit-backdrop-filter: blur(10px);
-  z-index: 100; // Ensure menu is above all content
+  backdrop-filter: blur(10px);
+  z-index: 100;
   
   &.open {
     visibility: visible;
@@ -94,12 +95,12 @@
     overflow: hidden;
     background-color: rgba($primary-color, 0.95);
     list-style: none;
-    padding: 1rem;
+    padding: 0.8rem 0.5rem;
     padding-left: 0px;
-    // Removing box-shadow to eliminate the black line
-    box-shadow: none;
-    transform: translateY(-100%);
-    transition: transform 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+    margin-top: 0;
+    transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
     
     &.open {
       transform: translateY(0);
@@ -108,12 +109,12 @@
     &__item {
       position: relative;
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-15px);
       
-      // Create staggered animation for menu items
-      @for $i from 1 through 5 {
+      // Restore original animation sequence (1-6 in order)
+      @for $i from 1 through 6 {
         &:nth-child(#{$i}) {
-          transition: all 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67) #{$i * 0.1 + 0.1}s;
+          transition: all 0.35s cubic-bezier(0.215, 0.61, 0.355, 1) #{($i - 1) * 0.05 + 0.15}s;
         }
       }
       
@@ -121,18 +122,18 @@
         color: $secondary-color;
         position: relative;
         
-        // Replace the simple underline with a modern indicator
+        // Updated indicator to span the full width of text
         &::after {
           content: '';
           position: absolute;
           bottom: -6px;
           left: 4vh;
-          width: 30px;
+          width: calc(100% - 4vh - 0.375rem); // Full width minus padding-left and margin-right
           height: 3px;
           background: linear-gradient(to right, 
-            rgba($secondary-color, 0.8) 0%, 
-            rgba($secondary-color, 0.8) 30%, 
-            rgba($secondary-color, 0.3) 70%, 
+            rgba($secondary-color, 0.8) 0%,
+            rgba($secondary-color, 0.8) 70%, 
+            rgba($secondary-color, 0.3) 90%, 
             transparent 100%
           );
           border-radius: 3px;
@@ -141,11 +142,10 @@
         }
         
         &:hover::after {
-          width: 40px;
           background: linear-gradient(to right, 
             rgba($secondary-color, 0.9) 0%,
-            rgba($secondary-color, 0.9) 60%,
-            rgba($secondary-color, 0.3) 90%,
+            rgba($secondary-color, 0.9) 80%,
+            rgba($secondary-color, 0.3) 95%,
             transparent 100%
           );
         }
@@ -164,7 +164,7 @@
         position: relative;
         overflow: hidden;
         
-        // Replace the hover underline with a more sophisticated effect
+        // Updated hover glow to span full width of text
         &::before {
           content: '';
           position: absolute;
@@ -185,11 +185,13 @@
           
           &::before {
             opacity: 1;
-            width: 30px;
+            width: calc(100% - 4vh - 0.375rem); // Full width minus padding-left and margin-right
             transform: translateX(0);
             background: linear-gradient(to right,
               rgba($secondary-color, 0.8) 0%,
-              rgba($secondary-color, 0.4) 100%
+              rgba($secondary-color, 0.8) 60%,
+              rgba($secondary-color, 0.4) 90%,
+              transparent 100%
             );
           }
         }

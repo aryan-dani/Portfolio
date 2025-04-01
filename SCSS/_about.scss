@@ -120,12 +120,12 @@
     opacity: 0;
     animation: slideInUp 0.5s 0.4s ease forwards;
     background: rgba($primary-color, 0.7);
-    padding: 10px;
+    padding: 3px;
     border-radius: 8px;
     transform-origin: left;
     transition: all 0.4s ease;
-    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     
     &:hover {
