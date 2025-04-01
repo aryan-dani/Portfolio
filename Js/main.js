@@ -67,18 +67,30 @@ function toggleMenu()
     }
 }
 
-// Enhanced portfolio animations
+// Welcome notifications for each page
 document.addEventListener('DOMContentLoaded', () => {
     // Determine page type and add appropriate body class
     const pagePath = window.location.pathname;
     const isHomePage = pagePath.includes('index.html') || pagePath.endsWith('/');
     
-    // Add class to body element to help with page-specific styling
-    if (isHomePage) {
-        document.body.classList.add('home-page');
-    }
+    // Add welcome toast based on page
+    setTimeout(() => {
+        if (isHomePage) {
+            showToast('Welcome to My Portfolio', 'Explore my work and get to know me better', 'fa-solid fa-house-user');
+        } else if (pagePath.includes('jobs.html')) {
+            showToast('Professional Experience', 'Learn about my career journey and achievements', 'fa-solid fa-briefcase');
+        } else if (pagePath.includes('projects.html')) {
+            showToast('Portfolio Projects', 'Discover the projects I\'ve worked on', 'fa-solid fa-code');
+        } else if (pagePath.includes('certification.html')) {
+            showToast('My Certifications', 'Check out my professional qualifications', 'fa-solid fa-certificate');
+        } else if (pagePath.includes('skills.html')) {
+            showToast('Technical Skills', 'Explore my expertise across different technologies', 'fa-solid fa-laptop-code');
+        } else if (pagePath.includes('about.html')) {
+            showToast('About Me', 'Get to know me better', 'fa-solid fa-user');
+        }
+    }, 1000);
     
-    // Initialize page transitions
+    // Continue with the rest of the initialization
     initPageTransition();
     
     // Initialize page-specific animations
@@ -490,19 +502,19 @@ function animateOnScroll() {
 
 // Skills page animations with interactive elements
 function initSkillsPageAnimations() {
-    // Initialize particles.js for background effect
+    // Initialize particles.js for background effect with improved colors
     if (document.getElementById('particles-js')) {
         particlesJS('particles-js', {
             particles: {
                 number: {
-                    value: 80,
+                    value: 100,
                     density: {
                         enable: true,
                         value_area: 800
                     }
                 },
                 color: {
-                    value: "#ff7b00"
+                    value: ["#ff7b00", "#ff9e00", "#ffb700", "#ffd000"]
                 },
                 shape: {
                     type: "circle",
@@ -512,7 +524,7 @@ function initSkillsPageAnimations() {
                     }
                 },
                 opacity: {
-                    value: 0.5,
+                    value: 0.6,
                     random: true,
                     anim: {
                         enable: true,
@@ -522,11 +534,11 @@ function initSkillsPageAnimations() {
                     }
                 },
                 size: {
-                    value: 5,
+                    value: 4,
                     random: true,
                     anim: {
                         enable: true,
-                        speed: 4,
+                        speed: 3,
                         size_min: 0.3,
                         sync: false
                     }
@@ -535,7 +547,7 @@ function initSkillsPageAnimations() {
                     enable: true,
                     distance: 150,
                     color: "#ff7b00",
-                    opacity: 0.2,
+                    opacity: 0.3,
                     width: 1
                 },
                 move: {
@@ -570,11 +582,18 @@ function initSkillsPageAnimations() {
                     grab: {
                         distance: 140,
                         line_linked: {
-                            opacity: 1
+                            opacity: 0.8
                         }
                     },
                     push: {
                         particles_nb: 4
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 6,
+                        duration: 2,
+                        opacity: 0.8,
+                        speed: 3
                     }
                 }
             },

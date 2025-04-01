@@ -40,13 +40,18 @@
       color: $primary-color;
       position: relative;
       display: inline-block;
-      background-clip: text;
       -webkit-background-clip: text;
-      animation: pulse 3s infinite;
+      background-clip: text;
+      background-image: linear-gradient(45deg, $primary-color, lighten($primary-color, 15%), $primary-color);
+      background-size: 200% auto;
+      color: transparent;
+      animation: gradient-text 4s ease infinite;
       
       &:hover {
         cursor: default;
         transform: translateY(-3px);
+        animation-play-state: paused;
+        filter: drop-shadow(0 0 5px rgba($primary-color, 0.7));
       }
     }
   }
@@ -100,11 +105,12 @@
   
       .link-title {
         display: flex;
-        align-items: center;
+        align-items: center; // Ensure vertical alignment
         gap: 10px;
         transition: transform $transition-speed ease;
         opacity: 0;
         transform: translateX(-20px);
+        margin-bottom: 0.5rem; // Add consistent spacing between items
         
         @for $i from 1 through 4 {
           &:nth-child(#{$i}) {
@@ -120,6 +126,9 @@
         i {
           transition: transform 0.3s ease;
           color: white; // Ensure icon is visible
+          display: flex; // Ensure icon is properly aligned
+          align-items: center;
+          justify-content: center;
           
           &:hover {
             transform: rotate(15deg) scale(1.2);
@@ -133,7 +142,8 @@
           text-decoration: none;
           transition: color $transition-speed ease;
           position: relative;
-          display: inline-block; // Ensure proper display
+          display: flex; // Change to flex for better alignment
+          align-items: center; // Center vertically
           
           &:hover {
             color: $secondary-color; // Make sure text is visible on hover
