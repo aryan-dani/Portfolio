@@ -42,10 +42,11 @@
   display: inline-block;
   -webkit-background-clip: text;
   background-clip: text;
-  background-image: linear-gradient(45deg, #272727, #4d4d4d, #272727);
+  background-image: linear-gradient(45deg, #272727, #5a5a5a, #272727);
   background-size: 200% auto;
   color: transparent;
   animation: gradient-text 4s ease infinite;
+  text-shadow: 0 0 1px rgba(240, 248, 255, 0.6), 0 0 2px rgba(240, 248, 255, 0.4);
 }
 .home__name--last:hover {
   cursor: default;
@@ -2147,6 +2148,46 @@ footer {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+.tech-stack {
+  width: 100%;
+  max-width: 1000px;
+  margin: 3rem auto 0;
+}
+.tech-stack__heading {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+.tech-stack__heading::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 100px;
+  height: 3px;
+  background: aliceblue;
+  transform: translateX(-50%);
+}
+.tech-stack__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+.tech-stack__badges img {
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+.tech-stack__badges img:hover {
+  transform: translateY(-5px) scale(1.05);
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+}
+
 @media screen and (max-width: 992px) {
   .skills__group {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -2279,4 +2320,4 @@ body {
     background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
-}
+}/*# sourceMappingURL=main.css.map */

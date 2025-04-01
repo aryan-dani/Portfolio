@@ -514,7 +514,7 @@ function initSkillsPageAnimations() {
                     }
                 },
                 color: {
-                    value: ["#ff7b00", "#ff9e00", "#ffb700", "#ffd000"]
+                    value: "#00bfff" // Using DeepSkyBlue for better visibility
                 },
                 shape: {
                     type: "circle",
@@ -546,7 +546,7 @@ function initSkillsPageAnimations() {
                 line_linked: {
                     enable: true,
                     distance: 150,
-                    color: "#ff7b00",
+                    color: "#00bfff",
                     opacity: 0.3,
                     width: 1
                 },
@@ -630,6 +630,14 @@ function initSkillsPageAnimations() {
     setTimeout(() => {
         showToast('Welcome to Skills Section', 'Explore my technical abilities and expertise', 'fa-solid fa-rocket');
     }, 1000);
+    
+    // Automatically click the "All" tab when the page loads
+    setTimeout(() => {
+        const allTab = document.querySelector('.category-tab[data-category="all"]');
+        if (allTab) {
+            allTab.click();
+        }
+    }, 300);
     
     // Animate category tabs with staggered fade in
     const categoryTabs = document.querySelectorAll('.category-tab');

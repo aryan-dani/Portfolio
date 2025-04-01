@@ -42,10 +42,14 @@
       display: inline-block;
       -webkit-background-clip: text;
       background-clip: text;
-      background-image: linear-gradient(45deg, $primary-color, lighten($primary-color, 15%), $primary-color);
+      background-image: linear-gradient(45deg, $primary-color, lighten($primary-color, 20%), $primary-color);
       background-size: 200% auto;
       color: transparent;
       animation: gradient-text 4s ease infinite;
+      // Adding subtle outline to improve visibility while keeping your colors
+      text-shadow: 
+        0 0 1px rgba($secondary-color, 0.6),
+        0 0 2px rgba($secondary-color, 0.4);
       
       &:hover {
         cursor: default;
