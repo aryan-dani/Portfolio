@@ -514,7 +514,7 @@ function initSkillsPageAnimations() {
                     }
                 },
                 color: {
-                    value: "#00bfff" // Using DeepSkyBlue for better visibility
+                    value: "#f0f8ff" // Using DeepSkyBlue for better visibility
                 },
                 shape: {
                     type: "circle",
@@ -546,7 +546,7 @@ function initSkillsPageAnimations() {
                 line_linked: {
                     enable: true,
                     distance: 150,
-                    color: "#00bfff",
+                    color: "#f0f8ff",
                     opacity: 0.3,
                     width: 1
                 },

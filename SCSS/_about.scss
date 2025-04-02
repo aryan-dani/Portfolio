@@ -1,13 +1,16 @@
 @use 'config' as *;
 
 .about {
-  height: 100%;
+  height: auto; /* Changed from fixed 100% to auto */
+  min-height: 100vh; /* Set minimum height instead */
   padding-top: 2vh;
-  overflow: hidden;
+  padding-bottom: 4rem; /* Added padding at bottom */
+  overflow: auto; /* Changed from hidden to auto to enable scrolling */
   align-items: center;
   text-align: left;
   background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../Images/Header.jpg") center top;
   background-size: cover;
+  background-attachment: fixed; /* Keep background fixed while scrolling */
   border-radius: 8px;
   position: relative;
   
@@ -29,11 +32,32 @@
     pointer-events: none;
   }
 
-  .about-list {
-    margin-top: 2%;
-    margin-left: 3%;
+  // New wrapper for side-by-side layout
+  .about-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    gap: 2rem;
+    
+    @media screen and (min-width: 992px) {
+      flex-wrap: nowrap;
+      align-items: flex-start;
+    }
+  }
+  
+  // Left column - About info
+  .about-info {
+    flex: 1;
     position: relative;
     z-index: 1;
+    min-width: 300px;
+    
+    @media screen and (min-width: 992px) {
+      max-width: 60%;
+    }
   }
 
   .about-details {
@@ -113,7 +137,8 @@
 
   p {
     font-size: 1rem;
-    width: 35rem;
+    width: 100%; // Changed from fixed width to 100%
+    max-width: 35rem;
     margin-left: 4px;
     position: relative;
     z-index: 1;
@@ -136,7 +161,8 @@
   }
 
   .contact-email {
-    width: 20rem;
+    width: 100%;
+    max-width: 25rem;
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -176,6 +202,323 @@
         left: 100%;
       }
     }
+
+    // Add styles for the Contact button
+    .contact-btn {
+      margin-left: auto;
+      background-color: transparent;
+      border: 2px solid $primary-color;
+      color: $primary-color;
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      
+      i {
+        font-size: 1rem;
+        transition: transform 0.3s ease;
+      }
+      
+      &:hover {
+        background-color: $primary-color;
+        color: $secondary-color;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        
+        i {
+          transform: translateY(-2px);
+        }
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+  
+  // Contact Form Styling - Updated for side-by-side layout
+  .contact-form-container {
+    width: 100%;
+    max-width: 35rem;
+    background-color: rgba(darken($primary-color, 2%), 1);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideInUp 0.5s 0.8s ease forwards;
+    border-left: 4px solid $secondary-color;
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    min-width: 300px;
+    margin-top: 0; // Reset margin for side-by-side layout
+    align-self: flex-start; // Align to top when in side-by-side
+    
+    @media screen and (min-width: 992px) {
+      margin-top: 0;
+      max-width: 35rem;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+      transition: left 1s ease;
+    }
+    
+    &:hover::before {
+      left: 100%;
+    }
+    
+    h2 {
+      color: $secondary-color;
+      margin-bottom: 1rem;
+      display: inline-block;
+      background: none;
+      box-shadow: none;
+      padding: 0;
+      margin-right: 1rem;
+
+      &::after {
+        display: none;
+      }
+      
+      &:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+    
+    p {
+      background: none;
+      width: auto;
+      padding: 0;
+      margin-bottom: 1.5rem;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+     
+      box-shadow: none;
+      
+      &:hover {
+        transform: none;
+        background: none;
+        box-shadow: none;
+      }
+    }
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: $secondary-color;
+        margin-bottom: 0.25rem;
+      }
+      
+      input, textarea {
+        background-color: rgba(lighten($primary-color, 5%), 0.6);
+        border: 2px solid transparent;
+        border-radius: 6px;
+        padding: 0.8rem;
+        color: set-text-color($primary-color);
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+        
+        &:focus {
+          outline: none;
+          border-color: rgba($secondary-color, 0.7);
+          background-color: rgba(lighten($primary-color, 8%), 0.8);
+          box-shadow: 0 0 8px rgba($secondary-color, 0.4);
+        }
+        
+        &::placeholder {
+          color: rgba(set-text-color($primary-color), 0.6);
+        }
+      }
+      
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+    }
+    
+    .submit-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: $secondary-color;
+      color: $primary-color;
+      border: none;
+      border-radius: 6px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      align-self: flex-start;
+      margin-top: 0.5rem;
+      
+      .btn-text {
+        position: relative;
+        z-index: 1;
+      }
+      
+      i {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease;
+      }
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+      }
+      
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        
+        &::before {
+          left: 100%;
+        }
+        
+        i {
+          transform: translateX(3px);
+        }
+      }
+      
+      &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+  
+  // Toast notifications styling
+  .toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 350px;
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .toast {
+    background: rgba(darken($primary-color, 5%), 0.9);
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: auto;
+    border-left: 4px solid;
+    overflow: hidden;
+    
+    &.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    &.success {
+      border-color: #4caf50;
+      
+      .toast-icon i {
+        color: #4caf50;
+      }
+    }
+    
+    &.error {
+      border-color: #f44336;
+      
+      .toast-icon i {
+        color: #f44336;
+      }
+    }
+    
+    .toast-icon {
+      flex-shrink: 0;
+      
+      i {
+        font-size: 24px;
+      }
+    }
+    
+    .toast-content {
+      flex-grow: 1;
+      
+      h4 {
+        margin: 0 0 5px;
+        font-size: 16px;
+      }
+      
+      p {
+        margin: 0;
+        font-size: 14px;
+        opacity: 0.8;
+        background: none;
+        box-shadow: none;
+        width: auto;
+        padding: 0;
+        
+        &:hover {
+          transform: none;
+          background: none;
+          box-shadow: none;
+        }
+      }
+    }
+    
+    .toast-close {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      padding: 0;
+      margin-left: auto;
+      align-self: flex-start;
+      font-size: 16px;
+      transition: color 0.3s ease;
+      
+      &:hover {
+        color: #fff;
+      }
+    }
   }
   
   // Floating animation for content blocks on scroll
@@ -184,5 +527,56 @@
       opacity: 0;
       animation: slideInUp 0.5s #{$i * 0.2}s ease forwards;
     }
+  }
+  
+  // Responsive styles
+  @media screen and (max-width: 991px) {
+    .about-content-wrapper {
+      flex-direction: column;
+    }
+    
+    .contact-form-container {
+      max-width: 100%;
+      margin-top: 2rem;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .contact-form-container {
+      padding: 1.5rem;
+    }
+    
+    p {
+      max-width: 100%;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .contact-form-container {
+      padding: 1rem;
+    }
+    
+    .contact-form {
+      .submit-btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// Hidden class for the contact form
+.hidden {
+  display: none;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+// Animation for showing the contact form
+.contact-form-container {
+  &.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    animation: slideInUp 0.5s ease forwards;
   }
 }

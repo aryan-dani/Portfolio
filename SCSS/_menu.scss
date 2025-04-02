@@ -73,8 +73,6 @@
   visibility: hidden;
   transform: translateY(-100%);
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
   z-index: 100;
   
   &.open {
