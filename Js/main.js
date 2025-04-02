@@ -820,44 +820,119 @@ function initSkillsPageAnimations() {
     initProgressBars();
 }
 
-// Toast notification function - Fixed to ensure visibility
+// Toast notification function - Fixed to ensure visibility across all pages
 function showToast(title, message, iconClass) {
-    const toastContainer = document.querySelector('.toast-container');
+    // Check if toast container exists, if not create it
+    let toastContainer = document.querySelector('.toast-container');
     if (!toastContainer) {
-        // Create the toast container if it doesn't exist
-        const newToastContainer = document.createElement('div');
-        newToastContainer.className = 'toast-container';
-        document.body.appendChild(newToastContainer);
-        
-        // Now use the newly created container
-        return showToast(title, message, iconClass);
+        toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container';
+        toastContainer.style.position = 'fixed';
+        toastContainer.style.top = '20px';
+        toastContainer.style.right = '20px';
+        toastContainer.style.maxWidth = '350px';
+        toastContainer.style.zIndex = '9999';
+        toastContainer.style.pointerEvents = 'none';
+        toastContainer.style.display = 'flex';
+        toastContainer.style.flexDirection = 'column';
+        toastContainer.style.gap = '10px';
+        document.body.appendChild(toastContainer);
     }
     
+    // Generate unique ID for this toast
     const toastId = 'toast-' + Date.now();
-    const toastHTML = `
-        <div class="toast" id="${toastId}">
-            <div class="toast-icon">
-                <i class="${iconClass}"></i>
-            </div>
-            <div class="toast-content">
-                <h4>${title}</h4>
-                <p>${message}</p>
-            </div>
-            <button class="toast-close" onclick="this.parentNode.remove()">
-                <i class="fa-solid fa-times"></i>
-            </button>
-        </div>
-    `;
     
-    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+    // Create toast element directly with JavaScript instead of using innerHTML
+    const toast = document.createElement('div');
+    toast.id = toastId;
+    toast.style.background = 'rgba(15, 15, 15, 0.9)';
+    toast.style.backdropFilter = 'blur(10px)';
+    toast.style.color = '#fff';
+    toast.style.padding = '15px';
+    toast.style.borderRadius = '8px';
+    toast.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)';
+    toast.style.marginBottom = '10px';
+    toast.style.display = 'flex';
+    toast.style.pointerEvents = 'auto';
+    toast.style.overflow = 'hidden';
+    toast.style.position = 'relative';
+    toast.style.borderLeft = '3px solid #f0f8ff'; // aliceblue
+    toast.style.transform = 'translateX(100%)';
+    toast.style.opacity = '0';
     
-    // Auto remove toast after 5 seconds
+    // Create icon container
+    const iconContainer = document.createElement('div');
+    iconContainer.style.display = 'flex';
+    iconContainer.style.alignItems = 'center';
+    iconContainer.style.justifyContent = 'center';
+    iconContainer.style.marginRight = '15px';
+    iconContainer.style.fontSize = '1.5rem';
+    iconContainer.style.color = '#f0f8ff'; // aliceblue
+    iconContainer.style.flexShrink = '0';
+    iconContainer.style.width = '30px';
+    iconContainer.style.height = '30px';
+    
+    // Create icon
+    const icon = document.createElement('i');
+    icon.className = iconClass;
+    iconContainer.appendChild(icon);
+    
+    // Create content container
+    const contentContainer = document.createElement('div');
+    contentContainer.style.display = 'flex';
+    contentContainer.style.flexDirection = 'column';
+    contentContainer.style.justifyContent = 'center';
+    contentContainer.style.color = '#fff';
+    
+    // Create title
+    const titleElement = document.createElement('h4');
+    titleElement.textContent = title;
+    contentContainer.appendChild(titleElement);
+    
+    // Create message
+    const messageElement = document.createElement('p');
+    messageElement.textContent = message;
+    contentContainer.appendChild(messageElement);
+    
+    // Create close button
+    const closeButton = document.createElement('button');
+    closeButton.className = 'toast-close';
+    closeButton.innerHTML = '<i class="fa-solid fa-times"></i>';
+    closeButton.onclick = () => {
+        toast.remove();
+    };
+    
+    // Add toast to container
+    toast.appendChild(iconContainer);
+    toast.appendChild(contentContainer);
+    toast.appendChild(closeButton);
+    toastContainer.appendChild(toast);
+    
+    // Force a reflow to ensure the toast animates properly
+    void toast.offsetWidth;
+    
+    // Make sure the toast is visible with proper animation
+    toast.style.animation = 'none';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    
+    // Force reflow again
+    void toast.offsetWidth;
+    
+    // Apply animation
+    toast.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(0)';
+    
+    // Auto-remove toast after 5 seconds
     setTimeout(() => {
-        const toast = document.getElementById(toastId);
-        if (toast) {
-            toast.classList.add('toast-hide');
+        if (toast && toast.parentNode) {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100%)';
+            
+            // Remove from DOM after animation completes
             setTimeout(() => {
-                if (toast.parentNode) {
+                if (toast && toast.parentNode) {
                     toast.remove();
                 }
             }, 500);
