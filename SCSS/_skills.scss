@@ -10,7 +10,8 @@
   height: 100%;
   z-index: -1;
   pointer-events: none;
-  background-color: rgba(darken($primary-color, 15%), 0.9);
+  background-color: $primary-color;
+  overflow: hidden;
 }
 
 .skills {
@@ -23,13 +24,16 @@
   position: relative;
   
   &__heading {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 3rem;
+    padding: 5px 10px;
     text-transform: uppercase;
     letter-spacing: 3px;
     position: relative;
     text-align: center;
-    
+    background-color: aliceblue;
+    border-radius: 8px;
+    color: $primary-color;
     .text-secondary {
       color: $secondary-color;
       position: relative;
@@ -84,8 +88,8 @@
         background: rgba(darken($primary-color, 5%), 0.7);
         border: 2px solid transparent;
         color: #fff;
-        padding: 0.7rem 1.3rem;
-        border-radius: 30px;
+        padding: 0.2rem 0.7rem;
+        border-radius:  12px;
         font-size: 1rem;
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
@@ -168,16 +172,16 @@
     cursor: pointer;
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    height: 150px; // Smaller height
+    height: 150px; 
     position: relative;
     border-left: 3px solid $secondary-color;
     
     // Special styling for "All" category
     .active-all & {
-      height: 140px;
+      height: 150px;
     
       &.expanded {
-        height: 230px;
+        height: 250px;
       }
     
       h3 {

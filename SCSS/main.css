@@ -1279,8 +1279,8 @@ footer:hover::before {
   animation: slideInUp 0.6s 0.2s ease forwards;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
 .certification p:hover {
   cursor: default;
@@ -1872,7 +1872,8 @@ footer {
   height: 100%;
   z-index: -1;
   pointer-events: none;
-  background-color: rgba(1, 1, 1, 0.9);
+  background-color: #272727;
+  overflow: hidden;
 }
 
 .skills {
@@ -1885,12 +1886,16 @@ footer {
   position: relative;
 }
 .skills__heading {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 3rem;
+  padding: 5px 10px;
   text-transform: uppercase;
   letter-spacing: 3px;
   position: relative;
   text-align: center;
+  background-color: aliceblue;
+  border-radius: 8px;
+  color: #272727;
 }
 .skills__heading .text-secondary {
   color: aliceblue;
@@ -1942,8 +1947,8 @@ footer {
   background: rgba(26, 26, 26, 0.7);
   border: 2px solid transparent;
   color: #fff;
-  padding: 0.7rem 1.3rem;
-  border-radius: 30px;
+  padding: 0.2rem 0.7rem;
+  border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
@@ -2018,10 +2023,10 @@ footer {
   border-left: 3px solid aliceblue;
 }
 .active-all .skills__card {
-  height: 140px;
+  height: 150px;
 }
 .active-all .skills__card.expanded {
-  height: 230px;
+  height: 250px;
 }
 .active-all .skills__card h3 {
   font-size: 1.1rem;
@@ -2320,4 +2325,4 @@ body {
     background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
-}/*# sourceMappingURL=main.css.map */
+}
