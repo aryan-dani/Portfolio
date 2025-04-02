@@ -1,4 +1,4 @@
-
+@use 'config' as *;
 .jobs-layout {
   padding: 1rem;
   background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../Images/Header.jpg") center top;
