@@ -120,7 +120,6 @@
   
         &:hover {
           cursor: default;
-          transform: translateY(-3px);
         }
   
         i {
@@ -176,7 +175,6 @@
   
           &:hover {
             background-color: #555;
-            transform: translateY(-3px) scale(1.05);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             color: $secondary-color; // Ensure text is visible on hover
             

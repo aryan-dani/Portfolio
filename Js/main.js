@@ -119,26 +119,37 @@ function menuBtnHoverOut() {
     // Empty functions to replace any existing listeners
 }
 
-// Welcome notifications for each page
+// Welcome notifications for each page - FIXED implementation
 document.addEventListener('DOMContentLoaded', () => {
     // Determine page type and add appropriate body class
     const pagePath = window.location.pathname;
     const isHomePage = pagePath.includes('index.html') || pagePath.endsWith('/');
     
-    // Add welcome toast based on page
+    // Determine page name for tracking first-time visits
+    let pageName = 'home';
+    if (pagePath.includes('jobs.html')) pageName = 'jobs';
+    else if (pagePath.includes('projects.html')) pageName = 'projects';
+    else if (pagePath.includes('certification.html')) pageName = 'certification';
+    else if (pagePath.includes('skills.html')) pageName = 'skills';
+    else if (pagePath.includes('about.html')) pageName = 'about';
+    
+    // Add welcome toast based on page - but only on first visit
     setTimeout(() => {
-        if (isHomePage) {
-            showToast('Welcome to My Portfolio', 'Explore my work and get to know me better', 'fa-solid fa-house-user');
-        } else if (pagePath.includes('jobs.html')) {
-            showToast('Professional Experience', 'Learn about my career journey and achievements', 'fa-solid fa-briefcase');
-        } else if (pagePath.includes('projects.html')) {
-            showToast('Portfolio Projects', 'Discover the projects I\'ve worked on', 'fa-solid fa-code');
-        } else if (pagePath.includes('certification.html')) {
-            showToast('My Certifications', 'Check out my professional qualifications', 'fa-solid fa-certificate');
-        } else if (pagePath.includes('skills.html')) {
-            showToast('Technical Skills', 'Explore my expertise across different technologies', 'fa-solid fa-laptop-code');
-        } else if (pagePath.includes('about.html')) {
-            showToast('About Me', 'Get to know me better', 'fa-solid fa-user');
+        // Only show welcome toasts on first visit to each page
+        if (checkFirstTimeVisit(pageName)) {
+            if (isHomePage) {
+                showToast('Welcome to My Portfolio', 'Explore my work and get to know me better', 'fa-solid fa-house-user');
+            } else if (pageName === 'jobs') {
+                showToast('Professional Experience', 'Learn about my career journey and achievements', 'fa-solid fa-briefcase');
+            } else if (pageName === 'projects') {
+                showToast('Portfolio Projects', 'Discover the projects I\'ve worked on', 'fa-solid fa-code');
+            } else if (pageName === 'certification') {
+                showToast('My Certifications', 'Check out my professional qualifications', 'fa-solid fa-certificate');
+            } else if (pageName === 'skills') {
+                showToast('Technical Skills', 'Explore my expertise across different technologies', 'fa-solid fa-laptop-code');
+            } else if (pageName === 'about') {
+                showToast('About Me', 'Get to know me better', 'fa-solid fa-user');
+            }
         }
     }, 1000);
     
@@ -994,8 +1005,11 @@ function animateOnScroll() {
     }
 }
 
-// Skills page animations with interactive elements
+// Skills page animations with interactive elements - Modified to reduce toast notifications
 function initSkillsPageAnimations() {
+    // Check if this is the first visit to skills page
+    const isFirstVisit = checkFirstTimeVisit('skills-page');
+    
     // Initialize particles.js for background effect with improved colors
     if (document.getElementById('particles-js')) {
         particlesJS('particles-js', {
@@ -1120,11 +1134,6 @@ function initSkillsPageAnimations() {
         });
     }
     
-    // Show welcome toast notification
-    setTimeout(() => {
-        showToast('Welcome to Skills Section', 'Explore my technical abilities and expertise', 'fa-solid fa-rocket');
-    }, 1000);
-    
     // Automatically click the "All" tab when the page loads
     setTimeout(() => {
         const allTab = document.querySelector('.category-tab[data-category="all"]');
@@ -1158,9 +1167,13 @@ function initSkillsPageAnimations() {
                 // Get category to display
                 const category = tab.getAttribute('data-category');
                 
-                // Show toast notification for category change
-                const categoryName = tab.textContent.trim();
-                showToast('Category Changed', `Now viewing ${categoryName} skills`, 'fa-solid fa-layer-group');
+                // Only show category change toast once per session
+                const categoryToastShown = sessionStorage.getItem('skillsCategoryToastShown');
+                if (!categoryToastShown) {
+                    const categoryName = tab.textContent.trim();
+                    showToast('Category Changed', `Now viewing ${categoryName} skills`, 'fa-solid fa-layer-group');
+                    sessionStorage.setItem('skillsCategoryToastShown', 'true');
+                }
                 
                 // Hide all skill groups initially
                 const skillGroups = document.querySelectorAll('.skills__group');
@@ -1246,8 +1259,10 @@ function initSkillsPageAnimations() {
         techStackBadges.forEach(badge => {
             badge.addEventListener('click', () => {
                 const technology = badge.getAttribute('src').match(/badge\/([^-]+)/);
-                if (technology && technology[1]) {
+                // Only show badge toast once per session
+                if (technology && technology[1] && !sessionStorage.getItem('techBadgeToastShown')) {
                     showToast(technology[1], 'One of my favorite technologies!', 'fa-solid fa-code');
+                    sessionStorage.setItem('techBadgeToastShown', 'true');
                 }
             });
         });
@@ -1272,8 +1287,10 @@ function initSkillsPageAnimations() {
                     else if (iconElement.classList.contains('fa-cloud')) skillName = 'Cloud Services';
                 }
                 
-                if (skillName) {
+                // Only show orbit element toast once per session
+                if (skillName && !sessionStorage.getItem('skillOrbitToastShown')) {
                     showToast(skillName, 'Click on the skill cards to learn more!', 'fa-solid fa-lightbulb');
+                    sessionStorage.setItem('skillOrbitToastShown', 'true');
                 }
                 
                 // Add pulse animation
@@ -1299,8 +1316,11 @@ function initSkillsPageAnimations() {
                 globeText.textContent = 'Explore Skills';
             }
             
-            // Show toast message
-            showToast('Skills Overview', 'Interactive visualization of my key skills', 'fa-solid fa-globe');
+            // Only show globe core toast once per session
+            if (!sessionStorage.getItem('globeCoreToastShown')) {
+                showToast('Skills Overview', 'Interactive visualization of my key skills', 'fa-solid fa-globe');
+                sessionStorage.setItem('globeCoreToastShown', 'true');
+            }
             
             // Add pulse animation
             globeCore.classList.add('globe-pulse');
@@ -1312,6 +1332,44 @@ function initSkillsPageAnimations() {
     
     // Initialize progress bars animation
     initProgressBars();
+    
+    // Show keyboard shortcut hint only for first-time visitors
+    if (isFirstVisit) {
+        setTimeout(() => {
+            const keyboardHint = document.createElement('div');
+            keyboardHint.className = 'keyboard-hint';
+            keyboardHint.innerHTML = `
+                <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+                    background: rgba(15, 15, 15, 0.8); color: white; padding: 10px 15px;
+                    border-radius: 8px; font-size: 0.9rem; z-index: 9999; max-width: 90%;
+                    text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); opacity: 0;
+                    transition: opacity 0.5s ease;">
+                    <span style="font-weight: bold;">Pro Tip:</span> Use <kbd style="background: #444; padding: 2px 5px; border-radius: 3px;">Alt</kbd> + <kbd style="background: #444; padding: 2px 5px; border-radius: 3px;">Arrow Keys</kbd> to navigate between pages
+                </div>
+            `;
+            document.body.appendChild(keyboardHint);
+            
+            // Show hint with animation after a delay
+            setTimeout(() => {
+                const hintElement = keyboardHint.querySelector('div');
+                if (hintElement) {
+                    hintElement.style.opacity = '1';
+                    
+                    // Auto-hide after a while
+                    setTimeout(() => {
+                        hintElement.style.opacity = '0';
+                        
+                        // Remove from DOM after fade out
+                        setTimeout(() => {
+                            if (keyboardHint.parentNode) {
+                                keyboardHint.parentNode.removeChild(keyboardHint);
+                            }
+                        }, 500);
+                    }, 5000);
+                }
+            }, 2000);
+        }, 3000);
+    }
 }
 
 // Toast notification function - Fixed to ensure visibility across all pages
@@ -1676,4 +1734,21 @@ function navigateTo(url) {
     } else {
         window.location.href = url;
     }
+}
+
+// Add persistent session storage to track first-time visits
+function checkFirstTimeVisit(pageName) {
+    // Get or initialize the visitedPages object in sessionStorage
+    let visitedPages = JSON.parse(sessionStorage.getItem('portfolioVisitedPages')) || {};
+    
+    // Check if this is the first visit to this page
+    const isFirstVisit = !visitedPages[pageName];
+    
+    // If it's the first visit, mark the page as visited for future checks
+    if (isFirstVisit) {
+        visitedPages[pageName] = true;
+        sessionStorage.setItem('portfolioVisitedPages', JSON.stringify(visitedPages));
+    }
+    
+    return isFirstVisit;
 }

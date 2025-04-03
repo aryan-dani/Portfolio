@@ -118,7 +118,6 @@
 }
 .home .social-icons .link-list .link-title:hover {
   cursor: default;
-  transform: translateY(-3px);
 }
 .home .social-icons .link-list .link-title i {
   transition: transform 0.3s ease;
@@ -169,7 +168,6 @@
 }
 .home .social-icons .link-list .link-title span:hover {
   background-color: #555;
-  transform: translateY(-3px) scale(1.05);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   color: aliceblue;
 }
@@ -1355,7 +1353,7 @@ footer:hover::before {
   opacity: 0;
   animation: slideInUp 0.5s 0.4s ease forwards;
   background: rgba(39, 39, 39, 0.7);
-  padding: 3px;
+  padding: 8px;
   border-radius: 8px;
   transform-origin: left;
   transition: all 0.4s ease;
@@ -1440,10 +1438,10 @@ footer:hover::before {
 }
 .about .contact-form-container {
   width: 100%;
-  max-width: 35rem;
+  max-width: 45rem;
   background-color: #222222;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   transform: translateY(20px);
   opacity: 0;
@@ -1459,7 +1457,7 @@ footer:hover::before {
 @media screen and (min-width: 992px) {
   .about .contact-form-container {
     margin-top: 0;
-    max-width: 35rem;
+    max-width: 45rem;
   }
 }
 .about .contact-form-container::before {
@@ -1477,7 +1475,7 @@ footer:hover::before {
 }
 .about .contact-form-container h2 {
   color: aliceblue;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   display: inline-block;
   background: none;
   box-shadow: none;
@@ -1495,7 +1493,7 @@ footer:hover::before {
   background: none;
   width: auto;
   padding: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   box-shadow: none;
@@ -1508,24 +1506,24 @@ footer:hover::before {
 .about .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.8rem;
 }
 .about .contact-form .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem;
 }
 .about .contact-form .form-group label {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: aliceblue;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 .about .contact-form .form-group input, .about .contact-form .form-group textarea {
   background-color: rgba(52, 52, 52, 0.6);
   border: 2px solid transparent;
   border-radius: 6px;
-  padding: 0.8rem;
+  padding: 0.7rem;
   color: #fff;
   font-family: "Poppins", sans-serif;
   transition: all 0.3s ease;
@@ -1544,7 +1542,8 @@ footer:hover::before {
 }
 .about .contact-form .form-group textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 80px;
+  max-height: 150px;
 }
 .about .contact-form .submit-btn {
   display: flex;
@@ -1555,7 +1554,7 @@ footer:hover::before {
   color: #272727;
   border: none;
   border-radius: 6px;
-  padding: 0.8rem 1.5rem;
+  padding: 0.7rem 1.3rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
