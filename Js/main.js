@@ -67,6 +67,58 @@ function toggleMenu()
     }
 }
 
+// Modernized menu button with clean animation effects
+function initModernMenu() {
+    // Get the elements
+    const menuBtn = document.querySelector('.menu-btn');
+    const hamburger = document.querySelector('.menu-btn__burger');
+    
+    // Add a wrapper for the burger to create cleaner effects
+    if (!document.querySelector('.menu-btn__wrapper')) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'menu-btn__wrapper';
+        hamburger.parentNode.insertBefore(wrapper, hamburger);
+        wrapper.appendChild(hamburger);
+        
+        // Add style for the wrapper with clean transitions
+        const style = document.createElement('style');
+        style.textContent = `
+            .menu-btn__wrapper {
+                position: relative;
+                width: 28px;
+                height: 28px;
+            }
+            
+            .menu-btn__burger {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                transition: background-color 0.3s ease;
+            }
+            
+            .menu-btn__burger::before,
+            .menu-btn__burger::after {
+                transition: transform 0.4s ease,
+                            background-color 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Remove all hover event listeners to prevent any rotation
+    menuBtn.removeEventListener('mouseenter', menuBtnHoverIn);
+    menuBtn.removeEventListener('mouseleave', menuBtnHoverOut);
+}
+
+function menuBtnHoverIn() {
+    // Empty functions to replace any existing listeners
+}
+
+function menuBtnHoverOut() {
+    // Empty functions to replace any existing listeners
+}
+
 // Welcome notifications for each page
 document.addEventListener('DOMContentLoaded', () => {
     // Determine page type and add appropriate body class
@@ -110,6 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize universal animations
     initUniversalAnimations();
+    
+    // Initialize modern menu
+    initModernMenu();
 });
 
 // Smooth page transitions
@@ -127,114 +182,210 @@ function initPageTransition() {
     }
 }
 
-// Home page-specific animations
+// Home page-specific animations - Optimized for performance
 function initHomePageAnimations() {
-    // Name animation with a more sophisticated effect - no bounce
+    // Track if this is a low-power device (most mobile devices qualify)
+    const isLowPowerDevice = window.navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i) !== null;
+    
+    // Name animation with optimized effect
     const name = document.querySelector('.home__name');
     if (name) {
-        // Reset any existing animations
+        // Simpler animation for better performance
         name.style.animation = 'none';
         name.style.opacity = '0';
-        name.style.transform = 'perspective(1000px) translateZ(-20px)';
-        name.style.transition = 'all 1s cubic-bezier(0.165, 0.84, 0.44, 1)';
+        name.style.transform = isLowPowerDevice ? 'translateY(-15px)' : 'perspective(1000px) translateZ(-15px)';
+        name.style.transition = 'all 0.7s ease-out';
         
-        // Animated text reveal effect - smooth and professional
-        setTimeout(() => {
-            name.style.opacity = '1';
-            name.style.transform = 'perspective(1000px) translateZ(0)';
+        // Use requestAnimationFrame for smoother animation
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                name.style.opacity = '1';
+                name.style.transform = isLowPowerDevice ? 'translateY(0)' : 'perspective(1000px) translateZ(0)';
+                name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)'; // Lighter shadow
+            }, 300);
+        });
+        
+        // Add typing animation for subtitle text
+        const subtitle = document.querySelector('.home h2');
+        if (subtitle) {
+            // Store the original subtitle text
+            const originalText = subtitle.textContent;
+            // Clear the subtitle text initially
+            subtitle.textContent = '';
+            subtitle.style.opacity = '1';
             
-            // Add subtle shadow effect instead of bounce
-            name.style.textShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
-        }, 300);
+            // Create a typing animation
+            let charIndex = 0;
+            const typingSpeed = 60; // milliseconds per character
+            
+            function typeText() {
+                if (charIndex < originalText.length) {
+                    subtitle.textContent += originalText.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeText, typingSpeed);
+                } else {
+                    // Add blinking cursor at the end when typing is complete
+                    subtitle.classList.add('typing-complete');
+                }
+            }
+            
+            // Start typing after name animation completes
+            setTimeout(typeText, 1000);
+            
+            // Add CSS for cursor effect
+            const style = document.createElement('style');
+            style.textContent = `
+                .home h2.typing-complete {
+                    border-right: 2px solid transparent;
+                    animation: blink-cursor 0.8s step-end infinite;
+                }
+                
+                @keyframes blink-cursor {
+                    from, to { border-color: transparent; }
+                    50% { border-color: #fff; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
         
-        // Add hover effect
-        name.addEventListener('mouseenter', () => {
-            name.style.transform = 'perspective(1000px) translateZ(15px)';
-            name.style.textShadow = '0 15px 40px rgba(0, 0, 0, 0.4)';
-        });
+        // Simplified hover effect with better performance
+        const optimizedHoverHandler = debounce(function(e) {
+            if (e.type === 'mouseenter') {
+                name.style.transform = isLowPowerDevice ? 'translateY(-5px)' : 'perspective(1000px) translateZ(10px)';
+                name.style.textShadow = '0 10px 30px rgba(0, 0, 0, 0.25)';
+            } else {
+                name.style.transform = isLowPowerDevice ? 'translateY(0)' : 'perspective(1000px) translateZ(0)';
+                name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+            }
+        }, 50);
         
-        name.addEventListener('mouseleave', () => {
-            name.style.transform = 'perspective(1000px) translateZ(0)';
-            name.style.textShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
-        });
+        name.addEventListener('mouseenter', optimizedHoverHandler);
+        name.addEventListener('mouseleave', optimizedHoverHandler);
     }
     
-    // 3D perspective for the subtitle
+    // Simplified subtitle animation
     const subtitle = document.querySelector('.home h2');
     if (subtitle) {
         subtitle.style.animation = 'none';
         subtitle.style.opacity = '0';
-        subtitle.style.transform = 'perspective(1000px) rotateX(10deg) translateZ(-50px)';
-        subtitle.style.transition = 'all 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
+        subtitle.style.transform = isLowPowerDevice ? 'translateY(15px)' : 'translateY(15px)';
+        subtitle.style.transition = 'all 0.6s ease-out';
         
-        setTimeout(() => {
-            subtitle.style.opacity = '1';
-            subtitle.style.transform = 'perspective(1000px) rotateX(0) translateZ(0)';
-            
-            // Set permanent styles to prevent flickering
-            subtitle.addEventListener('mouseenter', () => {
+        requestAnimationFrame(() => {
+            setTimeout(() => {
                 subtitle.style.opacity = '1';
-                subtitle.style.transform = 'perspective(1000px) rotateX(0) translateZ(20px)';
-                subtitle.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
-            });
-            
-            subtitle.addEventListener('mouseleave', () => {
-                subtitle.style.transform = 'perspective(1000px) rotateX(0) translateZ(0)';
-                subtitle.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)';
-            });
-        }, 600);
+                subtitle.style.transform = 'translateY(0)';
+            }, 600);
+        });
+        
+        // Simplified hover handler
+        const subtitleHoverHandler = debounce(function(e) {
+            if (e.type === 'mouseenter') {
+                subtitle.style.transform = 'translateY(-5px)';
+            } else {
+                subtitle.style.transform = 'translateY(0)';
+            }
+        }, 50);
+        
+        subtitle.addEventListener('mouseenter', subtitleHoverHandler);
+        subtitle.addEventListener('mouseleave', subtitleHoverHandler);
     }
     
-    // Enhanced social icons reveal - Fixed to prevent leftward movement
+    // Optimized social icons reveal
     const socialIconsList = document.querySelector('.social-icons .link-list');
     if (socialIconsList) {
-        // Ensure the list doesn't move from its original position
         socialIconsList.style.position = 'relative';
-        socialIconsList.style.left = '0';
         socialIconsList.style.opacity = '0';
-        socialIconsList.style.transition = 'opacity 0.8s ease';
+        socialIconsList.style.transition = 'opacity 0.5s ease';
         
         setTimeout(() => {
             socialIconsList.style.opacity = '1';
-        }, 600);
+        }, 700);
     }
     
+    // Staggered animation for social icons with better performance
     const socialIcons = document.querySelectorAll('.link-title');
     if (socialIcons.length > 0) {
-        socialIcons.forEach((icon, index) => {
-            // Remove any existing inline styles that might be causing left movement
-            icon.style.removeProperty('transform');
-            icon.style.removeProperty('animation');
-            
-            // Set initial state - only use opacity and Y translation
-            icon.style.opacity = '0';
-            icon.style.transform = 'translateY(20px)';
-            icon.style.position = 'relative';
-            icon.style.left = '0';
-            icon.style.transition = `opacity 0.5s ease, transform 0.5s ease ${0.3 + index * 0.1}s`;
-            
-            // Force browser reflow
-            void icon.offsetWidth;
-            
-            // Apply fade in animation without horizontal movement
-            setTimeout(() => {
-                icon.style.opacity = '1';
-                icon.style.transform = 'translateY(0)';
-            }, 800 + index * 100);
-            
-            // Add hover effect without horizontal movement
-            icon.addEventListener('mouseenter', () => {
-                icon.style.transform = 'translateY(-5px)';
-            });
-            
-            icon.addEventListener('mouseleave', () => {
-                icon.style.transform = 'translateY(0)';
+        // Batch all icon animations to avoid too many reflows
+        requestAnimationFrame(() => {
+            socialIcons.forEach((icon, index) => {
+                icon.style.opacity = '0';
+                icon.style.transform = 'translateY(15px)'; // Reduced distance
+                icon.style.transition = `all 0.4s ease ${0.3 + index * 0.08}s`; // Faster transition, shorter delay
+                
+                // Animate icons with a slight delay
+                setTimeout(() => {
+                    icon.style.opacity = '1';
+                    icon.style.transform = 'translateY(0)';
+                }, 800);
+                
+                // Add a simple hover effect
+                icon.addEventListener('mouseenter', () => {
+                    icon.style.transform = 'translateY(-3px)'; // Reduced movement
+                });
+                
+                icon.addEventListener('mouseleave', () => {
+                    icon.style.transform = 'translateY(0)';
+                });
             });
         });
     }
     
-    // Add parallax effect to background
-    initParallaxEffect();
+    // Use a more efficient parallax effect
+    initOptimizedParallaxEffect();
+}
+
+// Optimized parallax effect that's more performance-friendly
+function initOptimizedParallaxEffect() {
+    const parallaxElements = document.querySelectorAll('.home, .about, .jobs-layout, .project__project-image');
+    
+    let ticking = false;
+    let lastScrollY = window.scrollY;
+    
+    // Check if this is a low-power device
+    const isLowPowerDevice = window.navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i) !== null;
+    
+    // Skip parallax on mobile/low-power devices
+    if (isLowPowerDevice) {
+        return;
+    }
+    
+    // Use a throttled scroll handler
+    window.addEventListener('scroll', () => {
+        lastScrollY = window.scrollY;
+        
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                parallaxElements.forEach(element => {
+                    const speed = parseFloat(element.getAttribute('data-parallax-speed') || 0.1); // Lower default speed
+                    const yPos = -(lastScrollY * speed);
+                    element.style.backgroundPositionY = `calc(center + ${yPos}px)`;
+                });
+                
+                ticking = false;
+            });
+            
+            ticking = true;
+        }
+    });
+    
+    // Set parallax speed attributes - using lower speeds
+    parallaxElements.forEach(element => {
+        if (!element.getAttribute('data-parallax-speed')) {
+            element.setAttribute('data-parallax-speed', '0.1'); // Lower default speed
+        }
+    });
+}
+
+// Debounce helper function to improve performance of event handlers
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
 }
 
 // Jobs page animations
@@ -830,12 +981,12 @@ function showToast(title, message, iconClass) {
         toastContainer.style.position = 'fixed';
         toastContainer.style.top = '20px';
         toastContainer.style.right = '20px';
-        toastContainer.style.maxWidth = '350px';
+        toastContainer.style.maxWidth = '280px'; // Reduced from 350px
         toastContainer.style.zIndex = '9999';
         toastContainer.style.pointerEvents = 'none';
         toastContainer.style.display = 'flex';
         toastContainer.style.flexDirection = 'column';
-        toastContainer.style.gap = '10px';
+        toastContainer.style.gap = '8px'; // Reduced from 10px
         document.body.appendChild(toastContainer);
     }
     
@@ -848,10 +999,10 @@ function showToast(title, message, iconClass) {
     toast.style.background = 'rgba(15, 15, 15, 0.9)';
     toast.style.backdropFilter = 'blur(10px)';
     toast.style.color = '#fff';
-    toast.style.padding = '15px';
-    toast.style.borderRadius = '8px';
-    toast.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)';
-    toast.style.marginBottom = '10px';
+    toast.style.padding = '10px'; // Reduced from 15px
+    toast.style.borderRadius = '6px'; // Reduced from 8px
+    toast.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; // Lighter shadow
+    toast.style.marginBottom = '8px'; // Reduced from 10px
     toast.style.display = 'flex';
     toast.style.pointerEvents = 'auto';
     toast.style.overflow = 'hidden';
@@ -859,18 +1010,19 @@ function showToast(title, message, iconClass) {
     toast.style.borderLeft = '3px solid #f0f8ff'; // aliceblue
     toast.style.transform = 'translateX(100%)';
     toast.style.opacity = '0';
+    toast.style.fontSize = '0.9rem'; // Added to make text smaller
     
     // Create icon container
     const iconContainer = document.createElement('div');
     iconContainer.style.display = 'flex';
     iconContainer.style.alignItems = 'center';
     iconContainer.style.justifyContent = 'center';
-    iconContainer.style.marginRight = '15px';
-    iconContainer.style.fontSize = '1.5rem';
+    iconContainer.style.marginRight = '10px'; // Reduced from 15px
+    iconContainer.style.fontSize = '1.2rem'; // Reduced from 1.5rem
     iconContainer.style.color = '#f0f8ff'; // aliceblue
     iconContainer.style.flexShrink = '0';
-    iconContainer.style.width = '30px';
-    iconContainer.style.height = '30px';
+    iconContainer.style.width = '24px'; // Reduced from 30px
+    iconContainer.style.height = '24px'; // Reduced from 30px
     
     // Create icon
     const icon = document.createElement('i');
@@ -883,23 +1035,46 @@ function showToast(title, message, iconClass) {
     contentContainer.style.flexDirection = 'column';
     contentContainer.style.justifyContent = 'center';
     contentContainer.style.color = '#fff';
+    contentContainer.style.flex = '1';
     
     // Create title
     const titleElement = document.createElement('h4');
     titleElement.textContent = title;
+    titleElement.style.margin = '0 0 3px 0'; // Reduced margin
+    titleElement.style.fontSize = '0.9rem'; // Reduced from default
+    titleElement.style.fontWeight = '600';
     contentContainer.appendChild(titleElement);
     
     // Create message
     const messageElement = document.createElement('p');
     messageElement.textContent = message;
+    messageElement.style.margin = '0';
+    messageElement.style.fontSize = '0.8rem'; // Reduced from default
+    messageElement.style.opacity = '0.8';
     contentContainer.appendChild(messageElement);
     
     // Create close button
     const closeButton = document.createElement('button');
-    closeButton.className = 'toast-close';
+    closeButton.style.background = 'transparent';
+    closeButton.style.border = 'none';
+    closeButton.style.color = 'rgba(255, 255, 255, 0.5)';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.padding = '0';
+    closeButton.style.marginLeft = '8px'; // Reduced from 10px
+    closeButton.style.fontSize = '0.8rem'; // Reduced from 1rem
+    closeButton.style.display = 'flex';
+    closeButton.style.alignItems = 'center';
+    closeButton.style.justifyContent = 'center';
     closeButton.innerHTML = '<i class="fa-solid fa-times"></i>';
     closeButton.onclick = () => {
-        toast.remove();
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
     };
     
     // Add toast to container
@@ -911,20 +1086,12 @@ function showToast(title, message, iconClass) {
     // Force a reflow to ensure the toast animates properly
     void toast.offsetWidth;
     
-    // Make sure the toast is visible with proper animation
-    toast.style.animation = 'none';
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(100%)';
-    
-    // Force reflow again
-    void toast.offsetWidth;
-    
     // Apply animation
-    toast.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+    toast.style.transition = 'all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55)'; // Faster animation
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(0)';
     
-    // Auto-remove toast after 5 seconds
+    // Auto-remove toast after 4 seconds (reduced from 5)
     setTimeout(() => {
         if (toast && toast.parentNode) {
             toast.style.opacity = '0';
@@ -935,9 +1102,9 @@ function showToast(title, message, iconClass) {
                 if (toast && toast.parentNode) {
                     toast.remove();
                 }
-            }, 500);
+            }, 300); // Reduced from 500
         }
-    }, 5000);
+    }, 4000); // Reduced from 5000
 }
 
 // Initialize progress bars
@@ -1039,5 +1206,62 @@ function cardClickHandler(e) {
                 progressBar.style.width = `${level}%`;
             }, 300);
         }
+    }
+}
+
+// Add keyboard shortcuts for navigation
+document.addEventListener('keydown', (e) => {
+    // Only process shortcuts if Alt key is pressed (to avoid interfering with normal typing)
+    if (e.altKey) {
+        switch (e.key) {
+            case 'h': // Alt+H for Home
+                e.preventDefault();
+                navigateTo('index.html');
+                break;
+            case 'j': // Alt+J for Jobs
+                e.preventDefault();
+                navigateTo('jobs.html');
+                break;
+            case 'p': // Alt+P for Projects
+                e.preventDefault();
+                navigateTo('projects.html');
+                break;
+            case 'c': // Alt+C for Certifications
+                e.preventDefault();
+                navigateTo('certification.html');
+                break;
+            case 's': // Alt+S for Skills
+                e.preventDefault();
+                navigateTo('skills.html');
+                break;
+            case 'a': // Alt+A for About
+                e.preventDefault();
+                navigateTo('about.html');
+                break;
+            case 'm': // Alt+M to toggle menu
+                e.preventDefault();
+                toggleMenu();
+                break;
+        }
+    }
+});
+
+// Helper function for keyboard navigation
+function navigateTo(url) {
+    const main = document.querySelector('main');
+    
+    if (main) {
+        // Show a toast notification about the navigation
+        showToast('Keyboard Navigation', `Navigating to ${url.replace('.html', '')}`, 'fa-solid fa-keyboard');
+        
+        // Animate transition
+        main.style.opacity = '0';
+        main.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+            window.location.href = url;
+        }, 400);
+    } else {
+        window.location.href = url;
     }
 }

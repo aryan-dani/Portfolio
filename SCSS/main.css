@@ -475,7 +475,7 @@
   background-color: #272727;
   max-width: 800px;
   margin: 1rem auto;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(39, 39, 39, 0.1);
   transition: all 0.5s ease;
@@ -542,19 +542,6 @@
   margin-bottom: 0.5rem;
   position: relative;
 }
-.jobs-layout .Jobs h3::after {
-  content: "";
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, aliceblue, transparent);
-  transition: width 0.4s ease;
-}
-.jobs-layout .Jobs h3:hover::after {
-  width: 100%;
-}
 .jobs-layout .Jobs h3 a {
   font-size: 1.8rem;
   color: aliceblue;
@@ -565,7 +552,6 @@
 }
 .jobs-layout .Jobs h3 a:hover {
   color: grey;
-  transform: translateX(5px);
   text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 .jobs-layout .Jobs h4 {
@@ -2981,6 +2967,57 @@ footer:hover {
 
 body {
   transition: all 0.3s ease-in-out;
+}
+
+.shortcut-hint {
+  display: inline-block;
+  font-size: 0.7rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 2px 5px;
+  border-radius: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: none;
+  z-index: 999;
+}
+
+.menu-nav__link {
+  position: relative;
+  padding-bottom: 15px; /* Add padding to make room for the shortcut hint */
+}
+
+.menu-nav__link:hover .shortcut-hint {
+  opacity: 0.9;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.menu-toggle-shortcut {
+  position: absolute;
+  bottom: -30px; /* Moved further down */
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  font-size: 0.7rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 2px 5px;
+  border-radius: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.menu-btn:hover .menu-toggle-shortcut {
+  opacity: 0.8;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-5px);
 }
 
 @media screen and (max-width: 500px) {
