@@ -195,7 +195,6 @@
 }
 .menu-btn:hover {
   filter: drop-shadow(0 0 8px rgba(240, 248, 255, 0.9));
-  transform: scale(1.15) rotate(5deg);
 }
 .menu-btn__burger {
   position: absolute;
@@ -2969,40 +2968,11 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-.shortcut-hint {
-  display: inline-block;
-  font-size: 0.7rem;
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 2px 5px;
-  border-radius: 3px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%) translateY(0);
-  pointer-events: none;
-  z-index: 999;
-}
-
-.menu-nav__link {
-  position: relative;
-  padding-bottom: 15px; /* Add padding to make room for the shortcut hint */
-}
-
-.menu-nav__link:hover .shortcut-hint {
-  opacity: 0.9;
-  visibility: visible;
-  transform: translateX(-50%) translateY(-5px);
-  background-color: rgba(255, 255, 255, 0.25);
-}
-
 .menu-toggle-shortcut {
   position: absolute;
-  bottom: -30px; /* Moved further down */
+  top: 130%;
   left: 50%;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%);
   font-size: 0.7rem;
   background-color: rgba(255, 255, 255, 0.15);
   padding: 2px 5px;
@@ -3017,7 +2987,6 @@ body {
 .menu-btn:hover .menu-toggle-shortcut {
   opacity: 0.8;
   visibility: visible;
-  transform: translateX(-50%) translateY(-5px);
 }
 
 @media screen and (max-width: 500px) {
