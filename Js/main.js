@@ -187,152 +187,381 @@ function initHomePageAnimations() {
     // Track if this is a low-power device (most mobile devices qualify)
     const isLowPowerDevice = window.navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i) !== null;
     
-    // Name animation with optimized effect
+    // Add a particle background effect if not on a low-power device
+    if (!isLowPowerDevice && typeof particlesJS !== 'undefined') {
+        // Create particles container if it doesn't exist
+        if (!document.getElementById('particles-home')) {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.id = 'particles-home';
+            particlesContainer.style.position = 'absolute';
+            particlesContainer.style.top = '0';
+            particlesContainer.style.left = '0';
+            particlesContainer.style.width = '100%';
+            particlesContainer.style.height = '100%';
+            particlesContainer.style.zIndex = '0';
+            particlesContainer.style.opacity = '0';
+            particlesContainer.style.transition = 'opacity 2s ease';
+            
+            const homeSection = document.querySelector('.home');
+            if (homeSection) {
+                homeSection.style.position = 'relative';
+                homeSection.insertBefore(particlesContainer, homeSection.firstChild);
+                
+                // Initialize particles with a subtle, professional effect
+                setTimeout(() => {
+                    particlesJS('particles-home', {
+                        particles: {
+                            number: { value: 80, density: { enable: true, value_area: 800 } },
+                            color: { value: "#f0f8ff" },
+                            shape: { type: "circle" },
+                            opacity: { 
+                                value: 0.3, 
+                                random: true,
+                                anim: { enable: true, speed: 0.5, opacity_min: 0.1, sync: false }
+                            },
+                            size: { 
+                                value: 3, 
+                                random: true,
+                                anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
+                            },
+                            line_linked: {
+                                enable: true,
+                                distance: 150,
+                                color: "#f0f8ff",
+                                opacity: 0.2,
+                                width: 1
+                            },
+                            move: {
+                                enable: true,
+                                speed: 1,
+                                direction: "none",
+                                random: true,
+                                straight: false,
+                                out_mode: "out",
+                                bounce: false
+                            }
+                        },
+                        interactivity: {
+                            detect_on: "canvas",
+                            events: {
+                                onhover: { enable: true, mode: "grab" },
+                                onclick: { enable: true, mode: "push" },
+                                resize: true
+                            },
+                            modes: {
+                                grab: { distance: 140, line_linked: { opacity: 0.5 } },
+                                push: { particles_nb: 3 }
+                            }
+                        },
+                        retina_detect: true
+                    });
+                    
+                    // Fade in the particles
+                    particlesContainer.style.opacity = '0.7';
+                }, 800);
+            }
+        }
+    }
+    
+    // Enhanced name animation without the translucent rectangle
     const name = document.querySelector('.home__name');
     if (name) {
-        // Simpler animation for better performance
+        // More dramatic entrance for the name
         name.style.animation = 'none';
         name.style.opacity = '0';
-        name.style.transform = isLowPowerDevice ? 'translateY(-15px)' : 'perspective(1000px) translateZ(-15px)';
-        name.style.transition = 'all 0.7s ease-out';
+        name.style.transform = isLowPowerDevice ? 
+            'translateY(-25px)' : 
+            'perspective(1000px) translateZ(-30px) rotateX(10deg)';
+        name.style.transition = 'all 1s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
         
-        // Use requestAnimationFrame for smoother animation
+        // Add a subtle glow/shadow without the translucent rectangle
         requestAnimationFrame(() => {
             setTimeout(() => {
                 name.style.opacity = '1';
-                name.style.transform = isLowPowerDevice ? 'translateY(0)' : 'perspective(1000px) translateZ(0)';
-                name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)'; // Lighter shadow
+                name.style.transform = isLowPowerDevice ? 
+                    'translateY(0)' : 
+                    'perspective(1000px) translateZ(0) rotateX(0)';
+                name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+                
+                // Remove any existing nameRevealEffect if present
+                const existingEffect = name.querySelector('div');
+                if (existingEffect) {
+                    existingEffect.remove();
+                }
             }, 300);
         });
         
-        // Add typing animation for subtitle text
-        const subtitle = document.querySelector('.home h2');
-        if (subtitle) {
-            // Store the original subtitle text
-            const originalText = subtitle.textContent;
-            // Clear the subtitle text initially
-            subtitle.textContent = '';
-            subtitle.style.opacity = '1';
+        // Enhanced hover effect with subtle 3D movement
+        const enhancedHoverHandler = debounce(function(e) {
+            const rect = name.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
             
-            // Create a typing animation
-            let charIndex = 0;
-            const typingSpeed = 60; // milliseconds per character
+            // Calculate the rotation based on mouse position
+            const rotateY = isLowPowerDevice ? 0 : ((mouseX - rect.width / 2) / rect.width) * 5;
+            const rotateX = isLowPowerDevice ? 0 : -((mouseY - rect.height / 2) / rect.height) * 5;
             
-            function typeText() {
-                if (charIndex < originalText.length) {
-                    subtitle.textContent += originalText.charAt(charIndex);
-                    charIndex++;
-                    setTimeout(typeText, typingSpeed);
-                } else {
-                    // Add blinking cursor at the end when typing is complete
-                    subtitle.classList.add('typing-complete');
-                }
-            }
-            
-            // Start typing after name animation completes
-            setTimeout(typeText, 1000);
-            
-            // Add CSS for cursor effect
-            const style = document.createElement('style');
-            style.textContent = `
-                .home h2.typing-complete {
-                    border-right: 2px solid transparent;
-                    animation: blink-cursor 0.8s step-end infinite;
-                }
-                
-                @keyframes blink-cursor {
-                    from, to { border-color: transparent; }
-                    50% { border-color: #fff; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        // Simplified hover effect with better performance
-        const optimizedHoverHandler = debounce(function(e) {
             if (e.type === 'mouseenter') {
-                name.style.transform = isLowPowerDevice ? 'translateY(-5px)' : 'perspective(1000px) translateZ(10px)';
-                name.style.textShadow = '0 10px 30px rgba(0, 0, 0, 0.25)';
+                name.style.transform = isLowPowerDevice ? 
+                    'translateY(-5px)' : 
+                    `perspective(1000px) translateZ(15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                name.style.textShadow = '0 15px 35px rgba(0, 0, 0, 0.25)';
+                name.style.transition = 'transform 0.3s ease, text-shadow 0.3s ease';
+            } else if (e.type === 'mousemove') {
+                if (!isLowPowerDevice) {
+                    name.style.transform = `perspective(1000px) translateZ(15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    name.style.transition = 'transform 0.1s ease-out';
+                }
             } else {
-                name.style.transform = isLowPowerDevice ? 'translateY(0)' : 'perspective(1000px) translateZ(0)';
+                name.style.transform = isLowPowerDevice ? 
+                    'translateY(0)' : 
+                    'perspective(1000px) translateZ(0) rotateX(0) rotateY(0)';
                 name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+                name.style.transition = 'transform 0.5s ease, text-shadow 0.5s ease';
             }
-        }, 50);
+        }, 10);
         
-        name.addEventListener('mouseenter', optimizedHoverHandler);
-        name.addEventListener('mouseleave', optimizedHoverHandler);
+        name.addEventListener('mouseenter', enhancedHoverHandler);
+        name.addEventListener('mousemove', enhancedHoverHandler);
+        name.addEventListener('mouseleave', enhancedHoverHandler);
     }
     
-    // Simplified subtitle animation
+    // Improved subtitle animation with growing background for individual characters
     const subtitle = document.querySelector('.home h2');
     if (subtitle) {
-        subtitle.style.animation = 'none';
-        subtitle.style.opacity = '0';
-        subtitle.style.transform = isLowPowerDevice ? 'translateY(15px)' : 'translateY(15px)';
-        subtitle.style.transition = 'all 0.6s ease-out';
+        // Store the original subtitle text
+        const originalText = subtitle.textContent;
         
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                subtitle.style.opacity = '1';
-                subtitle.style.transform = 'translateY(0)';
-            }, 600);
-        });
+        // Get original styling from computed style
+        const originalBgColor = getComputedStyle(subtitle).backgroundColor;
+        const originalColor = getComputedStyle(subtitle).color;
+        const originalBorderRadius = getComputedStyle(subtitle).borderRadius;
+        const originalPadding = getComputedStyle(subtitle).padding;
         
-        // Simplified hover handler
-        const subtitleHoverHandler = debounce(function(e) {
-            if (e.type === 'mouseenter') {
-                subtitle.style.transform = 'translateY(-5px)';
-            } else {
-                subtitle.style.transform = 'translateY(0)';
+        // Clear the subtitle and reset its background
+        subtitle.textContent = '';
+        subtitle.style.background = 'transparent';
+        subtitle.style.opacity = '1';
+        subtitle.style.padding = '0';
+        
+        // Create a container for the typing animation
+        const animContainer = document.createElement('div');
+        animContainer.className = 'subtitle-typing-container';
+        animContainer.style.display = 'inline-block';
+        animContainer.style.position = 'relative';
+        animContainer.style.backgroundColor = originalBgColor;
+        animContainer.style.color = originalColor;
+        animContainer.style.borderRadius = originalBorderRadius;
+        animContainer.style.padding = originalPadding;
+        animContainer.style.width = '0';
+        animContainer.style.whiteSpace = 'nowrap';
+        animContainer.style.overflow = 'hidden';
+        animContainer.style.transition = 'width 0.1s ease-out';
+        subtitle.appendChild(animContainer);
+        
+        // Create a text span to hold the typed text
+        const textSpan = document.createElement('span');
+        textSpan.className = 'typed-text';
+        animContainer.appendChild(textSpan);
+        
+        // Add a blinking cursor element
+        const cursor = document.createElement('span');
+        cursor.className = 'typing-cursor';
+        cursor.innerHTML = '|';
+        cursor.style.display = 'inline-block';
+        cursor.style.color = originalColor;
+        cursor.style.animation = 'blink-cursor 0.8s step-end infinite';
+        cursor.style.marginLeft = '2px';
+        cursor.style.position = 'absolute';
+        cursor.style.right = '5px';
+        animContainer.appendChild(cursor);
+        
+        // Add CSS for cursor animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes blink-cursor {
+                from, to { opacity: 0; }
+                50% { opacity: 1; }
             }
-        }, 50);
+        `;
+        document.head.appendChild(style);
         
-        subtitle.addEventListener('mouseenter', subtitleHoverHandler);
-        subtitle.addEventListener('mouseleave', subtitleHoverHandler);
+        // Type characters one by one
+        let charIndex = 0;
+        const typingDelay = 100; // delay between characters in ms
+        
+        function typeNextChar() {
+            if (charIndex < originalText.length) {
+                // Add the next character to the text
+                textSpan.textContent += originalText.charAt(charIndex);
+                
+                // Calculate width including a buffer for the cursor
+                const newWidth = textSpan.offsetWidth + 15;
+                
+                // Grow the container to fit the text
+                animContainer.style.width = `${newWidth}px`;
+                
+                // Move cursor to end of text
+                cursor.style.left = `${newWidth - 10}px`;
+                
+                charIndex++;
+                setTimeout(typeNextChar, typingDelay);
+            } else {
+                // Remove cursor after animation completes
+                setTimeout(() => {
+                    cursor.style.display = 'none';
+                }, 2000);
+            }
+        }
+        
+        // Start typing after name animation completes
+        setTimeout(typeNextChar, 1000);
     }
     
-    // Optimized social icons reveal
+    // Advanced social icons animation
     const socialIconsList = document.querySelector('.social-icons .link-list');
     if (socialIconsList) {
         socialIconsList.style.position = 'relative';
         socialIconsList.style.opacity = '0';
-        socialIconsList.style.transition = 'opacity 0.5s ease';
+        socialIconsList.style.transform = 'translateY(20px)';
+        socialIconsList.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
         
         setTimeout(() => {
             socialIconsList.style.opacity = '1';
-        }, 700);
+            socialIconsList.style.transform = 'translateY(0)';
+        }, 1200);
     }
     
-    // Staggered animation for social icons with better performance
+    // Enhanced staggered animation for social icons
     const socialIcons = document.querySelectorAll('.link-title');
     if (socialIcons.length > 0) {
-        // Batch all icon animations to avoid too many reflows
-        requestAnimationFrame(() => {
-            socialIcons.forEach((icon, index) => {
-                icon.style.opacity = '0';
-                icon.style.transform = 'translateY(15px)'; // Reduced distance
-                icon.style.transition = `all 0.4s ease ${0.3 + index * 0.08}s`; // Faster transition, shorter delay
+        // Improved icon animations
+        socialIcons.forEach((icon, index) => {
+            // Clear any existing animations
+            icon.style.animation = 'none';
+            icon.style.opacity = '0';
+            icon.style.transform = 'translateY(20px) scale(0.9)';
+            icon.style.transition = `all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${1.2 + index * 0.1}s`;
+            
+            // Animate icons with a slight delay and spring effect
+            setTimeout(() => {
+                icon.style.opacity = '1';
+                icon.style.transform = 'translateY(0) scale(1)';
+            }, 1300);
+            
+            // Add an advanced hover effect with scale and 3D rotation
+            icon.addEventListener('mouseenter', () => {
+                // Get the social icon
+                const iconElement = icon.querySelector('i');
+                if (iconElement) {
+                    iconElement.style.transform = 'scale(1.3)'; // Removed rotation, keeping only the scale effect
+                    iconElement.style.color = 'rgba(240, 248, 255, 1)'; // Full brightness
+                    iconElement.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease';
+                    iconElement.style.textShadow = '0 0 15px rgba(240, 248, 255, 0.5)';
+                }
                 
-                // Animate icons with a slight delay
-                setTimeout(() => {
-                    icon.style.opacity = '1';
-                    icon.style.transform = 'translateY(0)';
-                }, 800);
+                icon.style.transform = 'translateY(-5px)';
+                icon.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            });
+            
+            icon.addEventListener('mouseleave', () => {
+                const iconElement = icon.querySelector('i');
+                if (iconElement) {
+                    iconElement.style.transform = 'scale(1)';
+                    iconElement.style.color = '';
+                    iconElement.style.textShadow = 'none';
+                }
                 
-                // Add a simple hover effect
-                icon.addEventListener('mouseenter', () => {
-                    icon.style.transform = 'translateY(-3px)'; // Reduced movement
-                });
-                
-                icon.addEventListener('mouseleave', () => {
-                    icon.style.transform = 'translateY(0)';
-                });
+                icon.style.transform = 'translateY(0)';
             });
         });
     }
     
-    // Use a more efficient parallax effect
-    initOptimizedParallaxEffect();
+    // Background parallax effect
+    const homeSection = document.querySelector('.home');
+    if (homeSection) {
+        // Add floating animation to the background
+        homeSection.style.backgroundPosition = 'center top';
+        homeSection.style.transition = 'background-position 0.1s ease-out';
+        
+        // Mouse move parallax effect for the background
+        if (!isLowPowerDevice) {
+            document.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                homeSection.style.backgroundPosition = `calc(center + ${moveX}px) calc(top + ${moveY}px)`;
+            });
+        }
+        
+        // Smooth scroll parallax
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            if (scrollY < window.innerHeight) {
+                homeSection.style.backgroundPositionY = `calc(top + ${scrollY * 0.4}px)`;
+                
+                // Fade out elements as user scrolls down
+                const contentWrapper = homeSection.querySelector('.content-wrapper');
+                if (contentWrapper) {
+                    contentWrapper.style.opacity = 1 - (scrollY / (window.innerHeight * 0.8));
+                    contentWrapper.style.transform = `translateY(${scrollY * 0.2}px)`;
+                }
+            }
+        });
+    }
+    
+    // Use a more efficient parallax effect for older devices
+    if (isLowPowerDevice) {
+        initOptimizedParallaxEffect();
+    }
+    
+    // Add pulse animation to CTA button if it exists
+    const ctaButton = document.querySelector('.home .cta-button');
+    if (ctaButton) {
+        setTimeout(() => {
+            ctaButton.style.animation = 'pulse 2s infinite';
+            ctaButton.style.opacity = '0';
+            ctaButton.style.transform = 'translateY(20px)';
+            ctaButton.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            
+            setTimeout(() => {
+                ctaButton.style.opacity = '1';
+                ctaButton.style.transform = 'translateY(0)';
+            }, 1800);
+            
+            // Add ripple effect on click
+            ctaButton.addEventListener('click', (e) => {
+                const rect = ctaButton.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                ripple.style.position = 'absolute';
+                ripple.style.top = `${y}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.transform = 'translate(-50%, -50%)';
+                ripple.style.width = '0';
+                ripple.style.height = '0';
+                ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transition = 'all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
+                
+                ctaButton.appendChild(ripple);
+                
+                // Animate the ripple
+                setTimeout(() => {
+                    ripple.style.width = '300px';
+                    ripple.style.height = '300px';
+                    ripple.style.opacity = '0';
+                }, 10);
+                
+                // Remove ripple after animation
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        }, 1500);
+    }
 }
 
 // Optimized parallax effect that's more performance-friendly
@@ -412,10 +641,6 @@ function initJobsPageAnimations() {
             card.style.opacity = '0';
             card.style.transform = 'perspective(1000px) rotateX(5deg) translateY(50px)';
             card.style.transition = `all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.3 + index * 0.15}s`;
-            
-            // Add 3D data attributes for mouse movement effect
-            card.setAttribute('data-depth', '0.1');
-            card.setAttribute('data-hover-depth', '0.2');
             
             setTimeout(() => {
                 card.style.opacity = '1';

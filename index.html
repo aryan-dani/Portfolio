@@ -11,6 +11,12 @@
       crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="SCSS/main.css" />
+    <!-- Add Particles.js for background effects -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Add Vanilla Tilt for 3D hover effects -->
+    <script src="https://unpkg.com/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
+    <!-- Preload large background image for better performance -->
+    <link rel="preload" href="Images/Header.jpg" as="image" />
   </head>
   <body>
     <!-- Toast Notifications Container -->
@@ -49,56 +55,69 @@
     </header>
     <main>
       <section class="home">
-        <h1 class="home__name">
-          Aryan
-          <span class="home__name--last">Dani</span>
-        </h1>
-        <h2>Tech Enthusiast, Web Developer and AI Engineer</h2>
-        <div class="social-icons">
-          <ul class="link-list">
-            <li class="link-title">
-              <i class="fa-brands fa-linkedin fa-2x"></i>
-              <a
-                href="https://www.linkedin.com/in/aryandani/"
-                title="LinkedIn"
-                target="_blank"
-                rel="noopener">
-                <span>LinkedIn</span>
-              </a>
-            </li>
+        <!-- This div will be used by particles.js -->
+        <!-- Content wrapper to ensure all elements are properly positioned -->
+        <div class="content-wrapper">
+          <h1 class="home__name">
+            Aryan
+            <span class="home__name--last">Dani</span>
+          </h1>
+          <h2>Tech Enthusiast, Web Developer and AI Engineer</h2>
+          <div class="social-icons">
+            <ul class="link-list">
+              <li class="link-title">
+                <i class="fa-brands fa-linkedin fa-2x"></i>
+                <a
+                  href="https://www.linkedin.com/in/aryandani/"
+                  title="LinkedIn"
+                  target="_blank"
+                  rel="noopener">
+                  <span>LinkedIn</span>
+                </a>
+              </li>
 
-            <li class="link-title">
-              <i class="fa-brands fa-instagram fa-2x"></i>
-              <a
-                href="https://www.instagram.com/aryandani_06/?hl=en"
-                title="Instagram"
-                target="_blank"
-                rel="noopener">
-                <span>Instagram</span>
-              </a>
-            </li>
-            <li class="link-title">
-              <i class="fa-brands fa-twitter fa-2x"></i>
-              <a
-                href="https://x.com/Killfall15"
-                title="Twitter"
-                target="_blank"
-                rel="noopener">
-                <span>Twitter</span>
-              </a>
-            </li>
+              <li class="link-title">
+                <i class="fa-brands fa-instagram fa-2x"></i>
+                <a
+                  href="https://www.instagram.com/aryandani_06/?hl=en"
+                  title="Instagram"
+                  target="_blank"
+                  rel="noopener">
+                  <span>Instagram</span>
+                </a>
+              </li>
+              <li class="link-title">
+                <i class="fa-brands fa-twitter fa-2x"></i>
+                <a
+                  href="https://x.com/Killfall15"
+                  title="Twitter"
+                  target="_blank"
+                  rel="noopener">
+                  <span>Twitter</span>
+                </a>
+              </li>
 
-            <li class="link-title">
-              <i class="fa-brands fa-github fa-2x"></i>
-              <a
-                href="https://github.com/duneshime"
-                title="GitHub"
-                target="_blank"
-                rel="noopener">
-                <span>GitHub</span>
-              </a>
-            </li>
-          </ul>
+              <li class="link-title">
+                <i class="fa-brands fa-github fa-2x"></i>
+                <a
+                  href="https://github.com/duneshime"
+                  title="GitHub"
+                  target="_blank"
+                  rel="noopener">
+                  <span>GitHub</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!-- Add a CTA button -->
+          <a href="projects.html" class="cta-button">
+            <span>View My Work</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <!-- Keyboard shortcut hint -->
+          <div class="keyboard-hint">
+            Press <kbd>Alt</kbd> + <kbd>Key</kbd> for quick navigation
+          </div>
         </div>
       </section>
     </main>

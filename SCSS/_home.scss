@@ -16,6 +16,10 @@
   .content-wrapper {
     position: relative;
     z-index: 1;
+    max-width: 800px; // Contain content width for better readability
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; // Add spacing between elements
   }
 
   &__name {
@@ -69,30 +73,20 @@
     padding: 0.1rem 0.5rem;
     display: inline-block;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba($primary-color, 0.2);
     position: relative;
     z-index: 1;
     opacity: 0;
     animation: slideInUp 0.8s 0.4s forwards;
     overflow: hidden;
     
-    // Shine effect across text
+    // Remove the shine effect completely
     &::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -60%;
-      width: 20%;
-      height: 200%;
-      background: rgba(255, 255, 255, 0.4);
-      transform: rotate(30deg);
-      animation: shimmer 3s infinite;
+      display: none;
     }
 
     &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba($primary-color, 0.3);
-      animation: none; // Remove the animation that might be causing it to disappear
+      transform: translateY(-3px) scale(1.02);
+      animation: none;
     }
   }
 
@@ -115,6 +109,7 @@
         opacity: 0;
         transform: translateX(-20px);
         margin-bottom: 0.5rem; // Add consistent spacing between items
+        width: fit-content; // Ensure width only extends as far as content
         
         @for $i from 1 through 4 {
           &:nth-child(#{$i}) {
@@ -133,9 +128,11 @@
           display: flex; // Ensure icon is properly aligned
           align-items: center;
           justify-content: center;
+          width: 24px; // Add fixed width
+          height: 24px; // Add fixed height
           
           &:hover {
-            transform: rotate(15deg) scale(1.2);
+            transform: scale(1.2);
           }
         }
         
@@ -148,6 +145,7 @@
           position: relative;
           display: flex; // Change to flex for better alignment
           align-items: center; // Center vertically
+          width: fit-content; // Add width to limit hover area
           
           &:hover {
             color: $secondary-color; // Make sure text is visible on hover
@@ -163,7 +161,7 @@
           position: relative;
           overflow: hidden;
           display: inline-block; // Ensure proper display
-          
+  
           &::before {
             content: '';
             position: absolute;
@@ -190,11 +188,172 @@
       }
     }
   }
+  
+  // CTA Button styling
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: $secondary-color;
+    color: $primary-color;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border-radius: 30px;
+    margin-top: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    align-self: flex-start;
+    z-index: 1;
+    text-decoration: none;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+      transition: left 0.7s ease;
+      z-index: -1;
+    }
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      background-color: lighten($secondary-color, 5%);
+      
+      &::before {
+        left: 100%;
+      }
+      
+      i {
+        transform: translateX(3px);
+      }
+    }
+    
+    &:active {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    i {
+      transition: transform 0.3s ease;
+    }
+  }
+  
+  // Add pulse animation for the CTA button
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+  }
+  
+  // Style for keyboard navigation hint
+  .keyboard-hint {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    opacity: 0;
+    animation: fadeIn 0.5s 2s forwards;
+    align-self: flex-start;
+    
+    kbd {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-size: 0.75rem;
+      font-family: monospace;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      margin: 0 2px;
+    }
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+  
+  // Add styles for the particles container
+  #particles-home {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  
+  // Additional animations
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .home {
+    padding-left: 1.5rem;
+    padding-top: 8vh;
+    
+    h2 {
+      font-size: 1.3rem;
+    }
+    
+    .social-icons .link-list .link-title a {
+      font-size: 1rem;
+    }
+    
+    .cta-button {
+      padding: 0.6rem 1.2rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
   .home {
     padding-left: 1rem;
-    padding-top: 8vh;
+    padding-top: 6vh;
+    
+    &__name {
+      font-size: 2rem;
+    }
+    
+    h2 {
+      font-size: 1.1rem;
+      margin-top: 0.8rem;
+    }
+    
+    .social-icons {
+      margin-top: 1rem;
+    }
+    
+    .keyboard-hint {
+      display: none; // Hide on small screens to save space
+    }
   }
 }
