@@ -263,70 +263,38 @@ function initHomePageAnimations() {
         }
     }
     
-    // Enhanced name animation without the translucent rectangle
+    // COORDINATED ANIMATION SEQUENCE
+    // This ensures elements animate in the correct order with proper timing
+    
+    // Step 1: Prepare all animations but don't start them yet
+    prepareHomeAnimations();
+    
+    // Step 2: Execute animations in sequence with proper timing
+    executeHomeAnimationSequence();
+}
+
+// Prepare all home page animations without starting them
+function prepareHomeAnimations() {
+    const isLowPowerDevice = window.navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i) !== null;
+    
+    // 1. Prepare name animation
     const name = document.querySelector('.home__name');
     if (name) {
-        // More dramatic entrance for the name
         name.style.animation = 'none';
         name.style.opacity = '0';
         name.style.transform = isLowPowerDevice ? 
             'translateY(-25px)' : 
             'perspective(1000px) translateZ(-30px) rotateX(10deg)';
-        name.style.transition = 'all 1s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+        name.style.transition = 'all 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
         
-        // Add a subtle glow/shadow without the translucent rectangle
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                name.style.opacity = '1';
-                name.style.transform = isLowPowerDevice ? 
-                    'translateY(0)' : 
-                    'perspective(1000px) translateZ(0) rotateX(0)';
-                name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
-                
-                // Remove any existing nameRevealEffect if present
-                const existingEffect = name.querySelector('div');
-                if (existingEffect) {
-                    existingEffect.remove();
-                }
-            }, 300);
-        });
-        
-        // Enhanced hover effect with subtle 3D movement
-        const enhancedHoverHandler = debounce(function(e) {
-            const rect = name.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-            
-            // Calculate the rotation based on mouse position
-            const rotateY = isLowPowerDevice ? 0 : ((mouseX - rect.width / 2) / rect.width) * 5;
-            const rotateX = isLowPowerDevice ? 0 : -((mouseY - rect.height / 2) / rect.height) * 5;
-            
-            if (e.type === 'mouseenter') {
-                name.style.transform = isLowPowerDevice ? 
-                    'translateY(-5px)' : 
-                    `perspective(1000px) translateZ(15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                name.style.textShadow = '0 15px 35px rgba(0, 0, 0, 0.25)';
-                name.style.transition = 'transform 0.3s ease, text-shadow 0.3s ease';
-            } else if (e.type === 'mousemove') {
-                if (!isLowPowerDevice) {
-                    name.style.transform = `perspective(1000px) translateZ(15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                    name.style.transition = 'transform 0.1s ease-out';
-                }
-            } else {
-                name.style.transform = isLowPowerDevice ? 
-                    'translateY(0)' : 
-                    'perspective(1000px) translateZ(0) rotateX(0) rotateY(0)';
-                name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
-                name.style.transition = 'transform 0.5s ease, text-shadow 0.5s ease';
-            }
-        }, 10);
-        
-        name.addEventListener('mouseenter', enhancedHoverHandler);
-        name.addEventListener('mousemove', enhancedHoverHandler);
-        name.addEventListener('mouseleave', enhancedHoverHandler);
+        // Remove any existing nameRevealEffect if present
+        const existingEffect = name.querySelector('div');
+        if (existingEffect) {
+            existingEffect.remove();
+        }
     }
     
-    // Improved subtitle animation with growing background for individual characters
+    // 2. Prepare subtitle animation
     const subtitle = document.querySelector('.home h2');
     if (subtitle) {
         // Store the original subtitle text
@@ -386,224 +354,374 @@ function initHomePageAnimations() {
         `;
         document.head.appendChild(style);
         
-        // Type characters one by one
-        let charIndex = 0;
-        const typingDelay = 100; // delay between characters in ms
-        
-        function typeNextChar() {
-            if (charIndex < originalText.length) {
-                // Add the next character to the text
-                textSpan.textContent += originalText.charAt(charIndex);
-                
-                // Calculate width including a buffer for the cursor
-                const newWidth = textSpan.offsetWidth + 15;
-                
-                // Grow the container to fit the text
-                animContainer.style.width = `${newWidth}px`;
-                
-                // Move cursor to end of text
-                cursor.style.left = `${newWidth - 10}px`;
-                
-                charIndex++;
-                setTimeout(typeNextChar, typingDelay);
-            } else {
-                // Remove cursor after animation completes
-                setTimeout(() => {
-                    cursor.style.display = 'none';
-                }, 2000);
-            }
-        }
-        
-        // Start typing after name animation completes
-        setTimeout(typeNextChar, 1000);
+        // Store original text for later use in animation sequence
+        subtitle.dataset.originalText = originalText;
     }
     
-    // Advanced social icons animation
+    // 3. Prepare social icons animation - make them ready but invisible
     const socialIconsList = document.querySelector('.social-icons .link-list');
     if (socialIconsList) {
         socialIconsList.style.position = 'relative';
         socialIconsList.style.opacity = '0';
         socialIconsList.style.transform = 'translateY(20px)';
-        socialIconsList.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        
-        setTimeout(() => {
-            socialIconsList.style.opacity = '1';
-            socialIconsList.style.transform = 'translateY(0)';
-        }, 1200);
+        socialIconsList.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     }
     
-    // Enhanced staggered animation for social icons
+    // 4. Prepare individual social icons
     const socialIcons = document.querySelectorAll('.link-title');
     if (socialIcons.length > 0) {
-        // Improved icon animations
-        socialIcons.forEach((icon, index) => {
-            // Clear any existing animations
+        socialIcons.forEach((icon) => {
+            // Clear any existing animations and prepare for new animation
             icon.style.animation = 'none';
             icon.style.opacity = '0';
-            icon.style.transform = 'translateY(20px) scale(0.9)';
-            icon.style.transition = `all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${1.2 + index * 0.1}s`;
+            icon.style.transform = 'translateY(15px) scale(0.95)';
+            icon.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
             
-            // Animate icons with a slight delay and spring effect
-            setTimeout(() => {
-                icon.style.opacity = '1';
-                icon.style.transform = 'translateY(0) scale(1)';
-            }, 1300);
-            
-            // Add an advanced hover effect with scale and 3D rotation
-            icon.addEventListener('mouseenter', () => {
-                // Get the social icon
-                const iconElement = icon.querySelector('i');
-                if (iconElement) {
-                    iconElement.style.transform = 'scale(1.3)'; // Removed rotation, keeping only the scale effect
-                    iconElement.style.color = 'rgba(240, 248, 255, 1)'; // Full brightness
-                    iconElement.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease';
-                    iconElement.style.textShadow = '0 0 15px rgba(240, 248, 255, 0.5)';
-                }
-                
-                icon.style.transform = 'translateY(-5px)';
-                icon.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            });
-            
-            icon.addEventListener('mouseleave', () => {
-                const iconElement = icon.querySelector('i');
-                if (iconElement) {
-                    iconElement.style.transform = 'scale(1)';
-                    iconElement.style.color = '';
-                    iconElement.style.textShadow = 'none';
-                }
-                
-                icon.style.transform = 'translateY(0)';
-            });
-        });
-    }
-    
-    // Background parallax effect
-    const homeSection = document.querySelector('.home');
-    if (homeSection) {
-        // Add floating animation to the background
-        homeSection.style.backgroundPosition = 'center top';
-        homeSection.style.transition = 'background-position 0.1s ease-out';
-        
-        // Mouse move parallax effect for the background
-        if (!isLowPowerDevice) {
-            document.addEventListener('mousemove', (e) => {
-                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-                homeSection.style.backgroundPosition = `calc(center + ${moveX}px) calc(top + ${moveY}px)`;
-            });
-        }
-        
-        // Smooth scroll parallax
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            if (scrollY < window.innerHeight) {
-                homeSection.style.backgroundPositionY = `calc(top + ${scrollY * 0.4}px)`;
-                
-                // Fade out elements as user scrolls down
-                const contentWrapper = homeSection.querySelector('.content-wrapper');
-                if (contentWrapper) {
-                    contentWrapper.style.opacity = 1 - (scrollY / (window.innerHeight * 0.8));
-                    contentWrapper.style.transform = `translateY(${scrollY * 0.2}px)`;
-                }
+            // Prepare icon element for animation
+            const iconElement = icon.querySelector('i');
+            if (iconElement) {
+                iconElement.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease';
             }
         });
     }
     
-    // Use a more efficient parallax effect for older devices
-    if (isLowPowerDevice) {
-        initOptimizedParallaxEffect();
-    }
-    
-    // Add pulse animation to CTA button if it exists
+    // 5. Prepare CTA button animation
     const ctaButton = document.querySelector('.home .cta-button');
     if (ctaButton) {
-        setTimeout(() => {
-            ctaButton.style.animation = 'pulse 2s infinite';
-            ctaButton.style.opacity = '0';
-            ctaButton.style.transform = 'translateY(20px)';
-            ctaButton.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        ctaButton.style.animation = 'pulse 2s infinite';
+        ctaButton.style.opacity = '0';
+        ctaButton.style.transform = 'translateY(20px)';
+        ctaButton.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        
+        // Add ripple effect on click
+        ctaButton.addEventListener('click', (e) => {
+            const rect = ctaButton.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.position = 'absolute';
+            ripple.style.top = `${y}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.transform = 'translate(-50%, -50%)';
+            ripple.style.width = '0';
+            ripple.style.height = '0';
+            ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.transition = 'all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
+            
+            ctaButton.appendChild(ripple);
+            
+            // Animate the ripple
             setTimeout(() => {
-                ctaButton.style.opacity = '1';
-                ctaButton.style.transform = 'translateY(0)';
-            }, 1800);
+                ripple.style.width = '300px';
+                ripple.style.height = '300px';
+                ripple.style.opacity = '0';
+            }, 10);
             
-            // Add ripple effect on click
-            ctaButton.addEventListener('click', (e) => {
-                const rect = ctaButton.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const ripple = document.createElement('span');
-                ripple.className = 'ripple';
-                ripple.style.position = 'absolute';
-                ripple.style.top = `${y}px`;
-                ripple.style.left = `${x}px`;
-                ripple.style.transform = 'translate(-50%, -50%)';
-                ripple.style.width = '0';
-                ripple.style.height = '0';
-                ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
-                ripple.style.borderRadius = '50%';
-                ripple.style.transition = 'all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
-                
-                ctaButton.appendChild(ripple);
-                
-                // Animate the ripple
-                setTimeout(() => {
-                    ripple.style.width = '300px';
-                    ripple.style.height = '300px';
-                    ripple.style.opacity = '0';
-                }, 10);
-                
-                // Remove ripple after animation
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-            });
-        }, 1500);
+            // Remove ripple after animation
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
     }
 }
 
-// Optimized parallax effect that's more performance-friendly
-function initOptimizedParallaxEffect() {
-    const parallaxElements = document.querySelectorAll('.home, .about, .jobs-layout, .project__project-image');
-    
-    let ticking = false;
-    let lastScrollY = window.scrollY;
-    
-    // Check if this is a low-power device
+// Execute home animations in proper sequence
+function executeHomeAnimationSequence() {
     const isLowPowerDevice = window.navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i) !== null;
     
-    // Skip parallax on mobile/low-power devices
-    if (isLowPowerDevice) {
-        return;
+    // ANIMATION SEQUENCE TIMELINE:
+    // T+0ms: Name animation starts
+    // T+300ms: Name animation completes
+    // T+500ms: Subtitle typing starts
+    // T+700ms: Social icons container fades in
+    // T+800ms: Individual social icons start appearing one by one
+    // T+1100ms: CTA button appears
+    
+    // 1. Start name animation (immediately)
+    const name = document.querySelector('.home__name');
+    if (name) {
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                name.style.opacity = '1';
+                name.style.transform = isLowPowerDevice ? 
+                    'translateY(0)' : 
+                    'perspective(1000px) translateZ(0) rotateX(0)';
+                name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+                
+                // Add enhanced hover effect after animation completes
+                setTimeout(() => {
+                    addNameHoverEffect(name, isLowPowerDevice);
+                }, 300);
+            }, 0);
+        });
     }
     
-    // Use a throttled scroll handler
-    window.addEventListener('scroll', () => {
-        lastScrollY = window.scrollY;
-        
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                parallaxElements.forEach(element => {
-                    const speed = parseFloat(element.getAttribute('data-parallax-speed') || 0.1); // Lower default speed
-                    const yPos = -(lastScrollY * speed);
-                    element.style.backgroundPositionY = `calc(center + ${yPos}px)`;
-                });
-                
-                ticking = false;
-            });
+    // 2. Start subtitle typing animation (delay 500ms)
+    const subtitle = document.querySelector('.home h2');
+    if (subtitle) {
+        setTimeout(() => {
+            startTypingAnimation(subtitle);
+        }, 500);
+    }
+    
+    // 3. Animate social icons container (delay 700ms)
+    const socialIconsList = document.querySelector('.social-icons .link-list');
+    if (socialIconsList) {
+        setTimeout(() => {
+            socialIconsList.style.opacity = '1';
+            socialIconsList.style.transform = 'translateY(0)';
             
-            ticking = true;
+            // 4. Animate individual social icons with short stagger (starting at 800ms)
+            const socialIcons = document.querySelectorAll('.link-title');
+            if (socialIcons.length > 0) {
+                socialIcons.forEach((icon, index) => {
+                    // Staggered animation with shorter delays (100ms apart)
+                    setTimeout(() => {
+                        icon.style.opacity = '1';
+                        icon.style.transform = 'translateY(0) scale(1)';
+                        
+                        // Add hover effect after animation completes
+                        addIconHoverEffect(icon);
+                    }, 100 + (index * 80)); // Short 80ms stagger between icons
+                });
+            }
+        }, 700);
+    }
+    
+    // 5. Animate CTA button (delay 1100ms)
+    const ctaButton = document.querySelector('.home .cta-button');
+    if (ctaButton) {
+        setTimeout(() => {
+            ctaButton.style.opacity = '1';
+            ctaButton.style.transform = 'translateY(0)';
+        }, 1100);
+    }
+    
+    // 6. Initialize background parallax for home section
+    initHomeParallax(isLowPowerDevice);
+}
+
+// Helper function to start typing animation with true letter-by-letter effect
+function startTypingAnimation(subtitle) {
+    if (!subtitle || !subtitle.dataset.originalText) return;
+    
+    const originalText = subtitle.dataset.originalText;
+    const animContainer = subtitle.querySelector('.subtitle-typing-container');
+    const textSpan = subtitle.querySelector('.typed-text');
+    const cursor = subtitle.querySelector('.typing-cursor');
+    
+    if (!animContainer || !textSpan || !cursor) return;
+    
+    // Reset everything first to ensure clean animation
+    textSpan.textContent = '';
+    animContainer.style.width = '20px'; // Start with just enough width for cursor
+    
+    // Type characters one by one
+    let charIndex = 0;
+    const typingDelay = 100; // Slower typing for more dramatic effect
+    
+    // Disable transition temporarily for initial setup
+    const originalTransition = animContainer.style.transition;
+    animContainer.style.transition = 'none';
+    
+    // Force a reflow to apply the style changes immediately
+    void animContainer.offsetWidth;
+    
+    // Restore the transition for smooth animations during typing
+    setTimeout(() => {
+        animContainer.style.transition = 'width 0.05s ease-out';
+        
+        // Start the letter-by-letter typing sequence
+        function typeNextChar() {
+            if (charIndex < originalText.length) {
+                // Add exactly one character
+                textSpan.textContent += originalText.charAt(charIndex);
+                
+                // Calculate new width for container with a bit of buffer for cursor
+                const newWidth = textSpan.offsetWidth + 20;
+                
+                // Expand container to fit text
+                animContainer.style.width = `${newWidth}px`;
+                
+                // Update cursor position
+                if (cursor) {
+                    cursor.style.left = '';
+                    cursor.style.right = '5px';
+                }
+                
+                // Move to next character
+                charIndex++;
+                
+                // Schedule typing of next character with a visible delay
+                setTimeout(typeNextChar, typingDelay);
+            } else {
+                // Animation complete - keep cursor blinking for a while then hide it
+                setTimeout(() => {
+                    if (cursor) cursor.style.display = 'none';
+                }, 2000);
+            }
         }
+        
+        // Start typing the first character
+        typeNextChar();
+    }, 50);
+}
+
+// Add hover effect to name element
+function addNameHoverEffect(name, isLowPowerDevice) {
+    // Enhanced hover effect with subtle 3D movement
+    const enhancedHoverHandler = debounce(function(e) {
+        const rect = name.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        // Calculate the rotation based on mouse position
+        const rotateY = isLowPowerDevice ? 0 : ((mouseX - rect.width / 2) / rect.width) * 5;
+        const rotateX = isLowPowerDevice ? 0 : -((mouseY - rect.height / 2) / rect.height) * 5;
+        
+        if (e.type === 'mouseenter') {
+            name.style.transform = isLowPowerDevice ? 
+                'translateY(-5px)' : 
+                `perspective(1000px) translateZ(15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            name.style.textShadow = '0 15px 35px rgba(0, 0, 0, 0.25)';
+            name.style.transition = 'transform 0.3s ease, text-shadow 0.3s ease';
+        } else if (e.type === 'mousemove') {
+            if (!isLowPowerDevice) {
+                name.style.transform = `perspective(1000px) translateZ(15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                name.style.transition = 'transform 0.1s ease-out';
+            }
+        } else {
+            name.style.transform = isLowPowerDevice ? 
+                'translateY(0)' : 
+                'perspective(1000px) translateZ(0) rotateX(0) rotateY(0)';
+            name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+            name.style.transition = 'transform 0.5s ease, text-shadow 0.5s ease';
+        }
+    }, 10);
+    
+    name.addEventListener('mouseenter', enhancedHoverHandler);
+    name.addEventListener('mousemove', enhancedHoverHandler);
+    name.addEventListener('mouseleave', enhancedHoverHandler);
+}
+
+// Improved social icon animation and hover effects
+function addIconHoverEffect(icon) {
+    // First remove any existing event listeners to prevent duplication
+    const iconClone = icon.cloneNode(true);
+    icon.parentNode.replaceChild(iconClone, icon);
+    
+    // Add an advanced hover effect with scale and 3D rotation
+    iconClone.addEventListener('mouseenter', () => {
+        // Get the social icon element
+        const iconElement = iconClone.querySelector('i');
+        if (iconElement) {
+            iconElement.style.transform = 'scale(1.3)'; 
+            iconElement.style.color = 'rgba(240, 248, 255, 1)'; // Full brightness
+            iconElement.style.textShadow = '0 0 15px rgba(240, 248, 255, 0.5)';
+        }
+        
+        // Apply 3D effect to the entire icon container
+        iconClone.style.transform = 'perspective(800px) translateY(-5px) translateZ(10px)';
     });
     
-    // Set parallax speed attributes - using lower speeds
-    parallaxElements.forEach(element => {
-        if (!element.getAttribute('data-parallax-speed')) {
-            element.setAttribute('data-parallax-speed', '0.1'); // Lower default speed
+    iconClone.addEventListener('mouseleave', () => {
+        const iconElement = iconClone.querySelector('i');
+        if (iconElement) {
+            iconElement.style.transform = 'scale(1)';
+            iconElement.style.color = '';
+            iconElement.style.textShadow = 'none';
         }
+        
+        // Smooth return to original position
+        iconClone.style.transform = 'perspective(800px) translateY(0) translateZ(0)';
     });
+    
+    // Add click feedback effect
+    iconClone.addEventListener('click', (e) => {
+        // Create ripple effect for tactile feedback
+        const rect = iconClone.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const ripple = document.createElement('span');
+        ripple.className = 'icon-ripple';
+        ripple.style.position = 'absolute';
+        ripple.style.top = `${y}px`;
+        ripple.style.left = `${x}px`;
+        ripple.style.transform = 'translate(-50%, -50%)';
+        ripple.style.width = '0';
+        ripple.style.height = '0';
+        ripple.style.backgroundColor = 'rgba(240, 248, 255, 0.4)';
+        ripple.style.borderRadius = '50%';
+        ripple.style.transition = 'all 0.4s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
+        
+        iconClone.appendChild(ripple);
+        
+        // Animate the ripple
+        setTimeout(() => {
+            ripple.style.width = '100px';
+            ripple.style.height = '100px';
+            ripple.style.opacity = '0';
+        }, 10);
+        
+        // Remove ripple after animation
+        setTimeout(() => {
+            ripple.remove();
+        }, 400);
+    });
+}
+
+// Initialize parallax effect for home section
+function initHomeParallax(isLowPowerDevice) {
+    const homeSection = document.querySelector('.home');
+    if (!homeSection) return;
+    
+    // Add floating animation to the background
+    homeSection.style.backgroundPosition = 'center top';
+    homeSection.style.transition = 'background-position 0.1s ease-out';
+    
+    // Mouse move parallax effect for the background
+    if (!isLowPowerDevice) {
+        const parallaxHandler = throttle((e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            homeSection.style.backgroundPosition = `calc(center + ${moveX}px) calc(top + ${moveY}px)`;
+        }, 10); // Throttle to improve performance
+        
+        document.addEventListener('mousemove', parallaxHandler);
+    }
+    
+    // Smooth scroll parallax
+    const scrollHandler = throttle(() => {
+        const scrollY = window.scrollY;
+        if (scrollY < window.innerHeight) {
+            homeSection.style.backgroundPositionY = `calc(top + ${scrollY * 0.4}px)`;
+            
+            // Fade out elements as user scrolls down
+            const contentWrapper = homeSection.querySelector('.content-wrapper');
+            if (contentWrapper) {
+                contentWrapper.style.opacity = 1 - (scrollY / (window.innerHeight * 0.8));
+                contentWrapper.style.transform = `translateY(${scrollY * 0.2}px)`;
+            }
+        }
+    }, 10); // Throttle to improve performance
+    
+    window.addEventListener('scroll', scrollHandler);
+}
+
+// Throttle function for better performance with frequent events
+function throttle(func, wait) {
+    let lastTime = 0;
+    return function() {
+        const now = Date.now();
+        if (now - lastTime >= wait) {
+            func.apply(this, arguments);
+            lastTime = now;
+        }
+    };
 }
 
 // Debounce helper function to improve performance of event handlers
@@ -1436,9 +1554,10 @@ function cardClickHandler(e) {
 
 // Add keyboard shortcuts for navigation
 document.addEventListener('keydown', (e) => {
-    // Only process shortcuts if Alt key is pressed (to avoid interfering with normal typing)
+    // Process shortcuts if Alt key is pressed (to avoid interfering with normal typing)
     if (e.altKey) {
         switch (e.key) {
+            // Existing letter shortcuts
             case 'h': // Alt+H for Home
                 e.preventDefault();
                 navigateTo('index.html');
@@ -1467,9 +1586,77 @@ document.addEventListener('keydown', (e) => {
                 e.preventDefault();
                 toggleMenu();
                 break;
+                
+            // Add Arrow key shortcuts
+            case 'ArrowRight': // Alt+Right Arrow for next page
+                e.preventDefault();
+                navigateNextPage();
+                break;
+            case 'ArrowLeft': // Alt+Left Arrow for previous page
+                e.preventDefault();
+                navigatePreviousPage();
+                break;
+            case 'ArrowUp': // Alt+Up Arrow for Home
+                e.preventDefault();
+                navigateTo('index.html');
+                break;
+            case 'ArrowDown': // Alt+Down Arrow for About (last page)
+                e.preventDefault();
+                navigateTo('about.html');
+                break;
         }
     }
 });
+
+// Function to determine the next page in the navigation sequence
+function navigateNextPage() {
+    const pages = ['index.html', 'jobs.html', 'projects.html', 'certification.html', 'skills.html', 'about.html'];
+    const currentPath = window.location.pathname;
+    
+    // Find current page index
+    let currentIndex = -1;
+    for (let i = 0; i < pages.length; i++) {
+        if (currentPath.includes(pages[i]) || 
+            (pages[i] === 'index.html' && currentPath.endsWith('/'))) {
+            currentIndex = i;
+            break;
+        }
+    }
+    
+    // Navigate to next page or loop back to first
+    if (currentIndex !== -1) {
+        const nextIndex = (currentIndex + 1) % pages.length;
+        navigateTo(pages[nextIndex]);
+    } else {
+        // Default to home if page not found in sequence
+        navigateTo('index.html');
+    }
+}
+
+// Function to determine the previous page in the navigation sequence
+function navigatePreviousPage() {
+    const pages = ['index.html', 'jobs.html', 'projects.html', 'certification.html', 'skills.html', 'about.html'];
+    const currentPath = window.location.pathname;
+    
+    // Find current page index
+    let currentIndex = -1;
+    for (let i = 0; i < pages.length; i++) {
+        if (currentPath.includes(pages[i]) || 
+            (pages[i] === 'index.html' && currentPath.endsWith('/'))) {
+            currentIndex = i;
+            break;
+        }
+    }
+    
+    // Navigate to previous page or loop back to last
+    if (currentIndex !== -1) {
+        const prevIndex = (currentIndex - 1 + pages.length) % pages.length;
+        navigateTo(pages[prevIndex]);
+    } else {
+        // Default to home if page not found in sequence
+        navigateTo('index.html');
+    }
+}
 
 // Helper function for keyboard navigation
 function navigateTo(url) {

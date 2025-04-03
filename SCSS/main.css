@@ -27,6 +27,7 @@
   gap: 1rem;
 }
 .home__name {
+  font-size: 3rem;
   margin-top: 0.4rem;
   font-weight: 700;
   position: relative;
