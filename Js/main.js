@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('About Me', 'Get to know me better', 'fa-solid fa-user');
             }
         }
-    }, 1000);
+    }, 500);
     
     // Continue with the rest of the initialization
     initPageTransition();
@@ -1372,7 +1372,7 @@ function initSkillsPageAnimations() {
     }
 }
 
-// Toast notification function - Fixed to ensure visibility across all pages
+// Toast notification function - Optimized for visibility and performance
 function showToast(title, message, iconClass) {
     // Check if toast container exists, if not create it
     let toastContainer = document.querySelector('.toast-container');
@@ -1382,12 +1382,12 @@ function showToast(title, message, iconClass) {
         toastContainer.style.position = 'fixed';
         toastContainer.style.top = '20px';
         toastContainer.style.right = '20px';
-        toastContainer.style.maxWidth = '280px'; // Reduced from 350px
-        toastContainer.style.zIndex = '9999';
+        toastContainer.style.maxWidth = '280px';
+        toastContainer.style.zIndex = '10000'; // Higher z-index to ensure visibility
         toastContainer.style.pointerEvents = 'none';
         toastContainer.style.display = 'flex';
         toastContainer.style.flexDirection = 'column';
-        toastContainer.style.gap = '8px'; // Reduced from 10px
+        toastContainer.style.gap = '8px';
         document.body.appendChild(toastContainer);
     }
     
@@ -1397,33 +1397,34 @@ function showToast(title, message, iconClass) {
     // Create toast element directly with JavaScript instead of using innerHTML
     const toast = document.createElement('div');
     toast.id = toastId;
-    toast.style.background = 'rgba(15, 15, 15, 0.9)';
+    toast.style.background = 'rgba(15, 15, 15, 0.95)'; // More opaque background
     toast.style.backdropFilter = 'blur(10px)';
     toast.style.color = '#fff';
-    toast.style.padding = '10px'; // Reduced from 15px
-    toast.style.borderRadius = '6px'; // Reduced from 8px
-    toast.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; // Lighter shadow
-    toast.style.marginBottom = '8px'; // Reduced from 10px
+    toast.style.padding = '12px'; // Slightly larger padding
+    toast.style.borderRadius = '6px';
+    toast.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.3)'; // Increased shadow for visibility
+    toast.style.marginBottom = '8px';
     toast.style.display = 'flex';
     toast.style.pointerEvents = 'auto';
     toast.style.overflow = 'hidden';
     toast.style.position = 'relative';
-    toast.style.borderLeft = '3px solid #f0f8ff'; // aliceblue
+    toast.style.borderLeft = '4px solid #f0f8ff'; // Thicker border
     toast.style.transform = 'translateX(100%)';
     toast.style.opacity = '0';
-    toast.style.fontSize = '0.9rem'; // Added to make text smaller
+    toast.style.fontSize = '0.9rem';
+    toast.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)'; // Add transition here
     
     // Create icon container
     const iconContainer = document.createElement('div');
     iconContainer.style.display = 'flex';
     iconContainer.style.alignItems = 'center';
     iconContainer.style.justifyContent = 'center';
-    iconContainer.style.marginRight = '10px'; // Reduced from 15px
-    iconContainer.style.fontSize = '1.2rem'; // Reduced from 1.5rem
-    iconContainer.style.color = '#f0f8ff'; // aliceblue
+    iconContainer.style.marginRight = '10px';
+    iconContainer.style.fontSize = '1.2rem';
+    iconContainer.style.color = '#f0f8ff';
     iconContainer.style.flexShrink = '0';
-    iconContainer.style.width = '24px'; // Reduced from 30px
-    iconContainer.style.height = '24px'; // Reduced from 30px
+    iconContainer.style.width = '24px';
+    iconContainer.style.height = '24px';
     
     // Create icon
     const icon = document.createElement('i');
@@ -1441,8 +1442,8 @@ function showToast(title, message, iconClass) {
     // Create title
     const titleElement = document.createElement('h4');
     titleElement.textContent = title;
-    titleElement.style.margin = '0 0 3px 0'; // Reduced margin
-    titleElement.style.fontSize = '0.9rem'; // Reduced from default
+    titleElement.style.margin = '0 0 3px 0';
+    titleElement.style.fontSize = '0.95rem'; // Slightly larger title
     titleElement.style.fontWeight = '600';
     contentContainer.appendChild(titleElement);
     
@@ -1450,19 +1451,19 @@ function showToast(title, message, iconClass) {
     const messageElement = document.createElement('p');
     messageElement.textContent = message;
     messageElement.style.margin = '0';
-    messageElement.style.fontSize = '0.8rem'; // Reduced from default
-    messageElement.style.opacity = '0.8';
+    messageElement.style.fontSize = '0.85rem'; // Slightly larger message
+    messageElement.style.opacity = '0.9'; // More visible text
     contentContainer.appendChild(messageElement);
     
     // Create close button
     const closeButton = document.createElement('button');
     closeButton.style.background = 'transparent';
     closeButton.style.border = 'none';
-    closeButton.style.color = 'rgba(255, 255, 255, 0.5)';
+    closeButton.style.color = 'rgba(255, 255, 255, 0.7)';
     closeButton.style.cursor = 'pointer';
     closeButton.style.padding = '0';
-    closeButton.style.marginLeft = '8px'; // Reduced from 10px
-    closeButton.style.fontSize = '0.8rem'; // Reduced from 1rem
+    closeButton.style.marginLeft = '8px';
+    closeButton.style.fontSize = '0.9rem';
     closeButton.style.display = 'flex';
     closeButton.style.alignItems = 'center';
     closeButton.style.justifyContent = 'center';
@@ -1488,11 +1489,10 @@ function showToast(title, message, iconClass) {
     void toast.offsetWidth;
     
     // Apply animation
-    toast.style.transition = 'all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55)'; // Faster animation
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(0)';
     
-    // Auto-remove toast after 4 seconds (reduced from 5)
+    // Auto-remove toast after 5 seconds (increased from 4 for better visibility)
     setTimeout(() => {
         if (toast && toast.parentNode) {
             toast.style.opacity = '0';
@@ -1503,9 +1503,9 @@ function showToast(title, message, iconClass) {
                 if (toast && toast.parentNode) {
                     toast.remove();
                 }
-            }, 300); // Reduced from 500
+            }, 300);
         }
-    }, 4000); // Reduced from 5000
+    }, 5000);
 }
 
 // Initialize progress bars
