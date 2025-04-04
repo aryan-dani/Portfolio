@@ -95,7 +95,8 @@
     position: relative;
     z-index: 1;
     opacity: 0;
-    animation: slideInUp 0.6s 0.4s forwards; // Faster animation, appears earlier
+    animation: slideInUp 0.7s 0.5s forwards; // Slower animation with later timing
+    will-change: transform, opacity; // Hardware acceleration hint
     
     .link-list {
       list-style: none;
@@ -106,15 +107,16 @@
         display: flex;
         align-items: center; // Ensure vertical alignment
         gap: 10px;
-        transition: transform 0.2s ease, opacity 0.2s ease; // Smoother, faster transition
+        transition: transform 0.3s ease, opacity 0.3s ease; // Slower transitions
         opacity: 0;
-        transform: translateX(-10px); // Reduced distance for smoother animation
+        transform: translateX(-8px); // Reduced distance for smoother animation
         margin-bottom: 0.5rem; // Add consistent spacing between items
         width: fit-content; // Ensure width only extends as far as content
+        will-change: transform, opacity;
         
         @for $i from 1 through 4 {
           &:nth-child(#{$i}) {
-            animation: fadeInStagger 0.4s #{$i * 0.1 + 0.45}s forwards; // Faster staggered animations
+            animation: fadeInStagger 0.6s #{$i * 0.15 + 0.6}s forwards; // Slower animations with more delay
           }
         }
   
@@ -123,13 +125,14 @@
         }
   
         i {
-          transition: transform 0.2s ease; // Smoother, faster transitions
+          transition: transform 0.3s ease; // Slower icon hover transition
           color: white; // Ensure icon is visible
           display: flex; // Ensure icon is properly aligned
           align-items: center;
           justify-content: center;
           width: 24px; // Add fixed width
           height: 24px; // Add fixed height
+          will-change: transform;
           
           &:hover {
             transform: scale(1.2);

@@ -121,6 +121,38 @@ function menuBtnHoverOut() {
 
 // Welcome notifications for each page - FIXED implementation
 document.addEventListener('DOMContentLoaded', () => {
+    // Create page loader if it doesn't exist
+    if (!document.querySelector('.page-loader')) {
+        const loader = document.createElement('div');
+        loader.className = 'page-loader';
+        loader.innerHTML = '<div class="page-loader__spinner"></div>';
+        document.body.appendChild(loader);
+        
+        // Show loader for a minimum time to avoid flashing
+        setTimeout(() => {
+            loader.classList.add('loaded');
+            
+            // Remove from DOM after transition completes
+            setTimeout(() => {
+                if (loader.parentNode) {
+                    loader.parentNode.removeChild(loader);
+                }
+            }, 500);
+        }, 800); // Show for at least 800ms
+    }
+    
+    // Add header background on scroll
+    const header = document.querySelector('header');
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    }
+    
     // Determine page type and add appropriate body class
     const pagePath = window.location.pathname;
     const isHomePage = pagePath.includes('index.html') || pagePath.endsWith('/');
@@ -134,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (pagePath.includes('about.html')) pageName = 'about';
     
     // Add welcome toast based on page - but only on first visit
+    // Delay increased to 1200ms to ensure it appears after social icons start animating
     setTimeout(() => {
         // Only show welcome toasts on first visit to each page
         if (checkFirstTimeVisit(pageName)) {
@@ -151,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('About Me', 'Get to know me better', 'fa-solid fa-user');
             }
         }
-    }, 500);
+    }, 1200);
     
     // Continue with the rest of the initialization
     initPageTransition();

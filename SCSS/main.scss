@@ -14,9 +14,79 @@
 
 // Import config variables to use them directly in this file
 @use "config" as *;
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+// Optimize font loading with font-display: swap
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* Modern CSS Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.6;
+  font-family: "Poppins", sans-serif;
+  background-color: $primary-color;
+  color: #fff;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Improved accessibility focus styles */
+:focus {
+  outline: 2px solid $secondary-color;
+  outline-offset: 2px;
+}
+
+/* Remove focus outline for mouse users, maintain for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Responsive typography */
 html {
   font-size: 16px;
+  scroll-behavior: smooth;
+  
   @media (max-width: 1200px) {
     font-size: 15px;
   }
@@ -31,17 +101,20 @@ html {
   }
 }
 
-body {
-  background-color: $primary-color;
-  color: #fff;
-  height: 100vh;
-  font-family: "Poppins", sans-serif;
-  line-height: 1.6;
-}
-
+/* Links styling */
 a {
   text-decoration: none;
   color: #fff;
+  transition: color 0.2s ease, transform 0.2s ease;
+  
+  &:hover {
+    color: darken(#fff, 10%);
+  }
+  
+  &:focus-visible {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
 }
 
 .text-secondary {
@@ -53,12 +126,22 @@ header {
   z-index: 2;
   width: 100%;
   padding: 1rem;
+  transition: background-color 0.3s ease;
+  
+  /* Add subtle background on scroll */
+  &.scrolled {
+    background-color: rgba($primary-color, 0.95);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
 }
 
 main {
   height: 100%;
   width: 100%;
   transition: margin-top 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  will-change: transform, opacity; /* Performance hint for animations */
 }
 
 footer {
@@ -74,16 +157,29 @@ footer {
   border-radius: 4px;
   transition: all 0.3s ease;
   pointer-events: auto; /* Ensure it's clickable */
+  -webkit-backdrop-filter: blur(5px); /* Add webkit prefix for Safari */
+  backdrop-filter: blur(5px); /* Modern glass effect */
   
   &:hover {
     background-color: rgba($primary-color, 0.9);
     transform: translateY(-3px);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
   }
+  
+  /* Ensure link is accessible */
+  a {
+    display: inline-block;
+    padding: 0.2rem;
+    
+    &:focus-visible {
+      outline: 2px solid $secondary-color;
+      border-radius: 2px;
+    }
+  }
 }
 
 body {
-  transition: all $transition-speed ease-in-out;
+  transition: background-color $transition-speed ease-in-out, color $transition-speed ease-in-out;
 }
 
 // Menu toggle shortcut styling only
@@ -108,10 +204,61 @@ body {
   visibility: visible;
 }
 
+/* Loading animation */
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $primary-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  
+  &.loaded {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  &__spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: $secondary-color;
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .page-loader__spinner {
+    animation: none !important;
+  }
+}
+
+/* Responsive adjustments */
 @media screen and (max-width: 500px) {
   footer {
     display: none;
   }
+  
   .home, .contact {
     background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
