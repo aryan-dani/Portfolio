@@ -231,81 +231,7 @@ function initHomePageAnimations() {
     // Track if this is a low-power device (most mobile devices qualify)
     const isLowPowerDevice = window.navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i) !== null;
     
-    // Add a particle background effect if not on a low-power device
-    if (!isLowPowerDevice && typeof particlesJS !== 'undefined') {
-        // Create particles container if it doesn't exist
-        if (!document.getElementById('particles-home')) {
-            const particlesContainer = document.createElement('div');
-            particlesContainer.id = 'particles-home';
-            particlesContainer.style.position = 'absolute';
-            particlesContainer.style.top = '0';
-            particlesContainer.style.left = '0';
-            particlesContainer.style.width = '100%';
-            particlesContainer.style.height = '100%';
-            particlesContainer.style.zIndex = '0';
-            particlesContainer.style.opacity = '0';
-            particlesContainer.style.transition = 'opacity 2s ease';
-            
-            const homeSection = document.querySelector('.home');
-            if (homeSection) {
-                homeSection.style.position = 'relative';
-                homeSection.insertBefore(particlesContainer, homeSection.firstChild);
-                
-                // Initialize particles with a subtle, professional effect
-                setTimeout(() => {
-                    particlesJS('particles-home', {
-                        particles: {
-                            number: { value: 80, density: { enable: true, value_area: 800 } },
-                            color: { value: "#f0f8ff" },
-                            shape: { type: "circle" },
-                            opacity: { 
-                                value: 0.3, 
-                                random: true,
-                                anim: { enable: true, speed: 0.5, opacity_min: 0.1, sync: false }
-                            },
-                            size: { 
-                                value: 3, 
-                                random: true,
-                                anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
-                            },
-                            line_linked: {
-                                enable: true,
-                                distance: 150,
-                                color: "#f0f8ff",
-                                opacity: 0.2,
-                                width: 1
-                            },
-                            move: {
-                                enable: true,
-                                speed: 1,
-                                direction: "none",
-                                random: true,
-                                straight: false,
-                                out_mode: "out",
-                                bounce: false
-                            }
-                        },
-                        interactivity: {
-                            detect_on: "canvas",
-                            events: {
-                                onhover: { enable: true, mode: "grab" },
-                                onclick: { enable: true, mode: "push" },
-                                resize: true
-                            },
-                            modes: {
-                                grab: { distance: 140, line_linked: { opacity: 0.5 } },
-                                push: { particles_nb: 3 }
-                            }
-                        },
-                        retina_detect: true
-                    });
-                    
-                    // Fade in the particles
-                    particlesContainer.style.opacity = '0.7';
-                }, 800);
-            }
-        }
-    }
+    // REMOVED: We're no longer initializing particles.js here as requested
     
     // COORDINATED ANIMATION SEQUENCE
     // This ensures elements animate in the correct order with proper timing
@@ -406,25 +332,34 @@ function prepareHomeAnimations() {
     const socialIconsList = document.querySelector('.social-icons .link-list');
     if (socialIconsList) {
         socialIconsList.style.position = 'relative';
-        socialIconsList.style.opacity = '0';
-        socialIconsList.style.transform = 'translateY(20px)';
-        socialIconsList.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        socialIconsList.style.opacity = '1'; // We show the container immediately
+        socialIconsList.style.transform = 'translateY(0)'; // No initial transform
     }
     
-    // 4. Prepare individual social icons
+    // 4. Prepare individual social icons for sequential animation
     const socialIcons = document.querySelectorAll('.link-title');
     if (socialIcons.length > 0) {
-        socialIcons.forEach((icon) => {
+        socialIcons.forEach((icon, index) => {
             // Clear any existing animations and prepare for new animation
             icon.style.animation = 'none';
             icon.style.opacity = '0';
-            icon.style.transform = 'translateY(15px) scale(0.95)';
-            icon.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            icon.style.transform = 'translateX(-20px)'; // Start from left side
+            icon.style.transition = 'all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)'; // More pronounced spring effect
             
             // Prepare icon element for animation
             const iconElement = icon.querySelector('i');
             if (iconElement) {
-                iconElement.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease';
+                iconElement.style.opacity = '0';
+                iconElement.style.transform = 'scale(0.5)';
+                iconElement.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease, color 0.3s ease';
+            }
+            
+            // Prepare text element for separate animation
+            const textElement = icon.querySelector('a span, a');
+            if (textElement) {
+                textElement.style.opacity = '0';
+                textElement.style.transform = 'translateX(-15px)';
+                textElement.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s, opacity 0.5s ease 0.2s';
             }
         });
     }
@@ -480,9 +415,8 @@ function executeHomeAnimationSequence() {
     // T+0ms: Name animation starts
     // T+300ms: Name animation completes
     // T+500ms: Subtitle typing starts
-    // T+700ms: Social icons container fades in
-    // T+800ms: Individual social icons start appearing one by one
-    // T+1100ms: CTA button appears
+    // T+700ms: Individual social icons start appearing one by one
+    // T+1300ms: CTA button appears
     
     // 1. Start name animation (immediately)
     const name = document.querySelector('.home__name');
@@ -511,40 +445,57 @@ function executeHomeAnimationSequence() {
         }, 500);
     }
     
-    // 3. Animate social icons container (delay 700ms)
-    const socialIconsList = document.querySelector('.social-icons .link-list');
-    if (socialIconsList) {
-        setTimeout(() => {
-            socialIconsList.style.opacity = '1';
-            socialIconsList.style.transform = 'translateY(0)';
-            
-            // 4. Animate individual social icons with short stagger (starting at 800ms)
-            const socialIcons = document.querySelectorAll('.link-title');
-            if (socialIcons.length > 0) {
-                socialIcons.forEach((icon, index) => {
-                    // Staggered animation with shorter delays (100ms apart)
+    // 3. Animate individual social icons with elegant sequential reveal
+    const socialIcons = document.querySelectorAll('.link-title');
+    if (socialIcons.length > 0) {
+        socialIcons.forEach((icon, index) => {
+            // Enhanced staggered animation with choreographed timing
+            setTimeout(() => {
+                // First animate the container position
+                icon.style.opacity = '1';
+                icon.style.transform = 'translateX(0)';
+                
+                // Then animate the icon with a slight delay
+                const iconElement = icon.querySelector('i');
+                if (iconElement) {
                     setTimeout(() => {
-                        icon.style.opacity = '1';
-                        icon.style.transform = 'translateY(0) scale(1)';
+                        iconElement.style.opacity = '1';
+                        iconElement.style.transform = 'scale(1.2)';
                         
-                        // Add hover effect after animation completes
-                        addIconHoverEffect(icon);
-                    }, 100 + (index * 80)); // Short 80ms stagger between icons
-                });
-            }
-        }, 700);
+                        // Return to normal scale with a bounce effect
+                        setTimeout(() => {
+                            iconElement.style.transform = 'scale(1)';
+                        }, 150);
+                    }, 100);
+                }
+                
+                // Finally reveal the text with another slight delay
+                const textElement = icon.querySelector('a span, a');
+                if (textElement) {
+                    setTimeout(() => {
+                        textElement.style.opacity = '1';
+                        textElement.style.transform = 'translateX(0)';
+                    }, 200);
+                }
+                
+                // Add hover effect after animation completes
+                setTimeout(() => {
+                    addIconHoverEffect(icon);
+                }, 350);
+            }, 1000 + (index * 300)); // Longer 200ms stagger for more noticeable sequence
+        });
     }
     
-    // 5. Animate CTA button (delay 1100ms)
+    // 4. Animate CTA button (delay 1300ms - after all social icons)
     const ctaButton = document.querySelector('.home .cta-button');
     if (ctaButton) {
         setTimeout(() => {
             ctaButton.style.opacity = '1';
             ctaButton.style.transform = 'translateY(0)';
-        }, 1100);
+        }, socialIcons.length * 200 + 1200); // Dynamic timing based on number of social icons
     }
     
-    // 6. Initialize background parallax for home section
+    // 5. Initialize background parallax for home section
     initHomeParallax(isLowPowerDevice);
 }
 
@@ -1043,105 +994,6 @@ function initSkillsPageAnimations() {
     // Check if this is the first visit to skills page
     const isFirstVisit = checkFirstTimeVisit('skills-page');
     
-    // Initialize particles.js for background effect with improved colors
-    if (document.getElementById('particles-js')) {
-        particlesJS('particles-js', {
-            particles: {
-                number: {
-                    value: 100,
-                    density: {
-                        enable: true,
-                        value_area: 800
-                    }
-                },
-                color: {
-                    value: "#f0f8ff" // Using DeepSkyBlue for better visibility
-                },
-                shape: {
-                    type: "circle",
-                    stroke: {
-                        width: 0,
-                        color: "#000000"
-                    }
-                },
-                opacity: {
-                    value: 0.6,
-                    random: true,
-                    anim: {
-                        enable: true,
-                        speed: 1,
-                        opacity_min: 0.1,
-                        sync: false
-                    }
-                },
-                size: {
-                    value: 4,
-                    random: true,
-                    anim: {
-                        enable: true,
-                        speed: 3,
-                        size_min: 0.3,
-                        sync: false
-                    }
-                },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: "#f0f8ff",
-                    opacity: 0.3,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 2,
-                    direction: "none",
-                    random: true,
-                    straight: false,
-                    out_mode: "out",
-                    bounce: false,
-                    attract: {
-                        enable: true,
-                        rotateX: 600,
-                        rotateY: 1200
-                    }
-                }
-            },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: {
-                        enable: true,
-                        mode: "grab"
-                    },
-                    onclick: {
-                        enable: true,
-                        mode: "push"
-                    },
-                    resize: true
-                },
-                modes: {
-                    grab: {
-                        distance: 140,
-                        line_linked: {
-                            opacity: 0.8
-                        }
-                    },
-                    push: {
-                        particles_nb: 4
-                    },
-                    bubble: {
-                        distance: 400,
-                        size: 6,
-                        duration: 2,
-                        opacity: 0.8,
-                        speed: 3
-                    }
-                }
-            },
-            retina_detect: true
-        });
-    }
-
     // Animate skills heading with fade in and slide up
     const skillsHeading = document.querySelector('.skills__heading');
     if (skillsHeading) {

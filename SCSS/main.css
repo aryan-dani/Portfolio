@@ -25,6 +25,8 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  height: 90vh;
+  justify-content: flex-start;
 }
 .home__name {
   font-size: 3rem;
@@ -85,8 +87,7 @@
 .home .social-icons {
   position: relative;
   z-index: 1;
-  opacity: 0;
-  animation: slideInUp 0.7s 0.5s forwards;
+  opacity: 1;
   will-change: transform, opacity;
 }
 .home .social-icons .link-list {
@@ -100,29 +101,17 @@
   gap: 10px;
   transition: transform 0.3s ease, opacity 0.3s ease;
   opacity: 0;
-  transform: translateX(-8px);
+  transform: translateY(15px);
   margin-bottom: 0.5rem;
   width: -moz-fit-content;
   width: fit-content;
   will-change: transform, opacity;
 }
-.home .social-icons .link-list .link-title:nth-child(1) {
-  animation: fadeInStagger 0.6s 0.75s forwards;
-}
-.home .social-icons .link-list .link-title:nth-child(2) {
-  animation: fadeInStagger 0.6s 0.9s forwards;
-}
-.home .social-icons .link-list .link-title:nth-child(3) {
-  animation: fadeInStagger 0.6s 1.05s forwards;
-}
-.home .social-icons .link-list .link-title:nth-child(4) {
-  animation: fadeInStagger 0.6s 1.2s forwards;
-}
 .home .social-icons .link-list .link-title:hover {
   cursor: default;
 }
 .home .social-icons .link-list .link-title i {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
   color: white;
   display: flex;
   align-items: center;
@@ -187,8 +176,9 @@
   font-weight: 600;
   padding: 0.7rem 1.5rem;
   border-radius: 8px;
-  margin-top: 4.5rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  margin-top: auto;
+  margin-bottom: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   border: 2px solid transparent;
   position: relative;
@@ -196,6 +186,7 @@
   align-self: flex-start;
   z-index: 1;
   text-decoration: none;
+  animation: bounce 1s ease 1.5s 1;
 }
 .home .cta-button::before {
   content: "";
@@ -210,7 +201,7 @@
 }
 .home .cta-button:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
   background-color: white;
 }
 .home .cta-button:hover::before {
@@ -236,17 +227,6 @@
     opacity: 0.9;
   }
 }
-.home .keyboard-hint {
-  display: none;
-}
-.home #particles-home {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
@@ -257,6 +237,17 @@
   60% {
     transform: translateY(-5px);
   }
+}
+.home .keyboard-hint {
+  display: none;
+}
+.home #particles-home {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 @keyframes fadeIn {
   from {
@@ -272,6 +263,9 @@
     padding-left: 1.5rem;
     padding-top: 8vh;
   }
+  .home .content-wrapper {
+    height: 88vh;
+  }
   .home h2 {
     font-size: 1.3rem;
   }
@@ -280,12 +274,16 @@
   }
   .home .cta-button {
     padding: 0.6rem 1.2rem;
+    margin-bottom: 1.5rem;
   }
 }
 @media (max-width: 576px) {
   .home {
     padding-left: 1rem;
     padding-top: 6vh;
+  }
+  .home .content-wrapper {
+    height: 90vh;
   }
   .home__name {
     font-size: 2rem;
@@ -296,6 +294,9 @@
   }
   .home .social-icons {
     margin-top: 1rem;
+  }
+  .home .cta-button {
+    margin-bottom: 1rem;
   }
 }
 .menu-btn {
@@ -3241,4 +3242,4 @@ body {
     background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
-}
+}/*# sourceMappingURL=main.css.map */

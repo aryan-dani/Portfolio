@@ -12,7 +12,7 @@
   background-attachment: fixed;
   position: relative;
   
-  // Content wrapper to ensure all elements are above the particle effect
+  // Content wrapper to ensure all elements are above the particle effect and properly positioned
   .content-wrapper {
     position: relative;
     z-index: 1;
@@ -20,6 +20,8 @@
     display: flex;
     flex-direction: column;
     gap: 1rem; // Add spacing between elements
+    height: calc(100vh - 10vh); // Adjust to full height minus padding
+    justify-content: flex-start; // Start content from the top
   }
 
   &__name {
@@ -94,8 +96,7 @@
   .social-icons {
     position: relative;
     z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.7s 0.5s forwards; // Slower animation with later timing
+    opacity: 1; // Keep the container visible
     will-change: transform, opacity; // Hardware acceleration hint
     
     .link-list {
@@ -107,25 +108,21 @@
         display: flex;
         align-items: center; // Ensure vertical alignment
         gap: 10px;
-        transition: transform 0.3s ease, opacity 0.3s ease; // Slower transitions
-        opacity: 0;
-        transform: translateX(-8px); // Reduced distance for smoother animation
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 0; // Individual items start invisible
+        transform: translateY(15px); // Prepare for animation
         margin-bottom: 0.5rem; // Add consistent spacing between items
         width: fit-content; // Ensure width only extends as far as content
         will-change: transform, opacity;
         
-        @for $i from 1 through 4 {
-          &:nth-child(#{$i}) {
-            animation: fadeInStagger 0.6s #{$i * 0.15 + 0.6}s forwards; // Slower animations with more delay
-          }
-        }
-  
+        // Remove the SCSS staggered animations as we're handling this with JS
+        
         &:hover {
           cursor: default;
         }
   
         i {
-          transition: transform 0.3s ease; // Slower icon hover transition
+          transition: transform 0.3s ease, color 0.3s ease;
           color: white; // Ensure icon is visible
           display: flex; // Ensure icon is properly aligned
           align-items: center;
@@ -191,7 +188,7 @@
     }
   }
   
-  // CTA Button styling
+  // CTA Button styling - positioned at bottom left with enhanced styling
   .cta-button {
     display: inline-flex;
     align-items: center;
@@ -201,13 +198,14 @@
     font-weight: 600;
     padding: 0.7rem 1.5rem;
     border-radius: 8px;
-    margin-top: 4.5rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    margin-top: auto; // Push to bottom of flexbox container
+    margin-bottom: 2rem; // Add some space from the bottom
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
-    align-self: flex-start;
+    align-self: flex-start; // Align to left
     z-index: 1;
     text-decoration: none;
     
@@ -225,7 +223,7 @@
     
     &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
       background-color: lighten($secondary-color, 5%);
       
       &::before {
@@ -245,6 +243,9 @@
     i {
       transition: transform 0.3s ease;
     }
+    
+    // Add a subtle bounce animation when page loads
+    animation: bounce 1s ease 1.5s 1;
   }
   
   // Add pulse animation for the CTA button
@@ -256,6 +257,19 @@
     50% {
       transform: scale(1.05);
       opacity: 0.9;
+    }
+  }
+  
+  // Add bounce animation for the CTA button
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
     }
   }
   
@@ -275,18 +289,6 @@
   }
   
   // Additional animations
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(-10px);
-    }
-    60% {
-      transform: translateY(-5px);
-    }
-  }
-  
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -302,6 +304,10 @@
     padding-left: 1.5rem;
     padding-top: 8vh;
     
+    .content-wrapper {
+      height: calc(100vh - 12vh); // Adjust height for mobile
+    }
+    
     h2 {
       font-size: 1.3rem;
     }
@@ -312,6 +318,7 @@
     
     .cta-button {
       padding: 0.6rem 1.2rem;
+      margin-bottom: 1.5rem; // Less space from bottom on mobile
     }
   }
 }
@@ -320,6 +327,10 @@
   .home {
     padding-left: 1rem;
     padding-top: 6vh;
+    
+    .content-wrapper {
+      height: calc(100vh - 10vh); // Adjust height for smaller mobile
+    }
     
     &__name {
       font-size: 2rem;
@@ -332,6 +343,10 @@
     
     .social-icons {
       margin-top: 1rem;
+    }
+    
+    .cta-button {
+      margin-bottom: 1rem; // Even less space from bottom on small mobile
     }
   }
 }
