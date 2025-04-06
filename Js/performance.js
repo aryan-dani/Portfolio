@@ -20,8 +20,17 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add intersection observer for animation on scroll
   initIntersectionObserver();
   
+  // Initialize resource hints for faster navigation
+  initResourceHints();
+  
+  // Initialize content visibility observer
+  initContentVisibilityObserver();
+  
   // Call preload function after a short delay
   setTimeout(preloadKeyPages, 1000);
+  
+  // Setup performance monitoring
+  setupPerformanceMonitoring();
 });
 
 /**
@@ -35,17 +44,33 @@ function initScrollProgress() {
     document.body.appendChild(progressBar);
   }
   
-  // Update progress bar width based on scroll position
+  // Use throttled scroll handler for better performance
+  let lastKnownScrollPosition = 0;
+  let ticking = false;
+  
   window.addEventListener('scroll', function() {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight;
-    const clientHeight = document.documentElement.clientHeight;
-    const scrolled = (scrollTop / (scrollHeight - clientHeight)) * 100;
+    lastKnownScrollPosition = window.scrollY;
     
-    requestAnimationFrame(function() {
-      document.querySelector('.scroll-progress').style.width = scrolled + '%';
-    });
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        updateScrollProgress(lastKnownScrollPosition);
+        ticking = false;
+      });
+      
+      ticking = true;
+    }
   }, { passive: true });
+}
+
+/**
+ * Update scroll progress value - separated for better performance
+ */
+function updateScrollProgress(scrollPos) {
+  const scrollHeight = document.documentElement.scrollHeight;
+  const clientHeight = document.documentElement.clientHeight;
+  const scrolled = (scrollPos / (scrollHeight - clientHeight)) * 100;
+  
+  document.querySelector('.scroll-progress').style.width = scrolled + '%';
 }
 
 /**
@@ -83,14 +108,36 @@ function initLazyLoading() {
           }
         });
       }, {
-        rootMargin: '100px',
-        threshold: 0.1
+        rootMargin: '200px',
+        threshold: 0
       });
       
       lazyImages.forEach(img => {
         imageObserver.observe(img);
       });
     }
+  }
+  
+  // Also apply lazy loading to background images with data-background attribute
+  const lazyBackgrounds = document.querySelectorAll('[data-background]');
+  
+  if (lazyBackgrounds.length > 0) {
+    const backgroundObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          element.style.backgroundImage = `url(${element.dataset.background})`;
+          backgroundObserver.unobserve(element);
+        }
+      });
+    }, {
+      rootMargin: '200px',
+      threshold: 0
+    });
+    
+    lazyBackgrounds.forEach(element => {
+      backgroundObserver.observe(element);
+    });
   }
 }
 
@@ -103,10 +150,60 @@ function registerServiceWorker() {
       navigator.serviceWorker.register('/service-worker.js')
         .then(function(registration) {
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          
+          // Check for service worker updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // New service worker available, show update notification
+                showToast('Portfolio updated! Refresh for latest version.', 'info', 10000);
+              }
+            });
+          });
         })
         .catch(function(error) {
           console.log('ServiceWorker registration failed: ', error);
         });
+        
+      // Handle service worker updates
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        // New service worker has taken control
+        showToast('New content available! Please refresh the page.', 'info', 10000);
+      });
+    });
+  }
+}
+
+/**
+ * Initialize content visibility observer for better performance
+ */
+function initContentVisibilityObserver() {
+  // Apply content-visibility to large sections
+  const contentSections = document.querySelectorAll('.skills__group, .project-grid > .Projects');
+  
+  if (contentSections.length > 0 && 'IntersectionObserver' in window) {
+    const options = {
+      rootMargin: '400px 0px', // Start rendering before it's visible
+      threshold: 0
+    };
+    
+    const contentObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Remove content-visibility: auto when in viewport
+          entry.target.style.contentVisibility = 'visible';
+          contentObserver.unobserve(entry.target);
+        }
+      });
+    }, options);
+    
+    contentSections.forEach(section => {
+      // Apply content-visibility: auto to all sections
+      section.style.contentVisibility = 'auto';
+      section.style.containIntrinsicSize = '0 500px';
+      contentObserver.observe(section);
     });
   }
 }
@@ -139,6 +236,110 @@ function initIntersectionObserver() {
       element.classList.add('is-visible');
     });
   }
+  
+  // Special handling for skill cards
+  const skillCards = document.querySelectorAll('.skills__card');
+  
+  if (skillCards.length > 0 && 'IntersectionObserver' in window) {
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          card.classList.add('is-visible');
+          
+          // Animate progress bar if exists
+          const progressBar = card.querySelector('.skills__progress-bar');
+          if (progressBar && progressBar.dataset.level) {
+            setTimeout(() => {
+              progressBar.style.width = `${progressBar.dataset.level}%`;
+            }, 100);
+          }
+          
+          cardObserver.unobserve(card);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -50px 0px',
+      threshold: 0.1
+    });
+    
+    skillCards.forEach(card => {
+      cardObserver.observe(card);
+    });
+  }
+}
+
+/**
+ * Initialize resource hints for faster navigation
+ */
+function initResourceHints() {
+  // Preconnect to external domains
+  const domains = [
+    'https://fonts.googleapis.com',
+    'https://kit.fontawesome.com',
+    'https://cdn.jsdelivr.net'
+  ];
+  
+  domains.forEach(domain => {
+    if (!document.querySelector(`link[rel="preconnect"][href="${domain}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = domain;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    }
+  });
+}
+
+/**
+ * Show toast notification 
+ */
+function showToast(message, type = 'info', duration = 5000) {
+  const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+  
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.textContent = message;
+  
+  // Add close button
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'toast-close';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.addEventListener('click', () => {
+    toast.classList.add('toast-hidden');
+    setTimeout(() => toast.remove(), 300);
+  });
+  
+  toast.appendChild(closeBtn);
+  toastContainer.appendChild(toast);
+  
+  // Trigger reflow
+  void toast.offsetWidth;
+  
+  // Show toast
+  toast.classList.add('toast-visible');
+  
+  // Auto remove after duration
+  if (duration > 0) {
+    setTimeout(() => {
+      if (toast.parentElement) {
+        toast.classList.add('toast-hidden');
+        setTimeout(() => toast.remove(), 300);
+      }
+    }, duration);
+  }
+  
+  return toast;
+}
+
+/**
+ * Create toast container if it doesn't exist
+ */
+function createToastContainer() {
+  const container = document.createElement('div');
+  container.className = 'toast-container';
+  document.body.appendChild(container);
+  return container;
 }
 
 /**
@@ -191,4 +392,33 @@ function preloadKeyPages() {
     link.href = page;
     document.head.appendChild(link);
   });
+}
+
+/**
+ * Setup performance monitoring
+ */
+function setupPerformanceMonitoring() {
+  if ('performance' in window && 'PerformanceObserver' in window) {
+    // Monitor important performance metrics
+    try {
+      // Create performance observer for Core Web Vitals
+      const observer = new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => {
+          // Log vital metrics
+          console.log(`[Performance] ${entry.name}: ${entry.value}`);
+          
+          // Report to analytics (if implemented)
+          // reportPerformance(entry.name, entry.value);
+        });
+      });
+      
+      // Observe LCP, FID, CLS
+      observer.observe({ type: 'largest-contentful-paint', buffered: true });
+      observer.observe({ type: 'first-input', buffered: true });
+      observer.observe({ type: 'layout-shift', buffered: true });
+      
+    } catch (e) {
+      console.log('Performance monitoring not supported', e);
+    }
+  }
 }
