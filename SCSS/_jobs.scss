@@ -5,14 +5,16 @@
   background-size: cover !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  position: absolute;
+  position: fixed; /* Changed from absolute to fixed for better full coverage */
   min-height: 100vh;
   width: 100%;
-  height: auto;
+  height: 100vh; /* Explicitly set height to 100vh to ensure full coverage */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 0; /* Added z-index to ensure proper stacking */
+  overflow-y: auto; /* Allow scrolling within the layout */
   
   // Remove any overlay for cleaner look
   &::before {

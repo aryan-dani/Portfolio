@@ -18,9 +18,13 @@
     <link rel="prefetch" href="jobs.html" />
     <link rel="prefetch" href="skills.html" />
     
+    <!-- Priority stylesheet loading with preload -->
+    <link rel="preload" href="SCSS/main.css" as="style">
+    
     <!-- Main CSS -->
     <link rel="stylesheet" href="SCSS/main.css" />
     
+    <!-- Minimal necessary inline styles that don't override SCSS -->
     <style>
       /* Progress indicator styles */
       .scroll-progress {
@@ -33,54 +37,16 @@
         width: 0%;
       }
       
-      /* Ensure content visibility */
-      body {
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-      
-      /* Optimize image loading with blur-up technique */
-      img.lazy-load {
-        filter: blur(5px);
-        transition: filter 0.3s ease;
-      }
-      img.lazy-loaded {
-        filter: blur(0);
-      }
-      
-      /* Optimized animations for smoother performance */
+      /* Animation triggers for JS to use */
       .animate-on-scroll {
         opacity: 0;
         transform: translateY(20px);
         transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        will-change: opacity, transform;
       }
       
       .animate-on-scroll.visible {
         opacity: 1;
         transform: translateY(0);
-      }
-      
-      /* Content-visibility optimization for off-screen content */
-      .Projects {
-        content-visibility: auto;
-        contain-intrinsic-size: 0 500px;
-      }
-      
-      /* Force menu button to always remain visible */
-      .menu-btn {
-        position: fixed !important;
-        z-index: 10000 !important; /* Higher than the menu z-index */
-        visibility: visible !important;
-        opacity: 1 !important;
-        transform: none !important;
-      }
-      
-      /* Enhance menu burger color when open for better visibility */
-      .menu-btn__burger.open::before,
-      .menu-btn__burger.open::after {
-        background-color: #f0f8ff !important;
-        box-shadow: 0 0 10px rgba(240, 248, 255, 0.7) !important;
       }
     </style>
   </head>

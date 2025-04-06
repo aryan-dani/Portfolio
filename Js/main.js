@@ -16,7 +16,7 @@ function toggleMenu() {
         menuNav.style.opacity = '0';
         nav.style.visibility = 'visible';
         
-        // Add open classes
+        // Add open classes - these will trigger the CSS styles we defined in _menu.scss
         hamburger.classList.add('open');
         nav.classList.add('open');
         menuNav.classList.add('open');
@@ -24,19 +24,11 @@ function toggleMenu() {
         // Add a class to the body to prevent scrolling when menu is open
         document.body.classList.add('menu-open');
         
-        // Force menu to stay at top of viewport
-        nav.style.position = 'fixed';
-        nav.style.top = '0';
-        nav.style.left = '0';
-        nav.style.right = '0';
-        nav.style.transform = 'none';
-        
-        // Store current scroll position
-        nav.setAttribute('data-scroll-pos', window.scrollY);
-        
         // Animate menu items in the original order
         setTimeout(() => {
             menuNav.style.opacity = '1';
+            
+            // Add open class to all menu items - CSS will handle the animation timing
             navItems.forEach(item => item.classList.add('open'));
         }, 50);
         
@@ -48,7 +40,7 @@ function toggleMenu() {
         // Remove open classes from menu items
         navItems.forEach(item => item.classList.remove('open'));
         
-        // Remove no-scroll class from body
+        // Remove menu-open class from body
         document.body.classList.remove('menu-open');
         
         // Then after a short delay, close the menu
@@ -56,9 +48,6 @@ function toggleMenu() {
             hamburger.classList.remove('open');
             nav.classList.remove('open');
             menuNav.classList.remove('open');
-            
-            // Reset any transforms or positioning that might interfere
-            nav.style.transform = '';
             
             // Hide menu after animation completes
             setTimeout(() => {

@@ -308,6 +308,12 @@
   width: 1.75rem;
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  /* Ensure menu button is always visible, even when menu is open */
+  position: fixed !important;
+  z-index: 10000 !important; /* Higher than the menu z-index */
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 .menu-btn:hover {
   filter: drop-shadow(0 0 8px rgba(240, 248, 255, 0.9));
@@ -366,6 +372,8 @@
   width: 100vw;
   opacity: 0;
   visibility: hidden;
+  transform: translateY(-100%);
+  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   z-index: 100;
 }
 .nav.open {
@@ -376,6 +384,8 @@
   left: 0 !important;
   right: 0 !important;
   bottom: auto !important;
+  transform: translateY(0);
+  animation: slideDownAndBounce 0.7s ease-out forwards;
 }
 .nav .menu-nav {
   display: flex;
@@ -481,8 +491,10 @@
 
 /* Add the menu-open class to prevent body scrolling when menu is open */
 body.menu-open {
-  overflow: hidden;
-  height: 100%;
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
   padding-right: 15px; /* Prevent content shifting when scrollbar disappears */
 }
 
@@ -525,6 +537,13 @@ body.menu-open {
     box-shadow: 0 0 18px rgba(240, 248, 255, 0.9);
   }
 }
+/* Enhance the burger color when open for better visibility */
+.menu-btn__burger.open::before,
+.menu-btn__burger.open::after {
+  background-color: aliceblue !important;
+  box-shadow: 0 0 10px rgba(240, 248, 255, 0.7) !important;
+}
+
 @media screen and (max-width: 768px) {
   .nav .menu-nav {
     padding: 0.8rem 0.3rem;
@@ -544,14 +563,16 @@ body.menu-open {
   background-size: cover !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  position: absolute;
+  position: fixed; /* Changed from absolute to fixed for better full coverage */
   min-height: 100vh;
   width: 100%;
-  height: auto;
+  height: 100vh; /* Explicitly set height to 100vh to ensure full coverage */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 0; /* Added z-index to ensure proper stacking */
+  overflow-y: auto; /* Allow scrolling within the layout */
 }
 .jobs-layout::before {
   display: none;
@@ -2013,40 +2034,11 @@ footer {
     background-size: cover;
   }
 }
-@keyframes floatAnimation {
-  0% {
-    transform: translateY(0px) translateZ(0);
-  }
-  50% {
-    transform: translateY(-15px) translateZ(0);
-  }
-  100% {
-    transform: translateY(0px) translateZ(0);
-  }
-}
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1) translateZ(0);
-  }
-  50% {
-    transform: scale(1.05) translateZ(0);
-  }
-}
-@keyframes shimmer {
-  0% {
-    background-position: -100% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-@keyframes rotateIn {
+@keyframes fadeIn {
   from {
-    transform: perspective(1000px) rotateY(90deg);
     opacity: 0;
   }
   to {
-    transform: perspective(1000px) rotateY(0);
     opacity: 1;
   }
 }
@@ -2063,14 +2055,25 @@ footer {
 @keyframes fadeInStagger {
   from {
     opacity: 0;
-    transform: translateX(-10px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
-@keyframes gradientBackground {
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes gradient-text {
   0% {
     background-position: 0% 50%;
   }
@@ -2081,123 +2084,26 @@ footer {
     background-position: 0% 50%;
   }
 }
-@keyframes gradient-text {
-  0% {
-    background-position: 0% 50% translateZ(0);
-  }
-  50% {
-    background-position: 100% 50% translateZ(0);
-  }
-  100% {
-    background-position: 0% 50% translateZ(0);
-  }
+.animated {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0) translateZ(0);
-  }
-  40% {
-    transform: translateY(-10px) translateZ(0);
-  }
-  60% {
-    transform: translateY(-5px) translateZ(0);
-  }
+.animated.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
-@keyframes typewriter {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
+
+.toast {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
-@keyframes blinkCursor {
-  from, to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: #fff;
-  }
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
 }
-@keyframes glowPulse {
-  0% {
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
-  }
-  100% {
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-  }
-}
-@keyframes floatIn {
-  0% {
-    transform: translateY(20px) scale(0.95);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-@keyframes slideInRight {
-  0% {
-    transform: translateX(50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-@keyframes slideInLeft {
-  0% {
-    transform: translateX(-50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes toastIn {
-  0% {
-    transform: translateX(100%) translateZ(0);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0) translateZ(0);
-    opacity: 1;
-  }
-}
-@keyframes toastOut {
-  0% {
-    transform: translateX(0) translateZ(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%) translateZ(0);
-    opacity: 0;
-  }
-}
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
+
 .toast-container {
   position: fixed;
   top: 20px;
@@ -2477,7 +2383,7 @@ footer {
   animation: neonPulse 3s infinite;
 }
 .skills__heading .text-secondary {
-  color: rgba(14, 14, 14, 0.8);
+  color: aliceblue;
   position: relative;
   display: inline-block;
   -webkit-background-clip: text;
@@ -3092,7 +2998,10 @@ a:focus-visible {
 }
 
 .text-secondary {
-  color: #272727;
+  color: rgba(14, 14, 14, 0.8);
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
 }
 
 header {
@@ -3203,6 +3112,38 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 280px;
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animate-on-scroll.visible, .animate-on-scroll.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: rgba(240, 248, 255, 0.8);
+  z-index: 9999;
+  width: 0%;
 }
 
 /* Reduced motion preferences */

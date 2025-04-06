@@ -118,7 +118,10 @@ a {
 }
 
 .text-secondary {
-  color: $primary-color;
+  color: rgba(darken($primary-color, 10%), 0.8);
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
 }
 
 header {
@@ -235,6 +238,42 @@ body {
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
+}
+
+// Toast container styling
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 280px;
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// Animation for elements entering viewport
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  
+  &.visible, &.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Progress indicator
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: rgba($secondary-color, 0.8);
+  z-index: 9999;
+  width: 0%;
 }
 
 /* Reduced motion preferences */

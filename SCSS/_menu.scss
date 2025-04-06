@@ -10,6 +10,13 @@
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
   
+  /* Ensure menu button is always visible, even when menu is open */
+  position: fixed !important; 
+  z-index: 10000 !important; /* Higher than the menu z-index */
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  
   &:hover {
     filter: drop-shadow(0 0 8px rgba($secondary-color, 0.9));
   }
@@ -74,6 +81,8 @@
   width: 100vw;
   opacity: 0;
   visibility: hidden;
+  transform: translateY(-100%);
+  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   z-index: 100;
   
   &.open {
@@ -84,6 +93,8 @@
     left: 0 !important;
     right: 0 !important;
     bottom: auto !important;
+    transform: translateY(0);
+    animation: slideDownAndBounce 0.7s ease-out forwards;
   }
   
   .menu-nav {
@@ -201,8 +212,10 @@
 
 /* Add the menu-open class to prevent body scrolling when menu is open */
 body.menu-open {
-  overflow: hidden;
-  height: 100%;
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
   padding-right: 15px; /* Prevent content shifting when scrollbar disappears */
 }
 
@@ -247,6 +260,13 @@ body.menu-open {
   50% {
     box-shadow: 0 0 18px rgba($secondary-color, 0.9);
   }
+}
+
+/* Enhance the burger color when open for better visibility */
+.menu-btn__burger.open::before,
+.menu-btn__burger.open::after {
+  background-color: $secondary-color !important;
+  box-shadow: 0 0 10px rgba($secondary-color, 0.7) !important;
 }
 
 // Media queries for responsive design
