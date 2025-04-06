@@ -61,6 +61,22 @@
       .skills__progress-bar {
         transition: width 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
       }
+      
+      /* Force menu button to always remain visible */
+      .menu-btn {
+        position: fixed !important;
+        z-index: 10000 !important; /* Higher than the menu z-index */
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      
+      /* Enhance menu burger color when open for better visibility */
+      .menu-btn__burger.open::before,
+      .menu-btn__burger.open::after {
+        background-color: #f0f8ff !important;
+        box-shadow: 0 0 10px rgba(240, 248, 255, 0.7) !important;
+      }
     </style>
   </head>
   <body>

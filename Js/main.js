@@ -9,10 +9,9 @@ let showMenu = false;
 
 menuBtn.addEventListener('click', toggleMenu);
 
-function toggleMenu()
-{
-    if(!showMenu)
-    {
+// When the menu is opened
+function toggleMenu() {
+    if(!showMenu) {
         // First prepare elements before showing them
         menuNav.style.opacity = '0';
         nav.style.visibility = 'visible';
@@ -22,26 +21,35 @@ function toggleMenu()
         nav.classList.add('open');
         menuNav.classList.add('open');
         
+        // Add a class to the body to prevent scrolling when menu is open
+        document.body.classList.add('menu-open');
+        
+        // Force menu to stay at top of viewport
+        nav.style.position = 'fixed';
+        nav.style.top = '0';
+        nav.style.left = '0';
+        nav.style.right = '0';
+        nav.style.transform = 'none';
+        
+        // Store current scroll position
+        nav.setAttribute('data-scroll-pos', window.scrollY);
+        
         // Animate menu items in the original order
         setTimeout(() => {
             menuNav.style.opacity = '1';
-            
-            // Add open class to all menu items - CSS will handle the animation timing
             navItems.forEach(item => item.classList.add('open'));
-            
-            // Remove margin adjustment - menu will stay fixed at top
-            // No longer adding margin-top to main content
         }, 50);
         
         showMenu = true;
-    }
-    else
-    {
+    } else {
         // First fade out menu items
         menuNav.style.opacity = '0';
         
         // Remove open classes from menu items
         navItems.forEach(item => item.classList.remove('open'));
+        
+        // Remove no-scroll class from body
+        document.body.classList.remove('menu-open');
         
         // Then after a short delay, close the menu
         setTimeout(() => {
@@ -49,8 +57,8 @@ function toggleMenu()
             nav.classList.remove('open');
             menuNav.classList.remove('open');
             
-            // Reset any margin that might have been applied
-            main.style.marginTop = '0px';
+            // Reset any transforms or positioning that might interfere
+            nav.style.transform = '';
             
             // Hide menu after animation completes
             setTimeout(() => {

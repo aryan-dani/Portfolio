@@ -366,36 +366,29 @@
   width: 100vw;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-100%);
-  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   z-index: 100;
 }
 .nav.open {
   visibility: visible;
   opacity: 0.98;
-  transform: translateY(0);
-  animation: slideDownAndBounce 0.7s ease-out forwards;
-  position: fixed;
-  top: 0;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
 }
 .nav .menu-nav {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   width: 100%;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  height: -moz-fit-content;
-  height: fit-content;
-  overflow: hidden;
   background: linear-gradient(135deg, rgba(31, 31, 31, 0.97), rgba(39, 39, 39, 0.97));
   list-style: none;
   padding: 1rem 0.5rem;
   border-bottom: 1px solid rgba(240, 248, 255, 0.2);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  transform: translateY(0);
-  margin-top: 0;
-  transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  position: relative;
 }
 .nav .menu-nav::before {
   content: "";
@@ -486,6 +479,13 @@
   background: linear-gradient(to right, rgba(240, 248, 255, 0.3) 0%, aliceblue 50%, rgba(240, 248, 255, 0.3) 100%);
 }
 
+/* Add the menu-open class to prevent body scrolling when menu is open */
+body.menu-open {
+  overflow: hidden;
+  height: 100%;
+  padding-right: 15px; /* Prevent content shifting when scrollbar disappears */
+}
+
 @keyframes slideDownAndBounce {
   0% {
     transform: translateY(-100%);
@@ -540,14 +540,18 @@
 }
 .jobs-layout {
   padding: 1rem;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
-  background-size: cover;
+  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center center;
+  background-size: cover !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  position: relative;
+  position: absolute;
   min-height: 100vh;
   width: 100%;
-  overflow: auto;
+  height: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .jobs-layout::before {
   display: none;
