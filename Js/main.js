@@ -740,7 +740,7 @@ function initJobsPageAnimations() {
         }, 300);
     }
     
-    // Animate job cards with 3D perspective
+    // Animate job cards with enhanced 3D perspective
     const jobCards = document.querySelectorAll('.Jobs');
     if (jobCards.length > 0) {
         jobCards.forEach((card, index) => {
@@ -754,13 +754,61 @@ function initJobsPageAnimations() {
                 card.style.transform = 'perspective(1000px) rotateX(0) translateY(0)';
             }, 300 + index * 150);
             
-            // Add 3D hover effect
+            // Add enhanced 3D hover effect
             add3DHoverEffect(card);
+            
+            // Animate list items with staggered delay
+            const listItems = card.querySelectorAll('.content ul li');
+            listItems.forEach((item, itemIndex) => {
+                item.style.animation = 'none';
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                item.style.transition = `all 0.5s ease ${0.6 + index * 0.15 + itemIndex * 0.1}s`;
+                
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 600 + index * 150 + itemIndex * 100);
+            });
         });
     }
     
-    // Initialize parallax effect
+    // Initialize parallax effect for background
     initParallaxEffect();
+}
+
+// Enhanced 3D hover effect for job cards
+function add3DHoverEffect(element) {
+    element.addEventListener('mousemove', (e) => {
+        const { left, top, width, height } = element.getBoundingClientRect();
+        const x = e.clientX - left;
+        const y = e.clientY - top;
+        
+        const xPercent = (x / width - 0.5) * 2; // -1 to 1
+        const yPercent = (y / height - 0.5) * 2; // -1 to 1
+        
+        // Limit rotation to a subtle effect
+        const rotateX = yPercent * -5; // Invert Y axis rotation
+        const rotateY = xPercent * 5;
+        
+        element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px) scale(1.02)`;
+    });
+    
+    element.addEventListener('mouseleave', () => {
+        element.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+        element.style.transition = 'all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
+    });
+}
+
+// Simple parallax effect for background image
+function initParallaxEffect() {
+    const jobsLayout = document.querySelector('.jobs-layout');
+    if (!jobsLayout) return;
+    
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        jobsLayout.style.backgroundPositionY = `${scrollY * 0.4}px`;
+    });
 }
 
 // Projects page animations
