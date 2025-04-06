@@ -77,6 +77,9 @@
       <!-- Toasts will be added dynamically here -->
     </div>
     
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
     <header>
       <div class="menu-btn">
         <span class="menu-btn__burger"></span>
@@ -274,37 +277,115 @@
       src="https://kit.fontawesome.com/1267cf2b7d.js"
       crossorigin="anonymous"
       defer></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
       
-    <!-- Intersection Observer for animations -->
+    <!-- Initialize Particles.js -->
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        // Update scroll progress indicator
-        const updateScrollProgress = () => {
-          const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const scrollTop = window.scrollY;
-          const progress = (scrollTop / scrollHeight) * 100;
-          document.querySelector('.scroll-progress').style.width = `${progress}%`;
-        };
-        
-        window.addEventListener('scroll', updateScrollProgress);
-        
-        // Lazy load animations with Intersection Observer
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              // Unobserve after animation to save resources
-              observer.unobserve(entry.target);
-            }
+      document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('particles-js')) {
+          particlesJS('particles-js', {
+            "particles": {
+              "number": {
+                "value": 80,
+                "density": {
+                  "enable": true,
+                  "value_area": 800
+                }
+              },
+              "color": {
+                "value": "#f0f8ff"
+              },
+              "shape": {
+                "type": "circle",
+                "stroke": {
+                  "width": 0,
+                  "color": "#000000"
+                }
+              },
+              "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                  "enable": false,
+                  "speed": 1,
+                  "opacity_min": 0.1,
+                  "sync": false
+                }
+              },
+              "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                  "enable": false,
+                  "speed": 40,
+                  "size_min": 0.1,
+                  "sync": false
+                }
+              },
+              "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#f0f8ff",
+                "opacity": 0.4,
+                "width": 1
+              },
+              "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                  "enable": false,
+                  "rotateX": 600,
+                  "rotateY": 1200
+                }
+              }
+            },
+            "interactivity": {
+              "detect_on": "canvas",
+              "events": {
+                "onhover": {
+                  "enable": true,
+                  "mode": "grab"
+                },
+                "onclick": {
+                  "enable": true,
+                  "mode": "push"
+                },
+                "resize": true
+              },
+              "modes": {
+                "grab": {
+                  "distance": 140,
+                  "line_linked": {
+                    "opacity": 1
+                  }
+                },
+                "bubble": {
+                  "distance": 400,
+                  "size": 40,
+                  "duration": 2,
+                  "opacity": 8,
+                  "speed": 3
+                },
+                "repulse": {
+                  "distance": 200,
+                  "duration": 0.4
+                },
+                "push": {
+                  "particles_nb": 4
+                },
+                "remove": {
+                  "particles_nb": 2
+                }
+              }
+            },
+            "retina_detect": true
           });
-        }, {
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px'
-        });
-
-        document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-          observer.observe(el);
-        });
+        }
       });
     </script>
   </body>

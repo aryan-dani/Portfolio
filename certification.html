@@ -4,6 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Certificates</title>
+    <meta name="description" content="View Aryan Dani's professional certifications and credentials in web development, data science, and AI engineering." />
+    
+    <!-- Resource hints for faster loading -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//kit.fontawesome.com" />
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+    <link rel="preconnect" href="//fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="//kit.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="//cdn.jsdelivr.net" crossorigin />
+    
+    <!-- Prefetch navigation for likely user paths -->
+    <link rel="prefetch" href="index.html" />
+    <link rel="prefetch" href="skills.html" />
+    
+    <!-- Priority stylesheet loading with preload -->
+    <link rel="preload" href="SCSS/main.css" as="style">
+    
+    <!-- Main CSS -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
@@ -18,13 +36,65 @@
         z-index: 9999 !important;
         pointer-events: none !important;
       }
+      
+      /* Progress indicator */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background-color: rgba(240, 248, 255, 0.8);
+        z-index: 9999;
+        width: 0%;
+      }
+      
+      /* Particles background styling */
+      #particles-js {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        background-color: transparent;
+      }
+      
+      /* Animation optimizations for certification cards */
+      .certificate-content {
+        will-change: transform, opacity;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985), 
+                    opacity 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+      }
+      
+      .certificate-content.is-visible {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      
+      /* Optimize lazy loading images */
+      img.lazy-load {
+        filter: blur(5px);
+        transition: filter 0.3s ease;
+      }
+      
+      img.lazy-loaded {
+        filter: blur(0);
+      }
     </style>
   </head>
   <body>
+    <!-- Progress indicator -->
+    <div class="scroll-progress"></div>
+    
     <!-- Toast Notifications Container -->
     <div class="toast-container">
       <!-- Toasts will be added dynamically here -->
     </div>
+    
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
     
     <header>
       <div class="menu-btn">
@@ -202,8 +272,124 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" defer></script>
     <script src="Js/main.js" defer></script>
+    <script src="Js/performance.js" defer></script>
     <script
       src="https://kit.fontawesome.com/1267cf2b7d.js"
       crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous" defer></script>
+      
+    <!-- Initialize Particles.js -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('particles-js')) {
+          particlesJS('particles-js', {
+            "particles": {
+              "number": {
+                "value": 80,
+                "density": {
+                  "enable": true,
+                  "value_area": 800
+                }
+              },
+              "color": {
+                "value": "#f0f8ff"
+              },
+              "shape": {
+                "type": "circle",
+                "stroke": {
+                  "width": 0,
+                  "color": "#000000"
+                }
+              },
+              "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                  "enable": false,
+                  "speed": 1,
+                  "opacity_min": 0.1,
+                  "sync": false
+                }
+              },
+              "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                  "enable": false,
+                  "speed": 40,
+                  "size_min": 0.1,
+                  "sync": false
+                }
+              },
+              "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#f0f8ff",
+                "opacity": 0.4,
+                "width": 1
+              },
+              "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                  "enable": false,
+                  "rotateX": 600,
+                  "rotateY": 1200
+                }
+              }
+            },
+            "interactivity": {
+              "detect_on": "canvas",
+              "events": {
+                "onhover": {
+                  "enable": true,
+                  "mode": "grab"
+                },
+                "onclick": {
+                  "enable": true,
+                  "mode": "push"
+                },
+                "resize": true
+              },
+              "modes": {
+                "grab": {
+                  "distance": 140,
+                  "line_linked": {
+                    "opacity": 1
+                  }
+                },
+                "bubble": {
+                  "distance": 400,
+                  "size": 40,
+                  "duration": 2,
+                  "opacity": 8,
+                  "speed": 3
+                },
+                "repulse": {
+                  "distance": 200,
+                  "duration": 0.4
+                },
+                "push": {
+                  "particles_nb": 4
+                },
+                "remove": {
+                  "particles_nb": 2
+                }
+              }
+            },
+            "retina_detect": true
+          });
+        }
+      });
+    </script>
   </body>
 </html>
