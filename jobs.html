@@ -18,6 +18,9 @@
     <link rel="prefetch" href="index.html" />
     <link rel="prefetch" href="projects.html" />
     
+    <!-- Priority stylesheet loading with preload -->
+    <link rel="preload" href="SCSS/main.css" as="style">
+    
     <!-- Main CSS -->
     <link rel="stylesheet" href="SCSS/main.css" />
     
@@ -46,6 +49,48 @@
       }
       img.lazy-loaded {
         filter: blur(0);
+      }
+      
+      /* Direct toast styling to ensure visibility */
+      .toast-container {
+        position: fixed !important;
+        top: 20px !important;
+        right: 20px !important;
+        max-width: 350px !important;
+        z-index: 9999 !important;
+        pointer-events: none !important;
+      }
+      
+      /* Optimized animations for smoother performance */
+      .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        will-change: opacity, transform;
+      }
+      
+      .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Content-visibility optimization for off-screen content */
+      .jobs-layout {
+        content-visibility: auto;
+        contain-intrinsic-size: 0 500px;
+      }
+      
+      /* Toast animations optimization */
+      .toast {
+        will-change: transform, opacity;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      
+      .toast.show {
+        transform: translateX(0);
+        opacity: 1;
       }
     </style>
   </head>
@@ -96,8 +141,8 @@
             <div class="content">
               <h2 class="text-secondary">2025 Current</h2>
               <h3>
-                <a href="https://artemhealthtech.com/about-us" target="_blank"
-                  >Artem HealthTech Pvt. Ltd.
+                <a href="https://artemhealthtech.com/about-us" target="_blank" rel="noopener">
+                  Artem HealthTech Pvt. Ltd.
                 </a>
               </h3>
               <h4>Intern (AI Engineer)</h4>
@@ -120,8 +165,8 @@
                   experience and optimize overall platform performance.
                 </li>
               </ul>
-              <!-- Added lazy loading for images -->
-              <img src="path/to/image.jpg" alt="Job Image" class="lazy-load" loading="lazy" />
+              <!-- Added lazy loading for images with proper dimensions to prevent CLS
+              <img src="path/to/image.jpg" alt="Job Image" class="lazy-load" loading="lazy" width="500" height="300" /> -->
             </div>
           </div>
         </div>
@@ -130,30 +175,16 @@
     <footer class="footer">
       <a href="copyright.html" class="copyright-link">&copy; 2025 Aryan Dani All Rights Reserved</a>
     </footer>
-    <script src="Js/main.js"></script>
+    
+    <!-- Core scripts with defer for performance -->
+    <script src="Js/main.js" defer></script>
     <script src="Js/performance.js" defer></script>
     <script
       src="https://kit.fontawesome.com/1267cf2b7d.js"
       crossorigin="anonymous" defer></script>
-    <!-- Optimized animations using Intersection Observer -->
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const lazyImages = document.querySelectorAll('img.lazy-load');
-        const observer = new IntersectionObserver((entries, observer) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const img = entry.target;
-              img.src = img.dataset.src;
-              img.classList.add('lazy-loaded');
-              observer.unobserve(img);
-            }
-          });
-        });
-
-        lazyImages.forEach(img => {
-          observer.observe(img);
-        });
-      });
-    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous" defer></script>
   </body>
 </html>
