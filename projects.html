@@ -4,9 +4,55 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projects</title>
+    <meta name="description" content="Portfolio projects by Aryan Dani, showcasing work in web development, AI, and data science." />
+    
+    <!-- Resource hints for faster loading -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//kit.fontawesome.com" />
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+    <link rel="preconnect" href="//fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="//kit.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="//cdn.jsdelivr.net" crossorigin />
+    
+    <!-- Prefetch navigation for likely user paths -->
+    <link rel="prefetch" href="jobs.html" />
+    <link rel="prefetch" href="skills.html" />
+    
+    <!-- Main CSS -->
     <link rel="stylesheet" href="SCSS/main.css" />
+    
+    <style>
+      /* Progress indicator styles */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background-color: rgba(240, 248, 255, 0.8);
+        z-index: 9999;
+        width: 0%;
+      }
+      
+      /* Ensure content visibility */
+      body {
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      
+      /* Optimize image loading with blur-up technique */
+      img.lazy-load {
+        filter: blur(5px);
+        transition: filter 0.3s ease;
+      }
+      img.lazy-loaded {
+        filter: blur(0);
+      }
+    </style>
   </head>
   <body>
+    <!-- Progress indicator -->
+    <div class="scroll-progress"></div>
+    
     <!-- Toast Notifications Container -->
     <div class="toast-container">
       <!-- Toasts will be added dynamically here -->
@@ -43,7 +89,7 @@
     </header>
     <main>
       <section class="project">
-        <div class="project__project-image">
+        <div class="project__project-image animate-on-scroll">
           <h2 class="text-secondary">My Projects</h2>
           <p>
             I know, I know, it’s not the Netflix catalog of projects yet, but
@@ -55,7 +101,7 @@
         </div>
         <!-- New container wrapping all project cards -->
         <div class="project-grid">
-          <div class="Projects">
+          <div class="Projects animate-on-scroll">
             <div class="content">
               <h2 class="text-secondary">2024 - 2025 Ongoing</h2>
               <h3>Real Time Threat Detection System</h3>
@@ -96,7 +142,7 @@
               </p>
             </div>
           </div>
-          <div class="Projects">
+          <div class="Projects animate-on-scroll">
             <div class="content">
               <h2 class="text-secondary">2025 Ongoing</h2>
               <h3>Automated Dicom Slice Analyzer</h3>
@@ -126,7 +172,7 @@
               </p>
             </div>
           </div>
-          <div class="Projects">
+          <div class="Projects animate-on-scroll">
             <div class="content">
               <h2 class="text-secondary">2025 Completed</h2>
               <h3>Capstone Data Science</h3>
@@ -159,7 +205,7 @@
               </p>
             </div>
           </div>
-          <div class="Projects">
+          <div class="Projects animate-on-scroll">
             <div class="content">
               <h2 class="text-secondary">2025 Ongoing</h2>
               <h3>Automated Expense Tracker</h3>
@@ -201,7 +247,10 @@
     <footer class="footer">
       <a href="copyright.html" class="copyright-link">&copy; 2025 Aryan Dani All Rights Reserved</a>
     </footer>
+    
+    <!-- Core scripts -->
     <script src="Js/main.js"></script>
+    <script src="Js/performance.js"></script>
     <script
       src="https://kit.fontawesome.com/1267cf2b7d.js"
       crossorigin="anonymous"></script>

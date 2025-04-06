@@ -3,10 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Jobs</title>
+    <title>Professional Experience</title>
+    <meta name="description" content="Aryan Dani's professional experience, showcasing jobs and work history in software development and AI." />
+    
+    <!-- Resource hints for faster loading -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//kit.fontawesome.com" />
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+    <link rel="preconnect" href="//fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="//kit.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="//cdn.jsdelivr.net" crossorigin />
+    
+    <!-- Prefetch navigation for likely user paths -->
+    <link rel="prefetch" href="index.html" />
+    <link rel="prefetch" href="projects.html" />
+    
+    <!-- Main CSS -->
     <link rel="stylesheet" href="SCSS/main.css" />
+    
+    <style>
+      /* Progress indicator styles */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background-color: rgba(240, 248, 255, 0.8);
+        z-index: 9999;
+        width: 0%;
+      }
+      
+      /* Ensure content visibility */
+      body {
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      
+      /* Optimize image loading with blur-up technique */
+      img.lazy-load {
+        filter: blur(5px);
+        transition: filter 0.3s ease;
+      }
+      img.lazy-loaded {
+        filter: blur(0);
+      }
+    </style>
   </head>
   <body>
+    <!-- Progress indicator -->
+    <div class="scroll-progress"></div>
+    
     <!-- Toast Notifications Container -->
     <div class="toast-container">
       <!-- Toasts will be added dynamically here -->
@@ -42,37 +88,39 @@
     </header>
     <main>
       <section class="jobs-layout">
-        <div class="heading">
+        <div class="heading animate-on-scroll">
           <h2 class="text-secondary">Jobs 💼</h2>
         </div>
-        <div class="Jobs">
-          <div class="content">
-            <h2 class="text-secondary">2025 Current</h2>
-            <h3>
-              <a href="https://artemhealthtech.com/about-us" target="_blank"
-                >Artem HealthTech Pvt. Ltd.
-              </a>
-            </h3>
-            <h4>Intern (AI Engineer)</h4>
-            <br />
-            <h6>Model Development</h6>
-            <h6>Convolutional Neural Networks</h6>
-            <h6>Angular.js</h6>
-            <h6>HMIS Framework</h6>
-            <ul>
-              <li>
-                Developing and deploying an automated system using Convolutional Neural networks and Vision Language Models Models to
-                accurately classify and analyze anomalies in DICOM slices
-              </li>
-              <li>
-                Built an Angular-based frontend for a speech-to-text recognition web
-                application utilizing web sockets and enhancing user engagement.
-              </li>
-              <li>
-                Collaborating with cross-functional teams to reduce inference time of various large language models and enhance user
-                experience and optimize overall platform performance.
-              </li>
-            </ul>
+        <div class="jobs-container">
+          <div class="Jobs animate-on-scroll">
+            <div class="content">
+              <h2 class="text-secondary">2025 Current</h2>
+              <h3>
+                <a href="https://artemhealthtech.com/about-us" target="_blank"
+                  >Artem HealthTech Pvt. Ltd.
+                </a>
+              </h3>
+              <h4>Intern (AI Engineer)</h4>
+              <br />
+              <h6>Model Development</h6>
+              <h6>Convolutional Neural Networks</h6>
+              <h6>Angular.js</h6>
+              <h6>HMIS Framework</h6>
+              <ul>
+                <li>
+                  Developing and deploying an automated system using Convolutional Neural networks and Vision Language Models Models to
+                  accurately classify and analyze anomalies in DICOM slices
+                </li>
+                <li>
+                  Built an Angular-based frontend for a speech-to-text recognition web
+                  application utilizing web sockets and enhancing user engagement.
+                </li>
+                <li>
+                  Collaborating with cross-functional teams to reduce inference time of various large language models and enhance user
+                  experience and optimize overall platform performance.
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -81,6 +129,7 @@
       <a href="copyright.html" class="copyright-link">&copy; 2025 Aryan Dani All Rights Reserved</a>
     </footer>
     <script src="Js/main.js"></script>
+    <script src="Js/performance.js"></script>
     <script
       src="https://kit.fontawesome.com/1267cf2b7d.js"
       crossorigin="anonymous"></script>

@@ -3,60 +3,84 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Offline - Aryan's Portfolio</title>
+    <title>Offline - Aryan Dani's Portfolio</title>
     <style>
+      :root {
+        --primary-color: #272727;
+        --secondary-color: #ff652f;
+        --text-color: #fff;
+      }
+      
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
       body {
+        background-color: var(--primary-color);
+        color: var(--text-color);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #272727;
-        color: aliceblue;
+        line-height: 1.5;
+        height: 100vh;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
-        height: 100vh;
-        margin: 0;
-        padding: 0 20px;
+        align-items: center;
         text-align: center;
       }
+      
       .offline-container {
         max-width: 600px;
-        background: rgba(39, 39, 39, 0.8);
         padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        animation: fadeIn 1s ease;
       }
+      
       h1 {
+        font-size: 3rem;
         margin-bottom: 1rem;
-        font-size: 2rem;
+        position: relative;
+        display: inline-block;
       }
+      
+      h1 span {
+        color: var(--secondary-color);
+      }
+      
       p {
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
       }
-      .icon {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-        animation: pulse 2s infinite ease-in-out;
-      }
-      .retry-button {
-        background-color: #3a3a3a;
-        color: aliceblue;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 5px;
-        cursor: pointer;
+      
+      .btn {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        background: var(--secondary-color);
+        color: var(--primary-color);
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
         transition: all 0.3s ease;
-        margin-top: 1rem;
+        border: 2px solid transparent;
       }
-      .retry-button:hover {
-        background-color: #4a4a4a;
+      
+      .btn:hover {
+        background: transparent;
+        color: var(--secondary-color);
+        border-color: var(--secondary-color);
         transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
       }
+      
+      .offline-icon {
+        font-size: 5rem;
+        margin-bottom: 2rem;
+        color: var(--secondary-color);
+        animation: pulse 2s infinite;
+      }
+      
       @keyframes pulse {
-        0%, 100% {
+        0% {
           transform: scale(1);
           opacity: 1;
         }
@@ -64,34 +88,109 @@
           transform: scale(1.1);
           opacity: 0.8;
         }
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
+        100% {
+          transform: scale(1);
           opacity: 1;
-          transform: translateY(0);
         }
+      }
+      
+      .cached-pages {
+        margin-top: 2rem;
+        font-size: 0.9rem;
+      }
+      
+      .cached-pages h3 {
+        margin-bottom: 0.5rem;
+        color: var(--secondary-color);
+      }
+      
+      .cached-pages ul {
+        list-style: none;
+      }
+      
+      .cached-pages li {
+        display: inline-block;
+        margin: 0.25rem;
+      }
+      
+      .cached-pages a {
+        color: var(--text-color);
+        text-decoration: none;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .cached-pages a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
       }
     </style>
   </head>
   <body>
     <div class="offline-container">
-      <div class="icon">📶</div>
-      <h1>You're Offline</h1>
-      <p>It looks like you're not connected to the internet right now. Some content may not be available until you reconnect.</p>
-      <p>You can still access previously visited pages from this site while offline.</p>
-      <button class="retry-button" onclick="window.location.reload()">
-        Try Again
-      </button>
+      <div class="offline-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="1" y1="1" x2="23" y2="23"></line>
+          <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+          <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+          <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+          <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+          <line x1="12" y1="20" x2="12.01" y2="20"></line>
+        </svg>
+      </div>
+      <h1>You're <span>Offline</span></h1>
+      <p>
+        It looks like you've lost your internet connection. Don't worry though - you can still access some of my portfolio pages that you've visited before.
+      </p>
+      <a href="/" class="btn">Try Again</a>
+      
+      <div class="cached-pages">
+        <h3>Cached Pages</h3>
+        <ul id="cached-pages-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Me</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="skills.html">Skills</a></li>
+        </ul>
+      </div>
     </div>
+    
     <script>
-      // Check if we're back online
-      window.addEventListener('online', () => {
-        window.location.reload();
-      });
+      // Check which pages are actually available in the cache
+      if ('caches' in window) {
+        caches.open('portfolio-cache-v1').then(cache => {
+          const cachedPagesList = document.getElementById('cached-pages-list');
+          const possiblePages = [
+            { url: 'index.html', name: 'Home' },
+            { url: 'about.html', name: 'About Me' },
+            { url: 'projects.html', name: 'Projects' },
+            { url: 'skills.html', name: 'Skills' },
+            { url: 'jobs.html', name: 'Jobs' },
+            { url: 'certification.html', name: 'Certifications' }
+          ];
+          
+          // Clear the default list
+          cachedPagesList.innerHTML = '';
+          
+          // Check each page and add it to the list if it's cached
+          Promise.all(possiblePages.map(page => {
+            return cache.match(page.url)
+              .then(response => {
+                if (response) {
+                  const li = document.createElement('li');
+                  const a = document.createElement('a');
+                  a.href = page.url;
+                  a.textContent = page.name;
+                  li.appendChild(a);
+                  cachedPagesList.appendChild(li);
+                }
+              });
+          }));
+        });
+      }
     </script>
   </body>
 </html>
