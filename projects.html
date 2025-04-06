@@ -24,8 +24,39 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="SCSS/main.css" />
     
-    <!-- Minimal necessary inline styles that don't override SCSS -->
+    <!-- Critical styles to ensure images are always visible -->
     <style>
+      /* Ensure project images are always visible */
+      .project .Projects .project-image {
+        height: 200px !important;
+        position: relative !important;
+        overflow: hidden !important;
+        z-index: 1 !important;
+        background-color: #272727 !important;
+      }
+      
+      .project .Projects .project-image img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: relative !important;
+        z-index: 0 !important;
+        display: block !important;
+      }
+      
+      /* Force images to remain visible after animation */
+      .project .Projects:hover .project-image img {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+      }
+      
+      /* Fix animation issues causing disappearing elements */
+      .project .Projects {
+        transform-style: preserve-3d !important;
+        backface-visibility: visible !important;
+      }
+      
       /* Progress indicator styles */
       .scroll-progress {
         position: fixed;
@@ -106,6 +137,9 @@
         <!-- New container wrapping all project cards -->
         <div class="project-grid">
           <div class="Projects animate-on-scroll">
+            <div class="project-image">
+              <img src="Images/API-Screenshot.jpg" alt="Real Time Threat Detection System" loading="lazy">
+            </div>
             <div class="content">
               <h2 class="text-secondary">2024 - 2025 Ongoing</h2>
               <h3>Real Time Threat Detection System</h3>
@@ -147,6 +181,9 @@
             </div>
           </div>
           <div class="Projects animate-on-scroll">
+            <div class="project-image">
+              <img src="Images/Header.jpg" alt="Automated Dicom Slice Analyzer" loading="lazy">
+            </div>
             <div class="content">
               <h2 class="text-secondary">2025 Ongoing</h2>
               <h3>Automated Dicom Slice Analyzer</h3>
@@ -177,6 +214,52 @@
             </div>
           </div>
           <div class="Projects animate-on-scroll">
+            <div class="project-image">
+              <img src="Images/API-Screenshot.jpg" alt="API Demonstration Application" loading="lazy">
+            </div>
+            <div class="content">
+              <h2 class="text-secondary">2025 Completed</h2>
+              <h3>API Demonstration Application</h3>
+              <div class="project-links">
+                <a
+                  href="https://aryan-dani.github.io/Threat_Detection_System/"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener">
+                  <i class="fas fa-eye"></i>
+                  Preview
+                </a>
+                <a
+                  href="https://github.com/aryan-dani/Threat_Detection_System"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener">
+                  <i class="fa-brands fa-github"></i>
+                  Github
+                </a>
+              </div>
+              <h6>Axios</h6>
+              <h6>Javascript</h6>
+              <h6>API Development</h6>
+              <h6>Github Copilot</h6>
+              <p>
+                The Major Project I'm developing in my College focuses on
+                real-time threat detection using YOLO v11 and EfficientNetV2.
+                This deep learning project aims to identify potential security
+                risks through video analysis and identify threats in X-ray
+                scans, with a specific focus on detecting weapons. Currently in
+                development, this system will integrate with existing security
+                infrastructure to provide automated alerts and monitoring
+                capabilities (it's a long shot i know). To provide a
+                comprehensive solution to the problem we have also designed an
+                adaptive frontend that integrates these two models together.
+              </p>
+            </div>
+          </div>
+          <div class="Projects animate-on-scroll">
+            <div class="project-image">
+              <img src="Images/Home Page .jpg" alt="Capstone Data Science" loading="lazy">
+            </div>
             <div class="content">
               <h2 class="text-secondary">2025 Completed</h2>
               <h3>Capstone Data Science</h3>
@@ -210,6 +293,9 @@
             </div>
           </div>
           <div class="Projects animate-on-scroll">
+            <div class="project-image">
+              <img src="Images/Header_Phone.jpg" alt="Automated Expense Tracker" loading="lazy">
+            </div>
             <div class="content">
               <h2 class="text-secondary">2025 Ongoing</h2>
               <h3>Automated Expense Tracker</h3>
