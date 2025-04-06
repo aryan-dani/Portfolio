@@ -595,14 +595,14 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
       
-    <!-- Initialize Particles.js -->
+    <!-- Initialize Particles.js with optimized settings -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         if (document.getElementById('particles-js')) {
           particlesJS('particles-js', {
             "particles": {
               "number": {
-                "value": 80,
+                "value": 40, // Reduced from 80
                 "density": {
                   "enable": true,
                   "value_area": 800
@@ -642,12 +642,12 @@
                 "enable": true,
                 "distance": 150,
                 "color": "#f0f8ff",
-                "opacity": 0.4,
+                "opacity": 0.3, // Reduced from 0.4
                 "width": 1
               },
               "move": {
                 "enable": true,
-                "speed": 2,
+                "speed": 1.5, // Reduced from 2
                 "direction": "none",
                 "random": false,
                 "straight": false,
@@ -677,7 +677,7 @@
                 "grab": {
                   "distance": 140,
                   "line_linked": {
-                    "opacity": 1
+                    "opacity": 0.8
                   }
                 },
                 "bubble": {
@@ -692,14 +692,14 @@
                   "duration": 0.4
                 },
                 "push": {
-                  "particles_nb": 4
+                  "particles_nb": 3 // Reduced from 4
                 },
                 "remove": {
                   "particles_nb": 2
                 }
               }
             },
-            "retina_detect": true
+            "retina_detect": false // Changed to false to improve performance
           });
         }
       });

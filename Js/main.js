@@ -1403,18 +1403,22 @@ function initProgressBars() {
 function animateSkillCards(container) {
     const cards = container.querySelectorAll('.skills__card');
     if (cards.length > 0) {
-        cards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'perspective(1000px) rotateY(5deg) translateZ(-20px)';
-            card.style.transition = `all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.1 + index * 0.1}s`;
-            
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'perspective(1000px) rotateY(0) translateZ(0)';
+        // Use requestAnimationFrame to batch animations and avoid layout thrashing
+        requestAnimationFrame(() => {
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'perspective(1000px) rotateY(5deg) translateZ(-20px)';
+                card.style.transition = `all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.05 + index * 0.05}s`;
                 
-                // Add expand card functionality instead of flip
-                addExpandCardEffect(card);
-            }, 200 + index * 100);
+                // Use setTimeout to stagger animations efficiently
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'perspective(1000px) rotateY(0) translateZ(0)';
+                    
+                    // Add expand card functionality instead of flip
+                    addExpandCardEffect(card);
+                }, 150 + index * 50); // Reduced timing for better performance
+            });
         });
     }
 }

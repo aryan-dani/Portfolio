@@ -2382,6 +2382,7 @@ footer {
   border-radius: 8px;
   color: #272727;
   animation: neonPulse 3s infinite;
+  will-change: box-shadow;
 }
 .skills__heading .text-secondary {
   color: #272727;
@@ -2392,6 +2393,7 @@ footer {
   background-image: linear-gradient(45deg, aliceblue, white, aliceblue);
   background-size: 200% auto;
   animation: gradient-text 4s ease infinite;
+  will-change: background-position;
 }
 .skills__heading::before {
   content: "";
@@ -2400,13 +2402,14 @@ footer {
   left: -5px;
   right: -5px;
   bottom: -5px;
-  background: linear-gradient(45deg, aliceblue, transparent, aliceblue, transparent, aliceblue);
-  background-size: 400% 400%;
+  background: linear-gradient(45deg, aliceblue, transparent 40%, aliceblue 60%, transparent 80%, aliceblue);
+  background-size: 300% 300%;
   z-index: -1;
   filter: blur(8px);
   opacity: 0.7;
-  animation: shimmer 10s linear infinite;
+  animation: shimmer 8s linear infinite;
   border-radius: 12px;
+  will-change: background-position;
 }
 .skills__categories {
   width: 100%;

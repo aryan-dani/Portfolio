@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add image optimization
   optimizeImages();
   
+  // Advanced image rendering optimization
+  optimizeImageRendering();
+  
   // Optimize memory usage
   optimizeMemoryUsage();
   
@@ -61,6 +64,252 @@ document.addEventListener('DOMContentLoaded', function() {
     initPerformanceDebugging();
   }
 });
+
+/**
+ * Enhanced animation utility
+ * Uses the Web Animation API for better performance over CSS animations
+ */
+function createAnimationHelper() {
+  // Helper to check if requestAnimationFrame and Web Animation API are supported
+  const isModernBrowser = 'animate' in Element.prototype;
+  
+  // Store animation instances for proper cleanup
+  const animationRegistry = new Map();
+  
+  // Animation presets with performance-optimized properties
+  const presets = {
+    fadeIn: {
+      keyframes: [
+        { opacity: 0, transform: 'translateY(20px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ],
+      options: { duration: 600, easing: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)', fill: 'forwards' }
+    },
+    fadeInLeft: {
+      keyframes: [
+        { opacity: 0, transform: 'translateX(-30px)' },
+        { opacity: 1, transform: 'translateX(0)' }
+      ],
+      options: { duration: 600, easing: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)', fill: 'forwards' }
+    },
+    fadeInRight: {
+      keyframes: [
+        { opacity: 0, transform: 'translateX(30px)' },
+        { opacity: 1, transform: 'translateX(0)' }
+      ],
+      options: { duration: 600, easing: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)', fill: 'forwards' }
+    },
+    pulse: {
+      keyframes: [
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.05)' },
+        { transform: 'scale(1)' }
+      ],
+      options: { duration: 1500, iterations: Infinity }
+    },
+    float: {
+      keyframes: [
+        { transform: 'translateY(0)' },
+        { transform: 'translateY(-10px)' },
+        { transform: 'translateY(0)' }
+      ],
+      options: { duration: 3000, iterations: Infinity, easing: 'ease-in-out' }
+    },
+    pop: {
+      keyframes: [
+        { transform: 'scale(0.8)', opacity: 0 },
+        { transform: 'scale(1.1)', opacity: 1 },
+        { transform: 'scale(0.95)' },
+        { transform: 'scale(1)' }
+      ],
+      options: { duration: 600, easing: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)', fill: 'forwards' }
+    },
+    shimmer: {
+      keyframes: [
+        { backgroundPosition: '-200% 0' },
+        { backgroundPosition: '200% 0' }
+      ],
+      options: { duration: 3000, iterations: Infinity, easing: 'linear' }
+    }
+  };
+  
+  /**
+   * Animates an element using the Web Animation API with fallback
+   * @param {Element} element - The DOM element to animate
+   * @param {string|Object} animation - The animation name or custom keyframes
+   * @param {Object} options - Optional animation options to override defaults
+   * @returns {Animation|null} - The Animation object or null if not supported
+   */
+  function animate(element, animation, options = {}) {
+    if (!element) return null;
+    
+    // Remove any existing animation on this element
+    clearAnimation(element);
+    
+    // If browser doesn't support modern animations, use classes
+    if (!isModernBrowser) {
+      if (typeof animation === 'string') {
+        element.classList.add('animated', animation);
+        return null;
+      }
+      return null;
+    }
+    
+    // Get animation details
+    let keyframes, animationOptions;
+    
+    if (typeof animation === 'string') {
+      // Use a preset animation
+      if (presets[animation]) {
+        keyframes = presets[animation].keyframes;
+        animationOptions = { ...presets[animation].options, ...options };
+      } else {
+        console.warn(`Animation preset "${animation}" not found`);
+        return null;
+      }
+    } else if (typeof animation === 'object') {
+      // Use custom keyframes
+      keyframes = animation;
+      animationOptions = options;
+    } else {
+      console.warn('Invalid animation parameter');
+      return null;
+    }
+    
+    // Create and start the animation
+    const animationInstance = element.animate(keyframes, animationOptions);
+    
+    // Store animation in registry for later cleanup
+    animationRegistry.set(element, animationInstance);
+    
+    // Return animation instance for further control
+    return animationInstance;
+  }
+  
+  /**
+   * Clears any active animation on an element
+   * @param {Element} element - The DOM element to clear animations from
+   */
+  function clearAnimation(element) {
+    if (!element) return;
+    
+    // Clear Web Animation API animations
+    if (animationRegistry.has(element)) {
+      const animation = animationRegistry.get(element);
+      animation.cancel();
+      animationRegistry.delete(element);
+    }
+    
+    // Also clear CSS animations for compatibility
+    element.classList.remove('animated');
+    Object.keys(presets).forEach(preset => {
+      element.classList.remove(preset);
+    });
+  }
+  
+  /**
+   * Stagger animations across multiple elements
+   * @param {NodeList|Array} elements - The elements to animate
+   * @param {string|Object} animation - The animation to apply
+   * @param {Object} options - Animation options
+   * @param {number} delay - Delay between each element's animation in ms
+   */
+  function stagger(elements, animation, options = {}, delay = 100) {
+    if (!elements || !elements.length) return;
+    
+    elements.forEach((element, index) => {
+      const staggeredOptions = { ...options, delay: options.delay || 0 + (index * delay) };
+      setTimeout(() => {
+        animate(element, animation, staggeredOptions);
+      }, index * delay);
+    });
+  }
+  
+  /**
+   * Creates scroll-triggered animations using Intersection Observer
+   * @param {string} selector - CSS selector to find elements
+   * @param {string|Object} animation - Animation to apply
+   * @param {Object} options - Animation options
+   * @param {Object} observerOptions - IntersectionObserver options
+   */
+  function animateOnScroll(selector, animation, options = {}, observerOptions = {}) {
+    const elements = document.querySelectorAll(selector);
+    if (!elements.length) return;
+    
+    const defaultObserverOptions = {
+      root: null,
+      rootMargin: '0px 0px -50px 0px',
+      threshold: 0.1
+    };
+    
+    const mergedObserverOptions = { ...defaultObserverOptions, ...observerOptions };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animate(entry.target, animation, options);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, mergedObserverOptions);
+    
+    elements.forEach(element => {
+      // Set initial state for smooth animation
+      if (typeof animation === 'string' && presets[animation]) {
+        const initialState = presets[animation].keyframes[0];
+        for (const prop in initialState) {
+          element.style[prop] = initialState[prop];
+        }
+      }
+      
+      observer.observe(element);
+    });
+  }
+  
+  /**
+   * Add animation based on user interaction with reduced event listeners
+   * @param {string} selector - CSS selector for elements
+   * @param {string} eventType - Event type like 'click', 'mouseenter', etc.
+   * @param {string|Object} animation - Animation to apply
+   * @param {Object} options - Animation options
+   */
+  function addInteractiveAnimation(selector, eventType, animation, options = {}) {
+    const container = document.querySelector('body');
+    
+    // Use event delegation to reduce listeners
+    container.addEventListener(eventType, (e) => {
+      const target = e.target.closest(selector);
+      if (target) {
+        animate(target, animation, options);
+      }
+    });
+  }
+  
+  // Clean up resources - call this when navigating away
+  function cleanup() {
+    animationRegistry.forEach((animation, element) => {
+      animation.cancel();
+    });
+    animationRegistry.clear();
+  }
+  
+  // Add window unload handler to clean up
+  window.addEventListener('unload', cleanup);
+  
+  // Return the public API
+  return {
+    animate,
+    clearAnimation,
+    stagger,
+    animateOnScroll,
+    addInteractiveAnimation,
+    presets,
+    cleanup
+  };
+}
+
+// Initialize the animation helper
+const Animate = createAnimationHelper();
 
 /**
  * Create and update scroll progress indicator
@@ -171,35 +420,65 @@ function initLazyLoading() {
 }
 
 /**
- * Register service worker for offline capabilities
+ * Initialize service worker registration for offline capabilities
  */
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
+    window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js')
-        .then(function(registration) {
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        .then(registration => {
+          console.log('Service Worker registered successfully with scope:', registration.scope);
           
           // Check for service worker updates
           registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing;
             
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New service worker available, show update notification
-                showToast('Portfolio updated! Refresh for latest version.', 'info', 10000);
+            // Show a toast notification when a new service worker is found
+            showToast(
+              'App Update Available', 
+              'Refresh to get the latest version',
+              'fa-solid fa-arrow-rotate-right'
+            );
+            
+            // Create update button in the toast
+            const toasts = document.querySelectorAll('.toast-container .toast');
+            if (toasts.length > 0) {
+              const latestToast = toasts[toasts.length - 1];
+              
+              // Add update button
+              const updateButton = document.createElement('button');
+              updateButton.textContent = 'Update Now';
+              updateButton.style.marginTop = '10px';
+              updateButton.style.padding = '5px 10px';
+              updateButton.style.background = 'rgba(240, 248, 255, 0.2)';
+              updateButton.style.border = 'none';
+              updateButton.style.borderRadius = '4px';
+              updateButton.style.color = '#fff';
+              updateButton.style.cursor = 'pointer';
+              
+              updateButton.addEventListener('click', () => {
+                // Tell the service worker to skipWaiting
+                newWorker.postMessage({ action: 'skipWaiting' });
+                
+                // Reload the page to activate the new service worker
+                window.location.reload();
+              });
+              
+              // Find content container and append button
+              const contentContainer = latestToast.querySelector('div:nth-child(2)');
+              if (contentContainer) {
+                contentContainer.appendChild(updateButton);
               }
-            });
+            }
           });
         })
-        .catch(function(error) {
-          console.log('ServiceWorker registration failed: ', error);
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
         });
-        
-      // Handle service worker updates
+      
+      // Handle service worker controlling the page (activated)
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        // New service worker has taken control
-        showToast('New content available! Please refresh the page.', 'info', 10000);
+        console.log('New service worker activated');
       });
     });
   }
@@ -637,6 +916,84 @@ function checkImageFormats() {
         img.src = `${basePath}.webp`;
       }
     });
+  }
+}
+
+/**
+ * Advanced image optimization for modern browsers
+ */
+function optimizeImageRendering() {
+  // Add support for native lazy loading with fallback
+  const images = document.querySelectorAll('img:not([loading])');
+  images.forEach(img => {
+    // Add native lazy loading
+    img.loading = 'lazy';
+    
+    // Add decoding attribute for better performance
+    img.decoding = 'async';
+    
+    // Add fetchpriority for above-the-fold images
+    const rect = img.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      img.fetchPriority = 'high';
+    } else {
+      img.fetchPriority = 'low';
+    }
+    
+    // Add srcset for responsive images if not already specified
+    if (!img.srcset && img.src && !img.src.includes('data:image')) {
+      const src = img.src;
+      const fileExt = src.split('.').pop();
+      
+      // Only add srcset for images that might benefit from responsive sizing
+      if (img.width > 400 && ['jpg', 'jpeg', 'png', 'webp'].includes(fileExt)) {
+        const basePath = src.substring(0, src.lastIndexOf('.'));
+        
+        // Create srcset with different sizes
+        img.srcset = `${basePath}-small.${fileExt} 400w, ${src} 800w, ${basePath}-large.${fileExt} 1200w`;
+        img.sizes = '(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px';
+      }
+    }
+  });
+  
+  // Add support for intrinsic size to reduce layout shifts
+  document.querySelectorAll('img:not([width]):not([height])').forEach(img => {
+    if (img.naturalWidth && img.naturalHeight) {
+      // Add width and height attributes to maintain aspect ratio
+      const aspectRatio = img.naturalHeight / img.naturalWidth;
+      
+      // Just set the width and let the browser calculate height based on aspect ratio
+      img.setAttribute('width', img.naturalWidth);
+      img.setAttribute('height', img.naturalHeight);
+      
+      // Apply CSS to maintain aspect ratio while allowing responsive scaling
+      img.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+    }
+  });
+  
+  // Save bandwidth for users on slow connections
+  if ('connection' in navigator) {
+    if (navigator.connection.saveData || 
+        navigator.connection.effectiveType === 'slow-2g' || 
+        navigator.connection.effectiveType === '2g') {
+      
+      // Replace high-quality images with lighter versions
+      document.querySelectorAll('img:not(.essential)').forEach(img => {
+        // Skip SVGs and icons
+        if (img.src && !img.src.includes('.svg') && !img.classList.contains('icon')) {
+          // Lower quality version
+          const src = img.src;
+          const basePath = src.substring(0, src.lastIndexOf('.'));
+          const fileExt = src.split('.').pop();
+          
+          // Try to load low-quality version if it exists
+          const testImg = new Image();
+          testImg.onload = () => { img.src = `${basePath}-lowq.${fileExt}`; };
+          testImg.onerror = () => { /* Keep original source if low quality doesn't exist */ };
+          testImg.src = `${basePath}-lowq.${fileExt}`;
+        }
+      });
+    }
   }
 }
 
