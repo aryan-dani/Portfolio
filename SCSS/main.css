@@ -2384,7 +2384,7 @@ footer {
   animation: neonPulse 3s infinite;
 }
 .skills__heading .text-secondary {
-  color: aliceblue;
+  color: #272727;
   position: relative;
   display: inline-block;
   -webkit-background-clip: text;
