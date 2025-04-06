@@ -120,6 +120,8 @@
                   experience and optimize overall platform performance.
                 </li>
               </ul>
+              <!-- Added lazy loading for images -->
+              <img src="path/to/image.jpg" alt="Job Image" class="lazy-load" loading="lazy" />
             </div>
           </div>
         </div>
@@ -129,9 +131,29 @@
       <a href="copyright.html" class="copyright-link">&copy; 2025 Aryan Dani All Rights Reserved</a>
     </footer>
     <script src="Js/main.js"></script>
-    <script src="Js/performance.js"></script>
+    <script src="Js/performance.js" defer></script>
     <script
       src="https://kit.fontawesome.com/1267cf2b7d.js"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous" defer></script>
+    <!-- Optimized animations using Intersection Observer -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const lazyImages = document.querySelectorAll('img.lazy-load');
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              img.src = img.dataset.src;
+              img.classList.add('lazy-loaded');
+              observer.unobserve(img);
+            }
+          });
+        });
+
+        lazyImages.forEach(img => {
+          observer.observe(img);
+        });
+      });
+    </script>
   </body>
 </html>
