@@ -26,11 +26,40 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize content visibility observer
   initContentVisibilityObserver();
   
+  // Optimize font loading
+  optimizeFontLoading();
+  
   // Call preload function after a short delay
   setTimeout(preloadKeyPages, 1000);
   
   // Setup performance monitoring
   setupPerformanceMonitoring();
+  
+  // Optimize script loading
+  optimizeScriptLoading();
+  
+  // Add image optimization
+  optimizeImages();
+  
+  // Optimize memory usage
+  optimizeMemoryUsage();
+  
+  // Implement event delegation for better performance
+  implementEventDelegation();
+  
+  // Setup caching improvements
+  setupCachingImprovements();
+  
+  // Optimize resource loading priorities
+  optimizeResourcePriorities();
+  
+  // Initialize viewport-aware content loading
+  initViewportAwareLoading();
+  
+  // Initialize performance debugging tools in development mode
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    initPerformanceDebugging();
+  }
 });
 
 /**
@@ -292,6 +321,34 @@ function initResourceHints() {
 }
 
 /**
+ * Optimize font loading with font-display
+ */
+function optimizeFontLoading() {
+  // Create a style element to add font-display property to any custom fonts
+  const style = document.createElement('style');
+  style.textContent = `
+    @font-face {
+      font-display: swap !important;
+    }
+    
+    /* Apply font-display to any Google Fonts */
+    [data-google-font], 
+    [data-font] {
+      font-display: swap !important;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Find any font preload links and add onload handler
+  const fontPreloads = document.querySelectorAll('link[rel="preload"][as="font"]');
+  fontPreloads.forEach(link => {
+    if (!link.hasAttribute('onload')) {
+      link.setAttribute('onload', "this.onload=null;this.rel='stylesheet'");
+    }
+  });
+}
+
+/**
  * Show toast notification 
  */
 function showToast(message, type = 'info', duration = 5000) {
@@ -421,4 +478,749 @@ function setupPerformanceMonitoring() {
       console.log('Performance monitoring not supported', e);
     }
   }
+}
+
+/**
+ * Optimize script loading with async and defer attributes
+ */
+function optimizeScriptLoading() {
+  // Find all script tags without async or defer
+  const scripts = document.querySelectorAll('script[src]:not([async]):not([defer])');
+  
+  scripts.forEach(script => {
+    // Create a new optimized script tag
+    const newScript = document.createElement('script');
+    newScript.src = script.src;
+    
+    // Add appropriate loading attribute based on script type
+    if (script.src.includes('fontawesome') || 
+        script.src.includes('analytics') || 
+        script.src.includes('cdn') ||
+        script.src.includes('tag')) {
+      // Non-critical scripts use async
+      newScript.async = true;
+    } else {
+      // Critical scripts use defer to maintain execution order
+      newScript.defer = true;
+    }
+    
+    // Replace original script with optimized version
+    if (script.parentNode) {
+      script.parentNode.replaceChild(newScript, script);
+    }
+  });
+}
+
+/**
+ * Optimize images to improve performance and reduce CLS
+ */
+function optimizeImages() {
+  // Find all images without width/height attributes
+  const images = document.querySelectorAll('img:not([width]):not([height])');
+  
+  images.forEach(img => {
+    // If the image is already loaded, use its natural dimensions
+    if (img.complete) {
+      // Only set dimensions if they're not already specified
+      if (!img.style.width && !img.style.height) {
+        // Keep aspect ratio by setting just height or width
+        img.style.height = 'auto';
+        img.width = img.naturalWidth;
+      }
+    } else {
+      // For images not yet loaded, set a listener to apply dimensions
+      img.addEventListener('load', () => {
+        if (!img.style.width && !img.style.height) {
+          img.style.height = 'auto';
+          img.width = img.naturalWidth;
+        }
+      });
+    }
+  });
+  
+  // Apply aspect ratio container to prevent layout shifts
+  const imageContainers = document.querySelectorAll('.image-container');
+  imageContainers.forEach(container => {
+    const img = container.querySelector('img');
+    if (img) {
+      // If image has dimensions, set aspect ratio container
+      if (img.complete && img.naturalWidth > 0) {
+        const aspectRatio = (img.naturalHeight / img.naturalWidth) * 100;
+        container.style.paddingBottom = `${aspectRatio}%`;
+        container.style.position = 'relative';
+        img.style.position = 'absolute';
+        img.style.top = '0';
+        img.style.left = '0';
+        img.style.width = '100%';
+        img.style.height = '100%';
+      } else {
+        // For images not yet loaded
+        img.addEventListener('load', () => {
+          const aspectRatio = (img.naturalHeight / img.naturalWidth) * 100;
+          container.style.paddingBottom = `${aspectRatio}%`;
+          container.style.position = 'relative';
+          img.style.position = 'absolute';
+          img.style.top = '0';
+          img.style.left = '0';
+          img.style.width = '100%';
+          img.style.height = '100%';
+        });
+      }
+    }
+  });
+  
+  // Check for supported image formats
+  checkImageFormats();
+}
+
+/**
+ * Check for modern image format support and optimize accordingly
+ */
+function checkImageFormats() {
+  // Create a function to check support for specific formats
+  const checkSupport = (format) => {
+    const elem = document.createElement('canvas');
+    if (!elem.getContext || !elem.getContext('2d')) {
+      return false;
+    }
+    
+    switch (format) {
+      case 'webp':
+        return elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+      case 'avif':
+        return elem.toDataURL('image/avif').indexOf('data:image/avif') === 0;
+      default:
+        return false;
+    }
+  };
+  
+  // Check for WebP and AVIF support
+  const supportsWebP = checkSupport('webp');
+  const supportsAVIF = checkSupport('avif');
+  
+  // Add classes to document root indicating support
+  if (supportsWebP) {
+    document.documentElement.classList.add('webp-support');
+  }
+  
+  if (supportsAVIF) {
+    document.documentElement.classList.add('avif-support');
+  }
+  
+  // Replace JPG/PNG images with WebP/AVIF where possible
+  if (supportsWebP || supportsAVIF) {
+    const images = document.querySelectorAll('img[src$=".jpg"], img[src$=".png"], img[src$=".jpeg"]');
+    
+    images.forEach(img => {
+      const currentSrc = img.src;
+      const basePath = currentSrc.substring(0, currentSrc.lastIndexOf('.'));
+      const extension = currentSrc.substring(currentSrc.lastIndexOf('.'));
+      
+      // Set the most optimal format available
+      if (supportsAVIF) {
+        // Try to load AVIF version first
+        const avifVersion = `${basePath}.avif`;
+        
+        // Create a test image to verify AVIF version exists
+        const testImg = new Image();
+        testImg.onload = () => { img.src = avifVersion; };
+        testImg.onerror = () => {
+          // Fallback to WebP if AVIF doesn't exist
+          if (supportsWebP) {
+            img.src = `${basePath}.webp`;
+          }
+        };
+        testImg.src = avifVersion;
+      } 
+      // If only WebP is supported, use it directly
+      else if (supportsWebP) {
+        img.src = `${basePath}.webp`;
+      }
+    });
+  }
+}
+
+/**
+ * Memory management optimizations
+ */
+function optimizeMemoryUsage() {
+  // Periodic cleanup of any references that might cause memory leaks
+  let cleanupInterval;
+  
+  function performCleanup() {
+    // Clean up any animation references that are no longer needed
+    const offScreenElements = document.querySelectorAll('.animated.is-visible');
+    offScreenElements.forEach(element => {
+      // Check if element is far out of viewport
+      const rect = element.getBoundingClientRect();
+      if (rect.bottom < -500 || rect.top > window.innerHeight + 500) {
+        // Remove any dynamic styles that might hold memory
+        element.style.animation = 'none';
+        element.style.transform = 'none';
+        element.style.transition = 'none';
+      }
+    });
+    
+    // Clear any stale toast notifications
+    const oldToasts = document.querySelectorAll('.toast:not(.toast-visible)');
+    oldToasts.forEach(toast => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    });
+  }
+  
+  // Set up periodic cleanup based on user interaction
+  function setupCleanup() {
+    // Clear previous interval if exists
+    if (cleanupInterval) {
+      clearInterval(cleanupInterval);
+    }
+    
+    // Run cleanup every 90 seconds while user is active
+    cleanupInterval = setInterval(performCleanup, 90000);
+  }
+  
+  // Start cleanup cycle
+  setupCleanup();
+  
+  // Reset cleanup timer when user interacts with page
+  ['scroll', 'click', 'keydown', 'mousemove'].forEach(eventType => {
+    window.addEventListener(eventType, debounce(() => {
+      setupCleanup();
+    }, 300), { passive: true });
+  });
+  
+  // Run cleanup when page becomes hidden
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      performCleanup();
+    } else {
+      setupCleanup();
+    }
+  });
+}
+
+/**
+ * Implement event delegation for better performance
+ */
+function implementEventDelegation() {
+  // Get the main content container
+  const mainContent = document.querySelector('main') || document.body;
+  
+  // Delegate common event types
+  mainContent.addEventListener('click', handleDelegatedEvents, false);
+  
+  // Delegate hover effects for touch devices
+  if ('ontouchstart' in window) {
+    mainContent.addEventListener('touchstart', handleDelegatedEvents, { passive: true });
+  }
+}
+
+/**
+ * Handle delegated events to reduce individual event listeners
+ */
+function handleDelegatedEvents(event) {
+  // Handle clicks on various interactive elements
+  const target = event.target;
+  
+  // Skills card click handler
+  if (target.closest('.skills__card')) {
+    const card = target.closest('.skills__card');
+    const skillName = card.querySelector('.skills__name')?.textContent || 'this skill';
+    
+    if (!card.classList.contains('card-clicked')) {
+      card.classList.add('card-clicked');
+      setTimeout(() => {
+        card.classList.remove('card-clicked');
+      }, 500);
+    }
+  }
+  
+  // Project card click handler
+  if (target.closest('.Projects')) {
+    const projectCard = target.closest('.Projects');
+    
+    // Toggle additional information or handle project clicks
+    if (target.closest('.project__btn-view')) {
+      // Handle view project button clicks
+      const projectLink = target.closest('.project__btn-view').getAttribute('href');
+      if (projectLink) {
+        // Track the click analytics if needed
+        console.log(`Project view click: ${projectLink}`);
+      }
+    }
+  }
+  
+  // Menu toggle handling
+  if (target.closest('.menu-toggle')) {
+    const menuToggle = target.closest('.menu-toggle');
+    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+    
+    menuToggle.setAttribute('aria-expanded', !isExpanded);
+    
+    // Find the target menu by aria-controls
+    const menuId = menuToggle.getAttribute('aria-controls');
+    if (menuId) {
+      const menu = document.getElementById(menuId);
+      if (menu) {
+        if (!isExpanded) {
+          menu.classList.add('is-open');
+        } else {
+          menu.classList.remove('is-open');
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Setup caching improvements
+ */
+function setupCachingImprovements() {
+  // Implement caching strategies for frequently accessed resources
+  if ('caches' in window) {
+    // Define different cache categories
+    const staticCache = 'portfolio-static-v1';
+    const imagesCache = 'portfolio-images-v1';
+    const pagesCache = 'portfolio-pages-v1';
+    
+    // Cache static assets that rarely change
+    caches.open(staticCache).then(cache => {
+      cache.addAll([
+        '/Js/main.js',
+        '/Js/performance.js',
+        '/SCSS/main.css'
+      ]).catch(error => {
+        console.error('Static caching failed:', error);
+      });
+    });
+    
+    // Cache images separately since they're larger
+    caches.open(imagesCache).then(cache => {
+      cache.addAll([
+        '/Images/Header.jpg',
+        '/Images/Header_Phone.jpg'
+      ]).catch(error => {
+        console.error('Image caching failed:', error);
+      });
+    });
+    
+    // Improve page navigation with dynamic page caching
+    window.addEventListener('load', () => {
+      // After page loads, prefetch and cache other main pages
+      caches.open(pagesCache).then(cache => {
+        const pagesToCache = [
+          '/index.html',
+          '/jobs.html',
+          '/projects.html',
+          '/skills.html',
+          '/about.html',
+          '/certification.html'
+        ];
+        
+        // Don't cache the current page again
+        const currentPath = window.location.pathname;
+        const filteredPages = pagesToCache.filter(page => 
+          !currentPath.endsWith(page) && 
+          !(currentPath === '/' && page === '/index.html')
+        );
+        
+        // Add all filtered pages to cache
+        cache.addAll(filteredPages).catch(error => {
+          console.error('Page caching failed:', error);
+        });
+      });
+    });
+    
+    // Clean up old caches periodically
+    const cacheAllowlist = [staticCache, imagesCache, pagesCache];
+    
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheAllowlist.indexOf(cacheName) === -1) {
+            // Delete old cache versions
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    });
+  }
+}
+
+/**
+ * Optimize resource loading priorities
+ * This helps the browser understand which resources are more important
+ */
+function optimizeResourcePriorities() {
+  // Function to set fetch priority for resources
+  function setPriority(selector, priority) {
+    document.querySelectorAll(selector).forEach(el => {
+      if ('fetchPriority' in el) {
+        el.fetchPriority = priority;
+      } else {
+        // Fallback for browsers that don't support fetchPriority
+        el.setAttribute('importance', priority);
+      }
+    });
+  }
+  
+  // Set high priority for critical resources
+  setPriority('link[rel="stylesheet"]', 'high');
+  setPriority('.hero-image', 'high');
+  setPriority('script[src*="main.js"]', 'high');
+  
+  // Set low priority for below-the-fold images
+  setPriority('.below-fold img', 'low');
+  
+  // Modify resource loading based on network conditions
+  if ('connection' in navigator) {
+    const conn = navigator.connection;
+    
+    if (conn.saveData) {
+      console.log('Data saver enabled - loading low resolution images');
+      document.documentElement.classList.add('data-saver-mode');
+    }
+    
+    if (conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g') {
+      console.log('Slow connection detected - deferring non-critical resources');
+      document.documentElement.classList.add('slow-connection');
+      
+      // Defer loading of non-critical resources
+      document.querySelectorAll('img:not(.critical)').forEach(img => {
+        img.loading = 'lazy';
+        if (!img.hasAttribute('importance')) {
+          img.setAttribute('importance', 'low');
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Initialize viewport-aware content loading
+ * This function loads content progressively as the user scrolls
+ * to improve initial page load performance
+ */
+function initViewportAwareLoading() {
+  // Elements that will be loaded when they approach the viewport
+  const deferredElements = document.querySelectorAll('[data-defer-load]');
+  
+  if (deferredElements.length > 0) {
+    const viewportObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          
+          // Get the data to load
+          const dataType = element.getAttribute('data-defer-type') || 'html';
+          const dataSource = element.getAttribute('data-defer-src');
+          
+          if (dataSource) {
+            // Handle different types of deferred content
+            switch (dataType) {
+              case 'html':
+                // Load HTML content
+                fetch(dataSource)
+                  .then(response => response.text())
+                  .then(html => {
+                    element.innerHTML = html;
+                    element.removeAttribute('data-defer-load');
+                    element.dispatchEvent(new CustomEvent('content-loaded'));
+                  })
+                  .catch(error => console.error('Error loading deferred content:', error));
+                break;
+                
+              case 'component':
+                // Load reusable component
+                fetch(dataSource)
+                  .then(response => response.text())
+                  .then(html => {
+                    element.innerHTML = html;
+                    // Initialize any scripts in the component
+                    const scripts = element.querySelectorAll('script');
+                    scripts.forEach(script => {
+                      const newScript = document.createElement('script');
+                      if (script.src) {
+                        newScript.src = script.src;
+                      } else {
+                        newScript.textContent = script.textContent;
+                      }
+                      document.head.appendChild(newScript);
+                    });
+                    element.removeAttribute('data-defer-load');
+                    element.dispatchEvent(new CustomEvent('component-loaded'));
+                  })
+                  .catch(error => console.error('Error loading component:', error));
+                break;
+                
+              case 'json':
+                // Load and process JSON data
+                fetch(dataSource)
+                  .then(response => response.json())
+                  .then(data => {
+                    // Find the template to use
+                    const templateId = element.getAttribute('data-template');
+                    const template = document.getElementById(templateId);
+                    
+                    if (template) {
+                      // Process template with JSON data
+                      let html = '';
+                      if (Array.isArray(data)) {
+                        data.forEach(item => {
+                          html += processTemplate(template.innerHTML, item);
+                        });
+                      } else {
+                        html = processTemplate(template.innerHTML, data);
+                      }
+                      element.innerHTML = html;
+                    } else {
+                      // Just store the data for custom processing
+                      element.dataset.jsonData = JSON.stringify(data);
+                      element.dispatchEvent(new CustomEvent('json-loaded', { detail: data }));
+                    }
+                    element.removeAttribute('data-defer-load');
+                  })
+                  .catch(error => console.error('Error loading JSON data:', error));
+                break;
+            }
+          }
+          
+          viewportObserver.unobserve(element);
+        }
+      });
+    }, {
+      rootMargin: '200px 0px',
+      threshold: 0.1
+    });
+    
+    deferredElements.forEach(element => {
+      viewportObserver.observe(element);
+    });
+  }
+}
+
+/**
+ * Process a template string with JSON data
+ * Simple template processing for deferred JSON content
+ */
+function processTemplate(template, data) {
+  let result = template;
+  
+  // Replace all {{property}} placeholders with actual data
+  for (const key in data) {
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      const value = data[key];
+      const regex = new RegExp(`{{${key}}}`, 'g');
+      result = result.replace(regex, value);
+    }
+  }
+  
+  return result;
+}
+
+/**
+ * Initialize performance debugging tools
+ */
+function initPerformanceDebugging() {
+  console.log('Performance debugging tools initialized');
+  
+  // Add visual indicators for Core Web Vitals
+  createPerformanceDebugPanel();
+  
+  // Log detailed performance metrics
+  if ('performance' in window) {
+    // Log navigation timing
+    setTimeout(() => {
+      const navEntry = performance.getEntriesByType('navigation')[0];
+      console.group('📊 Page Load Performance');
+      console.log(`🔄 DOM Content Loaded: ${Math.round(navEntry.domContentLoadedEventEnd)}ms`);
+      console.log(`⚡ Load Time: ${Math.round(navEntry.loadEventEnd)}ms`);
+      console.log(`⏱️ Time to First Byte: ${Math.round(navEntry.responseStart)}ms`);
+      console.log(`🖼️ DOM Interactive: ${Math.round(navEntry.domInteractive)}ms`);
+      console.groupEnd();
+    }, 1000);
+    
+    // Track and report long tasks
+    if ('PerformanceObserver' in window) {
+      try {
+        const longTaskObserver = new PerformanceObserver(list => {
+          list.getEntries().forEach(entry => {
+            console.warn(`🚨 Long Task detected: ${Math.round(entry.duration)}ms`, entry);
+          });
+        });
+        
+        longTaskObserver.observe({entryTypes: ['longtask']});
+      } catch (e) {
+        console.log('Long task observation not supported', e);
+      }
+    }
+  }
+  
+  // Add keyboard shortcut to toggle performance panel
+  document.addEventListener('keydown', event => {
+    // Ctrl+Shift+P to toggle performance panel
+    if (event.ctrlKey && event.shiftKey && event.key === 'P') {
+      togglePerformanceDebugPanel();
+    }
+  });
+}
+
+/**
+ * Create visual debug panel for performance metrics
+ */
+function createPerformanceDebugPanel() {
+  // Create panel container if it doesn't exist
+  if (!document.getElementById('performance-debug-panel')) {
+    const panel = document.createElement('div');
+    panel.id = 'performance-debug-panel';
+    panel.style.cssText = `
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 300px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 10px;
+      z-index: 9999;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      border-top-left-radius: 5px;
+    `;
+    
+    // Add header with controls
+    const header = document.createElement('div');
+    header.style.cssText = `
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    `;
+    header.innerHTML = `
+      <strong>Performance Monitor</strong>
+      <span id="perf-panel-toggle" style="cursor:pointer">Show</span>
+    `;
+    panel.appendChild(header);
+    
+    // Add sections for metrics
+    const metricsContainer = document.createElement('div');
+    metricsContainer.id = 'perf-metrics';
+    metricsContainer.innerHTML = `
+      <div>
+        <span>FPS: </span><span id="fps-value">-</span>
+      </div>
+      <div>
+        <span>LCP: </span><span id="lcp-value">-</span>
+      </div>
+      <div>
+        <span>CLS: </span><span id="cls-value">-</span>
+      </div>
+      <div>
+        <span>Memory: </span><span id="memory-value">-</span>
+      </div>
+      <div>
+        <span>JS Heap: </span><span id="heap-value">-</span>
+      </div>
+    `;
+    panel.appendChild(metricsContainer);
+    
+    // Add to document
+    document.body.appendChild(panel);
+    
+    // Attach toggle event
+    document.getElementById('perf-panel-toggle').addEventListener('click', () => {
+      togglePerformanceDebugPanel();
+    });
+    
+    // Start monitoring metrics
+    startPerformanceMonitoring();
+  }
+}
+
+/**
+ * Toggle performance debug panel visibility
+ */
+function togglePerformanceDebugPanel() {
+  const panel = document.getElementById('performance-debug-panel');
+  const toggle = document.getElementById('perf-panel-toggle');
+  
+  if (panel) {
+    const isVisible = panel.style.transform !== 'translateY(100%)';
+    
+    if (isVisible) {
+      panel.style.transform = 'translateY(100%)';
+      toggle.textContent = 'Show';
+    } else {
+      panel.style.transform = 'translateY(0)';
+      toggle.textContent = 'Hide';
+    }
+  }
+}
+
+/**
+ * Start continuous monitoring of performance metrics
+ */
+function startPerformanceMonitoring() {
+  // FPS monitoring
+  let lastFrameTime = performance.now();
+  let frameCount = 0;
+  
+  // CLS monitoring
+  let clsValue = 0;
+  if ('PerformanceObserver' in window) {
+    try {
+      const clsObserver = new PerformanceObserver(list => {
+        const entries = list.getEntries();
+        entries.forEach(entry => {
+          if (!entry.hadRecentInput) {
+            clsValue += entry.value;
+            document.getElementById('cls-value').textContent = clsValue.toFixed(3);
+          }
+        });
+      });
+      clsObserver.observe({type: 'layout-shift', buffered: true});
+      
+      // LCP monitoring
+      const lcpObserver = new PerformanceObserver(list => {
+        const entries = list.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        document.getElementById('lcp-value').textContent = `${Math.round(lastEntry.startTime)}ms`;
+      });
+      lcpObserver.observe({type: 'largest-contentful-paint', buffered: true});
+    } catch (e) {
+      console.log('Performance observation not supported', e);
+    }
+  }
+  
+  // Update metrics regularly
+  function updateMetrics() {
+    // Calculate FPS
+    const now = performance.now();
+    frameCount++;
+    
+    if (now - lastFrameTime >= 1000) {
+      const fps = Math.round((frameCount * 1000) / (now - lastFrameTime));
+      document.getElementById('fps-value').textContent = fps;
+      frameCount = 0;
+      lastFrameTime = now;
+      
+      // Update memory usage if available
+      if (performance.memory) {
+        const memoryUsed = Math.round(performance.memory.usedJSHeapSize / (1024 * 1024));
+        const memoryTotal = Math.round(performance.memory.totalJSHeapSize / (1024 * 1024));
+        document.getElementById('memory-value').textContent = `${memoryUsed}MB / ${memoryTotal}MB`;
+        document.getElementById('heap-value').textContent = `${Math.round(performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit * 100)}%`;
+      }
+    }
+    
+    requestAnimationFrame(updateMetrics);
+  }
+  
+  // Start updating metrics
+  requestAnimationFrame(updateMetrics);
 }
