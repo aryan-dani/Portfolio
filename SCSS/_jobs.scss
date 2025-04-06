@@ -2,10 +2,13 @@
 .jobs-layout {
   padding: 1rem;
   background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../Images/Header.jpg") center top;
-  background-size: 100% auto; // Fix the zoom issue by specifying exact size
+  background-size: cover; // Changed from 100% auto to cover to ensure full background
   background-repeat: no-repeat;
   background-attachment: fixed;
   position: relative;
+  min-height: 100vh; // Added min-height to ensure page covers full viewport height
+  width: 100%;
+  overflow: auto; // Allow scrolling if content overflows
   
   // Removed the animated particle overlay for cleaner look
   &::before {

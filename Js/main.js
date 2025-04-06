@@ -29,11 +29,8 @@ function toggleMenu()
             // Add open class to all menu items - CSS will handle the animation timing
             navItems.forEach(item => item.classList.add('open'));
             
-            // Get the menu height and apply it as margin to main content
-            setTimeout(() => {
-                const menuHeight = menuNav.offsetHeight;
-                main.style.marginTop = `${menuHeight}px`;
-            }, 50);
+            // Remove margin adjustment - menu will stay fixed at top
+            // No longer adding margin-top to main content
         }, 50);
         
         showMenu = true;
@@ -43,9 +40,6 @@ function toggleMenu()
         // First fade out menu items
         menuNav.style.opacity = '0';
         
-        // Immediately reset margin to prevent the weird shift
-        main.style.marginTop = '0';
-        
         // Remove open classes from menu items
         navItems.forEach(item => item.classList.remove('open'));
         
@@ -54,6 +48,9 @@ function toggleMenu()
             hamburger.classList.remove('open');
             nav.classList.remove('open');
             menuNav.classList.remove('open');
+            
+            // Reset any margin that might have been applied
+            main.style.marginTop = '0px';
             
             // Hide menu after animation completes
             setTimeout(() => {

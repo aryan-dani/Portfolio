@@ -83,6 +83,8 @@
     opacity: 0.98;
     transform: translateY(0);
     animation: slideDownAndBounce 0.7s ease-out forwards;
+    position: fixed; // Ensure it stays fixed when open
+    top: 0; // Keep at top
   }
   
   .menu-nav {

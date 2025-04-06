@@ -375,6 +375,8 @@
   opacity: 0.98;
   transform: translateY(0);
   animation: slideDownAndBounce 0.7s ease-out forwards;
+  position: fixed;
+  top: 0;
 }
 .nav .menu-nav {
   display: flex;
@@ -539,10 +541,13 @@
 .jobs-layout {
   padding: 1rem;
   background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
-  background-size: 100% auto;
+  background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: auto;
 }
 .jobs-layout::before {
   display: none;
