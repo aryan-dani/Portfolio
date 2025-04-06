@@ -61,9 +61,9 @@
       }
     </style>
     
-    <!-- Preload critical hero image -->
-    <link rel="preload" as="image" href="Images/Header.jpg" media="(min-width: 501px)">
-    <link rel="preload" as="image" href="Images/Header_Phone.jpg" media="(max-width: 500px)">
+    <!-- Preload critical hero image with dimensions for better CLS -->
+    <link rel="preload" as="image" href="Images/Header.jpg" media="(min-width: 501px)" imagesizes="100vw" imagesrcset="Images/Header.jpg 1920w">
+    <link rel="preload" as="image" href="Images/Header_Phone.jpg" media="(max-width: 500px)" imagesizes="100vw" imagesrcset="Images/Header_Phone.jpg 800w">
     
     <!-- Web App Manifest for PWA support -->
     <link rel="manifest" href="/manifest.json">

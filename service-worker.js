@@ -5,16 +5,14 @@
 
 // Cache name with version for better cache management
 const CACHE_NAME = 'portfolio-cache-v1';
-
-// Assets to cache immediately on service worker installation
-const PRECACHE_ASSETS = [
+const urlsToCache = [
   '/',
   '/index.html',
-  '/about.html',
-  '/certification.html',
   '/jobs.html',
   '/projects.html',
   '/skills.html',
+  '/certification.html',
+  '/about.html',
   '/copyright.html',
   '/offline.html',
   '/SCSS/main.css',
@@ -24,126 +22,68 @@ const PRECACHE_ASSETS = [
   '/Images/Header_Phone.jpg'
 ];
 
-// Install event - cache critical assets
+// Install event - cache essential assets
 self.addEventListener('install', event => {
-  console.log('Service Worker installing');
-  
-  // Skip waiting to ensure the new service worker activates immediately
-  self.skipWaiting();
-  
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Service Worker: Caching critical assets');
-        return cache.addAll(PRECACHE_ASSETS);
-      })
-      .catch(error => {
-        console.error('Pre-caching failed:', error);
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
       })
   );
+  // Activate immediately
+  self.skipWaiting();
 });
 
-// Activate event - clean up old caches
+// Activate event - clean old caches
 self.addEventListener('activate', event => {
-  console.log('Service Worker activating');
-  
-  // Claim clients to ensure the service worker takes control immediately
-  event.waitUntil(self.clients.claim());
-  
-  // Remove old caches
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.filter(cacheName => {
-          return cacheName.startsWith('portfolio-cache-') && cacheName !== CACHE_NAME;
-        }).map(cacheName => {
-          console.log('Service Worker: Removing old cache', cacheName);
-          return caches.delete(cacheName);
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
         })
       );
     })
   );
+  // Claim clients immediately
+  self.clients.claim();
 });
 
-// Fetch event - serve from cache or network with dynamic caching
+// Fetch event - network-first strategy with fallback to cache
 self.addEventListener('fetch', event => {
-  // Skip cross-origin requests
-  if (!event.request.url.startsWith(self.location.origin)) {
-    return;
-  }
-  
-  // Handle HTML navigation requests with network-first strategy
-  if (event.request.mode === 'navigate' || 
-      (event.request.method === 'GET' && 
-       event.request.headers.get('accept').includes('text/html'))) {
-    
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          // If we got a valid response, clone it and cache it
-          if (response && response.status === 200) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return response;
-        })
-        .catch(() => {
-          // If offline, try to serve from cache
-          return caches.match(event.request)
-            .then(cachedResponse => {
-              // Return cached response or fallback to offline page
-              return cachedResponse || caches.match('/offline.html');
-            });
-        })
-    );
-    return;
-  }
-  
-  // For CSS, JS, images, etc. use a cache-first strategy
-  if (event.request.destination === 'style' || 
-      event.request.destination === 'script' || 
-      event.request.destination === 'image' || 
-      event.request.destination === 'font') {
-    
-    event.respondWith(
-      caches.match(event.request)
-        .then(cachedResponse => {
-          // Return cached response if available
-          if (cachedResponse) {
-            return cachedResponse;
-          }
-          
-          // Otherwise fetch from network and cache
-          return fetch(event.request)
-            .then(response => {
-              // Make sure we received a valid response
-              if (!response || response.status !== 200 || response.type !== 'basic') {
-                return response;
-              }
-              
-              // Clone the response as it can only be consumed once
-              const responseToCache = response.clone();
-              
-              // Cache the fetched resource
-              caches.open(CACHE_NAME)
-                .then(cache => {
-                  cache.put(event.request, responseToCache);
-                });
-              
-              return response;
-            });
-        })
-    );
-    return;
-  }
-  
-  // For other requests, use a network-first approach
   event.respondWith(
     fetch(event.request)
+      .then(response => {
+        // Clone the response
+        const responseToCache = response.clone();
+        
+        // Update cache
+        caches.open(CACHE_NAME)
+          .then(cache => {
+            if (event.request.method === 'GET') {
+              cache.put(event.request, responseToCache);
+            }
+          });
+        
+        return response;
+      })
       .catch(() => {
-        return caches.match(event.request);
+        // Return from cache if network fails
+        return caches.match(event.request)
+          .then(response => {
+            if (response) {
+              return response;
+            }
+            
+            // If the request is for a page, return the offline page
+            if (event.request.headers.get('accept').includes('text/html')) {
+              return caches.match('/offline.html');
+            }
+          });
       })
   );
 });
