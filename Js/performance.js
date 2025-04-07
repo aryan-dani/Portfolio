@@ -939,6 +939,28 @@ function initViewportAwareLoading() {
       viewportObserver.observe(element);
     });
   }
+  
+  // Check if we're on the projects page and adjust images to start from the top
+  adjustProjectImages();
+}
+
+/**
+ * Adjusts project images to start from the top instead of being centered
+ * This makes sure images in the projects page start from the top
+ */
+function adjustProjectImages() {
+  // Check if we're on the projects page
+  if (window.location.pathname.includes('projects.html')) {
+    // Select all project images
+    const projectImages = document.querySelectorAll('.project-image img');
+    
+    // Change object-position to 'top' for all project images
+    projectImages.forEach(img => {
+      img.style.objectPosition = 'center top';
+    });
+    
+    console.log('Performance.js: Adjusted project images to start from the top');
+  }
 }
 
 /**
