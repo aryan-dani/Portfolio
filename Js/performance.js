@@ -1,8 +1,6 @@
-/**
- * Performance Optimizations for Portfolio Website
- * This file contains various optimizations for improving website performance
- * without affecting the existing stylesheets and animations.
- */
+// Performance Optimizations for Portfolio Website
+// This file contains various optimizations for improving website performance
+// without affecting the existing stylesheets and animations.
 
 // Initialize performance optimizations when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
@@ -11,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add scroll progress indicator
   initScrollProgress();
   
-  // Handle lazy loading of images
+  // Handle lazy loading of images - safely
   initLazyLoading();
   
   // Register service worker for offline capabilities if supported
@@ -38,12 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Optimize script loading
   optimizeScriptLoading();
   
-  // Add image optimization
-  optimizeImages();
-  
-  // Advanced image rendering optimization
-  optimizeImageRendering();
-  
   // Optimize memory usage
   optimizeMemoryUsage();
   
@@ -58,11 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize viewport-aware content loading
   initViewportAwareLoading();
-  
-  // Initialize performance debugging tools in development mode
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    initPerformanceDebugging();
-  }
 });
 
 /**
@@ -133,13 +120,7 @@ function createAnimationHelper() {
     }
   };
   
-  /**
-   * Animates an element using the Web Animation API with fallback
-   * @param {Element} element - The DOM element to animate
-   * @param {string|Object} animation - The animation name or custom keyframes
-   * @param {Object} options - Optional animation options to override defaults
-   * @returns {Animation|null} - The Animation object or null if not supported
-   */
+  // Public methods
   function animate(element, animation, options = {}) {
     if (!element) return null;
     
@@ -186,10 +167,6 @@ function createAnimationHelper() {
     return animationInstance;
   }
   
-  /**
-   * Clears any active animation on an element
-   * @param {Element} element - The DOM element to clear animations from
-   */
   function clearAnimation(element) {
     if (!element) return;
     
@@ -207,13 +184,6 @@ function createAnimationHelper() {
     });
   }
   
-  /**
-   * Stagger animations across multiple elements
-   * @param {NodeList|Array} elements - The elements to animate
-   * @param {string|Object} animation - The animation to apply
-   * @param {Object} options - Animation options
-   * @param {number} delay - Delay between each element's animation in ms
-   */
   function stagger(elements, animation, options = {}, delay = 100) {
     if (!elements || !elements.length) return;
     
@@ -225,13 +195,6 @@ function createAnimationHelper() {
     });
   }
   
-  /**
-   * Creates scroll-triggered animations using Intersection Observer
-   * @param {string} selector - CSS selector to find elements
-   * @param {string|Object} animation - Animation to apply
-   * @param {Object} options - Animation options
-   * @param {Object} observerOptions - IntersectionObserver options
-   */
   function animateOnScroll(selector, animation, options = {}, observerOptions = {}) {
     const elements = document.querySelectorAll(selector);
     if (!elements.length) return;
@@ -266,13 +229,6 @@ function createAnimationHelper() {
     });
   }
   
-  /**
-   * Add animation based on user interaction with reduced event listeners
-   * @param {string} selector - CSS selector for elements
-   * @param {string} eventType - Event type like 'click', 'mouseenter', etc.
-   * @param {string|Object} animation - Animation to apply
-   * @param {Object} options - Animation options
-   */
   function addInteractiveAnimation(selector, eventType, animation, options = {}) {
     const container = document.querySelector('body');
     
@@ -352,7 +308,7 @@ function updateScrollProgress(scrollPos) {
 }
 
 /**
- * Initialize lazy loading for images
+ * Initialize lazy loading for images safely without changing source paths
  */
 function initLazyLoading() {
   // If the browser supports native lazy loading, use it
@@ -363,7 +319,8 @@ function initLazyLoading() {
     });
   } else {
     // Otherwise use Intersection Observer for lazy loading
-    const lazyImages = document.querySelectorAll('img.lazy-load');
+    // Only apply to images with data-src attribute to avoid breaking existing images
+    const lazyImages = document.querySelectorAll('img[data-src]');
     
     if (lazyImages.length > 0) {
       const imageObserver = new IntersectionObserver((entries) => {
@@ -371,16 +328,8 @@ function initLazyLoading() {
           if (entry.isIntersecting) {
             const img = entry.target;
             if (img.dataset.src) {
-              // Create a new image object to preload
-              const tempImage = new Image();
-              tempImage.src = img.dataset.src;
-              
-              // When the image is loaded, replace the src and add loaded class
-              tempImage.onload = function() {
-                img.src = img.dataset.src;
-                img.classList.add('lazy-loaded');
-              };
-              
+              img.src = img.dataset.src;
+              img.classList.add('lazy-loaded');
               imageObserver.unobserve(img);
             }
           }
@@ -439,47 +388,11 @@ function registerServiceWorker() {
               'Refresh to get the latest version',
               'fa-solid fa-arrow-rotate-right'
             );
-            
-            // Create update button in the toast
-            const toasts = document.querySelectorAll('.toast-container .toast');
-            if (toasts.length > 0) {
-              const latestToast = toasts[toasts.length - 1];
-              
-              // Add update button
-              const updateButton = document.createElement('button');
-              updateButton.textContent = 'Update Now';
-              updateButton.style.marginTop = '10px';
-              updateButton.style.padding = '5px 10px';
-              updateButton.style.background = 'rgba(240, 248, 255, 0.2)';
-              updateButton.style.border = 'none';
-              updateButton.style.borderRadius = '4px';
-              updateButton.style.color = '#fff';
-              updateButton.style.cursor = 'pointer';
-              
-              updateButton.addEventListener('click', () => {
-                // Tell the service worker to skipWaiting
-                newWorker.postMessage({ action: 'skipWaiting' });
-                
-                // Reload the page to activate the new service worker
-                window.location.reload();
-              });
-              
-              // Find content container and append button
-              const contentContainer = latestToast.querySelector('div:nth-child(2)');
-              if (contentContainer) {
-                contentContainer.appendChild(updateButton);
-              }
-            }
           });
         })
         .catch(error => {
           console.error('Service Worker registration failed:', error);
         });
-      
-      // Handle service worker controlling the page (activated)
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        console.log('New service worker activated');
-      });
     });
   }
 }
@@ -488,8 +401,8 @@ function registerServiceWorker() {
  * Initialize content visibility observer for better performance
  */
 function initContentVisibilityObserver() {
-  // Apply content-visibility to large sections
-  const contentSections = document.querySelectorAll('.skills__group, .project-grid > .Projects');
+  // Apply content-visibility to large sections - but NOT to the project cards that contain images
+  const contentSections = document.querySelectorAll('.skills__group');
   
   if (contentSections.length > 0 && 'IntersectionObserver' in window) {
     const options = {
@@ -526,7 +439,7 @@ function initIntersectionObserver() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
+          entry.target.classList.add('visible');
           observer.unobserve(entry.target);
         }
       });
@@ -541,7 +454,7 @@ function initIntersectionObserver() {
   } else {
     // Fallback for browsers without IntersectionObserver
     elementsToAnimate.forEach(element => {
-      element.classList.add('is-visible');
+      element.classList.add('visible');
     });
   }
   
@@ -742,9 +655,6 @@ function setupPerformanceMonitoring() {
         list.getEntries().forEach((entry) => {
           // Log vital metrics
           console.log(`[Performance] ${entry.name}: ${entry.value}`);
-          
-          // Report to analytics (if implemented)
-          // reportPerformance(entry.name, entry.value);
         });
       });
       
@@ -788,213 +698,6 @@ function optimizeScriptLoading() {
       script.parentNode.replaceChild(newScript, script);
     }
   });
-}
-
-/**
- * Optimize images to improve performance and reduce CLS
- */
-function optimizeImages() {
-  // Find all images without width/height attributes
-  const images = document.querySelectorAll('img:not([width]):not([height])');
-  
-  images.forEach(img => {
-    // If the image is already loaded, use its natural dimensions
-    if (img.complete) {
-      // Only set dimensions if they're not already specified
-      if (!img.style.width && !img.style.height) {
-        // Keep aspect ratio by setting just height or width
-        img.style.height = 'auto';
-        img.width = img.naturalWidth;
-      }
-    } else {
-      // For images not yet loaded, set a listener to apply dimensions
-      img.addEventListener('load', () => {
-        if (!img.style.width && !img.style.height) {
-          img.style.height = 'auto';
-          img.width = img.naturalWidth;
-        }
-      });
-    }
-  });
-  
-  // Apply aspect ratio container to prevent layout shifts
-  const imageContainers = document.querySelectorAll('.image-container');
-  imageContainers.forEach(container => {
-    const img = container.querySelector('img');
-    if (img) {
-      // If image has dimensions, set aspect ratio container
-      if (img.complete && img.naturalWidth > 0) {
-        const aspectRatio = (img.naturalHeight / img.naturalWidth) * 100;
-        container.style.paddingBottom = `${aspectRatio}%`;
-        container.style.position = 'relative';
-        img.style.position = 'absolute';
-        img.style.top = '0';
-        img.style.left = '0';
-        img.style.width = '100%';
-        img.style.height = '100%';
-      } else {
-        // For images not yet loaded
-        img.addEventListener('load', () => {
-          const aspectRatio = (img.naturalHeight / img.naturalWidth) * 100;
-          container.style.paddingBottom = `${aspectRatio}%`;
-          container.style.position = 'relative';
-          img.style.position = 'absolute';
-          img.style.top = '0';
-          img.style.left = '0';
-          img.style.width = '100%';
-          img.style.height = '100%';
-        });
-      }
-    }
-  });
-  
-  // Check for supported image formats
-  checkImageFormats();
-}
-
-/**
- * Check for modern image format support and optimize accordingly
- */
-function checkImageFormats() {
-  // Create a function to check support for specific formats
-  const checkSupport = (format) => {
-    const elem = document.createElement('canvas');
-    if (!elem.getContext || !elem.getContext('2d')) {
-      return false;
-    }
-    
-    switch (format) {
-      case 'webp':
-        return elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
-      case 'avif':
-        return elem.toDataURL('image/avif').indexOf('data:image/avif') === 0;
-      default:
-        return false;
-    }
-  };
-  
-  // Check for WebP and AVIF support
-  const supportsWebP = checkSupport('webp');
-  const supportsAVIF = checkSupport('avif');
-  
-  // Add classes to document root indicating support
-  if (supportsWebP) {
-    document.documentElement.classList.add('webp-support');
-  }
-  
-  if (supportsAVIF) {
-    document.documentElement.classList.add('avif-support');
-  }
-  
-  // Replace JPG/PNG images with WebP/AVIF where possible
-  if (supportsWebP || supportsAVIF) {
-    const images = document.querySelectorAll('img[src$=".jpg"], img[src$=".png"], img[src$=".jpeg"]');
-    
-    images.forEach(img => {
-      const currentSrc = img.src;
-      const basePath = currentSrc.substring(0, currentSrc.lastIndexOf('.'));
-      const extension = currentSrc.substring(currentSrc.lastIndexOf('.'));
-      
-      // Set the most optimal format available
-      if (supportsAVIF) {
-        // Try to load AVIF version first
-        const avifVersion = `${basePath}.avif`;
-        
-        // Create a test image to verify AVIF version exists
-        const testImg = new Image();
-        testImg.onload = () => { img.src = avifVersion; };
-        testImg.onerror = () => {
-          // Fallback to WebP if AVIF doesn't exist
-          if (supportsWebP) {
-            img.src = `${basePath}.webp`;
-          }
-        };
-        testImg.src = avifVersion;
-      } 
-      // If only WebP is supported, use it directly
-      else if (supportsWebP) {
-        img.src = `${basePath}.webp`;
-      }
-    });
-  }
-}
-
-/**
- * Advanced image optimization for modern browsers
- */
-function optimizeImageRendering() {
-  // Add support for native lazy loading with fallback
-  const images = document.querySelectorAll('img:not([loading])');
-  images.forEach(img => {
-    // Add native lazy loading
-    img.loading = 'lazy';
-    
-    // Add decoding attribute for better performance
-    img.decoding = 'async';
-    
-    // Add fetchpriority for above-the-fold images
-    const rect = img.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
-      img.fetchPriority = 'high';
-    } else {
-      img.fetchPriority = 'low';
-    }
-    
-    // Add srcset for responsive images if not already specified
-    if (!img.srcset && img.src && !img.src.includes('data:image')) {
-      const src = img.src;
-      const fileExt = src.split('.').pop();
-      
-      // Only add srcset for images that might benefit from responsive sizing
-      if (img.width > 400 && ['jpg', 'jpeg', 'png', 'webp'].includes(fileExt)) {
-        const basePath = src.substring(0, src.lastIndexOf('.'));
-        
-        // Create srcset with different sizes
-        img.srcset = `${basePath}-small.${fileExt} 400w, ${src} 800w, ${basePath}-large.${fileExt} 1200w`;
-        img.sizes = '(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px';
-      }
-    }
-  });
-  
-  // Add support for intrinsic size to reduce layout shifts
-  document.querySelectorAll('img:not([width]):not([height])').forEach(img => {
-    if (img.naturalWidth && img.naturalHeight) {
-      // Add width and height attributes to maintain aspect ratio
-      const aspectRatio = img.naturalHeight / img.naturalWidth;
-      
-      // Just set the width and let the browser calculate height based on aspect ratio
-      img.setAttribute('width', img.naturalWidth);
-      img.setAttribute('height', img.naturalHeight);
-      
-      // Apply CSS to maintain aspect ratio while allowing responsive scaling
-      img.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
-    }
-  });
-  
-  // Save bandwidth for users on slow connections
-  if ('connection' in navigator) {
-    if (navigator.connection.saveData || 
-        navigator.connection.effectiveType === 'slow-2g' || 
-        navigator.connection.effectiveType === '2g') {
-      
-      // Replace high-quality images with lighter versions
-      document.querySelectorAll('img:not(.essential)').forEach(img => {
-        // Skip SVGs and icons
-        if (img.src && !img.src.includes('.svg') && !img.classList.contains('icon')) {
-          // Lower quality version
-          const src = img.src;
-          const basePath = src.substring(0, src.lastIndexOf('.'));
-          const fileExt = src.split('.').pop();
-          
-          // Try to load low-quality version if it exists
-          const testImg = new Image();
-          testImg.onload = () => { img.src = `${basePath}-lowq.${fileExt}`; };
-          testImg.onerror = () => { /* Keep original source if low quality doesn't exist */ };
-          testImg.src = `${basePath}-lowq.${fileExt}`;
-        }
-      });
-    }
-  }
 }
 
 /**
@@ -1162,47 +865,6 @@ function setupCachingImprovements() {
         console.error('Image caching failed:', error);
       });
     });
-    
-    // Improve page navigation with dynamic page caching
-    window.addEventListener('load', () => {
-      // After page loads, prefetch and cache other main pages
-      caches.open(pagesCache).then(cache => {
-        const pagesToCache = [
-          '/index.html',
-          '/jobs.html',
-          '/projects.html',
-          '/skills.html',
-          '/about.html',
-          '/certification.html'
-        ];
-        
-        // Don't cache the current page again
-        const currentPath = window.location.pathname;
-        const filteredPages = pagesToCache.filter(page => 
-          !currentPath.endsWith(page) && 
-          !(currentPath === '/' && page === '/index.html')
-        );
-        
-        // Add all filtered pages to cache
-        cache.addAll(filteredPages).catch(error => {
-          console.error('Page caching failed:', error);
-        });
-      });
-    });
-    
-    // Clean up old caches periodically
-    const cacheAllowlist = [staticCache, imagesCache, pagesCache];
-    
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheAllowlist.indexOf(cacheName) === -1) {
-            // Delete old cache versions
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    });
   }
 }
 
@@ -1227,32 +889,6 @@ function optimizeResourcePriorities() {
   setPriority('link[rel="stylesheet"]', 'high');
   setPriority('.hero-image', 'high');
   setPriority('script[src*="main.js"]', 'high');
-  
-  // Set low priority for below-the-fold images
-  setPriority('.below-fold img', 'low');
-  
-  // Modify resource loading based on network conditions
-  if ('connection' in navigator) {
-    const conn = navigator.connection;
-    
-    if (conn.saveData) {
-      console.log('Data saver enabled - loading low resolution images');
-      document.documentElement.classList.add('data-saver-mode');
-    }
-    
-    if (conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g') {
-      console.log('Slow connection detected - deferring non-critical resources');
-      document.documentElement.classList.add('slow-connection');
-      
-      // Defer loading of non-critical resources
-      document.querySelectorAll('img:not(.critical)').forEach(img => {
-        img.loading = 'lazy';
-        if (!img.hasAttribute('importance')) {
-          img.setAttribute('importance', 'low');
-        }
-      });
-    }
-  }
 }
 
 /**
@@ -1288,59 +924,6 @@ function initViewportAwareLoading() {
                   })
                   .catch(error => console.error('Error loading deferred content:', error));
                 break;
-                
-              case 'component':
-                // Load reusable component
-                fetch(dataSource)
-                  .then(response => response.text())
-                  .then(html => {
-                    element.innerHTML = html;
-                    // Initialize any scripts in the component
-                    const scripts = element.querySelectorAll('script');
-                    scripts.forEach(script => {
-                      const newScript = document.createElement('script');
-                      if (script.src) {
-                        newScript.src = script.src;
-                      } else {
-                        newScript.textContent = script.textContent;
-                      }
-                      document.head.appendChild(newScript);
-                    });
-                    element.removeAttribute('data-defer-load');
-                    element.dispatchEvent(new CustomEvent('component-loaded'));
-                  })
-                  .catch(error => console.error('Error loading component:', error));
-                break;
-                
-              case 'json':
-                // Load and process JSON data
-                fetch(dataSource)
-                  .then(response => response.json())
-                  .then(data => {
-                    // Find the template to use
-                    const templateId = element.getAttribute('data-template');
-                    const template = document.getElementById(templateId);
-                    
-                    if (template) {
-                      // Process template with JSON data
-                      let html = '';
-                      if (Array.isArray(data)) {
-                        data.forEach(item => {
-                          html += processTemplate(template.innerHTML, item);
-                        });
-                      } else {
-                        html = processTemplate(template.innerHTML, data);
-                      }
-                      element.innerHTML = html;
-                    } else {
-                      // Just store the data for custom processing
-                      element.dataset.jsonData = JSON.stringify(data);
-                      element.dispatchEvent(new CustomEvent('json-loaded', { detail: data }));
-                    }
-                    element.removeAttribute('data-defer-load');
-                  })
-                  .catch(error => console.error('Error loading JSON data:', error));
-                break;
             }
           }
           
@@ -1375,209 +958,4 @@ function processTemplate(template, data) {
   }
   
   return result;
-}
-
-/**
- * Initialize performance debugging tools
- */
-function initPerformanceDebugging() {
-  console.log('Performance debugging tools initialized');
-  
-  // Add visual indicators for Core Web Vitals
-  createPerformanceDebugPanel();
-  
-  // Log detailed performance metrics
-  if ('performance' in window) {
-    // Log navigation timing
-    setTimeout(() => {
-      const navEntry = performance.getEntriesByType('navigation')[0];
-      console.group('📊 Page Load Performance');
-      console.log(`🔄 DOM Content Loaded: ${Math.round(navEntry.domContentLoadedEventEnd)}ms`);
-      console.log(`⚡ Load Time: ${Math.round(navEntry.loadEventEnd)}ms`);
-      console.log(`⏱️ Time to First Byte: ${Math.round(navEntry.responseStart)}ms`);
-      console.log(`🖼️ DOM Interactive: ${Math.round(navEntry.domInteractive)}ms`);
-      console.groupEnd();
-    }, 1000);
-    
-    // Track and report long tasks
-    if ('PerformanceObserver' in window) {
-      try {
-        const longTaskObserver = new PerformanceObserver(list => {
-          list.getEntries().forEach(entry => {
-            console.warn(`🚨 Long Task detected: ${Math.round(entry.duration)}ms`, entry);
-          });
-        });
-        
-        longTaskObserver.observe({entryTypes: ['longtask']});
-      } catch (e) {
-        console.log('Long task observation not supported', e);
-      }
-    }
-  }
-  
-  // Add keyboard shortcut to toggle performance panel
-  document.addEventListener('keydown', event => {
-    // Ctrl+Shift+P to toggle performance panel
-    if (event.ctrlKey && event.shiftKey && event.key === 'P') {
-      togglePerformanceDebugPanel();
-    }
-  });
-}
-
-/**
- * Create visual debug panel for performance metrics
- */
-function createPerformanceDebugPanel() {
-  // Create panel container if it doesn't exist
-  if (!document.getElementById('performance-debug-panel')) {
-    const panel = document.createElement('div');
-    panel.id = 'performance-debug-panel';
-    panel.style.cssText = `
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      width: 300px;
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      font-family: monospace;
-      font-size: 12px;
-      padding: 10px;
-      z-index: 9999;
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      border-top-left-radius: 5px;
-    `;
-    
-    // Add header with controls
-    const header = document.createElement('div');
-    header.style.cssText = `
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    `;
-    header.innerHTML = `
-      <strong>Performance Monitor</strong>
-      <span id="perf-panel-toggle" style="cursor:pointer">Show</span>
-    `;
-    panel.appendChild(header);
-    
-    // Add sections for metrics
-    const metricsContainer = document.createElement('div');
-    metricsContainer.id = 'perf-metrics';
-    metricsContainer.innerHTML = `
-      <div>
-        <span>FPS: </span><span id="fps-value">-</span>
-      </div>
-      <div>
-        <span>LCP: </span><span id="lcp-value">-</span>
-      </div>
-      <div>
-        <span>CLS: </span><span id="cls-value">-</span>
-      </div>
-      <div>
-        <span>Memory: </span><span id="memory-value">-</span>
-      </div>
-      <div>
-        <span>JS Heap: </span><span id="heap-value">-</span>
-      </div>
-    `;
-    panel.appendChild(metricsContainer);
-    
-    // Add to document
-    document.body.appendChild(panel);
-    
-    // Attach toggle event
-    document.getElementById('perf-panel-toggle').addEventListener('click', () => {
-      togglePerformanceDebugPanel();
-    });
-    
-    // Start monitoring metrics
-    startPerformanceMonitoring();
-  }
-}
-
-/**
- * Toggle performance debug panel visibility
- */
-function togglePerformanceDebugPanel() {
-  const panel = document.getElementById('performance-debug-panel');
-  const toggle = document.getElementById('perf-panel-toggle');
-  
-  if (panel) {
-    const isVisible = panel.style.transform !== 'translateY(100%)';
-    
-    if (isVisible) {
-      panel.style.transform = 'translateY(100%)';
-      toggle.textContent = 'Show';
-    } else {
-      panel.style.transform = 'translateY(0)';
-      toggle.textContent = 'Hide';
-    }
-  }
-}
-
-/**
- * Start continuous monitoring of performance metrics
- */
-function startPerformanceMonitoring() {
-  // FPS monitoring
-  let lastFrameTime = performance.now();
-  let frameCount = 0;
-  
-  // CLS monitoring
-  let clsValue = 0;
-  if ('PerformanceObserver' in window) {
-    try {
-      const clsObserver = new PerformanceObserver(list => {
-        const entries = list.getEntries();
-        entries.forEach(entry => {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
-            document.getElementById('cls-value').textContent = clsValue.toFixed(3);
-          }
-        });
-      });
-      clsObserver.observe({type: 'layout-shift', buffered: true});
-      
-      // LCP monitoring
-      const lcpObserver = new PerformanceObserver(list => {
-        const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1];
-        document.getElementById('lcp-value').textContent = `${Math.round(lastEntry.startTime)}ms`;
-      });
-      lcpObserver.observe({type: 'largest-contentful-paint', buffered: true});
-    } catch (e) {
-      console.log('Performance observation not supported', e);
-    }
-  }
-  
-  // Update metrics regularly
-  function updateMetrics() {
-    // Calculate FPS
-    const now = performance.now();
-    frameCount++;
-    
-    if (now - lastFrameTime >= 1000) {
-      const fps = Math.round((frameCount * 1000) / (now - lastFrameTime));
-      document.getElementById('fps-value').textContent = fps;
-      frameCount = 0;
-      lastFrameTime = now;
-      
-      // Update memory usage if available
-      if (performance.memory) {
-        const memoryUsed = Math.round(performance.memory.usedJSHeapSize / (1024 * 1024));
-        const memoryTotal = Math.round(performance.memory.totalJSHeapSize / (1024 * 1024));
-        document.getElementById('memory-value').textContent = `${memoryUsed}MB / ${memoryTotal}MB`;
-        document.getElementById('heap-value').textContent = `${Math.round(performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit * 100)}%`;
-      }
-    }
-    
-    requestAnimationFrame(updateMetrics);
-  }
-  
-  // Start updating metrics
-  requestAnimationFrame(updateMetrics);
 }
