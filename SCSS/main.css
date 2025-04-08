@@ -1142,6 +1142,26 @@ footer:hover::before {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   background-color: rgba(39, 39, 39, 0.2);
 }
+.project .Projects .project-image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center top;
+     object-position: center top;
+  transition: transform 0.6s ease;
+  display: block;
+  position: relative;
+  z-index: 0;
+}
+.project .Projects .project-image img[width][height] {
+  aspect-ratio: attr(width)/attr(height);
+}
+.project .Projects .project-image img[loading=lazy] {
+  background: linear-gradient(110deg, rgba(227, 227, 227, 0.1) 30%, rgba(177, 177, 177, 0.1) 50%, rgba(227, 227, 227, 0.1) 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
 .project .Projects .project-image::after {
   content: "";
   position: absolute;
@@ -2151,6 +2171,33 @@ footer {
     background-size: cover;
   }
 }
+:focus-visible {
+  outline: 3px solid aliceblue;
+  outline-offset: 2px;
+  border-radius: 3px;
+  transition: outline-offset 0.2s ease;
+}
+
+.menu-nav__link:focus-visible,
+.project-link:focus-visible,
+.cta-button:focus-visible,
+.category-tab:focus-visible,
+.social-icons a:focus-visible,
+.footer a:focus-visible {
+  outline: 3px solid aliceblue;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(240, 248, 255, 0.3);
+}
+
+.menu-nav__link:focus-visible {
+  outline-color: aliceblue;
+}
+
+.keyboard-nav-active *:focus {
+  outline: 3px solid aliceblue !important;
+  outline-offset: 2px !important;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -2392,6 +2439,25 @@ footer {
   transform: translate(-50%, -50%) scale(0);
   animation: ripple 0.6s linear;
   pointer-events: none;
+}
+
+.reduced-motion * {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+}
+.reduced-motion .typing-cursor {
+  animation: none !important;
+}
+.reduced-motion .home,
+.reduced-motion .about,
+.reduced-motion .jobs-layout,
+.reduced-motion .project__project-image {
+  background-attachment: scroll !important;
+}
+.reduced-motion .skills__card,
+.reduced-motion .certificate-content {
+  transform: none !important;
 }
 
 @keyframes floatAnimation {
@@ -3013,6 +3079,103 @@ footer {
   }
 }
 
+footer {
+  background-color: #272727;
+  color: aliceblue;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.8rem;
+  font-size: 0.9rem;
+  z-index: 100;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  background-color: rgba(39, 39, 39, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+footer:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+footer .copyright-link {
+  color: aliceblue;
+  text-decoration: none;
+  position: relative;
+}
+footer .copyright-link:hover {
+  text-decoration: underline;
+}
+footer .copyright-link:focus-visible {
+  outline: 2px solid aliceblue;
+  outline-offset: 2px;
+}
+
+.performance-optimized .menu-btn,
+.performance-optimized .home__name,
+.performance-optimized .social-icons a,
+.performance-optimized .Projects,
+.performance-optimized .certificate-content,
+.performance-optimized .skills__card {
+  will-change: transform;
+  transform: translateZ(0);
+}
+.performance-optimized.battery-saving .project::before,
+.performance-optimized.battery-saving .certification::before,
+.performance-optimized.battery-saving .home::before {
+  animation-duration: 30s !important;
+  opacity: 0.3 !important;
+}
+.performance-optimized.battery-saving .skills__card,
+.performance-optimized.battery-saving .certificate-content,
+.performance-optimized.battery-saving .Projects {
+  transition-duration: 0.5s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .home,
+  .about,
+  .jobs-layout,
+  .project__project-image {
+    background-attachment: scroll !important;
+  }
+  .skills__card,
+  .certificate-content {
+    transform: none !important;
+    transition: none !important;
+  }
+  .skills__card:hover,
+  .certificate-content:hover {
+    transform: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+  }
+  .float,
+  .pulse,
+  .shimmer {
+    animation: none !important;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    text-rendering: optimizeLegibility;
+  }
+  .menu-btn__burger,
+  .nav .menu-nav,
+  .home__name,
+  .contact-email,
+  .Projects,
+  .certification .certificate-content {
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.15);
+  }
+}
 /* Modern CSS Reset */
 *,
 *::before,

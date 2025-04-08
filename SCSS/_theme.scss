@@ -62,3 +62,34 @@ footer {
     background-size: cover;
   }
 }
+
+// Enhanced focus states for better accessibility
+:focus-visible {
+  outline: 3px solid $secondary-color;
+  outline-offset: 2px;
+  border-radius: 3px;
+  transition: outline-offset 0.2s ease;
+}
+
+// Interactive elements with enhanced focus states
+.menu-nav__link:focus-visible,
+.project-link:focus-visible,
+.cta-button:focus-visible,
+.category-tab:focus-visible,
+.social-icons a:focus-visible,
+.footer a:focus-visible {
+  outline: 3px solid $secondary-color;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba($secondary-color, 0.3);
+}
+
+// For dark backgrounds
+.menu-nav__link:focus-visible {
+  outline-color: $secondary-color;
+}
+
+// Keyboard navigation indicator
+.keyboard-nav-active *:focus {
+  outline: 3px solid $secondary-color !important;
+  outline-offset: 2px !important;
+}

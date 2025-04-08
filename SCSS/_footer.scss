@@ -1,0 +1,43 @@
+// Created dedicated footer styles
+@use 'config' as *;
+
+footer {
+  background-color: $primary-color;
+  color: $secondary-color;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.8rem;
+  font-size: 0.9rem;
+  z-index: 100;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  
+  // Glass effect background
+  background-color: rgba($primary-color, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  // Copyright link styling
+  .copyright-link {
+    color: $secondary-color;
+    text-decoration: none;
+    position: relative;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+    
+    // Accessible focus state
+    &:focus-visible {
+      outline: 2px solid $secondary-color;
+      outline-offset: 2px;
+    }
+  }
+}

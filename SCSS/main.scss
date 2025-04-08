@@ -9,8 +9,10 @@
 @use "certification";
 @use "theme";
 @use "skills";
-@use "copyright"; // Adding the new copyright file
-@use "animations"; // Adding the new animations file
+@use "copyright"; 
+@use "animations"; 
+@use "footer"; 
+@use "performance"; // Added the new performance file
 
 // Import config variables to use them directly in this file
 @use "config" as *;
