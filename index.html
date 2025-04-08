@@ -10,9 +10,9 @@
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="dns-prefetch" href="//kit.fontawesome.com" />
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
-    <link rel="preconnect" href="//fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="//kit.fontawesome.com" crossorigin />
-    <link rel="preconnect" href="//cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     
     <!-- Prefetch likely navigation paths -->
     <link rel="prefetch" href="jobs.html">
@@ -62,18 +62,20 @@
     </style>
     
     <!-- Preload critical hero image with dimensions for better CLS -->
-    <link rel="preload" as="image" href="Images/Header.jpg" media="(min-width: 501px)" imagesizes="100vw" imagesrcset="Images/Header.jpg 1920w">
-    <link rel="preload" as="image" href="Images/Header_Phone.jpg" media="(max-width: 500px)" imagesizes="100vw" imagesrcset="Images/Header_Phone.jpg 800w">
+    <link rel="preload" as="image" href="Images/Header.jpg" media="(min-width: 501px)">
+    <link rel="preload" as="image" href="Images/Header_Phone.jpg" media="(max-width: 500px)">
     
     <!-- Web App Manifest for PWA support -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#272727">
     
     <!-- Add default meta tags -->
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Aryan Dani - Web Developer Portfolio">
     <meta property="og:description" content="Personal portfolio of Aryan Dani, showcasing skills in web development and AI engineering.">
     <meta property="og:type" content="website">
+    
+    <!-- Apple Touch Icon for iOS devices -->
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
   </head>
   <body>
     <!-- Progress indicator -->
@@ -175,7 +177,7 @@
         </div>
         
         <!-- Hidden container for preloaded background images - replaces the loose img tags -->
-        <div style="display: none;">
+        <div class="preload-images">
           <img src="Images/Header.jpg" alt="Background Image Desktop" id="bg-desktop">
           <img src="Images/Header_Phone.jpg" alt="Background Image Mobile" id="bg-mobile">
         </div>
