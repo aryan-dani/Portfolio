@@ -563,12 +563,18 @@ body.menu-open {
   background-size: cover !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  position: absolute; /* Changed back to absolute with improved positioning */
+  position: fixed;
+  /* Changed to fixed for better viewport coverage */
   min-height: 100vh;
-  width: 100vw; /* Using viewport width to ensure full width coverage */
-  height: auto;
-  inset: 0; /* Using inset shorthand for top, right, bottom, left */
+  width: 100%;
+  /* Changed from 100vw to 100% for better cross-browser compatibility */
+  height: 100%;
+  /* Set explicit height to 100% */
+  inset: 0;
+  /* Using inset shorthand for top, right, bottom, left */
   z-index: 0;
+  overflow-y: auto;
+  /* Add scrolling capability for content */
   /* Ensure content area has enough space */
   padding-bottom: 5rem;
   /* Enhanced container for jobs content with better spacing */
@@ -3264,4 +3270,4 @@ body {
     background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
-}/*# sourceMappingURL=main.css.map */
+}
