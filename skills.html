@@ -3,23 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="dark" />
     <title>Skills | Aryan Dani</title>
     <meta name="description" content="Aryan Dani's technical skills and expertise in programming, web development, and artificial intelligence." />
+    <meta name="author" content="Aryan Dani" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Skills | Aryan Dani" />
+    <meta property="og:description" content="Aryan Dani's technical skills and expertise in programming, web development, and artificial intelligence." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aryandani.github.io/skills.html" />
     
     <!-- Resource hints for faster loading -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="dns-prefetch" href="//kit.fontawesome.com" />
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
-    <link rel="preconnect" href="//fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="//kit.fontawesome.com" crossorigin />
-    <link rel="preconnect" href="//cdn.jsdelivr.net" crossorigin />
-    
-    <!-- Prefetch navigation for likely user paths -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+      <!-- Prefetch navigation for likely user paths -->
     <link rel="prefetch" href="index.html" />
     <link rel="prefetch" href="projects.html" />
+    <link rel="prefetch" href="about.html" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="Images/favicon.ico" sizes="any" />
+    <link rel="icon" href="Images/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.json" />
     
     <!-- Priority stylesheet loading with preload -->
-    <link rel="preload" href="SCSS/main.css" as="style">
+    <link rel="preload" href="SCSS/main.css" as="style" />
     
     <!-- Main CSS -->
     <link rel="stylesheet" href="SCSS/main.css" />
@@ -579,30 +595,29 @@
         </div>
         
       </section>
-    </main>
-    <footer class="footer">
+    </main>    <footer class="footer">
       <a href="copyright.html" class="copyright-link">&copy; 2025 Aryan Dani All Rights Reserved</a>
     </footer>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-    <script src="Js/main.js"></script>
-    <script src="Js/performance.js"></script>
-    <script
-      src="https://kit.fontawesome.com/1267cf2b7d.js"
-      crossorigin="anonymous"></script>
+    <!-- Load non-critical scripts with defer and optimal order -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" defer></script>
+    <script src="Js/main.js" defer></script>
+    <script src="Js/performance.js" defer></script>
+    <script src="https://kit.fontawesome.com/1267cf2b7d.js" crossorigin="anonymous" defer></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"></script>
-      
-    <!-- Initialize Particles.js with optimized settings -->
+      crossorigin="anonymous" 
+      defer></script>
+        <!-- Initialize Particles.js with optimized settings -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        if (document.getElementById('particles-js')) {
+      // Use requestIdleCallback or fallback to setTimeout for non-critical initialization
+      const initParticles = () => {
+        if (document.getElementById('particles-js') && window.particlesJS) {
           particlesJS('particles-js', {
             "particles": {
               "number": {
-                "value": 40, // Reduced from 80
+                "value": 30, // Further reduced for better performance
                 "density": {
                   "enable": true,
                   "value_area": 800
@@ -642,12 +657,12 @@
                 "enable": true,
                 "distance": 150,
                 "color": "#f0f8ff",
-                "opacity": 0.3, // Reduced from 0.4
+                "opacity": 0.2, // Further reduced for better performance
                 "width": 1
               },
               "move": {
                 "enable": true,
-                "speed": 1.5, // Reduced from 2
+                "speed": 1, // Further reduced for better performance
                 "direction": "none",
                 "random": false,
                 "straight": false,
@@ -677,7 +692,7 @@
                 "grab": {
                   "distance": 140,
                   "line_linked": {
-                    "opacity": 0.8
+                    "opacity": 0.5
                   }
                 },
                 "bubble": {
@@ -692,15 +707,25 @@
                   "duration": 0.4
                 },
                 "push": {
-                  "particles_nb": 3 // Reduced from 4
+                  "particles_nb": 2 // Further reduced for better performance
                 },
                 "remove": {
                   "particles_nb": 2
                 }
               }
             },
-            "retina_detect": false // Changed to false to improve performance
+            "retina_detect": false // Disabled for better performance
           });
+        }
+      };
+
+      // Initialize particles when page is fully loaded and idle
+      document.addEventListener('DOMContentLoaded', function() {
+        // Use requestIdleCallback for modern browsers or fallback to setTimeout
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => initParticles(), { timeout: 2000 });
+        } else {
+          setTimeout(initParticles, 1000);
         }
       });
     </script>
