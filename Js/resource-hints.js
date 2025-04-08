@@ -56,7 +56,6 @@
 		criticalCSS.forEach((url) => {
 			preloadAsset(url, "style");
 		});
-
 		// Page-specific critical assets
 		if (currentPath.includes("index.html") || currentPath.endsWith("/")) {
 			// Home page
@@ -64,7 +63,7 @@
 			preloadAsset("/Images/Header_Phone.jpg", "image", "(max-width: 500px)");
 		} else if (currentPath.includes("projects.html")) {
 			// Projects page - preload first project image
-			preloadAsset("/Images/projects/project-1.jpg", "image");
+			preloadAsset("/Images/Home_Page.jpg", "image");
 		} else if (currentPath.includes("skills.html")) {
 			// Skills page has skill cards that could benefit from preloaded icons
 			preloadAsset("https://kit.fontawesome.com/1267cf2b7d.js", "script");
