@@ -1,367 +1,384 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Certificates | Aryan Dani</title>
-    <meta name="description" content="View Aryan Dani's professional certifications and credentials in web development, data science, and AI engineering." />
-    
-    <!-- Resource hints for faster loading -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="//kit.fontawesome.com" />
-    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    
-    <!-- Prefetch navigation for likely user paths -->
-    <link rel="prefetch" href="index.html" />
-    <link rel="prefetch" href="skills.html" />
-    
-    <!-- Priority stylesheet loading with preload -->
-    <link rel="preload" href="SCSS/main.css" as="style">
-    
-    <!-- Main CSS -->
-<link
-rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="SCSS/main.css" />
-    
-    <!-- Minimal necessary inline styles that don't override SCSS -->
-    <style>
-      /* Progress indicator styles */
-      .scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 3px;
-        background-color: rgba(240, 248, 255, 0.8);
-        z-index: 9999;
-        width: 0%;
-      }
-      
-      /* Animation triggers for JS to use */
-      .animate-on-scroll {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-      }
-      
-      .animate-on-scroll.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Progress indicator -->
-    <div class="scroll-progress"></div>
-    
-    <!-- Toast Notifications Container -->
-    <div class="toast-container">
-      <!-- Toasts will be added dynamically here -->
-    </div>
-    
-    <!-- Particles Background -->
-    <div id="particles-js"></div>
-    
-    <header>
-      <div class="menu-btn">
-        <span class="menu-btn__burger"></span>
-        <span class="menu-toggle-shortcut">Alt+M</span>
-      </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Certificates | Aryan Dani</title>
+		<meta
+			name="description"
+			content="View Aryan Dani's professional certifications and credentials in web development, data science, and AI engineering." />
 
-      <nav class="nav">
-        <ul class="menu-nav">
-          <li class="menu-nav__item">
-            <a href="index.html" class="menu-nav__link">Home</a>
-          </li>
-          <li class="menu-nav__item">
-            <a href="jobs.html" class="menu-nav__link">Jobs</a>
-          </li>
-          <li class="menu-nav__item">
-            <a href="projects.html" class="menu-nav__link">My Projects</a>
-          </li>
-          <li class="menu-nav__item active">
-            <a href="certification.html" class="menu-nav__link">Certifications</a>
-          </li>
-          <li class="menu-nav__item">
-            <a href="skills.html" class="menu-nav__link">Skills</a>
-          </li>
-          <li class="menu-nav__item">
-            <a href="about.html" class="menu-nav__link">About Me</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <section class="certification">
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <h2 id="heading">My Certificates 🏆</h2>
-              <p>
-                Welcome to my digital trophy cabinet "Yes, I actually did that."
-                This is where my collection of shiny badges and fancy titles
-                lives—proof that I’ve clicked Next Lesson more times than I care
-                to admit. These certifications cover everything and each one
-                tells a story — mostly of me battling video lectures, dodging
-                the MCQ quizzes, and occasionally yelling at my screen, “WHY
-                WON’T YOU RUN?!” Think of this section as my résumé’s cooler,
-                funnier cousin—less formal, more "look what I can do!" version.
-                Browse away, and remember: behind every certificate is a lot of
-                tea and questionable life choices. Take a look, and don't be shy
-                to ask if I accept tips in snacks or compliments!
-              </p>
-            </div>
-          </div>
-          <!-- First Row of Certificate Cards -->
-          <div
-            class="row row-cols-1 row-cols-md-3 gx-4 gy-0 justify-content-around"
-            data-masonry='{"percentPosition": true }'>
-            <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
-              <div class="certificate-content animate-on-scroll">
-                <h2 class="text-secondary">JAN 2025</h2>
-                <h3>IBM Data Science Professional Certificate</h3>
-                <div class="certificate-links">
-                  <a
-                    href="https://coursera.org/share/86040f43745391bb89e3fa8fe317d86f"
-                    target="_blank"
-                    class="certificate-link">
-                    <i class="fas fa-eye"></i> View Certificate
-                  </a>
-                </div>
-                <p>
-                  A 12-course series by IBM covering Python programming, data
-                  analysis, visualization, SQL, and machine learning. This
-                  program included hands-on projects and a capstone project,
-                  equipping me with the skills to analyze and derive insights
-                  from real-world data while building a strong foundation in
-                  data science tools and techniques.
-                </p>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
-              <div class="certificate-content animate-on-scroll">
-                <h2 class="text-secondary">JAN 2025</h2>
-                <h3>Responsive Web Design</h3>
-                <div class="certificate-links">
-                  <a
-                    href="https://www.freecodecamp.org/certification/twofaced/responsive-web-design"
-                    target="_blank"
-                    class="certificate-link">
-                    <i class="fas fa-eye"></i> View Certificate
-                  </a>
-                </div>
-                <p>
-                  Earned the Responsive Web Design Certification from
-                  freeCodeCamp by completing over 300 hours of coursework.
-                  Developed expertise in HTML, CSS, and modern web design
-                  principles, including Flexbox, Grid, and responsive layouts.
-                </p>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
-              <div class="certificate-content animate-on-scroll">
-                <h2 class="text-secondary">JAN 2025</h2>
-                <h3>Inspect Rich Documents with Gemini and Multimodal RAG</h3>
-                <div class="certificate-links">
-                  <a
-                    href="https://www.cloudskillsboost.google/public_profiles/c3637b7f-94b4-4e5b-b747-f5929ebcf8a2/badges/13714641?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-shares"
-                    target="_blank"
-                    class="certificate-link">
-                    <i class="fas fa-eye"></i> View Certificate
-                  </a>
-                </div>
-                <p>
-                  I earned my certificate from the "Inspect Rich Documents with
-                  Gemini Multimodality and Multimodal RAG" course, where I dove
-                  into advanced AI techniques for analyzing complex documents. I
-                  learned how to use Google’s Gemini models and
-                  Retrieval-Augmented Generation (RAG) to break down and extract
-                  insights from text, images, and data.
-                </p>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
-              <div class="certificate-content animate-on-scroll">
-                <h2 class="text-secondary">FEB 2025</h2>
-                <h3>Career Essentials in GitHub Professional Certificate</h3>
-                <div class="certificate-links">
-                  <a
-                    href="https://www.linkedin.com/learning/certificates/39d8a9ca410b5e1276203de44d773b107973c17697b95770dbad4982f816b109?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3B3X9sqfnjT0ymIpfNZdrzLw%3D%3D"
-                    target="_blank"
-                    class="certificate-link">
-                    <i class="fas fa-eye"></i> View Certificate
-                  </a>
-                </div>
-                <p>
-                  I earned my certificate from the "Career Essentials in GitHub
-                  Professional Certificate" program, where I mastered the
-                  fundamentals of version control, repository management, and
-                  team collaboration. From creating branches and reviewing pull
-                  requests to merging changes, I now have a solid grasp of
-                  GitHub’s workflow. This certification validates my ability to
-                  streamline software development and work efficiently on
-                  real-world projects.
-                </p>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
-              <div class="certificate-content animate-on-scroll">
-                <h2 class="text-secondary">DEC 2024</h2>
-                <h3>
-                  Career Essentials in Generative AI by Microsoft and LinkedIn
-                </h3>
-                <div class="certificate-links">
-                  <a
-                    href="https://www.linkedin.com/learning/certificates/b53dace1e572fe2d7b48ee76145ae787c0ca62233f2cba513085689bd314dcc1?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BH2R62%2BJ0RjumKtuczPVNzQ%3D%3D"
-                    target="_blank"
-                    class="certificate-link">
-                    <i class="fas fa-eye"></i> View Certificate
-                  </a>
-                </div>
-                <p>
-                  I earned the "Career Essentials in Generative AI by Microsoft
-                  and LinkedIn" certificate, where I explored advanced AI models
-                  that can create everything from text to images. Through
-                  hands-on labs and real-world examples, I learned how to build
-                  and apply these cutting-edge tools to solve modern challenges.
-                  This certification highlights my ability to harness generative
-                  AI for innovative solutions in today’s fast-paced tech world.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-    <footer class="footer">
-      <a href="copyright.html" class="copyright-link">&copy; 2025 Aryan Dani All Rights Reserved</a>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" defer></script>
-    <script src="Js/main.js" defer></script>
-    <script src="Js/performance.js" defer></script>
-    <script
-      src="https://kit.fontawesome.com/1267cf2b7d.js"
-      crossorigin="anonymous" defer></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous" defer></script>
-      
-    <!-- Initialize Particles.js -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        if (document.getElementById('particles-js')) {
-          particlesJS('particles-js', {
-            "particles": {
-              "number": {
-                "value": 80,
-                "density": {
-                  "enable": true,
-                  "value_area": 800
-                }
-              },
-              "color": {
-                "value": "#f0f8ff"
-              },
-              "shape": {
-                "type": "circle",
-                "stroke": {
-                  "width": 0,
-                  "color": "#000000"
-                }
-              },
-              "opacity": {
-                "value": 0.5,
-                "random": false,
-                "anim": {
-                  "enable": false,
-                  "speed": 1,
-                  "opacity_min": 0.1,
-                  "sync": false
-                }
-              },
-              "size": {
-                "value": 3,
-                "random": true,
-                "anim": {
-                  "enable": false,
-                  "speed": 40,
-                  "size_min": 0.1,
-                  "sync": false
-                }
-              },
-              "line_linked": {
-                "enable": true,
-                "distance": 150,
-                "color": "#f0f8ff",
-                "opacity": 0.4,
-                "width": 1
-              },
-              "move": {
-                "enable": true,
-                "speed": 2,
-                "direction": "none",
-                "random": false,
-                "straight": false,
-                "out_mode": "out",
-                "bounce": false,
-                "attract": {
-                  "enable": false,
-                  "rotateX": 600,
-                  "rotateY": 1200
-                }
-              }
-            },
-            "interactivity": {
-              "detect_on": "canvas",
-              "events": {
-                "onhover": {
-                  "enable": true,
-                  "mode": "grab"
-                },
-                "onclick": {
-                  "enable": true,
-                  "mode": "push"
-                },
-                "resize": true
-              },
-              "modes": {
-                "grab": {
-                  "distance": 140,
-                  "line_linked": {
-                    "opacity": 1
-                  }
-                },
-                "bubble": {
-                  "distance": 400,
-                  "size": 40,
-                  "duration": 2,
-                  "opacity": 8,
-                  "speed": 3
-                },
-                "repulse": {
-                  "distance": 200,
-                  "duration": 0.4
-                },
-                "push": {
-                  "particles_nb": 4
-                },
-                "remove": {
-                  "particles_nb": 2
-                }
-              }
-            },
-            "retina_detect": true
-          });
-        }
-      });
-    </script>
-  </body>
+		<!-- Resource hints for faster loading -->
+		<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+		<link rel="dns-prefetch" href="//kit.fontawesome.com" />
+		<link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+		<link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+
+		<!-- Prefetch navigation for likely user paths -->
+		<link rel="prefetch" href="index.html" />
+		<link rel="prefetch" href="skills.html" />
+
+		<!-- Priority stylesheet loading with preload -->
+		<link rel="preload" href="SCSS/main.css" as="style" />
+
+		<!-- Main CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="SCSS/main.css" />
+
+		<!-- Minimal necessary inline styles that don't override SCSS -->
+		<style>
+			/* Progress indicator styles */
+			.scroll-progress {
+				position: fixed;
+				top: 0;
+				left: 0;
+				height: 3px;
+				background-color: rgba(240, 248, 255, 0.8);
+				z-index: 9999;
+				width: 0%;
+			}
+
+			/* Animation triggers for JS to use */
+			.animate-on-scroll {
+				opacity: 0;
+				transform: translateY(20px);
+				transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+			}
+
+			.animate-on-scroll.visible {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Progress indicator -->
+		<div class="scroll-progress"></div>
+
+		<!-- Toast Notifications Container -->
+		<div class="toast-container">
+			<!-- Toasts will be added dynamically here -->
+		</div>
+
+		<!-- Particles Background -->
+		<div id="particles-js"></div>
+
+		<header>
+			<div class="menu-btn">
+				<span class="menu-btn__burger"></span>
+				<span class="menu-toggle-shortcut">Alt+M</span>
+			</div>
+
+			<nav class="nav">
+				<ul class="menu-nav">
+					<li class="menu-nav__item">
+						<a href="index.html" class="menu-nav__link">Home</a>
+					</li>
+					<li class="menu-nav__item">
+						<a href="jobs.html" class="menu-nav__link">Jobs</a>
+					</li>
+					<li class="menu-nav__item">
+						<a href="projects.html" class="menu-nav__link">My Projects</a>
+					</li>
+					<li class="menu-nav__item active">
+						<a href="certification.html" class="menu-nav__link"
+							>Certifications</a
+						>
+					</li>
+					<li class="menu-nav__item">
+						<a href="skills.html" class="menu-nav__link">Skills</a>
+					</li>
+					<li class="menu-nav__item">
+						<a href="about.html" class="menu-nav__link">About Me</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<section class="certification">
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+							<h2 id="heading">My Certificates 🏆</h2>
+							<p>
+								Welcome to my digital trophy cabinet "Yes, I actually did that."
+								This is where my collection of shiny badges and fancy titles
+								lives—proof that I’ve clicked Next Lesson more times than I care
+								to admit. These certifications cover everything and each one
+								tells a story — mostly of me battling video lectures, dodging
+								the MCQ quizzes, and occasionally yelling at my screen, “WHY
+								WON’T YOU RUN?!” Think of this section as my résumé’s cooler,
+								funnier cousin—less formal, more "look what I can do!" version.
+								Browse away, and remember: behind every certificate is a lot of
+								tea and questionable life choices. Take a look, and don't be shy
+								to ask if I accept tips in snacks or compliments!
+							</p>
+						</div>
+					</div>
+					<!-- First Row of Certificate Cards -->
+					<div
+						class="row row-cols-1 row-cols-md-3 gx-4 gy-0 justify-content-around"
+						data-masonry='{"percentPosition": true }'>
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+							<div class="certificate-content animate-on-scroll">
+								<h2 class="text-secondary">JAN 2025</h2>
+								<h3>IBM Data Science Professional Certificate</h3>
+								<div class="certificate-links">
+									<a
+										href="https://coursera.org/share/86040f43745391bb89e3fa8fe317d86f"
+										target="_blank"
+										class="certificate-link">
+										<i class="fas fa-eye"></i> View Certificate
+									</a>
+								</div>
+								<p>
+									A 12-course series by IBM covering Python programming, data
+									analysis, visualization, SQL, and machine learning. This
+									program included hands-on projects and a capstone project,
+									equipping me with the skills to analyze and derive insights
+									from real-world data while building a strong foundation in
+									data science tools and techniques.
+								</p>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+							<div class="certificate-content animate-on-scroll">
+								<h2 class="text-secondary">JAN 2025</h2>
+								<h3>Responsive Web Design</h3>
+								<div class="certificate-links">
+									<a
+										href="https://www.freecodecamp.org/certification/twofaced/responsive-web-design"
+										target="_blank"
+										class="certificate-link">
+										<i class="fas fa-eye"></i> View Certificate
+									</a>
+								</div>
+								<p>
+									Earned the Responsive Web Design Certification from
+									freeCodeCamp by completing over 300 hours of coursework.
+									Developed expertise in HTML, CSS, and modern web design
+									principles, including Flexbox, Grid, and responsive layouts.
+								</p>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+							<div class="certificate-content animate-on-scroll">
+								<h2 class="text-secondary">JAN 2025</h2>
+								<h3>Inspect Rich Documents with Gemini and Multimodal RAG</h3>
+								<div class="certificate-links">
+									<a
+										href="https://www.cloudskillsboost.google/public_profiles/c3637b7f-94b4-4e5b-b747-f5929ebcf8a2/badges/13714641?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-shares"
+										target="_blank"
+										class="certificate-link">
+										<i class="fas fa-eye"></i> View Certificate
+									</a>
+								</div>
+								<p>
+									I earned my certificate from the "Inspect Rich Documents with
+									Gemini Multimodality and Multimodal RAG" course, where I dove
+									into advanced AI techniques for analyzing complex documents. I
+									learned how to use Google’s Gemini models and
+									Retrieval-Augmented Generation (RAG) to break down and extract
+									insights from text, images, and data.
+								</p>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+							<div class="certificate-content animate-on-scroll">
+								<h2 class="text-secondary">FEB 2025</h2>
+								<h3>Career Essentials in GitHub Professional Certificate</h3>
+								<div class="certificate-links">
+									<a
+										href="https://www.linkedin.com/learning/certificates/39d8a9ca410b5e1276203de44d773b107973c17697b95770dbad4982f816b109?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3B3X9sqfnjT0ymIpfNZdrzLw%3D%3D"
+										target="_blank"
+										class="certificate-link">
+										<i class="fas fa-eye"></i> View Certificate
+									</a>
+								</div>
+								<p>
+									I earned my certificate from the "Career Essentials in GitHub
+									Professional Certificate" program, where I mastered the
+									fundamentals of version control, repository management, and
+									team collaboration. From creating branches and reviewing pull
+									requests to merging changes, I now have a solid grasp of
+									GitHub’s workflow. This certification validates my ability to
+									streamline software development and work efficiently on
+									real-world projects.
+								</p>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+							<div class="certificate-content animate-on-scroll">
+								<h2 class="text-secondary">DEC 2024</h2>
+								<h3>
+									Career Essentials in Generative AI by Microsoft and LinkedIn
+								</h3>
+								<div class="certificate-links">
+									<a
+										href="https://www.linkedin.com/learning/certificates/b53dace1e572fe2d7b48ee76145ae787c0ca62233f2cba513085689bd314dcc1?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BH2R62%2BJ0RjumKtuczPVNzQ%3D%3D"
+										target="_blank"
+										class="certificate-link">
+										<i class="fas fa-eye"></i> View Certificate
+									</a>
+								</div>
+								<p>
+									I earned the "Career Essentials in Generative AI by Microsoft
+									and LinkedIn" certificate, where I explored advanced AI models
+									that can create everything from text to images. Through
+									hands-on labs and real-world examples, I learned how to build
+									and apply these cutting-edge tools to solve modern challenges.
+									This certification highlights my ability to harness generative
+									AI for innovative solutions in today’s fast-paced tech world.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer class="footer">
+			<a href="copyright.html" class="copyright-link"
+				>&copy; 2025 Aryan Dani All Rights Reserved</a
+			>
+		</footer>
+		<script
+			src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+			defer></script>
+		<script src="Js/main.js" defer></script>
+		<script src="Js/performance.js" defer></script>
+		<script
+			src="https://kit.fontawesome.com/1267cf2b7d.js"
+			crossorigin="anonymous"
+			defer></script>
+		<script
+			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
+			defer></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"
+			defer></script>
+
+		<!-- Initialize Particles.js -->
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				if (document.getElementById("particles-js")) {
+					particlesJS("particles-js", {
+						particles: {
+							number: {
+								value: 80,
+								density: {
+									enable: true,
+									value_area: 800,
+								},
+							},
+							color: {
+								value: "#f0f8ff",
+							},
+							shape: {
+								type: "circle",
+								stroke: {
+									width: 0,
+									color: "#000000",
+								},
+							},
+							opacity: {
+								value: 0.5,
+								random: false,
+								anim: {
+									enable: false,
+									speed: 1,
+									opacity_min: 0.1,
+									sync: false,
+								},
+							},
+							size: {
+								value: 3,
+								random: true,
+								anim: {
+									enable: false,
+									speed: 40,
+									size_min: 0.1,
+									sync: false,
+								},
+							},
+							line_linked: {
+								enable: true,
+								distance: 150,
+								color: "#f0f8ff",
+								opacity: 0.4,
+								width: 1,
+							},
+							move: {
+								enable: true,
+								speed: 2,
+								direction: "none",
+								random: false,
+								straight: false,
+								out_mode: "out",
+								bounce: false,
+								attract: {
+									enable: false,
+									rotateX: 600,
+									rotateY: 1200,
+								},
+							},
+						},
+						interactivity: {
+							detect_on: "canvas",
+							events: {
+								onhover: {
+									enable: true,
+									mode: "grab",
+								},
+								onclick: {
+									enable: true,
+									mode: "push",
+								},
+								resize: true,
+							},
+							modes: {
+								grab: {
+									distance: 140,
+									line_linked: {
+										opacity: 1,
+									},
+								},
+								bubble: {
+									distance: 400,
+									size: 40,
+									duration: 2,
+									opacity: 8,
+									speed: 3,
+								},
+								repulse: {
+									distance: 200,
+									duration: 0.4,
+								},
+								push: {
+									particles_nb: 4,
+								},
+								remove: {
+									particles_nb: 2,
+								},
+							},
+						},
+						retina_detect: true,
+					});
+				}
+			});
+		</script>
+
+		<!-- Resource hints optimization -->
+		<script src="Js/resource-hints.js" defer></script>
+	</body>
 </html>

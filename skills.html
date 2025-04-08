@@ -725,9 +725,11 @@
         if ('requestIdleCallback' in window) {
           requestIdleCallback(() => initParticles(), { timeout: 2000 });
         } else {
-          setTimeout(initParticles, 1000);
-        }
+          setTimeout(initParticles, 1000);        }
       });
     </script>
+    
+    <!-- Resource hints optimization -->
+    <script src="Js/resource-hints.js" defer></script>
   </body>
 </html>
