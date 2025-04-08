@@ -1863,7 +1863,7 @@ footer:hover::before {
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px), radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 30px 30px, 25px 25px;
   background-position: 0 0, 15px 15px;
-  animation: gradientBackground 20s ease infinite;
+  animation: gradientShift 20s ease infinite;
   z-index: 0;
   pointer-events: none;
 }
@@ -1919,6 +1919,9 @@ footer:hover::before {
   transform: translateY(-5px) scale(1.01);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
+.certification .col-xl-4, .certification .col-md-4, .certification .col-sm-12 {
+  padding-bottom: 45px;
+}
 .certification .certificate-content {
   background-color: aliceblue;
   border-radius: 8px;
@@ -1931,7 +1934,8 @@ footer:hover::before {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   overflow: hidden;
-  margin-bottom: 25px;
+  margin-bottom: 0;
+  height: 100%;
 }
 .certification .certificate-content::before {
   content: "";
@@ -2062,6 +2066,21 @@ footer:hover::before {
   --cert-index: 10;
 }
 
+.row[data-masonry] .col-xl-4, .row[data-masonry] .col-md-4, .row[data-masonry] .col-sm-12 {
+  margin-bottom: 15px;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
 html {
   font-size: 16px;
 }
@@ -3270,4 +3289,4 @@ body {
     background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
-}
+}/*# sourceMappingURL=main.css.map */

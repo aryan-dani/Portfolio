@@ -16,7 +16,7 @@
       radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 30px 30px, 25px 25px;
     background-position: 0 0, 15px 15px;
-    animation: gradientBackground 20s ease infinite;
+    animation: gradientShift 20s ease infinite;
     z-index: 0;
     pointer-events: none;
   }
@@ -78,6 +78,11 @@
     }
   }
 
+  // Certificate card container
+  .col-xl-4, .col-md-4, .col-sm-12 {
+    padding-bottom: 45px; // Add fixed padding to each column
+  }
+
   .certificate-content {
     background-color: $secondary-color;
     border-radius: 8px;
@@ -90,7 +95,8 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
-    margin-bottom: 25px;
+    margin-bottom: 0; // Remove margin from cards themselves
+    height: 100%; // Make cards fill the column height
     
     // Glass morphism effect
     &::before {
@@ -208,5 +214,25 @@
 @for $i from 1 through 10 {
   .certificate-content:nth-child(#{$i + 3}) {
     --cert-index: #{$i};
+  }
+}
+
+// Fix for Masonry layout spacing
+.row[data-masonry] {
+  .col-xl-4, .col-md-4, .col-sm-12 {
+    margin-bottom: 15px; // Add consistent margin to columns
+  }
+}
+
+// Add keyframes for the animation
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
   }
 }
