@@ -52,6 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Initialize viewport-aware content loading
 	initViewportAwareLoading();
+
+	// Apply reduced motion preferences
+	applyReducedMotionPreferences();
 });
 
 /**
@@ -1155,4 +1158,68 @@ function processTemplate(template, data) {
 	}
 
 	return result;
+}
+
+/**
+ * Apply reduced motion settings based on user preference
+ */
+function applyReducedMotionPreferences() {
+	// Check if user prefers reduced motion
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	
+	if (prefersReducedMotion) {
+		// Apply reduced motion settings to the entire document
+		document.documentElement.classList.add('reduced-motion');
+		
+		// Create a style element to add reduced-motion styles
+		const style = document.createElement('style');
+		style.textContent = `
+			/* Apply reduced animations when user prefers reduced motion */
+			.reduced-motion * {
+				animation-duration: 0.001ms !important;
+				transition-duration: 0.001ms !important;
+				animation-iteration-count: 1 !important;
+			}
+			
+			/* Special cases for essential animations */
+			.reduced-motion .typing-cursor {
+				animation: none !important;
+			}
+			
+			/* Disable parallax effects */
+			.reduced-motion .home,
+			.reduced-motion .about, 
+			.reduced-motion .jobs-layout, 
+			.reduced-motion .project__project-image {
+				background-attachment: scroll !important;
+			}
+			
+			/* Disable 3D effects */
+			.reduced-motion .skills__card,
+			.reduced-motion .certificate-content {
+				transform: none !important;
+			}
+		`;
+		document.head.appendChild(style);
+		
+		// Show a toast notification to inform the user
+		if (typeof showToast === 'function') {
+			setTimeout(() => {
+				showToast(
+					'Reduced Motion Enabled',
+					'Animations have been minimized for better accessibility',
+					'fa-solid fa-universal-access'
+				);
+			}, 2000);
+		}
+	}
+	
+	// Listen for changes to the prefers-reduced-motion media query
+	window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', e => {
+		if (e.matches) {
+			document.documentElement.classList.add('reduced-motion');
+		} else {
+			document.documentElement.classList.remove('reduced-motion');
+		}
+	});
 }

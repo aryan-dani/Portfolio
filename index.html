@@ -226,7 +226,7 @@
 		<script
 			src="https://kit.fontawesome.com/1267cf2b7d.js"
 			crossorigin="anonymous"
-			async></script>
+			defer></script>
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -263,6 +263,22 @@
 						})
 						.catch((error) => {
 							console.error("Service Worker registration failed:", error);
+							// More comprehensive error handling
+							const errorMessage = error.message || "Unknown error";
+							if (typeof showToast === "function") {
+								showToast(
+									"Service Worker Error",
+									`Registration failed: ${errorMessage}`,
+									"fa-solid fa-exclamation-triangle"
+								);
+							}
+							// Try again with a timeout if it was a network error
+							if (error.name === 'NetworkError') {
+								setTimeout(() => {
+									navigator.serviceWorker.register("/service-worker.js")
+										.catch(e => console.error("Retry failed:", e));
+								}, 3000);
+							}
 						});
 				});
 			}

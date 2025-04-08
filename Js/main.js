@@ -25,12 +25,12 @@ function toggleMenu() {
         document.body.classList.add('menu-open');
         
         // Animate menu items in the original order
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             menuNav.style.opacity = '1';
             
             // Add open class to all menu items - CSS will handle the animation timing
             navItems.forEach(item => item.classList.add('open'));
-        }, 50);
+        }, 50, 'menuOpenAnimation');
         
         showMenu = true;
     } else {
@@ -44,18 +44,18 @@ function toggleMenu() {
         document.body.classList.remove('menu-open');
         
         // Then after a short delay, close the menu
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             hamburger.classList.remove('open');
             nav.classList.remove('open');
             menuNav.classList.remove('open');
             
             // Hide menu after animation completes
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 if (!showMenu) { // Check again in case menu was reopened
                     nav.style.visibility = 'hidden';
                 }
-            }, 300);
-        }, 100);
+            }, 300, 'menuHideAnimation');
+        }, 100, 'menuCloseAnimation');
         
         showMenu = false;
     }
@@ -123,16 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(loader);
         
         // Show loader for a minimum time to avoid flashing
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             loader.classList.add('loaded');
             
             // Remove from DOM after transition completes
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 if (loader.parentNode) {
                     loader.parentNode.removeChild(loader);
                 }
-            }, 500);
-        }, 800); // Show for at least 800ms
+            }, 500, 'loaderRemove');
+        }, 800, 'loaderShow');
     }
     
     // Add header background on scroll
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add welcome toast based on page - but only on first visit
     // Delay increased to 1200ms to ensure it appears after social icons start animating
-    setTimeout(() => {
+    setTrackedTimeout(() => {
         // Only show welcome toasts on first visit to each page
         if (checkFirstTimeVisit(pageName)) {
             if (isHomePage) {
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('About Me', 'Get to know me better', 'fa-solid fa-user');
             }
         }
-    }, 1200);
+    }, 1200, 'welcomeToast');
     
     // Continue with the rest of the initialization
     initPageTransition();
@@ -203,6 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize modern menu
     initModernMenu();
+    
+    // Update copyright year dynamically
+    updateCopyrightYear();
+    
+    // Initialize keyboard navigation detection
+    detectKeyboardNavigation();
 });
 
 // Smooth page transitions
@@ -213,10 +219,39 @@ function initPageTransition() {
         main.style.transform = 'translateY(20px)';
         main.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
         
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             main.style.opacity = '1';
             main.style.transform = 'translateY(0)';
-        }, 100);
+        }, 100, 'pageTransition');
+    }
+}
+
+// Store timeouts for proper cleanup
+const timeoutMap = new Map();
+
+// Set a tracked timeout that can be cleared later
+function setTrackedTimeout(callback, delay, id) {
+    // Clear any existing timeout with this ID
+    clearTrackedTimeout(id);
+    
+    // Create a new timeout and store its ID
+    const timeoutId = setTimeout(() => {
+        // Remove from map once executed
+        timeoutMap.delete(id);
+        callback();
+    }, delay);
+    
+    // Store in our map
+    timeoutMap.set(id, timeoutId);
+    
+    return timeoutId;
+}
+
+// Clear a tracked timeout
+function clearTrackedTimeout(id) {
+    if (timeoutMap.has(id)) {
+        clearTimeout(timeoutMap.get(id));
+        timeoutMap.delete(id);
     }
 }
 
@@ -387,16 +422,16 @@ function prepareHomeAnimations() {
             ctaButton.appendChild(ripple);
             
             // Animate the ripple
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 ripple.style.width = '300px';
                 ripple.style.height = '300px';
                 ripple.style.opacity = '0';
-            }, 10);
+            }, 10, 'ctaRippleExpand');
             
             // Remove ripple after animation
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 ripple.remove();
-            }, 600);
+            }, 600, 'ctaRippleRemove');
         });
     }
 }
@@ -416,7 +451,7 @@ function executeHomeAnimationSequence() {
     const name = document.querySelector('.home__name');
     if (name) {
         requestAnimationFrame(() => {
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 name.style.opacity = '1';
                 name.style.transform = isLowPowerDevice ? 
                     'translateY(0)' : 
@@ -424,19 +459,19 @@ function executeHomeAnimationSequence() {
                 name.style.textShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
                 
                 // Add enhanced hover effect after animation completes
-                setTimeout(() => {
+                setTrackedTimeout(() => {
                     addNameHoverEffect(name, isLowPowerDevice);
-                }, 300);
-            }, 0);
+                }, 300, 'nameHoverEffect');
+            }, 0, 'nameAnimation');
         });
     }
     
     // 2. Start subtitle typing animation (delay 500ms)
     const subtitle = document.querySelector('.home h2');
     if (subtitle) {
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             startTypingAnimation(subtitle);
-        }, 500);
+        }, 500, 'subtitleTyping');
     }
     
     // 3. Animate individual social icons with elegant sequential reveal
@@ -444,7 +479,7 @@ function executeHomeAnimationSequence() {
     if (socialIcons.length > 0) {
         socialIcons.forEach((icon, index) => {
             // Enhanced staggered animation with choreographed timing
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 // First animate the container position
                 icon.style.opacity = '1';
                 icon.style.transform = 'translateX(0)';
@@ -452,41 +487,41 @@ function executeHomeAnimationSequence() {
                 // Then animate the icon with a slight delay
                 const iconElement = icon.querySelector('i');
                 if (iconElement) {
-                    setTimeout(() => {
+                    setTrackedTimeout(() => {
                         iconElement.style.opacity = '1';
                         iconElement.style.transform = 'scale(1.2)';
                         
                         // Return to normal scale with a bounce effect
-                        setTimeout(() => {
+                        setTrackedTimeout(() => {
                             iconElement.style.transform = 'scale(1)';
-                        }, 150);
-                    }, 100);
+                        }, 150, `iconBounceEffect-${index}`);
+                    }, 100, `iconExpandEffect-${index}`);
                 }
                 
                 // Finally reveal the text with another slight delay
                 const textElement = icon.querySelector('a span, a');
                 if (textElement) {
-                    setTimeout(() => {
+                    setTrackedTimeout(() => {
                         textElement.style.opacity = '1';
                         textElement.style.transform = 'translateX(0)';
-                    }, 200);
+                    }, 200, `textRevealEffect-${index}`);
                 }
                 
                 // Add hover effect after animation completes
-                setTimeout(() => {
+                setTrackedTimeout(() => {
                     addIconHoverEffect(icon);
-                }, 350);
-            }, 1000 + (index * 300)); // Longer 200ms stagger for more noticeable sequence
+                }, 350, `iconHoverEffect-${index}`);
+            }, 1000 + (index * 300), `iconAnimation-${index}`); // Longer 200ms stagger for more noticeable sequence
         });
     }
     
     // 4. Animate CTA button (delay 1300ms - after all social icons)
     const ctaButton = document.querySelector('.home .cta-button');
     if (ctaButton) {
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             ctaButton.style.opacity = '1';
             ctaButton.style.transform = 'translateY(0)';
-        }, socialIcons.length * 200 + 1200); // Dynamic timing based on number of social icons
+        }, socialIcons.length * 200 + 1200, 'ctaButtonAnimation'); // Dynamic timing based on number of social icons
     }
     
     // 5. Initialize background parallax for home section
@@ -520,7 +555,7 @@ function startTypingAnimation(subtitle) {
     void animContainer.offsetWidth;
     
     // Restore the transition for smooth animations during typing
-    setTimeout(() => {
+    setTrackedTimeout(() => {
         animContainer.style.transition = 'width 0.05s ease-out';
         
         // Start the letter-by-letter typing sequence
@@ -545,18 +580,18 @@ function startTypingAnimation(subtitle) {
                 charIndex++;
                 
                 // Schedule typing of next character with a visible delay
-                setTimeout(typeNextChar, typingDelay);
+                setTrackedTimeout(typeNextChar, typingDelay, `typingChar-${charIndex}`);
             } else {
                 // Animation complete - keep cursor blinking for a while then hide it
-                setTimeout(() => {
+                setTrackedTimeout(() => {
                     if (cursor) cursor.style.display = 'none';
-                }, 2000);
+                }, 2000, 'cursorHide');
             }
         }
         
         // Start typing the first character
         typeNextChar();
-    }, 50);
+    }, 50, 'typingStart');
 }
 
 // Add hover effect to name element
@@ -650,16 +685,16 @@ function addIconHoverEffect(icon) {
         iconClone.appendChild(ripple);
         
         // Animate the ripple
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             ripple.style.width = '100px';
             ripple.style.height = '100px';
             ripple.style.opacity = '0';
-        }, 10);
+        }, 10, 'iconRippleExpand');
         
         // Remove ripple after animation
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             ripple.remove();
-        }, 400);
+        }, 400, 'iconRippleRemove');
     });
 }
 
@@ -734,10 +769,10 @@ function initJobsPageAnimations() {
         jobsTitle.style.transform = 'translateY(-20px)';
         jobsTitle.style.transition = 'all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
         
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             jobsTitle.style.opacity = '1';
             jobsTitle.style.transform = 'translateY(0)';
-        }, 300);
+        }, 300, 'jobsTitleAnimation');
     }
     
     // Animate job cards with enhanced 3D perspective
@@ -749,10 +784,10 @@ function initJobsPageAnimations() {
             card.style.transform = 'perspective(1000px) rotateX(5deg) translateY(50px)';
             card.style.transition = `all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.3 + index * 0.15}s`;
             
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 card.style.opacity = '1';
                 card.style.transform = 'perspective(1000px) rotateX(0) translateY(0)';
-            }, 300 + index * 150);
+            }, 300 + index * 150, `jobCardAnimation-${index}`);
             
             // Add enhanced 3D hover effect
             add3DHoverEffect(card);
@@ -765,10 +800,10 @@ function initJobsPageAnimations() {
                 item.style.transform = 'translateX(-20px)';
                 item.style.transition = `all 0.5s ease ${0.6 + index * 0.15 + itemIndex * 0.1}s`;
                 
-                setTimeout(() => {
+                setTrackedTimeout(() => {
                     item.style.opacity = '1';
                     item.style.transform = 'translateX(0)';
-                }, 600 + index * 150 + itemIndex * 100);
+                }, 600 + index * 150 + itemIndex * 100, `listItemAnimation-${index}-${itemIndex}`);
             });
         });
     }
@@ -822,10 +857,10 @@ function initProjectsPageAnimations() {
             card.style.transform = 'perspective(1000px) rotateY(10deg) translateZ(-50px)';
             card.style.transition = `all 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.3 + index * 0.1}s`;
             
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 card.style.opacity = '1';
                 card.style.transform = 'perspective(1000px) rotateY(0) translateZ(0)';
-            }, 300 + index * 100);
+            }, 300 + index * 100, `projectCardAnimation-${index}`);
             
             // Add 3D hover effect
             add3DHoverEffect(card);
@@ -840,10 +875,10 @@ function initProjectsPageAnimations() {
         projectHeader.style.transform = 'scale(0.98)';
         projectHeader.style.transition = 'all 1.2s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
         
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             projectHeader.style.opacity = '1';
             projectHeader.style.transform = 'scale(1)';
-        }, 200);
+        }, 200, 'projectHeaderAnimation');
     }
 }
 
@@ -859,10 +894,10 @@ function initCertificationsPageAnimations() {
             card.style.transform = 'perspective(1000px) rotateX(10deg) translateY(50px)';
             card.style.transition = `all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.3 + index * 0.15}s`;
             
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 card.style.opacity = '1';
                 card.style.transform = 'perspective(1000px) rotateX(0) translateY(0)';
-            }, 400 + index * 150);
+            }, 400 + index * 150, `certCardAnimation-${index}`);
             
             // Add 3D hover effect
             add3DHoverEffect(card);
@@ -877,10 +912,10 @@ function initCertificationsPageAnimations() {
         heading.style.transform = 'translateY(-30px)';
         heading.style.transition = 'all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
         
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             heading.style.opacity = '1';
             heading.style.transform = 'translateY(0)';
-        }, 300);
+        }, 300, 'certHeadingAnimation');
     }
 }
 
@@ -896,10 +931,10 @@ function initAboutPageAnimations() {
             element.style.transform = 'translateY(30px)';
             element.style.transition = `all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.3 + index * 0.1}s`;
             
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 element.style.opacity = '1';
                 element.style.transform = 'translateY(0)';
-            }, 300 + index * 100);
+            }, 300 + index * 100, `aboutElementAnimation-${index}`);
         });
     }
     
@@ -927,9 +962,9 @@ function initUniversalAnimations() {
                 main.style.opacity = '0';
                 main.style.transform = 'translateY(-20px)';
                 
-                setTimeout(() => {
+                setTrackedTimeout(() => {
                     window.location.href = link.href;
-                }, 400);
+                }, 400, 'linkTransition');
             } else {
                 window.location.href = link.href;
             }
@@ -1044,10 +1079,10 @@ function initSkillsPageAnimations() {
         skillsHeading.style.transform = 'translateY(20px)';
         skillsHeading.style.transition = 'all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985)';
         
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             skillsHeading.style.opacity = '1';
             skillsHeading.style.transform = 'translateY(0)';
-        }, 300);
+        }, 300, 'skillsHeadingAnimation');
     }
     
     // Initialize VanillaTilt for 3D card hover effect
@@ -1062,12 +1097,12 @@ function initSkillsPageAnimations() {
     }
     
     // Automatically click the "All" tab when the page loads
-    setTimeout(() => {
+    setTrackedTimeout(() => {
         const allTab = document.querySelector('.category-tab[data-category="all"]');
         if (allTab) {
             allTab.click();
         }
-    }, 300);
+    }, 300, 'allTabClick');
     
     // Animate category tabs with staggered fade in
     const categoryTabs = document.querySelectorAll('.category-tab');
@@ -1078,10 +1113,10 @@ function initSkillsPageAnimations() {
             tab.style.transform = 'translateY(20px)';
             tab.style.transition = `all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.4 + index * 0.1}s`;
             
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 tab.style.opacity = '1';
                 tab.style.transform = 'translateY(0)';
-            }, 500 + index * 100);
+            }, 500 + index * 100, `categoryTabAnimation-${index}`);
             
             // Add click event to show relevant skill group
             tab.addEventListener('click', () => {
@@ -1143,11 +1178,11 @@ function initSkillsPageAnimations() {
                     
                     // Show the all skills container with proper spacing
                     allSkillsContainer.classList.add('active', 'active-all');
-                    setTimeout(() => {
+                    setTrackedTimeout(() => {
                         allSkillsContainer.style.opacity = '1';
                         allSkillsContainer.style.transform = 'translateY(0)';
                         animateSkillCards(allSkillsContainer);
-                    }, 100);
+                    }, 100, 'allSkillsContainerAnimation');
                 } else {
                     // Hide the all skills container if it exists
                     const allSkillsContainer = document.getElementById('all-skills');
@@ -1159,13 +1194,13 @@ function initSkillsPageAnimations() {
                     const selectedGroup = document.getElementById(category);
                     if (selectedGroup) {
                         selectedGroup.classList.add('active');
-                        setTimeout(() => {
+                        setTrackedTimeout(() => {
                             selectedGroup.style.opacity = '1';
                             selectedGroup.style.transform = 'translateY(0)';
                             
                             // Animate cards within the active group
                             animateSkillCards(selectedGroup);
-                        }, 100);
+                        }, 100, `selectedGroupAnimation-${category}`);
                     }
                 }
             });
@@ -1175,9 +1210,9 @@ function initSkillsPageAnimations() {
     // Animate skill cards with staggered fadeIn and 3D effect for initial active group
     const activeGroup = document.querySelector('.skills__group.active');
     if (activeGroup) {
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             animateSkillCards(activeGroup);
-        }, 800);
+        }, 800, 'activeGroupAnimation');
     }
     
     // Add interactions for tech stack badges
@@ -1222,9 +1257,9 @@ function initSkillsPageAnimations() {
                 
                 // Add pulse animation
                 element.classList.add('pulse-animation');
-                setTimeout(() => {
+                setTrackedTimeout(() => {
                     element.classList.remove('pulse-animation');
-                }, 1000);
+                }, 1000, 'skillOrbitPulse');
             });
         });
     }
@@ -1251,9 +1286,9 @@ function initSkillsPageAnimations() {
             
             // Add pulse animation
             globeCore.classList.add('globe-pulse');
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 globeCore.classList.remove('globe-pulse');
-            }, 1000);
+            }, 1000, 'globeCorePulse');
         });
     }
     
@@ -1262,7 +1297,7 @@ function initSkillsPageAnimations() {
     
     // Show keyboard shortcut hint only for first-time visitors
     if (isFirstVisit) {
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             const keyboardHint = document.createElement('div');
             keyboardHint.className = 'keyboard-hint';
             keyboardHint.innerHTML = `
@@ -1277,25 +1312,25 @@ function initSkillsPageAnimations() {
             document.body.appendChild(keyboardHint);
             
             // Show hint with animation after a delay
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 const hintElement = keyboardHint.querySelector('div');
                 if (hintElement) {
                     hintElement.style.opacity = '1';
                     
                     // Auto-hide after a while
-                    setTimeout(() => {
+                    setTrackedTimeout(() => {
                         hintElement.style.opacity = '0';
                         
                         // Remove from DOM after fade out
-                        setTimeout(() => {
+                        setTrackedTimeout(() => {
                             if (keyboardHint.parentNode) {
                                 keyboardHint.parentNode.removeChild(keyboardHint);
                             }
-                        }, 500);
-                    }, 5000);
+                        }, 500, 'keyboardHintRemove');
+                    }, 5000, 'keyboardHintHide');
                 }
-            }, 2000);
-        }, 3000);
+            }, 2000, 'keyboardHintShow');
+        }, 3000, 'keyboardHintInit');
     }
 }
 
@@ -1399,11 +1434,11 @@ function showToast(title, message, iconClass) {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(100%)';
         
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             if (toast.parentNode) {
                 toast.parentNode.removeChild(toast);
             }
-        }, 300);
+        }, 300, `toastRemove-${toastId}`);
     };
     
     // Add toast to container
@@ -1420,19 +1455,19 @@ function showToast(title, message, iconClass) {
     toast.style.transform = 'translateX(0)';
     
     // Auto-remove toast after 5 seconds (increased from 4 for better visibility)
-    setTimeout(() => {
+    setTrackedTimeout(() => {
         if (toast && toast.parentNode) {
             toast.style.opacity = '0';
             toast.style.transform = 'translateX(100%)';
             
             // Remove from DOM after animation completes
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 if (toast && toast.parentNode) {
                     toast.remove();
                 }
-            }, 300);
+            }, 300, `toastRemove-${toastId}`);
         }
-    }, 5000);
+    }, 5000, `toastAutoRemove-${toastId}`);
 }
 
 // Initialize progress bars
@@ -1459,13 +1494,13 @@ function animateSkillCards(container) {
                 card.style.transition = `all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.05 + index * 0.05}s`;
                 
                 // Use setTimeout to stagger animations efficiently
-                setTimeout(() => {
+                setTrackedTimeout(() => {
                     card.style.opacity = '1';
                     card.style.transform = 'perspective(1000px) rotateY(0) translateZ(0)';
                     
                     // Add expand card functionality instead of flip
                     addExpandCardEffect(card);
-                }, 150 + index * 50); // Reduced timing for better performance
+                }, 150 + index * 50, `skillCardAnimation-${index}`); // Reduced timing for better performance
             });
         });
     }
@@ -1534,9 +1569,9 @@ function cardClickHandler(e) {
         const progressBar = card.querySelector('.skills__progress-bar');
         if (progressBar) {
             const level = progressBar.getAttribute('data-level');
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 progressBar.style.width = `${level}%`;
-            }, 300);
+            }, 300, `progressBarAnimation-${skillName}`);
         }
     }
 }
@@ -1659,9 +1694,9 @@ function navigateTo(url) {
         main.style.opacity = '0';
         main.style.transform = 'translateY(-20px)';
         
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             window.location.href = url;
-        }, 400);
+        }, 400, 'keyboardNavigation');
     } else {
         window.location.href = url;
     }
@@ -1682,4 +1717,113 @@ function checkFirstTimeVisit(pageName) {
     }
     
     return isFirstVisit;
+}
+
+// Store references to event listeners for proper cleanup
+const eventListeners = new Map();
+
+// Add event listener with proper tracking
+function addTrackedEventListener(element, eventType, handler) {
+    if (!element) return;
+    
+    // Create a wrapper to store in our map
+    const wrappedHandler = (e) => handler(e);
+    
+    // Store reference to the handler
+    if (!eventListeners.has(element)) {
+        eventListeners.set(element, new Map());
+    }
+    
+    const elementListeners = eventListeners.get(element);
+    if (!elementListeners.has(eventType)) {
+        elementListeners.set(eventType, []);
+    }
+    
+    elementListeners.get(eventType).push({
+        original: handler,
+        wrapped: wrappedHandler
+    });
+    
+    // Add the actual event listener
+    element.addEventListener(eventType, wrappedHandler);
+    
+    return wrappedHandler;
+}
+
+// Remove tracked event listener
+function removeTrackedEventListener(element, eventType, handler) {
+    if (!element || !eventListeners.has(element)) return;
+    
+    const elementListeners = eventListeners.get(element);
+    if (!elementListeners.has(eventType)) return;
+    
+    const handlers = elementListeners.get(eventType);
+    const index = handlers.findIndex(h => h.original === handler);
+    
+    if (index !== -1) {
+        const { wrapped } = handlers[index];
+        element.removeEventListener(eventType, wrapped);
+        handlers.splice(index, 1);
+    }
+}
+
+// Cleanup all listeners for an element
+function cleanupElementListeners(element) {
+    if (!element || !eventListeners.has(element)) return;
+    
+    const elementListeners = eventListeners.get(element);
+    elementListeners.forEach((handlers, eventType) => {
+        handlers.forEach(({ wrapped }) => {
+            element.removeEventListener(eventType, wrapped);
+        });
+    });
+    
+    eventListeners.delete(element);
+}
+
+// Update copyright year dynamically across all pages
+function updateCopyrightYear() {
+    const currentYear = new Date().getFullYear();
+    document.querySelectorAll('.copyright-link, footer a[href="copyright.html"]').forEach(el => {
+        if (el.textContent.includes('©')) {
+            el.innerHTML = el.innerHTML.replace(/\d{4}/, currentYear);
+        }
+    });
+}
+
+/**
+ * Detect keyboard navigation to show focus styles appropriately
+ */
+function detectKeyboardNavigation() {
+    // Add class to body when user navigates with keyboard
+    let isUsingKeyboard = false;
+    
+    // Add keyboard navigation class
+    function handleKeyDown(e) {
+        if (e.key === 'Tab') {
+            if (!isUsingKeyboard) {
+                document.body.classList.add('keyboard-nav-active');
+                isUsingKeyboard = true;
+            }
+        }
+    }
+    
+    // Remove keyboard navigation class when using mouse
+    function handleMouseDown() {
+        if (isUsingKeyboard) {
+            document.body.classList.remove('keyboard-nav-active');
+            isUsingKeyboard = false;
+        }
+    }
+    
+    // Add event listeners
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleMouseDown);
+    
+    // Check for users who might be using screen readers
+    if (navigator.userAgent.includes('JAWS') || 
+        navigator.userAgent.includes('NVDA') ||
+        navigator.userAgent.includes('VoiceOver')) {
+        document.body.classList.add('keyboard-nav-active');
+    }
 }
