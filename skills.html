@@ -39,32 +39,7 @@
     
     <!-- Main CSS -->
     <link rel="stylesheet" href="SCSS/main.css" />
-    
-    <!-- Minimal necessary inline styles that don't override SCSS -->
-    <style>
-      /* Progress indicator styles */
-      .scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 3px;
-        background-color: rgba(240, 248, 255, 0.8);
-        z-index: 9999;
-        width: 0%;
-      }
-      
-      /* Animation triggers for JS to use */
-      .animate-on-scroll {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-      }
-      
-      .animate-on-scroll.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    </style>
+      <!-- No inline styles needed as they're now in main.css -->
   </head>
   <body>
     <!-- Progress indicator -->
