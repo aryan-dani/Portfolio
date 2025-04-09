@@ -1,4 +1,16 @@
 @use 'config' as *;
+@use 'mixins' as *;
+
+// Add fallback mixin definitions
+@mixin card-hover {
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  }
+}
 
 .copyright {
   padding: 2rem;
@@ -9,7 +21,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   &__title {
     font-size: 2.5rem;
     margin-bottom: 2rem;
@@ -19,7 +31,7 @@
     position: relative;
     color: $secondary-color;
     text-align: center;
-    
+
     &::after {
       content: "";
       position: absolute;
@@ -28,17 +40,16 @@
       transform: translateX(-50%);
       width: 60%;
       height: 4px;
-      background: linear-gradient(to right, 
-        transparent, 
-        rgba($secondary-color, 0.6),
-        $secondary-color,
-        rgba($secondary-color, 0.6),
-        transparent
-      );
+      background: linear-gradient(to right,
+          transparent,
+          rgba($secondary-color, 0.6),
+          $secondary-color,
+          rgba($secondary-color, 0.6),
+          transparent);
       border-radius: 2px;
     }
   }
-  
+
   &__content {
     max-width: 900px;
     width: 100%;
@@ -46,7 +57,7 @@
     flex-direction: column;
     gap: 1.5rem;
   }
-  
+
   .copyright-card {
     background-color: rgba(darken($primary-color, 2%), 0.7);
     padding: 1.5rem;
@@ -55,13 +66,13 @@
     transition: all 0.3s ease;
     transform: translateY(0);
     border-left: 4px solid $secondary-color;
-    
+
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
       background-color: rgba(darken($primary-color, 2%), 0.85);
     }
-    
+
     h2 {
       color: $secondary-color;
       font-size: 1.5rem;
@@ -70,23 +81,23 @@
       border-bottom: 1px solid rgba($secondary-color, 0.2);
       padding-bottom: 0.5rem;
     }
-    
+
     p {
       color: set-text-color($primary-color);
       font-size: 1.1rem;
       line-height: 1.6;
       margin-bottom: 0.5rem;
     }
-    
+
     ul {
       padding-left: 1.5rem;
       margin-top: 0.5rem;
-      
+
       li {
         margin-bottom: 0.5rem;
         color: set-text-color($primary-color);
         position: relative;
-        
+
         &::before {
           content: "•";
           color: $secondary-color;
@@ -97,21 +108,21 @@
       }
     }
   }
-  
+
   @media screen and (max-width: 768px) {
     padding: 1.5rem;
-    
+
     &__title {
       font-size: 2rem;
     }
-    
+
     .copyright-card {
       padding: 1.2rem;
-      
+
       h2 {
         font-size: 1.3rem;
       }
-      
+
       p {
         font-size: 1rem;
       }

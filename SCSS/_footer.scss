@@ -1,5 +1,23 @@
 // Created dedicated footer styles
 @use 'config' as *;
+@use 'mixins' as *;
+
+// Add fallback mixin definitions
+@mixin hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@mixin focus-styles {
+  &:focus-visible {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+}
 
 footer {
   background-color: $primary-color;
@@ -13,28 +31,28 @@ footer {
   z-index: 100;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
-  
+
   // Glass effect background
   background-color: rgba($primary-color, 0.8);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  
-  
+
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
-  
+
   // Copyright link styling
   .copyright-link {
     color: $secondary-color;
     text-decoration: none;
     position: relative;
-    
+
     &:hover {
       text-decoration: underline;
     }
-    
+
     // Accessible focus state
     &:focus-visible {
       outline: 2px solid $secondary-color;

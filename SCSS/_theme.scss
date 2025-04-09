@@ -1,16 +1,21 @@
 @use 'config' as *;
+@use 'mixins' as *;
 
 html {
   font-size: 16px;
+
   @media (max-width: 1200px) {
     font-size: 15px;
   }
+
   @media (max-width: 992px) {
     font-size: 14px;
   }
+
   @media (max-width: 768px) {
     font-size: 13px;
   }
+
   @media screen and (max-width: 576px) {
     font-size: 12px;
   }
@@ -57,7 +62,9 @@ footer {
   footer {
     display: none;
   }
-  .home, .contact {
+
+  .home,
+  .contact {
     background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }

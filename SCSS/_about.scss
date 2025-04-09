@@ -1,19 +1,62 @@
 @use 'config' as *;
+@use 'mixins' as *;
+
+// Add fallback mixin definitions to prevent compilation errors
+@mixin hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@mixin shine-effect {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+@mixin glass-effect {
+  background-color: rgba($primary-color, 0.7);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 
 .about {
-  height: auto; /* Changed from fixed 100% to auto */
-  min-height: 100vh; /* Set minimum height instead */
+  height: auto;
+  /* Changed from fixed 100% to auto */
+  min-height: 100vh;
+  /* Set minimum height instead */
   padding-top: 2vh;
-  padding-bottom: 4rem; /* Added padding at bottom */
-  overflow: auto; /* Changed from hidden to auto to enable scrolling */
+  padding-bottom: 4rem;
+  /* Added padding at bottom */
+  overflow: auto;
+  /* Changed from hidden to auto to enable scrolling */
   align-items: center;
   text-align: left;
   background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../Images/Header.jpg") center top;
   background-size: cover;
-  background-attachment: fixed; /* Keep background fixed while scrolling */
+  background-attachment: fixed;
+  /* Keep background fixed while scrolling */
   border-radius: 8px;
   position: relative;
-  
+
   // Particle effect overlay
   &::before {
     content: '';
@@ -22,7 +65,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
+    background-image:
       radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
       radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 30px 30px, 20px 20px;
@@ -41,20 +84,20 @@
     margin: 0 auto;
     padding: 0 2rem;
     gap: 2rem;
-    
+
     @media screen and (min-width: 992px) {
       flex-wrap: nowrap;
       align-items: flex-start;
     }
   }
-  
+
   // Left column - About info
   .about-info {
     flex: 1;
     position: relative;
     z-index: 1;
     min-width: 300px;
-    
+
     @media screen and (min-width: 992px) {
       max-width: 60%;
     }
@@ -74,7 +117,7 @@
     animation: slideInUp 0.5s ease forwards;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow: hidden;
-    
+
     // Shimmer effect
     &::before {
       content: '';
@@ -91,7 +134,7 @@
       cursor: default;
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-      
+
       &::before {
         left: 100%;
       }
@@ -114,7 +157,7 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transform-origin: left;
     overflow: hidden;
-    
+
     // Animated shine effect
     &::after {
       content: '';
@@ -128,7 +171,7 @@
       transition: left 0.7s ease;
       animation: shimmer 3s infinite;
     }
-    
+
     &:hover {
       transform: translateY(-5px) scale(1.05);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -152,7 +195,7 @@
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    
+
     &:hover {
       transform: translateY(-3px) scale(1.01);
       background: rgba($primary-color, 0.8);
@@ -180,7 +223,7 @@
     transform-origin: left;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    
+
     // Shine effect
     &::before {
       content: '';
@@ -197,7 +240,7 @@
       cursor: default;
       transform: translateY(-5px) scale(1.03);
       box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
-      
+
       &::before {
         left: 100%;
       }
@@ -218,29 +261,29 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      
+
       i {
         font-size: 1rem;
         transition: transform 0.3s ease;
       }
-      
+
       &:hover {
         background-color: $primary-color;
         color: $secondary-color;
         transform: translateY(-2px);
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        
+
         i {
           transform: translateY(-2px);
         }
       }
-      
+
       &:active {
         transform: translateY(0);
       }
     }
   }
-  
+
   // Contact Form Styling - Updated for better vertical fit
   .contact-form-container {
     width: 100%;
@@ -259,12 +302,12 @@
     min-width: 300px; // Reduced from 300px
     margin-top: 0;
     align-self: flex-start;
-    
+
     @media screen and (min-width: 992px) {
       margin-top: 0;
       max-width: 45rem; // Reduced for side-by-side layout
     }
-    
+
     &::before {
       content: '';
       position: absolute;
@@ -275,11 +318,11 @@
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
       transition: left 1s ease;
     }
-    
+
     &:hover::before {
       left: 100%;
     }
-    
+
     h2 {
       color: $secondary-color;
       margin-bottom: 0.5rem;
@@ -292,13 +335,13 @@
       &::after {
         display: none;
       }
-      
+
       &:hover {
         transform: none;
         box-shadow: none;
       }
     }
-    
+
     p {
       background: none;
       width: auto;
@@ -306,9 +349,9 @@
       margin-bottom: 1rem;
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
-     
+
       box-shadow: none;
-      
+
       &:hover {
         transform: none;
         background: none;
@@ -316,25 +359,26 @@
       }
     }
   }
-  
+
   .contact-form {
     display: flex;
     flex-direction: column;
     gap: 0.8rem; // Reduced from 1.2rem
-    
+
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 0.3rem; // Reduced from 0.5rem
-      
+
       label {
         font-size: 0.85rem; // Reduced from 0.9rem
         font-weight: 600;
         color: $secondary-color;
         margin-bottom: 0.2rem; // Reduced from 0.25rem
       }
-      
-      input, textarea {
+
+      input,
+      textarea {
         background-color: rgba(lighten($primary-color, 5%), 0.6);
         border: 2px solid transparent;
         border-radius: 6px;
@@ -342,26 +386,26 @@
         color: set-text-color($primary-color);
         font-family: 'Poppins', sans-serif;
         transition: all 0.3s ease;
-        
+
         &:focus {
           outline: none;
           border-color: rgba($secondary-color, 0.7);
           background-color: rgba(lighten($primary-color, 8%), 0.8);
           box-shadow: 0 0 8px rgba($secondary-color, 0.4);
         }
-        
+
         &::placeholder {
           color: rgba(set-text-color($primary-color), 0.6);
         }
       }
-      
+
       textarea {
         resize: vertical;
         min-height: 80px; // Reduced from 100px
         max-height: 150px; // Added max-height
       }
     }
-    
+
     .submit-btn {
       display: flex;
       align-items: center;
@@ -379,18 +423,18 @@
       overflow: hidden;
       align-self: flex-start;
       margin-top: 0.5rem;
-      
+
       .btn-text {
         position: relative;
         z-index: 1;
       }
-      
+
       i {
         position: relative;
         z-index: 1;
         transition: transform 0.3s ease;
       }
-      
+
       &::before {
         content: '';
         position: absolute;
@@ -401,27 +445,27 @@
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
         transition: left 0.5s ease;
       }
-      
+
       &:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        
+
         &::before {
           left: 100%;
         }
-        
+
         i {
           transform: translateX(3px);
         }
       }
-      
+
       &:active {
         transform: translateY(-1px);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       }
     }
   }
-  
+
   // Toast notifications styling
   .toast-container {
     position: fixed;
@@ -434,7 +478,7 @@
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .toast {
     background: rgba(darken($primary-color, 5%), 0.9);
     color: #fff;
@@ -450,44 +494,44 @@
     pointer-events: auto;
     border-left: 4px solid;
     overflow: hidden;
-    
+
     &.show {
       transform: translateX(0);
       opacity: 1;
     }
-    
+
     &.success {
       border-color: #4caf50;
-      
+
       .toast-icon i {
         color: #4caf50;
       }
     }
-    
+
     &.error {
       border-color: #f44336;
-      
+
       .toast-icon i {
         color: #f44336;
       }
     }
-    
+
     .toast-icon {
       flex-shrink: 0;
-      
+
       i {
         font-size: 24px;
       }
     }
-    
+
     .toast-content {
       flex-grow: 1;
-      
+
       h4 {
         margin: 0 0 5px;
         font-size: 16px;
       }
-      
+
       p {
         margin: 0;
         font-size: 14px;
@@ -496,7 +540,7 @@
         box-shadow: none;
         width: auto;
         padding: 0;
-        
+
         &:hover {
           transform: none;
           background: none;
@@ -504,7 +548,7 @@
         }
       }
     }
-    
+
     .toast-close {
       background: none;
       border: none;
@@ -515,13 +559,13 @@
       align-self: flex-start;
       font-size: 16px;
       transition: color 0.3s ease;
-      
+
       &:hover {
         color: #fff;
       }
     }
   }
-  
+
   // Floating animation for content blocks on scroll
   @for $i from 1 through 5 {
     .about-element:nth-child(#{$i}) {
@@ -529,34 +573,34 @@
       animation: slideInUp 0.5s #{$i * 0.2}s ease forwards;
     }
   }
-  
+
   // Responsive styles
   @media screen and (max-width: 991px) {
     .about-content-wrapper {
       flex-direction: column;
     }
-    
+
     .contact-form-container {
       max-width: 100%;
       margin-top: 2rem;
     }
   }
-  
+
   @media screen and (max-width: 768px) {
     .contact-form-container {
       padding: 1.5rem;
     }
-    
+
     p {
       max-width: 100%;
     }
   }
-  
+
   @media screen and (max-width: 480px) {
     .contact-form-container {
       padding: 1rem;
     }
-    
+
     .contact-form {
       .submit-btn {
         width: 100%;
