@@ -16,8 +16,9 @@ footer {
   
   // Glass effect background
   background-color: rgba($primary-color, 0.8);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  
   
   &:hover {
     transform: translateY(-3px);

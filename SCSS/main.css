@@ -2248,6 +2248,82 @@ footer {
     background-position: 0% 50%;
   }
 }
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(240, 248, 255, 0.8), 0 0 30px rgba(240, 248, 255, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
+  }
+}
+@keyframes borderFlash {
+  0% {
+    border-color: aliceblue;
+  }
+  50% {
+    border-color: #8ac8ff;
+  }
+  100% {
+    border-color: aliceblue;
+  }
+}
+@keyframes spinGlow {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.7;
+  }
+}
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
 .animated {
   opacity: 0;
   transform: translateY(20px);
@@ -3092,8 +3168,8 @@ footer {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
   background-color: rgba(39, 39, 39, 0.8);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 footer:hover {
   transform: translateY(-3px);
@@ -3452,4 +3528,4 @@ body {
     background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
-}/*# sourceMappingURL=main.css.map */
+}

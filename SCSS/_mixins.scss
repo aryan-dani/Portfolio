@@ -1,0 +1,149 @@
+// filepath: c:\Users\BAPS\Documents\Web Development\HTML,CSS and JS\Portfolio\SCSS\_mixins.scss
+@use 'config' as *;
+
+// Hover effect mixins to reduce duplication
+
+// Standard hover lift effect
+@mixin hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+}
+
+// Button hover effect
+@mixin button-hover {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+        &::before {
+            left: 100%;
+        }
+    }
+}
+
+// Card hover effect with scale
+@mixin card-hover {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    }
+}
+
+// Shine effect for elements
+@mixin shine-effect {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.7s ease;
+    }
+
+    &:hover::before {
+        left: 100%;
+    }
+}
+
+// Text underline animation
+@mixin underline-animation {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, $primary-color, transparent);
+        transition: width 0.4s ease;
+    }
+
+    &:hover::after {
+        width: 100%;
+    }
+}
+
+// Glass effect
+@mixin glass-effect {
+    background-color: rgba($primary-color, 0.7);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+// Focus styles for accessibility
+@mixin focus-styles {
+    &:focus-visible {
+        outline: 2px solid $secondary-color;
+        outline-offset: 2px;
+    }
+}
+
+// Card 3D hover effect
+@mixin card-3d-hover($depth: 10px) {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateZ($depth);
+    }
+}
+
+// Animation delay for staggered elements
+@mixin staggered-animation($base-delay: 0.2s, $item-index: 0) {
+    animation-delay: calc($base-delay * $item-index);
+}
+
+// Gradient text effect
+@mixin gradient-text($start-color, $end-color) {
+    background-image: linear-gradient(90deg, $start-color, $end-color);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: gradient-text 4s ease infinite;
+    will-change: background-position;
+}
+
+// Animated border effect
+@mixin animated-border($color: $secondary-color) {
+    border-left: 3px solid $color;
+    animation: borderFlash 3s infinite;
+
+    &:nth-child(odd) {
+        animation-delay: 0.5s;
+    }
+
+    &:nth-child(3n) {
+        animation-delay: 1s;
+    }
+}

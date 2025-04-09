@@ -3,42 +3,95 @@
 
 // Enhanced animation keyframes
 @keyframes floatAnimation {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 @keyframes spinGlow {
-  0% { transform: rotate(0deg); opacity: 0.7; }
-  50% { transform: rotate(180deg); opacity: 1; }
-  100% { transform: rotate(360deg); opacity: 0.7; }
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.7;
+  }
 }
 
 @keyframes popIn {
-  0% { transform: scale(0.6); opacity: 0; }
-  60% { transform: scale(1.1); }
-  80% { transform: scale(0.95); }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.1);
+  }
+
+  80% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes neonPulse {
-  0% { box-shadow: 0 0 5px rgba($secondary-color, 0.5), 
-               0 0 10px rgba($secondary-color, 0.5); }
-  50% { box-shadow: 0 0 20px rgba($secondary-color, 0.8), 
-                0 0 30px rgba($secondary-color, 0.8); }
-  100% { box-shadow: 0 0 5px rgba($secondary-color, 0.5), 
-                  0 0 10px rgba($secondary-color, 0.5); }
+  0% {
+    box-shadow: 0 0 5px rgba($secondary-color, 0.5),
+      0 0 10px rgba($secondary-color, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba($secondary-color, 0.8),
+      0 0 30px rgba($secondary-color, 0.8);
+  }
+
+  100% {
+    box-shadow: 0 0 5px rgba($secondary-color, 0.5),
+      0 0 10px rgba($secondary-color, 0.5);
+  }
 }
 
 @keyframes borderFlash {
-  0% { border-color: $secondary-color; }
-  50% { border-color: darken($secondary-color, 20%); }
-  100% { border-color: $secondary-color; }
+  0% {
+    border-color: $secondary-color;
+  }
+
+  50% {
+    border-color: darken($secondary-color, 20%);
+  }
+
+  100% {
+    border-color: $secondary-color;
+  }
 }
 
 // Particles container styling
@@ -62,7 +115,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  
+
   &__heading {
     font-size: 2.5rem;
     font-weight: bolder;
@@ -87,7 +140,8 @@
       background-size: 200% auto;
       animation: gradient-text 4s ease infinite;
       will-change: background-position; // Performance optimization
-    }       
+    }
+
     &::before {
       content: '';
       position: absolute;
@@ -95,12 +149,12 @@
       left: -5px;
       right: -5px;
       bottom: -5px;
-      background: linear-gradient(45deg, 
-        $secondary-color, 
-        transparent 40%, 
-        $secondary-color 60%, 
-        transparent 80%, 
-        $secondary-color);
+      background: linear-gradient(45deg,
+          $secondary-color,
+          transparent 40%,
+          $secondary-color 60%,
+          transparent 80%,
+          $secondary-color);
       background-size: 300% 300%;
       z-index: -1;
       filter: blur(8px);
@@ -110,20 +164,20 @@
       will-change: background-position; // Performance optimization
     }
   }
-  
+
   &__categories {
     width: 100%;
     max-width: 800px;
     margin-bottom: 2rem;
     position: relative;
     z-index: 2;
-    
+
     .category-tabs {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 15px;
-      
+
       .category-tab {
         background: rgba(darken($primary-color, 5%), 0.7);
         border: 2px solid transparent;
@@ -136,15 +190,15 @@
         position: relative;
         overflow: hidden;
         animation: borderFlash 4s infinite;
-        
+
         &:nth-child(odd) {
           animation-delay: 0.7s;
         }
-        
+
         &:nth-child(3n) {
           animation-delay: 1.3s;
         }
-        
+
         &::before {
           content: '';
           position: absolute;
@@ -158,34 +212,35 @@
           transition: all 0.5s ease;
           z-index: -1;
         }
-        
-        &:hover, &.active {
+
+        &:hover,
+        &.active {
           border-color: $secondary-color;
           transform: translateY(-3px) scale(1.1);
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
           animation: neonPulse 1.5s infinite;
-          
+
           &::before {
             width: 300%;
             height: 300%;
             animation: spinGlow 8s linear infinite;
           }
         }
-        
+
         &.active {
           background: rgba($secondary-color, 0.3);
           font-weight: bold;
           text-shadow: 0 0 10px rgba($secondary-color, 0.8);
           box-shadow: 0 0 15px rgba($secondary-color, 0.5);
         }
-        
+
         &:hover:not(.active) {
           background: rgba(darken($primary-color, 10%), 0.8);
         }
       }
     }
   }
-  
+
   &__container {
     width: 100%;
     max-width: 1200px;
@@ -196,18 +251,18 @@
     z-index: 1;
     margin: 0 auto;
   }
-  
+
   &__group {
     display: none;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1.5rem;
     width: 100%;
-    
+
     &.active {
       display: grid;
       animation: fadeIn 0.8s ease;
     }
-    
+
     // Special styling for "All" category
     &.active-all {
       display: grid;
@@ -216,65 +271,54 @@
       margin-bottom: 2rem;
     }
   }
-  
+
   &__card {
     border-radius: 10px;
     background: rgba(lighten($primary-color, 3%), 0.8);
     overflow: hidden;
-    transform-style: preserve-3d;
     cursor: pointer;
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    height: 150px; 
+    height: 150px;
     position: relative;
-    border-left: 3px solid $secondary-color;
-    animation: borderFlash 3s infinite, neonPulse 4s infinite;
-    
-    &:nth-child(odd) {
-      animation-delay: 0.5s;
-    }
-    
-    &:nth-child(3n) {
-      animation-delay: 1s;
-    }
-    
-    &:nth-child(3n+1) {
-      animation-delay: 1.5s;
-    }
-    
+
+    // Use mixins for consistent styling
+    @include card-hover;
+    @include animated-border($secondary-color);
+    // Additional animation
+    animation: neonPulse 4s infinite;
+
     // Special styling for "All" category
     .active-all & {
       height: 150px;
-    
+
       &.expanded {
         height: 250px;
       }
-    
+
       h3 {
         font-size: 1.1rem;
       }
-    
+
       i {
         font-size: 2.5rem;
       }
     }
-    
+
     &.expanded {
       height: 240px; // Expanded height when clicked
       transform: scale(1.05);
       z-index: 10;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
       animation: neonPulse 2s infinite;
-      
+
       .skills__card-front {
         transform: translateY(-100%);
       }
-      
+
       .skills__card-back {
         transform: translateY(0);
       }
     }
-    
+
     // Glow effect on hover that matches site theme
     &::after {
       content: '';
@@ -290,28 +334,28 @@
       transition: opacity 0.3s ease;
       border-radius: 10px;
     }
-    
+
     &:hover {
       transform: translateY(-8px) scale(1.02);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
       animation: floatAnimation 3s ease infinite;
-      
+
       &::after {
         opacity: 0.8;
         animation: spinGlow 8s linear infinite;
       }
-      
+
       .skills__card-front i {
         animation: pulse 1.5s ease infinite alternate;
         color: lighten($secondary-color, 10%);
         transform: scale(1.1);
       }
-      
+
       .skills__card-front h3 {
-        background-image: linear-gradient(90deg, 
-          rgba($secondary-color, 0.7), 
-          rgba(#fff, 0.9), 
-          rgba($secondary-color, 0.7));
+        background-image: linear-gradient(90deg,
+            rgba($secondary-color, 0.7),
+            rgba(#fff, 0.9),
+            rgba($secondary-color, 0.7));
         background-size: 200% auto;
         color: transparent;
         -webkit-background-clip: text;
@@ -319,8 +363,9 @@
         animation: shimmer 2s linear infinite;
       }
     }
-    
-    &-front, &-back {
+
+    &-front,
+    &-back {
       position: absolute;
       top: 0;
       left: 0;
@@ -333,16 +378,16 @@
       padding: 1.2rem;
       backface-visibility: hidden;
       transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
-      
+
       i {
         transition: all 0.3s ease;
         margin-bottom: 1rem;
       }
     }
-    
+
     &-front {
       background: linear-gradient(135deg, rgba(lighten($primary-color, 5%), 0.9), rgba(lighten($primary-color, 2%), 0.9));
-      
+
       h3 {
         margin-top: 0.5rem;
         font-size: 1.2rem;
@@ -351,18 +396,18 @@
         color: #fff;
         text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       }
-      
+
       i {
         color: $secondary-color;
         filter: drop-shadow(0 0 8px rgba($secondary-color, 0.6));
         font-size: 3.2rem;
       }
     }
-    
+
     &-back {
       background: linear-gradient(135deg, rgba(darken($primary-color, 5%), 0.95), rgba(darken($primary-color, 15%), 0.95));
       transform: translateY(100%);
-      
+
       p {
         color: #ddd;
         font-size: 0.85rem;
@@ -372,7 +417,7 @@
       }
     }
   }
-  
+
   &__progress {
     width: 100%;
     height: 8px;
@@ -382,7 +427,7 @@
     position: relative;
     margin-top: 0.5rem;
     box-shadow: 0 0 10px rgba($secondary-color, 0.3) inset;
-    
+
     &-bar {
       height: 100%;
       background: linear-gradient(90deg, $secondary-color, lighten($secondary-color, 20%));
@@ -392,7 +437,7 @@
       transition: width 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
       position: relative;
       animation: shimmer 2s linear infinite;
-      
+
       &::before {
         content: '';
         position: absolute;
@@ -404,7 +449,7 @@
         opacity: 0.6;
         border-radius: 0 8px 8px 0;
       }
-      
+
       &::after {
         content: '';
         position: absolute;
@@ -417,7 +462,7 @@
         animation: shimmer 2s linear infinite;
       }
     }
-    
+
     &-percent {
       position: absolute;
       right: 5px;
@@ -435,7 +480,7 @@
   width: 100%;
   max-width: 1000px;
   margin: 3rem auto 0;
-  
+
   &__heading {
     font-size: 2rem;
     margin-bottom: 2rem;
@@ -444,7 +489,7 @@
     text-align: center;
     color: #fff;
     position: relative;
-    
+
     &::after {
       content: '';
       position: absolute;
@@ -456,38 +501,38 @@
       transform: translateX(-50%);
     }
   }
-  
+
   &__badges {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
     padding: 1rem;
-    
+
     img {
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform: scale(1);
       position: relative;
-      
+
       &:nth-child(odd) {
         animation: floatAnimation 4s ease-in-out infinite;
       }
-      
+
       &:nth-child(even) {
         animation: floatAnimation 4s ease-in-out infinite 0.5s;
       }
-      
+
       &:nth-child(3n) {
         animation: floatAnimation 4s ease-in-out infinite 1s;
       }
-      
+
       &:hover {
         transform: translateY(-10px) scale(1.1) rotate(3deg);
         filter: drop-shadow(0 10px 20px rgba($secondary-color, 0.5));
         animation: none;
         z-index: 10;
       }
-      
+
       &::after {
         content: '';
         position: absolute;
@@ -501,7 +546,7 @@
         opacity: 0;
         transition: opacity 0.3s ease;
       }
-      
+
       &:hover::after {
         opacity: 0.7;
         animation: spinGlow 4s linear infinite;
@@ -516,7 +561,7 @@
     &__group {
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     }
-    
+
     &__heading {
       font-size: 2.5rem;
     }
@@ -526,33 +571,33 @@
 @media screen and (max-width: 768px) {
   .skills {
     padding: 1.5rem;
-    
+
     &__group {
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 1.2rem;
     }
-    
+
     &__card {
       height: 140px;
-      
+
       &.expanded {
         height: 220px;
       }
-      
+
       &-front {
         i {
           font-size: 2.8rem;
         }
-        
+
         h3 {
           font-size: 1rem;
         }
       }
     }
-    
+
     &__categories .category-tabs {
       gap: 10px;
-      
+
       .category-tab {
         padding: 0.6rem 1rem;
         font-size: 0.9rem;
@@ -567,7 +612,7 @@
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 1rem;
     }
-    
+
     &__heading {
       font-size: 2rem;
       margin-bottom: 2rem;

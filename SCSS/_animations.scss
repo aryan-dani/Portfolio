@@ -2,8 +2,13 @@
 
 // Animation keyframes for use throughout the site
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInUp {
@@ -11,6 +16,7 @@
     transform: translateY(30px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -22,6 +28,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -29,15 +36,131 @@
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes gradient-text {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px rgba($secondary-color, 0.5), 0 0 10px rgba($secondary-color, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba($secondary-color, 0.8), 0 0 30px rgba($secondary-color, 0.8);
+  }
+
+  100% {
+    box-shadow: 0 0 5px rgba($secondary-color, 0.5), 0 0 10px rgba($secondary-color, 0.5);
+  }
+}
+
+@keyframes borderFlash {
+  0% {
+    border-color: $secondary-color;
+  }
+
+  50% {
+    border-color: darken($secondary-color, 20%);
+  }
+
+  100% {
+    border-color: $secondary-color;
+  }
+}
+
+@keyframes spinGlow {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
+  }
 }
 
 // Class for animated elements when entering viewport
@@ -45,7 +168,7 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  
+
   &.in-view {
     opacity: 1;
     transform: translateY(0);
@@ -57,7 +180,7 @@
   transform: translateX(100%);
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  
+
   &.show {
     transform: translateX(0);
     opacity: 1;
@@ -92,7 +215,7 @@
   position: relative;
   border-left: 3px solid $secondary-color;
   animation: toastIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -100,19 +223,19 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, 
-                               rgba($secondary-color, 0) 0%, 
-                               rgba($secondary-color, 0.1) 50%, 
-                               rgba($secondary-color, 0) 100%);
+    background: linear-gradient(90deg,
+        rgba($secondary-color, 0) 0%,
+        rgba($secondary-color, 0.1) 50%,
+        rgba($secondary-color, 0) 100%);
     transform: translateX(-100%);
     animation: shimmer 3s infinite;
     pointer-events: none;
   }
-  
+
   &-hide {
     animation: toastOut 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
   }
-  
+
   &-icon {
     display: flex;
     align-items: center;
@@ -123,28 +246,28 @@
     flex-shrink: 0;
     width: 30px;
     height: 30px;
-    
+
     i {
       animation: pulse 2s infinite ease-in-out;
     }
   }
-  
+
   &-content {
     flex: 1;
-    
+
     h4 {
       margin: 0 0 5px;
       font-size: 1rem;
       font-weight: 600;
     }
-    
+
     p {
       margin: 0;
       font-size: 0.85rem;
       opacity: 0.8;
     }
   }
-  
+
   &-close {
     background: transparent;
     border: none;
@@ -157,7 +280,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     &:hover {
       color: #fff;
     }
@@ -168,27 +291,27 @@
 .animate {
   animation-duration: 1s;
   animation-fill-mode: both;
-  
+
   &--slow {
     animation-duration: 2s;
   }
-  
+
   &--delay-1 {
     animation-delay: 0.2s;
   }
-  
+
   &--delay-2 {
     animation-delay: 0.4s;
   }
-  
+
   &--delay-3 {
     animation-delay: 0.6s;
   }
-  
+
   &--delay-4 {
     animation-delay: 0.8s;
   }
-  
+
   &--infinite {
     animation-iteration-count: infinite;
   }
@@ -219,7 +342,7 @@
 .shimmer {
   position: relative;
   overflow: hidden;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -243,7 +366,7 @@
 .ripple-effect {
   position: relative;
   overflow: hidden;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -266,20 +389,20 @@
     transition-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
   }
-  
+
   // Special cases for essential animations
   .typing-cursor {
     animation: none !important;
   }
-  
+
   // Disable parallax effects
   .home,
-  .about, 
-  .jobs-layout, 
+  .about,
+  .jobs-layout,
   .project__project-image {
     background-attachment: scroll !important;
   }
-  
+
   // Disable 3D effects
   .skills__card,
   .certificate-content {

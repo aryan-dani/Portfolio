@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Apply reduced motion preferences
 	applyReducedMotionPreferences();
-	
+
 	// Initialize battery status detection
 	detectBatteryStatus();
 });
@@ -70,20 +70,10 @@ function createAnimationHelper() {
 
 	// Store animation instances for proper cleanup
 	const animationRegistry = new Map();
-
 	// Animation presets with performance-optimized properties
+	// Uses CSS animation classes when possible to reduce duplication
 	const presets = {
-		fadeIn: {
-			keyframes: [
-				{ opacity: 0, transform: "translateY(20px)" },
-				{ opacity: 1, transform: "translateY(0)" },
-			],
-			options: {
-				duration: 600,
-				easing: "cubic-bezier(0.25, 0.1, 0.25, 1.0)",
-				fill: "forwards",
-			},
-		},
+		// For animations that need dynamic control only - otherwise use CSS
 		fadeInLeft: {
 			keyframes: [
 				{ opacity: 0, transform: "translateX(-30px)" },
@@ -106,22 +96,6 @@ function createAnimationHelper() {
 				fill: "forwards",
 			},
 		},
-		pulse: {
-			keyframes: [
-				{ transform: "scale(1)" },
-				{ transform: "scale(1.05)" },
-				{ transform: "scale(1)" },
-			],
-			options: { duration: 1500, iterations: Infinity },
-		},
-		float: {
-			keyframes: [
-				{ transform: "translateY(0)" },
-				{ transform: "translateY(-10px)" },
-				{ transform: "translateY(0)" },
-			],
-			options: { duration: 3000, iterations: Infinity, easing: "ease-in-out" },
-		},
 		pop: {
 			keyframes: [
 				{ transform: "scale(0.8)", opacity: 0 },
@@ -135,13 +109,11 @@ function createAnimationHelper() {
 				fill: "forwards",
 			},
 		},
-		shimmer: {
-			keyframes: [
-				{ backgroundPosition: "-200% 0" },
-				{ backgroundPosition: "200% 0" },
-			],
-			options: { duration: 3000, iterations: Infinity, easing: "linear" },
-		},
+		// Removed duplicate animations that are already defined in CSS:
+		// - fadeIn (use CSS .fadeIn)
+		// - pulse (use CSS .pulse)
+		// - float (use CSS .float)
+		// - shimmer (use CSS .shimmer)
 	};
 
 	// Public methods
@@ -1168,14 +1140,16 @@ function processTemplate(template, data) {
  */
 function applyReducedMotionPreferences() {
 	// Check if user prefers reduced motion
-	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	
+	const prefersReducedMotion = window.matchMedia(
+		"(prefers-reduced-motion: reduce)"
+	).matches;
+
 	if (prefersReducedMotion) {
 		// Apply reduced motion settings to the entire document
-		document.documentElement.classList.add('reduced-motion');
-		
+		document.documentElement.classList.add("reduced-motion");
+
 		// Create a style element to add reduced-motion styles
-		const style = document.createElement('style');
+		const style = document.createElement("style");
 		style.textContent = `
 			/* Apply reduced animations when user prefers reduced motion */
 			.reduced-motion * {
@@ -1204,27 +1178,29 @@ function applyReducedMotionPreferences() {
 			}
 		`;
 		document.head.appendChild(style);
-		
+
 		// Show a toast notification to inform the user
-		if (typeof showToast === 'function') {
+		if (typeof showToast === "function") {
 			setTimeout(() => {
 				showToast(
-					'Reduced Motion Enabled',
-					'Animations have been minimized for better accessibility',
-					'fa-solid fa-universal-access'
+					"Reduced Motion Enabled",
+					"Animations have been minimized for better accessibility",
+					"fa-solid fa-universal-access"
 				);
 			}, 2000);
 		}
 	}
-	
+
 	// Listen for changes to the prefers-reduced-motion media query
-	window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', e => {
-		if (e.matches) {
-			document.documentElement.classList.add('reduced-motion');
-		} else {
-			document.documentElement.classList.remove('reduced-motion');
-		}
-	});
+	window
+		.matchMedia("(prefers-reduced-motion: reduce)")
+		.addEventListener("change", (e) => {
+			if (e.matches) {
+				document.documentElement.classList.add("reduced-motion");
+			} else {
+				document.documentElement.classList.remove("reduced-motion");
+			}
+		});
 }
 
 /**
@@ -1233,36 +1209,43 @@ function applyReducedMotionPreferences() {
  */
 function detectBatteryStatus() {
 	// Check if Battery API is supported
-	if ('getBattery' in navigator) {
-		navigator.getBattery().then(battery => {
-			// Add performance-optimized class to enable optimizations
-			document.documentElement.classList.add('performance-optimized');
-			
-			// Function to check battery level and apply optimizations
-			const updateBatteryStatus = () => {
-				// Apply battery-saving mode when battery level is low (below 30%) and not charging
-				if (battery.level < 0.3 && !battery.charging) {
-					document.documentElement.classList.add('battery-saving');
-					console.log('Battery saving mode enabled: ' + Math.round(battery.level * 100) + '% battery remaining');
-				} else {
-					document.documentElement.classList.remove('battery-saving');
-				}
-			};
-			
-			// Initial battery check
-			updateBatteryStatus();
-			
-			// Listen for battery status changes
-			battery.addEventListener('levelchange', updateBatteryStatus);
-			battery.addEventListener('chargingchange', updateBatteryStatus);
-		}).catch(err => {
-			console.warn('Battery API error:', err);
-			// Still apply performance optimized class as fallback
-			document.documentElement.classList.add('performance-optimized');
-		});
+	if ("getBattery" in navigator) {
+		navigator
+			.getBattery()
+			.then((battery) => {
+				// Add performance-optimized class to enable optimizations
+				document.documentElement.classList.add("performance-optimized");
+
+				// Function to check battery level and apply optimizations
+				const updateBatteryStatus = () => {
+					// Apply battery-saving mode when battery level is low (below 30%) and not charging
+					if (battery.level < 0.3 && !battery.charging) {
+						document.documentElement.classList.add("battery-saving");
+						console.log(
+							"Battery saving mode enabled: " +
+								Math.round(battery.level * 100) +
+								"% battery remaining"
+						);
+					} else {
+						document.documentElement.classList.remove("battery-saving");
+					}
+				};
+
+				// Initial battery check
+				updateBatteryStatus();
+
+				// Listen for battery status changes
+				battery.addEventListener("levelchange", updateBatteryStatus);
+				battery.addEventListener("chargingchange", updateBatteryStatus);
+			})
+			.catch((err) => {
+				console.warn("Battery API error:", err);
+				// Still apply performance optimized class as fallback
+				document.documentElement.classList.add("performance-optimized");
+			});
 	} else {
 		// Battery API not supported - apply performance optimizations anyway as fallback
-		console.log('Battery API not supported, applying default optimizations');
-		document.documentElement.classList.add('performance-optimized');
+		console.log("Battery API not supported, applying default optimizations");
+		document.documentElement.classList.add("performance-optimized");
 	}
 }
