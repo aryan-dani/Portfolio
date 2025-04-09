@@ -459,71 +459,51 @@ function initContentVisibilityObserver() {
  * Initialize intersection observer for animation on scroll
  */
 function initIntersectionObserver() {
-	const elementsToAnimate = document.querySelectorAll(".animate-on-scroll");
+    const elementsToAnimate = document.querySelectorAll(".animate-on-scroll, .skills__card");
 
-	if (elementsToAnimate.length > 0 && "IntersectionObserver" in window) {
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add("visible");
-						observer.unobserve(entry.target);
-					}
-				});
-			},
-			{
-				rootMargin: "0px 0px -100px 0px",
-				threshold: 0.1,
-			}
-		);
+    if (elementsToAnimate.length > 0 && "IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
 
-		elementsToAnimate.forEach((element) => {
-			observer.observe(element);
-		});
-	} else {
-		// Fallback for browsers without IntersectionObserver
-		elementsToAnimate.forEach((element) => {
-			element.classList.add("visible");
-		});
-	}
-	// Special handling for skill cards
-	const skillCards = document.querySelectorAll(".skills__card");
+                        // Special handling for skill cards
+                        if (entry.target.classList.contains("skills__card")) {
+                            const progressBar = entry.target.querySelector(".skills__progress-bar");
+                            if (progressBar && progressBar.dataset.level && (progressBar.style.width === "0%" || !progressBar.style.width)) {
+                                setTimeout(() => {
+                                    progressBar.style.width = `${progressBar.dataset.level}%`;
+                                }, 300);
+                            }
+                        }
 
-	if (skillCards.length > 0 && "IntersectionObserver" in window) {
-		const cardObserver = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						const card = entry.target;
-						card.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                rootMargin: "0px 0px -100px 0px",
+                threshold: 0.1,
+            }
+        );
 
-						// Animate progress bar if exists
-						const progressBar = card.querySelector(".skills__progress-bar");
-						if (progressBar && progressBar.dataset.level && (progressBar.style.width === "0%" || !progressBar.style.width)) {
-							setTimeout(() => {
-								progressBar.style.width = `${progressBar.dataset.level}%`;
-							}, 300);
-						}
-
-						cardObserver.unobserve(card);
-					}
-				});
-			},
-			{
-				rootMargin: "0px 0px -50px 0px",
-				threshold: 0.1,
-			}
-		);
-
-		skillCards.forEach((card) => {
-			// Initialize progress bars to 0 width initially
-			const progressBar = card.querySelector(".skills__progress-bar");
-			if (progressBar && progressBar.dataset.level) {
-				progressBar.style.width = "0%";
-			}
-			cardObserver.observe(card);
-		});
-	}
+        elementsToAnimate.forEach((element) => {
+            // Initialize progress bars to 0 width initially for skill cards
+            if (element.classList.contains("skills__card")) {
+                const progressBar = element.querySelector(".skills__progress-bar");
+                if (progressBar && progressBar.dataset.level) {
+                    progressBar.style.width = "0%";
+                }
+            }
+            observer.observe(element);
+        });
+    } else {
+        // Fallback for browsers without IntersectionObserver
+        elementsToAnimate.forEach((element) => {
+            element.classList.add("visible");
+        });
+    }
 }
 
 /**

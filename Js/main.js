@@ -23,6 +23,14 @@ function toggleMenu() {
 		nav.classList.add("open");
 		menuNav.classList.add("open");
 
+		// Calculate menu height and set it as a CSS variable for content shifting
+		setTrackedTimeout(() => {
+			// Get the actual height of the menu
+			const menuHeight = menuNav.offsetHeight;
+			// Set it as a CSS variable on the document
+			document.documentElement.style.setProperty('--menu-height', menuHeight + 'px');
+		}, 10, "calculateMenuHeight");
+
 		// Add a class to the body to prevent scrolling when menu is open
 		document.body.classList.add("menu-open");
 

@@ -94,6 +94,7 @@
   transform: translateY(-100%);
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   z-index: 100;
+  height: auto;
 
   &.open {
     visibility: visible;
@@ -218,14 +219,24 @@
   }
 }
 
-/* Add the menu-open class to prevent body scrolling when menu is open */
+/* Add the menu-open class to make content shift down with menu */
 body.menu-open {
   overflow: hidden !important;
   position: fixed !important;
   width: 100% !important;
   height: 100% !important;
-  padding-right: 15px;
-  /* Prevent content shifting when scrollbar disappears */
+  padding-right: 15px; /* Prevent content shifting when scrollbar disappears */
+}
+
+/* This is the key style that shifts the main content down when menu is open */
+main {
+  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* When menu opens, push the main content down by the height of the menu */
+body.menu-open main {
+  transform: translateY(var(--menu-height, 65px));
+  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 // Added keyframes for new animations
@@ -244,6 +255,17 @@ body.menu-open {
 
   100% {
     transform: translateY(0);
+  }
+}
+
+/* Added keyframe animation for content shifting */
+@keyframes shiftContent {
+  0% {
+    transform: translateY(0);
+  }
+  
+  100% {
+    transform: translateY(var(--menu-height, 65px));
   }
 }
 
