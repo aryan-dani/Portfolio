@@ -55,6 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Apply reduced motion preferences
 	applyReducedMotionPreferences();
+	
+	// Initialize battery status detection
+	detectBatteryStatus();
 });
 
 /**
@@ -1222,4 +1225,44 @@ function applyReducedMotionPreferences() {
 			document.documentElement.classList.remove('reduced-motion');
 		}
 	});
+}
+
+/**
+ * Detect battery status and apply battery-saving optimizations when needed
+ * Uses the Battery API to improve performance on low-battery devices
+ */
+function detectBatteryStatus() {
+	// Check if Battery API is supported
+	if ('getBattery' in navigator) {
+		navigator.getBattery().then(battery => {
+			// Add performance-optimized class to enable optimizations
+			document.documentElement.classList.add('performance-optimized');
+			
+			// Function to check battery level and apply optimizations
+			const updateBatteryStatus = () => {
+				// Apply battery-saving mode when battery level is low (below 30%) and not charging
+				if (battery.level < 0.3 && !battery.charging) {
+					document.documentElement.classList.add('battery-saving');
+					console.log('Battery saving mode enabled: ' + Math.round(battery.level * 100) + '% battery remaining');
+				} else {
+					document.documentElement.classList.remove('battery-saving');
+				}
+			};
+			
+			// Initial battery check
+			updateBatteryStatus();
+			
+			// Listen for battery status changes
+			battery.addEventListener('levelchange', updateBatteryStatus);
+			battery.addEventListener('chargingchange', updateBatteryStatus);
+		}).catch(err => {
+			console.warn('Battery API error:', err);
+			// Still apply performance optimized class as fallback
+			document.documentElement.classList.add('performance-optimized');
+		});
+	} else {
+		// Battery API not supported - apply performance optimizations anyway as fallback
+		console.log('Battery API not supported, applying default optimizations');
+		document.documentElement.classList.add('performance-optimized');
+	}
 }

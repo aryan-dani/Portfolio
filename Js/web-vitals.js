@@ -100,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		}
 	}
-
 	/**
 	 * Apply general optimizations based on device capabilities
 	 */
@@ -148,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 
 		// Apply optimizations regardless of device
-		prefetchNextPages();
+		// Note: We skip prefetchNextPages here as it's now handled by resource-hints.js
 		optimizeImageLoading();
 
 		// Add page transition class by default
