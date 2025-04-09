@@ -486,7 +486,6 @@ function initIntersectionObserver() {
 			element.classList.add("visible");
 		});
 	}
-
 	// Special handling for skill cards
 	const skillCards = document.querySelectorAll(".skills__card");
 
@@ -500,10 +499,10 @@ function initIntersectionObserver() {
 
 						// Animate progress bar if exists
 						const progressBar = card.querySelector(".skills__progress-bar");
-						if (progressBar && progressBar.dataset.level) {
+						if (progressBar && progressBar.dataset.level && (progressBar.style.width === "0%" || !progressBar.style.width)) {
 							setTimeout(() => {
 								progressBar.style.width = `${progressBar.dataset.level}%`;
-							}, 100);
+							}, 300);
 						}
 
 						cardObserver.unobserve(card);
@@ -517,6 +516,11 @@ function initIntersectionObserver() {
 		);
 
 		skillCards.forEach((card) => {
+			// Initialize progress bars to 0 width initially
+			const progressBar = card.querySelector(".skills__progress-bar");
+			if (progressBar && progressBar.dataset.level) {
+				progressBar.style.width = "0%";
+			}
 			cardObserver.observe(card);
 		});
 	}

@@ -21,8 +21,6 @@
 @use "footer";
 @use "performance";
 
-// Note: Each component file should import its own dependencies 
-// using @use 'config' as *; and @use 'mixins' as *;
 
 // Optimize font loading with font-display: swap
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");

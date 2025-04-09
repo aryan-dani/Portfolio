@@ -1326,6 +1326,9 @@ function initSkillsPageAnimations() {
 		});
 	}
 
+	// Initialize skill cards properly with consistent animation behavior
+	initializeSkillCards();
+
 	// Automatically click the "All" tab when the page loads
 	setTrackedTimeout(
 		() => {
@@ -2199,5 +2202,55 @@ function detectKeyboardNavigation() {
 		navigator.userAgent.includes("VoiceOver")
 	) {
 		document.body.classList.add("keyboard-nav-active");
+	}
+}
+
+/**
+ * Initialize skill cards with consistent animation behavior
+ */
+function initializeSkillCards() {
+	const skillCards = document.querySelectorAll(".skills__card");
+
+	if (skillCards.length > 0) {
+		skillCards.forEach((card) => {
+			// Add click handler for expanding cards
+			card.addEventListener("click", function () {
+				// Toggle expanded state
+				const isExpanded = this.classList.contains("expanded");
+
+				// Reset all cards first
+				document
+					.querySelectorAll(".skills__card.expanded")
+					.forEach((expandedCard) => {
+						expandedCard.classList.remove("expanded");
+						// Reset progress bar when card is collapsed if it's not the currently visible one
+						const progressBar = expandedCard.querySelector(
+							".skills__progress-bar"
+						);
+						if (progressBar && expandedCard !== card) {
+							progressBar.style.width = "0%";
+						}
+					});
+
+				if (!isExpanded) {
+					// Expand this card
+					this.classList.add("expanded");
+
+					// Animate progress bar
+					const progressBar = this.querySelector(".skills__progress-bar");
+					if (progressBar && progressBar.dataset.level) {
+						setTimeout(() => {
+							progressBar.style.width = `${progressBar.dataset.level}%`;
+						}, 300);
+					}
+				}
+			});
+
+			// Initialize progress bars to 0 width for consistent animations
+			const progressBar = card.querySelector(".skills__progress-bar");
+			if (progressBar && progressBar.dataset.level) {
+				progressBar.style.width = "0%";
+			}
+		});
 	}
 }
