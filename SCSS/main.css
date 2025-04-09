@@ -1,4 +1,8 @@
 @charset "UTF-8";
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 * {
   margin: 0;
@@ -6,6 +10,356 @@
   box-sizing: border-box;
 }
 
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeInStagger {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes gradient-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(240, 248, 255, 0.8), 0 0 30px rgba(240, 248, 255, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
+  }
+}
+@keyframes borderFlash {
+  0% {
+    border-color: aliceblue;
+  }
+  50% {
+    border-color: #8ac8ff;
+  }
+  100% {
+    border-color: aliceblue;
+  }
+}
+@keyframes spinGlow {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.7;
+  }
+}
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+.animated {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animated.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 350px;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: rgba(15, 15, 15, 0.9);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+  display: flex;
+  pointer-events: auto;
+  overflow: hidden;
+  position: relative;
+  border-left: 3px solid aliceblue;
+  animation: toastIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+.toast::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(240, 248, 255, 0) 0%, rgba(240, 248, 255, 0.1) 50%, rgba(240, 248, 255, 0) 100%);
+  transform: translateX(-100%);
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+.toast-hide {
+  animation: toastOut 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+.toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  font-size: 1.5rem;
+  color: aliceblue;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+}
+.toast-icon i {
+  animation: pulse 2s infinite ease-in-out;
+}
+.toast-content {
+  flex: 1;
+}
+.toast-content h4 {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.toast-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+.toast-close {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0;
+  margin-left: 10px;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.toast-close:hover {
+  color: #fff;
+}
+
+.animate {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+.animate--slow {
+  animation-duration: 2s;
+}
+.animate--delay-1 {
+  animation-delay: 0.2s;
+}
+.animate--delay-2 {
+  animation-delay: 0.4s;
+}
+.animate--delay-3 {
+  animation-delay: 0.6s;
+}
+.animate--delay-4 {
+  animation-delay: 0.8s;
+}
+.animate--infinite {
+  animation-iteration-count: infinite;
+}
+
+.slideInUp {
+  animation-name: slideInUp;
+}
+
+.fadeIn {
+  animation-name: fadeInStagger;
+}
+
+.float {
+  animation-name: floatAnimation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.pulse {
+  animation-name: pulse;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 2s infinite;
+}
+
+.rotate-in {
+  animation-name: rotateIn;
+}
+
+.bounce {
+  animation-name: bounce;
+}
+
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+.ripple-effect::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+}
+
+.reduced-motion * {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+}
+.reduced-motion .typing-cursor {
+  animation: none !important;
+}
+.reduced-motion .home,
+.reduced-motion .about,
+.reduced-motion .jobs-layout,
+.reduced-motion .project__project-image {
+  background-attachment: scroll !important;
+}
+.reduced-motion .skills__card,
+.reduced-motion .certificate-content {
+  transform: none !important;
+}
+
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 .home {
   height: 100%;
   padding-left: 3vh;
@@ -299,6 +653,10 @@
     margin-bottom: 1rem;
   }
 }
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 .menu-btn {
   position: fixed;
   z-index: 101;
@@ -557,6 +915,10 @@ body.menu-open {
     font-size: 0.9rem;
   }
 }
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 .jobs-layout {
   padding: 1rem;
   background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center center;
@@ -673,9 +1035,13 @@ body.menu-open {
   margin-bottom: 0.5rem;
   font-weight: bold;
   letter-spacing: 0.5px;
-  transition: all 0.4s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
+}
+.jobs-layout .Jobs h2:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 .jobs-layout .Jobs h2::before {
   content: "";
@@ -684,16 +1050,15 @@ body.menu-open {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+.jobs-layout .Jobs h2:hover::before {
+  left: 100%;
 }
 .jobs-layout .Jobs h2:hover {
   cursor: default;
   transform: translateY(-5px) scale(1.08);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-}
-.jobs-layout .Jobs h2:hover::before {
-  left: 100%;
 }
 .jobs-layout .Jobs h3 {
   margin-bottom: 0.5rem;
@@ -966,6 +1331,10 @@ footer:hover::before {
     transform: none;
   }
 }
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 .project {
   position: relative;
   overflow: hidden;
@@ -1040,7 +1409,8 @@ footer:hover::before {
 .project__project-image:hover {
   transform: translateZ(0) scale(1.02);
 }
-.project__project-image:hover h2, .project__project-image:hover p {
+.project__project-image:hover h2,
+.project__project-image:hover p {
   transform: translateY(-5px);
 }
 .project__project-image h2 {
@@ -1102,13 +1472,17 @@ footer:hover::before {
   border-bottom: solid 8px #555;
   position: relative;
   z-index: 1;
-  transition: all 0.4s ease;
   opacity: 0;
   transform: translateY(30px);
   animation: slideInUp 0.6s forwards;
   animation-delay: calc(var(--project-index, 0) * 0.2s);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.project .Projects:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 .project .Projects::before {
   content: "";
@@ -1126,7 +1500,6 @@ footer:hover::before {
 }
 .project .Projects:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   border-bottom-color: aliceblue;
 }
 .project .Projects:hover::before {
@@ -1354,6 +1727,10 @@ footer:hover::before {
   left: 100%;
 }
 
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 .about {
   height: auto; /* Changed from fixed 100% to auto */
   min-height: 100vh; /* Set minimum height instead */
@@ -1870,6 +2247,10 @@ footer:hover::before {
   animation: slideInUp 0.5s ease forwards;
 }
 
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 .certification {
   position: relative;
 }
@@ -2101,6 +2482,10 @@ footer:hover::before {
     background-position: 0% 0%;
   }
 }
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 html {
   font-size: 16px;
 }
@@ -2198,344 +2583,10 @@ footer {
   outline-offset: 2px !important;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes slideInUp {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-@keyframes fadeInStagger {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes gradient-text {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-@keyframes floatAnimation {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-@keyframes neonPulse {
-  0% {
-    box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(240, 248, 255, 0.8), 0 0 30px rgba(240, 248, 255, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
-  }
-}
-@keyframes borderFlash {
-  0% {
-    border-color: aliceblue;
-  }
-  50% {
-    border-color: #8ac8ff;
-  }
-  100% {
-    border-color: aliceblue;
-  }
-}
-@keyframes spinGlow {
-  0% {
-    transform: rotate(0deg);
-    opacity: 0.7;
-  }
-  50% {
-    transform: rotate(180deg);
-    opacity: 1;
-  }
-  100% {
-    transform: rotate(360deg);
-    opacity: 0.7;
-  }
-}
-@keyframes ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(2);
-    opacity: 0;
-  }
-}
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
-  }
-}
-.animated {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-.animated.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.toast {
-  transform: translateX(100%);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.toast.show {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  max-width: 350px;
-  z-index: 9999;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.toast {
-  background: rgba(15, 15, 15, 0.9);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  margin-bottom: 10px;
-  display: flex;
-  pointer-events: auto;
-  overflow: hidden;
-  position: relative;
-  border-left: 3px solid aliceblue;
-  animation: toastIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-}
-.toast::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(240, 248, 255, 0) 0%, rgba(240, 248, 255, 0.1) 50%, rgba(240, 248, 255, 0) 100%);
-  transform: translateX(-100%);
-  animation: shimmer 3s infinite;
-  pointer-events: none;
-}
-.toast-hide {
-  animation: toastOut 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-}
-.toast-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 15px;
-  font-size: 1.5rem;
-  color: aliceblue;
-  flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-}
-.toast-icon i {
-  animation: pulse 2s infinite ease-in-out;
-}
-.toast-content {
-  flex: 1;
-}
-.toast-content h4 {
-  margin: 0 0 5px;
-  font-size: 1rem;
-  font-weight: 600;
-}
-.toast-content p {
-  margin: 0;
-  font-size: 0.85rem;
-  opacity: 0.8;
-}
-.toast-close {
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  padding: 0;
-  margin-left: 10px;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.toast-close:hover {
-  color: #fff;
-}
-
-.animate {
-  animation-duration: 1s;
-  animation-fill-mode: both;
-}
-.animate--slow {
-  animation-duration: 2s;
-}
-.animate--delay-1 {
-  animation-delay: 0.2s;
-}
-.animate--delay-2 {
-  animation-delay: 0.4s;
-}
-.animate--delay-3 {
-  animation-delay: 0.6s;
-}
-.animate--delay-4 {
-  animation-delay: 0.8s;
-}
-.animate--infinite {
-  animation-iteration-count: infinite;
-}
-
-.slideInUp {
-  animation-name: slideInUp;
-}
-
-.fadeIn {
-  animation-name: fadeInStagger;
-}
-
-.float {
-  animation-name: floatAnimation;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-
-.pulse {
-  animation-name: pulse;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-
-.shimmer {
-  position: relative;
-  overflow: hidden;
-}
-.shimmer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  animation: shimmer 2s infinite;
-}
-
-.rotate-in {
-  animation-name: rotateIn;
-}
-
-.bounce {
-  animation-name: bounce;
-}
-
-.ripple-effect {
-  position: relative;
-  overflow: hidden;
-}
-.ripple-effect::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  animation: ripple 0.6s linear;
-  pointer-events: none;
-}
-
-.reduced-motion * {
-  animation-duration: 0.001ms !important;
-  transition-duration: 0.001ms !important;
-  animation-iteration-count: 1 !important;
-}
-.reduced-motion .typing-cursor {
-  animation: none !important;
-}
-.reduced-motion .home,
-.reduced-motion .about,
-.reduced-motion .jobs-layout,
-.reduced-motion .project__project-image {
-  background-attachment: scroll !important;
-}
-.reduced-motion .skills__card,
-.reduced-motion .certificate-content {
-  transform: none !important;
-}
-
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 @keyframes floatAnimation {
   0% {
     transform: translateY(0px);
@@ -2764,23 +2815,24 @@ footer {
   border-radius: 10px;
   background: rgba(47, 47, 47, 0.8);
   overflow: hidden;
-  transform-style: preserve-3d;
   cursor: pointer;
-  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   height: 150px;
   position: relative;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   border-left: 3px solid aliceblue;
-  animation: borderFlash 3s infinite, neonPulse 4s infinite;
+  animation: borderFlash 3s infinite;
+  animation: neonPulse 4s infinite;
+}
+.skills__card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 .skills__card:nth-child(odd) {
   animation-delay: 0.5s;
 }
 .skills__card:nth-child(3n) {
   animation-delay: 1s;
-}
-.skills__card:nth-child(3n+1) {
-  animation-delay: 1.5s;
 }
 .active-all .skills__card {
   height: 150px;
@@ -3055,6 +3107,10 @@ footer {
     margin-bottom: 2rem;
   }
 }
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 .copyright {
   padding: 2rem;
   height: auto;
@@ -3155,6 +3211,10 @@ footer {
   }
 }
 
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 footer {
   background-color: #272727;
   color: aliceblue;
@@ -3188,6 +3248,10 @@ footer .copyright-link:focus-visible {
   outline-offset: 2px;
 }
 
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 .performance-optimized .menu-btn,
 .performance-optimized .home__name,
 .performance-optimized .social-icons a,
@@ -3382,7 +3446,8 @@ main {
   height: 100%;
   width: 100%;
   transition: margin-top 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
-  will-change: transform, opacity; /* Performance hint for animations */
+  will-change: transform, opacity;
+  /* Performance hint for animations */
 }
 
 footer {
@@ -3392,14 +3457,18 @@ footer {
   right: 1rem;
   color: #fff;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-  z-index: 20; /* Increased z-index to ensure it's above all content */
+  z-index: 20;
+  /* Increased z-index to ensure it's above all content */
   background-color: rgba(39, 39, 39, 0.7);
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
   transition: all 0.3s ease;
-  pointer-events: auto; /* Ensure it's clickable */
-  -webkit-backdrop-filter: blur(5px); /* Add webkit prefix for Safari */
-  backdrop-filter: blur(5px); /* Modern glass effect */
+  pointer-events: auto;
+  /* Ensure it's clickable */
+  -webkit-backdrop-filter: blur(5px);
+  /* Add webkit prefix for Safari */
+  backdrop-filter: blur(5px);
+  /* Modern glass effect */
   /* Ensure link is accessible */
 }
 footer:hover {
@@ -3524,7 +3593,8 @@ body {
   footer {
     display: none;
   }
-  .home, .contact {
+  .home,
+  .contact {
     background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }

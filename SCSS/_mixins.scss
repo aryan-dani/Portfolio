@@ -108,13 +108,22 @@
     }
 }
 
-// Card 3D hover effect
-@mixin card-3d-hover($depth: 10px) {
+// Card 3D hover effect - static version for CSS-only implementation
+@mixin card-3d-hover($depth: 10px, $scale: 1.02) {
     transform-style: preserve-3d;
-    transition: transform 0.3s ease;
+    transition: transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 
     &:hover {
-        transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateZ($depth);
+        transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px) scale($scale);
+    }
+
+    // Add data attribute for JavaScript enhancement
+    &[data-enhanced="true"] {
+
+        // JavaScript will handle the hover when enhanced
+        &:hover {
+            transform: none; // Let JS handle it
+        }
     }
 }
 

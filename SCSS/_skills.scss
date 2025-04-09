@@ -1,5 +1,31 @@
 @use 'config' as *;
+@use 'mixins' as *;
 @use "animations" as *;
+
+// Explicitly define card-hover mixin directly in this file as a fallback
+@mixin card-hover {
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  }
+}
+
+// Explicitly define animated-border mixin directly in this file as a fallback
+@mixin animated-border($color: $secondary-color) {
+  border-left: 3px solid $color;
+  animation: borderFlash 3s infinite;
+
+  &:nth-child(odd) {
+    animation-delay: 0.5s;
+  }
+
+  &:nth-child(3n) {
+    animation-delay: 1s;
+  }
+}
 
 // Enhanced animation keyframes
 @keyframes floatAnimation {

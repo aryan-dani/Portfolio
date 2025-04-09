@@ -1,6 +1,14 @@
-@forward "config"; 
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
 
-// Keep forwarding config so its variables are available everywhere
+// First, import and use the core variables and mixins
+@use "config" as *;
+@use "mixins" as *;
+
+// Then import all component files that rely on variables and mixins
+@use "animations";
 @use "home";
 @use "menu";
 @use "jobs";
@@ -9,14 +17,12 @@
 @use "certification";
 @use "theme";
 @use "skills";
-@use "copyright"; 
-@use "animations"; 
-@use "footer"; 
-@use "performance"; // Added the new performance file
+@use "copyright";
+@use "footer";
+@use "performance";
 
-// Import config variables to use them directly in this file
-@use "config" as *;
-@use "mixins" as *;
+// Note: Each component file should import its own dependencies 
+// using @use 'config' as *; and @use 'mixins' as *;
 
 // Optimize font loading with font-display: swap
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
@@ -89,16 +95,19 @@ select {
 html {
   font-size: 16px;
   scroll-behavior: smooth;
-  
+
   @media (max-width: 1200px) {
     font-size: 15px;
   }
+
   @media (max-width: 992px) {
     font-size: 14px;
   }
+
   @media (max-width: 768px) {
     font-size: 13px;
   }
+
   @media screen and (max-width: 576px) {
     font-size: 12px;
   }
@@ -109,11 +118,11 @@ a {
   text-decoration: none;
   color: #fff;
   transition: color 0.2s ease, transform 0.2s ease;
-  
+
   &:hover {
     color: darken(#fff, 10%);
   }
-  
+
   &:focus-visible {
     outline: 2px solid $secondary-color;
     outline-offset: 2px;
@@ -133,7 +142,7 @@ header {
   width: 100%;
   padding: 1rem;
   transition: background-color 0.3s ease;
-  
+
   /* Add subtle background on scroll */
   &.scrolled {
     background-color: rgba($primary-color, 0.95);
@@ -147,7 +156,8 @@ main {
   height: 100%;
   width: 100%;
   transition: margin-top 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
-  will-change: transform, opacity; /* Performance hint for animations */
+  will-change: transform, opacity;
+  /* Performance hint for animations */
 }
 
 footer {
@@ -157,26 +167,30 @@ footer {
   right: 1rem;
   color: #fff;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-  z-index: 20; /* Increased z-index to ensure it's above all content */
+  z-index: 20;
+  /* Increased z-index to ensure it's above all content */
   background-color: rgba($primary-color, 0.7);
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
   transition: all 0.3s ease;
-  pointer-events: auto; /* Ensure it's clickable */
-  -webkit-backdrop-filter: blur(5px); /* Add webkit prefix for Safari */
-  backdrop-filter: blur(5px); /* Modern glass effect */
-  
+  pointer-events: auto;
+  /* Ensure it's clickable */
+  -webkit-backdrop-filter: blur(5px);
+  /* Add webkit prefix for Safari */
+  backdrop-filter: blur(5px);
+  /* Modern glass effect */
+
   &:hover {
     background-color: rgba($primary-color, 0.9);
     transform: translateY(-3px);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
   }
-  
+
   /* Ensure link is accessible */
   a {
     display: inline-block;
     padding: 0.2rem;
-    
+
     &:focus-visible {
       outline: 2px solid $secondary-color;
       border-radius: 2px;
@@ -223,12 +237,12 @@ body {
   align-items: center;
   z-index: 9999;
   transition: opacity 0.5s ease, visibility 0.5s ease;
-  
+
   &.loaded {
     opacity: 0;
     visibility: hidden;
   }
-  
+
   &__spinner {
     width: 50px;
     height: 50px;
@@ -237,9 +251,11 @@ body {
     border-top-color: $secondary-color;
     animation: spin 1s ease-in-out infinite;
   }
-  
+
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 }
 
@@ -261,8 +277,9 @@ body {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  
-  &.visible, &.in-view {
+
+  &.visible,
+  &.in-view {
     opacity: 1;
     transform: translateY(0);
   }
@@ -281,6 +298,7 @@ body {
 
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -289,7 +307,7 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   .page-loader__spinner {
     animation: none !important;
   }
@@ -300,8 +318,9 @@ body {
   footer {
     display: none;
   }
-  
-  .home, .contact {
+
+  .home,
+  .contact {
     background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
