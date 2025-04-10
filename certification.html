@@ -105,7 +105,7 @@
 					<div class="row">
 						<div class="col-12">
 							<h2 id="heading">My Certificates 🏆</h2>
-							<p>
+							<p class="intro-text animate-on-scroll">
 								Welcome to my digital trophy cabinet "Yes, I actually did that."
 								This is where my collection of shiny badges and fancy titles
 								lives—proof that I've clicked Next Lesson more times than I care
@@ -120,14 +120,30 @@
 							</p>
 						</div>
 					</div>
+					
+					<!-- Certificate Filters -->
+					<div class="row mb-4">
+						<div class="col-12">
+							<div class="certificate-filters animate-on-scroll">
+								<button class="filter-btn active" data-filter="all">All Certificates</button>
+								<button class="filter-btn" data-filter="data-science">Data Science</button>
+								<button class="filter-btn" data-filter="ai-ml">AI & ML</button>
+								<button class="filter-btn" data-filter="web-dev">Web Development</button>
+								<button class="filter-btn" data-filter="programming">Programming</button>
+							</div>
+						</div>
+					</div>
+					
 					<!-- Certificate Cards -->
+					<div class="certificates-container">
 					<div
 						class="row row-cols-1 row-cols-md-3 gx-4 gy-0 justify-content-around"
 						data-masonry='{"percentPosition": true }'>
-						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="data-science">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/IBM Professional Certificate For Data Science.png" alt="IBM Data Science Professional Certificate" />
+									<span class="certificate-badge">Data Science</span>
 								</div>
 								<h2 class="text-secondary">JAN 2025</h2>
 								<h3>IBM Data Science Professional Certificate</h3>
@@ -135,7 +151,7 @@
 									<a
 										href="https://coursera.org/share/86040f43745391bb89e3fa8fe317d86f"
 										target="_blank"
-										class="certificate-link">
+										class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
@@ -147,12 +163,20 @@
 									from real-world data while building a strong foundation in
 									data science tools and techniques.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM" />
+										<span>IBM</span>
+									</div>
+									<div class="certificate-tag">Professional Certificate</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="web-dev">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/Responsive Web Design (FreeCodeCamp).png" alt="Responsive Web Design Certificate" />
+									<span class="certificate-badge">Web Dev</span>
 								</div>
 								<h2 class="text-secondary">JAN 2025</h2>
 								<h3>Responsive Web Design</h3>
@@ -160,7 +184,7 @@
 									<a
 										href="https://www.freecodecamp.org/certification/twofaced/responsive-web-design"
 										target="_blank"
-										class="certificate-link">
+										class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
@@ -170,12 +194,20 @@
 									Developed expertise in HTML, CSS, and modern web design
 									principles, including Flexbox, Grid, and responsive layouts.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://design-style-guide.freecodecamp.org/downloads/fcc_secondary_small.svg" alt="freeCodeCamp" />
+										<span>freeCodeCamp</span>
+									</div>
+									<div class="certificate-tag">Web Design</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="ai-ml">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/inspect-rich-documents-with-gemini-multimodality-an.png" alt="Inspect Rich Documents with Gemini Certificate" />
+									<span class="certificate-badge">AI & ML</span>
 								</div>
 								<h2 class="text-secondary">JAN 2025</h2>
 								<h3>Inspect Rich Documents with Gemini and Multimodal RAG</h3>
@@ -183,7 +215,7 @@
 									<a
 										href="https://www.cloudskillsboost.google/public_profiles/c3637b7f-94b4-4e5b-b747-f5929ebcf8a2/badges/13714641?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-shares"
 										target="_blank"
-										class="certificate-link">
+										class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
@@ -195,12 +227,20 @@
 									Retrieval-Augmented Generation (RAG) to break down and extract
 									insights from text, images, and data.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://storage.googleapis.com/gweb-cloudblog-publish/images/google_cloud_logo.max-500x500.png" alt="Google Cloud" />
+										<span>Google Cloud</span>
+									</div>
+									<div class="certificate-tag">Skill Badge</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="web-dev">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/Git and GIthub Certificate.jpg" alt="Git and GitHub Certificate" />
+									<span class="certificate-badge">Dev Tools</span>
 								</div>
 								<h2 class="text-secondary">FEB 2025</h2>
 								<h3>Career Essentials in GitHub Professional Certificate</h3>
@@ -208,7 +248,7 @@
 									<a
 										href="https://www.linkedin.com/learning/certificates/39d8a9ca410b5e1276203de44d773b107973c17697b95770dbad4982f816b109?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3B3X9sqfnjT0ymIpfNZdrzLw%3D%3D"
 										target="_blank"
-										class="certificate-link">
+										class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
@@ -222,12 +262,20 @@
 									streamline software development and work efficiently on
 									real-world projects.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="LinkedIn" />
+										<span>LinkedIn</span>
+									</div>
+									<div class="certificate-tag">Professional Certificate</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+						<div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="ai-ml">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/Career Essentials in Generative AI Professional Certificate.png" alt="Career Essentials in Generative AI Certificate" />
+									<span class="certificate-badge">AI & ML</span>
 								</div>
 								<h2 class="text-secondary">DEC 2024</h2>
 								<h3>
@@ -237,7 +285,7 @@
 									<a
 										href="https://www.linkedin.com/learning/certificates/b53dace1e572fe2d7b48ee76145ae787c0ca62233f2cba513085689bd314dcc1?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BH2R62%2BJ0RjumKtuczPVNzQ%3D%3D"
 										target="_blank"
-										class="certificate-link">
+										class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
@@ -250,55 +298,79 @@
 									This certification highlights my ability to harness generative
 									AI for innovative solutions in today's fast-paced tech world.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" />
+										<span>Microsoft & LinkedIn</span>
+									</div>
+									<div class="certificate-tag">Professional Certificate</div>
+								</div>
 							</div>
 						</div>
                         
                         <!-- Add remaining certificates -->
-                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="programming">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/C Programming Basics .png" alt="C Programming Basics Certificate" />
+									<span class="certificate-badge">Programming</span>
 								</div>
 								<h2 class="text-secondary">NOV 2024</h2>
 								<h3>C Programming Basics</h3>
 								<div class="certificate-links">
-									<a href="#" target="_blank" class="certificate-link">
+									<a href="#" target="_blank" class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
 								<p>
 									Completed comprehensive training in C programming fundamentals, covering variables, control structures, functions, arrays, pointers, and memory management. This certification demonstrates my ability to write efficient and structured code using this foundational programming language.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png" alt="C Programming" />
+										<span>Programming Institute</span>
+									</div>
+									<div class="certificate-tag">Programming</div>
+								</div>
 							</div>
 						</div>
                         
-                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="web-dev">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/HTML-5 Linkedin Certificate.png" alt="HTML-5 LinkedIn Certificate" />
+									<span class="certificate-badge">Web Dev</span>
 								</div>
 								<h2 class="text-secondary">OCT 2024</h2>
 								<h3>HTML-5 Essential Training</h3>
 								<div class="certificate-links">
-									<a href="#" target="_blank" class="certificate-link">
+									<a href="#" target="_blank" class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
 								<p>
 									Completed LinkedIn's HTML5 Essential Training course, mastering semantic markup, form controls, embedding media, and modern web standards. This certification validates my proficiency in creating accessible, well-structured HTML documents that serve as the foundation for modern web applications.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="LinkedIn" />
+										<span>LinkedIn Learning</span>
+									</div>
+									<div class="certificate-tag">Web Development</div>
+								</div>
 							</div>
 						</div>
                         
-                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="ai-ml">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/prompt-design-in-vertex-ai-skill-badge.png" alt="Prompt Design in Vertex AI Certificate" />
+									<span class="certificate-badge">AI & ML</span>
 								</div>
 								<h2 class="text-secondary">MAR 2025</h2>
 								<h3>Prompt Design in Vertex AI</h3>
 								<div class="certificate-links">
-									<a href="#" target="_blank" class="certificate-link">
+									<a href="#" target="_blank" class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
@@ -308,44 +380,75 @@
 							</div>
 						</div>
                         
-                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="web-dev">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/SASS Certificate Linkedin.png" alt="SASS Certificate LinkedIn" />
+									<span class="certificate-badge">Web Dev</span>
 								</div>
 								<h2 class="text-secondary">SEP 2024</h2>
 								<h3>SASS Essential Training</h3>
 								<div class="certificate-links">
-									<a href="#" target="_blank" class="certificate-link">
+									<a href="#" target="_blank" class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
 								<p>
 									Completed LinkedIn's SASS Essential Training, mastering variables, nesting, mixins, functions, and modular architecture. This certification validates my ability to write more maintainable and efficient CSS code using SASS preprocessor features to streamline frontend development workflows.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="LinkedIn" />
+										<span>LinkedIn Learning</span>
+									</div>
+									<div class="certificate-tag">CSS Preprocessor</div>
+								</div>
 							</div>
 						</div>
-                        
-                        <div class="col-xl-4 col-md-4 col-sm-12 align-content-top">
+                          <div class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item" data-category="web-dev">
 							<div class="certificate-content animate-on-scroll">
 								<div class="certificate-image">
 									<img src="Certifications/WhatsApp Image 2025-03-17 at 11.40.31_d46856c9.jpg" alt="Additional Certificate" />
+									<span class="certificate-badge">Web Dev</span>
 								</div>
 								<h2 class="text-secondary">MAR 2025</h2>
 								<h3>Advanced Web Development Workshop</h3>
 								<div class="certificate-links">
-									<a href="#" target="_blank" class="certificate-link">
+									<a href="#" target="_blank" class="certificate-link view-certificate">
 										<i class="fas fa-eye"></i> View Certificate
 									</a>
 								</div>
 								<p>
 									Participated in an intensive workshop covering modern frontend and backend technologies, including React, Node.js, and database integration. This hands-on training enhanced my full-stack development skills and provided practical experience with industry-standard tools and frameworks.
 								</p>
+								<div class="certificate-meta">
+									<div class="certificate-issuer">
+										<img src="https://cdn-icons-png.flaticon.com/512/919/919851.png" alt="Web Dev" />
+										<span>Dev Workshop</span>
+									</div>
+									<div class="certificate-tag">Workshop</div>
+								</div>
 							</div>
 						</div>
-					</div>
+                    </div>
+                    
+                    <!-- No Results Message -->
+                    <div class="no-certificates" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3>No certificates match your filter</h3>
+                        <p>Try selecting a different category or view all certificates</p>
+                    </div>
+                </div>
 				</div>
 			</section>
+
+            <!-- Certificate Preview Modal -->
+            <div class="certificate-preview">
+                <div class="preview-container">
+                    <img src="" alt="Certificate Preview" />
+                    <button class="close-preview">×</button>
+                </div>
+            </div>
 		</main>
 		<footer class="footer">
 			<a href="copyright.html" class="copyright-link"
@@ -356,6 +459,7 @@
 			src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
 			defer></script>
 		<script src="Js/main.js" defer></script>
+		<script src="Js/certification.js" defer></script>
 		<script src="Js/performance.js" defer></script>
 		<script
 			src="https://kit.fontawesome.com/1267cf2b7d.js"

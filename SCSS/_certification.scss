@@ -1,41 +1,14 @@
+// Certification Page Styles
 @use 'config' as *;
 @use 'mixins' as *;
 
-// Add fallback mixin definitions to prevent compilation errors
-@mixin card-hover {
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
-  }
-}
-
-@mixin shine-effect {
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.7s ease;
-  }
-
-  &:hover::before {
-    left: 100%;
-  }
-}
-
 .certification {
   position: relative;
-
-  // Add subtle particle background
+  padding: 2rem 0; 
+  min-height: calc(100vh - 80px);
+  overflow: hidden;
+  
+  // Add subtle particle backgrounds to match projects section
   &::before {
     content: '';
     position: absolute;
@@ -44,285 +17,446 @@
     width: 100%;
     height: 100%;
     background-image:
-      radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 30px 30px, 25px 25px;
-    background-position: 0 0, 15px 15px;
-    animation: gradientShift 20s ease infinite;
-    z-index: 0;
+      radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 25px 25px;
+    opacity: 0.6;
     pointer-events: none;
+    z-index: 0;
+    animation: gradientBackground 15s ease infinite;
   }
-
-  #heading {
-    font-weight: 900;
-    margin: 50px 0 5px;
-    color: $primary-color;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: $secondary-color;
+  h2#heading {
     display: inline-block;
+    margin-left: 32.5vw;
+    font-weight: 900;
+    font-size: 2rem;
+    padding: 2px 10px;
+    color:$primary-color;
+    background-color: aliceblue;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    animation: slide-in-heading 0.8s ease-out forwards;
     position: relative;
     z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.6s ease forwards;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    overflow: hidden;
-
-    // Shine effect
-    &::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -60%;
-      width: 20%;
-      height: 200%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: rotate(30deg);
-      animation: shimmer 3s infinite;
     }
-
-    &:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    }
-  }
-
-  p {
-    background-color: $secondary-color;
-    border-radius: 8px;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    padding: 10px;
+  
+  p.intro-text {
+    max-width: 900px;
     color: $primary-color;
+    margin: 0 auto 3rem;
+    text-align: justify;
+    padding: 10px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.9;
     position: relative;
     z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.6s 0.2s ease forwards;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-
-    &:hover {
-      cursor: default;
-      transform: translateY(-5px) scale(1.01);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    }
-  }
-
-  // Certificate card container
-  .col-xl-4,
-  .col-md-4,
-  .col-sm-12 {
-    padding-bottom: 50px; // Add fixed padding to each column
-  }
-
-  // Certificate image styling - NEW SECTION
-  .certificate-image {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px 8px 0 0;
-    height: 180px; // Fixed height for consistent card layout
-    margin-bottom: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    
-    // Create a gradient overlay on the bottom for text readability
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.2));
-      pointer-events: none;
-      z-index: 1;
-    }
-    
-    // Apply zoom effect on hover
-    &:hover img {
-      transform: scale(1.05);
-    }
-    
-    // Image styling within container
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; // Maintain aspect ratio and cover container
-      object-position: center; // Center the image
-      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      border-radius: 8px 8px 0 0;
-    }
-  }
-
-  .certificate-content {
-    background-color: $secondary-color;
+    background-color: aliceblue;
     border-radius: 8px;
+  }
+    // Filter controls
+  .certificate-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
     position: relative;
     z-index: 1;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: slideInUp 0.6s forwards;
-    animation-delay: calc(var(--cert-index, 0) * 0.2s + 0.4s);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    .filter-btn {
+      background: rgba(lighten($primary-color, 5%), 0.4);
+      border: 1px solid $secondary-color;
+      color: $secondary-color;
+      padding: 0.5rem 1.2rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      
+      &:hover {
+        background: rgba($secondary-color, 0.2);
+        transform: translateY(-2px);
+        border-color: $secondary-color;
+      }
+      
+      &.active {
+        background: $secondary-color;
+        color: $primary-color;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba($secondary-color, 0.3);
+        border-color: $primary-color;
+      }
+      
+      @include media-md {
+        font-size: 1rem;
+        padding: 0.6rem 1.5rem;
+      }
+    }
+  }
+  // Certificate cards container
+  .certificates-container {
+    position: relative;
+    min-height: 400px; // Ensures container maintains height during filtering
+    
+    &.filtering {
+      .certificate-content {
+        transition: all 0.5s ease;
+      }
+    }
+  }
+  
+  // Filtering animations
+  .certificate-item {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    
+    &.filtering-out {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    
+    .certificate-content {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      
+      &.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+    // Certificate card styles
+  .certificate-content {
+    background: rgba(lighten($primary-color, 5%), 0.7);
+    border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 0; // Remove margin from cards themselves
-    height: 100%; // Make cards fill the column height
-
-    // Glass morphism effect
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($secondary-color, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+      &:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);      border-color: rgba($secondary-color, 0.4);
+      
+      .certificate-image img {
+        transform: scale(1.05);
+      }
+      
+      .certificate-links {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      &::before {
+        opacity: 1;
+      }      
+      h3 {
+        color: $secondary-color;
+      }
+    }
+    
     &::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center,
-          rgba(255, 255, 255, 0.2) 0%,
-          rgba(255, 255, 255, 0) 80%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba($secondary-color, 0.05) 0%,
+        rgba($secondary-color, 0.1) 100%
+      );
       opacity: 0;
-      transform: scale(0.8);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      z-index: -1;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+      pointer-events: none;
     }
-
-    &:hover {
-      cursor: default;
-      transform: translateY(-15px) scale(1.03);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-
-      &::before {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      .text-secondary,
-      h3,
-      .certificate-links,
-      p {
-        transform: translateY(-3px);
-      }
-    }
-
-    .text-secondary {
-      padding: 10px;
-      padding-bottom: 0px;
-      position: relative;
-      transition: all 0.5s ease;
-
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 10px;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(90deg, $primary-color, transparent);
-        transition: width 0.4s ease;
-      }
-
-      &:hover::after {
-        width: calc(100% - 20px);
-      }
-    }
-
-    h3 {
-      color: $primary-color;
-      margin-left: 10px;
-      position: relative;
-      transition: all 0.5s ease;
-
-      // Create a glowing effect on hover
-      &:hover {
-        text-shadow: 0 0 5px rgba($primary-color, 0.5);
-      }
-    }
-
-    .certificate-links {
-      margin-left: 3px;
-      transition: all 0.5s ease;
-      margin-top: 10px;
-    }
-
-    .certificate-link {
-      background-color: $primary-color;
-      border-radius: 8px;
-      padding: 5px;
-      margin: 0px 5px;
+      .certificate-image {
       position: relative;
       overflow: hidden;
-      display: inline-block;
-      transition: all 0.4s ease;
-
-      // Shine effect on hover
+      height: 220px;
+      border-radius: 8px;
+      margin: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      
       &::before {
         content: '';
         position: absolute;
         top: 0;
-        left: -100%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.1),
+          rgba(0, 0, 0, 0.3)
+        );
+        z-index: 1;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+      }
+      
+      img {
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s ease;
+        object-fit: cover;
+        transition: transform 0.8s ease;
+        border-radius: 6px;
       }
-
-      &:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-
+      
+      .certificate-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba($primary-color, 0.7);
+        color: $secondary-color;
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding: 0.3rem 0.6rem;
+        border-radius: 8px;
+        z-index: 2;
+        text-transform: uppercase;
+        border: 1px solid rgba($secondary-color, 0.2);
+        backdrop-filter: blur(3px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+    
+    h2.text-secondary {
+      font-size: 1rem;
+      margin: 0 1.5rem 0.5rem;
+      color: $secondary-color;
+      font-weight: 600;
+      opacity: 0.8;
+    }
+    
+    h3 {
+      font-size: 1.3rem;
+      margin: 0.5rem 1.5rem;
+      font-weight: 700;
+      line-height: 1.4;
+      min-height: 2.8rem;
+      transition: color 0.3s ease;
+    }
+      .certificate-links {
+      display: flex;
+      margin: 0.5rem 1.5rem;
+      opacity: 0.9;
+      transition: all 0.4s ease;
+      
+      .certificate-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 1rem;
+        background: rgba($secondary-color, 0.1);
+        color: $secondary-color;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba($secondary-color, 0.3);
+        position: relative;
+        overflow: hidden;
+        
         &::before {
-          left: 100%;
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba($secondary-color, 0.2), transparent);
+          transition: left 0.7s ease;
+        }
+          &:hover {
+          background: rgba($secondary-color, 0.3);
+          border-color: rgba($secondary-color, 0.5);
+          transform: translateY(-2px);
+          
+          &::before {
+            left: 100%;
+          }
+        }
+        
+        i {
+          margin-right: 0.5rem;
         }
       }
     }
-
+    
     p {
-      margin-left: 8px;
-      transition: all 0.5s ease;
+      margin: 1rem 1.5rem 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: rgba($secondary-color, 0.85);
+      flex-grow: 1;
+      position: relative;
+      z-index: 1;
+    }
+      .certificate-meta {
+      display: flex;
+      align-items: center;
+      margin: 0 1.5rem 1.5rem;
+      justify-content: space-between;
+      
+      .certificate-issuer {
+        display: flex;
+        align-items: center;
+        
+        img {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          margin-right: 0.5rem;
+          box-shadow: 0 0 0 1px rgba($secondary-color, 0.2);
+          background-color: rgba($secondary-color, 0.1);
+          padding: 1px;
+        }
+        
+        span {
+          font-size: 0.85rem;
+          opacity: 0.7;
+          color: $secondary-color;
+        }
+      }
+      
+      .certificate-tag {
+        font-size: 0.8rem;
+        background: rgba($secondary-color, 0.1);
+        color: rgba($secondary-color, 0.9);
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        border: 1px solid rgba($secondary-color, 0.15);
+      }
     }
   }
-}
-
-// Add staggered animations for certification cards
-@for $i from 1 through 10 {
-  .certificate-content:nth-child(#{$i + 3}) {
-    --cert-index: #{$i};
+  
+  // Masonry grid settings
+  .certificate-grid {
+    @include media-lg {
+      column-count: 3;
+      column-gap: 1.5rem;
+      
+      .certificate-item {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+      }
+    }
+    
+    @include media-md {
+      column-count: 2;
+    }
+  }
+  
+  // Empty state
+  .no-certificates {
+    text-align: center;
+    padding: 3rem 1rem;
+    opacity: 0.7;
+    
+    i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+    // Animation for certificate cards and headings
+  @keyframes certificate-popup {
+    0% {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  @keyframes slide-in-heading {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .certificate-content.animate-on-scroll {
+    animation: certificate-popup 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985) forwards;
   }
 }
 
-// Fix for Masonry layout spacing
-.row[data-masonry] {
-
-  .col-xl-4,
-  .col-md-4,
-  .col-sm-12 {
-    margin-bottom: 15px; // Add consistent margin to columns
+// Fullscreen certificate preview
+.certificate-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($primary-color, 0.95);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+  
+  &.active {
+    opacity: 1;
+    visibility: visible;
   }
-}
-
-// Add keyframes for the animation
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 0%;
-  }
-
-  50% {
-    background-position: 100% 100%;
-  }
-
-  100% {
-    background-position: 0% 0%;
-  }
-}
-
-// Add keyframe for image hover shine effect
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) rotate(30deg);
-  }
-  100% {
-    transform: translateX(200%) rotate(30deg);
+  
+  .preview-container {
+    max-width: 90%;
+    max-height: 100%;
+    position: relative;
+    
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transform: scale(0.95);
+      transition: transform 0.5s ease;
+      
+      .certificate-preview.active & {
+        transform: scale(1);
+      }
+    }
+    
+    .close-preview {
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      background: none;
+      border: none;
+      color: set-text-color($primary-color);
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        opacity: 1;
+        transform: rotate(90deg);
+      }
+    }
   }
 }
