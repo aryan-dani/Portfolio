@@ -37,8 +37,7 @@ function initCertificationPage() {
                 item.classList.add('filtering-out');
                 item.querySelector('.certificate-content').classList.remove('visible');
             });
-            
-            // Wait for fade out animation to complete
+              // Wait for fade out animation to complete
             setTimeout(() => {
                 // Add filtering class to container
                 certificatesContainer.classList.add('filtering');
@@ -51,41 +50,67 @@ function initCertificationPage() {
                         item.style.display = '';
                         item.classList.remove('filtering-out');
                         visibleCount++;
-                        
-                        // Add staggered animation
-                        setTimeout(() => {
-                            item.querySelector('.certificate-content').classList.add('visible');
-                        }, 50 * visibleCount);
                     } else {
                         item.style.display = 'none';
                     }
-            });
-            
-            // Show/hide no results message
-            if (visibleCount === 0) {
-                noResultsMsg.style.display = 'block';
-            } else {
-                noResultsMsg.style.display = 'none';
-            }
-                  // Show/hide no results message
+                });
+                
+                // Show/hide no results message
                 if (visibleCount === 0) {
                     noResultsMsg.style.display = 'block';
                 } else {
                     noResultsMsg.style.display = 'none';
                 }
                 
-                // Remove filtering class after transition
-                setTimeout(() => {
-                    certificatesContainer.classList.remove('filtering');
-                    
-                    // If masonry is available, reinitialize it
-                    if (typeof Masonry !== 'undefined' && certificatesContainer.parentElement.dataset.masonry) {
-                        new Masonry(certificatesContainer.parentElement, {
+                // Force layout recalculation
+                certificatesContainer.offsetHeight;
+                
+                // Apply Masonry layout first, then show items with animation
+                if (typeof Masonry !== 'undefined') {
+                    const grid = document.querySelector('.row[data-masonry]');
+                    if (grid) {
+                        const masonryInstance = new Masonry(grid, {
                             itemSelector: '.certificate-item',
-                            percentPosition: true
+                            percentPosition: true,
+                            transitionDuration: 0
                         });
+                        
+                        // After layout is applied, animate items in
+                        setTimeout(() => {
+                            let counter = 0;
+                            certificateItems.forEach(item => {
+                                if (item.style.display !== 'none') {
+                                    counter++;
+                                    setTimeout(() => {
+                                        item.querySelector('.certificate-content').classList.add('visible');
+                                    }, 50 * counter);
+                                }
+                            });
+                            
+                            // Remove filtering class after animations
+                            setTimeout(() => {
+                                certificatesContainer.classList.remove('filtering');
+                                // Layout might need another refresh
+                                masonryInstance.layout();
+                            }, 500);
+                        }, 100);
                     }
-                }, 500);
+                } else {
+                    // If Masonry not available, still do the animations
+                    let counter = 0;
+                    certificateItems.forEach(item => {
+                        if (item.style.display !== 'none') {
+                            counter++;
+                            setTimeout(() => {
+                                item.querySelector('.certificate-content').classList.add('visible');
+                            }, 50 * counter);
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        certificatesContainer.classList.remove('filtering');
+                    }, 500);
+                }
             }, 300); // Wait for fade out animation
         });
     });    // Certificate preview functionality with enhanced image viewing
