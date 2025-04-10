@@ -397,8 +397,7 @@
     }
   }
   
-  .certificate-content.animate-on-scroll {
-    animation: certificate-popup 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985) forwards;
+  .certificate-content.animate-on-scroll {    animation: certificate-popup 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985) forwards;
   }
 }
 
@@ -408,7 +407,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: rgba($primary-color, 0.95);
   z-index: 1000;
   display: flex;
@@ -416,47 +415,63 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   backdrop-filter: blur(10px);
+  overflow-y: auto; /* Enable vertical scrolling */
   
   &.active {
     opacity: 1;
     visibility: visible;
+    
+    .preview-container {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
   }
   
   .preview-container {
     max-width: 90%;
-    max-height: 100%;
+    max-height: 90vh;
     position: relative;
+    transform: translateY(30px) scale(0.95);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
     
     img {
       max-width: 100%;
-      max-height: 100%;
-      border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      transform: scale(0.95);
-      transition: transform 0.5s ease;
+      height: auto;
+      max-height: 80vh;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      cursor: grab;
       
-      .certificate-preview.active & {
-        transform: scale(1);
+      &:active {
+        cursor: grabbing;
       }
     }
     
     .close-preview {
       position: absolute;
-      top: -40px;
-      right: -40px;
-      background: none;
-      border: none;
-      color: set-text-color($primary-color);
-      font-size: 2rem;
+      top: -50px;
+      right: 0;
+      background: rgba($secondary-color, 0.2);
+      border: 2px solid rgba($secondary-color, 0.5);
+      color: $secondary-color;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
       cursor: pointer;
-      opacity: 0.7;
+      opacity: 0.9;
       transition: all 0.3s ease;
       
       &:hover {
         opacity: 1;
         transform: rotate(90deg);
+        background: rgba($secondary-color, 0.3);
       }
     }
   }

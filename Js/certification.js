@@ -88,24 +88,227 @@ function initCertificationPage() {
                 }, 500);
             }, 300); // Wait for fade out animation
         });
-    });
-      // Certificate preview functionality
+    });    // Certificate preview functionality with enhanced image viewing
     // Make both the view buttons and images clickable
     const viewButtons = document.querySelectorAll('.view-certificate');
     const certificateImages = document.querySelectorAll('.certificate-image');
     
-    // Add click handler to certificate images
+    // Create enhanced preview container if it doesn't exist
+    let zoomLevel = 1;
+    let isDragging = false;
+    let startX, startY, translateX = 0, translateY = 0;
+    
+    // Add zoom controls to preview
+    if (certificatePreview) {
+        // Create zoom controls if they don't exist
+        if (!certificatePreview.querySelector('.zoom-controls')) {
+            const zoomControls = document.createElement('div');
+            zoomControls.className = 'zoom-controls';
+            zoomControls.innerHTML = `
+                <button class="zoom-in"><i class="fas fa-search-plus"></i></button>
+                <button class="zoom-reset"><i class="fas fa-redo-alt"></i></button>
+                <button class="zoom-out"><i class="fas fa-search-minus"></i></button>
+            `;
+            certificatePreview.querySelector('.preview-container').appendChild(zoomControls);
+            
+            // Style the zoom controls
+            const style = document.createElement('style');
+            style.textContent = `
+                .zoom-controls {
+                    position: absolute;
+                    bottom: -50px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    gap: 15px;
+                }
+                .zoom-controls button {
+                    background: rgba(240, 248, 255, 0.2);
+                    border: 1px solid rgba(240, 248, 255, 0.4);
+                    color: aliceblue;
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .zoom-controls button:hover {
+                    background: rgba(240, 248, 255, 0.3);
+                    transform: translateY(-3px);
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Add zoom functionality
+            const zoomIn = zoomControls.querySelector('.zoom-in');
+            const zoomOut = zoomControls.querySelector('.zoom-out');
+            const zoomReset = zoomControls.querySelector('.zoom-reset');
+            
+            zoomIn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                zoomLevel = Math.min(zoomLevel + 0.25, 3);
+                updateImageTransform();
+            });
+            
+            zoomOut.addEventListener('click', (e) => {
+                e.stopPropagation();
+                zoomLevel = Math.max(zoomLevel - 0.25, 1);
+                updateImageTransform();
+                if (zoomLevel === 1) {
+                    translateX = 0;
+                    translateY = 0;
+                    updateImageTransform();
+                }
+            });
+            
+            zoomReset.addEventListener('click', (e) => {
+                e.stopPropagation();
+                zoomLevel = 1;
+                translateX = 0;
+                translateY = 0;
+                updateImageTransform();
+            });
+        }
+    }
+    
+    // Function to update image transform
+    function updateImageTransform() {
+        if (previewImage) {
+            previewImage.style.transform = `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px)`;
+        }
+    }
+    
+    // Add drag functionality for panning when zoomed in
+    if (previewImage) {
+        previewImage.addEventListener('mousedown', (e) => {
+            if (zoomLevel > 1) {
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                previewImage.style.cursor = 'grabbing';
+                e.preventDefault();
+            }
+        });
+        
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                translateX = (e.clientX - startX) / zoomLevel;
+                translateY = (e.clientY - startY) / zoomLevel;
+                updateImageTransform();
+            }
+        });
+        
+        window.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                previewImage.style.cursor = 'grab';
+            }
+        });
+        
+        // Add mouse wheel zoom
+        previewImage.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                // Zoom in
+                zoomLevel = Math.min(zoomLevel + 0.1, 3);
+            } else {
+                // Zoom out
+                zoomLevel = Math.max(zoomLevel - 0.1, 1);
+                if (zoomLevel === 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+            }
+            updateImageTransform();
+        });
+    }
+    
+    // Add click handler to certificate images with enhanced animation
     certificateImages.forEach(imageContainer => {
         imageContainer.addEventListener('click', () => {
             const certCard = imageContainer.closest('.certificate-content');
             const certImage = imageContainer.querySelector('img');
             const viewButton = certCard.querySelector('.certificate-link');
+              // Reset zoom and position
+            zoomLevel = 1;
+            translateX = 0;
+            translateY = 0;
             
-            // Set preview image source
-            previewImage.src = certImage.src;
-            previewImage.alt = certImage.alt;
+            // Get current scroll position to center preview in viewport
+            const scrollY = window.scrollY;
+            const viewportHeight = window.innerHeight;
             
-            // Show preview
+            // Position the certificate preview container relative to scroll position
+            if (certificatePreview) {
+                // Center the preview in the current viewport
+                certificatePreview.style.top = `${scrollY}px`;
+                certificatePreview.style.height = `${viewportHeight}px`;
+            }
+            
+            // Set preview image source with preloading
+            const loader = document.createElement('div');
+            loader.className = 'image-loader';
+            loader.innerHTML = '<div class="spinner"></div>';
+            
+            const tempImage = new Image();
+            tempImage.onload = () => {
+                // Image loaded successfully
+                if (previewImage) {
+                    previewImage.src = tempImage.src;
+                    previewImage.alt = certImage.alt;
+                    
+                    // Remove loader if exists
+                    const existingLoader = certificatePreview.querySelector('.image-loader');
+                    if (existingLoader) {
+                        existingLoader.remove();
+                    }
+                    
+                    // Show preview with beautiful animation
+                    requestAnimationFrame(() => {
+                        certificatePreview.classList.add('active');
+                    });
+                }
+            };
+            
+            // Add loader to preview container
+            if (certificatePreview && !certificatePreview.querySelector('.image-loader')) {
+                const previewContainer = certificatePreview.querySelector('.preview-container');
+                if (previewContainer) {
+                    previewContainer.appendChild(loader);
+                }
+                
+                // Add loader styles
+                const style = document.createElement('style');
+                style.textContent = `
+                    .image-loader {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                    .spinner {
+                        width: 40px;
+                        height: 40px;
+                        border: 4px solid rgba(240, 248, 255, 0.3);
+                        border-top: 4px solid aliceblue;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                    }
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Start loading the image
+            tempImage.src = certImage.src;
+            
+            // Show preview immediately with loader
             certificatePreview.classList.add('active');
             
             // Disable body scroll
