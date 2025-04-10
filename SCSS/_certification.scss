@@ -115,7 +115,45 @@
   .col-xl-4,
   .col-md-4,
   .col-sm-12 {
-    padding-bottom: 45px; // Add fixed padding to each column
+    padding-bottom: 50px; // Add fixed padding to each column
+  }
+
+  // Certificate image styling - NEW SECTION
+  .certificate-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+    height: 180px; // Fixed height for consistent card layout
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+    // Create a gradient overlay on the bottom for text readability
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.2));
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    // Apply zoom effect on hover
+    &:hover img {
+      transform: scale(1.05);
+    }
+    
+    // Image styling within container
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; // Maintain aspect ratio and cover container
+      object-position: center; // Center the image
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      border-radius: 8px 8px 0 0;
+    }
   }
 
   .certificate-content {
@@ -205,6 +243,7 @@
     .certificate-links {
       margin-left: 3px;
       transition: all 0.5s ease;
+      margin-top: 10px;
     }
 
     .certificate-link {
@@ -275,5 +314,15 @@
 
   100% {
     background-position: 0% 0%;
+  }
+}
+
+// Add keyframe for image hover shine effect
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(30deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(30deg);
   }
 }

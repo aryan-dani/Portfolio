@@ -2185,7 +2185,7 @@ function navigateTo(url) {
 function checkFirstTimeVisit(pageName) {
 	// Get or initialize the visitedPages object in sessionStorage
 	let visitedPages =
-		JSON.Parse(sessionStorage.getItem("portfolioVisitedPages")) || {};
+		JSON.parse(sessionStorage.getItem("portfolioVisitedPages")) || {};
 
 	// Check if this is the first visit to this page
 	const isFirstVisit = !visitedPages[pageName];
