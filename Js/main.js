@@ -1299,313 +1299,378 @@ function animateOnScroll() {
 	}
 }
 
-// Skills page animations with interactive elements - Modified to reduce toast notifications
+// Skills page animations with interactive elements - Modified to reduce toast notifications and improve performance
 function initSkillsPageAnimations() {
-	// Check if this is the first visit to skills page
-	const isFirstVisit = checkFirstTimeVisit("skills-page");
+  // Check if this is the first visit to skills page
+  const isFirstVisit = checkFirstTimeVisit("skills-page");
+  
+  // Check for low-power devices or reduced motion preference
+  const isLowPowerDevice = window.navigator.userAgent.match(
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+  ) !== null;
+  
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  
+  // Adjust animation settings based on device capabilities
+  const animationSettings = {
+    useSimpleAnimations: isLowPowerDevice || prefersReducedMotion,
+    duration: isLowPowerDevice ? "0.4s" : "0.7s",
+    staggerDelay: isLowPowerDevice ? 0.02 : 0.05
+  };
 
-	// Animate skills heading with fade in and slide up
-	const skillsHeading = document.querySelector(".skills__heading");
-	if (skillsHeading) {
-		skillsHeading.style.animation = "none";
-		skillsHeading.style.opacity = "0";
-		skillsHeading.style.transform = "translateY(20px)";
-		skillsHeading.style.transition =
-			"all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985)";
+  // Animate skills heading with fade in and slide up
+  const skillsHeading = document.querySelector(".skills__heading");
+  if (skillsHeading) {
+    // Use transform: translate3d for GPU acceleration
+    skillsHeading.style.animation = "none";
+    skillsHeading.style.opacity = "0";
+    skillsHeading.style.transform = "translate3d(0, 20px, 0)";
+    skillsHeading.style.transition =
+      `all ${animationSettings.duration} cubic-bezier(0.26, 0.86, 0.44, 0.985)`;
 
-		setTrackedTimeout(
-			() => {
-				skillsHeading.style.opacity = "1";
-				skillsHeading.style.transform = "translateY(0)";
-			},
-			300,
-			"skillsHeadingAnimation"
-		);
-	}
+    // Use requestAnimationFrame for smoother animations
+    requestAnimationFrame(() => {
+      setTrackedTimeout(
+        () => {
+          skillsHeading.style.opacity = "1";
+          skillsHeading.style.transform = "translate3d(0, 0, 0)";
+        },
+        300,
+        "skillsHeadingAnimation"
+      );
+    });
+  }
 
-	// Initialize VanillaTilt for 3D card hover effect
-	if (typeof VanillaTilt !== "undefined") {
-		VanillaTilt.init(document.querySelectorAll(".skills__card"), {
-			max: 15,
-			speed: 400,
-			glare: true,
-			"max-glare": 0.2,
-			scale: 1.05,
-		});
-	}
+  // Initialize VanillaTilt for 3D card hover effect
+  if (typeof VanillaTilt !== "undefined") {
+    VanillaTilt.init(document.querySelectorAll(".skills__card"), {
+      max: 15,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.2,
+      scale: 1.05,
+    });
+  }
 
-	// Initialize skill cards properly with consistent animation behavior
-	initializeSkillCards();
+  // Initialize skill cards properly with consistent animation behavior
+  initializeSkillCards();
 
-	// Automatically click the "All" tab when the page loads
-	setTrackedTimeout(
-		() => {
-			const allTab = document.querySelector(
-				'.category-tab[data-category="all"]'
-			);
-			if (allTab) {
-				allTab.click();
-			}
-		},
-		300,
-		"allTabClick"
-	);
+  // Automatically click the "All" tab when the page loads
+  setTrackedTimeout(
+    () => {
+      const allTab = document.querySelector(
+        '.category-tab[data-category="all"]'
+      );
+      if (allTab) {
+        allTab.click();
+      }
+    },
+    300,
+    "allTabClick"
+  );
 
-	// Animate category tabs with staggered fade in
-	const categoryTabs = document.querySelectorAll(".category-tab");
-	if (categoryTabs.length > 0) {
-		categoryTabs.forEach((tab, index) => {
-			tab.style.animation = "none";
-			tab.style.opacity = "0";
-			tab.style.transform = "translateY(20px)";
-			tab.style.transition = `all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
-				0.4 + index * 0.1
-			}s`;
+  // Animate category tabs with staggered fade in
+  const categoryTabs = document.querySelectorAll(".category-tab");
+  if (categoryTabs.length > 0) {
+    categoryTabs.forEach((tab, index) => {
+      tab.style.animation = "none";
+      tab.style.opacity = "0";
+      tab.style.transform = "translateY(20px)";
+      tab.style.transition = `all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
+        0.4 + index * 0.1
+      }s`;
 
-			setTrackedTimeout(
-				() => {
-					tab.style.opacity = "1";
-					tab.style.transform = "translateY(0)";
-				},
-				500 + index * 100,
-				`categoryTabAnimation-${index}`
-			);
+      setTrackedTimeout(
+        () => {
+          tab.style.opacity = "1";
+          tab.style.transform = "translateY(0)";
+        },
+        500 + index * 100,
+        `categoryTabAnimation-${index}`
+      );
 
-			// Add click event to show relevant skill group
-			tab.addEventListener("click", () => {
-				// Remove active class from all tabs
-				categoryTabs.forEach((t) => t.classList.remove("active"));
+      // Add click event to show relevant skill group
+      tab.addEventListener("click", () => {
+        // Remove active class from all tabs
+        categoryTabs.forEach((t) => t.classList.remove("active"));
 
-				// Add active class to clicked tab
-				tab.classList.add("active");
+        // Add active class to clicked tab
+        tab.classList.add("active");
 
-				// Get category to display
-				const category = tab.getAttribute("data-category");
+        // Get category to display
+        const category = tab.getAttribute("data-category");
 
-				// Only show category change toast once per session
-				const categoryToastShown = sessionStorage.getItem(
-					"skillsCategoryToastShown"
-				);
-				if (!categoryToastShown) {
-					const categoryName = tab.textContent.trim();
-					showToast(
-						"Category Changed",
-						`Now viewing ${categoryName} skills`,
-						"fa-solid fa-layer-group"
-					);
-					sessionStorage.setItem("skillsCategoryToastShown", "true");
-				}
+        // Only show category change toast once per session
+        const categoryToastShown = sessionStorage.getItem("skillsCategoryToastShown");
+        if (!categoryToastShown) {
+          const categoryName = tab.textContent.trim();
+          showToast(
+            "Category Changed",
+            `Now viewing ${categoryName} skills`,
+            "fa-solid fa-layer-group"
+          );
+          sessionStorage.setItem("skillsCategoryToastShown", "true");
+        }
 
-				// Hide all skill groups initially
-				const skillGroups = document.querySelectorAll(".skills__group");
-				skillGroups.forEach((group) => {
-					group.classList.remove("active");
-					group.classList.remove("active-all");
-					group.style.opacity = "0";
-					group.style.transform = "translateY(20px)";
-				});
+        // Hide all skill groups initially
+        const skillGroups = document.querySelectorAll(".skills__group");
+        skillGroups.forEach((group) => {
+          group.classList.remove("active");
+          group.classList.remove("active-all");
+          group.style.opacity = "0";
+          group.style.transform = "translateY(20px)";
+        });
 
-				// If "All" is selected, show all skill groups with special formatting
-				if (category === "all") {
-					// Create a container for all skills if it doesn't exist
-					let allSkillsContainer = document.getElementById("all-skills");
-					if (!allSkillsContainer) {
-						allSkillsContainer = document.createElement("div");
-						allSkillsContainer.id = "all-skills";
-						allSkillsContainer.className = "skills__group";
-						document
-							.querySelector(".skills__container")
-							.appendChild(allSkillsContainer);
-					}
+        // If "All" is selected, show all skill groups with special formatting
+        if (category === "all") {
+          // Create a container for all skills if it doesn't exist
+          let allSkillsContainer = document.getElementById("all-skills");
+          if (!allSkillsContainer) {
+            allSkillsContainer = document.createElement("div");
+            allSkillsContainer.id = "all-skills";
+            allSkillsContainer.className = "skills__group";
+            allSkillsContainer.setAttribute("role", "tabpanel");
+            allSkillsContainer.setAttribute("aria-labelledby", "tab-all");
+            allSkillsContainer.setAttribute("id", "panel-all");
+            allSkillsContainer.setAttribute("tabindex", "0");
+            
+            document
+              .querySelector(".skills__container")
+              .appendChild(allSkillsContainer);
+          }
 
-					// Clear the all skills container
-					allSkillsContainer.innerHTML = "";
+          // Clear the all skills container
+          allSkillsContainer.innerHTML = "";
 
-					// Collect all skill cards from different categories
-					let allCards = [];
-					skillGroups.forEach((group) => {
-						if (group.id !== "all-skills") {
-							const cards = group.querySelectorAll(".skills__card");
-							cards.forEach((card) => {
-								allCards.push(card.cloneNode(true));
-							});
-						}
-					});
+          // Use DocumentFragment for better performance when adding multiple elements
+          const fragment = document.createDocumentFragment();
+          
+          // Collect all skill cards from different categories
+          skillGroups.forEach((group) => {
+            if (group.id !== "all-skills") {
+              const cards = group.querySelectorAll(".skills__card");
+              cards.forEach((card) => {
+                // Use cloneNode for better memory management
+                fragment.appendChild(card.cloneNode(true));
+              });
+            }
+          });
 
-					// Add all cards to the all skills container
-					allCards.forEach((card) => {
-						allSkillsContainer.appendChild(card);
-					});
+          // Add all cards to the all skills container at once
+          allSkillsContainer.appendChild(fragment);
 
-					// Show the all skills container with proper spacing
-					allSkillsContainer.classList.add("active", "active-all");
-					setTrackedTimeout(
-						() => {
-							allSkillsContainer.style.opacity = "1";
-							allSkillsContainer.style.transform = "translateY(0)";
-							animateSkillCards(allSkillsContainer);
-						},
-						100,
-						"allSkillsContainerAnimation"
-					);
-				} else {
-					// Hide the all skills container if it exists
-					const allSkillsContainer = document.getElementById("all-skills");
-					if (allSkillsContainer) {
-						allSkillsContainer.classList.remove("active", "active-all");
-					}
+          // Show the all skills container with proper spacing
+          allSkillsContainer.classList.add("active", "active-all");
+          setTrackedTimeout(
+            () => {
+              allSkillsContainer.style.opacity = "1";
+              allSkillsContainer.style.transform = "translateY(0)";
+              animateSkillCards(allSkillsContainer);
+              
+              // Announce to screen readers
+              const srAnnounce = document.createElement("div");
+              srAnnounce.className = "sr-only";
+              srAnnounce.setAttribute("aria-live", "polite");
+              srAnnounce.textContent = "All skills category selected, showing all skill cards";
+              document.body.appendChild(srAnnounce);
+              setTimeout(() => srAnnounce.remove(), 1000);
+            },
+            100,
+            "allSkillsContainerAnimation"
+          );
+        } else {
+          // Hide the all skills container if it exists
+          const allSkillsContainer = document.getElementById("all-skills");
+          if (allSkillsContainer) {
+            allSkillsContainer.classList.remove("active", "active-all");
+          }
 
-					// Show selected skill group with animation
-					const selectedGroup = document.getElementById(category);
-					if (selectedGroup) {
-						selectedGroup.classList.add("active");
-						setTrackedTimeout(
-							() => {
-								selectedGroup.style.opacity = "1";
-								selectedGroup.style.transform = "translateY(0)";
+          // Show selected skill group with animation
+          const selectedGroup = document.getElementById(category);
+          if (selectedGroup) {
+            selectedGroup.classList.add("active");
+            setTrackedTimeout(
+              () => {
+                selectedGroup.style.opacity = "1";
+                selectedGroup.style.transform = "translateY(0)";
 
-								// Animate cards within the active group
-								animateSkillCards(selectedGroup);
-							},
-							100,
-							`selectedGroupAnimation-${category}`
-						);
-					}
-				}
-			});
-		});
-	}
+                // Animate cards within the active group
+                animateSkillCards(selectedGroup);
+                
+                // Announce to screen readers
+                const categoryName = document.querySelector(`.category-tab[data-category="${category}"]`)?.textContent.trim();
+                const srAnnounce = document.createElement("div");
+                srAnnounce.className = "sr-only";
+                srAnnounce.setAttribute("aria-live", "polite");
+                srAnnounce.textContent = `${categoryName} skills category selected, showing relevant skill cards`;
+                document.body.appendChild(srAnnounce);
+                setTimeout(() => srAnnounce.remove(), 1000);
+              },
+              100,
+              `selectedGroupAnimation-${category}`
+            );
+          }
+        }
+      });
+      
+      // Add keyboard support for tab navigation
+      tab.addEventListener("keydown", (e) => {
+        let nextTabIndex;
+        
+        switch (e.key) {
+          case "ArrowRight":
+            nextTabIndex = (index + 1) % categoryTabs.length;
+            e.preventDefault();
+            categoryTabs[nextTabIndex].click();
+            break;
+          case "ArrowLeft":
+            nextTabIndex = (index - 1 + categoryTabs.length) % categoryTabs.length;
+            e.preventDefault();
+            categoryTabs[nextTabIndex].click();
+            break;
+          case "Home":
+            e.preventDefault();
+            categoryTabs[0].click();
+            break;
+          case "End":
+            e.preventDefault();
+            categoryTabs[categoryTabs.length - 1].click();
+            break;
+        }
+      });
+    });
+  }
 
-	// Animate skill cards with staggered fadeIn and 3D effect for initial active group
-	const activeGroup = document.querySelector(".skills__group.active");
-	if (activeGroup) {
-		setTrackedTimeout(
-			() => {
-				animateSkillCards(activeGroup);
-			},
-			800,
-			"activeGroupAnimation"
-		);
-	}
+  // Animate skill cards with staggered fadeIn and 3D effect for initial active group
+  const activeGroup = document.querySelector(".skills__group.active");
+  if (activeGroup) {
+    setTrackedTimeout(
+      () => {
+        animateSkillCards(activeGroup);
+      },
+      800,
+      "activeGroupAnimation"
+    );
+  }
 
-	// Add interactions for tech stack badges
-	const techStackBadges = document.querySelectorAll(".tech-stack__badges img");
-	if (techStackBadges.length > 0) {
-		techStackBadges.forEach((badge) => {
-			badge.addEventListener("click", () => {
-				const technology = badge.getAttribute("src").match(/badge\/([^-]+)/);
-				// Only show badge toast once per session
-				if (
-					technology &&
-					technology[1] &&
-					!sessionStorage.getItem("techBadgeToastShown")
-				) {
-					showToast(
-						technology[1],
-						"One of my favorite technologies!",
-						"fa-solid fa-code"
-					);
-					sessionStorage.setItem("techBadgeToastShown", "true");
-				}
-			});
-		});
-	}
+  // Add interactions for tech stack badges
+  const techStackBadges = document.querySelectorAll(".tech-stack__badges img");
+  if (techStackBadges.length > 0) {
+    techStackBadges.forEach((badge) => {
+      badge.addEventListener("click", () => {
+        const technology = badge.getAttribute("src").match(/badge\/([^-]+)/);
+        // Only show badge toast once per session
+        if (
+          technology &&
+          technology[1] &&
+          !sessionStorage.getItem("techBadgeToastShown")
+        ) {
+          showToast(
+            technology[1],
+            "One of my favorite technologies!",
+            "fa-solid fa-code"
+          );
+          sessionStorage.setItem("techBadgeToastShown", "true");
+        }
+      });
+    });
+  }
 
-	// Add 3D effect to skills globe elements
-	const skillOrbitElements = document.querySelectorAll(".skill-orbit");
-	if (skillOrbitElements.length > 0) {
-		skillOrbitElements.forEach((element) => {
-			element.addEventListener("click", () => {
-				// Get the name of the skill from icon class
-				let skillName = "";
-				const iconElement = element.querySelector("i");
-				if (iconElement) {
-					if (iconElement.classList.contains("fa-react")) skillName = "React";
-					else if (iconElement.classList.contains("fa-python"))
-						skillName = "Python";
-					else if (iconElement.classList.contains("fa-js"))
-						skillName = "JavaScript";
-					else if (iconElement.classList.contains("fa-node-js"))
-						skillName = "Node.js";
-					else if (iconElement.classList.contains("fa-html5"))
-						skillName = "HTML5";
-					else if (iconElement.classList.contains("fa-css3-alt"))
-						skillName = "CSS3";
-					else if (iconElement.classList.contains("fa-database"))
-						skillName = "Database";
-					else if (iconElement.classList.contains("fa-cloud"))
-						skillName = "Cloud Services";
-				}
+  // Add 3D effect to skills globe elements
+  const skillOrbitElements = document.querySelectorAll(".skill-orbit");
+  if (skillOrbitElements.length > 0) {
+    skillOrbitElements.forEach((element) => {
+      element.addEventListener("click", () => {
+        // Get the name of the skill from icon class
+        let skillName = "";
+        const iconElement = element.querySelector("i");
+        if (iconElement) {
+          if (iconElement.classList.contains("fa-react")) skillName = "React";
+          else if (iconElement.classList.contains("fa-python"))
+            skillName = "Python";
+          else if (iconElement.classList.contains("fa-js"))
+            skillName = "JavaScript";
+          else if (iconElement.classList.contains("fa-node-js"))
+            skillName = "Node.js";
+          else if (iconElement.classList.contains("fa-html5"))
+            skillName = "HTML5";
+          else if (iconElement.classList.contains("fa-css3-alt"))
+            skillName = "CSS3";
+          else if (iconElement.classList.contains("fa-database"))
+            skillName = "Database";
+          else if (iconElement.classList.contains("fa-cloud"))
+            skillName = "Cloud Services";
+        }
 
-				// Only show orbit element toast once per session
-				if (skillName && !sessionStorage.getItem("skillOrbitToastShown")) {
-					showToast(
-						skillName,
-						"Click on the skill cards to learn more!",
-						"fa-solid fa-lightbulb"
-					);
-					sessionStorage.setItem("skillOrbitToastShown", "true");
-				}
+        // Only show orbit element toast once per session
+        if (skillName && !sessionStorage.getItem("skillOrbitToastShown")) {
+          showToast(
+            skillName,
+            "Click on the skill cards to learn more!",
+            "fa-solid fa-lightbulb"
+          );
+          sessionStorage.setItem("skillOrbitToastShown", "true");
+        }
 
-				// Add pulse animation
-				element.classList.add("pulse-animation");
-				setTrackedTimeout(
-					() => {
-						element.classList.remove("pulse-animation");
-					},
-					1000,
-					"skillOrbitPulse"
-				);
-			});
-		});
-	}
+        // Add pulse animation
+        element.classList.add("pulse-animation");
+        setTrackedTimeout(
+          () => {
+            element.classList.remove("pulse-animation");
+          },
+          1000,
+          "skillOrbitPulse"
+        );
+      });
+    });
+  }
 
-	// Add click interaction to globe core
-	const globeCore = document.querySelector(".skills__globe-core");
-	const globeText = document.querySelector(".skills__globe-text");
-	if (globeCore && globeText) {
-		globeCore.addEventListener("click", () => {
-			// Change text content
-			if (globeText.textContent === "Explore Skills") {
-				globeText.textContent = "Click Icons";
-			} else if (globeText.textContent === "Click Icons") {
-				globeText.textContent = "Awesome!";
-			} else {
-				globeText.textContent = "Explore Skills";
-			}
+  // Add click interaction to globe core
+  const globeCore = document.querySelector(".skills__globe-core");
+  const globeText = document.querySelector(".skills__globe-text");
+  if (globeCore && globeText) {
+    globeCore.addEventListener("click", () => {
+      // Change text content
+      if (globeText.textContent === "Explore Skills") {
+        globeText.textContent = "Click Icons";
+      } else if (globeText.textContent === "Click Icons") {
+        globeText.textContent = "Awesome!";
+      } else {
+        globeText.textContent = "Explore Skills";
+      }
 
-			// Only show globe core toast once per session
-			if (!sessionStorage.getItem("globeCoreToastShown")) {
-				showToast(
-					"Skills Overview",
-					"Interactive visualization of my key skills",
-					"fa-solid fa-globe"
-				);
-				sessionStorage.setItem("globeCoreToastShown", "true");
-			}
+      // Only show globe core toast once per session
+      if (!sessionStorage.getItem("globeCoreToastShown")) {
+        showToast(
+          "Skills Overview",
+          "Interactive visualization of my key skills",
+          "fa-solid fa-globe"
+        );
+        sessionStorage.setItem("globeCoreToastShown", "true");
+      }
 
-			// Add pulse animation
-			globeCore.classList.add("globe-pulse");
-			setTrackedTimeout(
-				() => {
-					globeCore.classList.remove("globe-pulse");
-				},
-				1000,
-				"globeCorePulse"
-			);
-		});
-	}
+      // Add pulse animation
+      globeCore.classList.add("globe-pulse");
+      setTrackedTimeout(
+        () => {
+          globeCore.classList.remove("globe-pulse");
+        },
+        1000,
+        "globeCorePulse"
+      );
+    });
+  }
 
-	// Initialize progress bars animation
-	initProgressBars();
+  // Initialize progress bars animation
+  initProgressBars();
 
-	// Show keyboard shortcut hint only for first-time visitors
-	if (isFirstVisit) {
-		setTrackedTimeout(
-			() => {
-				const keyboardHint = document.createElement("div");
-				keyboardHint.className = "keyboard-hint";
-				keyboardHint.innerHTML = `
+  // Show keyboard shortcut hint only for first-time visitors
+  if (isFirstVisit) {
+    setTrackedTimeout(
+      () => {
+        const keyboardHint = document.createElement("div");
+        keyboardHint.className = "keyboard-hint";
+        keyboardHint.innerHTML = `
                 <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
                     background: rgba(15, 15, 15, 0.8); color: white; padding: 10px 15px;
                     border-radius: 8px; font-size: 0.9rem; z-index: 9999; max-width: 90%;
@@ -1614,44 +1679,44 @@ function initSkillsPageAnimations() {
                     <span style="font-weight: bold;">Pro Tip:</span> Use <kbd style="background: #444; padding: 2px 5px; border-radius: 3px;">Alt</kbd> + <kbd style="background: #444; padding: 2px 5px; border-radius: 3px;">Arrow Keys</kbd> to navigate between pages
                 </div>
             `;
-				document.body.appendChild(keyboardHint);
+        document.body.appendChild(keyboardHint);
 
-				// Show hint with animation after a delay
-				setTrackedTimeout(
-					() => {
-						const hintElement = keyboardHint.querySelector("div");
-						if (hintElement) {
-							hintElement.style.opacity = "1";
+        // Show hint with animation after a delay
+        setTrackedTimeout(
+          () => {
+            const hintElement = keyboardHint.querySelector("div");
+            if (hintElement) {
+              hintElement.style.opacity = "1";
 
-							// Auto-hide after a while
-							setTrackedTimeout(
-								() => {
-									hintElement.style.opacity = "0";
+              // Auto-hide after a while
+              setTrackedTimeout(
+                () => {
+                  hintElement.style.opacity = "0";
 
-									// Remove from DOM after fade out
-									setTrackedTimeout(
-										() => {
-											if (keyboardHint.parentNode) {
-												keyboardHint.parentNode.removeChild(keyboardHint);
-											}
-										},
-										500,
-										"keyboardHintRemove"
-									);
-								},
-								5000,
-								"keyboardHintHide"
-							);
-						}
-					},
-					2000,
-					"keyboardHintShow"
-				);
-			},
-			3000,
-			"keyboardHintInit"
-		);
-	}
+                  // Remove from DOM after fade out
+                  setTrackedTimeout(
+                    () => {
+                      if (keyboardHint.parentNode) {
+                        keyboardHint.parentNode.removeChild(keyboardHint);
+                      }
+                    },
+                    500,
+                    "keyboardHintRemove"
+                  );
+                },
+                5000,
+                "keyboardHintHide"
+              );
+            }
+          },
+          2000,
+          "keyboardHintShow"
+        );
+      },
+      3000,
+      "keyboardHintInit"
+    );
+  }
 }
 
 // Toast notification function - Optimized for visibility and performance
@@ -1816,115 +1881,152 @@ function initProgressBars() {
 
 // Animate skill cards with staggered fadeIn and 3D effect
 function animateSkillCards(container) {
-	const cards = container.querySelectorAll(".skills__card");
-	if (cards.length > 0) {
-		// Use requestAnimationFrame to batch animations and avoid layout thrashing
-		requestAnimationFrame(() => {
-			cards.forEach((card, index) => {
-				card.style.opacity = "0";
-				card.style.transform =
-					"perspective(1000px) rotateY(5deg) translateZ(-20px)";
-				card.style.transition = `all 0.7s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
-					0.05 + index * 0.05
-				}s`;
+  const cards = container.querySelectorAll(".skills__card");
+  if (cards.length > 0) {
+    // Use requestAnimationFrame to batch animations and avoid layout thrashing
+    requestAnimationFrame(() => {
+      // Consider fewer cards per animation batch for smoother performance
+      const batchSize = 5;
+      const totalCards = cards.length;
+      
+      for (let i = 0; i < totalCards; i++) {
+        const card = cards[i];
+        const delayFactor = Math.min(i, batchSize); // Cap delay factor for better performance
+        
+        card.style.opacity = "0";
+        card.style.transform = "translate3d(0, 20px, 0)"; // Simpler transform for better performance
+        card.style.transition = `all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.05 + delayFactor * 0.05}s`;
 
-				// Use setTimeout to stagger animations efficiently
-				setTrackedTimeout(
-					() => {
-						card.style.opacity = "1";
-						card.style.transform =
-							"perspective(1000px) rotateY(0) translateZ(0)";
-
-						// Add expand card functionality instead of flip
-						addExpandCardEffect(card);
-					},
-					150 + index * 50,
-					`skillCardAnimation-${index}`
-				); // Reduced timing for better performance
-			});
-		});
-	}
+        setTrackedTimeout(
+          () => {
+            card.style.opacity = "1";
+            card.style.transform = "translate3d(0, 0, 0)";
+            
+            // Add expand card functionality 
+            addExpandCardEffect(card);
+          },
+          120 + delayFactor * 40,
+          `skillCardAnimation-${i}`
+        );
+      }
+    });
+  }
 }
 
-// Add expand effect to skill cards instead of flip
+// Add expand effect to skill cards with improved accessibility
 function addExpandCardEffect(card) {
-	// Make sure the card has only one click event listener
-	card.removeEventListener("click", cardClickHandler);
-	card.addEventListener("click", cardClickHandler);
+  // Remove existing listener to avoid duplicates
+  card.removeEventListener("click", cardClickHandler);
+  card.addEventListener("click", cardClickHandler);
 
-	// Create a data attribute to store the skill level for reference
-	const progressBar = card.querySelector(".skills__progress-bar");
-	if (progressBar) {
-		const level = progressBar.getAttribute("data-level");
-		card.setAttribute("data-skill-level", level);
+  // Add keyboard accessibility
+  if (!card.hasAttribute("tabindex")) {
+    card.setAttribute("tabindex", "0");
+  }
+  
+  // Add ARIA attributes for accessibility
+  card.setAttribute("role", "button");
+  card.setAttribute("aria-expanded", "false");
 
-		// Make the percentage text visible immediately
-		const percentText = document.createElement("span");
-		percentText.className = "skills__progress-percent";
-		percentText.textContent = level + "%";
-		percentText.style.position = "absolute";
-		percentText.style.right = "10px";
-		percentText.style.top = "-25px";
-		percentText.style.color = "#fff";
-		percentText.style.fontSize = "14px";
-		percentText.style.fontWeight = "bold";
+  // Add keyboard handler
+  card.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      cardClickHandler.call(card, e);
+    }
+  });
 
-		// Add it to the progress bar container
-		const progressContainer = progressBar.parentElement;
-		if (
-			progressContainer &&
-			!progressContainer.querySelector(".skills__progress-percent")
-		) {
-			progressContainer.style.position = "relative";
-			progressContainer.appendChild(percentText);
-		}
-	}
+  // Create a data attribute to store the skill level for reference
+  const progressBar = card.querySelector(".skills__progress-bar");
+  if (progressBar) {
+    const level = progressBar.getAttribute("data-level");
+    card.setAttribute("data-skill-level", level);
+
+    // Make the percentage text visible and accessible
+    const progressContainer = progressBar.parentElement;
+    if (progressContainer) {
+      // Check if percent text already exists
+      if (!progressContainer.querySelector(".skills__progress-percent")) {
+        const percentText = document.createElement("span");
+        percentText.className = "skills__progress-percent";
+        percentText.textContent = level + "%";
+        percentText.style.position = "absolute";
+        percentText.style.right = "10px";
+        percentText.style.top = "-25px";
+        percentText.style.color = "#fff";
+        percentText.style.fontSize = "14px";
+        percentText.style.fontWeight = "bold";
+        percentText.setAttribute("aria-hidden", "false");
+        
+        // Add visually hidden text for screen readers
+        const srText = document.createElement("span");
+        srText.className = "sr-only";
+        srText.textContent = `Skill level: ${level}%`;
+        srText.style.position = "absolute";
+        srText.style.width = "1px";
+        srText.style.height = "1px";
+        srText.style.overflow = "hidden";
+        srText.style.clip = "rect(0, 0, 0, 0)";
+        percentText.appendChild(srText);
+        
+        progressContainer.style.position = "relative";
+        progressContainer.appendChild(percentText);
+      }
+    }
+  }
 }
 
-// Card click handler function to avoid duplicate listeners
+// Card click handler function with improved performance and accessibility
 function cardClickHandler(e) {
-	const card = this;
+  const card = this;
+  const isExpanded = card.classList.contains("expanded");
+  
+  // First collapse all expanded cards
+  const allExpandedCards = document.querySelectorAll(".skills__card.expanded");
+  allExpandedCards.forEach((expandedCard) => {
+    expandedCard.classList.remove("expanded");
+    expandedCard.setAttribute("aria-expanded", "false");
+    // Reset progress bar when card is collapsed
+    const progressBar = expandedCard.querySelector(".skills__progress-bar");
+    if (progressBar) {
+      // Use CSS transition instead of immediate reset for smoother effect
+      progressBar.style.transition = "width 0.3s ease-out";
+      progressBar.style.width = "0";
+    }
+  });
 
-	// Check if this card is already expanded
-	const isExpanded = card.classList.contains("expanded");
+  // If the clicked card wasn't already expanded, expand it
+  if (!isExpanded) {
+    card.classList.add("expanded");
+    card.setAttribute("aria-expanded", "true");
 
-	// First collapse all expanded cards
-	const allExpandedCards = document.querySelectorAll(".skills__card.expanded");
-	allExpandedCards.forEach((expandedCard) => {
-		expandedCard.classList.remove("expanded");
-		// Reset progress bar when card is collapsed
-		const progressBar = expandedCard.querySelector(".skills__progress-bar");
-		if (progressBar) {
-			progressBar.style.width = "0";
-		}
-	});
+    // Get skill information before showing toast
+    const skillName = card.querySelector("h3").textContent.trim();
+    const skillLevel = card.getAttribute("data-skill-level");
+    
+    // Show toast notification about the skill
+    showToast(
+      skillName,
+      `Proficiency: ${skillLevel}%`,
+      "fa-solid fa-chart-line"
+    );
 
-	// If the clicked card wasn't already expanded, expand it
-	if (!isExpanded) {
-		card.classList.add("expanded");
-
-		// Show toast notification about the skill
-		const skillName = card.querySelector("h3").textContent.trim();
-		const skillLevel = card.getAttribute("data-skill-level");
-		showToast(
-			skillName,
-			`Proficiency: ${skillLevel}%`,
-			"fa-solid fa-chart-line"
-		);
-
-		// Animate the progress bar
-		const progressBar = card.querySelector(".skills__progress-bar");
-		if (progressBar) {
-			const level = progressBar.getAttribute("data-level");
-			setTrackedTimeout(
-				() => {
-					progressBar.style.width = `${level}%`;
-				},
-				300,
-				`progressBarAnimation-${skillName}`
-			);
-		}
-	}
+    // Animate the progress bar with requestAnimationFrame for better performance
+    const progressBar = card.querySelector(".skills__progress-bar");
+    if (progressBar) {
+      const level = progressBar.getAttribute("data-level");
+      requestAnimationFrame(() => {
+        progressBar.style.transition = "width 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
+        setTrackedTimeout(
+          () => {
+            progressBar.style.width = `${level}%`;
+          },
+          100, // Reduced delay for better responsiveness
+          `progressBarAnimation-${skillName}`
+        );
+      });
+    }
+  }
 }
 
 // Add keyboard shortcuts for navigation
@@ -2037,7 +2139,1029 @@ function navigatePreviousPage() {
 			(pages[i] === "index.html" && currentPath.endsWith("/"))
 		) {
 			currentIndex = i;
+					break;
+		}
+	}
+
+	// Navigate to previous page or loop back to last
+	if (currentIndex !== -1) {
+		const prevIndex = (currentIndex - 1 + pages.length) % pages.length;
+		navigateTo(pages[prevIndex]);
+	} else {
+		// Default to home if page not found in sequence
+		navigateTo("index.html");
+	}
+}
+
+// Helper function for keyboard navigation
+function navigateTo(url) {
+	const main = document.querySelector("main");
+
+	if (main) {
+		// Show a toast notification about the navigation
+		showToast(
+			"Keyboard Navigation",
+			`Navigating to ${url.replace(".html", "")}`,
+			"fa-solid fa-keyboard"
+		);
+
+		// Animate transition
+		main.style.opacity = "0";
+		main.style.transform = "translateY(-20px)";
+
+		setTrackedTimeout(
+			() => {
+				window.location.href = url;
+			},
+			400,
+			"keyboardNavigation"
+		);
+	} else {
+		window.location.href = url;
+	}
+}
+
+// Add persistent session storage to track first-time visits
+function checkFirstTimeVisit(pageName) {
+	// Get or initialize the visitedPages object in sessionStorage
+	let visitedPages =
+		JSON.Parse(sessionStorage.getItem("portfolioVisitedPages")) || {};
+
+	// Check if this is the first visit to this page
+	const isFirstVisit = !visitedPages[pageName];
+
+	// If it's the first visit, mark the page as visited for future checks
+	if (isFirstVisit) {
+		visitedPages[pageName] = true;
+		sessionStorage.setItem(
+			"portfolioVisitedPages",
+			JSON.stringify(visitedPages)
+		);
+	}
+
+	return isFirstVisit;
+}
+
+// Add event listener with proper tracking
+function addTrackedEventListener(element, eventType, handler) {
+	if (!element) return;
+
+	// Create a wrapper to store in our map
+	const wrappedHandler = (e) => handler(e);
+
+	// Store reference to the handler
+	if (!eventListeners.has(element)) {
+		eventListeners.set(element, new Map());
+	}
+
+	const elementListeners = eventListeners.get(element);
+	if (!elementListeners.has(eventType)) {
+		elementListeners.set(eventType, []);
+	}
+
+	elementListeners.get(eventType).push({
+		original: handler,
+		wrapped: wrappedHandler,
+	});
+
+	// Add the actual event listener
+	element.addEventListener(eventType, wrappedHandler);
+
+	return wrappedHandler;
+}
+
+// Remove tracked event listener
+function removeTrackedEventListener(element, eventType, handler) {
+	if (!element || !eventListeners.has(element)) return;
+
+	const elementListeners = eventListeners.get(element);
+	if (!elementListeners.has(eventType)) return;
+
+	const handlers = elementListeners.get(eventType);
+	const index = handlers.findIndex((h) => h.original === handler);
+
+	if (index !== -1) {
+		const { wrapped } = handlers[index];
+		element.removeEventListener(eventType, wrapped);
+		handlers.splice(index, 1);
+	}
+}
+
+// Cleanup all listeners for an element
+function cleanupElementListeners(element) {
+	if (!element || !eventListeners.has(element)) return;
+
+	const elementListeners = eventListeners.get(element);
+	elementListeners.forEach((handlers, eventType) => {
+		handlers.forEach(({ wrapped }) => {
+			element.removeEventListener(eventType, wrapped);
+		});
+	});
+
+	eventListeners.delete(element);
+}
+
+// Update copyright year dynamically across all pages
+function updateCopyrightYear() {
+	const currentYear = new Date().getFullYear();
+	document
+		.querySelectorAll('.copyright-link, footer a[href="copyright.html"]')
+		.forEach((el) => {
+			if (el.textContent.includes("©")) {
+				el.innerHTML = el.innerHTML.replace(/\d{4}/, currentYear);
+			}
+		});
+}
+
+/**
+ * Detect keyboard navigation to show focus styles appropriately
+ */
+function detectKeyboardNavigation() {
+	// Add class to body when user navigates with keyboard
+	let isUsingKeyboard = false;
+
+	// Add keyboard navigation class
+	function handleKeyDown(e) {
+		if (e.key === "Tab") {
+			if (!isUsingKeyboard) {
+				document.body.classList.add("keyboard-nav-active");
+				isUsingKeyboard = true;
+			}
+		}
+	}
+
+	// Remove keyboard navigation class when using mouse
+	function handleMouseDown() {
+		if (isUsingKeyboard) {
+			document.body.classList.remove("keyboard-nav-active");
+			isUsingKeyboard = false;
+		}
+	}
+
+	// Add event listeners
+	document.addEventListener("keydown", handleKeyDown);
+	document.addEventListener("mousedown", handleMouseDown);
+
+	// Check for users who might be using screen readers
+	if (
+		navigator.userAgent.includes("JAWS") ||
+		navigator.userAgent.includes("NVDA") ||
+		navigator.userAgent.includes("VoiceOver")
+	) {
+		document.body.classList.add("keyboard-nav-active");
+	}
+}
+
+/**
+ * Initialize skill cards with consistent animation behavior
+ */
+function initializeSkillCards() {
+	const skillCards = document.querySelectorAll(".skills__card");
+
+	if (skillCards.length > 0) {
+		skillCards.forEach((card) => {
+			// Add click handler for expanding cards
+			card.addEventListener("click", function () {
+				// Toggle expanded state
+				const isExpanded = this.classList.contains("expanded");
+
+				// Reset all cards first
+				document
+					.querySelectorAll(".skills__card.expanded")
+					.forEach((expandedCard) => {
+						expandedCard.classList.remove("expanded");
+						// Reset progress bar when card is collapsed if it's not the currently visible one
+						const progressBar = expandedCard.querySelector(
+							".skills__progress-bar"
+						);
+						if (progressBar && expandedCard !== card) {
+							progressBar.style.width = "0";
+						}
+					});
+
+				if (!isExpanded) {
+					// Expand this card
+					this.classList.add("expanded");
+
+					// Animate progress bar
+					const progressBar = this.querySelector(".skills__progress-bar");
+					if (progressBar && progressBar.dataset.level) {
+						setTimeout(() => {
+							progressBar.style.width = `${progressBar.dataset.level}%`;
+						}, 300);
+					}
+				}
+			});
+
+			// Initialize progress bars to 0 width for consistent animations
+			const progressBar = card.querySelector(".skills__progress-bar");
+			if (progressBar && progressBar.dataset.level) {
+				progressBar.style.width = "0%";
+			}
+		});
+	}
+}
+
+// Initialize category tabs with improved accessibility and focus management
+function initCategoryTabs() {
+  const categoryTabs = document.querySelectorAll(".category-tab");
+  if (categoryTabs.length > 0) {
+    // Create a tab container for ARIA relationships if it doesn't exist
+    const tabsParent = categoryTabs[0].parentElement;
+    if (!tabsParent.getAttribute("role")) {
+      tabsParent.setAttribute("role", "tablist");
+      tabsParent.setAttribute("aria-label", "Skill Categories");
+    }
+    
+    categoryTabs.forEach((tab, index) => {
+      // Add ARIA attributes for accessibility
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-selected", tab.classList.contains("active") ? "true" : "false");
+      tab.setAttribute("tabindex", tab.classList.contains("active") ? "0" : "-1");
+      
+      // Generate unique IDs for ARIA relationships
+      const categoryId = tab.getAttribute("data-category");
+      const tabId = `tab-${categoryId}`;
+      const panelId = `panel-${categoryId}`;
+      
+      tab.setAttribute("id", tabId);
+      tab.setAttribute("aria-controls", panelId);
+      
+      // Find the corresponding panel (skill group)
+      const panel = document.getElementById(categoryId);
+      if (panel) {
+        panel.setAttribute("role", "tabpanel");
+        panel.setAttribute("aria-labelledby", tabId);
+        panel.setAttribute("id", panelId);
+        panel.setAttribute("tabindex", "0");
+      }
+      
+      // Add click event with improved focus management
+      tab.addEventListener("click", () => {
+        // Remove active class and update ARIA attributes from all tabs
+        categoryTabs.forEach((t) => {
+          t.classList.remove("active");
+          t.setAttribute("aria-selected", "false");
+          t.setAttribute("tabindex", "-1");
+        });
+
+        // Add active class and update ARIA attributes for clicked tab
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+        tab.setAttribute("tabindex", "0");
+        tab.focus(); // Focus the selected tab for keyboard users
+        
+        // Original category change logic...
+        const category = tab.getAttribute("data-category");
+        
+        // Only show category change toast once per session
+        const categoryToastShown = sessionStorage.getItem("skillsCategoryToastShown");
+        if (!categoryToastShown) {
+          const categoryName = tab.textContent.trim();
+          showToast(
+            "Category Changed",
+            `Now viewing ${categoryName} skills`,
+            "fa-solid fa-layer-group"
+          );
+          sessionStorage.setItem("skillsCategoryToastShown", "true");
+        }
+        
+        // Continue with existing category display logic...
+        handleCategoryChange(category);
+      });
+      
+      // Add keyboard support for tab navigation
+      tab.addEventListener("keydown", (e) => {
+        let nextTabIndex;
+        
+        switch (e.key) {
+          case "ArrowRight":
+            nextTabIndex = (index + 1) % categoryTabs.length;
+            e.preventDefault();
+            categoryTabs[nextTabIndex].click();
+            break;
+          case "ArrowLeft":
+            nextTabIndex = (index - 1 + categoryTabs.length) % categoryTabs.length;
+            e.preventDefault();
+            categoryTabs[nextTabIndex].click();
+            break;
+          case "Home":
+            e.preventDefault();
+            categoryTabs[0].click();
+            break;
+          case "End":
+            e.preventDefault();
+            categoryTabs[categoryTabs.length - 1].click();
+            break;
+        }
+      });
+    });
+  }
+}
+
+// Handle category change logic
+function handleCategoryChange(category) {
+  // Hide all skill groups initially
+  const skillGroups = document.querySelectorAll(".skills__group");
+  skillGroups.forEach((group) => {
+    group.classList.remove("active");
+    group.classList.remove("active-all");
+    group.style.opacity = "0";
+    group.style.transform = "translateY(20px)";
+  });
+
+  // If "All" is selected, show all skill groups with special formatting
+  if (category === "all") {
+    // Create a container for all skills if it doesn't exist
+    let allSkillsContainer = document.getElementById("all-skills");
+    if (!allSkillsContainer) {
+      allSkillsContainer = document.createElement("div");
+      allSkillsContainer.id = "all-skills";
+      allSkillsContainer.className = "skills__group";
+      allSkillsContainer.setAttribute("role", "tabpanel");
+      allSkillsContainer.setAttribute("aria-labelledby", "tab-all");
+      allSkillsContainer.setAttribute("id", "panel-all");
+      allSkillsContainer.setAttribute("tabindex", "0");
+      
+      document
+        .querySelector(".skills__container")
+        .appendChild(allSkillsContainer);
+    }
+
+    // Clear the all skills container
+    allSkillsContainer.innerHTML = "";
+
+    // Use DocumentFragment for better performance when adding multiple elements
+    const fragment = document.createDocumentFragment();
+    
+    // Collect all skill cards from different categories
+    skillGroups.forEach((group) => {
+      if (group.id !== "all-skills") {
+        const cards = group.querySelectorAll(".skills__card");
+        cards.forEach((card) => {
+          // Use cloneNode for better memory management
+          fragment.appendChild(card.cloneNode(true));
+        });
+      }
+    });
+
+    // Add all cards to the all skills container at once
+    allSkillsContainer.appendChild(fragment);
+
+    // Show the all skills container with proper spacing
+    allSkillsContainer.classList.add("active", "active-all");
+    setTrackedTimeout(
+      () => {
+        allSkillsContainer.style.opacity = "1";
+        allSkillsContainer.style.transform = "translateY(0)";
+        animateSkillCards(allSkillsContainer);
+        
+        // Announce to screen readers
+        const srAnnounce = document.createElement("div");
+        srAnnounce.className = "sr-only";
+        srAnnounce.setAttribute("aria-live", "polite");
+        srAnnounce.textContent = "All skills category selected, showing all skill cards";
+        document.body.appendChild(srAnnounce);
+        setTimeout(() => srAnnounce.remove(), 1000);
+      },
+      100,
+      "allSkillsContainerAnimation"
+    );
+  } else {
+    // Hide the all skills container if it exists
+    const allSkillsContainer = document.getElementById("all-skills");
+    if (allSkillsContainer) {
+      allSkillsContainer.classList.remove("active", "active-all");
+    }
+
+    // Show selected skill group with animation
+    const selectedGroup = document.getElementById(category);
+    if (selectedGroup) {
+      selectedGroup.classList.add("active");
+      setTrackedTimeout(
+        () => {
+          selectedGroup.style.opacity = "1";
+          selectedGroup.style.transform = "translateY(0)";
+
+          // Animate cards within the active group
+          animateSkillCards(selectedGroup);
+          
+          // Announce to screen readers
+          const categoryName = document.querySelector(`.category-tab[data-category="${category}"]`)?.textContent.trim();
+          const srAnnounce = document.createElement("div");
+          srAnnounce.className = "sr-only";
+          srAnnounce.setAttribute("aria-live", "polite");
+          srAnnounce.textContent = `${categoryName} skills category selected, showing relevant skill cards`;
+          document.body.appendChild(srAnnounce);
+          setTimeout(() => srAnnounce.remove(), 1000);
+        },
+        100,
+        `selectedGroupAnimation-${category}`
+      );
+    }
+  }
+}
+
+function initCategoryTabs() {
+  const categoryTabs = document.querySelectorAll(".category-tab");
+  if (categoryTabs.length > 0) {
+    // Create a tab container for ARIA relationships if it doesn't exist
+    const tabsParent = categoryTabs[0].parentElement;
+    if (!tabsParent.getAttribute("role")) {
+      tabsParent.setAttribute("role", "tablist");
+      tabsParent.setAttribute("aria-label", "Skill Categories");
+    }
+    
+    categoryTabs.forEach((tab, index) => {
+      // Add ARIA attributes for accessibility
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-selected", tab.classList.contains("active") ? "true" : "false");
+      tab.setAttribute("tabindex", tab.classList.contains("active") ? "0" : "-1");
+      
+      // Generate unique IDs for ARIA relationships
+      const categoryId = tab.getAttribute("data-category");
+      const tabId = `tab-${categoryId}`;
+      const panelId = `panel-${categoryId}`;
+      
+      tab.setAttribute("id", tabId);
+      tab.setAttribute("aria-controls", panelId);
+      
+      // Find the corresponding panel (skill group)
+      const panel = document.getElementById(categoryId);
+      if (panel) {
+        panel.setAttribute("role", "tabpanel");
+        panel.setAttribute("aria-labelledby", tabId);
+        panel.setAttribute("id", panelId);
+        panel.setAttribute("tabindex", "0");
+      }
+      
+      // Add click event with improved focus management
+      tab.addEventListener("click", () => {
+        // Remove active class and update ARIA attributes from all tabs
+        categoryTabs.forEach((t) => {
+          t.classList.remove("active");
+          t.setAttribute("aria-selected", "false");
+          t.setAttribute("tabindex", "-1");
+        });
+
+        // Add active class and update ARIA attributes for clicked tab
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+        tab.setAttribute("tabindex", "0");
+        tab.focus(); // Focus the selected tab for keyboard users
+        
+        // Original category change logic...
+        const category = tab.getAttribute("data-category");
+        
+        // Only show category change toast once per session
+        const categoryToastShown = sessionStorage.getItem("skillsCategoryToastShown");
+        if (!categoryToastShown) {
+          const categoryName = tab.textContent.trim();
+          showToast(
+            "Category Changed",
+            `Now viewing ${categoryName} skills`,
+            "fa-solid fa-layer-group"
+          );
+          sessionStorage.setItem("skillsCategoryToastShown", "true");
+        }
+        
+        // Continue with existing category display logic...
+        handleCategoryChange(category);
+      });
+      
+      // Add keyboard support for tab navigation
+      tab.addEventListener("keydown", (e) => {
+        let nextTabIndex;
+        
+        switch (e.key) {
+          case "ArrowRight":
+            nextTabIndex = (index + 1) % categoryTabs.length;
+            e.preventDefault();
+            categoryTabs[nextTabIndex].click();
+            break;
+          case "ArrowLeft":
+            nextTabIndex = (index - 1 + categoryTabs.length) % categoryTabs.length;
+            e.preventDefault();
+            categoryTabs[nextTabIndex].click();
+            break;
+          case "Home":
+            e.preventDefault();
+            categoryTabs[0].click();
+            break;
+          case "End":
+            e.preventDefault();
+            categoryTabs[categoryTabs.length - 1].click();
+            break;
+        }
+      });
+    });
+  }
+}
+
+// Skills page animations with interactive elements - Modified to reduce toast notifications and improve performance
+function initSkillsPageAnimations() {
+  // Check if this is the first visit to skills page
+  const isFirstVisit = checkFirstTimeVisit("skills-page");
+  
+  // Check for low-power devices or reduced motion preference
+  const isLowPowerDevice = window.navigator.userAgent.match(
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+  ) !== null;
+  
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  
+  // Adjust animation settings based on device capabilities
+  const animationSettings = {
+    useSimpleAnimations: isLowPowerDevice || prefersReducedMotion,
+    duration: isLowPowerDevice ? "0.4s" : "0.7s",
+    staggerDelay: isLowPowerDevice ? 0.02 : 0.05
+  };
+
+  // Animate skills heading with fade in and slide up
+  const skillsHeading = document.querySelector(".skills__heading");
+  if (skillsHeading) {
+    // Use transform: translate3d for GPU acceleration
+    skillsHeading.style.animation = "none";
+    skillsHeading.style.opacity = "0";
+    skillsHeading.style.transform = "translate3d(0, 20px, 0)";
+    skillsHeading.style.transition =
+      `all ${animationSettings.duration} cubic-bezier(0.26, 0.86, 0.44, 0.985)`;
+
+    // Use requestAnimationFrame for smoother animations
+    requestAnimationFrame(() => {
+      setTrackedTimeout(
+        () => {
+          skillsHeading.style.opacity = "1";
+          skillsHeading.style.transform = "translate3d(0, 0, 0)";
+        },
+        300,
+        "skillsHeadingAnimation"
+      );
+    });
+  }
+
+  // Initialize VanillaTilt for 3D card hover effect
+  if (typeof VanillaTilt !== "undefined") {
+    VanillaTilt.init(document.querySelectorAll(".skills__card"), {
+      max: 15,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.2,
+      scale: 1.05,
+    });
+  }
+
+  // Initialize skill cards properly with consistent animation behavior
+  initializeSkillCards();
+
+  // Automatically click the "All" tab when the page loads
+  setTrackedTimeout(
+    () => {
+      const allTab = document.querySelector(
+        '.category-tab[data-category="all"]'
+      );
+      if (allTab) {
+        allTab.click();
+      }
+    },
+    300,
+    "allTabClick"
+  );
+
+  // Animate category tabs with staggered fade in
+  const categoryTabs = document.querySelectorAll(".category-tab");
+  if (categoryTabs.length > 0) {
+    categoryTabs.forEach((tab, index) => {
+      tab.style.animation = "none";
+      tab.style.opacity = "0";
+      tab.style.transform = "translateY(20px)";
+      tab.style.transition = `all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
+        0.4 + index * 0.1
+      }s`;
+
+      setTrackedTimeout(
+        () => {
+          tab.style.opacity = "1";
+          tab.style.transform = "translateY(0)";
+        },
+        500 + index * 100,
+        `categoryTabAnimation-${index}`
+      );
+
+      // Add click event to show relevant skill group
+      tab.addEventListener("click", () => {
+        // Remove active class from all tabs
+        categoryTabs.forEach((t) => t.classList.remove("active"));
+
+        // Add active class to clicked tab
+        tab.classList.add("active");
+
+        // Get category to display
+        const category = tab.getAttribute("data-category");
+
+        // Only show category change toast once per session
+        const categoryToastShown = sessionStorage.getItem("skillsCategoryToastShown");
+        if (!categoryToastShown) {
+          const categoryName = tab.textContent.trim();
+          showToast(
+            "Category Changed",
+            `Now viewing ${categoryName} skills`,
+            "fa-solid fa-layer-group"
+          );
+          sessionStorage.setItem("skillsCategoryToastShown", "true");
+        }
+
+        // Hide all skill groups initially
+        const skillGroups = document.querySelectorAll(".skills__group");
+        skillGroups.forEach((group) => {
+          group.classList.remove("active");
+          group.classList.remove("active-all");
+          group.style.opacity = "0";
+          group.style.transform = "translateY(20px)";
+        });
+
+        // If "All" is selected, show all skill groups with special formatting
+        if (category === "all") {
+          // Create a container for all skills if it doesn't exist
+          let allSkillsContainer = document.getElementById("all-skills");
+          if (!allSkillsContainer) {
+            allSkillsContainer = document.createElement("div");
+            allSkillsContainer.id = "all-skills";
+            allSkillsContainer.className = "skills__group";
+            allSkillsContainer.setAttribute("role", "tabpanel");
+            allSkillsContainer.setAttribute("aria-labelledby", "tab-all");
+            allSkillsContainer.setAttribute("id", "panel-all");
+            allSkillsContainer.setAttribute("tabindex", "0");
+            
+            document
+              .querySelector(".skills__container")
+              .appendChild(allSkillsContainer);
+          }
+
+          // Clear the all skills container
+          allSkillsContainer.innerHTML = "";
+
+          // Use DocumentFragment for better performance when adding multiple elements
+          const fragment = document.createDocumentFragment();
+          
+          // Collect all skill cards from different categories
+          skillGroups.forEach((group) => {
+            if (group.id !== "all-skills") {
+              const cards = group.querySelectorAll(".skills__card");
+              cards.forEach((card) => {
+                // Use cloneNode for better memory management
+                fragment.appendChild(card.cloneNode(true));
+              });
+            }
+          });
+
+          // Add all cards to the all skills container at once
+          allSkillsContainer.appendChild(fragment);
+
+          // Show the all skills container with proper spacing
+          allSkillsContainer.classList.add("active", "active-all");
+          setTrackedTimeout(
+            () => {
+              allSkillsContainer.style.opacity = "1";
+              allSkillsContainer.style.transform = "translateY(0)";
+              animateSkillCards(allSkillsContainer);
+              
+              // Announce to screen readers
+              const srAnnounce = document.createElement("div");
+              srAnnounce.className = "sr-only";
+              srAnnounce.setAttribute("aria-live", "polite");
+              srAnnounce.textContent = "All skills category selected, showing all skill cards";
+              document.body.appendChild(srAnnounce);
+              setTimeout(() => srAnnounce.remove(), 1000);
+            },
+            100,
+            "allSkillsContainerAnimation"
+          );
+        } else {
+          // Hide the all skills container if it exists
+          const allSkillsContainer = document.getElementById("all-skills");
+          if (allSkillsContainer) {
+            allSkillsContainer.classList.remove("active", "active-all");
+          }
+
+          // Show selected skill group with animation
+          const selectedGroup = document.getElementById(category);
+          if (selectedGroup) {
+            selectedGroup.classList.add("active");
+            setTrackedTimeout(
+              () => {
+                selectedGroup.style.opacity = "1";
+                selectedGroup.style.transform = "translateY(0)";
+
+                // Animate cards within the active group
+                animateSkillCards(selectedGroup);
+                
+                // Announce to screen readers
+                const categoryName = document.querySelector(`.category-tab[data-category="${category}"]`)?.textContent.trim();
+                const srAnnounce = document.createElement("div");
+                srAnnounce.className = "sr-only";
+                srAnnounce.setAttribute("aria-live", "polite");
+                srAnnounce.textContent = `${categoryName} skills category selected, showing relevant skill cards`;
+                document.body.appendChild(srAnnounce);
+                setTimeout(() => srAnnounce.remove(), 1000);
+              },
+              100,
+              `selectedGroupAnimation-${category}`
+            );
+          }
+        }
+      });
+      
+      // Add keyboard support for tab navigation
+      tab.addEventListener("keydown", (e) => {
+        let nextTabIndex;
+        
+        switch (e.key) {
+          case "ArrowRight":
+            nextTabIndex = (index + 1) % categoryTabs.length;
+            e.preventDefault();
+            categoryTabs[nextTabIndex].click();
+            break;
+          case "ArrowLeft":
+            nextTabIndex = (index - 1 + categoryTabs.length) % categoryTabs.length;
+            e.preventDefault();
+            categoryTabs[nextTabIndex].click();
+            break;
+          case "Home":
+            e.preventDefault();
+            categoryTabs[0].click();
+            break;
+          case "End":
+            e.preventDefault();
+            categoryTabs[categoryTabs.length - 1].click();
+            break;
+        }
+      });
+    });
+  }
+}
+
+// Animate skill cards with staggered fadeIn and 3D effect for initial active group
+function animateSkillCards(container) {
+  const cards = container.querySelectorAll(".skills__card");
+  if (cards.length > 0) {
+    // Use requestAnimationFrame to batch animations and avoid layout thrashing
+    requestAnimationFrame(() => {
+      // Consider fewer cards per animation batch for smoother performance
+      const batchSize = 5;
+      const totalCards = cards.length;
+      
+      for (let i = 0; i < totalCards; i++) {
+        const card = cards[i];
+        const delayFactor = Math.min(i, batchSize); // Cap delay factor for better performance
+        
+        card.style.opacity = "0";
+        card.style.transform = "translate3d(0, 20px, 0)"; // Simpler transform for better performance
+        card.style.transition = `all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${0.05 + delayFactor * 0.05}s`;
+
+        setTrackedTimeout(
+          () => {
+            card.style.opacity = "1";
+            card.style.transform = "translate3d(0, 0, 0)";
+            
+            // Add expand card functionality 
+            addExpandCardEffect(card);
+          },
+          120 + delayFactor * 40,
+          `skillCardAnimation-${i}`
+        );
+      }
+    });
+  }
+}
+
+// Add expand effect to skill cards with improved accessibility
+function addExpandCardEffect(card) {
+  // Remove existing listener to avoid duplicates
+  card.removeEventListener("click", cardClickHandler);
+  card.addEventListener("click", cardClickHandler);
+
+  // Add keyboard accessibility
+  if (!card.hasAttribute("tabindex")) {
+    card.setAttribute("tabindex", "0");
+  }
+  
+  // Add ARIA attributes for accessibility
+  card.setAttribute("role", "button");
+  card.setAttribute("aria-expanded", "false");
+
+  // Add keyboard handler
+  card.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      cardClickHandler.call(card, e);
+    }
+  });
+
+  // Create a data attribute to store the skill level for reference
+  const progressBar = card.querySelector(".skills__progress-bar");
+  if (progressBar) {
+    const level = progressBar.getAttribute("data-level");
+    card.setAttribute("data-skill-level", level);
+
+    // Make the percentage text visible and accessible
+    const progressContainer = progressBar.parentElement;
+    if (progressContainer) {
+      // Check if percent text already exists
+      if (!progressContainer.querySelector(".skills__progress-percent")) {
+        const percentText = document.createElement("span");
+        percentText.className = "skills__progress-percent";
+        percentText.textContent = level + "%";
+        percentText.style.position = "absolute";
+        percentText.style.right = "10px";
+        percentText.style.top = "-25px";
+        percentText.style.color = "#fff";
+        percentText.style.fontSize = "14px";
+        percentText.style.fontWeight = "bold";
+        percentText.setAttribute("aria-hidden", "false");
+        
+        // Add visually hidden text for screen readers
+        const srText = document.createElement("span");
+        srText.className = "sr-only";
+        srText.textContent = `Skill level: ${level}%`;
+        srText.style.position = "absolute";
+        srText.style.width = "1px";
+        srText.style.height = "1px";
+        srText.style.overflow = "hidden";
+        srText.style.clip = "rect(0, 0, 0, 0)";
+        percentText.appendChild(srText);
+        
+        progressContainer.style.position = "relative";
+        progressContainer.appendChild(percentText);
+      }
+    }
+  }
+}
+
+// Card click handler function with improved performance and accessibility
+function cardClickHandler(e) {
+  const card = this;
+  const isExpanded = card.classList.contains("expanded");
+  
+  // First collapse all expanded cards
+  const allExpandedCards = document.querySelectorAll(".skills__card.expanded");
+  allExpandedCards.forEach((expandedCard) => {
+    expandedCard.classList.remove("expanded");
+    expandedCard.setAttribute("aria-expanded", "false");
+    // Reset progress bar when card is collapsed
+    const progressBar = expandedCard.querySelector(".skills__progress-bar");
+    if (progressBar) {
+      // Use CSS transition instead of immediate reset for smoother effect
+      progressBar.style.transition = "width 0.3s ease-out";
+      progressBar.style.width = "0";
+    }
+  });
+
+  // If the clicked card wasn't already expanded, expand it
+  if (!isExpanded) {
+    card.classList.add("expanded");
+    card.setAttribute("aria-expanded", "true");
+
+    // Get skill information before showing toast
+    const skillName = card.querySelector("h3").textContent.trim();
+    const skillLevel = card.getAttribute("data-skill-level");
+    
+    // Show toast notification about the skill
+    showToast(
+      skillName,
+      `Proficiency: ${skillLevel}%`,
+      "fa-solid fa-chart-line"
+    );
+
+    // Animate the progress bar with requestAnimationFrame for better performance
+    const progressBar = card.querySelector(".skills__progress-bar");
+    if (progressBar) {
+      const level = progressBar.getAttribute("data-level");
+      requestAnimationFrame(() => {
+        progressBar.style.transition = "width 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
+        setTrackedTimeout(
+          () => {
+            progressBar.style.width = `${level}%`;
+          },
+          100, // Reduced delay for better responsiveness
+          `progressBarAnimation-${skillName}`
+        );
+      });
+    }
+  }
+}
+
+// Add keyboard shortcuts for navigation
+document.addEventListener("keydown", (e) => {
+	// Process shortcuts if Alt key is pressed (to avoid interfering with normal typing)
+	if (e.altKey) {
+		switch (e.key) {
+			// Existing letter shortcuts
+			case "h": // Alt+H for Home
+				e.preventDefault();
+				navigateTo("index.html");
+				break;
+			case "j": // Alt+J for Jobs
+				e.preventDefault();
+				navigateTo("jobs.html");
+				break;
+			case "p": // Alt+P for Projects
+				e.preventDefault();
+				navigateTo("projects.html");
+				break;
+			case "c": // Alt+C for Certifications
+				e.preventDefault();
+				navigateTo("certification.html");
+				break;
+			case "s": // Alt+S for Skills
+				e.preventDefault();
+				navigateTo("skills.html");
+				break;
+			case "a": // Alt+A for About
+				e.preventDefault();
+				navigateTo("about.html");
+				break;
+			case "m": // Alt+M to toggle menu
+				e.preventDefault();
+				toggleMenu();
+				break;
+
+			// Add Arrow key shortcuts
+			case "ArrowRight": // Alt+Right Arrow for next page
+				e.preventDefault();
+				navigateNextPage();
+				break;
+			case "ArrowLeft": // Alt+Left Arrow for previous page
+				e.preventDefault();
+				navigatePreviousPage();
+				break;
+			case "ArrowUp": // Alt+Up Arrow for Home
+				e.preventDefault();
+				navigateTo("index.html");
+				break;
+			case "ArrowDown": // Alt+Down Arrow for About (last page)
+				e.preventDefault();
+				navigateTo("about.html");
+				break;
+		}
+	}
+});
+
+// Function to determine the next page in the navigation sequence
+function navigateNextPage() {
+	const pages = [
+		"index.html",
+		"jobs.html",
+		"projects.html",
+		"certification.html",
+		"skills.html",
+		"about.html",
+	];
+	const currentPath = window.location.pathname;
+
+	// Find current page index
+	let currentIndex = -1;
+	for (let i = 0; i < pages.length; i++) {
+		if (
+			currentPath.includes(pages[i]) ||
+			(pages[i] === "index.html" && currentPath.endsWith("/"))
+		) {
+			currentIndex = i;
 			break;
+		}
+	}
+
+	// Navigate to next page or loop back to first
+	if (currentIndex !== -1) {
+		const nextIndex = (currentIndex + 1) % pages.length;
+		navigateTo(pages[nextIndex]);
+	} else {
+		// Default to home if page not found in sequence
+		navigateTo("index.html");
+	}
+}
+
+// Function to determine the previous page in the navigation sequence
+function navigatePreviousPage() {
+	const pages = [
+		"index.html",
+		"jobs.html",
+		"projects.html",
+		"certification.html",
+		"skills.html",
+		"about.html",
+	];
+	const currentPath = window.location.pathname;
+
+	// Find current page index
+	let currentIndex = -1;
+	for (let i = 0; i < pages.length; i++) {
+		if (
+			currentPath.includes(pages[i]) ||
+			(pages[i] === "index.html" && currentPath.endsWith("/"))
+		) {
+			currentIndex = i;
+					break;
 		}
 	}
 
@@ -2236,7 +3360,7 @@ function initializeSkillCards() {
 							".skills__progress-bar"
 						);
 						if (progressBar && expandedCard !== card) {
-							progressBar.style.width = "0%";
+							progressBar.style.width = "0";
 						}
 					});
 
