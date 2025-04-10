@@ -89,17 +89,17 @@ function initCertificationPage() {
             }, 300); // Wait for fade out animation
         });
     });
-    
-    // Certificate preview functionality
+      // Certificate preview functionality
+    // Make both the view buttons and images clickable
     const viewButtons = document.querySelectorAll('.view-certificate');
-    viewButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            // Prevent default link behavior
-            e.preventDefault();
-            
-            // Get the certificate image
-            const certCard = button.closest('.certificate-content');
-            const certImage = certCard.querySelector('.certificate-image img');
+    const certificateImages = document.querySelectorAll('.certificate-image');
+    
+    // Add click handler to certificate images
+    certificateImages.forEach(imageContainer => {
+        imageContainer.addEventListener('click', () => {
+            const certCard = imageContainer.closest('.certificate-content');
+            const certImage = imageContainer.querySelector('img');
+            const viewButton = certCard.querySelector('.certificate-link');
             
             // Set preview image source
             previewImage.src = certImage.src;
@@ -111,10 +111,18 @@ function initCertificationPage() {
             // Disable body scroll
             document.body.style.overflow = 'hidden';
             
-            // If there's a valid link, store it for later
-            if (button.getAttribute('href') !== '#') {
-                previewImage.dataset.linkUrl = button.getAttribute('href');
+            // If there's a valid link from the view button, store it for later
+            if (viewButton && viewButton.getAttribute('href') !== '#') {
+                previewImage.dataset.linkUrl = viewButton.getAttribute('href');
             }
+        });
+    });
+    
+    // Keep the existing functionality for view certificate buttons
+    viewButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            // Don't prevent default link behavior - allow the link to open naturally
+            // e.preventDefault();
         });
     });
     
