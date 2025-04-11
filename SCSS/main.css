@@ -659,67 +659,73 @@
  */
 .menu-btn {
   position: fixed;
-  z-index: 101;
-  right: 1rem;
-  top: 1rem;
-  height: 1.25rem;
-  width: 1.75rem;
+  z-index: 10000;
+  right: 0.7rem;
+  top: 0.7rem;
+  height: 2.5rem;
+  width: 2.5rem;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-  /* Ensure menu button is always visible, even when menu is open */
-  position: fixed !important;
-  z-index: 10000 !important;
-  /* Higher than the menu z-index */
+  transition: all 0.3s ease;
+  background-color: rgba(39, 39, 39, 0.8);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  /* Ensure menu button is always visible */
   visibility: visible !important;
   opacity: 1 !important;
-  transform: none !important;
 }
 .menu-btn:hover {
-  filter: drop-shadow(0 0 8px rgba(240, 248, 255, 0.9));
+  transform: scale(1.05);
+  background-color: rgba(39, 39, 39, 0.9);
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3), 0 0 8px rgba(240, 248, 255, 0.7);
 }
 .menu-btn__burger {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 1.75rem;
+  position: relative;
+  width: 1.5rem;
   height: 0.1875rem;
   background-color: #fff;
-  transition: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-  border-radius: 3px;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  margin: 0 auto;
 }
 .menu-btn__burger::before {
-  content: " ";
+  content: "";
   position: absolute;
-  top: -0.5rem;
-  width: 1.75rem;
+  top: -0.45rem;
+  left: 0;
+  width: 100%;
   height: 0.1875rem;
   background-color: #fff;
-  border-radius: 3px;
-  transition: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 .menu-btn__burger::after {
-  content: " ";
+  content: "";
   position: absolute;
-  top: 0.5rem;
-  width: 1.25rem;
+  top: 0.45rem;
+  left: 0;
+  width: 100%;
   height: 0.1875rem;
   background-color: #fff;
-  border-radius: 3px;
-  transition: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 .menu-btn__burger.open {
-  transform: rotate(180deg);
   background-color: transparent;
 }
 .menu-btn__burger.open::before {
-  transform: rotate(45deg) translate(0.3125rem, 0.5rem);
+  transform: rotate(45deg) translate(0.3rem, 0.3rem);
   background-color: aliceblue;
-  width: 1.75rem;
+  width: 100%;
   box-shadow: 0 0 10px rgba(240, 248, 255, 0.7);
 }
 .menu-btn__burger.open::after {
-  width: 1.75rem;
-  transform: rotate(-45deg) translate(0.1875rem, -0.4375rem);
+  width: 100%;
+  transform: rotate(-45deg) translate(0.3rem, -0.3rem);
   background-color: aliceblue;
   box-shadow: 0 0 10px rgba(240, 248, 255, 0.7);
 }
@@ -728,13 +734,14 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-100%);
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   z-index: 100;
   height: auto;
+  overflow: hidden;
 }
 .nav.open {
   visibility: visible;
@@ -745,7 +752,7 @@
   right: 0 !important;
   bottom: auto !important;
   transform: translateY(0);
-  animation: slideDownAndBounce 0.7s ease-out forwards;
+  animation: slideDownAndBounce 0.5s ease-out forwards;
 }
 .nav .menu-nav {
   display: flex;
@@ -849,24 +856,28 @@
   background: linear-gradient(to right, rgba(240, 248, 255, 0.3) 0%, aliceblue 50%, rgba(240, 248, 255, 0.3) 100%);
 }
 
-/* Add the menu-open class to make content shift down with menu */
+/* Improved menu-open class to prevent scroll jumping */
 body.menu-open {
   overflow: hidden !important;
   position: fixed !important;
   width: 100% !important;
   height: 100% !important;
-  padding-right: 15px; /* Prevent content shifting when scrollbar disappears */
 }
 
-/* This is the key style that shifts the main content down when menu is open */
+/* Adding padding on the right to prevent content shifting when scrollbar disappears */
+body.menu-open {
+  padding-right: var(--scrollbar-width, 0);
+}
+
+/* This creates a smooth transition for the main content */
 main {
-  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: transform 0.3s ease;
 }
 
-/* When menu opens, push the main content down by the height of the menu */
+/* Keep the main content in place when menu is open */
 body.menu-open main {
-  transform: translateY(var(--menu-height, 65px));
-  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  /* We no longer push content down, the menu overlays it instead */
+  transform: translateY(0);
 }
 
 @keyframes slideDownAndBounce {
@@ -3545,6 +3556,200 @@ footer .copyright-link:focus-visible {
     box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.15);
   }
 }
+/* 
+ * Portfolio Main Stylesheet
+ * This file organizes all the imports for the site
+ */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 350px;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: rgba(39, 39, 39, 0.9);
+  color: aliceblue;
+  padding: 12px 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center; /* Center items vertically */
+  gap: 12px;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: auto;
+  border-left: 4px solid;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  max-width: 100%;
+  max-height: 100px !important; /* Max height with !important to override any other rules */
+}
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+.toast.custom {
+  border-color: aliceblue;
+  background: rgba(31, 31, 31, 0.92);
+  padding: 12px 15px;
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+.toast.custom .toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+}
+.toast.custom .toast-icon i {
+  color: aliceblue;
+  font-size: 20px;
+}
+.toast.custom .toast-content {
+  padding: 0 5px;
+}
+.toast.custom .toast-content h4 {
+  margin: 0 0 5px;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+.toast.custom .toast-content p {
+  color: aliceblue;
+  font-weight: 400;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.toast.custom .toast-content .toast-subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 4px;
+}
+.toast.custom.home {
+  border-color: aliceblue;
+}
+.toast.custom.home .toast-icon {
+  background: rgba(240, 248, 255, 0.08);
+}
+.toast.custom.about {
+  border-color: aliceblue;
+}
+.toast.custom.about .toast-icon {
+  background: rgba(240, 248, 255, 0.08);
+}
+.toast.custom.projects {
+  border-color: aliceblue;
+}
+.toast.custom.projects .toast-icon {
+  background: rgba(240, 248, 255, 0.08);
+}
+.toast.custom.skills {
+  border-color: aliceblue;
+}
+.toast.custom.skills .toast-icon {
+  background: rgba(240, 248, 255, 0.08);
+}
+.toast.custom.jobs {
+  border-color: aliceblue;
+}
+.toast.custom.jobs .toast-icon {
+  background: rgba(240, 248, 255, 0.08);
+}
+.toast.custom.certification {
+  border-color: aliceblue;
+}
+.toast.custom.certification .toast-icon {
+  background: rgba(240, 248, 255, 0.08);
+}
+.toast.custom.success {
+  border-color: #4caf50;
+}
+.toast.custom.success .toast-icon i {
+  color: #4caf50;
+}
+.toast.custom.error {
+  border-color: #f44336;
+}
+.toast.custom.error .toast-icon i {
+  color: #f44336;
+}
+.toast.custom.warning {
+  border-color: #ff9800;
+}
+.toast.custom.warning .toast-icon i {
+  color: #ff9800;
+}
+.toast.custom.info {
+  border-color: #2196f3;
+}
+.toast.custom.info .toast-icon i {
+  color: #2196f3;
+}
+.toast .toast-icon {
+  flex-shrink: 0;
+}
+.toast .toast-icon i {
+  font-size: 24px;
+}
+.toast .toast-content {
+  flex-grow: 1;
+}
+.toast .toast-content h4 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+.toast .toast-content p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+.toast .toast-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+  align-self: flex-start;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+.toast .toast-close:hover {
+  color: #fff;
+}
+@media screen and (max-width: 480px) {
+  .toast .toast-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+  }
+  .toast .toast {
+    padding: 12px;
+    gap: 10px;
+  }
+  .toast .toast .toast-icon i {
+    font-size: 20px;
+  }
+  .toast .toast .toast-content h4 {
+    font-size: 14px;
+  }
+  .toast .toast .toast-content p {
+    font-size: 12px;
+  }
+}
+
 /* Modern CSS Reset */
 *,
 *::before,

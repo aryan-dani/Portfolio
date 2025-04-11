@@ -1,0 +1,222 @@
+// Import configuration and mixins
+@use "config" as *;
+@use "mixins" as *;
+
+// Toast notifications
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 350px;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: rgba($primary-color, 0.9);
+  color: $secondary-color;
+  padding: 12px 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center; /* Center items vertically */
+  gap: 12px;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: auto;
+  border-left: 4px solid;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  max-width: 100%;
+  max-height: 100px !important; /* Max height with !important to override any other rules */
+
+  &.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  // Custom toast styling for portfolio pages
+  &.custom {
+    border-color: $secondary-color;
+    background: rgba(darken($primary-color, 3%), 0.92);
+    padding: 12px 15px;
+    overflow: hidden; /* Ensure content doesn't overflow */
+
+    .toast-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+
+      i {
+        color: $secondary-color;
+        font-size: 20px;
+      }
+    }
+
+    .toast-content {
+      padding: 0 5px;
+
+      h4 {
+        margin: 0 0 5px;
+        font-size: 14px;
+        font-weight: 600;
+        opacity: 0.9;
+      }
+
+      p {
+        color: $secondary-color;
+        font-weight: 400;
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .toast-subtitle {
+        font-size: 12px;
+        opacity: 0.7;
+        margin-top: 4px;
+      }
+    }
+    &.home {
+      border-color: $secondary-color;
+      .toast-icon {
+        background: rgba($secondary-color, 0.08);
+      }
+    }
+
+    &.about {
+      border-color: $secondary-color;
+      .toast-icon {
+        background: rgba($secondary-color, 0.08);
+      }
+    }
+
+    &.projects {
+      border-color: $secondary-color;
+      .toast-icon {
+        background: rgba($secondary-color, 0.08);
+      }
+    }
+
+    &.skills {
+      border-color: $secondary-color;
+      .toast-icon {
+        background: rgba($secondary-color, 0.08);
+      }
+    }
+
+    &.jobs {
+      border-color: $secondary-color;
+      .toast-icon {
+        background: rgba($secondary-color, 0.08);
+      }
+    }
+
+    &.certification {
+      border-color: $secondary-color;
+      .toast-icon {
+        background: rgba($secondary-color, 0.08);
+      }
+    }
+
+    &.success {
+      border-color: #4caf50;
+      .toast-icon i {
+        color: #4caf50;
+      }
+    }
+
+    &.error {
+      border-color: #f44336;
+      .toast-icon i {
+        color: #f44336;
+      }
+    }
+
+    &.warning {
+      border-color: #ff9800;
+      .toast-icon i {
+        color: #ff9800;
+      }
+    }
+
+    &.info {
+      border-color: #2196f3;
+      .toast-icon i {
+        color: #2196f3;
+      }
+    }
+  }
+
+  .toast-icon {
+    flex-shrink: 0;
+    i {
+      font-size: 24px;
+    }
+  }
+
+  .toast-content {
+    flex-grow: 1;
+    h4 {
+      margin: 0 0 5px;
+      font-size: 16px;
+    }
+    p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  }
+
+  .toast-close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+    align-self: flex-start;
+    font-size: 20px;
+    transition: color 0.3s ease;
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  // Responsive adjustments
+  @media screen and (max-width: 480px) {
+    .toast-container {
+      top: 10px;
+      right: 10px;
+      left: 10px;
+      max-width: calc(100% - 20px);
+    }
+
+    .toast {
+      padding: 12px;
+      gap: 10px;
+
+      .toast-icon i {
+        font-size: 20px;
+      }
+
+      .toast-content {
+        h4 {
+          font-size: 14px;
+        }
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
