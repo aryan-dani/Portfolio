@@ -2561,13 +2561,15 @@ footer:hover::before {
   align-items: center;
 }
 .certification .certificate-content .certificate-meta .certificate-issuer img {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+  -o-object-fit: contain;
+     object-fit: contain;
   border-radius: 50%;
   margin-right: 0.5rem;
   box-shadow: 0 0 0 1px rgba(240, 248, 255, 0.2);
   background-color: rgba(240, 248, 255, 0.1);
-  padding: 1px;
+  padding: 2px;
 }
 .certification .certificate-content .certificate-meta .certificate-issuer span {
   font-size: 0.85rem;

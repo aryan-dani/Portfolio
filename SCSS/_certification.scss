@@ -307,19 +307,19 @@
       align-items: center;
       margin: 0 1.5rem 1.5rem;
       justify-content: space-between;
-      
-      .certificate-issuer {
+        .certificate-issuer {
         display: flex;
         align-items: center;
         
         img {
-          width: 20px;
-          height: 20px;
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
           border-radius: 50%;
           margin-right: 0.5rem;
           box-shadow: 0 0 0 1px rgba($secondary-color, 0.2);
           background-color: rgba($secondary-color, 0.1);
-          padding: 1px;
+          padding: 2px;
         }
         
         span {
