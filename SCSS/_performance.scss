@@ -1,9 +1,8 @@
-@use 'config' as *;
-@use 'mixins' as *;
+@use "config" as *;
+@use "mixins" as *;
 
 // Improved performance handling
 .performance-optimized {
-
   // Optimize rendering for transforms
   .menu-btn,
   .home__name,
@@ -17,7 +16,6 @@
 
   // Reduce GPU usage for background effects when battery is low
   &.battery-saving {
-
     .project::before,
     .certification::before,
     .home::before {
@@ -35,7 +33,6 @@
 
 // Media query for users who prefer reduced motion
 @media (prefers-reduced-motion: reduce) {
-
   // Apply to all animations and transitions
   *,
   *::before,
@@ -74,8 +71,7 @@
 }
 
 // Apply optimizations for high DPI screens
-@media (-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   body {
     text-rendering: optimizeLegibility;
   }

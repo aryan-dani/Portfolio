@@ -1,5 +1,5 @@
-@use 'config' as *;
-@use 'mixins' as *;
+@use "config" as *;
+@use "mixins" as *;
 
 // Add fallback mixin definitions to prevent compilation errors
 @mixin gradient-text($start-color, $end-color) {
@@ -18,13 +18,18 @@
   transition: all 0.3s ease;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
@@ -44,7 +49,12 @@
   padding-top: 10vh;
   overflow: hidden;
   text-align: left;
-  background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../Images/Header.jpg") center top;
+  background: linear-gradient(
+      to right,
+      rgba($primary-color, 0.9),
+      rgba($primary-color, 0)
+    ),
+    url("../Images/Header.jpg") center top;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -87,13 +97,17 @@
       display: inline-block;
       -webkit-background-clip: text;
       background-clip: text;
-      background-image: linear-gradient(45deg, $primary-color, lighten($primary-color, 20%), $primary-color);
+      background-image: linear-gradient(
+        45deg,
+        $primary-color,
+        lighten($primary-color, 20%),
+        $primary-color
+      );
       background-size: 200% auto;
       color: transparent;
       animation: gradient-text 4s ease infinite;
       // Adding subtle outline to improve visibility while keeping your colors
-      text-shadow:
-        0 0 1px rgba($secondary-color, 0.6),
+      text-shadow: 0 0 1px rgba($secondary-color, 0.6),
         0 0 2px rgba($secondary-color, 0.4);
 
       &:hover {
@@ -201,13 +215,18 @@
           display: inline-block; // Ensure proper display
 
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.4),
+              transparent
+            );
             transition: left 0.5s ease;
           }
 
@@ -248,13 +267,18 @@
     text-decoration: none;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.6),
+        transparent
+      );
       transition: left 0.7s ease;
       z-index: -1;
     }
@@ -288,7 +312,6 @@
 
   // Add pulse animation for the CTA button
   @keyframes pulse {
-
     0%,
     100% {
       transform: scale(1);
@@ -303,7 +326,6 @@
 
   // Add bounce animation for the CTA button
   @keyframes bounce {
-
     0%,
     20%,
     50%,

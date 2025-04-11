@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Offline | Aryan Dani</title>
-    <meta name="description" content="Currently offline - Aryan Dani's Portfolio" />
+    <meta
+      name="description"
+      content="Currently offline - Aryan Dani's Portfolio"
+    />
     <link rel="stylesheet" href="SCSS/main.css" />
     <style>
       .offline-container {
@@ -16,20 +19,20 @@
         padding: 2rem;
         text-align: center;
       }
-      
+
       .offline-icon {
         font-size: 4rem;
         margin-bottom: 2rem;
         color: #ff6b6b;
         animation: pulse 2s infinite;
       }
-      
+
       .offline-title {
         font-size: 2.5rem;
         margin-bottom: 1rem;
         color: #f0f8ff;
       }
-      
+
       .offline-message {
         font-size: 1.2rem;
         margin-bottom: 2rem;
@@ -37,7 +40,7 @@
         color: #ddd;
         line-height: 1.6;
       }
-      
+
       .retry-button {
         padding: 0.8rem 1.5rem;
         background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
@@ -49,12 +52,12 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
       }
-      
+
       .retry-button:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(255, 107, 107, 0.4);
       }
-      
+
       .cached-pages {
         margin-top: 3rem;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -62,12 +65,12 @@
         width: 100%;
         max-width: 600px;
       }
-      
+
       .cached-pages h3 {
         color: #f0f8ff;
         margin-bottom: 1rem;
       }
-      
+
       .cached-pages ul {
         list-style: none;
         padding: 0;
@@ -76,7 +79,7 @@
         justify-content: center;
         gap: 1rem;
       }
-      
+
       .cached-pages li a {
         display: inline-block;
         padding: 0.5rem 1rem;
@@ -86,12 +89,12 @@
         text-decoration: none;
         transition: all 0.3s ease;
       }
-      
+
       .cached-pages li a:hover {
         background: rgba(255, 255, 255, 0.2);
         transform: translateY(-3px);
       }
-      
+
       @keyframes pulse {
         0% {
           transform: scale(1);
@@ -106,7 +109,7 @@
           opacity: 1;
         }
       }
-      
+
       /* Particles background styles */
       #particles-js {
         position: fixed;
@@ -139,7 +142,9 @@
             <a href="projects.html" class="menu-nav__link">My Projects</a>
           </li>
           <li class="menu-nav__item">
-            <a href="certification.html" class="menu-nav__link">Certifications</a>
+            <a href="certification.html" class="menu-nav__link"
+              >Certifications</a
+            >
           </li>
           <li class="menu-nav__item">
             <a href="skills.html" class="menu-nav__link">Skills</a>
@@ -158,12 +163,13 @@
         </div>
         <h1 class="offline-title">You're Offline</h1>
         <p class="offline-message">
-          It seems you don't have an internet connection right now. Some of my portfolio content may still be available if you've visited it before.
+          It seems you don't have an internet connection right now. Some of my
+          portfolio content may still be available if you've visited it before.
         </p>
         <button class="retry-button" onclick="window.location.reload()">
           <i class="fa-solid fa-rotate-right"></i> Try Again
         </button>
-        
+
         <div class="cached-pages">
           <h3>Available Pages</h3>
           <ul>
@@ -185,98 +191,103 @@
     <script>
       // Simple check if we're online and redirect if so
       if (navigator.onLine) {
-        window.location.href = 'index.html';
+        window.location.href = "index.html";
       }
-      
+
       // Listen for online status changes
-      window.addEventListener('online', () => {
+      window.addEventListener("online", () => {
         // Show a message before redirecting
-        document.querySelector('.offline-message').textContent = 
-          'You are back online! Redirecting you to the homepage...';
-        
+        document.querySelector(".offline-message").textContent =
+          "You are back online! Redirecting you to the homepage...";
+
         // Change button text
-        document.querySelector('.retry-button').innerHTML = 
+        document.querySelector(".retry-button").innerHTML =
           '<i class="fa-solid fa-check"></i> Connected!';
-        
+
         // Redirect after a short delay
         setTimeout(() => {
-          window.location.href = 'index.html';
+          window.location.href = "index.html";
         }, 1500);
       });
     </script>
-    
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://kit.fontawesome.com/1267cf2b7d.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/1267cf2b7d.js"
+      crossorigin="anonymous"
+    ></script>
     <script>
       // Initialize particles.js with minimal settings for offline page
-      document.addEventListener('DOMContentLoaded', function() {
-        if (typeof particlesJS !== 'undefined') {
-          particlesJS('particles-js', {
-            "particles": {
-              "number": {
-                "value": 30,
-                "density": {
-                  "enable": true,
-                  "value_area": 800
-                }
-              },
-              "color": {
-                "value": "#ff6b6b"
-              },
-              "shape": {
-                "type": "circle"
-              },
-              "opacity": {
-                "value": 0.5,
-                "random": true
-              },
-              "size": {
-                "value": 3,
-                "random": true
-              },
-              "line_linked": {
-                "enable": true,
-                "distance": 150,
-                "color": "#ff6b6b",
-                "opacity": 0.2,
-                "width": 1
-              },
-              "move": {
-                "enable": true,
-                "speed": 1,
-                "direction": "none",
-                "random": true,
-                "straight": false,
-                "out_mode": "out"
-              }
-            },
-            "interactivity": {
-              "detect_on": "canvas",
-              "events": {
-                "onhover": {
-                  "enable": true,
-                  "mode": "bubble"
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof particlesJS !== "undefined") {
+          particlesJS("particles-js", {
+            particles: {
+              number: {
+                value: 30,
+                density: {
+                  enable: true,
+                  value_area: 800,
                 },
-                "onclick": {
-                  "enable": true,
-                  "mode": "push"
-                },
-                "resize": true
-              }
+              },
+              color: {
+                value: "#ff6b6b",
+              },
+              shape: {
+                type: "circle",
+              },
+              opacity: {
+                value: 0.5,
+                random: true,
+              },
+              size: {
+                value: 3,
+                random: true,
+              },
+              line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#ff6b6b",
+                opacity: 0.2,
+                width: 1,
+              },
+              move: {
+                enable: true,
+                speed: 1,
+                direction: "none",
+                random: true,
+                straight: false,
+                out_mode: "out",
+              },
             },
-            "retina_detect": false
+            interactivity: {
+              detect_on: "canvas",
+              events: {
+                onhover: {
+                  enable: true,
+                  mode: "bubble",
+                },
+                onclick: {
+                  enable: true,
+                  mode: "push",
+                },
+                resize: true,
+              },
+            },
+            retina_detect: false,
           });
         }
       });
-      
+
       // Simple implementation of the menu toggle functionality
-      document.querySelector('.menu-btn').addEventListener('click', function() {
-        this.classList.toggle('open');
-        document.querySelector('.nav').classList.toggle('open');
-        document.querySelectorAll('.menu-nav__item').forEach(item => {
-          item.classList.toggle('open');
+      document
+        .querySelector(".menu-btn")
+        .addEventListener("click", function () {
+          this.classList.toggle("open");
+          document.querySelector(".nav").classList.toggle("open");
+          document.querySelectorAll(".menu-nav__item").forEach((item) => {
+            item.classList.toggle("open");
+          });
         });
-      });
     </script>
   </body>
 </html>

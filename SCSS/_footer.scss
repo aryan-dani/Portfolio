@@ -1,6 +1,6 @@
 // Created dedicated footer styles
-@use 'config' as *;
-@use 'mixins' as *;
+@use "config" as *;
+@use "mixins" as *;
 
 // Add fallback mixin definitions
 @mixin hover-lift {
@@ -36,7 +36,6 @@ footer {
   background-color: rgba($primary-color, 0.8);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-
 
   &:hover {
     transform: translateY(-3px);

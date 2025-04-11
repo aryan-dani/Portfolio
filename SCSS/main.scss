@@ -21,7 +21,6 @@
 @use "footer";
 @use "performance";
 
-
 // Optimize font loading with font-display: swap
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
@@ -197,7 +196,8 @@ footer {
 }
 
 body {
-  transition: background-color $transition-speed ease-in-out, color $transition-speed ease-in-out;
+  transition: background-color $transition-speed ease-in-out,
+    color $transition-speed ease-in-out;
 }
 
 // Menu toggle shortcut styling only
@@ -296,7 +296,6 @@ body {
 
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -319,7 +318,12 @@ body {
 
   .home,
   .contact {
-    background: linear-gradient(to right, rgba($primary-color, 0.9), rgba($primary-color, 0)), url("../Images/Header_Phone.jpg") center top;
+    background: linear-gradient(
+        to right,
+        rgba($primary-color, 0.9),
+        rgba($primary-color, 0)
+      ),
+      url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
 }
