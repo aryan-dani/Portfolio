@@ -379,7 +379,7 @@ function initLazyLoading() {
         });
       },
       {
-        rootMargin: "200px",
+        rootMargin: "200px 0px",
         threshold: 0,
       }
     );
@@ -564,58 +564,6 @@ function optimizeFontLoading() {
       link.setAttribute("onload", "this.onload=null;this.rel='stylesheet'");
     }
   });
-}
-
-/**
- * Show toast notification
- */
-function showToast(message, type = "info", duration = 5000) {
-  const toastContainer =
-    document.querySelector(".toast-container") || createToastContainer();
-
-  const toast = document.createElement("div");
-  toast.className = `toast toast-${type}`;
-  toast.textContent = message;
-
-  // Add close button
-  const closeBtn = document.createElement("button");
-  closeBtn.className = "toast-close";
-  closeBtn.innerHTML = "&times;";
-  closeBtn.addEventListener("click", () => {
-    toast.classList.add("toast-hidden");
-    setTimeout(() => toast.remove(), 300);
-  });
-
-  toast.appendChild(closeBtn);
-  toastContainer.appendChild(toast);
-
-  // Trigger reflow
-  void toast.offsetWidth;
-
-  // Show toast
-  toast.classList.add("toast-visible");
-
-  // Auto remove after duration
-  if (duration > 0) {
-    setTimeout(() => {
-      if (toast.parentElement) {
-        toast.classList.add("toast-hidden");
-        setTimeout(() => toast.remove(), 300);
-      }
-    }, duration);
-  }
-
-  return toast;
-}
-
-/**
- * Create toast container if it doesn't exist
- */
-function createToastContainer() {
-  const container = document.createElement("div");
-  container.className = "toast-container";
-  document.body.appendChild(container);
-  return container;
 }
 
 /**
