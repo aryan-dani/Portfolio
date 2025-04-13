@@ -1,5 +1,12 @@
 /** @format */
 
+// Calculate scrollbar width once to avoid layout shifts
+const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+document.documentElement.style.setProperty(
+  "--scrollbar-width",
+  scrollbarWidth + "px"
+);
+
 const menuBtn = document.querySelector(".menu-btn");
 const hamburger = document.querySelector(".menu-btn__burger");
 const nav = document.querySelector(".nav");
@@ -91,57 +98,33 @@ function toggleMenu() {
   }
 }
 
-// Modernized menu button with clean animation effects
-function initModernMenu() {
-  // Get the elements
-  const menuBtn = document.querySelector(".menu-btn");
-  const hamburger = document.querySelector(".menu-btn__burger");
+// Close menu when clicking on menu items
+navItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    if (showMenu) {
+      toggleMenu();
+    }
+  });
+});
 
-  // Add a wrapper for the burger to create cleaner effects
-  if (!document.querySelector(".menu-btn__wrapper")) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "menu-btn__wrapper";
-    hamburger.parentNode.insertBefore(wrapper, hamburger);
-    wrapper.appendChild(hamburger);
-
-    // Add style for the wrapper with clean transitions
-    const style = document.createElement("style");
-    style.textContent = `
-            .menu-btn__wrapper {
-                position: relative;
-                width: 28px;
-                height: 28px;
-            }
-            
-            .menu-btn__burger {
-                position: absolute;
-                top: 50%;
-                left: 0;
-                transform: translateY(-50%);
-                transition: background-color 0.3s ease;
-            }
-            
-            .menu-btn__burger::before,
-            .menu-btn__burger::after {
-                transition: transform 0.4s ease,
-                            background-color 0.3s ease;
-            }
-        `;
-    document.head.appendChild(style);
+// Close menu when clicking outside
+document.addEventListener("click", (e) => {
+  if (
+    showMenu &&
+    !e.target.closest(".menu-btn") &&
+    !e.target.closest(".nav") &&
+    !e.target.closest(".menu-nav")
+  ) {
+    toggleMenu();
   }
+});
 
-  // Remove all hover event listeners to prevent any rotation
-  menuBtn.removeEventListener("mouseenter", menuBtnHoverIn);
-  menuBtn.removeEventListener("mouseleave", menuBtnHoverOut);
-}
-
-function menuBtnHoverIn() {
-  // Empty functions to replace any existing listeners
-}
-
-function menuBtnHoverOut() {
-  // Empty functions to replace any existing listeners
-}
+// Escape key to close menu
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && showMenu) {
+    toggleMenu();
+  }
+});
 
 // Welcome notifications for each page - FIXED implementation
 document.addEventListener("DOMContentLoaded", () => {
@@ -263,15 +246,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize universal animations
   initUniversalAnimations();
 
-  // Initialize modern menu
-  initModernMenu();
-
   // Update copyright year dynamically
   updateCopyrightYear();
 
   // Initialize keyboard navigation detection
   detectKeyboardNavigation();
-});
+}); // <-- Added closing parenthesis and semicolon
 
 // Smooth page transitions
 function initPageTransition() {
@@ -646,9 +626,6 @@ function executeHomeAnimationSequence() {
       "ctaButtonAnimation" // Dynamic timing based on number of social icons
     );
   }
-
-  // 5. Initialize background parallax for home section
-  initHomeParallax(isLowPowerDevice);
 }
 
 // Helper function to start typing animation with true letter-by-letter effect
@@ -772,14 +749,10 @@ function addNameHoverEffect(name, isLowPowerDevice) {
 
 // Improved social icon animation and hover effects
 function addIconHoverEffect(icon) {
-  // First remove any existing event listeners to prevent duplication
-  const iconClone = icon.cloneNode(true);
-  icon.parentNode.replaceChild(iconClone, icon);
-
   // Add an advanced hover effect with scale and 3D rotation
-  iconClone.addEventListener("mouseenter", () => {
+  icon.addEventListener("mouseenter", () => {
     // Get the social icon element
-    const iconElement = iconClone.querySelector("i");
+    const iconElement = icon.querySelector("i");
     if (iconElement) {
       iconElement.style.transform = "scale(1.3)";
       iconElement.style.color = "rgba(240, 248, 255, 1)"; // Full brightness
@@ -787,12 +760,12 @@ function addIconHoverEffect(icon) {
     }
 
     // Apply 3D effect to the entire icon container
-    iconClone.style.transform =
+    icon.style.transform =
       "perspective(800px) translateY(-5px) translateZ(10px)";
   });
 
-  iconClone.addEventListener("mouseleave", () => {
-    const iconElement = iconClone.querySelector("i");
+  icon.addEventListener("mouseleave", () => {
+    const iconElement = icon.querySelector("i");
     if (iconElement) {
       iconElement.style.transform = "scale(1)";
       iconElement.style.color = "";
@@ -800,14 +773,13 @@ function addIconHoverEffect(icon) {
     }
 
     // Smooth return to original position
-    iconClone.style.transform =
-      "perspective(800px) translateY(0) translateZ(0)";
+    icon.style.transform = "perspective(800px) translateY(0) translateZ(0)";
   });
 
   // Add click feedback effect
-  iconClone.addEventListener("click", (e) => {
+  icon.addEventListener("click", (e) => {
     // Create ripple effect for tactile feedback
-    const rect = iconClone.getBoundingClientRect();
+    const rect = icon.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
@@ -823,7 +795,7 @@ function addIconHoverEffect(icon) {
     ripple.style.borderRadius = "50%";
     ripple.style.transition = "all 0.4s cubic-bezier(0.26, 0.86, 0.44, 0.985)";
 
-    iconClone.appendChild(ripple);
+    icon.appendChild(ripple); // Append to original icon
 
     // Animate the ripple
     setTrackedTimeout(
@@ -847,44 +819,6 @@ function addIconHoverEffect(icon) {
   });
 }
 
-// Initialize parallax effect for home section
-function initHomeParallax(isLowPowerDevice) {
-  const homeSection = document.querySelector(".home");
-  if (!homeSection) return;
-
-  // Add floating animation to the background
-  homeSection.style.backgroundPosition = "center top";
-  homeSection.style.transition = "background-position 0.1s ease-out";
-
-  // Mouse move parallax effect for the background
-  if (!isLowPowerDevice) {
-    const parallaxHandler = throttle((e) => {
-      const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-      const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-      homeSection.style.backgroundPosition = `calc(center + ${moveX}px) calc(top + ${moveY}px)`;
-    }, 10); // Throttle to improve performance
-
-    document.addEventListener("mousemove", parallaxHandler);
-  }
-
-  // Smooth scroll parallax
-  const scrollHandler = throttle(() => {
-    const scrollY = window.scrollY;
-    if (scrollY < window.innerHeight) {
-      homeSection.style.backgroundPositionY = `calc(top + ${scrollY * 0.4}px)`;
-
-      // Fade out elements as user scrolls down
-      const contentWrapper = homeSection.querySelector(".content-wrapper");
-      if (contentWrapper) {
-        contentWrapper.style.opacity = 1 - scrollY / (window.innerHeight * 0.8);
-        contentWrapper.style.transform = `translateY(${scrollY * 0.2}px)`;
-      }
-    }
-  }, 10); // Throttle to improve performance
-
-  window.addEventListener("scroll", scrollHandler);
-}
-
 // Throttle function for better performance with frequent events
 function throttle(func, wait) {
   let lastTime = 0;
@@ -894,17 +828,6 @@ function throttle(func, wait) {
       func.apply(this, arguments);
       lastTime = now;
     }
-  };
-}
-
-// Debounce helper function to improve performance of event handlers
-function debounce(func, wait) {
-  let timeout;
-  return function () {
-    const context = this;
-    const args = arguments;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), wait);
   };
 }
 
@@ -951,9 +874,6 @@ function initJobsPageAnimations() {
         300 + index * 150,
         `jobCardAnimation-${index}`
       );
-
-      // Add enhanced 3D hover effect
-      add3DHoverEffect(card);
 
       // Animate list items with staggered delay
       const listItems = card.querySelectorAll(".content ul li");
@@ -1003,9 +923,6 @@ function initProjectsPageAnimations() {
         300 + index * 100,
         `projectCardAnimation-${index}`
       );
-
-      // Add 3D hover effect
-      add3DHoverEffect(card);
     });
   }
 
@@ -1052,9 +969,6 @@ function initCertificationsPageAnimations() {
         400 + index * 150,
         `certCardAnimation-${index}`
       );
-
-      // Add 3D hover effect
-      add3DHoverEffect(card);
     });
   }
 
@@ -1142,16 +1056,16 @@ function initUniversalAnimations() {
     }
   });
 
-  // Add scroll animations
-  window.addEventListener("scroll", () => {
-    animateOnScroll();
-  });
+  // Initialize modern menu - REMOVED CALL
 
-  // Trigger initial scroll animations
-  animateOnScroll();
-}
+  // Update copyright year dynamically
+  updateCopyrightYear();
 
-// Parallax effect for background elements
+  // Initialize keyboard navigation detection
+  detectKeyboardNavigation();
+} // <-- Corrected closing brace
+
+// Parallax effect for background elements (Consolidated - handles .home via data attribute)
 function initParallaxEffect() {
   const parallaxElements = document.querySelectorAll(
     ".home, .about, .jobs-layout, .project__project-image"
@@ -1183,37 +1097,6 @@ function initParallaxEffect() {
       element.setAttribute("data-parallax-speed", "0.2");
     }
   });
-}
-
-// Animate elements when they come into view during scrolling
-function animateOnScroll() {
-  const elements = document.querySelectorAll(".animate-on-scroll");
-
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -10% 0px",
-      }
-    );
-
-    elements.forEach((element) => {
-      observer.observe(element);
-    });
-  } else {
-    // Fallback for browsers without IntersectionObserver
-    elements.forEach((element) => {
-      element.classList.add("in-view");
-    });
-  }
 }
 
 // Skills page animations with interactive elements - Modified to reduce toast notifications and improve performance
@@ -1383,7 +1266,7 @@ function initSkillsPageAnimations() {
             () => {
               allSkillsContainer.style.opacity = "1";
               allSkillsContainer.style.transform = "translateY(0)";
-              animateSkillCards(allSkillsContainer);
+              // REMOVED: animateSkillCards(allSkillsContainer);
 
               // Announce to screen readers
               const srAnnounce = document.createElement("div");
@@ -1414,7 +1297,7 @@ function initSkillsPageAnimations() {
                 selectedGroup.style.transform = "translateY(0)";
 
                 // Animate cards within the active group
-                animateSkillCards(selectedGroup);
+                // REMOVED: animateSkillCards(selectedGroup);
 
                 // Announce to screen readers
                 const categoryName = document
@@ -1461,7 +1344,7 @@ function initSkillsPageAnimations() {
         }
       });
     });
-    initCategoryTabs(); // Call this to set up ARIA and keyboard navigation properly
+    // REMOVED: initCategoryTabs();
   }
 
   // Add interactions for tech stack badges
@@ -1790,6 +1673,10 @@ document.addEventListener("keydown", (e) => {
         break;
     }
   }
+  // Also handle Escape key for menu closing here, consolidating listener
+  else if (e.key === "Escape" && showMenu) {
+    toggleMenu();
+  }
 });
 
 // Function to determine the next page in the navigation sequence
@@ -1909,66 +1796,19 @@ function checkFirstTimeVisit(pageName) {
   return isFirstVisit;
 }
 
-// Store references to event listeners for proper cleanup
-const eventListeners = new Map();
-
-// Add event listener with proper tracking
-function addTrackedEventListener(element, eventType, handler) {
-  if (!element) return;
-
-  // Create a wrapper to store in our map
-  const wrappedHandler = (e) => handler(e);
-
-  // Store reference to the handler
-  if (!eventListeners.has(element)) {
-    eventListeners.set(element, new Map());
-  }
-
-  const elementListeners = eventListeners.get(element);
-  if (!elementListeners.has(eventType)) {
-    elementListeners.set(eventType, []);
-  }
-
-  elementListeners.get(eventType).push({
-    original: handler,
-    wrapped: wrappedHandler,
-  });
-
-  // Add the actual event listener
-  element.addEventListener(eventType, wrappedHandler);
-
-  return wrappedHandler;
-}
-
-// Remove tracked event listener
-function removeTrackedEventListener(element, eventType, handler) {
-  if (!element || !eventListeners.has(element)) return;
-
-  const elementListeners = eventListeners.get(element);
-  if (!elementListeners.has(eventType)) return;
-
-  const handlers = elementListeners.get(eventType);
-  const index = handlers.findIndex((h) => h.original === handler);
-
-  if (index !== -1) {
-    const { wrapped } = handlers[index];
-    element.removeEventListener(eventType, wrapped);
-    handlers.splice(index, 1);
-  }
-}
-
-// Cleanup all listeners for an element
-function cleanupElementListeners(element) {
-  if (!element || !eventListeners.has(element)) return;
-
-  const elementListeners = eventListeners.get(element);
-  elementListeners.forEach((handlers, eventType) => {
-    handlers.forEach(({ wrapped }) => {
-      element.removeEventListener(eventType, wrapped);
-    });
-  });
-
-  eventListeners.delete(element);
+/**
+ * Debounce helper function to improve performance of event handlers
+ */
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func.apply(this, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
 // Update copyright year dynamically across all pages
