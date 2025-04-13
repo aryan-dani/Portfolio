@@ -2,23 +2,6 @@
 @use "config" as *;
 @use "mixins" as *;
 
-// Add fallback mixin definitions
-@mixin hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  }
-}
-
-@mixin focus-styles {
-  &:focus-visible {
-    outline: 2px solid $secondary-color;
-    outline-offset: 2px;
-  }
-}
-
 footer {
   background-color: $primary-color;
   color: $secondary-color;

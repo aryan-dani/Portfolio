@@ -45,7 +45,6 @@
     border-color: $secondary-color;
     background: rgba(darken($primary-color, 3%), 0.92);
     padding: 12px 15px;
-    overflow: hidden; /* Ensure content doesn't overflow */
 
     .toast-icon {
       display: flex;
@@ -87,42 +86,36 @@
       }
     }
     &.home {
-      border-color: $secondary-color;
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
 
     &.about {
-      border-color: $secondary-color;
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
 
     &.projects {
-      border-color: $secondary-color;
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
 
     &.skills {
-      border-color: $secondary-color;
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
 
     &.jobs {
-      border-color: $secondary-color;
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
 
     &.certification {
-      border-color: $secondary-color;
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }

@@ -158,44 +158,6 @@ main {
   /* Performance hint for animations */
 }
 
-footer {
-  font-size: 1rem;
-  position: fixed;
-  bottom: 0.5rem;
-  right: 1rem;
-  color: #fff;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-  z-index: 20;
-  /* Increased z-index to ensure it's above all content */
-  background-color: rgba($primary-color, 0.7);
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  pointer-events: auto;
-  /* Ensure it's clickable */
-  -webkit-backdrop-filter: blur(5px);
-  /* Add webkit prefix for Safari */
-  backdrop-filter: blur(5px);
-  /* Modern glass effect */
-
-  &:hover {
-    background-color: rgba($primary-color, 0.9);
-    transform: translateY(-3px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-  }
-
-  /* Ensure link is accessible */
-  a {
-    display: inline-block;
-    padding: 0.2rem;
-
-    &:focus-visible {
-      outline: 2px solid $secondary-color;
-      border-radius: 2px;
-    }
-  }
-}
-
 body {
   transition: background-color $transition-speed ease-in-out,
     color $transition-speed ease-in-out;

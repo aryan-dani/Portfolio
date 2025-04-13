@@ -1,48 +1,6 @@
 @use "config" as *;
 @use "mixins" as *;
 
-// Add fallback mixin definitions to prevent compilation errors
-@mixin gradient-text($start-color, $end-color) {
-  background-image: linear-gradient(90deg, $start-color, $end-color);
-  background-size: 200% auto;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: gradient-text 4s ease infinite;
-  will-change: background-position;
-}
-
-@mixin button-hover {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-
-    &::before {
-      left: 100%;
-    }
-  }
-}
-
 .home {
   height: 100%;
   padding-left: 3vh;
