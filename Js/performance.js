@@ -190,12 +190,15 @@ function registerServiceWorker() {
  * Adds a 'visible' class to elements when they enter the viewport.
  * CSS should handle the actual animation/transition based on this class.
  */
-function initIntersectionObserver() {
-  const elementsToAnimate = document.querySelectorAll(
-    ".animate-on-scroll, .skills__card" // Include relevant selectors
-  );
+function initIntersectionObserver(elements = null) {
+  // Accept optional elements
+  const elementsToObserve =
+    elements ||
+    document.querySelectorAll(
+      ".animate-on-scroll, .skills__card" // Default selectors if no elements passed
+    );
 
-  if (elementsToAnimate.length > 0 && "IntersectionObserver" in window) {
+  if (elementsToObserve.length > 0 && "IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -229,7 +232,7 @@ function initIntersectionObserver() {
       }
     );
 
-    elementsToAnimate.forEach((element) => {
+    elementsToObserve.forEach((element) => {
       // Initialize progress bars to 0 width initially for skill cards
       if (element.classList.contains("skills__card")) {
         const progressBar = element.querySelector(".skills__progress-bar");
@@ -241,11 +244,11 @@ function initIntersectionObserver() {
       observer.observe(element);
     });
     console.log(
-      "Performance.js: IntersectionObserver for scroll animations initialized."
+      `Performance.js: IntersectionObserver initialized for ${elementsToObserve.length} elements.`
     );
   } else {
     // Fallback for browsers without IntersectionObserver or no elements found
-    elementsToAnimate.forEach((element) => {
+    elementsToObserve.forEach((element) => {
       element.classList.add("visible"); // Make elements visible immediately
     });
     if (!("IntersectionObserver" in window)) {

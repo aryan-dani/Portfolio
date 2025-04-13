@@ -301,6 +301,12 @@
     cursor: pointer;
     height: 150px;
     position: relative;
+    transform-style: preserve-3d; // Ensure 3D context
+    transition: height 0.6s cubic-bezier(0.645, 0.045, 0.355, 1),
+      // Add height transition
+      transform 0.3s ease,
+      // Keep existing transform transition
+      box-shadow 0.3s ease; // Keep existing shadow transition
 
     // Use mixins for consistent styling
     @include card-hover;

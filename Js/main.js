@@ -1099,6 +1099,89 @@ function initParallaxEffect() {
   });
 }
 
+// Function to animate skill cards within a container
+function animateSkillCards(container) {
+  const cards = container.querySelectorAll(".skills__card");
+  const animationSettings = {
+    duration: "0.6s",
+    staggerDelay: 0.08,
+  };
+
+  cards.forEach((card, index) => {
+    card.style.animation = "none";
+    card.style.opacity = "0";
+    card.style.transform = "translateY(30px)";
+    card.style.transition = `all ${
+      animationSettings.duration
+    } cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
+      animationSettings.staggerDelay * index
+    }s`;
+
+    // --- ADD CLICK LISTENER ---
+    card.removeEventListener("click", handleCardClick); // Remove previous listener if any
+    card.addEventListener("click", handleCardClick);
+    // --- END ADD CLICK LISTENER ---
+
+    setTrackedTimeout(
+      () => {
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+
+        // Trigger progress bar animation if visible (handled by IntersectionObserver)
+        const progressBar = card.querySelector(".skills__progress-bar");
+        if (progressBar && card.classList.contains("observed-visible")) {
+          // Check if observer marked it
+          const level = progressBar.dataset.level || "0";
+          progressBar.style.width = `${level}%`;
+        }
+      },
+      100 + animationSettings.staggerDelay * index * 1000, // Delay slightly after container appears
+      `skillCardAnim-${container.id}-${index}`
+    );
+  });
+
+  // Re-initialize VanillaTilt for the visible cards
+  if (typeof VanillaTilt !== "undefined") {
+    VanillaTilt.init(cards, {
+      max: 15,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.2,
+      // scale: 1.05, // REMOVED: Let CSS handle scaling
+    });
+  }
+
+  // Re-observe cards for progress bar animation
+  if (typeof initIntersectionObserver === "function") {
+    initIntersectionObserver(cards); // Pass specific cards to observe
+  }
+}
+
+// --- ADD CLICK HANDLER FUNCTION ---
+function handleCardClick(event) {
+  const clickedCard = event.currentTarget;
+
+  // Check if the click is on the card itself, not interactive elements inside the back
+  if (event.target.closest("a, button")) {
+    return; // Don't toggle if clicking a link/button inside
+  }
+
+  // Toggle the expanded class on the clicked card
+  clickedCard.classList.toggle("expanded");
+
+  // Optional: Close other expanded cards in the same container
+  const container = clickedCard.closest(".skills__group");
+  if (container) {
+    const allCardsInContainer = container.querySelectorAll(".skills__card");
+    allCardsInContainer.forEach((card) => {
+      if (card !== clickedCard && card.classList.contains("expanded")) {
+        card.classList.remove("expanded");
+      }
+    });
+  }
+}
+// --- END ADD CLICK HANDLER FUNCTION ---
+
 // Skills page animations with interactive elements - Modified to reduce toast notifications and improve performance
 function initSkillsPageAnimations() {
   // Check if this is the first visit to skills page
@@ -1140,17 +1223,6 @@ function initSkillsPageAnimations() {
         300,
         "skillsHeadingAnimation"
       );
-    });
-  }
-
-  // Initialize VanillaTilt for 3D card hover effect
-  if (typeof VanillaTilt !== "undefined") {
-    VanillaTilt.init(document.querySelectorAll(".skills__card"), {
-      max: 15,
-      speed: 400,
-      glare: true,
-      "max-glare": 0.2,
-      scale: 1.05,
     });
   }
 
@@ -1266,7 +1338,7 @@ function initSkillsPageAnimations() {
             () => {
               allSkillsContainer.style.opacity = "1";
               allSkillsContainer.style.transform = "translateY(0)";
-              // REMOVED: animateSkillCards(allSkillsContainer);
+              animateSkillCards(allSkillsContainer); // Call animation function
 
               // Announce to screen readers
               const srAnnounce = document.createElement("div");
@@ -1297,7 +1369,7 @@ function initSkillsPageAnimations() {
                 selectedGroup.style.transform = "translateY(0)";
 
                 // Animate cards within the active group
-                // REMOVED: animateSkillCards(selectedGroup);
+                animateSkillCards(selectedGroup); // Call animation function
 
                 // Announce to screen readers
                 const categoryName = document
