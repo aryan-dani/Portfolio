@@ -33,7 +33,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   max-width: 100%;
-  max-height: 100px !important; /* Max height with !important to override any other rules */
+  max-height: 100px; /* Max height without !important */
 
   &.show {
     transform: translateX(0);
@@ -78,6 +78,10 @@
         font-size: 14px;
         line-height: 1.4;
       }
+
+      // Add overflow handling and max-height for content
+      overflow-y: auto;
+      max-height: 60px; // Adjust as needed based on padding/icon size
 
       .toast-subtitle {
         font-size: 12px;

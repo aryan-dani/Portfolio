@@ -4,20 +4,6 @@
  * This file organizes all the imports for the site
  */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -259,10 +245,6 @@
   transform: none !important;
 }
 
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 .home {
   height: 100%;
   padding-left: 3vh;
@@ -556,10 +538,6 @@
     margin-bottom: 1rem;
   }
 }
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 /*
 @mixin focus-styles {
   &:focus-visible {
@@ -859,28 +837,16 @@ body.menu-open main {
     font-size: 0.9rem;
   }
 }
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 .jobs-layout {
   padding: 1rem;
-  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center center;
-  background-size: cover !important;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center center/cover no-repeat fixed;
   position: absolute;
-  /* Changed from fixed to absolute for better scrolling behavior */
   min-height: 100vh;
   width: 100%;
-  /* Changed from 100vw to 100% for better cross-browser compatibility */
   height: auto;
-  /* Changed from 100% to auto to accommodate content */
   inset: 0;
-  /* Using inset shorthand for top, right, bottom, left */
   z-index: 0;
   overflow-y: auto;
-  /* Add scrolling capability for content */
   /* Ensure content area has enough space */
   padding-bottom: 5rem;
   /* Enhanced container for jobs content with better spacing */
@@ -1245,10 +1211,6 @@ body.menu-open main {
     transform: none;
   }
 }
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 .project {
   position: relative;
   overflow: hidden;
@@ -1641,10 +1603,6 @@ footer:hover::before {
   left: 100%;
 }
 
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 .about {
   height: auto;
   /* Changed from fixed 100% to auto */
@@ -1661,7 +1619,6 @@ footer:hover::before {
   background-size: cover;
   background-attachment: fixed;
   /* Keep background fixed while scrolling */
-  border-radius: 8px;
   position: relative;
 }
 .about::before {
@@ -2085,10 +2042,6 @@ footer:hover::before {
   animation: slideInUp 0.5s ease forwards;
 }
 
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 .certification {
   position: relative;
   padding: 2rem 0;
@@ -2518,10 +2471,6 @@ footer:hover::before {
   background: rgba(240, 248, 255, 0.3);
 }
 
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 html {
   font-size: 16px;
 }
@@ -3144,10 +3093,6 @@ footer {
     margin-bottom: 2rem;
   }
 }
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 .copyright {
   padding: 2rem;
   height: auto;
@@ -3248,10 +3193,6 @@ footer {
   }
 }
 
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 footer {
   background-color: #272727;
   color: aliceblue;
@@ -3285,10 +3226,6 @@ footer .copyright-link:focus-visible {
   outline-offset: 2px;
 }
 
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 .performance-optimized .menu-btn,
 .performance-optimized .home__name,
 .performance-optimized .social-icons a,
@@ -3353,10 +3290,6 @@ footer .copyright-link:focus-visible {
     box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.15);
   }
 }
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 .toast-container {
   position: fixed;
   top: 20px;
@@ -3387,7 +3320,7 @@ footer .copyright-link:focus-visible {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   max-width: 100%;
-  max-height: 100px !important; /* Max height with !important to override any other rules */
+  max-height: 100px; /* Max height without !important */
 }
 .toast.show {
   transform: translateX(0);
@@ -3413,6 +3346,8 @@ footer .copyright-link:focus-visible {
 }
 .toast.custom .toast-content {
   padding: 0 5px;
+  overflow-y: auto;
+  max-height: 60px;
 }
 .toast.custom .toast-content h4 {
   margin: 0 0 5px;

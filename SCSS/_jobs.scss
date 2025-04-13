@@ -8,22 +8,15 @@
       rgba($primary-color, 0.9),
       rgba($primary-color, 0)
     ),
-    url("../Images/Header.jpg") center center;
-  background-size: cover !important;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+    url("../Images/Header.jpg") center center / cover no-repeat fixed;
+  // Combined background properties using modern shorthand
   position: absolute;
-  /* Changed from fixed to absolute for better scrolling behavior */
   min-height: 100vh;
   width: 100%;
-  /* Changed from 100vw to 100% for better cross-browser compatibility */
   height: auto;
-  /* Changed from 100% to auto to accommodate content */
   inset: 0;
-  /* Using inset shorthand for top, right, bottom, left */
   z-index: 0;
   overflow-y: auto;
-  /* Add scrolling capability for content */
 
   /* Ensure content area has enough space */
   padding-bottom: 5rem;
