@@ -2,174 +2,171 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Professional Experience | Aryan Dani</title>
-    <meta
-      name="description"
-      content="Aryan Dani's professional experience, showcasing jobs and work history in software development and AI."
-    />
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Professional Experience | Aryan Dani</title>
+		<meta
+			name="description"
+			content="Aryan Dani's professional experience, showcasing jobs and work history in software development and AI." />
 
-    <!-- Resource hints for faster loading -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://kit.fontawesome.com" />
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+		<!-- Resource hints for faster loading -->
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+		<link rel="dns-prefetch" href="https://kit.fontawesome.com" />
+		<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+		<link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 
-    <!-- Prefetch navigation for likely user paths -->
-    <link rel="prefetch" href="index.html" />
-    <link rel="prefetch" href="projects.html" />
+		<!-- Prefetch navigation for likely user paths -->
+		<link rel="prefetch" href="index.html" />
+		<link rel="prefetch" href="projects.html" />
 
-    <!-- Priority stylesheet loading with preload -->
-    <link rel="preload" href="SCSS/main.css" as="style" />
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="SCSS/main.css" />
+		<!-- Priority stylesheet loading with preload -->
+		<link rel="preload" href="SCSS/main.css" as="style" />
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="SCSS/main.css" />
 
-    <!-- Material Icons for toast notifications -->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+		<!-- Material Icons for toast notifications -->
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet" />
 
-    <!-- Basic page animations and progress indicator that don't override SCSS -->
-    <style>
-      /* Progress indicator styles */
-      .scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 3px;
-        background-color: rgba(240, 248, 255, 0.8);
-        z-index: 9999;
-        width: 0%;
-      }
+		<!-- Basic page animations and progress indicator that don't override SCSS -->
+		<style>
+			/* Progress indicator styles */
+			.scroll-progress {
+				position: fixed;
+				top: 0;
+				left: 0;
+				height: 3px;
+				background-color: rgba(240, 248, 255, 0.8);
+				z-index: 9999;
+				width: 0%;
+			}
 
-      /* Animation triggers for JS to use */
-      .animate-on-scroll {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-      }
+			/* Animation triggers for JS to use */
+			.animate-on-scroll {
+				opacity: 0;
+				transform: translateY(20px);
+				transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+			}
 
-      .animate-on-scroll.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Progress indicator -->
-    <div class="scroll-progress"></div>
+			.animate-on-scroll.visible {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Progress indicator -->
+		<div class="scroll-progress"></div>
 
-    <!-- Toast Notifications Container -->
-    <div class="toast-container">
-      <!-- Toasts will be added dynamically here -->
-    </div>
+		<!-- Toast Notifications Container -->
+		<div class="toast-container">
+			<!-- Toasts will be added dynamically here -->
+		</div>
 
-    <header>
-      <div class="menu-btn">
-        <span class="menu-btn__burger"></span>
-        <span class="menu-toggle-shortcut">Alt+M</span>
-      </div>
-      <nav class="nav">
-        <ul class="menu-nav">
-          <li class="menu-nav__item">
-            <a href="index.html" class="menu-nav__link">Home</a>
-          </li>
-          <li class="menu-nav__item active">
-            <a href="jobs.html" class="menu-nav__link">Jobs</a>
-          </li>
-          <li class="menu-nav__item">
-            <a href="projects.html" class="menu-nav__link">My Projects</a>
-          </li>
-          <li class="menu-nav__item">
-            <a href="certification.html" class="menu-nav__link"
-              >Certifications</a
-            >
-          </li>
-          <li class="menu-nav__item">
-            <a href="skills.html" class="menu-nav__link">Skills</a>
-          </li>
-          <li class="menu-nav__item">
-            <a href="about.html" class="menu-nav__link">About Me</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <section class="jobs-layout">
-        <div class="heading animate-on-scroll">
-          <h2 class="text-secondary">Jobs</h2>
-        </div>
-        <div class="jobs-container">
-          <div class="Jobs animate-on-scroll">
-            <div class="content">
-              <h2 class="text-secondary">2025 Current</h2>
-              <h3>
-                <a
-                  href="https://artemhealthtech.com/about-us"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Artem HealthTech Pvt. Ltd.
-                </a>
-              </h3>
-              <h4>Intern (AI Engineer)</h4>
-              <br />
-              <h6>Model Development</h6>
-              <h6>Convolutional Neural Networks</h6>
-              <h6>Angular.js</h6>
-              <h6>HMIS Framework</h6>
-              <ul>
-                <li>
-                  Developing and deploying an automated system using
-                  Convolutional Neural networks and Vision Language Models to
-                  accurately classify and analyze anomalies in DICOM slices
-                </li>
-                <li>
-                  Built an Angular-based frontend for a speech-to-text
-                  recognition web application utilizing web sockets and
-                  enhancing user engagement.
-                </li>
-                <li>
-                  Collaborating with cross-functional teams to reduce inference
-                  time of various large language models and enhance user
-                  experience and optimize overall platform performance.
-                </li>
-              </ul>
-              <!-- Added lazy loading for images with proper dimensions to prevent CLS
+		<header>
+			<div class="menu-btn">
+				<span class="menu-btn__burger"></span>
+				<span class="menu-toggle-shortcut">Alt+M</span>
+			</div>
+			<nav class="nav">
+				<ul class="menu-nav">
+					<li class="menu-nav__item">
+						<a href="index.html" class="menu-nav__link">Home</a>
+					</li>
+					<li class="menu-nav__item active">
+						<a href="jobs.html" class="menu-nav__link">Jobs</a>
+					</li>
+					<li class="menu-nav__item">
+						<a href="projects.html" class="menu-nav__link">My Projects</a>
+					</li>
+					<li class="menu-nav__item">
+						<a href="certification.html" class="menu-nav__link"
+							>Certifications</a
+						>
+					</li>
+					<li class="menu-nav__item">
+						<a href="skills.html" class="menu-nav__link">Skills</a>
+					</li>
+					<li class="menu-nav__item">
+						<a href="about.html" class="menu-nav__link">About Me</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<section class="jobs-layout">
+				<div class="heading animate-on-scroll">
+					<h2 class="text-secondary">Jobs</h2>
+				</div>
+				<div class="jobs-container">
+					<div class="Jobs animate-on-scroll">
+						<div class="content">
+							<h2 class="text-secondary">2025 Current</h2>
+							<h3>
+								<a
+									href="https://artemhealthtech.com/about-us"
+									target="_blank"
+									rel="noopener">
+									Artem HealthTech Pvt. Ltd.
+								</a>
+							</h3>
+							<h4>Intern (AI Engineer)</h4>
+							<br />
+							<h6>Model Development</h6>
+							<h6>Convolutional Neural Networks</h6>
+							<h6>Angular.js</h6>
+							<h6>HMIS Framework</h6>
+							<ul>
+								<li>
+									Developing and deploying an automated system using
+									Convolutional Neural networks and Vision Language Models to
+									accurately classify and analyze anomalies in DICOM slices
+								</li>
+								<li>
+									Built an Angular-based frontend for a speech-to-text
+									recognition web application utilizing web sockets and
+									enhancing user engagement.
+								</li>
+								<li>
+									Collaborating with cross-functional teams to reduce inference
+									time of various large language models and enhance user
+									experience and optimize overall platform performance.
+								</li>
+							</ul>
+							<!-- Added lazy loading for images with proper dimensions to prevent CLS
               <img src="path/to/image.jpg" alt="Job Image" class="lazy-load" loading="lazy" width="500" height="300" /> -->
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-    <footer class="footer">
-      <a href="copyright.html" class="copyright-link"
-        >&copy; 2025 Aryan Dani All Rights Reserved</a
-      >
-    </footer>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer class="footer">
+			<a href="copyright.html" class="copyright-link"
+				>&copy; 2025 Aryan Dani All Rights Reserved</a
+			>
+		</footer>
 
-    <!-- Core scripts with defer for performance -->
-    <script src="Js/main.js" defer></script>
-    <script src="Js/performance.js" defer></script>
-    <script
-      src="https://kit.fontawesome.com/1267cf2b7d.js"
-      crossorigin="anonymous"
-      defer
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-      defer
-    ></script>
-    <!-- Resource hints optimization -->
-    <script src="Js/resource-hints.js" defer></script>
-    <!-- Enhanced menu and toast notification system -->
-    <script src="Js/menu-enhancements.js"></script>
-  </body>
+		<!-- Core scripts with defer for performance -->
+		<script src="Js/main.js" defer></script>
+		<script src="Js/performance.js" defer></script>
+		<script
+			src="https://kit.fontawesome.com/1267cf2b7d.js"
+			crossorigin="anonymous"
+			defer></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"
+			defer></script>
+		<!-- Resource hints optimization -->
+		<script src="Js/resource-hints.js" defer></script>
+		<!-- Web Vitals Tracking -->
+		<script src="Js/web-vitals.js" defer></script>
+		<!-- Enhanced menu and toast notification system -->
+		<script src="Js/menu-enhancements.js"></script>
+	</body>
 </html>

@@ -30,8 +30,8 @@
   pointer-events: auto;
   border-left: 4px solid;
   overflow: hidden;
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   max-width: 100%;
   max-height: 100px; /* Max height without !important */
 
