@@ -87,6 +87,8 @@
     opacity: 0;
     animation: slideInUp 0.8s 0.4s forwards;
     overflow: hidden;
+    transition: transform 0.3s ease; // Add transition for smooth hover
+    will-change: transform; // Hint for performance
 
     // Remove the shine effect completely
     &::after {
@@ -95,7 +97,6 @@
 
     &:hover {
       transform: translateY(-3px) scale(1.02);
-      animation: none;
     }
   }
 
@@ -108,20 +109,18 @@
     .link-list {
       list-style: none;
       padding: 0;
-      margin: 1rem 0;
+      margin: 1rem 0.5rem;
 
       .link-title {
         display: flex;
-        align-items: center; // Ensure vertical alignment
-        gap: 10px;
+        align-items: center; 
+        gap: 20px;
         transition: transform 0.3s ease, opacity 0.3s ease;
-        opacity: 0; // Individual items start invisible
-        transform: translateY(15px); // Prepare for animation
-        margin-bottom: 0.5rem; // Add consistent spacing between items
-        width: fit-content; // Ensure width only extends as far as content
+        opacity: 0; 
+        transform: translateY(15px); 
+        margin-bottom: 0.5rem;
+        width: fit-content;
         will-change: transform, opacity;
-
-        // Remove the SCSS staggered animations as we're handling this with JS
 
         &:hover {
           cursor: default;

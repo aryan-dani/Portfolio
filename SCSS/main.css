@@ -315,13 +315,14 @@
   opacity: 0;
   animation: slideInUp 0.8s 0.4s forwards;
   overflow: hidden;
+  transition: transform 0.3s ease;
+  will-change: transform;
 }
 .home h2::after {
   display: none;
 }
 .home h2:hover {
   transform: translateY(-3px) scale(1.02);
-  animation: none;
 }
 .home .social-icons {
   position: relative;
@@ -332,12 +333,12 @@
 .home .social-icons .link-list {
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: 1rem 0.5rem;
 }
 .home .social-icons .link-list .link-title {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   transition: transform 0.3s ease, opacity 0.3s ease;
   opacity: 0;
   transform: translateY(15px);
