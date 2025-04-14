@@ -50,32 +50,6 @@
 			src="https://unpkg.com/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"
 			defer></script>
 
-		<!-- Minimal necessary inline styles that don't override SCSS -->
-		<style>
-			/* Basic scroll progress indicator */
-			.scroll-progress {
-				position: fixed;
-				top: 0;
-				left: 0;
-				height: 3px;
-				background-color: rgba(240, 248, 255, 0.8);
-				z-index: 9999;
-				width: 0%;
-			}
-
-			/* Animation triggers for JS to use */
-			.animate-on-scroll {
-				opacity: 0;
-				transform: translateY(20px);
-				transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-			}
-
-			.animate-on-scroll.visible {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		</style>
-
 		<!-- Preload critical hero image with dimensions for better CLS -->
 		<link
 			rel="preload"
@@ -103,8 +77,6 @@
 		<link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
 	</head>
 	<body>
-		<!-- Progress indicator -->
-		<div class="scroll-progress"></div>
 
 		<!-- Toast Notifications Container -->
 		<div class="toast-container">
@@ -289,12 +261,5 @@
 				});
 			}
 		</script>
-
-		<!-- Resource hints optimization -->
-		<script src="Js/resource-hints.js" defer></script>
-		<!-- Web Vitals Tracking -->
-		<script src="Js/web-vitals.js" defer></script>
-		<!-- Enhanced menu and toast notification system -->
-		<script src="Js/menu-enhancements.js"></script>
 	</body>
 </html>
