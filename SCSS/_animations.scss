@@ -275,31 +275,3 @@
     pointer-events: none;
   }
 }
-
-// Reduced motion settings for accessibility
-.reduced-motion {
-  * {
-    animation-duration: 0.001ms !important;
-    transition-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-  }
-
-  // Special cases for essential animations
-  .typing-cursor {
-    animation: none !important;
-  }
-
-  // Disable parallax effects
-  .home,
-  .about,
-  .jobs-layout,
-  .project__project-image {
-    background-attachment: scroll !important;
-  }
-
-  // Disable 3D effects
-  .skills__card,
-  .certificate-content {
-    transform: none !important;
-  }
-}

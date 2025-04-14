@@ -1,18 +1,7 @@
 $primary-color: #272727;
 $secondary-color: aliceblue;
-$accent-color: #ff4081;
-$job-border-color: #ccc;
-$job-gradient-start: #ffffff;
-$job-gradient-end: #f9f9f9;
 $transition-speed: 0.3s;
 
-@mixin transition-ease {
-  transition: all 0.3s ease-in-out;
-}
-
-@mixin transition-nav {
-  transition: all 0.8s ease-in-out;
-}
 
 @function set-text-color($color) {
   @if (lightness($color) > 40%) {

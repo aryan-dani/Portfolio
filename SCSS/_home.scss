@@ -34,8 +34,6 @@
     font-weight: 700;
     position: relative;
     z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.8s ease forwards;
 
     // Remove the line effect completely
     &::after {
@@ -84,8 +82,6 @@
     border-radius: 8px;
     position: relative;
     z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.8s 0.4s forwards;
     overflow: hidden;
     transition: transform 0.3s ease; // Add transition for smooth hover
     will-change: transform; // Hint for performance
@@ -113,11 +109,9 @@
 
       .link-title {
         display: flex;
-        align-items: center; 
+        align-items: center;
         gap: 20px;
         transition: transform 0.3s ease, opacity 0.3s ease;
-        opacity: 0; 
-        transform: translateY(15px); 
         margin-bottom: 0.5rem;
         width: fit-content;
         will-change: transform, opacity;

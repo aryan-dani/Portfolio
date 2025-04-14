@@ -226,25 +226,6 @@
   pointer-events: none;
 }
 
-.reduced-motion * {
-  animation-duration: 0.001ms !important;
-  transition-duration: 0.001ms !important;
-  animation-iteration-count: 1 !important;
-}
-.reduced-motion .typing-cursor {
-  animation: none !important;
-}
-.reduced-motion .home,
-.reduced-motion .about,
-.reduced-motion .jobs-layout,
-.reduced-motion .project__project-image {
-  background-attachment: scroll !important;
-}
-.reduced-motion .skills__card,
-.reduced-motion .certificate-content {
-  transform: none !important;
-}
-
 .home {
   height: 100%;
   padding-left: 3vh;
@@ -273,8 +254,6 @@
   font-weight: 700;
   position: relative;
   z-index: 1;
-  opacity: 0;
-  animation: slideInUp 0.8s ease forwards;
 }
 .home__name::after {
   display: none;
@@ -312,8 +291,6 @@
   border-radius: 8px;
   position: relative;
   z-index: 1;
-  opacity: 0;
-  animation: slideInUp 0.8s 0.4s forwards;
   overflow: hidden;
   transition: transform 0.3s ease;
   will-change: transform;
@@ -340,8 +317,6 @@
   align-items: center;
   gap: 20px;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
-  transform: translateY(15px);
   margin-bottom: 0.5rem;
   width: -moz-fit-content;
   width: fit-content;
@@ -1424,18 +1399,6 @@ body.menu-open main {
   pointer-events: none;
   z-index: 1;
 }
-.project .Projects .project-image img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
-  transition: transform 0.6s ease;
-  display: block;
-  position: relative;
-  z-index: 0;
-}
 .project .Projects h2 {
   display: inline-block;
   color: aliceblue;
@@ -1578,33 +1541,6 @@ body.menu-open main {
     grid-template-columns: 1fr;
   }
 }
-footer {
-  background-color: #272727;
-  color: aliceblue;
-  padding: 0.4rem;
-  gap: 0.5rem;
-  border-radius: 0.8rem;
-  position: relative;
-  overflow: hidden;
-}
-footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.7s ease;
-}
-footer:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-footer:hover::before {
-  left: 100%;
-}
-
 .about {
   height: auto;
   /* Changed from fixed 100% to auto */

@@ -2,20 +2,6 @@
 @use "mixins" as *;
 @use "animations" as *;
 
-// Explicitly define animated-border mixin directly in this file as a fallback
-@mixin animated-border($color: $secondary-color) {
-  border-left: 3px solid $color;
-  animation: borderFlash 3s infinite;
-
-  &:nth-child(odd) {
-    animation-delay: 0.5s;
-  }
-
-  &:nth-child(3n) {
-    animation-delay: 1s;
-  }
-}
-
 // Enhanced animation keyframes
 @keyframes floatAnimation {
   0% {
