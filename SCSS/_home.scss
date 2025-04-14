@@ -16,16 +16,15 @@
   background-attachment: fixed;
   position: relative;
 
-  // Content wrapper to ensure all elements are above the particle effect and properly positioned
   .content-wrapper {
     position: relative;
     z-index: 1;
-    max-width: 800px; // Contain content width for better readability
+    max-width: 800px;
     display: flex;
     flex-direction: column;
-    gap: 1rem; // Add spacing between elements
-    height: calc(100vh - 10vh); // Adjust to full height minus padding
-    justify-content: flex-start; // Start content from the top
+    gap: 1rem;
+    height: calc(100vh - 10vh);
+    justify-content: flex-start;
   }
 
   &__name {
@@ -37,318 +36,298 @@
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInUp 1s ease forwards 0.3s;
-  }
-
-  &:hover {
-    cursor: default;
-    animation: none;
-
-    &::after {
-      width: 100%;
-      transition: width 0.5s ease;
-    }
-  }
-
-  &--last {
-    color: $primary-color;
-    position: relative;
-    display: inline-block;
-    -webkit-background-clip: text;
-    background-clip: text;
-    background-image: linear-gradient(45deg,
-        $primary-color,
-        lighten($primary-color, 25%),
-        $secondary-color,
-        $primary-color);
-    background-size: 300% auto;
-    color: transparent;
-    animation: gradient-text 6s ease infinite;
-    text-shadow: 0 0 2px rgba($secondary-color, 0.8),
-      0 5px 15px rgba($primary-color, 0.3);
 
     &:hover {
       cursor: default;
-      transform: translateY(-3px);
-      animation-play-state: paused;
-      filter: drop-shadow(0 0 5px rgba($primary-color, 0.7));
+      animation: none;
+
+      &::after {
+        width: 100%;
+        transition: width 0.5s ease;
+      }
     }
-  }
-}
 
-h2 {
-  background-color: $secondary-color;
-  color: $primary-color;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 0.3rem;
-  padding: 0.4rem 0.8rem;
-  display: inline-block;
-  border-radius: 8px;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  will-change: transform, box-shadow;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease forwards 0.6s;
-
-  // Add a shine effect on hover
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    transition: left 0.7s ease;
-  }
-
-  &:hover {
-    transform: translateY(-5px) scale(1.03);
-
-    &::after {
-      left: 100%;
-    }
-  }
-}
-
-.social-icons {
-  position: relative;
-  z-index: 1;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease forwards 0.9s;
-  will-change: transform, opacity;
-
-  .link-list {
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-
-    .link-title {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      width: fit-content;
-      will-change: transform;
+    &--last {
+      color: $primary-color;
+      position: relative;
+      display: inline-block;
+      -webkit-background-clip: text;
+      background-clip: text;
+      background-image: linear-gradient(45deg,
+          $primary-color,
+          lighten($primary-color, 25%),
+          $secondary-color,
+          $primary-color);
+      background-size: 300% auto;
+      color: transparent;
+      animation: gradient-text 6s ease infinite;
+      text-shadow: 0 0 2px rgba($secondary-color, 0.8),
+        0 5px 15px rgba($primary-color, 0.3);
 
       &:hover {
         cursor: default;
-        transform: translateX(5px);
+        transform: translateY(-3px);
+        animation-play-state: paused;
+        filter: drop-shadow(0 0 5px rgba($primary-color, 0.7));
       }
+    }
+  }
 
-      i {
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        color: white;
+  h2 {
+    background-color: $secondary-color;
+    color: $primary-color;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0.3rem;
+    padding: 0.4rem 0.8rem;
+    display: inline-block;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: transform, box-shadow;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards 0.6s;
+  }
+
+  .social-icons {
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards 0.9s;
+    will-change: transform, opacity;
+
+    .link-list {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+
+      .link-title {
         display: flex;
         align-items: center;
-        justify-content: center;
-        width: 35px;
-        height: 35px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 50%;
-        padding: 10px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        will-change: transform, background-color;
-
-        &:hover {
-          transform: scale(1.2) rotate(5deg);
-          background: rgba(255, 255, 255, 0.15);
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-      }
-
-      a {
-        margin: 0.5rem 0;
-        font-weight: 700;
-        font-size: 1.2rem;
-        text-decoration: none;
+        gap: 20px;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        position: relative;
-        display: flex;
-        align-items: center;
         width: fit-content;
+        will-change: transform;
 
         &:hover {
-          color: $secondary-color;
-          transform: translateX(3px);
-        }
-      }
-
-      span {
-        color: $primary-color;
-        background-color: $secondary-color;
-        padding: 0.3rem 0.6rem;
-        border-radius: 8px;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-        transform: translateZ(0);
-        backface-visibility: hidden;
-
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg,
-              transparent,
-              rgba(255, 255, 255, 0.6),
-              transparent);
-          transition: left 0.7s ease;
-          z-index: 0;
+          cursor: default;
+          transform: translateX(5px);
         }
 
-        &:hover {
-          background-color: darken($secondary-color, 15%);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-          color: lighten($primary-color, 15%);
-          transform: translateY(-3px) scale(1.05);
-          letter-spacing: 0.5px;
+        i {
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 35px;
+          height: 35px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 50%;
+          padding: 10px;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+          will-change: transform, background-color;
+
+          &:hover {
+            transform: scale(1.2) rotate(5deg);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        a {
+          margin: 0.5rem 0;
+          font-weight: 700;
+          font-size: 1.2rem;
+          text-decoration: none;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          position: relative;
+          display: flex;
+          align-items: center;
+          width: fit-content;
+
+          &:hover {
+            color: $secondary-color;
+            transform: translateX(3px);
+          }
+        }
+
+        span {
+          color: $primary-color;
+          background-color: $secondary-color;
+          padding: 0.3rem 0.6rem;
+          border-radius: 8px;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          position: relative;
+          overflow: hidden;
+          display: inline-block;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+          transform: translateZ(0);
+          backface-visibility: hidden;
 
           &::before {
-            left: 100%;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.6),
+                transparent);
             transition: left 0.7s ease;
+            z-index: 0;
+          }
+
+          &:hover {
+            background-color: aliceblue;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            color: lighten($primary-color, 15%);
+            transform: translateY(-3px) scale(1.05);
+            letter-spacing: 0.5px;
+
+            &::before {
+              left: 100%;
+              transition: left 0.7s ease;
+            }
           }
         }
       }
     }
   }
-}
 
-// CTA Button styling - positioned at bottom left with enhanced styling
-.cta-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  background-color: $secondary-color;
-  color: $primary-color;
-  font-weight: 600;
-  padding: 0.7rem 1.5rem;
-  border-radius: 8px;
-  margin-top: auto; // Push to bottom of flexbox container
-  margin-bottom: 2rem; // Add some space from the bottom
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border: 2px solid transparent;
-  position: relative;
-  overflow: hidden;
-  align-self: flex-start; // Align to left
-  z-index: 1;
-  text-decoration: none;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent);
-    transition: left 0.7s ease;
-    z-index: -1;
-  }
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-    background-color: lighten($secondary-color, 5%);
+  // CTA Button styling - positioned at bottom left with enhanced styling
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: $secondary-color;
+    color: $primary-color;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    margin-top: auto; // Push to bottom of flexbox container
+    margin-bottom: 2rem; // Add some space from the bottom
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    align-self: flex-start; // Align to left
+    z-index: 1;
+    text-decoration: none;
 
     &::before {
-      left: 100%;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.6),
+          transparent);
+      transition: left 0.7s ease;
+      z-index: -1;
+    }
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      background-color: lighten($secondary-color, 5%);
+
+      &::before {
+        left: 100%;
+      }
+
+      i {
+        transform: translateX(3px);
+      }
+    }
+
+    &:active {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     i {
-      transform: translateX(3px);
+      transition: transform 0.3s ease;
+    }
+
+    // Add a subtle bounce animation when page loads
+    animation: bounce 1s ease 1.5s 1;
+  }
+
+  // Add pulse animation for the CTA button
+  @keyframes pulse {
+
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    50% {
+      transform: scale(1.05);
+      opacity: 0.9;
     }
   }
 
-  &:active {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  // Add bounce animation for the CTA button
+  @keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+
+    40% {
+      transform: translateY(-10px);
+    }
+
+    60% {
+      transform: translateY(-5px);
+    }
   }
 
-  i {
-    transition: transform 0.3s ease;
+  // Style for keyboard navigation hint - removed from home page but preserved in SCSS for reference
+  .keyboard-hint {
+    display: none; // Hide keyboard hint completely
   }
 
-  // Add a subtle bounce animation when page loads
-  animation: bounce 1s ease 1.5s 1;
-}
-
-// Add pulse animation for the CTA button
-@keyframes pulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
+  // Add styles for the particles container
+  #particles-home {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
   }
 
-  50% {
-    transform: scale(1.05);
-    opacity: 0.9;
-  }
-}
+  // Additional animations
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
 
-// Add bounce animation for the CTA button
-@keyframes bounce {
-
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-
-  40% {
-    transform: translateY(-10px);
-  }
-
-  60% {
-    transform: translateY(-5px);
-  }
-}
-
-// Style for keyboard navigation hint - removed from home page but preserved in SCSS for reference
-.keyboard-hint {
-  display: none; // Hide keyboard hint completely
-}
-
-// Add styles for the particles container
-#particles-home {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-// Additional animations
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
+    to {
+      opacity: 1;
+    }
   }
 }
-
 
 @media (max-width: 768px) {
   .home {
