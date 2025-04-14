@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	cards.forEach((card) => {
 		card.setAttribute("data-enhanced", "true"); // Mark card for CSS to ignore hover transform
 
-		const intensity = 2; 
+		const intensity = 2;
 
 		card.addEventListener("mousemove", (e) => {
 			const rect = card.getBoundingClientRect();

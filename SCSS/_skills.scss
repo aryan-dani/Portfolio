@@ -151,12 +151,10 @@
       display: inline-block;
       -webkit-background-clip: text;
       background-clip: text;
-      background-image: linear-gradient(
-        45deg,
-        $secondary-color,
-        lighten($secondary-color, 15%),
-        $secondary-color
-      );
+      background-image: linear-gradient(45deg,
+          $secondary-color,
+          lighten($secondary-color, 15%),
+          $secondary-color );
       background-size: 200% auto;
       animation: gradient-text 4s ease infinite;
       will-change: background-position; // Performance optimization
@@ -169,14 +167,12 @@
       left: -5px;
       right: -5px;
       bottom: -5px;
-      background: linear-gradient(
-        45deg,
-        $secondary-color,
-        transparent 40%,
-        $secondary-color 60%,
-        transparent 80%,
-        $secondary-color
-      );
+      background: linear-gradient(45deg,
+          $secondary-color,
+          transparent 40%,
+          $secondary-color 60%,
+          transparent 80%,
+          $secondary-color );
       background-size: 300% 300%;
       z-index: -1;
       filter: blur(8px);
@@ -355,12 +351,10 @@
       left: -2px;
       right: -2px;
       bottom: -2px;
-      background: linear-gradient(
-        45deg,
-        $secondary-color,
-        darken($secondary-color, 20%),
-        $secondary-color
-      );
+      background: linear-gradient(45deg,
+          $secondary-color,
+          darken($secondary-color, 20%),
+          $secondary-color );
       z-index: -1;
       filter: blur(12px);
       opacity: 0;
@@ -385,12 +379,10 @@
       }
 
       .skills__card-front h3 {
-        background-image: linear-gradient(
-          90deg,
-          rgba($secondary-color, 0.7),
-          rgba(#fff, 0.9),
-          rgba($secondary-color, 0.7)
-        );
+        background-image: linear-gradient(90deg,
+            rgba($secondary-color, 0.7),
+            rgba(#fff, 0.9),
+            rgba($secondary-color, 0.7));
         background-size: 200% auto;
         color: transparent;
         -webkit-background-clip: text;
@@ -421,11 +413,9 @@
     }
 
     &-front {
-      background: linear-gradient(
-        135deg,
-        rgba(lighten($primary-color, 5%), 0.9),
-        rgba(lighten($primary-color, 2%), 0.9)
-      );
+      background: linear-gradient(135deg,
+          rgba(lighten($primary-color, 5%), 0.9),
+          rgba(lighten($primary-color, 2%), 0.9));
 
       h3 {
         margin-top: 0.5rem;
@@ -444,11 +434,9 @@
     }
 
     &-back {
-      background: linear-gradient(
-        135deg,
-        rgba(darken($primary-color, 5%), 0.95),
-        rgba(darken($primary-color, 15%), 0.95)
-      );
+      background: linear-gradient(135deg,
+          rgba(darken($primary-color, 5%), 0.95),
+          rgba(darken($primary-color, 15%), 0.95));
       transform: translateY(100%);
 
       p {
@@ -473,11 +461,9 @@
 
     &-bar {
       height: 100%;
-      background: linear-gradient(
-        90deg,
-        $secondary-color,
-        lighten($secondary-color, 20%)
-      );
+      background: linear-gradient(90deg,
+          $secondary-color,
+          lighten($secondary-color, 20%));
       background-size: 200% 100%;
       border-radius: 8px;
       width: 0;

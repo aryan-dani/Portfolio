@@ -3,11 +3,9 @@
 
 .jobs-layout {
   padding: 1rem;
-  background: linear-gradient(
-      to right,
+  background: linear-gradient(to right,
       rgba($primary-color, 0.9),
-      rgba($primary-color, 0)
-    ),
+      rgba($primary-color, 0)),
     url("../Images/Header.jpg") center center / cover no-repeat fixed;
   // Combined background properties using modern shorthand
   position: absolute;
@@ -60,12 +58,10 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.6),
-          transparent
-        );
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.6),
+            transparent);
         transition: left 0.7s ease;
       }
 
@@ -106,12 +102,10 @@
       left: 0;
       width: 100%;
       height: 8px;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        $secondary-color,
-        transparent
-      );
+      background: linear-gradient(90deg,
+          transparent,
+          $secondary-color,
+          transparent);
       transform: scaleX(0);
       transform-origin: bottom right;
       transition: transform 0.5s ease;
@@ -226,12 +220,10 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
         transition: left 0.5s ease;
       }
 
@@ -270,9 +262,7 @@
           transform: translateX(0);
           opacity: 0;
           animation: slideInUp 0.6s forwards;
-          animation-delay: calc(
-            (var(--job-index, 0) * 0.2s) + 0.4s + (var(--item-index, 0) * 0.1s)
-          );
+          animation-delay: calc((var(--job-index, 0) * 0.2s) + 0.4s + (var(--item-index, 0) * 0.1s));
 
           // Enhanced animated border
           &::after {
@@ -282,12 +272,10 @@
             left: 0;
             width: 0%;
             height: 3px;
-            background: linear-gradient(
-              90deg,
-              $primary-color,
-              $secondary-color,
-              transparent
-            );
+            background: linear-gradient(90deg,
+                $primary-color,
+                $secondary-color,
+                transparent);
             transition: width 0.4s ease;
             z-index: 0;
           }
