@@ -251,138 +251,175 @@
 .home__name {
   font-size: 3rem;
   margin-top: 0.4rem;
-  font-weight: 700;
+  font-weight: 800;
   position: relative;
   z-index: 1;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards 0.3s;
 }
-.home__name::after {
-  display: none;
-}
-.home__name:hover {
+.home:hover {
   cursor: default;
-  animation: pulse 2s infinite;
+  animation: none;
 }
-.home__name--last {
+.home:hover::after {
+  width: 100%;
+  transition: width 0.5s ease;
+}
+.home--last {
   color: #272727;
   position: relative;
   display: inline-block;
   -webkit-background-clip: text;
   background-clip: text;
-  background-image: linear-gradient(45deg, #272727, #5a5a5a, #272727);
-  background-size: 200% auto;
+  background-image: linear-gradient(45deg, #272727, #676767, aliceblue, #272727);
+  background-size: 300% auto;
   color: transparent;
-  animation: gradient-text 4s ease infinite;
-  text-shadow: 0 0 1px rgba(240, 248, 255, 0.6), 0 0 2px rgba(240, 248, 255, 0.4);
+  animation: gradient-text 6s ease infinite;
+  text-shadow: 0 0 2px rgba(240, 248, 255, 0.8), 0 5px 15px rgba(39, 39, 39, 0.3);
 }
-.home__name--last:hover {
+.home--last:hover {
   cursor: default;
   transform: translateY(-3px);
   animation-play-state: paused;
   filter: drop-shadow(0 0 5px rgba(39, 39, 39, 0.7));
 }
-.home h2 {
+
+h2 {
   background-color: aliceblue;
   color: #272727;
   font-size: 1.5rem;
   font-weight: 600;
   margin-top: 0.3rem;
-  padding: 0.1rem 0.5rem;
+  padding: 0.4rem 0.8rem;
   display: inline-block;
   border-radius: 8px;
   position: relative;
   z-index: 1;
   overflow: hidden;
-  transition: transform 0.3s ease;
-  will-change: transform;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform, box-shadow;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards 0.6s;
 }
-.home h2::after {
-  display: none;
-}
-.home h2:hover {
-  transform: translateY(-3px) scale(1.02);
-}
-.home .social-icons {
-  position: relative;
-  z-index: 1;
-  opacity: 1;
-  will-change: transform, opacity;
-}
-.home .social-icons .link-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0.5rem;
-}
-.home .social-icons .link-list .link-title {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  margin-bottom: 0.5rem;
-  width: -moz-fit-content;
-  width: fit-content;
-  will-change: transform, opacity;
-}
-.home .social-icons .link-list .link-title:hover {
-  cursor: default;
-}
-.home .social-icons .link-list .link-title i {
-  transition: transform 0.3s ease, color 0.3s ease;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  will-change: transform;
-}
-.home .social-icons .link-list .link-title i:hover {
-  transform: scale(1.2);
-}
-.home .social-icons .link-list .link-title a {
-  margin: 0.5rem 0;
-  font-weight: 700;
-  font-size: 1.2rem;
-  text-decoration: none;
-  transition: color 0.3s ease;
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: -moz-fit-content;
-  width: fit-content;
-}
-.home .social-icons .link-list .link-title a:hover {
-  color: aliceblue;
-}
-.home .social-icons .link-list .link-title span {
-  color: #272727;
-  background-color: aliceblue;
-  padding: 0.2rem 0.4rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-}
-.home .social-icons .link-list .link-title span::before {
+h2::after {
   content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.5s ease;
+  transition: left 0.7s ease;
 }
-.home .social-icons .link-list .link-title span:hover {
-  background-color: #555;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  color: aliceblue;
+h2:hover {
+  transform: translateY(-5px) scale(1.03);
 }
-.home .social-icons .link-list .link-title span:hover::before {
+h2:hover::after {
   left: 100%;
-  transition: left 0.5s ease;
 }
-.home .cta-button {
+
+.social-icons {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards 0.9s;
+  will-change: transform, opacity;
+}
+.social-icons .link-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.social-icons .link-list .link-title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  width: -moz-fit-content;
+  width: fit-content;
+  will-change: transform;
+}
+.social-icons .link-list .link-title:hover {
+  cursor: default;
+  transform: translateX(5px);
+}
+.social-icons .link-list .link-title i {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  will-change: transform, background-color;
+}
+.social-icons .link-list .link-title i:hover {
+  transform: scale(1.2) rotate(5deg);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.social-icons .link-list .link-title a {
+  margin: 0.5rem 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+.social-icons .link-list .link-title a:hover {
+  color: aliceblue;
+  transform: translateX(3px);
+}
+.social-icons .link-list .link-title span {
+  color: #272727;
+  background-color: aliceblue;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.social-icons .link-list .link-title span::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transition: left 0.7s ease;
+  z-index: 0;
+}
+.social-icons .link-list .link-title span:hover {
+  background-color: #a4d4ff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  color: #4d4d4d;
+  transform: translateY(-3px) scale(1.05);
+  letter-spacing: 0.5px;
+}
+.social-icons .link-list .link-title span:hover::before {
+  left: 100%;
+  transition: left 0.7s ease;
+}
+
+.cta-button {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -403,7 +440,7 @@
   text-decoration: none;
   animation: bounce 1s ease 1.5s 1;
 }
-.home .cta-button::before {
+.cta-button::before {
   content: "";
   position: absolute;
   top: 0;
@@ -414,24 +451,25 @@
   transition: left 0.7s ease;
   z-index: -1;
 }
-.home .cta-button:hover {
+.cta-button:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
   background-color: white;
 }
-.home .cta-button:hover::before {
+.cta-button:hover::before {
   left: 100%;
 }
-.home .cta-button:hover i {
+.cta-button:hover i {
   transform: translateX(3px);
 }
-.home .cta-button:active {
+.cta-button:active {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-.home .cta-button i {
+.cta-button i {
   transition: transform 0.3s ease;
 }
+
 @keyframes pulse {
   0%, 100% {
     transform: scale(1);
@@ -453,10 +491,11 @@
     transform: translateY(-5px);
   }
 }
-.home .keyboard-hint {
+.keyboard-hint {
   display: none;
 }
-.home #particles-home {
+
+#particles-home {
   position: absolute;
   top: 0;
   left: 0;
@@ -464,6 +503,7 @@
   height: 100%;
   z-index: 0;
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -472,7 +512,6 @@
     opacity: 1;
   }
 }
-
 @media (max-width: 768px) {
   .home {
     padding-left: 1.5rem;
