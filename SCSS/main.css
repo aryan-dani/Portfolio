@@ -561,8 +561,8 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   /* Ensure menu button is always visible */
   visibility: visible !important;
   opacity: 1 !important;
@@ -1353,12 +1353,14 @@ body.menu-open main {
   animation: slideInUp 0.6s forwards;
   animation-delay: calc(var(--project-index, 0) * 0.2s);
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 }
 .project .Projects:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px) scale(1.02);
+}
+.project .Projects[data-enhanced=true]:hover {
+  transform: none;
 }
 .project .Projects::before {
   content: "";
@@ -1375,7 +1377,6 @@ body.menu-open main {
   z-index: -1;
 }
 .project .Projects:hover {
-  transform: translateY(-10px) scale(1.02);
   border-bottom-color: aliceblue;
 }
 .project .Projects:hover::before {
@@ -2166,9 +2167,16 @@ footer:hover::before {
   flex-direction: column;
   position: relative;
   z-index: 1;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 }
 .certification .certificate-content:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px) scale(1.02);
+}
+.certification .certificate-content[data-enhanced=true]:hover {
+  transform: none;
+}
+.certification .certificate-content:hover {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   border-color: rgba(240, 248, 255, 0.4);
 }
@@ -2202,12 +2210,15 @@ footer:hover::before {
   position: relative;
   overflow: hidden;
   height: auto;
-  min-height: 200px; /* Minimum height for consistency */
-  max-height: 280px; /* Maximum height to maintain card proportions */
+  min-height: 200px;
+  /* Minimum height for consistency */
+  max-height: 280px;
+  /* Maximum height to maintain card proportions */
   border-radius: 8px;
   margin: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  cursor: pointer; /* Add cursor pointer to indicate clickable */
+  cursor: pointer;
+  /* Add cursor pointer to indicate clickable */
 }
 .certification .certificate-content .certificate-image::before {
   content: "";
@@ -2418,7 +2429,8 @@ footer:hover::before {
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
 }
 .certificate-preview.active {
   opacity: 1;
@@ -3712,4 +3724,4 @@ body {
     background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
     background-size: cover;
   }
-}/*# sourceMappingURL=main.css.map */
+}

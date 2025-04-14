@@ -13,11 +13,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.05) 1px,
-      transparent 1px
-    );
+    background-image: radial-gradient(circle,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px);
     background-size: 25px 25px;
     opacity: 0.6;
     pointer-events: none;
@@ -57,11 +55,9 @@
   &__project-image {
     height: 30vh;
     width: 100%;
-    background: linear-gradient(
-        to right,
+    background: linear-gradient(to right,
         rgba($primary-color, 0.9),
-        rgba($primary-color, 0)
-      ),
+        rgba($primary-color, 0)),
       url("../Images/Header.jpg") center top;
     background-size: cover;
     display: flex;
@@ -83,12 +79,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        135deg,
-        rgba($primary-color, 0.7) 0%,
-        rgba($primary-color, 0.3) 50%,
-        rgba($primary-color, 0.7) 100%
-      );
+      background: linear-gradient(135deg,
+          rgba($primary-color, 0.7) 0%,
+          rgba($primary-color, 0.3) 50%,
+          rgba($primary-color, 0.7) 100%);
       background-size: 300% 300%;
       animation: gradientBackground 8s ease infinite;
       z-index: 0;
@@ -176,8 +170,8 @@
     animation-delay: calc(var(--project-index, 0) * 0.2s);
     overflow: hidden;
 
-    // Apply card hover mixin
-    @include card-hover;
+    // Apply card 3d hover mixin instead of card-hover
+    @include card-3d-hover;
 
     // Glass morphism effect
     &::before {
@@ -187,11 +181,9 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(
-        circle at center,
-        rgba(255, 255, 255, 0.2) 0%,
-        rgba(255, 255, 255, 0) 80%
-      );
+      background: radial-gradient(circle at center,
+          rgba(255, 255, 255, 0.2) 0%,
+          rgba(255, 255, 255, 0) 80%);
       opacity: 0;
       transform: scale(0.8);
       transition: opacity 0.5s ease, transform 0.5s ease;
@@ -200,13 +192,12 @@
     }
 
     &:hover {
-      // Override card-hover's transform with our specific one
-      transform: translateY(-10px) scale(1.02);
+      // Remove the transform override from here as it's handled by the mixin
       border-bottom-color: $secondary-color;
 
       &::before {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1); // Keep this part of the glass effect
       }
     }
 
@@ -238,12 +229,10 @@
         // Modern lazy loading support with fallback handled in JS
         &[loading="lazy"] {
           // Add a subtle placeholder while loading
-          background: linear-gradient(
-            110deg,
-            rgba(227, 227, 227, 0.1) 30%,
-            rgba(177, 177, 177, 0.1) 50%,
-            rgba(227, 227, 227, 0.1) 70%
-          );
+          background: linear-gradient(110deg,
+              rgba(227, 227, 227, 0.1) 30%,
+              rgba(177, 177, 177, 0.1) 50%,
+              rgba(227, 227, 227, 0.1) 70%);
           background-size: 200% 100%;
           animation: shimmer 1.5s linear infinite;
         }
@@ -257,11 +246,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        to bottom,
-        rgba(39, 39, 39, 0.1),
-        rgba(39, 39, 39, 0.4)
-      );
+      background: linear-gradient(to bottom,
+          rgba(39, 39, 39, 0.1),
+          rgba(39, 39, 39, 0.4));
       pointer-events: none;
       z-index: 1;
     }
@@ -293,12 +280,10 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
         transition: left 0.7s ease;
       }
 
@@ -356,12 +341,10 @@
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.4),
-            transparent
-          );
+          background: linear-gradient(90deg,
+              transparent,
+              rgba(255, 255, 255, 0.4),
+              transparent);
           transition: left 0.5s ease;
         }
 
@@ -434,12 +417,10 @@ footer {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent);
     transition: left 0.7s ease;
   }
 
