@@ -155,10 +155,7 @@ function registerServiceWorker() {
 	if ("serviceWorker" in navigator) {
 		window.addEventListener("load", () => {
 			// Always use the repo name for GitHub Pages project sites
-			let swPath = "/service-worker.js";
-			if (window.location.hostname.endsWith("github.io")) {
-				swPath = "/service-worker.js";
-			}
+			const swPath = "/Portfolio/service-worker.js"; // Correct path for GitHub Pages
 
 			navigator.serviceWorker
 				.register(swPath)
