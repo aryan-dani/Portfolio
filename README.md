@@ -68,7 +68,7 @@ If you have questions, ideas, or just want to connect, feel free to reach out:
 
 ## ⭐ Show Your Support
 
-If you like this project, consider starring ⭐ the repo and sharing it with others. Every bit of support helps! 😊
+If you like this project, consider starring ⭐ the repo and sharing it with others. Every bit of support helps! 
 
 📄 License
 This project is licensed under the MIT License – see the LICENSE file for details.
