@@ -154,20 +154,37 @@ function initLazyLoading() {
 function registerServiceWorker() {
 	if ("serviceWorker" in navigator) {
 		window.addEventListener("load", () => {
+			// Dynamically determine the service worker path for local and GitHub Pages
+			let swPath = "/service-worker.js";
+			if (window.location.hostname.endsWith("github.io")) {
+				// For GitHub Pages project sites, add the repo name as the base path
+				const pathParts = window.location.pathname.split("/").filter(Boolean);
+				if (pathParts.length > 0) {
+					swPath = `/${pathParts[0]}/service-worker.js`;
+				}
+			}
+
 			navigator.serviceWorker
-				.register("/service-worker.js")
+				.register(swPath)
 				.then((registration) => {
 					console.log(
 						"Service Worker registered successfully with scope:",
 						registration.scope
 					);
 
-					// Check for service worker updates
+					// Listen for updates to the service worker
 					registration.addEventListener("updatefound", () => {
 						const newWorker = registration.installing;
 						console.log("Service Worker update found. New worker installing.");
-						// Optionally, show a notification to the user
+						// Optionally, notify the user about the update
 						// Example: showToast("App Update Available", "Refresh to get the latest version", "fa-solid fa-arrow-rotate-right");
+					});
+
+					// Optionally, handle controller change (when new SW takes control)
+					navigator.serviceWorker.addEventListener("controllerchange", () => {
+						console.log("New Service Worker activated. Refreshing page...");
+						// Optionally, reload the page or show a prompt
+						// window.location.reload();
 					});
 				})
 				.catch((error) => {
