@@ -47,6 +47,7 @@ function toggleMenu() {
 
 		// Add a class to the body to prevent scrolling when menu is open
 		document.body.classList.add("menu-open");
+		document.documentElement.style.background = "transparent"; // Prevent black border
 
 		// Animate menu items in the original order
 		setTrackedTimeout(
@@ -70,6 +71,7 @@ function toggleMenu() {
 
 		// Remove menu-open class from body
 		document.body.classList.remove("menu-open");
+		document.documentElement.style.background = ""; // Restore background
 
 		// Then after a short delay, close the menu
 		setTrackedTimeout(

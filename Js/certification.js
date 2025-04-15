@@ -1,9 +1,4 @@
-/**
- * Certification Page JavaScript
- * Handles filtering, animations, and interactive features for the certifications page
- *
- * @format
- */
+/** @format */		
 
 document.addEventListener("DOMContentLoaded", function () {
 	// Add a small delay to ensure all elements are fully rendered
