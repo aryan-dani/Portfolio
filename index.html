@@ -219,7 +219,7 @@
 			if ("serviceWorker" in navigator) {
 				window.addEventListener("load", () => {
 					navigator.serviceWorker
-						.register("/service-worker.js")
+						.register("/Portfolio/service-worker.js") // Correct path for GitHub Pages
 						.then((registration) => {
 							console.log(
 								"Service Worker registered with scope:",
