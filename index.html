@@ -79,40 +79,36 @@
 		</div>
 
 		<header>
-			<div class="menu-btn">
+			<div class="menu-btn" id="menu-btn" tabindex="0" aria-label="Open main menu" aria-controls="main-navigation" aria-expanded="false" role="button">
 				<span class="menu-btn__burger"></span>
 				<span class="menu-toggle-shortcut">Alt+M</span>
 			</div>
 
-			<nav class="nav">
+			<nav class="nav" id="main-navigation" role="navigation" aria-label="Main menu">
 				<ul class="menu-nav">
 					<li class="menu-nav__item active">
-						<a href="index.html" class="menu-nav__link">Home</a>
+						<a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
 					</li>
 					<li class="menu-nav__item">
-						<a href="jobs.html" class="menu-nav__link">Jobs</a>
+						<a href="jobs.html" class="menu-nav__link" tabindex="0">Jobs</a>
 					</li>
 					<li class="menu-nav__item">
-						<a href="projects.html" class="menu-nav__link">My Projects</a>
+						<a href="projects.html" class="menu-nav__link" tabindex="0">My Projects</a>
 					</li>
 					<li class="menu-nav__item">
-						<a href="certification.html" class="menu-nav__link"
-							>Certifications</a
-						>
+						<a href="certification.html" class="menu-nav__link" tabindex="0">Certifications</a>
 					</li>
 					<li class="menu-nav__item">
-						<a href="skills.html" class="menu-nav__link">Skills</a>
+						<a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
 					</li>
 					<li class="menu-nav__item">
-						<a href="about.html" class="menu-nav__link">About Me</a>
+						<a href="about.html" class="menu-nav__link" tabindex="0">About Me</a>
 					</li>
 				</ul>
 			</nav>
 		</header>
 		<main>
 			<section class="home animate-on-scroll">
-				<!-- Particles background container -->
-				<div id="particles-home"></div>
 				<!-- Content wrapper to ensure all elements are properly positioned -->
 				<div class="content-wrapper">
 					<h1 class="home__name animate-on-scroll">
@@ -183,10 +179,6 @@
 		<!-- Core scripts -->
 		<script src="Js/main.js"></script>
 		<script src="Js/performance.js"></script>
-
-		<!-- Particles.js for interactive background -->
-		<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-		<script src="Js/particles.js"></script>
 
 		<script
 			src="https://kit.fontawesome.com/1267cf2b7d.js"
