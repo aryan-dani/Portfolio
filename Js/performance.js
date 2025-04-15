@@ -154,14 +154,10 @@ function initLazyLoading() {
 function registerServiceWorker() {
 	if ("serviceWorker" in navigator) {
 		window.addEventListener("load", () => {
-			// Dynamically determine the service worker path for local and GitHub Pages
+			// Always use the repo name for GitHub Pages project sites
 			let swPath = "/service-worker.js";
 			if (window.location.hostname.endsWith("github.io")) {
-				// For GitHub Pages project sites, add the repo name as the base path
-				const pathParts = window.location.pathname.split("/").filter(Boolean);
-				if (pathParts.length > 0) {
-					swPath = `/${pathParts[0]}/service-worker.js`;
-				}
+				swPath = "/Portfolio/service-worker.js";
 			}
 
 			navigator.serviceWorker
