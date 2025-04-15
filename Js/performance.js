@@ -157,7 +157,7 @@ function registerServiceWorker() {
 			// Always use the repo name for GitHub Pages project sites
 			let swPath = "/service-worker.js";
 			if (window.location.hostname.endsWith("github.io")) {
-				swPath = "/Portfolio/service-worker.js";
+				swPath = "/service-worker.js";
 			}
 
 			navigator.serviceWorker
