@@ -87,11 +87,12 @@
 .nav {
   position: fixed;
   top: 0;
-  transform: translate(-50%, -50%);
+  left: 50%;
+  right: auto;
   width: auto;
   min-width: 320px;
-  right: auto;
-  margin: 0 auto;
+  max-width: 700px;
+  transform: translateX(-50%);
   opacity: 0;
   visibility: hidden;
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -104,10 +105,12 @@
     opacity: 0.98;
     position: fixed !important;
     top: 0 !important;
-    left: 5% !important;
-    transform: translate(-50%, 0);
-    right: 5%;
+    left: 50% !important;
+    right: auto !important;
     width: auto;
+    min-width: 320px;
+    max-width: 700px;
+    transform: translateX(-50%);
     margin: 0 auto;
     animation: slideDownAndBounce 0.5s ease-out forwards;
   }
@@ -239,125 +242,31 @@
     }
   }
 }
-}
 
-/* Improved menu-open class to prevent scroll jumping */
-body.menu-open {
-  overflow: hidden !important;
-  position: fixed !important;
-  width: 100% !important;
-  height: 100% !important;
-}
+// Properly close the .nav block here
 
-/* Adding padding on the right to prevent content shifting when scrollbar disappears */
-body.menu-open {
-  padding-right: var(--scrollbar-width, 0);
-}
-
-/* This creates a smooth transition for the main content */
-main {
-  transition: transform 0.3s ease;
-}
-
-/* Keep the main content in place when menu is open */
-body.menu-open main {
-  /* We no longer push content down, the menu overlays it instead */
-  transform: translateY(0);
-}
-
-// Added keyframes for new animations
-@keyframes slideDownAndBounce {
-  0% {
-    transform: translateY(-100%);
-  }
-
-  70% {
-    transform: translateY(10px);
-  }
-
-  90% {
-    transform: translateY(-5px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
-
-/* Added keyframe animation for content shifting */
-@keyframes shiftContent {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(var(--menu-height, 65px));
-  }
-}
-
-@keyframes wobble {
-
-  0%,
-  100% {
-    transform: translateY(0) rotate(0);
-  }
-
-  20% {
-    transform: translateY(-5px) rotate(3deg);
-  }
-
-  40% {
-    transform: translateY(0) rotate(-2deg);
-  }
-
-  60% {
-    transform: translateY(2px) rotate(1deg);
-  }
-
-  80% {
-    transform: translateY(-1px) rotate(0);
-  }
-}
-
-@keyframes pulseGlow {
-
-  0%,
-  100% {
-    box-shadow: 0 0 12px rgba($secondary-color, 0.7);
-  }
-
-  50% {
-    box-shadow: 0 0 18px rgba($secondary-color, 0.9);
-  }
-}
-
-/* Enhance the burger color when open for better visibility */
-.menu-btn__burger.open::before,
-.menu-btn__burger.open::after {
-  background-color: $secondary-color !important;
-  box-shadow: 0 0 10px rgba($secondary-color, 0.7) !important;
-}
-
-// Media queries for responsive design
 @media screen and (max-width: 768px) {
   .nav {
     left: 50%;
-    transform: translate(-50%, -100%);
+    right: auto;
     width: 98vw;
     min-width: 0;
     max-width: 100vw;
+    transform: translateX(-50%);
 
     &.open {
       left: 50% !important;
-      transform: translate(-50%, 0);
+      right: auto !important;
       width: 98vw;
       min-width: 0;
       max-width: 100vw;
+      transform: translateX(-50%);
+    }
+
+    .menu-nav {
+      margin-left: auto;
+      margin-right: auto;
     }
   }
-
-  .nav .menu-nav {
-    margin-left: auto;
-    margin-right: auto;
-  }
+}
 }
