@@ -23,6 +23,119 @@ document.addEventListener("DOMContentLoaded", function () {
 	applyReducedMotionPreferences();
 });
 
+// Global toast container reference
+let toastContainer = null;
+
+/**
+ * Ensures the toast container exists in the DOM.
+ */
+function ensureToastContainer() {
+	if (!toastContainer) {
+		toastContainer = document.querySelector(".toast-container");
+		if (!toastContainer) {
+			toastContainer = document.createElement("div");
+			toastContainer.className = "toast-container";
+			document.body.appendChild(toastContainer);
+		}
+	}
+}
+
+/**
+ * Displays a toast notification.
+ * @param {string} message - The main message to display.
+ * @param {string} type - Type of toast ('success', 'error', 'info', 'warning'). Determines icon and color.
+ * @param {number} duration - How long the toast should be visible in milliseconds.
+ * @param {string} title - Optional title for the toast.
+ * @param {string} iconClass - Optional Font Awesome icon class (e.g., 'fa-solid fa-check-circle').
+ */
+function showToast(
+	message,
+	type = "info",
+	duration = 5000,
+	title = null,
+	iconClass = null
+) {
+	ensureToastContainer(); // Make sure the container exists
+
+	const toast = document.createElement("div");
+	toast.className = `toast ${type}`; // Add type class for styling
+	toast.setAttribute("role", "alert");
+	toast.setAttribute("aria-live", "assertive");
+
+	// Determine icon based on type or provided class
+	let iconHtml = "";
+	if (iconClass) {
+		iconHtml = `<i class="${iconClass}"></i>`;
+	} else {
+		switch (type) {
+			case "success":
+				iconHtml = '<i class="fa-solid fa-check-circle"></i>';
+				title = title || "Success";
+				break;
+			case "error":
+				iconHtml = '<i class="fa-solid fa-times-circle"></i>';
+				title = title || "Error";
+				break;
+			case "warning":
+				iconHtml = '<i class="fa-solid fa-exclamation-triangle"></i>';
+				title = title || "Warning";
+				break;
+			case "info":
+			default:
+				iconHtml = '<i class="fa-solid fa-info-circle"></i>';
+				title = title || "Information";
+				break;
+		}
+	}
+
+	const toastContent = `
+        <div class="toast-icon">
+            ${iconHtml}
+        </div>
+        <div class="toast-content">
+            ${title ? `<h4>${title}</h4>` : ""}
+            <p>${message}</p>
+        </div>
+        <button class="toast-close" aria-label="Close notification">
+            <i class="fa-solid fa-times"></i>
+        </button>
+    `;
+
+	toast.innerHTML = toastContent;
+	toastContainer.appendChild(toast);
+
+	// Trigger animation
+	requestAnimationFrame(() => {
+		toast.classList.add("show");
+	});
+
+	// Auto-dismiss
+	const dismissTimeout = setTimeout(() => {
+		dismissToast(toast);
+	}, duration);
+
+	// Close button functionality
+	const closeButton = toast.querySelector(".toast-close");
+	closeButton.addEventListener("click", () => {
+		clearTimeout(dismissTimeout); // Prevent auto-dismiss if manually closed
+		dismissToast(toast);
+	});
+}
+
+/**
+ * Dismisses a specific toast notification with animation.
+ * @param {HTMLElement} toast - The toast element to dismiss.
+ */
+function dismissToast(toast) {
+	toast.classList.remove("show");
+	// Remove the element after the fade-out animation completes
+	setTimeout(() => {
+		if (toast.parentNode) {
+			toast.parentNode.removeChild(toast);
+		}
+	}, 300); // Match animation duration in CSS
+}
+
 /**
  * Create and update scroll progress indicator
  */
@@ -154,8 +267,15 @@ function initLazyLoading() {
 function registerServiceWorker() {
 	if ("serviceWorker" in navigator) {
 		window.addEventListener("load", () => {
-			// Always use the repo name for GitHub Pages project sites
-			const swPath = "/Portfolio/service-worker.js"; // Correct path for GitHub Pages
+			// Determine the correct path based on hostname
+			const isLocal =
+				window.location.hostname === "localhost" ||
+				window.location.hostname === "127.0.0.1";
+			const swPath = isLocal
+				? "/service-worker.js"
+				: "/Portfolio/service-worker.js"; // Adjust '/Portfolio/' if your repo name is different
+
+			console.log(`Registering Service Worker from: ${swPath}`); // Log the path being used
 
 			navigator.serviceWorker
 				.register(swPath)

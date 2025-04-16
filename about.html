@@ -81,7 +81,9 @@
 				aria-label="Open main menu"
 				aria-controls="main-navigation"
 				aria-expanded="false"
-				role="button">
+				role="button"
+				title="Open Menu (Alt+M)">
+				<!-- Added title attribute -->
 				<span class="menu-btn__burger"></span>
 				<span class="menu-toggle-shortcut">Alt+M</span>
 			</div>
@@ -253,63 +255,20 @@
 					.addEventListener("submit", function (e) {
 						e.preventDefault();
 
-						// In a real application, you would send the form data to a server
-						// For this demo, we'll show a success message using the performance.js toast function
-
-						// Create toast notification using the function from performance.js
+						// Use the global showToast function from performance.js
 						if (typeof showToast === "function") {
 							showToast(
-								"Message sent! Thanks for reaching out. I'll get back to you soon!",
-								"success",
-								5000
+								"Thanks for reaching out. I'll get back to you soon!", // Message
+								"success", // Type
+								5000, // Duration
+								"Message Sent!" // Title
 							);
 						} else {
-							// Fallback if showToast isn't available
-							const toastContainer = document.querySelector(".toast-container");
-							const toast = document.createElement("div");
-							toast.classList.add("toast", "success");
-
-							const toastContent = `
-              <div class="toast-icon">
-                <i class="fas fa-check-circle"></i>
-              </div>
-              <div class="toast-content">
-                <h4>Message Sent!</h4>
-                <p>Thanks for reaching out. I'll get back to you soon!</p>
-              </div>
-              <button class="toast-close">
-                <i class="fas fa-times"></i>
-              </button>
-            `;
-
-							toast.innerHTML = toastContent;
-							toastContainer.appendChild(toast);
-
-							// Add animation class
-							setTimeout(() => {
-								toast.classList.add("show");
-							}, 10);
-
-							// Clear the form
-							this.reset();
-
-							// Remove toast after 5 seconds
-							setTimeout(() => {
-								toast.classList.remove("show");
-								setTimeout(() => {
-									toastContainer.removeChild(toast);
-								}, 300);
-							}, 5000);
-
-							// Close button functionality
-							toast
-								.querySelector(".toast-close")
-								.addEventListener("click", function () {
-									toast.classList.remove("show");
-									setTimeout(() => {
-										toastContainer.removeChild(toast);
-									}, 300);
-								});
+							// Fallback alert if showToast is somehow not available (shouldn't happen now)
+							console.error(
+								"showToast function not found. Using alert fallback."
+							);
+							alert("Message sent! Thanks for reaching out.");
 						}
 
 						// Reset form

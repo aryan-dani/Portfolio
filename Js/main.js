@@ -188,38 +188,59 @@ document.addEventListener("DOMContentLoaded", () => {
 		() => {
 			// Only show welcome toasts on first visit to each page
 			if (checkFirstTimeVisit(pageName)) {
-				if (isHomePage) {
-					showToast(
-						"Welcome to My Portfolio",
-						"Explore my work and get to know me better",
-						"fa-solid fa-house-user"
-					);
-				} else if (pageName === "jobs") {
-					showToast(
-						"Professional Experience",
-						"Learn about my career journey and achievements",
-						"fa-solid fa-briefcase"
-					);
-				} else if (pageName === "projects") {
-					showToast(
-						"Portfolio Projects",
-						"Discover the projects I've worked on",
-						"fa-solid fa-code"
-					);
-				} else if (pageName === "certification") {
-					showToast(
-						"My Certifications",
-						"Check out my professional qualifications",
-						"fa-solid fa-certificate"
-					);
-				} else if (pageName === "skills") {
-					showToast(
-						"Technical Skills",
-						"Explore my expertise across different technologies",
-						"fa-solid fa-laptop-code"
-					);
-				} else if (pageName === "about") {
-					showToast("About Me", "Get to know me better", "fa-solid fa-user");
+				// Use the new showToast function
+				if (typeof showToast === "function") {
+					if (isHomePage) {
+						showToast(
+							"Explore my work and get to know me better", // Message
+							"info", // Type
+							6000, // Duration
+							"Welcome to My Portfolio", // Title
+							"fa-solid fa-house-user" // Icon
+						);
+					} else if (pageName === "jobs") {
+						showToast(
+							"Learn about my career journey and achievements",
+							"info",
+							6000,
+							"Professional Experience",
+							"fa-solid fa-briefcase"
+						);
+					} else if (pageName === "projects") {
+						showToast(
+							"Discover the projects I've worked on",
+							"info",
+							6000,
+							"Portfolio Projects",
+							"fa-solid fa-code"
+						);
+					} else if (pageName === "certification") {
+						showToast(
+							"Check out my professional qualifications",
+							"info",
+							6000,
+							"My Certifications",
+							"fa-solid fa-certificate"
+						);
+					} else if (pageName === "skills") {
+						showToast(
+							"Explore my expertise across different technologies",
+							"info",
+							6000,
+							"Technical Skills",
+							"fa-solid fa-laptop-code"
+						);
+					} else if (pageName === "about") {
+						showToast(
+							"Get to know me better",
+							"info",
+							6000,
+							"About Me",
+							"fa-solid fa-user"
+						);
+					}
+				} else {
+					console.error("showToast function is not defined in performance.js");
 				}
 			}
 		},
