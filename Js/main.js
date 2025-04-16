@@ -12,8 +12,6 @@ const hamburger = document.querySelector(".menu-btn__burger");
 const nav = document.querySelector(".nav");
 const menuNav = document.querySelector(".menu-nav");
 const navItems = document.querySelectorAll(".menu-nav__item");
-const main = document.querySelector("main");
-
 let showMenu = false;
 
 menuBtn.addEventListener("click", toggleMenu);
@@ -118,13 +116,6 @@ document.addEventListener("click", (e) => {
 		!e.target.closest(".nav") &&
 		!e.target.closest(".menu-nav")
 	) {
-		toggleMenu();
-	}
-});
-
-// Escape key to close menu
-document.addEventListener("keydown", (e) => {
-	if (e.key === "Escape" && showMenu) {
 		toggleMenu();
 	}
 });
@@ -279,14 +270,18 @@ document.addEventListener("DOMContentLoaded", () => {
 		initAboutPageAnimations();
 	}
 
-	// Initialize universal animations
+	// Initialize universal animations and effects
 	initUniversalAnimations();
 
-	// Update copyright year dynamically
-	updateCopyrightYear();
-
-	// Initialize keyboard navigation detection
-	detectKeyboardNavigation();
+	// Initialize parallax effect once for relevant pages
+	if (
+		isHomePage ||
+		pagePath.includes("jobs.html") ||
+		pagePath.includes("about.html") ||
+		pagePath.includes("projects.html") // Assuming parallax is used here too based on initParallaxEffect querySelector
+	) {
+		initParallaxEffect();
+	}
 }); // <-- Added closing parenthesis and semicolon
 
 // Smooth page transitions
@@ -855,18 +850,6 @@ function addIconHoverEffect(icon) {
 	});
 }
 
-// Throttle function for better performance with frequent events
-function throttle(func, wait) {
-	let lastTime = 0;
-	return function () {
-		const now = Date.now();
-		if (now - lastTime >= wait) {
-			func.apply(this, arguments);
-			lastTime = now;
-		}
-	};
-}
-
 // Jobs page animations
 function initJobsPageAnimations() {
 	// Animate jobs title
@@ -932,9 +915,6 @@ function initJobsPageAnimations() {
 			});
 		});
 	}
-
-	// Initialize parallax effect for background
-	initParallaxEffect();
 }
 
 // Projects page animations
@@ -1053,9 +1033,6 @@ function initAboutPageAnimations() {
 			);
 		});
 	}
-
-	// Initialize parallax effect
-	initParallaxEffect();
 }
 
 // Universal animations and effects for all pages
@@ -1092,7 +1069,7 @@ function initUniversalAnimations() {
 		}
 	});
 
-	// Initialize modern menu - REMOVED CALL
+	// REMOVED: Initialize modern menu call
 
 	// Update copyright year dynamically
 	updateCopyrightYear();
@@ -1459,7 +1436,6 @@ function initSkillsPageAnimations() {
 				}
 			});
 		});
-		// REMOVED: initCategoryTabs();
 	}
 
 	// Add interactions for tech stack badges
@@ -1593,143 +1569,152 @@ function showToast(title, message, iconClass) {
 	if (!toastContainer) {
 		toastContainer = document.createElement("div");
 		toastContainer.className = "toast-container";
+		// --- Improved Container Styles ---
 		toastContainer.style.position = "fixed";
-		toastContainer.style.top = "20px";
+		toastContainer.style.bottom = "20px"; // Position at bottom-right
 		toastContainer.style.right = "20px";
-		toastContainer.style.maxWidth = "280px";
-		toastContainer.style.zIndex = "10000"; // Higher z-index to ensure visibility
-		toastContainer.style.pointerEvents = "none";
+		toastContainer.style.maxWidth = "320px"; // Slightly wider
+		toastContainer.style.zIndex = "10000";
+		toastContainer.style.pointerEvents = "none"; // Allow clicks through container
 		toastContainer.style.display = "flex";
-		toastContainer.style.flexDirection = "column";
-		toastContainer.style.gap = "8px";
+		toastContainer.style.flexDirection = "column-reverse"; // New toasts appear above old ones
+		toastContainer.style.gap = "10px"; // Space between toasts
 		document.body.appendChild(toastContainer);
 	}
 
 	// Generate unique ID for this toast
 	const toastId = "toast-" + Date.now();
 
-	// Create toast element directly with JavaScript instead of using innerHTML
+	// Create toast element
 	const toast = document.createElement("div");
 	toast.id = toastId;
-	toast.style.background = "rgba(15, 15, 15, 0.95)"; // More opaque background
-	toast.style.backdropFilter = "blur(10px)";
-	toast.style.color = "#fff";
-	toast.style.padding = "12px"; // Slightly larger padding
-	toast.style.borderRadius = "6px";
-	toast.style.boxShadow = "0 6px 16px rgba(0, 0, 0, 0.3)"; // Increased shadow for visibility
-	toast.style.marginBottom = "8px";
+	toast.setAttribute("role", "alert"); // Accessibility
+	toast.setAttribute("aria-live", "assertive"); // Accessibility
+
+	// --- Improved Toast Styles ---
+	toast.style.background =
+		"linear-gradient(135deg, rgba(40, 40, 40, 0.95), rgba(25, 25, 25, 0.98))"; // Subtle gradient
+	toast.style.backdropFilter = "blur(8px)"; // Slightly less blur
+	toast.style.color = "#e0e0e0"; // Lighter text color
+	toast.style.padding = "15px 20px"; // More padding
+	toast.style.borderRadius = "8px"; // More rounded corners
+	toast.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.4)"; // Softer, larger shadow
 	toast.style.display = "flex";
-	toast.style.pointerEvents = "auto";
+	toast.style.alignItems = "center"; // Vertically align items
+	toast.style.pointerEvents = "auto"; // Allow interaction with toast
 	toast.style.overflow = "hidden";
 	toast.style.position = "relative";
-	toast.style.borderLeft = "4px solid #f0f8ff"; // Thicker border
-	toast.style.transform = "translateX(100%)";
+	// toast.style.borderLeft = "4px solid #58a6ff"; // Accent border (e.g., blue) - Adjust color as needed
 	toast.style.opacity = "0";
-	toast.style.fontSize = "0.9rem";
-	toast.style.transition = "all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)"; // Add transition here
+	toast.style.transform = "translateY(20px) scale(0.95)"; // Start slightly down and scaled down
+	toast.style.transition =
+		"opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)"; // Smoother transition
 
 	// Create icon container
 	const iconContainer = document.createElement("div");
 	iconContainer.style.display = "flex";
 	iconContainer.style.alignItems = "center";
 	iconContainer.style.justifyContent = "center";
-	iconContainer.style.marginRight = "10px";
-	iconContainer.style.fontSize = "1.2rem";
-	iconContainer.style.color = "#f0f8ff";
+	iconContainer.style.marginRight = "15px"; // More space for icon
+	iconContainer.style.fontSize = "1.4rem"; // Larger icon
+	iconContainer.style.color = "#79c0ff"; // Match accent color (adjust if border color changes)
 	iconContainer.style.flexShrink = "0";
-	iconContainer.style.width = "24px";
-	iconContainer.style.height = "24px";
+	iconContainer.style.width = "28px";
+	iconContainer.style.height = "28px";
 
 	// Create icon
 	const icon = document.createElement("i");
-	icon.className = iconClass;
+	icon.className = iconClass; // Use the provided icon class
 	iconContainer.appendChild(icon);
 
 	// Create content container
 	const contentContainer = document.createElement("div");
-	contentContainer.style.display = "flex";
-	contentContainer.style.flexDirection = "column";
-	contentContainer.style.justifyContent = "center";
-	contentContainer.style.color = "#fff";
-	contentContainer.style.flex = "1";
+	contentContainer.style.flex = "1"; // Take remaining space
+	contentContainer.style.minWidth = "0"; // Prevent overflow issues
 
 	// Create title
 	const titleElement = document.createElement("h4");
 	titleElement.textContent = title;
-	titleElement.style.margin = "0 0 3px 0";
-	titleElement.style.fontSize = "0.95rem"; // Slightly larger title
+	titleElement.style.margin = "0 0 4px 0"; // Space below title
+	titleElement.style.fontSize = "1rem"; // Standard title size
 	titleElement.style.fontWeight = "600";
+	titleElement.style.color = "#ffffff"; // White title
 	contentContainer.appendChild(titleElement);
 
 	// Create message
 	const messageElement = document.createElement("p");
 	messageElement.textContent = message;
 	messageElement.style.margin = "0";
-	messageElement.style.fontSize = "0.85rem"; // Slightly larger message
-	messageElement.style.opacity = "0.9"; // More visible text
+	messageElement.style.fontSize = "0.9rem";
+	messageElement.style.lineHeight = "1.4"; // Better readability
+	messageElement.style.opacity = "0.85"; // Slightly less prominent message text
 	contentContainer.appendChild(messageElement);
 
 	// Create close button
 	const closeButton = document.createElement("button");
+	closeButton.setAttribute("aria-label", "Close notification"); // Accessibility
 	closeButton.style.background = "transparent";
 	closeButton.style.border = "none";
-	closeButton.style.color = "rgba(255, 255, 255, 0.7)";
+	closeButton.style.color = "rgba(255, 255, 255, 0.6)"; // Dimmer close icon
 	closeButton.style.cursor = "pointer";
-	closeButton.style.padding = "0";
-	closeButton.style.marginLeft = "8px";
-	closeButton.style.fontSize = "0.9rem";
-	closeButton.style.display = "flex";
-	closeButton.style.alignItems = "center";
-	closeButton.style.justifyContent = "center";
+	closeButton.style.padding = "5px"; // Clickable area
+	closeButton.style.marginLeft = "10px"; // Space before close button
+	closeButton.style.fontSize = "1rem";
+	closeButton.style.lineHeight = "1"; // Ensure icon is centered
+	closeButton.style.transition = "color 0.2s ease";
 	closeButton.innerHTML = '<i class="fa-solid fa-times"></i>';
-	closeButton.onclick = () => {
+
+	// Close button hover effect
+	closeButton.onmouseenter = () =>
+		(closeButton.style.color = "rgba(255, 255, 255, 0.9)");
+	closeButton.onmouseleave = () =>
+		(closeButton.style.color = "rgba(255, 255, 255, 0.6)");
+
+	// Close action
+	const closeToast = () => {
 		toast.style.opacity = "0";
-		toast.style.transform = "translateX(100%)";
+		toast.style.transform = "translateY(10px) scale(0.9)"; // Animate out downwards
 
 		setTrackedTimeout(
 			() => {
 				if (toast.parentNode) {
 					toast.parentNode.removeChild(toast);
 				}
+				// If container is empty after removal, remove container
+				if (toastContainer.children.length === 0) {
+					toastContainer.remove();
+				}
 			},
-			300,
+			300, // Match transition duration
 			`toastRemove-${toastId}`
 		);
 	};
+	closeButton.onclick = closeToast;
 
-	// Add toast to container
+	// Add elements to toast
 	toast.appendChild(iconContainer);
 	toast.appendChild(contentContainer);
 	toast.appendChild(closeButton);
-	toastContainer.appendChild(toast);
 
-	// Force a reflow to ensure the toast animates properly
+	// Add toast to container (prepends so new toasts are at the bottom visually due to flex-direction: column-reverse)
+	toastContainer.insertBefore(toast, toastContainer.firstChild);
+
+	// Force a reflow before animating in
 	void toast.offsetWidth;
 
-	// Apply animation
+	// Animate in
 	toast.style.opacity = "1";
-	toast.style.transform = "translateX(0)";
+	toast.style.transform = "translateY(0) scale(1)";
 
-	// Auto-remove toast after 5 seconds (increased from 4 for better visibility)
+	// Auto-remove toast after 6 seconds
 	setTrackedTimeout(
 		() => {
-			if (toast && toast.parentNode) {
-				toast.style.opacity = "0";
-				toast.style.transform = "translateX(100%)";
-
-				// Remove from DOM after animation completes
-				setTrackedTimeout(
-					() => {
-						if (toast && toast.parentNode) {
-							toast.remove();
-						}
-					},
-					300,
-					`toastRemove-${toastId}`
-				);
+			// Check if toast still exists before trying to close
+			if (document.getElementById(toastId)) {
+				closeToast();
 			}
 		},
-		5000,
+		6000, // Increased duration
 		`toastAutoRemove-${toastId}`
 	);
 }
