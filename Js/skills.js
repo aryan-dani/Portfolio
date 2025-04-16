@@ -1,22 +1,141 @@
 /**
  * Skills Page Functionality
- * Handles category filtering and search filtering for skill cards.
+ * Handles category filtering, search filtering, and modal display for skill cards.
  *
  * @format
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+	// --- START OF DOMContentLoaded LISTENER CODE ---
+
 	const searchInput = document.getElementById("skillSearchInput");
 	const categoryTabs = document.querySelectorAll(".category-tab");
 	const allSkillCards = document.querySelectorAll(".skills__card"); // Get all cards once
 	const skillGroups = document.querySelectorAll(".skills__group");
 	const noResultsMsg = document.querySelector(".no-skills");
-	const skillsContainer = document.querySelector(".skills__container"); // Main container for all groups
+
+	// Modal Elements
+	const modal = document.getElementById("skillModal");
+
+	// *** Add check for modal existence ***
+	if (!modal) {
+		console.error("Skill modal element with ID 'skillModal' not found!");
+		// Optionally disable card clicks if modal is missing
+		allSkillCards.forEach((card) => (card.style.cursor = "default"));
+		return; // Stop script execution if modal is essential
+	}
+
+	const modalCloseBtns = modal.querySelectorAll("[data-close-modal]");
+	const modalIcon = modal.querySelector(".skill-modal__icon");
+	const modalTitle = modal.querySelector(".skill-modal__title");
+	const modalProgressBar = modal.querySelector(".skills__progress-bar");
+	const modalProgressPercent = modal.querySelector(".skills__progress-percent");
+	const modalDescription = modal.querySelector(".skill-modal__description");
+	const modalProjectsList = modal.querySelector(".skill-modal__projects ul");
+	let lastFocusedElement = null; // To restore focus when modal closes
 
 	let currentCategory = "all";
 	let currentSearchTerm = "";
 
 	// --- Helper Functions ---
+
+	/**
+	 * Animates the progress bar width and updates the percentage text.
+	 * @param {HTMLElement} progressBar - The progress bar element.
+	 * @param {HTMLElement} progressPercent - The percentage text element.
+	 * @param {number} level - The proficiency level (0-100).
+	 */
+	function animateProgressBar(progressBar, progressPercent, level) {
+		if (progressBar && progressPercent) {
+			// Reset before animating
+			progressBar.style.width = "0%";
+			progressPercent.textContent = "0%";
+
+			// Delay slightly to ensure reset is rendered before animation starts
+			setTimeout(() => {
+				progressBar.style.width = `${level}%`;
+				progressPercent.textContent = `${level}%`;
+			}, 100); // Small delay
+		}
+	}
+
+	/**
+	 * Opens the skill details modal and populates it with data from the card.
+	 * @param {HTMLElement} card - The skill card element that was clicked.
+	 */
+	function openSkillModal(card) {
+		const iconElement = card.querySelector(".skills__card-front i");
+		const titleElement = card.querySelector(".skills__card-front h3");
+		const descriptionElement = card.querySelector(".skills__card-back p");
+		const progressElement = card.querySelector(".skills__progress-bar");
+		const projectsContainer = card.querySelector(".skill-projects ul");
+
+		if (
+			!modal ||
+			!iconElement ||
+			!titleElement ||
+			!descriptionElement ||
+			!progressElement
+		) {
+			console.error("Modal or card elements not found!");
+			return;
+		}
+
+		// Populate Modal
+		modalIcon.className = iconElement.className + " skill-modal__icon"; // Copy classes
+		modalTitle.textContent = titleElement.textContent;
+		modalDescription.textContent = descriptionElement.textContent;
+
+		// Handle Progress Bar
+		const level = progressElement.getAttribute("data-level") || 0;
+		animateProgressBar(modalProgressBar, modalProgressPercent, level);
+
+		// Handle Projects
+		modalProjectsList.innerHTML = ""; // Clear previous projects
+		if (projectsContainer) {
+			const projectLinks = projectsContainer.querySelectorAll("li");
+			if (projectLinks.length > 0) {
+				projectLinks.forEach((linkItem) => {
+					modalProjectsList.appendChild(linkItem.cloneNode(true));
+				});
+				modalProjectsList.parentElement.style.display = "block"; // Show projects section
+			} else {
+				modalProjectsList.parentElement.style.display = "none"; // Hide if no projects
+			}
+		} else {
+			modalProjectsList.parentElement.style.display = "none"; // Hide if no projects container
+		}
+
+		// Show Modal & Accessibility
+		lastFocusedElement = document.activeElement; // Store focus
+		modal.classList.add("active");
+		modal.setAttribute("aria-hidden", "false");
+		document.body.style.overflow = "hidden"; // Prevent background scrolling
+
+		// Focus the close button or modal content for accessibility
+		const firstFocusableElement = modal.querySelector(
+			"button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"
+		);
+		if (firstFocusableElement) {
+			firstFocusableElement.focus();
+		}
+	}
+
+	/**
+	 * Closes the skill details modal.
+	 */
+	function closeSkillModal() {
+		if (!modal) return;
+		modal.classList.remove("active");
+		modal.setAttribute("aria-hidden", "true");
+		document.body.style.overflow = ""; // Restore background scrolling
+
+		// Restore focus
+		if (lastFocusedElement) {
+			lastFocusedElement.focus();
+			lastFocusedElement = null;
+		}
+	}
 
 	/**
 	 * Filters and displays skill cards based on the current category and search term.
@@ -25,121 +144,67 @@ document.addEventListener("DOMContentLoaded", () => {
 		let totalVisibleCards = 0;
 		const searchTermLower = currentSearchTerm.toLowerCase();
 
-		// Reset group states
-		skillGroups.forEach((group) => {
-			group.classList.remove("active");
-			group.style.display = "none"; // Start by hiding all groups
+		// Hide all cards initially
+		allSkillCards.forEach((card) => {
+			card.style.display = "none";
+			card.classList.remove("expanded"); // Ensure no leftover expansion state
 		});
-		// Reset container class used for specific 'all' view styling if any
-		if (skillsContainer) {
-			skillsContainer.classList.remove("all-view-active");
-		}
 
-		if (currentCategory === "all") {
-			// --- Handle "All" Category ---
-			// Make all groups potentially visible and apply search filter to cards within them
-			skillGroups.forEach((group) => {
-				group.style.display = "grid"; // Set all groups to grid
-				group.classList.add("active"); // Mark them as active for potential styling/animation
-				const cardsInGroup = group.querySelectorAll(".skills__card");
-				let groupHasVisibleSearchResult = false;
+		// Hide all groups initially and remove active class
+		skillGroups.forEach((group) => {
+			group.style.display = "none";
+			group.classList.remove("active");
+		});
 
-				cardsInGroup.forEach((card) => {
-					const skillName = (
-						card.getAttribute("data-skill-name") || ""
-					).toLowerCase();
-					const skillDescription = (
-						card.querySelector(".skills__card-back p")?.textContent || ""
-					).toLowerCase();
-					const matchesSearch =
-						searchTermLower === "" ||
-						skillName.includes(searchTermLower) ||
-						skillDescription.includes(searchTermLower);
+		// Determine which cards should be visible
+		allSkillCards.forEach((card) => {
+			const parentGroup = card.closest(".skills__group");
+			if (!parentGroup) return; // Skip if card is not in a group
 
-					if (matchesSearch) {
-						card.style.display = ""; // Show card if it matches search
-						totalVisibleCards++;
-						groupHasVisibleSearchResult = true;
-					} else {
-						card.style.display = "none"; // Hide card if it doesn't match search
-					}
-				});
+			const cardCategory = parentGroup.getAttribute("data-category");
+			const skillName = (
+				card.getAttribute("data-skill-name") || ""
+			).toLowerCase();
+			const skillDescription = (
+				card.querySelector(".skills__card-back p")?.textContent || ""
+			).toLowerCase();
 
-				// Optional: If a group has NO visible cards after search, hide the group itself
-				if (!groupHasVisibleSearchResult) {
-					group.style.display = "none";
-					group.classList.remove("active");
-				}
-			});
-		} else {
-			// --- Handle Specific Category ---
-			// Hide all cards first, then show only the relevant group and filter within it
-			allSkillCards.forEach((card) => (card.style.display = "none"));
+			const matchesCategory =
+				currentCategory === "all" || cardCategory === currentCategory;
+			const matchesSearch =
+				searchTermLower === "" ||
+				skillName.includes(searchTermLower) ||
+				skillDescription.includes(searchTermLower);
 
-			skillGroups.forEach((group) => {
-				const groupCategory = group.getAttribute("data-category");
+			if (matchesCategory && matchesSearch) {
+				card.style.display = ""; // Show the card
+				totalVisibleCards++;
+				// Mark the parent group as needing to be visible
+				parentGroup.dataset.hasVisibleCard = "true";
+			}
+		});
 
-				if (groupCategory === currentCategory) {
-					let groupHasVisibleCards = false;
-					const cardsInGroup = group.querySelectorAll(".skills__card");
-
-					cardsInGroup.forEach((card) => {
-						const skillName = (
-							card.getAttribute("data-skill-name") || ""
-						).toLowerCase();
-						const skillDescription = (
-							card.querySelector(".skills__card-back p")?.textContent || ""
-						).toLowerCase();
-						const matchesSearch =
-							searchTermLower === "" ||
-							skillName.includes(searchTermLower) ||
-							skillDescription.includes(searchTermLower);
-
-						if (matchesSearch) {
-							card.style.display = ""; // Show card
-							groupHasVisibleCards = true;
-							totalVisibleCards++;
-						} else {
-							card.style.display = "none"; // Hide card
-						}
-					});
-
-					// Show the group only if it's the selected category AND has visible cards
-					if (groupHasVisibleCards) {
-						group.style.display = "grid";
-						group.classList.add("active");
-					} else {
-						group.style.display = "none"; // Keep group hidden if no cards match search
-						group.classList.remove("active");
-					}
-				} else {
-					// Ensure other groups remain hidden
-					group.style.display = "none";
-					group.classList.remove("active");
-				}
-			});
-		}
+		// Now, make the necessary groups visible
+		skillGroups.forEach((group) => {
+			if (group.dataset.hasVisibleCard === "true") {
+				group.style.display = "grid";
+				group.classList.add("active");
+			}
+			delete group.dataset.hasVisibleCard; // Clean up the temporary attribute
+		});
 
 		// Show/hide the 'no results' message
 		if (noResultsMsg) {
 			noResultsMsg.style.display = totalVisibleCards === 0 ? "block" : "none";
 		}
 
-		// Animate cards within the currently active groups
+		// Animate cards (if function exists) - This part remains the same
 		const activeGroups = document.querySelectorAll(".skills__group.active");
 		activeGroups.forEach((group) => {
 			if (typeof animateSkillCards === "function") {
-				animateSkillCards(group); // animateSkillCards should internally select visible cards
+				animateSkillCards(group);
 			}
 		});
-
-		// Re-observe for progress bars etc.
-		if (typeof initIntersectionObserver === "function") {
-			const visibleCards = document.querySelectorAll(
-				'.skills__card:not([style*="display: none"])'
-			);
-			initIntersectionObserver(visibleCards);
-		}
 	}
 
 	// --- Event Listeners ---
@@ -162,6 +227,29 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Skill Card Clicks - Open Modal
+	allSkillCards.forEach((card) => {
+		card.addEventListener("click", (event) => {
+			// Prevent opening modal if a link inside the card was clicked (e.g., project link)
+			if (event.target.closest("a")) {
+				return;
+			}
+			openSkillModal(card);
+		});
+	});
+
+	// Modal Close Button/Overlay Clicks
+	modalCloseBtns.forEach((btn) => {
+		btn.addEventListener("click", closeSkillModal);
+	});
+
+	// Keyboard accessibility (Escape key to close modal)
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape" && modal.classList.contains("active")) {
+			closeSkillModal();
+		}
+	});
+
 	// --- Initial Setup ---
 	const initialActiveTab = document.querySelector(".category-tab.active");
 	if (initialActiveTab) {
@@ -175,11 +263,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	filterAndDisplaySkills(); // Initial filter
 
-	// Add click handler for expanding cards
-	allSkillCards.forEach((card) => {
-		if (typeof handleCardClick === "function") {
-			card.removeEventListener("click", handleCardClick);
-			card.addEventListener("click", handleCardClick);
-		}
-	});
-});
+	// --- END OF DOMContentLoaded LISTENER CODE ---
+}); // Ensure this is the final closing brace and parenthesis for the listener

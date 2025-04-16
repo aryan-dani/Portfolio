@@ -2825,6 +2825,131 @@ a {
   opacity: 1;
 }
 
+.skill-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+}
+.skill-modal.active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease;
+}
+.skill-modal.active .skill-modal__content {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.skill-modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.skill-modal__content {
+  position: relative;
+  background: linear-gradient(145deg, #1a1a1a, #010101);
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  max-width: 550px;
+  z-index: 1001;
+  transform: translateY(50px) scale(0.95);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  border: 1px solid rgba(240, 248, 255, 0.3);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.skill-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.skill-modal__close:hover {
+  color: aliceblue;
+  transform: rotate(90deg);
+}
+.skill-modal__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(240, 248, 255, 0.2);
+}
+.skill-modal__icon {
+  font-size: 3rem;
+  color: aliceblue;
+  margin-right: 1.5rem;
+  filter: drop-shadow(0 0 8px rgba(240, 248, 255, 0.6));
+}
+.skill-modal__title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+.skill-modal__body {
+  color: #ddd;
+}
+.skill-modal__progress {
+  margin-bottom: 1.5rem;
+}
+.skill-modal__progress .skills__progress-percent {
+  opacity: 1;
+  top: -20px;
+  font-size: 0.85rem;
+}
+.skill-modal__description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.skill-modal__projects h4 {
+  font-size: 1rem;
+  color: aliceblue;
+  margin-bottom: 0.8rem;
+}
+.skill-modal__projects ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skill-modal__projects li a {
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  background: rgba(240, 248, 255, 0.2);
+  border-radius: 4px;
+  text-decoration: none;
+  color: white;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.skill-modal__projects li a:hover {
+  background: rgba(240, 248, 255, 0.4);
+  color: #fff;
+}
+
 .tech-stack {
   width: 100%;
   max-width: 1000px;
@@ -2958,6 +3083,26 @@ a {
   .skills__card-back p {
     font-size: 0.75rem;
     max-height: none;
+  }
+  .skill-modal__content {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+  .skill-modal__header {
+    margin-bottom: 1rem;
+  }
+  .skill-modal__icon {
+    font-size: 2.5rem;
+    margin-right: 1rem;
+  }
+  .skill-modal__title {
+    font-size: 1.5rem;
+  }
+  .skill-modal__description {
+    font-size: 0.9rem;
+  }
+  .skill-modal__projects li a {
+    font-size: 0.8rem;
   }
 }
 .copyright {

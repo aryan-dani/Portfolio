@@ -842,5 +842,40 @@
 		<script src="Js/card-3d-effect.js" defer></script>
 		<!-- Add Skills specific JS -->
 		<script src="Js/skills.js" defer></script>
+
+		<!-- Skill Details Modal -->
+		<div
+			class="skill-modal"
+			id="skillModal"
+			aria-hidden="true"
+			role="dialog"
+			aria-labelledby="skillModalTitle">
+			<div class="skill-modal__overlay" tabindex="-1" data-close-modal></div>
+			<div class="skill-modal__content" role="document">
+				<button
+					class="skill-modal__close"
+					aria-label="Close skill details"
+					data-close-modal>
+					&times;
+				</button>
+				<div class="skill-modal__header">
+					<i class="skill-modal__icon" aria-hidden="true"></i>
+					<h2 id="skillModalTitle" class="skill-modal__title">Skill Title</h2>
+				</div>
+				<div class="skill-modal__body">
+					<div class="skills__progress skill-modal__progress">
+						<div class="skills__progress-bar" data-level="0"></div>
+						<span class="skills__progress-percent">0%</span>
+					</div>
+					<p class="skill-modal__description">Skill description goes here.</p>
+					<div class="skill-modal__projects">
+						<h4>Used in:</h4>
+						<ul>
+							<!-- Project links will be added dynamically -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

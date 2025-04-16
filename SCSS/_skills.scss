@@ -409,6 +409,7 @@
           font-size: 0.85rem;
           margin-bottom: 0.3rem;
         }
+
         ul {
           list-style: none;
           padding: 0;
@@ -418,6 +419,7 @@
           gap: 5px;
           justify-content: center;
         }
+
         li a {
           font-size: 0.75rem;
           padding: 2px 5px;
@@ -425,6 +427,7 @@
           border-radius: 4px;
           text-decoration: none;
           color: lighten($secondary-color, 15%);
+
           &:hover {
             background: rgba($secondary-color, 0.4);
             color: #fff;
@@ -489,6 +492,151 @@
 
   &__card.expanded &__progress-percent {
     opacity: 1;
+  }
+}
+
+// --- Skill Modal Styles ---
+.skill-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); // Semi-transparent overlay
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease;
+
+    .skill-modal__content {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  &__content {
+    position: relative;
+    background: linear-gradient(145deg, darken($primary-color, 5%), darken($primary-color, 15%));
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 550px;
+    z-index: 1001;
+    transform: translateY(50px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+    border: 1px solid rgba($secondary-color, 0.3);
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: rgba(#fff, 0.7);
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      color: $secondary-color;
+      transform: rotate(90deg);
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba($secondary-color, 0.2);
+  }
+
+  &__icon {
+    font-size: 3rem;
+    color: $secondary-color;
+    margin-right: 1.5rem;
+    filter: drop-shadow(0 0 8px rgba($secondary-color, 0.6));
+  }
+
+  &__title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+
+  &__body {
+    color: #ddd;
+  }
+
+  &__progress {
+    margin-bottom: 1.5rem; // Space below progress bar
+
+    .skills__progress-percent {
+      opacity: 1; // Always show percentage in modal
+      top: -20px; // Adjust position if needed
+      font-size: 0.85rem;
+    }
+  }
+
+  &__description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  &__projects {
+    h4 {
+      font-size: 1rem;
+      color: $secondary-color;
+      margin-bottom: 0.8rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    li a {
+      font-size: 0.85rem;
+      padding: 4px 8px;
+      background: rgba($secondary-color, 0.2);
+      border-radius: 4px;
+      text-decoration: none;
+      color: lighten($secondary-color, 15%);
+      transition: background 0.3s ease, color 0.3s ease;
+
+      &:hover {
+        background: rgba($secondary-color, 0.4);
+        color: #fff;
+      }
+    }
   }
 }
 
@@ -616,8 +764,10 @@
           font-size: 0.8rem; // Adjust font size
           max-height: none; // Remove max-height constraint
         }
+
         .skill-projects {
           font-size: 0.75rem;
+
           li a {
             font-size: 0.7rem;
           }
@@ -660,6 +810,36 @@
           font-size: 0.75rem;
           max-height: none; // Remove max-height constraint
         }
+      }
+    }
+  }
+
+  .skill-modal {
+    &__content {
+      padding: 1.5rem;
+      max-width: 95%;
+    }
+
+    &__header {
+      margin-bottom: 1rem;
+    }
+
+    &__icon {
+      font-size: 2.5rem;
+      margin-right: 1rem;
+    }
+
+    &__title {
+      font-size: 1.5rem;
+    }
+
+    &__description {
+      font-size: 0.9rem;
+    }
+
+    &__projects {
+      li a {
+        font-size: 0.8rem;
       }
     }
   }
