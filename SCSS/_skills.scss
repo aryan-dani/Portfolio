@@ -1,6 +1,6 @@
 @use "config" as *;
 @use "mixins" as *;
-@use "animations" as *; // Use animations from the central file
+@use "animations" as *;
 
 // Particles container styling
 #particles-js {
@@ -25,68 +25,118 @@
   position: relative;
 
   &__heading {
-    font-size: 2.5rem;
-    font-weight: bolder;
-    margin-bottom: 3rem;
-    padding: 5px 10px;
+    font-size: 2.8rem; // Slightly reduced
+    font-weight: 700;
+    margin-bottom: 3rem; // Slightly reduced
+    padding: 12px 25px; // Reduced padding
     text-transform: uppercase;
     position: relative;
     text-align: center;
-    background-color: aliceblue;
-    border-radius: 8px;
-    color: $primary-color;
-    animation: neonPulse 3s infinite; // Use animation from _animations.scss
-
-    .text-secondary {
-      color: $primary-color;
-      position: relative;
-      display: inline-block;
-      // Apply gradient-text mixin
-      @include gradient-text($secondary-color,
-        lighten($secondary-color, 15%));
-    }
+    color: $secondary-color;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); // Adjusted shadow
+    border: 1px solid rgba($secondary-color, 0.3); // Subtle border
+    background: linear-gradient(145deg, rgba($primary-color, 0.1), rgba(darken($primary-color, 5%), 0.2)); // Subtle gradient background
+    border-radius: 10px; // Slightly rounded corners
+    // animation: neonPulse 3s infinite; // Consider removing or adjusting if too distracting
 
     &::before {
+      // Adjust or remove the ::before pseudo-element if it clashes
       content: "";
       position: absolute;
-      top: -5px;
-      left: -5px;
-      right: -5px;
-      bottom: -5px;
-      background: linear-gradient(45deg,
-          $secondary-color,
-          transparent 40%,
-          $secondary-color 60%,
-          transparent 80%,
-          $secondary-color );
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
+      background: linear-gradient(45deg, rgba($secondary-color, 0.3), transparent 40%, rgba($secondary-color, 0.3) 60%, transparent 80%, rgba($secondary-color, 0.3));
       background-size: 300% 300%;
       z-index: -1;
-      filter: blur(8px);
+      filter: blur(15px); // Slightly more blur
       opacity: 0.7;
-      animation: shimmer 8s linear infinite; // Use animation from _animations.scss
-      border-radius: 12px;
-      will-change: background-position; // Performance optimization
+      // animation: shimmer 6s linear infinite; // Slower shimmer
     }
   }
 
-  &__categories {
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 2rem;
+  &__search-filter {
+    display: flex;
+    // Default to row layout, allow wrapping
+    flex-direction: row;
+    flex-wrap: wrap;
+    // Center items horizontally by default
+    justify-content: center;
+    align-items: center; // Center items vertically
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
     position: relative;
-    z-index: 2;
+    z-index: 1;
+    width: 100%;
+    max-width: 900px; // Slightly increase max-width if needed
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem 1.5rem; // Adjusted padding
+    background: rgba(darken($primary-color, 3%), 0.5);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+    // Remove the media-md block changing direction, as row is default now
+    // @include media-md { ... }
+  }
+
+  // Skills Search Input Styles
+  .skills-search {
+    // Adjust width and flexibility
+    width: auto; // Let it size based on content/max-width
+    flex-grow: 1; // Allow growing
+    flex-shrink: 1; // Allow shrinking
+    max-width: 400px; // Keep max-width
+    margin: 0; // Remove specific margins, rely on gap
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1.2rem; // Increase padding
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba($secondary-color, 0.4);
+      background-color: rgba(lighten($primary-color, 5%), 0.8);
+      color: #eee;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+      &::placeholder {
+        color: rgba(#eee, 0.6);
+      }
+
+      &:focus {
+        border-color: $secondary-color;
+        box-shadow: 0 0 10px rgba($secondary-color, 0.5);
+        outline: none;
+        background-color: rgba(lighten($primary-color, 8%), 0.9);
+      }
+    }
+  }
+
+
+  &__categories {
+    // Adjust width and flexibility
+    width: auto; // Let it size based on content
+    flex-grow: 1; // Allow growing (or set to 0 if search should dominate)
+    flex-shrink: 1; // Allow shrinking
+    margin: 0; // Remove specific margins, rely on gap
 
     .category-tabs {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: 15px;
+      justify-content: center; // Center tabs within their container
+      gap: 10px;
+
+      @include media-md {
+        justify-content: flex-end; // Align right on larger screens if preferred
+        gap: 15px;
+      }
 
       .category-tab {
         background: rgba(darken($primary-color, 5%), 0.7);
         border: 2px solid transparent;
         color: #fff;
-        padding: 0.2rem 0.7rem;
+        padding: 0.5rem 1rem; // Adjust padding for consistency
         border-radius: 12px;
         font-size: 1rem;
         cursor: pointer;
@@ -148,35 +198,49 @@
   &__container {
     width: 100%;
     max-width: 1200px;
-    display: flex;
     justify-content: center;
     perspective: 1500px;
     position: relative;
     z-index: 1;
     margin: 0 auto;
+    // Remove display: grid from here initially
+
+    // REMOVE this block - it conflicts with the JS logic
+    // &.all-view-active {
+    //   display: grid; 
+    //   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    //   gap: 1.5rem;
+    //   width: 100%;
+    //   .skills__group {
+    //     display: none !important; 
+    //   }
+    //   > .skills__card {
+    //       display: block; 
+    //   }
+    // }
   }
 
   &__group {
-    display: none;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    display: none; // Keep hidden by default
+    // Use auto-fit instead of auto-fill
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
     gap: 1.5rem;
-    width: 100%;
+    width: 100%; // Groups should take full width of the container
+    opacity: 0; // Start hidden for animation
+    transform: translateY(20px); // Start slightly lower for animation
+    transition: opacity 0.5s ease, transform 0.5s ease; // Smooth transition
+    margin-bottom: 2rem; // Add some space between groups when multiple are shown (like in 'All')
 
     &.active {
-      display: grid;
-      animation: fadeIn 0.8s ease;
-    }
-
-    // Special styling for "All" category
-    &.active-all {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
+      display: grid; // Ensure grid display when active
+      opacity: 1; // Fade in
+      transform: translateY(0); // Slide up
     }
   }
 
   &__card {
+    // display: block; // Remove default display here, JS will control it
+    // Ensure cards are initially hidden or managed by JS display style
     border-radius: 10px;
     background: rgba(lighten($primary-color, 3%), 0.8);
     overflow: hidden;
@@ -320,6 +384,7 @@
           rgba(darken($primary-color, 5%), 0.95),
           rgba(darken($primary-color, 15%), 0.95));
       transform: translateY(100%);
+      overflow: hidden;
 
       p {
         color: #ddd;

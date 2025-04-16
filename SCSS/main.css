@@ -2438,64 +2438,103 @@ a {
   position: relative;
 }
 .skills__heading {
-  font-size: 2.5rem;
-  font-weight: bolder;
+  font-size: 2.8rem;
+  font-weight: 700;
   margin-bottom: 3rem;
-  padding: 5px 10px;
+  padding: 12px 25px;
   text-transform: uppercase;
   position: relative;
   text-align: center;
-  background-color: aliceblue;
-  border-radius: 8px;
-  color: #272727;
-  animation: neonPulse 3s infinite;
-}
-.skills__heading .text-secondary {
-  color: #272727;
-  position: relative;
-  display: inline-block;
-  background-image: linear-gradient(90deg, aliceblue, white);
-  background-size: 200% auto;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: gradient-text 4s ease infinite;
-  will-change: background-position;
+  color: aliceblue;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(240, 248, 255, 0.3);
+  background: linear-gradient(145deg, rgba(39, 39, 39, 0.1), rgba(26, 26, 26, 0.2));
+  border-radius: 10px;
 }
 .skills__heading::before {
   content: "";
   position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  background: linear-gradient(45deg, aliceblue, transparent 40%, aliceblue 60%, transparent 80%, aliceblue);
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: linear-gradient(45deg, rgba(240, 248, 255, 0.3), transparent 40%, rgba(240, 248, 255, 0.3) 60%, transparent 80%, rgba(240, 248, 255, 0.3));
   background-size: 300% 300%;
   z-index: -1;
-  filter: blur(8px);
+  filter: blur(15px);
   opacity: 0.7;
-  animation: shimmer 8s linear infinite;
-  border-radius: 12px;
-  will-change: background-position;
+}
+.skills__search-filter {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 1.5rem;
+  background: rgba(31, 31, 31, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.skills .skills-search {
+  width: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 400px;
+  margin: 0;
+}
+.skills .skills-search .form-control {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(240, 248, 255, 0.4);
+  background-color: rgba(52, 52, 52, 0.8);
+  color: #eee;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.skills .skills-search .form-control::-moz-placeholder {
+  color: rgba(238, 238, 238, 0.6);
+}
+.skills .skills-search .form-control::placeholder {
+  color: rgba(238, 238, 238, 0.6);
+}
+.skills .skills-search .form-control:focus {
+  border-color: aliceblue;
+  box-shadow: 0 0 10px rgba(240, 248, 255, 0.5);
+  outline: none;
+  background-color: rgba(59, 59, 59, 0.9);
 }
 .skills__categories {
-  width: 100%;
-  max-width: 800px;
-  margin-bottom: 2rem;
-  position: relative;
-  z-index: 2;
+  width: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  margin: 0;
 }
 .skills__categories .category-tabs {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
+  justify-content: center;
+  gap: 10px;
+}
+@media screen and (min-width: 768px) {
+  .skills__categories .category-tabs {
+    justify-content: flex-end;
+    gap: 15px;
+  }
 }
 .skills__categories .category-tabs .category-tab {
   background: rgba(26, 26, 26, 0.7);
   border: 2px solid transparent;
   color: #fff;
-  padding: 0.2rem 0.7rem;
+  padding: 0.5rem 1rem;
   border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
@@ -2546,7 +2585,6 @@ a {
 .skills__container {
   width: 100%;
   max-width: 1200px;
-  display: flex;
   justify-content: center;
   perspective: 1500px;
   position: relative;
@@ -2555,19 +2593,18 @@ a {
 }
 .skills__group {
   display: none;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1.5rem;
   width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  margin-bottom: 2rem;
 }
 .skills__group.active {
   display: grid;
-  animation: fadeIn 0.8s ease;
-}
-.skills__group.active-all {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  opacity: 1;
+  transform: translateY(0);
 }
 .skills__card {
   border-radius: 10px;
@@ -2693,6 +2730,7 @@ a {
 .skills__card-back {
   background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(1, 1, 1, 0.95));
   transform: translateY(100%);
+  overflow: hidden;
 }
 .skills__card-back p {
   color: #ddd;
