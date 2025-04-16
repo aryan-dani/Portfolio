@@ -174,30 +174,17 @@
     align-self: flex-start; // Align to left
     z-index: 1;
     text-decoration: none;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg,
-          transparent,
-          rgba(255, 255, 255, 0.6),
-          transparent);
-      transition: left 0.7s ease;
-      z-index: -1;
-    }
+    @include button-hover;
+    animation-name: bounce;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-delay: 1.5s;
+    animation-iteration-count: 1;
 
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
       background-color: lighten($secondary-color, 5%);
-
-      &::before {
-        left: 100%;
-      }
 
       i {
         transform: translateX(3px);
@@ -211,29 +198,6 @@
 
     i {
       transition: transform 0.3s ease;
-    }
-
-    // Add a subtle bounce animation when page loads
-    animation: bounce 1s ease 1.5s 1;
-  }
-
-  // Add bounce animation for the CTA button
-  @keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-      transform: translateY(0);
-    }
-
-    40% {
-      transform: translateY(-10px);
-    }
-
-    60% {
-      transform: translateY(-5px);
     }
   }
 

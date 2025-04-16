@@ -34,45 +34,6 @@ a {
   color: #fff;
 }
 
-.text-secondary {
-  color: $primary-color;
-}
-
-header {
-  position: fixed;
-  z-index: 2;
-  width: 100%;
-  padding: 1rem;
-}
-
-main {
-  height: 100%;
-  width: 100%;
-}
-
-footer {
-  font-size: 1rem;
-  position: fixed;
-  bottom: 0.2rem;
-  right: 0.6rem;
-  color: #fff;
-}
-
-@media screen and (max-width: 500px) {
-  footer {
-    display: none;
-  }
-
-  .home,
-  .contact {
-    background: linear-gradient(to right,
-        rgba($primary-color, 0.9),
-        rgba($primary-color, 0)),
-      url("../../Images/Header_Phone.jpg") center top;
-    background-size: cover;
-  }
-}
-
 // Enhanced focus states for better accessibility
 :focus-visible {
   outline: 3px solid $secondary-color;

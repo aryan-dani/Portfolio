@@ -82,31 +82,16 @@
     opacity: 0;
     animation: slideInUp 0.5s ease forwards;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+    overflow: hidden; // Keep for shine effect
 
-    // Shimmer effect
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg,
-          transparent,
-          rgba(255, 255, 255, 0.1),
-          transparent);
-      transition: left 0.7s ease;
-    }
+    // Apply shine effect mixin instead of manual styles
+    @include shine-effect;
 
     &:hover {
       cursor: default;
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-
-      &::before {
-        left: 100%;
-      }
+      // Hover state for shine effect is handled by the mixin
     }
   }
 
@@ -127,7 +112,7 @@
     transform-origin: left;
     overflow: hidden;
 
-    // Animated shine effect
+    // Animated shine effect (keep this custom one if different from mixin)
     &::after {
       content: "";
       position: absolute;
@@ -141,7 +126,11 @@
       animation: shimmer 3s infinite;
     }
 
+    // Apply hover lift mixin
+    @include hover-lift;
+
     &:hover {
+      // Override hover-lift mixin if needed, or remove if mixin is sufficient
       transform: translateY(-5px) scale(1.05);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
@@ -165,7 +154,11 @@
     backdrop-filter: blur(5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 
+    // Apply hover lift mixin
+    @include hover-lift;
+
     &:hover {
+      // Override hover-lift mixin if needed, or remove if mixin is sufficient
       transform: translateY(-3px) scale(1.01);
       background: rgba($primary-color, 0.8);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -191,31 +184,16 @@
     transition: all 0.5s ease;
     transform-origin: left;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
+    overflow: hidden; // Keep for shine effect
 
-    // Shine effect
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg,
-          transparent,
-          rgba(255, 255, 255, 0.3),
-          transparent);
-      transition: left 0.7s ease;
-    }
+    // Apply shine effect mixin
+    @include shine-effect;
 
     &:hover {
       cursor: default;
       transform: translateY(-5px) scale(1.03);
       box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
-
-      &::before {
-        left: 100%;
-      }
+      // Hover state for shine effect is handled by the mixin
     }
 
     // Add styles for the Contact button
@@ -269,32 +247,13 @@
     animation: slideInUp 0.5s 0.8s ease forwards;
     border-left: 4px solid $secondary-color;
     position: relative;
-    overflow: hidden;
-    flex: 1;
-    min-width: 300px; // Reduced from 300px
-    margin-top: 0;
-    align-self: flex-start;
+    overflow: hidden; // Keep for shine effect
 
-    @media screen and (min-width: 992px) {
-      margin-top: 0;
-      max-width: 45rem; // Reduced for side-by-side layout
-    }
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg,
-          transparent,
-          rgba(255, 255, 255, 0.05),
-          transparent);
-      transition: left 1s ease;
-    }
+    // Apply shine effect mixin
+    @include shine-effect;
 
     &:hover::before {
+      // Hover state for shine effect is handled by the mixin
       left: 100%;
     }
 
@@ -410,31 +369,19 @@
         transition: transform 0.3s ease;
       }
 
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent);
-        transition: left 0.5s ease;
-      }
+      // Apply button hover mixin
+      @include button-hover;
 
       &:hover {
+        // Override button-hover mixin if needed, or remove if mixin is sufficient
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-
-        &::before {
-          left: 100%;
-        }
 
         i {
           transform: translateX(3px);
         }
+
+        // Hover state for shine effect is handled by the mixin
       }
 
       &:active {

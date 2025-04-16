@@ -135,18 +135,6 @@
   }
 }
 
-@keyframes ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(2);
-    opacity: 0;
-  }
-}
-
 @keyframes bounce {
 
   0%,
@@ -166,15 +154,17 @@
   }
 }
 
-// Class for animated elements when entering viewport
-.animated {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
 
-  &.in-view {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
 
@@ -230,48 +220,6 @@
   animation-timing-function: ease-in-out;
 }
 
-.shimmer {
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent);
-    animation: shimmer 2s infinite;
-  }
-}
-
-.rotate-in {
-  animation-name: rotateIn;
-}
-
 .bounce {
   animation-name: bounce;
-}
-
-.ripple-effect {
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    animation: ripple 0.6s linear;
-    pointer-events: none;
-  }
 }

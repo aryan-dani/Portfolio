@@ -109,16 +109,6 @@
     opacity: 0.7;
   }
 }
-@keyframes ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(2);
-    opacity: 0;
-  }
-}
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
@@ -130,16 +120,17 @@
     transform: translateY(-5px);
   }
 }
-.animated {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
-.animated.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .animate {
   animation-duration: 1s;
   animation-fill-mode: both;
@@ -185,45 +176,8 @@
   animation-timing-function: ease-in-out;
 }
 
-.shimmer {
-  position: relative;
-  overflow: hidden;
-}
-.shimmer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  animation: shimmer 2s infinite;
-}
-
-.rotate-in {
-  animation-name: rotateIn;
-}
-
 .bounce {
   animation-name: bounce;
-}
-
-.ripple-effect {
-  position: relative;
-  overflow: hidden;
-}
-.ripple-effect::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  animation: ripple 0.6s linear;
-  pointer-events: none;
 }
 
 .home {
@@ -378,7 +332,14 @@
   align-self: flex-start;
   z-index: 1;
   text-decoration: none;
-  animation: bounce 1s ease 1.5s 1;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation-name: bounce;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-delay: 1.5s;
+  animation-iteration-count: 1;
 }
 .home .cta-button::before {
   content: "";
@@ -387,17 +348,20 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-  transition: left 0.7s ease;
-  z-index: -1;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+.home .cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.home .cta-button:hover::before {
+  left: 100%;
 }
 .home .cta-button:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
   background-color: white;
-}
-.home .cta-button:hover::before {
-  left: 100%;
 }
 .home .cta-button:hover i {
   transform: translateX(3px);
@@ -408,17 +372,6 @@
 }
 .home .cta-button i {
   transition: transform 0.3s ease;
-}
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
-  }
 }
 .home #particles-home {
   position: absolute;
@@ -541,6 +494,26 @@
   transform: rotate(-45deg) translate(0.3rem, -0.3rem);
   background-color: aliceblue;
   box-shadow: 0 0 10px rgba(240, 248, 255, 0.7);
+}
+.menu-btn:hover .menu-toggle-shortcut {
+  opacity: 0.8;
+  visibility: visible;
+}
+
+.menu-toggle-shortcut {
+  position: absolute;
+  top: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 2px 5px;
+  border-radius: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 999;
 }
 
 .nav {
@@ -717,6 +690,8 @@
   transition: all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
   position: relative;
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 .jobs-layout .heading .text-secondary::before {
   content: "";
@@ -725,16 +700,16 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s ease;
+}
+.jobs-layout .heading .text-secondary:hover::before {
+  left: 100%;
 }
 .jobs-layout .heading .text-secondary:hover {
   cursor: default;
   transform: translateY(-10px) scale(1.08);
   box-shadow: 0 15px 30px rgba(39, 39, 39, 0.4);
-}
-.jobs-layout .heading .text-secondary:hover::before {
-  left: 100%;
 }
 .jobs-layout .Jobs {
   background-color: rgba(39, 39, 39, 0.95);
@@ -848,6 +823,11 @@
   font-weight: 700;
   transition: all 0.3s ease;
   transform-origin: center left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.jobs-layout .Jobs h4:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 .jobs-layout .Jobs h4:hover {
   cursor: default;
@@ -868,6 +848,8 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 .jobs-layout .Jobs h6::before {
   content: "";
@@ -877,15 +859,15 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
+  transition: left 0.7s ease;
+}
+.jobs-layout .Jobs h6:hover::before {
+  left: 100%;
 }
 .jobs-layout .Jobs h6:hover {
   cursor: default;
   transform: translateY(-5px) scale(1.15);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-.jobs-layout .Jobs h6:hover::before {
-  left: 100%;
 }
 .jobs-layout .Jobs .content {
   color: #272727;
@@ -1138,17 +1120,24 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.4s ease;
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
-.project__project-image h2::after {
+.project__project-image h2::before {
   content: "";
   position: absolute;
-  top: -50%;
-  left: -60%;
-  width: 20%;
-  height: 200%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: rotate(30deg);
-  animation: shimmer 3s infinite;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+.project__project-image h2:hover::before {
+  left: 100%;
+}
+.project__project-image h2:hover::before {
+  left: 100%;
 }
 .project__project-image p {
   text-align: justify;
@@ -1269,6 +1258,8 @@
   border-radius: 8px;
   position: relative;
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 .project .Projects h2::before {
   content: "";
@@ -1279,6 +1270,9 @@
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s ease;
+}
+.project .Projects h2:hover::before {
+  left: 100%;
 }
 .project .Projects h2:hover::before {
   left: 100%;
@@ -1317,6 +1311,8 @@
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 .project .Projects .project-links a::before {
   content: "";
@@ -1325,17 +1321,17 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+.project .Projects .project-links a:hover::before {
+  left: 100%;
 }
 .project .Projects .project-links a:hover {
   background-color: #272727;
   color: rgb(215, 230, 230);
   transform: translateY(-5px) scale(1.05);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-.project .Projects .project-links a:hover::before {
-  left: 100%;
 }
 .project .Projects h6 {
   display: inline-block;
@@ -1347,6 +1343,11 @@
   margin-bottom: 10px;
   transition: all 0.3s ease;
   transform-origin: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.project .Projects h6:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 .project .Projects h6:hover {
   cursor: default;
@@ -1475,6 +1476,8 @@
   animation: slideInUp 0.5s ease forwards;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 .about .about-details::before {
   content: "";
@@ -1483,16 +1486,16 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s ease;
+}
+.about .about-details:hover::before {
+  left: 100%;
 }
 .about .about-details:hover {
   cursor: default;
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-}
-.about .about-details:hover::before {
-  left: 100%;
 }
 .about h2 {
   display: inline-block;
@@ -1510,6 +1513,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transform-origin: left;
   overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .about h2::after {
   content: "";
@@ -1522,6 +1526,10 @@
   transform: rotate(30deg);
   transition: left 0.7s ease;
   animation: shimmer 3s infinite;
+}
+.about h2:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 .about h2:hover {
   transform: translateY(-5px) scale(1.05);
@@ -1544,6 +1552,11 @@
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.about p:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 .about p:hover {
   transform: translateY(-3px) scale(1.01);
@@ -1570,6 +1583,8 @@
   transform-origin: left;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 .about .contact-email::before {
   content: "";
@@ -1578,16 +1593,16 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s ease;
+}
+.about .contact-email:hover::before {
+  left: 100%;
 }
 .about .contact-email:hover {
   cursor: default;
   transform: translateY(-5px) scale(1.03);
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
-}
-.about .contact-email:hover::before {
-  left: 100%;
 }
 .about .contact-email .contact-btn {
   margin-left: auto;
@@ -1633,16 +1648,8 @@
   border-left: 4px solid aliceblue;
   position: relative;
   overflow: hidden;
-  flex: 1;
-  min-width: 300px;
-  margin-top: 0;
-  align-self: flex-start;
-}
-@media screen and (min-width: 992px) {
-  .about .contact-form-container {
-    margin-top: 0;
-    max-width: 45rem;
-  }
+  position: relative;
+  overflow: hidden;
 }
 .about .contact-form-container::before {
   content: "";
@@ -1651,8 +1658,11 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-  transition: left 1s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+.about .contact-form-container:hover::before {
+  left: 100%;
 }
 .about .contact-form-container:hover::before {
   left: 100%;
@@ -1749,6 +1759,9 @@
   overflow: hidden;
   align-self: flex-start;
   margin-top: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 .about .contact-form .submit-btn .btn-text {
   position: relative;
@@ -1775,6 +1788,10 @@
 }
 .about .contact-form .submit-btn:hover::before {
   left: 100%;
+}
+.about .contact-form .submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 .about .contact-form .submit-btn:hover i {
   transform: translateX(3px);
@@ -2090,6 +2107,8 @@
   border: 1px solid rgba(240, 248, 255, 0.3);
   position: relative;
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 .certification .certificate-content .certificate-links .certificate-link::before {
   content: "";
@@ -2098,16 +2117,16 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(240, 248, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s ease;
+}
+.certification .certificate-content .certificate-links .certificate-link:hover::before {
+  left: 100%;
 }
 .certification .certificate-content .certificate-links .certificate-link:hover {
   background: rgba(240, 248, 255, 0.3);
   border-color: rgba(240, 248, 255, 0.5);
   transform: translateY(-2px);
-}
-.certification .certificate-content .certificate-links .certificate-link:hover::before {
-  left: 100%;
 }
 .certification .certificate-content .certificate-links .certificate-link i {
   margin-right: 0.5rem;
@@ -2319,40 +2338,6 @@ a {
   color: #fff;
 }
 
-.text-secondary {
-  color: #272727;
-}
-
-header {
-  position: fixed;
-  z-index: 2;
-  width: 100%;
-  padding: 1rem;
-}
-
-main {
-  height: 100%;
-  width: 100%;
-}
-
-footer {
-  font-size: 1rem;
-  position: fixed;
-  bottom: 0.2rem;
-  right: 0.6rem;
-  color: #fff;
-}
-
-@media screen and (max-width: 500px) {
-  footer {
-    display: none;
-  }
-  .home,
-  .contact {
-    background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../../Images/Header_Phone.jpg") center top;
-    background-size: cover;
-  }
-}
 :focus-visible {
   outline: 3px solid aliceblue;
   outline-offset: 2px;
@@ -2384,77 +2369,6 @@ footer {
  * Portfolio Main Stylesheet
  * This file organizes all the imports for the site
  */
-@keyframes floatAnimation {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-@keyframes spinGlow {
-  0% {
-    transform: rotate(0deg);
-    opacity: 0.7;
-  }
-  50% {
-    transform: rotate(180deg);
-    opacity: 1;
-  }
-  100% {
-    transform: rotate(360deg);
-    opacity: 0.7;
-  }
-}
-@keyframes popIn {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.1);
-  }
-  80% {
-    transform: scale(0.95);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-@keyframes neonPulse {
-  0% {
-    box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(240, 248, 255, 0.8), 0 0 30px rgba(240, 248, 255, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
-  }
-}
-@keyframes borderFlash {
-  0% {
-    border-color: aliceblue;
-  }
-  50% {
-    border-color: #8ac8ff;
-  }
-  100% {
-    border-color: aliceblue;
-  }
-}
 #particles-js {
   position: fixed;
   top: 0;
@@ -2488,16 +2402,16 @@ footer {
   border-radius: 8px;
   color: #272727;
   animation: neonPulse 3s infinite;
-  will-change: box-shadow;
 }
 .skills__heading .text-secondary {
   color: #272727;
   position: relative;
   display: inline-block;
+  background-image: linear-gradient(90deg, aliceblue, white);
+  background-size: 200% auto;
+  color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  background-image: linear-gradient(45deg, aliceblue, white, aliceblue);
-  background-size: 200% auto;
   animation: gradient-text 4s ease infinite;
   will-change: background-position;
 }
@@ -2953,6 +2867,11 @@ footer {
   transition: all 0.3s ease;
   transform: translateY(0);
   border-left: 4px solid aliceblue;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.copyright .copyright-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 .copyright .copyright-card:hover {
   transform: translateY(-5px);
@@ -3019,9 +2938,15 @@ footer {
   z-index: 100;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
-  background-color: rgba(39, 39, 39, 0.8);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: rgba(39, 39, 39, 0.7);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+footer:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 footer:hover {
   transform: translateY(-3px);
@@ -3032,12 +2957,12 @@ footer .copyright-link {
   text-decoration: none;
   position: relative;
 }
-footer .copyright-link:hover {
-  text-decoration: underline;
-}
 footer .copyright-link:focus-visible {
   outline: 2px solid aliceblue;
   outline-offset: 2px;
+}
+footer .copyright-link:hover {
+  text-decoration: underline;
 }
 
 .performance-optimized .menu-btn,
@@ -3314,6 +3239,7 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: #272727;
   color: #fff;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 /* Make images easier to work with */
@@ -3412,31 +3338,6 @@ main {
   /* Performance hint for animations */
 }
 
-body {
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-.menu-toggle-shortcut {
-  position: absolute;
-  top: 130%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.7rem;
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 2px 5px;
-  border-radius: 3px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  pointer-events: none;
-  z-index: 999;
-}
-
-.menu-btn:hover .menu-toggle-shortcut {
-  opacity: 0.8;
-  visibility: visible;
-}
-
 /* Loading animation */
 .page-loader {
   position: fixed;
@@ -3469,18 +3370,6 @@ body {
   }
 }
 
-.toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  max-width: 280px;
-  z-index: 10000;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(20px);
@@ -3501,28 +3390,9 @@ body {
   width: 0%;
 }
 
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  .page-loader__spinner {
-    animation: none !important;
-  }
-}
 /* Responsive adjustments */
 @media screen and (max-width: 500px) {
   footer {
     display: none;
-  }
-  .home,
-  .contact {
-    background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header_Phone.jpg") center top;
-    background-size: cover;
   }
 }

@@ -15,12 +15,14 @@ footer {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
 
+  // Apply hover lift mixin
+  @include hover-lift;
+
   // Glass effect background
-  background-color: rgba($primary-color, 0.8);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  @include glass-effect; // Use mixin
 
   &:hover {
+    // Override hover-lift mixin if needed, or remove if mixin is sufficient
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
@@ -31,14 +33,11 @@ footer {
     text-decoration: none;
     position: relative;
 
+    // Apply focus styles mixin
+    @include focus-styles;
+
     &:hover {
       text-decoration: underline;
-    }
-
-    // Accessible focus state
-    &:focus-visible {
-      outline: 2px solid $secondary-color;
-      outline-offset: 2px;
     }
   }
 }

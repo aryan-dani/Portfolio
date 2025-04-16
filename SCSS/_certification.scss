@@ -23,6 +23,7 @@
     opacity: 0.6;
     pointer-events: none;
     z-index: 0;
+    // Use consolidated animation
     animation: gradientBackground 15s ease infinite;
   }
 
@@ -280,30 +281,16 @@
         transition: all 0.3s ease;
         border: 1px solid rgba($secondary-color, 0.3);
         position: relative;
-        overflow: hidden;
+        overflow: hidden; // Keep for shine effect
 
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg,
-              transparent,
-              rgba($secondary-color, 0.2),
-              transparent);
-          transition: left 0.7s ease;
-        }
+        // Apply shine effect mixin
+        @include shine-effect;
 
         &:hover {
           background: rgba($secondary-color, 0.3);
           border-color: rgba($secondary-color, 0.5);
           transform: translateY(-2px);
-
-          &::before {
-            left: 100%;
-          }
+          // Hover state for shine effect is handled by the mixin
         }
 
         i {

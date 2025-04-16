@@ -57,6 +57,7 @@
     transition: all 0.3s ease;
     transform: translateY(0);
     border-left: 4px solid $secondary-color;
+    @include hover-lift;
 
     &:hover {
       transform: translateY(-5px);

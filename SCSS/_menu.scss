@@ -82,6 +82,27 @@
       }
     }
   }
+
+  &:hover .menu-toggle-shortcut {
+    opacity: 0.8;
+    visibility: visible;
+  }
+}
+
+.menu-toggle-shortcut {
+  position: absolute;
+  top: 130%; // Positioned further below the menu button
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 2px 5px;
+  border-radius: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 999;
 }
 
 .nav {
@@ -155,7 +176,7 @@
       padding-right: 1.2rem;
       margin-right: 0;
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
-      
+
       &:last-child {
         border-right: none !important;
         padding-right: 0;

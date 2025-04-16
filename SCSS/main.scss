@@ -61,6 +61,9 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: $primary-color;
   color: #fff;
+  // Add transition here for theme changes
+  transition: background-color $transition-speed ease-in-out,
+    color $transition-speed ease-in-out;
 }
 
 /* Make images easier to work with */
@@ -127,6 +130,7 @@ a {
   }
 }
 
+// Keep this more specific definition
 .text-secondary {
   color: rgba(darken($primary-color, 10%), 0.8);
   position: relative;
@@ -156,33 +160,6 @@ main {
   transition: margin-top 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
   will-change: transform, opacity;
   /* Performance hint for animations */
-}
-
-body {
-  transition: background-color $transition-speed ease-in-out,
-    color $transition-speed ease-in-out;
-}
-
-// Menu toggle shortcut styling only
-.menu-toggle-shortcut {
-  position: absolute;
-  top: 130%; // Positioned further below the menu button
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.7rem;
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 2px 5px;
-  border-radius: 3px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  pointer-events: none;
-  z-index: 999;
-}
-
-.menu-btn:hover .menu-toggle-shortcut {
-  opacity: 0.8;
-  visibility: visible;
 }
 
 /* Loading animation */
@@ -220,20 +197,7 @@ body {
   }
 }
 
-// Toast container styling
-.toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  max-width: 280px;
-  z-index: 10000;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-// Animation for elements entering viewport
+// Animation for elements entering viewport (keep this one)
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(20px);
@@ -257,35 +221,9 @@ body {
   width: 0%;
 }
 
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .page-loader__spinner {
-    animation: none !important;
-  }
-}
-
 /* Responsive adjustments */
 @media screen and (max-width: 500px) {
   footer {
     display: none;
-  }
-
-  .home,
-  .contact {
-    background: linear-gradient(to right,
-        rgba($primary-color, 0.9),
-        rgba($primary-color, 0)),
-      url("../Images/Header_Phone.jpg") center top;
-    background-size: cover;
   }
 }

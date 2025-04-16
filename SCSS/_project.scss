@@ -20,6 +20,7 @@
     opacity: 0.6;
     pointer-events: none;
     z-index: 0;
+    // Use consolidated animation
     animation: gradientBackground 15s ease infinite;
   }
 
@@ -84,6 +85,7 @@
           rgba($primary-color, 0.3) 50%,
           rgba($primary-color, 0.7) 100%);
       background-size: 300% 300%;
+      // Use consolidated animation
       animation: gradientBackground 8s ease infinite;
       z-index: 0;
     }
@@ -108,18 +110,14 @@
       z-index: 1;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       transition: all 0.4s ease;
-      overflow: hidden;
+      overflow: hidden; // Keep for shine effect
 
-      &::after {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -60%;
-        width: 20%;
-        height: 200%;
-        background: rgba(255, 255, 255, 0.3);
-        transform: rotate(30deg);
-        animation: shimmer 3s infinite;
+      // Apply shine effect mixin
+      @include shine-effect;
+
+      &:hover::before {
+        // Hover state for shine effect is handled by the mixin
+        left: 100%;
       }
     }
 
@@ -261,23 +259,13 @@
       padding: 0px 0.3rem;
       border-radius: 8px;
       position: relative;
-      overflow: hidden;
+      overflow: hidden; // Keep for shine effect
 
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent);
-        transition: left 0.7s ease;
-      }
+      // Apply shine effect mixin
+      @include shine-effect;
 
       &:hover::before {
+        // Hover state for shine effect is handled by the mixin
         left: 100%;
       }
     }
@@ -321,32 +309,17 @@
         border-radius: 8px;
         transition: all 0.4s ease;
         position: relative;
-        overflow: hidden;
+        overflow: hidden; // Keep for shine effect
 
-        // Inner shimmer effect
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg,
-              transparent,
-              rgba(255, 255, 255, 0.4),
-              transparent);
-          transition: left 0.5s ease;
-        }
+        // Apply shine effect mixin
+        @include shine-effect;
 
         &:hover {
           background-color: $primary-color;
           color: rgb(215, 230, 230);
           transform: translateY(-5px) scale(1.05);
           box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-
-          &::before {
-            left: 100%;
-          }
+          // Hover state for shine effect is handled by the mixin
         }
       }
     }
@@ -362,8 +335,12 @@
       transition: all 0.3s ease;
       transform-origin: left;
 
+      // Apply hover lift mixin
+      @include hover-lift;
+
       &:hover {
         cursor: default;
+        // Override hover-lift mixin if needed, or remove if mixin is sufficient
         transform: translateY(-3px) scale(1.05);
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
       }

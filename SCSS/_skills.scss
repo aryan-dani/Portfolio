@@ -1,99 +1,6 @@
 @use "config" as *;
 @use "mixins" as *;
-@use "animations" as *;
-
-// Enhanced animation keyframes
-@keyframes floatAnimation {
-  0% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-15px);
-  }
-
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-@keyframes spinGlow {
-  0% {
-    transform: rotate(0deg);
-    opacity: 0.7;
-  }
-
-  50% {
-    transform: rotate(180deg);
-    opacity: 1;
-  }
-
-  100% {
-    transform: rotate(360deg);
-    opacity: 0.7;
-  }
-}
-
-@keyframes popIn {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-
-  60% {
-    transform: scale(1.1);
-  }
-
-  80% {
-    transform: scale(0.95);
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes neonPulse {
-  0% {
-    box-shadow: 0 0 5px rgba($secondary-color, 0.5),
-      0 0 10px rgba($secondary-color, 0.5);
-  }
-
-  50% {
-    box-shadow: 0 0 20px rgba($secondary-color, 0.8),
-      0 0 30px rgba($secondary-color, 0.8);
-  }
-
-  100% {
-    box-shadow: 0 0 5px rgba($secondary-color, 0.5),
-      0 0 10px rgba($secondary-color, 0.5);
-  }
-}
-
-@keyframes borderFlash {
-  0% {
-    border-color: $secondary-color;
-  }
-
-  50% {
-    border-color: darken($secondary-color, 20%);
-  }
-
-  100% {
-    border-color: $secondary-color;
-  }
-}
+@use "animations" as *; // Use animations from the central file
 
 // Particles container styling
 #particles-js {
@@ -128,22 +35,15 @@
     background-color: aliceblue;
     border-radius: 8px;
     color: $primary-color;
-    animation: neonPulse 3s infinite;
-    will-change: box-shadow; // Optimizes animation performance
+    animation: neonPulse 3s infinite; // Use animation from _animations.scss
 
     .text-secondary {
       color: $primary-color;
       position: relative;
       display: inline-block;
-      -webkit-background-clip: text;
-      background-clip: text;
-      background-image: linear-gradient(45deg,
-          $secondary-color,
-          lighten($secondary-color, 15%),
-          $secondary-color );
-      background-size: 200% auto;
-      animation: gradient-text 4s ease infinite;
-      will-change: background-position; // Performance optimization
+      // Apply gradient-text mixin
+      @include gradient-text($secondary-color,
+        lighten($secondary-color, 15%));
     }
 
     &::before {
@@ -163,7 +63,7 @@
       z-index: -1;
       filter: blur(8px);
       opacity: 0.7;
-      animation: shimmer 8s linear infinite;
+      animation: shimmer 8s linear infinite; // Use animation from _animations.scss
       border-radius: 12px;
       will-change: background-position; // Performance optimization
     }
@@ -193,7 +93,7 @@
         transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
         position: relative;
         overflow: hidden;
-        animation: borderFlash 4s infinite;
+        animation: borderFlash 4s infinite; // Use animation from _animations.scss
 
         &:nth-child(odd) {
           animation-delay: 0.7s;
@@ -222,12 +122,12 @@
           border-color: $secondary-color;
           transform: translateY(-3px) scale(1.1);
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-          animation: neonPulse 1.5s infinite;
+          animation: neonPulse 1.5s infinite; // Use animation from _animations.scss
 
           &::before {
             width: 300%;
             height: 300%;
-            animation: spinGlow 8s linear infinite;
+            animation: spinGlow 8s linear infinite; // Use animation from _animations.scss
           }
         }
 
@@ -289,9 +189,8 @@
 
     // Use mixins for consistent styling
     @include card-hover;
-    @include animated-border($secondary-color);
-    // Additional animation
-    animation: neonPulse 4s infinite;
+    @include animated-border($secondary-color); // Use mixin from _mixins.scss
+    animation: neonPulse 4s infinite; // Use animation from _animations.scss
 
     // Special styling for "All" category
     .active-all & {
@@ -315,7 +214,7 @@
       transform: scale(1.05);
       z-index: 10;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-      animation: neonPulse 2s infinite;
+      animation: neonPulse 2s infinite; // Use animation from _animations.scss
 
       .skills__card-front {
         transform: translateY(-100%);
@@ -348,15 +247,15 @@
     &:hover {
       transform: translateY(-8px) scale(1.02);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-      animation: floatAnimation 3s ease infinite;
+      animation: floatAnimation 3s ease infinite; // Use animation from _animations.scss
 
       &::after {
         opacity: 0.8;
-        animation: spinGlow 8s linear infinite;
+        animation: spinGlow 8s linear infinite; // Use animation from _animations.scss
       }
 
       .skills__card-front i {
-        animation: pulse 1.5s ease infinite alternate;
+        animation: pulse 1.5s ease infinite alternate; // Use animation from _animations.scss
         color: lighten($secondary-color, 10%);
         transform: scale(1.1);
       }
@@ -370,7 +269,7 @@
         color: transparent;
         -webkit-background-clip: text;
         background-clip: text;
-        animation: shimmer 2s linear infinite;
+        animation: shimmer 2s linear infinite; // Use animation from _animations.scss
       }
     }
 
@@ -452,7 +351,7 @@
       width: 0;
       transition: width 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
       position: relative;
-      animation: shimmer 2s linear infinite;
+      animation: shimmer 2s linear infinite; // Use animation from _animations.scss
 
       &::before {
         content: "";
@@ -475,7 +374,7 @@
         height: 100%;
         background: rgba(255, 255, 255, 0.3);
         filter: blur(5px);
-        animation: shimmer 2s linear infinite;
+        animation: shimmer 2s linear infinite; // Use animation from _animations.scss
       }
     }
 
@@ -486,7 +385,7 @@
       font-size: 0.8rem;
       color: #fff;
       text-shadow: 0 0 5px rgba($secondary-color, 0.8);
-      animation: pulse 2s ease infinite;
+      animation: pulse 2s ease infinite; // Use animation from _animations.scss
     }
   }
 }
@@ -531,21 +430,21 @@
       position: relative;
 
       &:nth-child(odd) {
-        animation: floatAnimation 4s ease-in-out infinite;
+        animation: floatAnimation 4s ease-in-out infinite; // Use animation from _animations.scss
       }
 
       &:nth-child(even) {
-        animation: floatAnimation 4s ease-in-out infinite 0.5s;
+        animation: floatAnimation 4s ease-in-out infinite 0.5s; // Use animation from _animations.scss
       }
 
       &:nth-child(3n) {
-        animation: floatAnimation 4s ease-in-out infinite 1s;
+        animation: floatAnimation 4s ease-in-out infinite 1s; // Use animation from _animations.scss
       }
 
       &:hover {
         transform: translateY(-10px) scale(1.1) rotate(3deg);
         filter: drop-shadow(0 10px 20px rgba($secondary-color, 0.5));
-        animation: none;
+        animation: none; // Keep this override
         z-index: 10;
       }
 
@@ -565,7 +464,7 @@
 
       &:hover::after {
         opacity: 0.7;
-        animation: spinGlow 4s linear infinite;
+        animation: spinGlow 4s linear infinite; // Use animation from _animations.scss
       }
     }
   }
