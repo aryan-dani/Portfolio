@@ -17,7 +17,8 @@ const main = document.querySelector("main");
 let showMenu = false;
 
 menuBtn.addEventListener("click", toggleMenu);
-
+// Add title attribute for tooltip hint
+menuBtn.title = "Click to open navigation menu (Alt+M)";
 // When the menu is opened
 function toggleMenu() {
 	if (!showMenu) {
@@ -186,6 +187,18 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Delay increased to 1200ms to ensure it appears after social icons start animating
 	setTrackedTimeout(
 		() => {
+			// --- Global First Visit Check for Navigation Hint ---
+			const globalFirstVisitKey = "portfolioGlobalFirstVisit";
+			if (!sessionStorage.getItem(globalFirstVisitKey)) {
+				showToast(
+					"Navigation Tip",
+					"Use Alt + Arrow keys or Alt + [Letter] (H, J, P, C, S, A) to navigate between pages.",
+					"fa-solid fa-keyboard"
+				);
+				sessionStorage.setItem(globalFirstVisitKey, "true"); // Mark as visited globally
+			}
+			// --- End Global First Visit Check ---
+
 			// Only show welcome toasts on first visit to each page
 			if (checkFirstTimeVisit(pageName)) {
 				// Use the new showToast function
@@ -244,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				}
 			}
 		},
-		1200,
+		1200, // Keep the original delay for welcome toasts
 		"welcomeToast"
 	);
 
@@ -1139,6 +1152,8 @@ function animateSkillCards(container) {
 		} cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
 			animationSettings.staggerDelay * index
 		}s`;
+		card.style.cursor = "pointer"; // Explicitly set cursor
+		card.title = "Click to see details"; // Add tooltip hint
 
 		// --- ADD CLICK LISTENER ---
 		card.removeEventListener("click", handleCardClick); // Remove previous listener if any
@@ -1191,6 +1206,10 @@ function handleCardClick(event) {
 
 	// Toggle the expanded class on the clicked card
 	clickedCard.classList.toggle("expanded");
+	// Update tooltip based on state
+	clickedCard.title = clickedCard.classList.contains("expanded")
+		? "Click to close details"
+		: "Click to see details";
 
 	// Optional: Close other expanded cards in the same container
 	const container = clickedCard.closest(".skills__group");
@@ -1199,6 +1218,7 @@ function handleCardClick(event) {
 		allCardsInContainer.forEach((card) => {
 			if (card !== clickedCard && card.classList.contains("expanded")) {
 				card.classList.remove("expanded");
+				card.title = "Click to see details"; // Reset title on close
 			}
 		});
 	}
@@ -1845,13 +1865,14 @@ function navigatePreviousPage() {
 // Helper function for keyboard navigation
 function navigateTo(url) {
 	const main = document.querySelector("main");
+	const pageName = url.replace(".html", "").replace("index", "Home"); // Get a user-friendly name
 
 	if (main) {
 		// Show a toast notification about the navigation
 		showToast(
-			"Keyboard Navigation",
-			`Navigating to ${url.replace(".html", "")}`,
-			"fa-solid fa-keyboard"
+			"Navigating...", // Simpler title
+			`Loading ${pageName} page`, // Clearer message
+			"fa-solid fa-spinner fa-spin" // Use a loading icon
 		);
 
 		// Animate transition
@@ -1862,11 +1883,11 @@ function navigateTo(url) {
 			() => {
 				window.location.href = url;
 			},
-			400,
+			400, // Keep delay for animation
 			"keyboardNavigation"
 		);
 	} else {
-		window.location.href = url;
+		window.location.href = url; // Navigate directly if main element not found
 	}
 }
 
