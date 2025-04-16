@@ -210,20 +210,5 @@ main {
   }
 }
 
-// Progress indicator
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background-color: rgba($secondary-color, 0.8);
-  z-index: 9999;
-  width: 0%;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 500px) {
-  footer {
-    display: none;
-  }
-}
+// Toast Notifications
+// ...existing code...

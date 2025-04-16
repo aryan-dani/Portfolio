@@ -7,9 +7,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 	console.log("Performance.js: DOM loaded, initializing optimizations");
 
-	// Add scroll progress indicator
-	initScrollProgress();
-
 	// Handle lazy loading of images - safely
 	initLazyLoading();
 
@@ -134,53 +131,6 @@ function dismissToast(toast) {
 			toast.parentNode.removeChild(toast);
 		}
 	}, 300); // Match animation duration in CSS
-}
-
-/**
- * Create and update scroll progress indicator
- */
-function initScrollProgress() {
-	// Create progress bar if it doesn't exist
-	if (!document.querySelector(".scroll-progress")) {
-		const progressBar = document.createElement("div");
-		progressBar.className = "scroll-progress";
-		document.body.appendChild(progressBar);
-	}
-
-	// Use throttled scroll handler for better performance
-	let lastKnownScrollPosition = 0;
-	let ticking = false;
-
-	window.addEventListener(
-		"scroll",
-		function () {
-			lastKnownScrollPosition = window.scrollY;
-
-			if (!ticking) {
-				window.requestAnimationFrame(function () {
-					updateScrollProgress(lastKnownScrollPosition);
-					ticking = false;
-				});
-
-				ticking = true;
-			}
-		},
-		{ passive: true }
-	);
-}
-
-/**
- * Update scroll progress value - separated for better performance
- */
-function updateScrollProgress(scrollPos) {
-	const scrollHeight = document.documentElement.scrollHeight;
-	const clientHeight = document.documentElement.clientHeight;
-	const scrolled = (scrollPos / (scrollHeight - clientHeight)) * 100;
-
-	const progressBar = document.querySelector(".scroll-progress");
-	if (progressBar) {
-		progressBar.style.width = scrolled + "%";
-	}
 }
 
 /**

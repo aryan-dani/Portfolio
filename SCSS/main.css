@@ -3416,20 +3416,3 @@ main {
   opacity: 1;
   transform: translateY(0);
 }
-
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background-color: rgba(240, 248, 255, 0.8);
-  z-index: 9999;
-  width: 0%;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 500px) {
-  footer {
-    display: none;
-  }
-}
