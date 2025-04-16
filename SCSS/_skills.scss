@@ -223,7 +223,7 @@
   &__group {
     display: none; // Keep hidden by default
     // Use auto-fit instead of auto-fill
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.5rem;
     width: 100%; // Groups should take full width of the container
     opacity: 0; // Start hidden for animation
