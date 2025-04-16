@@ -49,7 +49,7 @@
     }
 
     &--last {
-      color: $primary-color;
+      color: rgba($secondary-color, 0.8);
       position: relative;
       display: inline-block;
       -webkit-background-clip: text;
@@ -67,16 +67,16 @@
 
       &:hover {
         cursor: default;
-        transform: translateY(-3px);
+        transform: translateY(-2px); // Slightly less jumpy
         animation-play-state: paused;
-        filter: drop-shadow(0 0 5px rgba($primary-color, 0.7));
+        filter: drop-shadow(0 0 8px rgba($primary-color, 0.8)); // Enhanced glow
       }
     }
   }
 
   h2 {
-    background-color: $secondary-color;
     color: $primary-color;
+    background-color: $secondary-color;
     font-size: 1.5rem;
     font-weight: 600;
     margin-top: 0.3rem;
@@ -87,8 +87,6 @@
     position: relative;
     z-index: 1;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    will-change: transform, box-shadow;
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInUp 1s ease forwards 0.6s;
@@ -114,17 +112,7 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         width: fit-content;
-        will-change: transform;
-
-        i {
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          will-change: transform;
-        }
 
         a {
           margin: 0.3rem 0;
@@ -133,68 +121,33 @@
           text-decoration: none;
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           position: relative;
-          display: flex;
+          display: inline-flex; // Use inline-flex for alignment
           align-items: center;
-          gap: 10px; // Add gap between icon and text
-          padding: 0.5rem 1rem; // Add padding for better hover area
-          border-radius: 8px; // Rounded corners
-          background-color: rgba(255, 255, 255, 0.05); // Subtle background
+          gap: 10px;
+          padding: 0.6rem 1.2rem; // Adjusted padding
+          border-radius: 8px;
+          background-color: rgba(255, 255, 255, 0.1); // Slightly more visible background
+          color: $secondary-color; // Default text color
           width: fit-content;
+          overflow: hidden; // Needed for potential future effects like shine
+
+          i {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform, color;
+            position: relative; // Ensure icon stays aligned
+            z-index: 1;
+          }
 
           &:hover {
             color: $primary-color; // Change text color on hover
             background-color: $secondary-color; // Change background on hover
-            transform: translateX(3px) scale(1.05); // Add scale effect
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); // Add shadow
+            transform: translateX(5px) scale(1.05); // Adjusted transform
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); // Enhanced shadow
 
             i {
-              color: $primary-color !important; // Set icon color to primary (dark) for contrast
-              transform: none; // Remove transform on hover
-              position: relative; // Ensure z-index works
-              z-index: 2; // Keep icon above other elements like the span
+              color: $primary-color !important; // Ensure icon contrast on hover
+              transform: scale(1.1) rotate(-5deg); // Add subtle icon animation
             }
-
-            span {
-              color: $primary-color; // Ensure span text color matches link hover
-              background-color: transparent; // Remove span background on link hover
-              box-shadow: none; // Remove span shadow on link hover
-              transform: none; // Reset span transform on link hover
-              letter-spacing: normal; // Reset letter spacing
-
-              &::before {
-                // Hide the span's shine effect when the whole link is hovered
-                display: none;
-              }
-            }
-          }
-        }
-
-        span {
-          color: $primary-color;
-          background-color: $secondary-color;
-          padding: 0.3rem 0.6rem;
-          border-radius: 8px;
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          position: relative;
-          overflow: hidden;
-          display: inline-block;
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-          transform: translateZ(0);
-          backface-visibility: hidden;
-
-          &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg,
-                transparent,
-                rgba(255, 255, 255, 0.6),
-                transparent);
-            transition: left 0.7s ease;
-            z-index: 0;
           }
         }
       }
@@ -264,21 +217,6 @@
     animation: bounce 1s ease 1.5s 1;
   }
 
-  // Add pulse animation for the CTA button
-  @keyframes pulse {
-
-    0%,
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-
-    50% {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-  }
-
   // Add bounce animation for the CTA button
   @keyframes bounce {
 
@@ -299,11 +237,6 @@
     }
   }
 
-  // Style for keyboard navigation hint - removed from home page but preserved in SCSS for reference
-  .keyboard-hint {
-    display: none; // Hide keyboard hint completely
-  }
-
   // Add styles for the particles container
   #particles-home {
     position: absolute;
@@ -312,17 +245,6 @@
     width: 100%;
     height: 100%;
     z-index: 0;
-  }
-
-  // Additional animations
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
   }
 }
 

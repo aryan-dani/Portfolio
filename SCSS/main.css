@@ -268,7 +268,7 @@
   transition: width 0.5s ease;
 }
 .home__name--last {
-  color: #272727;
+  color: rgba(240, 248, 255, 0.8);
   position: relative;
   display: inline-block;
   -webkit-background-clip: text;
@@ -281,13 +281,13 @@
 }
 .home__name--last:hover {
   cursor: default;
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   animation-play-state: paused;
-  filter: drop-shadow(0 0 5px rgba(39, 39, 39, 0.7));
+  filter: drop-shadow(0 0 8px rgba(39, 39, 39, 0.8));
 }
 .home h2 {
-  background-color: aliceblue;
   color: #272727;
+  background-color: aliceblue;
   font-size: 1.5rem;
   font-weight: 600;
   margin-top: 0.3rem;
@@ -298,8 +298,6 @@
   position: relative;
   z-index: 1;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  will-change: transform, box-shadow;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 1s ease forwards 0.6s;
@@ -324,17 +322,8 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   width: -moz-fit-content;
   width: fit-content;
-  will-change: transform;
-}
-.home .social-icons .link-list .link-title i {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  will-change: transform;
 }
 .home .social-icons .link-list .link-title a {
   margin: 0.3rem 0;
@@ -343,60 +332,32 @@
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: aliceblue;
   width: -moz-fit-content;
   width: fit-content;
+  overflow: hidden;
+}
+.home .social-icons .link-list .link-title a i {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform, color;
+  position: relative;
+  z-index: 1;
 }
 .home .social-icons .link-list .link-title a:hover {
   color: #272727;
   background-color: aliceblue;
-  transform: translateX(3px) scale(1.05);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transform: translateX(5px) scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 .home .social-icons .link-list .link-title a:hover i {
   color: #272727 !important;
-  transform: none;
-  position: relative;
-  z-index: 2;
-}
-.home .social-icons .link-list .link-title a:hover span {
-  color: #272727;
-  background-color: transparent;
-  box-shadow: none;
-  transform: none;
-  letter-spacing: normal;
-}
-.home .social-icons .link-list .link-title a:hover span::before {
-  display: none;
-}
-.home .social-icons .link-list .link-title span {
-  color: #272727;
-  background-color: aliceblue;
-  padding: 0.3rem 0.6rem;
-  border-radius: 8px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-.home .social-icons .link-list .link-title span::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-  transition: left 0.7s ease;
-  z-index: 0;
+  transform: scale(1.1) rotate(-5deg);
 }
 .home .cta-button {
   display: inline-flex;
@@ -448,16 +409,6 @@
 .home .cta-button i {
   transition: transform 0.3s ease;
 }
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.9;
-  }
-}
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
@@ -469,9 +420,6 @@
     transform: translateY(-5px);
   }
 }
-.home .keyboard-hint {
-  display: none;
-}
 .home #particles-home {
   position: absolute;
   top: 0;
@@ -479,14 +427,6 @@
   width: 100%;
   height: 100%;
   z-index: 0;
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 @media (max-width: 768px) {
