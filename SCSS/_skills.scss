@@ -245,7 +245,7 @@
     background: rgba(lighten($primary-color, 3%), 0.8);
     overflow: hidden;
     cursor: pointer;
-    height: 150px;
+    height: 160px; // Slightly increase base height for better front face layout
     position: relative;
     transform-style: preserve-3d; // Ensure 3D context
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease; // Keep transition for other effects if needed
@@ -274,7 +274,7 @@
     }
 
     &.expanded {
-      height: 240px; // Expanded height when clicked
+      height: 340px; // Increased expanded height
       transform: scale(1.05);
       z-index: 10;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
@@ -348,7 +348,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 1.2rem;
+      padding: 1rem; // Adjusted padding slightly
       backface-visibility: hidden;
       transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
 
@@ -385,13 +385,51 @@
           rgba(darken($primary-color, 15%), 0.95));
       transform: translateY(100%);
       overflow: hidden;
+      justify-content: flex-start; // Align content to the top
+      padding: 1.5rem 1rem; // Add more vertical padding
 
       p {
         color: #ddd;
         font-size: 0.85rem;
         line-height: 1.5;
         text-align: center;
-        margin-top: 1rem;
+        margin-top: 0.8rem; // Adjust margin
+        margin-bottom: 0.8rem; // Add bottom margin
+        flex-grow: 1; // Allow paragraph to take available space if needed
+        overflow-y: visible; // Change from auto to visible
+        max-height: none; // Remove max-height constraint
+      }
+
+      .skill-projects {
+        margin-top: auto; // Push projects towards the bottom
+        width: 100%; // Ensure it takes full width
+        font-size: 0.8rem;
+
+        h4 {
+          font-size: 0.85rem;
+          margin-bottom: 0.3rem;
+        }
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 5px;
+          justify-content: center;
+        }
+        li a {
+          font-size: 0.75rem;
+          padding: 2px 5px;
+          background: rgba($secondary-color, 0.2);
+          border-radius: 4px;
+          text-decoration: none;
+          color: lighten($secondary-color, 15%);
+          &:hover {
+            background: rgba($secondary-color, 0.4);
+            color: #fff;
+          }
+        }
       }
     }
   }
@@ -403,7 +441,8 @@
     border-radius: 8px;
     overflow: hidden;
     position: relative;
-    margin-top: 0.5rem;
+    margin-top: 0; // Remove top margin, handled by flex gap or padding
+    margin-bottom: 0.5rem; // Add some space below progress bar
     box-shadow: 0 0 10px rgba($secondary-color, 0.3) inset;
 
     &-bar {
@@ -431,27 +470,25 @@
       }
 
       &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 30px;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.3);
-        filter: blur(5px);
-        animation: shimmer 2s linear infinite; // Use animation from _animations.scss
+        display: none;
       }
     }
 
     &-percent {
       position: absolute;
       right: 5px;
-      top: -20px;
-      font-size: 0.8rem;
+      top: -18px; // Position above the bar
+      font-size: 0.75rem;
+      font-weight: bold;
       color: #fff;
-      text-shadow: 0 0 5px rgba($secondary-color, 0.8);
-      animation: pulse 2s ease infinite; // Use animation from _animations.scss
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+      opacity: 0; // Initially hidden
+      transition: opacity 0.5s ease 0.5s; // Fade in after bar animates
     }
+  }
+
+  &__card.expanded &__progress-percent {
+    opacity: 1;
   }
 }
 
@@ -558,10 +595,10 @@
     }
 
     &__card {
-      height: 140px;
+      height: 150px; // Adjust base height for smaller screens
 
       &.expanded {
-        height: 220px;
+        height: 260px; // Adjust expanded height for smaller screens
       }
 
       &-front {
@@ -571,6 +608,19 @@
 
         h3 {
           font-size: 1rem;
+        }
+      }
+
+      &-back {
+        p {
+          font-size: 0.8rem; // Adjust font size
+          max-height: none; // Remove max-height constraint
+        }
+        .skill-projects {
+          font-size: 0.75rem;
+          li a {
+            font-size: 0.7rem;
+          }
         }
       }
     }
@@ -596,6 +646,21 @@
     &__heading {
       font-size: 2rem;
       margin-bottom: 2rem;
+    }
+
+    &__card {
+      height: 140px;
+
+      &.expanded {
+        height: 250px;
+      }
+
+      &-back {
+        p {
+          font-size: 0.75rem;
+          max-height: none; // Remove max-height constraint
+        }
+      }
     }
   }
 }

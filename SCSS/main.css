@@ -2611,7 +2611,7 @@ a {
   background: rgba(47, 47, 47, 0.8);
   overflow: hidden;
   cursor: pointer;
-  height: 150px;
+  height: 160px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
@@ -2645,7 +2645,7 @@ a {
   font-size: 2.5rem;
 }
 .skills__card.expanded {
-  height: 240px;
+  height: 340px;
   transform: scale(1.05);
   z-index: 10;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
@@ -2703,7 +2703,7 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1.2rem;
+  padding: 1rem;
   backface-visibility: hidden;
   transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
@@ -2731,13 +2731,49 @@ a {
   background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(1, 1, 1, 0.95));
   transform: translateY(100%);
   overflow: hidden;
+  justify-content: flex-start;
+  padding: 1.5rem 1rem;
 }
 .skills__card-back p {
   color: #ddd;
   font-size: 0.85rem;
   line-height: 1.5;
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  flex-grow: 1;
+  overflow-y: visible;
+  max-height: none;
+}
+.skills__card-back .skill-projects {
+  margin-top: auto;
+  width: 100%;
+  font-size: 0.8rem;
+}
+.skills__card-back .skill-projects h4 {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.skills__card-back .skill-projects ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+.skills__card-back .skill-projects li a {
+  font-size: 0.75rem;
+  padding: 2px 5px;
+  background: rgba(240, 248, 255, 0.2);
+  border-radius: 4px;
+  text-decoration: none;
+  color: white;
+}
+.skills__card-back .skill-projects li a:hover {
+  background: rgba(240, 248, 255, 0.4);
+  color: #fff;
 }
 .skills__progress {
   width: 100%;
@@ -2746,7 +2782,8 @@ a {
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  margin-top: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
   box-shadow: 0 0 10px rgba(240, 248, 255, 0.3) inset;
 }
 .skills__progress-bar {
@@ -2771,24 +2808,21 @@ a {
   border-radius: 0 8px 8px 0;
 }
 .skills__progress-bar::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 30px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.3);
-  filter: blur(5px);
-  animation: shimmer 2s linear infinite;
+  display: none;
 }
 .skills__progress-percent {
   position: absolute;
   right: 5px;
-  top: -20px;
-  font-size: 0.8rem;
+  top: -18px;
+  font-size: 0.75rem;
+  font-weight: bold;
   color: #fff;
-  text-shadow: 0 0 5px rgba(240, 248, 255, 0.8);
-  animation: pulse 2s ease infinite;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: opacity 0.5s ease 0.5s;
+}
+.skills__card.expanded .skills__progress-percent {
+  opacity: 1;
 }
 
 .tech-stack {
@@ -2877,16 +2911,26 @@ a {
     gap: 1.2rem;
   }
   .skills__card {
-    height: 140px;
+    height: 150px;
   }
   .skills__card.expanded {
-    height: 220px;
+    height: 260px;
   }
   .skills__card-front i {
     font-size: 2.8rem;
   }
   .skills__card-front h3 {
     font-size: 1rem;
+  }
+  .skills__card-back p {
+    font-size: 0.8rem;
+    max-height: none;
+  }
+  .skills__card-back .skill-projects {
+    font-size: 0.75rem;
+  }
+  .skills__card-back .skill-projects li a {
+    font-size: 0.7rem;
   }
   .skills__categories .category-tabs {
     gap: 10px;
@@ -2904,6 +2948,16 @@ a {
   .skills__heading {
     font-size: 2rem;
     margin-bottom: 2rem;
+  }
+  .skills__card {
+    height: 140px;
+  }
+  .skills__card.expanded {
+    height: 250px;
+  }
+  .skills__card-back p {
+    font-size: 0.75rem;
+    max-height: none;
   }
 }
 .copyright {
