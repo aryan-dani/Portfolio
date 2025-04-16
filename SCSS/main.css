@@ -1075,17 +1075,20 @@
   width: 100%;
 }
 .project__project-image {
-  height: 30vh;
+  height: auto;
+  min-height: 25vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 5px;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 1rem;
   position: relative;
   overflow: hidden;
   transform: translateZ(0);
   transition: transform 0.5s ease;
+  text-align: center;
 }
 .project__project-image::before {
   content: "";
@@ -1108,15 +1111,17 @@
 }
 .project__project-image h2 {
   display: inline-block;
-  font-size: 1.5rem;
-  background-color: aliceblue;
-  padding: 0rem 1rem;
+  font-size: 1.8rem;
+  background-color: rgba(240, 248, 255, 0.9);
+  color: #272727;
+  padding: 0.5rem 1.5rem;
   border-radius: 8px;
   position: relative;
   z-index: 1;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.4s ease;
   overflow: hidden;
+  margin-bottom: 0.5rem;
   position: relative;
   overflow: hidden;
 }
@@ -1137,23 +1142,27 @@
   left: 100%;
 }
 .project__project-image p {
-  text-align: justify;
-  background-color: #272727;
-  padding: 0.5rem;
-  font-size: 0.8rem;
-  width: 61%;
+  text-align: center;
+  background-color: rgba(39, 39, 39, 0.8);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+  padding: 1rem;
+  font-size: 1rem;
+  max-width: 700px;
+  width: 90%;
   margin-bottom: 0.5rem;
   border-radius: 8px;
   position: relative;
   z-index: 1;
   transition: all 0.4s ease;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  color: aliceblue;
 }
 .project__project-image p:hover {
-  background-color: #272727;
-  color: rgb(215, 230, 230);
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  background-color: rgba(39, 39, 39, 0.9);
+  color: white;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 .project .project-grid {
   display: grid;
@@ -2231,6 +2240,7 @@
   }
 }
 .certification .no-certificates {
+  display: none;
   text-align: center;
   padding: 3rem 1rem;
   opacity: 0.7;

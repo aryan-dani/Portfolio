@@ -413,6 +413,7 @@
 
   // Empty state
   .no-certificates {
+    display: none; // Hide by default
     text-align: center;
     padding: 3rem 1rem;
     opacity: 0.7;

@@ -54,17 +54,22 @@
   }
 
   &__project-image {
-    height: 30vh;
+    height: auto; // Adjust height automatically
+    min-height: 25vh; // Set a minimum height
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    gap: 5px;
+    justify-content: center; // Center content vertically
+    gap: 1rem; // Increase gap
+    padding: 2rem 1rem; // Add padding
     position: relative;
     overflow: hidden;
+    // Removed box-shadow as it might conflict with particle background
+    // box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transform: translateZ(0);
     transition: transform 0.5s ease;
+    text-align: center; // Center text elements
 
     &::before {
       content: "";
@@ -95,15 +100,17 @@
 
     h2 {
       display: inline-block;
-      font-size: 1.5rem;
-      background-color: $secondary-color;
-      padding: 0rem 1rem;
+      font-size: 1.8rem; // Increase font size
+      background-color: rgba($secondary-color, 0.9); // Slightly transparent background
+      color: $primary-color; // Ensure contrast
+      padding: 0.5rem 1.5rem; // Adjust padding
       border-radius: 8px;
       position: relative;
       z-index: 1;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       transition: all 0.4s ease;
       overflow: hidden; // Keep for shine effect
+      margin-bottom: 0.5rem; // Add margin below heading
 
       // Apply shine effect mixin
       @include shine-effect;
@@ -115,23 +122,26 @@
     }
 
     p {
-      text-align: justify;
-      background-color: $primary-color;
-      padding: 0.5rem;
-      font-size: 0.8rem;
-      width: 61%;
+      text-align: center; // Center paragraph text
+      background-color: rgba($primary-color, 0.8); // Slightly transparent background
+      backdrop-filter: blur(5px); // Add blur effect
+      padding: 1rem; // Increase padding
+      font-size: 1rem; // Increase font size
+      max-width: 700px; // Limit width for readability
+      width: 90%; // Use percentage width
       margin-bottom: 0.5rem;
       border-radius: 8px;
       position: relative;
       z-index: 1;
       transition: all 0.4s ease;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      color: $secondary-color; // Ensure contrast
 
       &:hover {
-        background-color: $primary-color;
-        color: rgb(215, 230, 230);
-        transform: translateY(-8px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        background-color: rgba($primary-color, 0.9);
+        color: lighten($secondary-color, 15%);
+        transform: translateY(-5px); // Adjust hover transform
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       }
     }
   }

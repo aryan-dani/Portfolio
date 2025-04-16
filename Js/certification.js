@@ -25,6 +25,11 @@ function initCertificationPage() {
 	let currentFilter = "all"; // Keep track of the current category filter
 	let currentSearchTerm = ""; // Keep track of the current search term
 
+	// Ensure 'no results' message is hidden initially
+	if (noResultsMsg) {
+		noResultsMsg.style.display = "none";
+	}
+
 	// Combined filter and search function
 	function filterAndSearchCertificates() {
 		// Hide all certificates first with fade out
