@@ -2879,14 +2879,17 @@ a {
   right: 15px;
   background: none;
   border: none;
+  outline: none;
   font-size: 2rem;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
+  padding: 0;
+  line-height: 1;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 .skill-modal__close:hover {
   color: aliceblue;
-  transform: rotate(90deg);
+  transform: scale(1.1);
 }
 .skill-modal__header {
   display: flex;

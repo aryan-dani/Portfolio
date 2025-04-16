@@ -553,15 +553,18 @@
     top: 10px;
     right: 15px;
     background: none;
-    border: none;
+    border: none; // Ensure no border
+    outline: none; // Ensure no outline
     font-size: 2rem;
     color: rgba(#fff, 0.7);
     cursor: pointer;
-    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 0; // Remove default padding
+    line-height: 1; // Ensure consistent line height
+    transition: color 0.3s ease, transform 0.3s ease; // Keep transition for color
 
     &:hover {
       color: $secondary-color;
-      transform: rotate(90deg);
+      transform: scale(1.1); // Optional: Add subtle scale instead
     }
   }
 

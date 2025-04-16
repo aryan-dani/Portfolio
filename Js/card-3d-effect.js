@@ -1,7 +1,9 @@
 /** @format */
 
 document.addEventListener("DOMContentLoaded", () => {
-	const cards = document.querySelectorAll(".Projects, .certificate-content");
+	const cards = document.querySelectorAll(
+		".Projects, .certificate-content, .skills__card"
+	);
 
 	cards.forEach((card) => {
 		card.setAttribute("data-enhanced", "true"); // Mark card for CSS to ignore hover transform
