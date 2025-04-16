@@ -140,26 +140,31 @@
 						</div>
 					</div>
 
-					<!-- Certificate Filters -->
+					<!-- Search and Filter Controls -->
 					<div class="row mb-4">
 						<div class="col-12">
-							<!-- Search Input -->
-							<div class="certificate-search mb-3 animate-on-scroll">
-								<input
-									type="search"
-									id="certificateSearchInput"
-									class="form-control"
-									placeholder="Search certificates by title, issuer, or keyword..."
-									aria-label="Search certificates" />
-							</div>
-							<div class="certificate-filters animate-on-scroll">
-								<button class="filter-btn active" data-filter="all">
-									All Certificates
-								</button>
-								<button class="filter-btn" data-filter="ai-ml">AI & ML</button>
-								<button class="filter-btn" data-filter="web-dev">
-									Web Development
-								</button>
+							<div class="search-filter-controls animate-on-scroll">
+								<!-- Search Input -->
+								<div class="certificate-search">
+									<input
+										type="search"
+										id="certificateSearchInput"
+										class="form-control"
+										placeholder="Search certificates..."
+										aria-label="Search certificates" />
+								</div>
+								<!-- Certificate Filters -->
+								<div class="certificate-filters">
+									<button class="filter-btn active" data-filter="all">
+										All
+									</button>
+									<button class="filter-btn" data-filter="ai-ml">
+										AI & ML
+									</button>
+									<button class="filter-btn" data-filter="web-dev">
+										Web Dev
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>

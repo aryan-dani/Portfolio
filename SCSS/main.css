@@ -1908,20 +1908,56 @@
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-.certification .certificate-filters {
+.certification .search-filter-controls {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-bottom: 2rem;
   position: relative;
   z-index: 1;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.certification .certificate-search {
+  flex-grow: 1;
+  max-width: 400px;
+  margin: 0;
+}
+.certification .certificate-search .form-control {
+  background-color: rgba(65, 65, 65, 0.5);
+  border: 1px solid rgba(240, 248, 255, 0.2);
+  color: aliceblue;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+.certification .certificate-search .form-control::-moz-placeholder {
+  color: rgba(240, 248, 255, 0.6);
+}
+.certification .certificate-search .form-control::placeholder {
+  color: rgba(240, 248, 255, 0.6);
+}
+.certification .certificate-search .form-control:focus {
+  background-color: rgba(77, 77, 77, 0.6);
+  border-color: aliceblue;
+  box-shadow: 0 0 0 0.2rem rgba(240, 248, 255, 0.25);
+  color: aliceblue;
+}
+.certification .certificate-filters {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0;
 }
 .certification .certificate-filters .filter-btn {
   background: rgba(52, 52, 52, 0.4);
   border: 1px solid aliceblue;
   color: aliceblue;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: 12px;
   font-size: 0.9rem;
   cursor: pointer;
@@ -1945,33 +1981,6 @@
     font-size: 1rem;
     padding: 0.6rem 1.5rem;
   }
-}
-.certification .certificate-search {
-  position: relative;
-  z-index: 1;
-  max-width: 600px;
-  margin: 0 auto 1.5rem;
-}
-.certification .certificate-search .form-control {
-  background-color: rgba(65, 65, 65, 0.5);
-  border: 1px solid rgba(240, 248, 255, 0.2);
-  color: aliceblue;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px);
-}
-.certification .certificate-search .form-control::-moz-placeholder {
-  color: rgba(240, 248, 255, 0.6);
-}
-.certification .certificate-search .form-control::placeholder {
-  color: rgba(240, 248, 255, 0.6);
-}
-.certification .certificate-search .form-control:focus {
-  background-color: rgba(77, 77, 77, 0.6);
-  border-color: aliceblue;
-  box-shadow: 0 0 0 0.2rem rgba(240, 248, 255, 0.25);
-  color: aliceblue;
 }
 .certification .certificates-container {
   position: relative;

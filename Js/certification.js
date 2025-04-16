@@ -1,4 +1,4 @@
-/** @format */		
+/** @format */
 
 document.addEventListener("DOMContentLoaded", function () {
 	// Add a small delay to ensure all elements are fully rendered
@@ -20,10 +20,147 @@ function initCertificationPage() {
 		? certificatePreview.querySelector("img")
 		: null;
 	const closePreviewBtn = document.querySelector(".close-preview");
+	const searchInput = document.getElementById("certificateSearchInput"); // Get search input
 
-	console.log("Filter buttons found:", filterButtons.length);
-	console.log("Certificate items found:", certificateItems.length);
-	// Filter functionality
+	let currentFilter = "all"; // Keep track of the current category filter
+	let currentSearchTerm = ""; // Keep track of the current search term
+
+	// Combined filter and search function
+	function filterAndSearchCertificates() {
+		// Hide all certificates first with fade out
+		certificateItems.forEach((item) => {
+			item.classList.add("filtering-out");
+			item.querySelector(".certificate-content").classList.remove("visible");
+		});
+
+		// Wait for fade out animation
+		setTimeout(() => {
+			certificatesContainer.classList.add("filtering");
+			let visibleCount = 0;
+			const searchTermLower = currentSearchTerm.toLowerCase();
+
+			certificateItems.forEach((item) => {
+				const category = item.getAttribute("data-category");
+				const title = item.querySelector("h3")?.textContent.toLowerCase() || "";
+				const description =
+					item.querySelector("p")?.textContent.toLowerCase() || "";
+				const issuer =
+					item
+						.querySelector(".certificate-issuer span")
+						?.textContent.toLowerCase() || "";
+
+				const matchesCategory =
+					currentFilter === "all" || category === currentFilter;
+				const matchesSearch =
+					searchTermLower === "" ||
+					title.includes(searchTermLower) ||
+					description.includes(searchTermLower) ||
+					issuer.includes(searchTermLower);
+
+				if (matchesCategory && matchesSearch) {
+					item.style.display = "";
+					item.classList.remove("filtering-out");
+					// Reset position styles that might interfere with new layout
+					item.style.position = "";
+					item.style.left = "";
+					item.style.top = "";
+					visibleCount++;
+				} else {
+					item.style.display = "none";
+				}
+			}); // Show/hide no results message
+			if (visibleCount === 0) {
+				noResultsMsg.style.display = "block";
+			} else {
+				noResultsMsg.style.display = "none";
+			}
+
+			// Force layout recalculation
+			certificatesContainer.offsetHeight; // Completely reset and reinitialize masonry
+			const grid = document.querySelector(".row[data-masonry]");
+
+			// Fix for masonry layout
+			if (typeof Masonry !== "undefined" && grid) {
+				// Destroy previous masonry instance if it exists
+				if (grid.masonry) {
+					grid.masonry.destroy();
+					delete grid.masonry;
+				}
+
+				// Remove any masonry attributes that might be causing issues
+				grid.removeAttribute("data-masonry-id");
+
+				// Reset all items to ensure clean layout
+				grid.querySelectorAll(".certificate-item").forEach((item) => {
+					if (item.style.display !== "none") {
+						// Reset all positioning that might have been set by previous masonry
+						item.style.position = "";
+						item.style.left = "";
+						item.style.top = "";
+					}
+				}); // Wait a moment to ensure DOM is ready
+				setTimeout(() => {
+					// Create fresh masonry instance with proper configuration
+					const masonryInstance = new Masonry(grid, {
+						itemSelector: ".certificate-item:not([style*='display: none'])",
+						percentPosition: true,
+						columnWidth: ".col-md-4",
+						transitionDuration: 0,
+						initLayout: true,
+						horizontalOrder: true,
+						fitWidth: false,
+					});
+
+					// Force layout recalculation
+					masonryInstance.layout();
+
+					// Store masonry instance on the grid element for future reference
+					grid.masonry = masonryInstance;
+
+					// After layout is applied, animate items in
+					setTimeout(() => {
+						let counter = 0;
+						certificateItems.forEach((item) => {
+							if (item.style.display !== "none") {
+								counter++;
+								setTimeout(() => {
+									item
+										.querySelector(".certificate-content")
+										.classList.add("visible");
+								}, 50 * counter);
+							}
+						});
+
+						// Remove filtering class after animations
+						setTimeout(() => {
+							certificatesContainer.classList.remove("filtering");
+							// Do another layout refresh after animations
+							masonryInstance.layout();
+						}, 500);
+					}, 100);
+				}, 50);
+			} else {
+				// If Masonry not available, still do the animations
+				let counter = 0;
+				certificateItems.forEach((item) => {
+					if (item.style.display !== "none") {
+						counter++;
+						setTimeout(() => {
+							item
+								.querySelector(".certificate-content")
+								.classList.add("visible");
+						}, 50 * counter);
+					}
+				});
+
+				setTimeout(() => {
+					certificatesContainer.classList.remove("filtering");
+				}, 500);
+			}
+		}, 300); // Wait for fade out animation
+	}
+
+	// Filter button event listeners
 	filterButtons.forEach((button) => {
 		button.addEventListener("click", () => {
 			// Update active button
@@ -32,125 +169,19 @@ function initCertificationPage() {
 
 			// Get filter category
 			const filterValue = button.getAttribute("data-filter");
+			currentFilter = filterValue; // Update current filter
 
-			// Hide all certificates first with fade out
-			certificateItems.forEach((item) => {
-				item.classList.add("filtering-out");
-				item.querySelector(".certificate-content").classList.remove("visible");
-			});
-			// Wait for fade out animation to complete
-			setTimeout(() => {
-				// Add filtering class to container
-				certificatesContainer.classList.add("filtering"); // Filter certificates
-				let visibleCount = 0;
-
-				certificateItems.forEach((item) => {
-					if (
-						filterValue === "all" ||
-						item.getAttribute("data-category") === filterValue
-					) {
-						item.style.display = "";
-						item.classList.remove("filtering-out");
-						// Reset position styles that might interfere with new layout
-						item.style.position = "";
-						item.style.left = "";
-						item.style.top = "";
-						visibleCount++;
-					} else {
-						item.style.display = "none";
-					}
-				}); // Show/hide no results message
-				if (visibleCount === 0) {
-					noResultsMsg.style.display = "block";
-				} else {
-					noResultsMsg.style.display = "none";
-				}
-
-				// Force layout recalculation
-				certificatesContainer.offsetHeight; // Completely reset and reinitialize masonry
-				const grid = document.querySelector(".row[data-masonry]");
-
-				// Fix for masonry layout
-				if (typeof Masonry !== "undefined" && grid) {
-					// Destroy previous masonry instance if it exists
-					if (grid.masonry) {
-						grid.masonry.destroy();
-						delete grid.masonry;
-					}
-
-					// Remove any masonry attributes that might be causing issues
-					grid.removeAttribute("data-masonry-id");
-
-					// Reset all items to ensure clean layout
-					grid.querySelectorAll(".certificate-item").forEach((item) => {
-						if (item.style.display !== "none") {
-							// Reset all positioning that might have been set by previous masonry
-							item.style.position = "";
-							item.style.left = "";
-							item.style.top = "";
-						}
-					}); // Wait a moment to ensure DOM is ready
-					setTimeout(() => {
-						// Create fresh masonry instance with proper configuration
-						const masonryInstance = new Masonry(grid, {
-							itemSelector: ".certificate-item:not([style*='display: none'])",
-							percentPosition: true,
-							columnWidth: ".col-md-4",
-							transitionDuration: 0,
-							initLayout: true,
-							horizontalOrder: true,
-							fitWidth: false,
-						});
-
-						// Force layout recalculation
-						masonryInstance.layout();
-
-						// Store masonry instance on the grid element for future reference
-						grid.masonry = masonryInstance;
-
-						// After layout is applied, animate items in
-						setTimeout(() => {
-							let counter = 0;
-							certificateItems.forEach((item) => {
-								if (item.style.display !== "none") {
-									counter++;
-									setTimeout(() => {
-										item
-											.querySelector(".certificate-content")
-											.classList.add("visible");
-									}, 50 * counter);
-								}
-							});
-
-							// Remove filtering class after animations
-							setTimeout(() => {
-								certificatesContainer.classList.remove("filtering");
-								// Do another layout refresh after animations
-								masonryInstance.layout();
-							}, 500);
-						}, 100);
-					}, 50);
-				} else {
-					// If Masonry not available, still do the animations
-					let counter = 0;
-					certificateItems.forEach((item) => {
-						if (item.style.display !== "none") {
-							counter++;
-							setTimeout(() => {
-								item
-									.querySelector(".certificate-content")
-									.classList.add("visible");
-							}, 50 * counter);
-						}
-					});
-
-					setTimeout(() => {
-						certificatesContainer.classList.remove("filtering");
-					}, 500);
-				}
-			}, 300); // Wait for fade out animation
+			filterAndSearchCertificates(); // Call combined function
 		});
-	}); // Certificate preview functionality with enhanced image viewing
+	});
+
+	// Search input event listener
+	searchInput.addEventListener("input", () => {
+		currentSearchTerm = searchInput.value;
+		filterAndSearchCertificates(); // Call combined function
+	});
+
+	// Certificate preview functionality with enhanced image viewing
 	// Make both the view buttons and images clickable
 	const viewButtons = document.querySelectorAll(".view-certificate");
 	const certificateImages = document.querySelectorAll(".certificate-image");

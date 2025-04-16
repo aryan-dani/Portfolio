@@ -64,21 +64,60 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); // Add subtle shadow
   }
 
-  // Filter controls
-  .certificate-filters {
+  // Combined Search and Filter Controls Layout
+  .search-filter-controls {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    justify-content: space-between; // Pushes search left, filters right
+    align-items: center;
+    flex-wrap: wrap; // Allow wrapping on smaller screens
+    gap: 1rem;
     margin-bottom: 2rem;
     position: relative;
     z-index: 1;
+    max-width: 900px; // Constrain width
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // Search Input Styles (adjustments)
+  .certificate-search {
+    flex-grow: 1; // Allow search to take available space
+    max-width: 400px; // Limit max width
+    margin: 0; // Remove auto margins
+
+    .form-control {
+      background-color: rgba(lighten($primary-color, 10%), 0.5);
+      border: 1px solid rgba($secondary-color, 0.2);
+      color: $secondary-color;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      backdrop-filter: blur(5px);
+
+      &::placeholder {
+        color: rgba($secondary-color, 0.6);
+      }
+
+      &:focus {
+        background-color: rgba(lighten($primary-color, 15%), 0.6);
+        border-color: $secondary-color;
+        box-shadow: 0 0 0 0.2rem rgba($secondary-color, 0.25);
+        color: $secondary-color;
+      }
+    }
+  }
+
+  // Filter controls (adjustments)
+  .certificate-filters {
+    display: flex;
+    justify-content: flex-end; // Align buttons to the right
+    gap: 0.5rem;
+    margin-bottom: 0; // Remove bottom margin as parent handles it
 
     .filter-btn {
       background: rgba(lighten($primary-color, 5%), 0.4);
       border: 1px solid $secondary-color;
       color: $secondary-color;
-      padding: 0.5rem 1.2rem;
+      padding: 0.5rem 1rem; // Slightly adjust padding if needed
       border-radius: 12px;
       font-size: 0.9rem;
       cursor: pointer;
@@ -102,34 +141,6 @@
       @include media-md {
         font-size: 1rem;
         padding: 0.6rem 1.5rem;
-      }
-    }
-  }
-
-  // Search Input Styles
-  .certificate-search {
-    position: relative;
-    z-index: 1;
-    max-width: 600px; // Limit width
-    margin: 0 auto 1.5rem; // Center and add margin
-
-    .form-control {
-      background-color: rgba(lighten($primary-color, 10%), 0.5);
-      border: 1px solid rgba($secondary-color, 0.2);
-      color: $secondary-color;
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      backdrop-filter: blur(5px);
-
-      &::placeholder {
-        color: rgba($secondary-color, 0.6);
-      }
-
-      &:focus {
-        background-color: rgba(lighten($primary-color, 15%), 0.6);
-        border-color: $secondary-color;
-        box-shadow: 0 0 0 0.2rem rgba($secondary-color, 0.25);
-        color: $secondary-color;
       }
     }
   }
