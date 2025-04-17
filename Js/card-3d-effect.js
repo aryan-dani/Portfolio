@@ -2,7 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 	const cards = document.querySelectorAll(
-		".Projects, .certificate-content, .skills__card"
+		".project-card, .certificate-content, .skills__card" // Updated selector to include .project-card
 	);
 
 	cards.forEach((card) => {
