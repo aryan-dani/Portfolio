@@ -125,17 +125,23 @@
 			</nav>
 		</header>
 		<main>
-			<section class="home animate-on-scroll">
-				<!-- Content wrapper to ensure all elements are properly positioned -->
-				<div class="content-wrapper">
-					<h1 class="home__name animate-on-scroll">
-						Aryan
-						<span class="home__name--last">Dani</span>
+			<section class="home">
+				<!-- Add particles container -->
+				<div id="particles-js"></div>
+
+				<!-- New structure: Content on left, Image on right -->
+				<div class="home__content animate-on-scroll">
+					<h1 class="home__name">
+						ARYAN
+						<span class="home__name--last">DANI</span>
 					</h1>
-					<h2 class="animate-on-scroll">
-						Tech Enthusiast, Web Developer and AI Engineer
-					</h2>
-					<div class="social-icons animate-on-scroll">
+					<h2>Tech Enthusiast, Web Developer and AI Engineer</h2>
+					<p class="intro-text">
+						I’m a passionate Web Developer and AI Engineer, dedicated to
+						crafting seamless, high‑performance web solutions. Discover my
+						projects, skills, and certifications below.
+					</p>
+					<div class="social-icons">
 						<ul class="link-list">
 							<li class="link-title">
 								<a
@@ -147,7 +153,7 @@
 									LinkedIn
 								</a>
 							</li>
-
+							<!-- Add Instagram Link -->
 							<li class="link-title">
 								<a
 									href="https://www.instagram.com/aryandani_06/?hl=en"
@@ -158,6 +164,7 @@
 									Instagram
 								</a>
 							</li>
+							<!-- Add Twitter Link -->
 							<li class="link-title">
 								<a
 									href="https://x.com/Killfall15"
@@ -180,12 +187,22 @@
 							</li>
 						</ul>
 					</div>
-					<!-- Add a CTA button -->
-					<a href="projects.html" class="cta-button animate-on-scroll">
+					<!-- Move CTA button inside content div -->
+					<a href="projects.html" class="cta-button">
 						<span>View My Work</span>
 						<i class="fa-solid fa-arrow-right"></i>
 					</a>
 				</div>
+
+				<!-- Image container -->
+				<div class="home__image-container animate-on-scroll">
+					<img
+						src="Images/Profile photo.jpg"
+						alt="Aryan Dani"
+						class="home__image" />
+				</div>
+
+				<!-- Removed content-wrapper div as structure is now handled by home__content and home__image-container -->
 			</section>
 		</main>
 		<footer>
@@ -206,6 +223,117 @@
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 			crossorigin="anonymous"
 			defer></script>
+
+		<!-- Add particles.js library -->
+		<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+		<!-- Add script to initialize particles.js -->
+		<script>
+			particlesJS("particles-js", {
+				particles: {
+					number: {
+						value: 60, // Reduced particle count
+						density: {
+							enable: true,
+							value_area: 800,
+						},
+					},
+					color: {
+						value: "#00adb5", // Use secondary color
+					},
+					shape: {
+						type: "circle",
+						stroke: {
+							width: 0,
+							color: "#000000",
+						},
+						polygon: {
+							nb_sides: 5,
+						},
+					},
+					opacity: {
+						value: 0.5,
+						random: false,
+						anim: {
+							enable: false,
+							speed: 1,
+							opacity_min: 0.1,
+							sync: false,
+						},
+					},
+					size: {
+						value: 3,
+						random: true,
+						anim: {
+							enable: false,
+							speed: 40,
+							size_min: 0.1,
+							sync: false,
+						},
+					},
+					line_linked: {
+						enable: true,
+						distance: 150,
+						color: "#ffffff",
+						opacity: 0.4,
+						width: 1,
+					},
+					move: {
+						enable: true,
+						speed: 2, // Slower speed
+						direction: "none",
+						random: false,
+						straight: false,
+						out_mode: "out",
+						bounce: false,
+						attract: {
+							enable: false,
+							rotateX: 600,
+							rotateY: 1200,
+						},
+					},
+				},
+				interactivity: {
+					detect_on: "canvas",
+					events: {
+						onhover: {
+							enable: true,
+							mode: "repulse", // Change to repulse for more interaction
+						},
+						onclick: {
+							enable: true,
+							mode: "push", // Keep push on click
+						},
+						resize: true,
+					},
+					modes: {
+						grab: {
+							distance: 140,
+							line_linked: {
+								opacity: 1,
+							},
+						},
+						bubble: {
+							distance: 250, // Smaller distance
+							size: 10, // Smaller bubble size
+							duration: 2,
+							opacity: 8,
+							speed: 3,
+						},
+						repulse: {
+							distance: 150, // Increased distance for repulse
+							duration: 0.6, // Faster repulse reaction
+						},
+						push: {
+							particles_nb: 4,
+						},
+						remove: {
+							particles_nb: 2,
+						},
+					},
+				},
+				retina_detect: true,
+			});
+		</script>
 
 		<!-- Intersection Observer for animations -->
 		<script>

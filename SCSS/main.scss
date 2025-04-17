@@ -61,6 +61,7 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: $primary-color;
   color: #fff;
+  overflow-x: hidden; // Prevent horizontal overflow
   // Add transition here for theme changes
   transition: background-color $transition-speed ease-in-out,
     color $transition-speed ease-in-out;

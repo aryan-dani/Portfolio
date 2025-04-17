@@ -258,6 +258,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Initialize page-specific animations
 	if (isHomePage) {
 		initHomePageAnimations();
+		// Initialize Vanilla Tilt for the home image
+		const homeImageContainer = document.querySelector(".home__image-container");
+		if (homeImageContainer && typeof VanillaTilt !== "undefined") {
+			VanillaTilt.init(homeImageContainer, {
+				max: 15, // Max tilt rotation (degrees)
+				speed: 400, // Speed of the enter/exit transition
+				glare: true, // Add a glare effect
+				"max-glare": 0.3, // Glare intensity (0-1)
+			});
+		}
 	} else if (pagePath.includes("jobs.html")) {
 		initJobsPageAnimations();
 	} else if (pagePath.includes("projects.html")) {
@@ -351,6 +361,9 @@ function initHomePageAnimations() {
 
 	// Step 2: Execute animations in sequence with proper timing
 	executeHomeAnimationSequence();
+		
+	// Step 3: Initialize interactive effects like parallax
+	addHomeContentParallax();
 }
 
 // Prepare all home page animations without starting them
@@ -529,6 +542,58 @@ function prepareHomeAnimations() {
 			);
 		});
 	}
+}
+
+// Add mouse move parallax effect to home content
+function addHomeContentParallax() {
+	const content = document.querySelector(".home__content");
+	if (!content) return;
+
+	// Reduce effect on low power devices or if reduced motion is preferred
+	const isLowPowerDevice =
+		window.navigator.userAgent.match(
+			/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+		) !== null;
+	const prefersReducedMotion = window.matchMedia(
+		"(prefers-reduced-motion: reduce)"
+	).matches;
+
+	const maxOffset = 15; // Max pixels to move
+	const dampening = 0.05; // How quickly it reacts (lower is slower/smoother)
+
+	let targetX = 0;
+	let targetY = 0;
+	let currentX = 0;
+	let currentY = 0;
+
+	function updatePosition(event) {
+		const centerX = window.innerWidth / 2;
+		const centerY = window.innerHeight / 2;
+		const mouseX = event.clientX;
+		const mouseY = event.clientY;
+
+		// Calculate target offset based on mouse position relative to center
+		targetX = ((mouseX - centerX) / centerX) * -maxOffset;
+		targetY = ((mouseY - centerY) / centerY) * -maxOffset;
+	}
+
+	function animate() {
+		// Smoothly interpolate current position towards target position
+		currentX += (targetX - currentX) * dampening;
+		currentY += (targetY - currentY) * dampening;
+
+		// Apply transform only if not preferring reduced motion
+		if (!prefersReducedMotion && !isLowPowerDevice) {
+			content.style.transform = `translate(${currentX}px, ${currentY}px)`;
+		}
+
+		// Continue the animation loop
+		requestAnimationFrame(animate);
+	}
+
+	// Add listener and start animation loop
+	window.addEventListener("mousemove", updatePosition);
+	animate(); // Start the animation loop
 }
 
 // Execute home animations in proper sequence
@@ -1117,19 +1182,21 @@ function animateSkillCards(container) {
 	if (!container) return;
 
 	// Target only cards that are NOT set to display: none by the filtering logic
-	const cards = container.querySelectorAll(".skills__card:not([style*='display: none'])");
+	const cards = container.querySelectorAll(
+		".skills__card:not([style*='display: none'])"
+	);
 	// const animationSettings = {
 	// 	duration: "0.6s",
 	// 	staggerDelay: 0.08,
 	// };
 
 	cards.forEach((card, index) => {
-		// --- TEMPORARY SIMPLIFICATION FOR DEBUGGING --- 
+		// --- TEMPORARY SIMPLIFICATION FOR DEBUGGING ---
 		// Directly apply final styles instead of transitioning
 		card.style.opacity = "1";
 		card.style.transform = "translateY(0)";
-        card.style.transition = 'none'; // Disable transition temporarily
-        card.style.animation = 'none'; // Disable other animations temporarily
+		card.style.transition = "none"; // Disable transition temporarily
+		card.style.animation = "none"; // Disable other animations temporarily
 		card.style.cursor = "pointer";
 		card.title = "Click to see details";
 
@@ -1143,8 +1210,8 @@ function animateSkillCards(container) {
 		// } cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
 		// 	animationSettings.staggerDelay * index
 		// }s`;
-		// card.style.cursor = "pointer"; 
-		// card.title = "Click to see details"; 
+		// card.style.cursor = "pointer";
+		// card.title = "Click to see details";
 
 		// // Use setTimeout for staggered animation start
 		// setTrackedTimeout(

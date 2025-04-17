@@ -2,41 +2,134 @@
 @use "mixins" as *;
 
 .home {
-  height: 100%;
-  padding-left: 3vh;
-  padding-top: 10vh;
+  min-height: 100vh;
+  padding: 15vh 8vw; // Increased padding for more space
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5rem; // Increased gap
   overflow: hidden;
-  text-align: left;
-  background: linear-gradient(to right,
-      rgba($primary-color, 0.9),
-      rgba($primary-color, 0)),
-    url("../Images/Header.jpg") center top;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: linear-gradient(-45deg, $primary-color, lighten($primary-color, 5%), darken($primary-color, 5%), $primary-color);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
   position: relative;
 
-  .content-wrapper {
-    position: relative;
+  #particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; // Place behind content
+  }
+
+  // Style the content area
+  &__content {
+    flex: 1;
+    max-width: 700px; // Increased max width
     z-index: 1;
-    max-width: 800px;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    height: calc(100vh - 10vh);
-    justify-content: flex-start;
+    gap: 2rem; // Increased gap
+    opacity: 0;
+    transform: translateX(-40px); // Start further left
+    animation: slideInLeftEnhanced 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.2s; // Smoother cubic-bezier
+    position: relative;
+    padding: 2rem; // Added padding for internal spacing
+    background-color: rgba(lighten($primary-color, 8%), 0.5); // Slightly adjusted opacity/lightness
+    backdrop-filter: blur(10px); // Slightly increased blur
+    border: 1px solid rgba($secondary-color, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+    // Ensure text wraps within the content box
+
+    // Add subtle background glow blob
+    &::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle at center, rgba($secondary-color, 0.3), transparent 70%);
+      filter: blur(90px);
+      top: -50px;
+      left: -60px;
+      z-index: 0;
+      animation: floatBlob 7s ease-in-out infinite alternate; // Alternate direction
+    }
+
+    p.intro-text {
+      max-width: 700px;
+      color: $secondary-color;
+      margin: 0;
+      text-align: justify;
+      font-size: 1.1rem;
+      line-height: 1.8; // Increased line-height for readability
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  // Style the image container
+  &__image-container {
+    flex-basis: 40%; // Adjusted basis
+    max-width: 450px; // Adjusted max width for circular image
+    z-index: 1;
+    position: relative;
+    opacity: 0;
+    transform: translateX(40px) scale(0.95); // Start further right and slightly scaled down
+    animation: slideInRightFadeEnhanced 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.5s; // Smoother, delayed animation
+    transition: transform 0.4s ease; // Keep transform transition for potential JS effects
+    overflow: hidden; // Add this to clip any potential shadow overflow
+    border-radius: 50%; // Apply border-radius to the container as well
+
+    // Add subtle background glow blob
+    &::before {
+      content: '';
+      position: absolute;
+      width: 280px;
+      height: 250px;
+      background: radial-gradient(circle at center, rgba($secondary-color, 0.25), transparent 70%);
+      filter: blur(110px);
+      bottom: -60px;
+      right: -60px;
+      z-index: 0;
+      animation: floatBlob 9s ease-in-out infinite alternate -2s; // Alternate direction, offset start
+    }
+
+    // Remove hover effects from container, apply directly to image
+    &:hover {
+      transform: scale(1.02); // Only subtle scale on container hover
+      box-shadow: none !important; // Force removal of box-shadow on container hover
+    }
+  }
+
+  // Style the image itself - CIRCULAR
+  &__image {
+    width: 100%;
+    aspect-ratio: 1 / 1; // Maintain square aspect ratio before rounding
+    border-radius: 50%; // Make it circular
+    object-fit: cover; // Ensure image covers the area well
+    display: block; // Ensure it behaves like a block element
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); // Slightly softer default shadow
+    // Transition for the glow effect
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease-out;
+    will-change: transform, box-shadow; // Performance hint
+
+    &:hover {
+      box-shadow: 0 0 25px 3px rgba($secondary-color, 0.6), 0 5px 15px rgba(0, 0, 0, 0.25); // Adjusted glow intensity/spread
+    }
   }
 
   &__name {
-    font-size: 2.5rem;
-    margin-top: 0.4rem;
-    margin-left: 0.6rem;
-    font-weight: 800;
+    font-size: 3.6rem; // Slightly reduced base font size
+    margin-top: 0;
+    margin-left: 0;
+    font-weight: 700;
     position: relative;
     z-index: 1;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease forwards 0.3s;
+    // Add subtle text shadow for depth
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 
     &:hover {
       cursor: default;
@@ -54,99 +147,104 @@
       display: inline-block;
       -webkit-background-clip: text;
       background-clip: text;
-      background-image: linear-gradient(45deg,
-          $primary-color,
-          lighten($primary-color, 25%),
+      background-image: linear-gradient(60deg,
+          lighten($secondary-color, 10%),
           $secondary-color,
-          $primary-color);
-      background-size: 300% auto;
+          darken($secondary-color, 10%),
+          $secondary-color,
+          lighten($secondary-color, 10%));
+      background-size: 250% auto;
       color: transparent;
-      animation: gradient-text 6s ease infinite;
-      text-shadow: 0 0 2px rgba($secondary-color, 0.8),
-        0 5px 15px rgba($primary-color, 0.3);
+      animation: gradient-text 8s ease infinite;
+      text-shadow: 0 0 5px rgba($secondary-color, 0.6), // Brighter base glow
+        0 0 15px rgba($secondary-color, 0.3),
+        0 4px 10px rgba(darken($primary-color, 15%), 0.3); // Darker depth shadow
 
       &:hover {
         cursor: default;
-        transform: translateY(-2px); // Slightly less jumpy
+        transform: translateY(-4px) scale(1.02); // More lift and slight scale
         animation-play-state: paused;
-        filter: drop-shadow(0 0 8px rgba($primary-color, 0.8)); // Enhanced glow
+        filter: drop-shadow(0 0 12px rgba($secondary-color, 0.8)); // Brighter glow on hover
       }
     }
   }
 
   h2 {
-    color: $primary-color;
-    background-color: $secondary-color;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 0.3rem;
-    margin-left: 0.6rem;
-    padding: 0.4rem 0.8rem;
-    display: inline-block;
-    border-radius: 8px;
+    // Subtitle adjustments
+    color: $text-color; // Use standard text color for better readability
+    background-color: transparent; // Remove background color
+    font-size: 1.5rem; // Slightly reduced base font size
+    font-weight: 500; // Slightly lighter weight
+    margin-top: 0.3rem; // More space above
+    margin-bottom: 1rem; // More space below
+    margin-left: 0;
+    padding: 0; // Remove padding
+    display: block; // Ensure it takes full width available in content
+    border-radius: 0; // Remove border-radius
     position: relative;
     z-index: 1;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease forwards 0.6s;
+    overflow: visible; // Ensure text doesn't get cut off
+    white-space: normal; // Allow text wrapping
+    line-height: 1.4; // Improve line spacing if it wraps
   }
 
   .social-icons {
     position: relative;
     z-index: 1;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease forwards 0.9s;
-    will-change: transform, opacity;
+    margin: 1rem 0 2rem 0; // Adjusted margin
 
     .link-list {
       list-style: none;
       padding: 0;
-      margin: 1.5rem 0.5rem;
+      margin: 0; // Remove margin
       display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
+      flex-direction: row; // Display icons horizontally
+      flex-wrap: wrap; // Allow wrapping
+      gap: 1.5rem; // Slightly increased gap
 
       .link-title {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 10px; // Adjust gap
         width: fit-content;
 
         a {
           margin: 0.3rem 0;
           font-weight: 700;
-          font-size: 1.2rem;
+          font-size: 1.05rem; // Slightly increase font size
           text-decoration: none;
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Smooth all transitions
           position: relative;
           display: inline-flex; // Use inline-flex for alignment
           align-items: center;
           gap: 10px;
-          padding: 0.6rem 1.2rem; // Adjusted padding
+          padding: 0.6rem 1.1rem; // Slightly adjust padding
           border-radius: 8px;
-          background-color: rgba(255, 255, 255, 0.1); // Slightly more visible background
-          color: $secondary-color; // Default text color
+          background-color: rgba($secondary-color, 0.1); // Slightly less intense background
+          color: lighten($text-color, 10%); // Lighter default text
+          border: 1px solid rgba($secondary-color, 0.2); // Subtle border
           width: fit-content;
           overflow: hidden; // Needed for potential future effects like shine
 
           i {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.4rem; // Make icons slightly larger within the link
+            color: $secondary-color; // Icon color matches secondary
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             will-change: transform, color;
             position: relative; // Ensure icon stays aligned
             z-index: 1;
           }
 
           &:hover {
-            color: $primary-color; // Change text color on hover
-            background-color: $secondary-color; // Change background on hover
-            transform: translateX(5px) scale(1.05); // Adjusted transform
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); // Enhanced shadow
+            transform: translateY(-6px) scale(1.1); // More pronounced lift and scale
+            box-shadow: 0 8px 20px rgba($secondary-color, 0.35); // Adjusted shadow
+            color: $primary-color;
+            background-color: $secondary-color;
+            border-color: $secondary-color; // Make border solid on hover
 
             i {
-              color: $primary-color !important; // Ensure icon contrast on hover
-              transform: scale(1.1) rotate(-5deg); // Add subtle icon animation
+              color: $primary-color !important;
+              transform: scale(1.2) rotate(-12deg); // More icon movement
             }
           }
         }
@@ -154,112 +252,209 @@
     }
   }
 
-  // CTA Button styling - positioned at bottom left with enhanced styling
   .cta-button {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    background-color: $secondary-color;
+    background: linear-gradient(45deg, $secondary-color, lighten($secondary-color, 15%));
+    background-size: 200% 200%;
     color: $primary-color;
     font-weight: 600;
-    padding: 0.7rem 1.5rem;
+    padding: 0.9rem 2rem; // Slightly larger padding
+    font-size: 1.2rem; // Slightly larger font
     border-radius: 8px;
-    margin-top: auto; // Push to bottom of flexbox container
-    margin-bottom: 2rem; // Add some space from the bottom
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 2px solid transparent;
+    margin-top: 1rem; // Adjusted margin
+    margin-bottom: 0; // Remove bottom margin
+    box-shadow: 0 6px 18px rgba(darken($primary-color, 20%), 0.3); // Darker shadow
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Smooth all transitions
+    border: 1px solid $secondary-color; // Add border
     position: relative;
     overflow: hidden;
-    align-self: flex-start; // Align to left
+    align-self: flex-start; // Ensure it stays left-aligned
     z-index: 1;
     text-decoration: none;
     @include button-hover;
-    animation-name: bounce;
-    animation-duration: 1s;
-    animation-timing-function: ease;
-    animation-delay: 1.5s;
-    animation-iteration-count: 1;
+    animation: none !important; // remove any bounce
 
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      background-position: right center; // Change gradient direction on hover
+      transform: translateY(-5px) scale(1.03); // More lift and slight scale
+      box-shadow: 0 12px 25px rgba($secondary-color, 0.4), 0 0 15px rgba($secondary-color, 0.2); // Combined shadow + glow
       background-color: lighten($secondary-color, 5%);
+      border-color: lighten($secondary-color, 5%);
 
       i {
-        transform: translateX(3px);
+        transform: translateX(5px) rotate(10deg); // Add rotation to arrow
       }
     }
 
     &:active {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 5px 15px rgba(darken($primary-color, 20%), 0.3);
     }
 
     i {
-      transition: transform 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-  }
-
-  // Add styles for the particles container
-  #particles-home {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
   }
 }
 
-@media (max-width: 768px) {
-  .home {
-    padding-left: 1.5rem;
-    padding-top: 8vh;
+// Keyframe for background gradient animation
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
 
-    .content-wrapper {
-      height: calc(100vh - 12vh); // Adjust height for mobile
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// Enhanced Keyframe animations
+@keyframes slideInLeftEnhanced {
+  from {
+    opacity: 0;
+    transform: translateX(-40px) rotateY(10deg); // Add slight rotation
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0);
+  }
+}
+
+@keyframes slideInRightFadeEnhanced {
+  from {
+    opacity: 0;
+    transform: translateX(40px) scale(0.95) rotateY(-10deg); // Add slight rotation
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotateY(0);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 992px) {
+  .home {
+    padding: 10vh 6vw; // Adjust padding
+    gap: 3rem; // Adjust gap
+    flex-direction: column; // Stack elements vertically
+    text-align: center; // Center text
+
+    &__content {
+      max-width: 100%;
+      width: 100%; // Ensure it takes full width when stacked
+      align-items: center;
+      text-align: center; // Center text on tablet/mobile
+      animation-name: slideInUpFadeEnhanced; // Use updated up animation
+    }
+
+    &__image-container {
+      order: -1;
+      max-width: 300px; // Adjust size for circular image
+      margin-bottom: 2.5rem;
+      animation-name: slideInUpFadeEnhanced; // Use updated up animation
+    }
+
+    &__name {
+      font-size: 3rem; // Adjust for tablet
     }
 
     h2 {
-      font-size: 1.3rem;
+      font-size: 1.6rem; // Adjust for tablet
+      max-width: 100%; // Allow full width
     }
 
-    .social-icons .link-list .link-title a {
-      font-size: 1rem;
+    .social-icons .link-list {
+      justify-content: center;
     }
 
     .cta-button {
-      padding: 0.6rem 1.2rem;
-      margin-bottom: 1.5rem; // Less space from bottom on mobile
+      align-self: center;
     }
   }
 }
 
 @media (max-width: 576px) {
   .home {
-    padding-left: 1rem;
-    padding-top: 6vh;
+    padding: 8vh 5vw;
+    gap: 2rem;
 
-    .content-wrapper {
-      height: calc(100vh - 10vh); // Adjust height for smaller mobile
+    &__image-container {
+      max-width: 220px; // Smaller image on mobile
     }
 
     &__name {
-      font-size: 2rem;
+      font-size: 2.5rem; // Adjust for mobile
     }
 
     h2 {
-      font-size: 1.1rem;
-      margin-top: 0.8rem;
+      font-size: 1.3rem; // Adjust for mobile
     }
 
-    .social-icons {
-      margin-top: 1rem;
+    .social-icons .link-list {
+      gap: 1rem; // Adjust gap for mobile
+
+      a {
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem;
+
+        i {
+          font-size: 1.2rem;
+        }
+      }
     }
 
     .cta-button {
-      margin-bottom: 1rem; // Even less space from bottom on small mobile
+      padding: 0.8rem 1.6rem;
+      font-size: 1.05rem;
     }
+  }
+}
+
+// Enhanced slide up animation
+@keyframes slideInUpFadeEnhanced {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Float blob animation
+@keyframes floatBlob {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-25px) translateX(15px) rotate(5deg);
+  }
+}
+
+// Gradient text animation
+@keyframes gradient-text {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
