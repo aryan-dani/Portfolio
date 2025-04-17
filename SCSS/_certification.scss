@@ -167,7 +167,7 @@
         cursor: pointer;
         padding: 0 5px; // Add some padding for easier clicking
         line-height: 1;
-        display: none; // Hidden by default, JS will show it
+        display: none; // Hide by default, JS will show it
 
         &:hover {
           color: $secondary-color; // Highlight on hover

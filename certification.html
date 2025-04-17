@@ -134,9 +134,8 @@
 										<button
 											type="button"
 											class="search-clear-btn"
-											aria-label="Clear search"
-											style="display: none">
-											&times;
+											aria-label="Clear search">
+											×
 										</button>
 									</div>
 									<!-- Certificate Filters -->
@@ -144,12 +143,13 @@
 										<button class="filter-btn active" data-filter="all">
 											All
 										</button>
-										<button
-											type="button"
-											class="search-clear-btn hidden"
-											aria-label="Clear search">
-											&times;
+										<button class="filter-btn" data-filter="web-dev">
+											Web Dev
 										</button>
+										<button class="filter-btn" data-filter="ai-ml">
+											AI & ML
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -159,7 +159,7 @@
 					<div class="certificates-container">
 						<div
 							class="row row-cols-1 row-cols-md-3 gx-4 gy-0 justify-content-around"
-							data-masonry='{"percentPosition": true }'>
+							data-masonry='{"percentPosition": true}'>
 							<div
 								class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item"
 								data-category="ai-ml">
@@ -359,7 +359,6 @@
 									</div>
 								</div>
 							</div>
-							<!-- Add remaining certificates -->
 							<div
 								class="col-xl-4 col-md-4 col-sm-12 align-content-top certificate-item"
 								data-category="web-dev">
@@ -526,19 +525,19 @@
 						</div>
 					</div>
 				</div>
-			</section>
 
-			<!-- Certificate Preview Modal -->
-			<div class="certificate-preview">
-				<div class="preview-container">
-					<img src="" alt="Certificate Preview" />
-					<button class="close-preview">×</button>
+				<!-- Certificate Preview Modal (Outside container, inside section) -->
+				<div class="certificate-preview">
+					<div class="preview-container">
+						<img src="" alt="Certificate Preview" />
+						<button class="close-preview">×</button>
+					</div>
 				</div>
-			</div>
+			</section>
 		</main>
 		<footer class="footer">
 			<a href="copyright.html" class="copyright-link"
-				>&copy; 2025 Aryan Dani All Rights Reserved</a
+				>© 2025 Aryan Dani All Rights Reserved</a
 			>
 		</footer>
 		<script

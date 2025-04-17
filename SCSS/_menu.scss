@@ -5,9 +5,11 @@
   0% {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
+
   50% {
     box-shadow: 0 2px 15px rgba($secondary-color, 0.5), 0 0 8px rgba($secondary-color, 0.4);
   }
+
   100% {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
@@ -64,7 +66,7 @@
       background-color: #fff;
       border-radius: 4px;
       transition: all 0.3s ease;
-      
+
     }
 
     &::after {
@@ -106,7 +108,7 @@
 
 .menu-toggle-shortcut {
   position: absolute;
-  top: 130%; 
+  top: 130%;
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.7rem;
