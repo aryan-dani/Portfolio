@@ -28,77 +28,84 @@
   }
 
   h2#heading {
-    display: block; // Change from inline-block
-    // margin-left: 35vw; // Remove fixed margin
-    text-align: center; // Center the heading
-    margin: 0 auto 1.5rem; // Adjust margins for centering
+    display: block; // Ensure it takes full width available
+    text-align: center; // Center the heading text
+    width: 100%; // Explicitly set width to 100%
+    margin: 0 auto 1.5rem; // Center block element and add bottom margin
     font-weight: 900;
-    font-size: 2.2rem; // Slightly increase size
-    padding: 2px 10px;
-    color: $secondary-color; // Ensure text is visible
-    // background-color: aliceblue; // Removed background
-    // border-radius: 8px; // Remove radius if no background
-    margin-bottom: 1rem;
+    font-size: 2.5rem; // Slightly larger font size
+    padding: 10px 20px; // Add some padding
+    color: $secondary-color;
+    margin-bottom: 1.5rem; // Consistent bottom margin
     animation: slide-in-heading 0.8s ease-out forwards;
     position: relative;
     z-index: 1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); // Add text shadow
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6); // Enhanced text shadow
   }
 
   p.intro-text {
-    max-width: 800px; // Slightly reduce max-width
-    color: $secondary-color; // Ensure text is visible
-    margin: 0 auto 3rem;
-    text-align: justify;
-    padding: 1.5rem; // Increase padding
+    width: 100%; // Make paragraph take full width
+    max-width: 900px; // Keep a max-width for readability
+    color: $secondary-color;
+    margin: 0 auto 3rem; // Center block element and add bottom margin
+    text-align: justify; // Justify text
+    padding: 2rem; // Increased padding
     font-size: 1.1rem;
-    line-height: 1.7; // Increase line-height
-    opacity: 1; // Ensure full opacity
+    line-height: 1.8; // Slightly increased line-height
+    opacity: 1;
     position: relative;
     z-index: 1;
-    // Reintroduce a subtle, blurred background
-    background-color: rgba(lighten($primary-color, 5%), 0.6);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba($secondary-color, 0.1);
-    border-radius: 10px; // Add border-radius
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); // Add subtle shadow
+    background-color: rgba(lighten($primary-color, 7%), 0.65); // Slightly adjusted background
+    backdrop-filter: blur(10px); // Slightly stronger blur
+    border: 1px solid rgba($secondary-color, 0.15); // Slightly more visible border
+    border-radius: 12px; // Slightly larger radius
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); // Enhanced shadow
   }
 
-  // Combined Search and Filter Controls Layout
-  .search-filter-controls {
-    display: flex;
-    justify-content: space-between; // Pushes search left, filters right
-    align-items: center;
-    flex-wrap: wrap; // Allow wrapping on smaller screens
-    gap: 1rem;
-    margin-bottom: 2rem;
+  // Container for search and filter controls
+  .search-filter-container {
+    background-color: rgba(lighten($primary-color, 5%), 0.5); // Transparent background
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba($secondary-color, 0.1);
+    border-radius: 10px;
+    padding: 1.5rem; // Add padding inside the container
+    margin: 0 auto 2.5rem; // Center container and add bottom margin
+    max-width: 900px; // Match intro text max-width
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 1;
-    max-width: 900px; // Constrain width
-    margin-left: auto;
-    margin-right: auto;
+  }
+
+  // Combined Search and Filter Controls Layout (inside the container)
+  .search-filter-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
   // Search Input Styles (adjustments)
   .certificate-search {
-    flex-grow: 1; // Allow search to take available space
-    max-width: 400px; // Limit max width
-    margin: 0; // Remove auto margins
+    flex-grow: 1;
+    max-width: 450px; // Slightly increase max width if needed
+    margin: 0;
 
     .form-control {
-      background-color: rgba(lighten($primary-color, 10%), 0.5);
-      border: 1px solid rgba($secondary-color, 0.2);
+      // Inherit background from container or set slightly different
+      background-color: rgba(lighten($primary-color, 12%), 0.6);
+      border: 1px solid rgba($secondary-color, 0.25);
       color: $secondary-color;
       border-radius: 8px;
       padding: 0.75rem 1rem;
       backdrop-filter: blur(5px);
 
       &::placeholder {
-        color: rgba($secondary-color, 0.6);
+        color: rgba($secondary-color, 0.65);
       }
 
       &:focus {
-        background-color: rgba(lighten($primary-color, 15%), 0.6);
+        background-color: rgba(lighten($primary-color, 18%), 0.7);
         border-color: $secondary-color;
         box-shadow: 0 0 0 0.2rem rgba($secondary-color, 0.25);
         color: $secondary-color;
@@ -109,25 +116,26 @@
   // Filter controls (adjustments)
   .certificate-filters {
     display: flex;
-    justify-content: flex-end; // Align buttons to the right
-    gap: 0.5rem;
-    margin-bottom: 0; // Remove bottom margin as parent handles it
+    justify-content: flex-end;
+    gap: 0.75rem; // Slightly increase gap
+    margin-bottom: 0;
 
     .filter-btn {
-      background: rgba(lighten($primary-color, 5%), 0.4);
-      border: 1px solid $secondary-color;
+      background: rgba(lighten($primary-color, 8%), 0.5); // Adjust background
+      border: 1px solid rgba($secondary-color, 0.8); // Stronger border
       color: $secondary-color;
-      padding: 0.5rem 1rem; // Slightly adjust padding if needed
-      border-radius: 12px;
+      padding: 0.6rem 1.2rem; // Adjust padding
+      border-radius: 15px; // More rounded
       font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
       &:hover {
-        background: rgba($secondary-color, 0.2);
+        background: rgba($secondary-color, 0.25);
         transform: translateY(-2px);
         border-color: $secondary-color;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       }
 
       &.active {
@@ -135,12 +143,12 @@
         color: $primary-color;
         font-weight: 600;
         box-shadow: 0 4px 12px rgba($secondary-color, 0.3);
-        border-color: $primary-color;
+        border-color: $secondary-color; // Use secondary color for active border
       }
 
       @include media-md {
         font-size: 1rem;
-        padding: 0.6rem 1.5rem;
+        padding: 0.7rem 1.6rem;
       }
     }
   }
