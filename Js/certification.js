@@ -21,6 +21,9 @@ function initCertificationPage() {
 		: null;
 	const closePreviewBtn = document.querySelector(".close-preview");
 	const searchInput = document.getElementById("certificateSearchInput"); // Get search input
+	const clearSearchBtn = searchInput
+		? searchInput.parentElement.querySelector(".search-clear-btn")
+		: null; // Get the clear button relative to parent
 
 	let currentFilter = "all"; // Keep track of the current category filter
 	let currentSearchTerm = ""; // Keep track of the current search term
@@ -181,10 +184,33 @@ function initCertificationPage() {
 	});
 
 	// Search input event listener
-	searchInput.addEventListener("input", () => {
-		currentSearchTerm = searchInput.value;
-		filterAndSearchCertificates(); // Call combined function
-	});
+	if (searchInput && clearSearchBtn) {
+		// Check if elements exist
+		searchInput.addEventListener("input", () => {
+			currentSearchTerm = searchInput.value;
+			// Show/hide clear button based on input value
+			clearSearchBtn.style.display = currentSearchTerm ? "block" : "none";
+			filterAndSearchCertificates(); // Call combined function
+		});
+
+		// Clear button event listener
+		clearSearchBtn.addEventListener("click", () => {
+			searchInput.value = ""; // Clear the input
+			currentSearchTerm = ""; // Update the state variable
+			clearSearchBtn.style.display = "none"; // Hide the button
+			searchInput.focus(); // Keep focus on the input
+			filterAndSearchCertificates(); // Re-filter
+		});
+
+		// Initial check in case the input has a value on load (e.g., browser autofill)
+		clearSearchBtn.style.display = searchInput.value ? "block" : "none";
+	} else if (searchInput) {
+		// Fallback if clear button isn't found (e.g., HTML not updated yet)
+		searchInput.addEventListener("input", () => {
+			currentSearchTerm = searchInput.value;
+			filterAndSearchCertificates();
+		});
+	}
 
 	// Certificate preview functionality with enhanced image viewing
 	// Make both the view buttons and images clickable

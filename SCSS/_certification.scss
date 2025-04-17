@@ -119,6 +119,61 @@
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); // Enhance shadow
     position: relative;
     z-index: 1;
+
+    .certificate-search {
+      position: relative; // Needed for absolute positioning of the clear button
+      display: flex; // Align input and button if needed, or adjust as per layout
+      align-items: center;
+      flex-grow: 1; // Allow search to take available space
+
+      .form-control {
+        background-color: rgba(lighten($primary-color, 12%), 0.6);
+        border: 1px solid rgba($secondary-color, 0.25);
+        color: $secondary-color;
+        border-radius: 10px; // Slightly larger radius
+        padding: 0.8rem 1.1rem; // Adjust padding
+        backdrop-filter: blur(5px);
+        padding-right: 2.5rem; // Add padding-right to prevent text from going under the clear button
+
+        &::placeholder {
+          color: rgba($secondary-color, 0.65);
+        }
+
+        &:focus {
+          background-color: rgba(lighten($primary-color, 18%), 0.7);
+          border-color: $secondary-color;
+          box-shadow: 0 0 0 0.2rem rgba($secondary-color, 0.25);
+          color: $secondary-color;
+        }
+
+        // Hide default browser clear button (X) for search inputs
+        &::-webkit-search-cancel-button,
+        &::-webkit-search-decoration {
+          -webkit-appearance: none;
+          appearance: none;
+          display: none;
+        }
+      }
+
+      .search-clear-btn {
+        position: absolute;
+        right: 10px; // Adjust position as needed
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        font-size: 1.5rem; // Make 'x' larger
+        color: rgba(#fff, 0.6); // Style the 'x' color
+        cursor: pointer;
+        padding: 0 5px; // Add some padding for easier clicking
+        line-height: 1;
+        display: none; // Hidden by default, JS will show it
+
+        &:hover {
+          color: $secondary-color; // Highlight on hover
+        }
+      }
+    }
   }
 
   // Combined Search and Filter Controls Layout (inside the container)
@@ -128,33 +183,6 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
-  }
-
-  // Search Input Styles (adjustments)
-  .certificate-search {
-    flex-grow: 1;
-    max-width: 450px; // Slightly increase max width if needed
-    margin: 0;
-
-    .form-control {
-      background-color: rgba(lighten($primary-color, 12%), 0.6);
-      border: 1px solid rgba($secondary-color, 0.25);
-      color: $secondary-color;
-      border-radius: 10px; // Slightly larger radius
-      padding: 0.8rem 1.1rem; // Adjust padding
-      backdrop-filter: blur(5px);
-
-      &::placeholder {
-        color: rgba($secondary-color, 0.65);
-      }
-
-      &:focus {
-        background-color: rgba(lighten($primary-color, 18%), 0.7);
-        border-color: $secondary-color;
-        box-shadow: 0 0 0 0.2rem rgba($secondary-color, 0.25);
-        color: $secondary-color;
-      }
-    }
   }
 
   // Filter controls (adjustments)

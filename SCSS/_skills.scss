@@ -145,24 +145,25 @@
 
   &__search-filter {
     display: flex;
-    // Default to row layout, allow wrapping
     flex-direction: row;
     flex-wrap: wrap;
-    // Center items horizontally by default
     justify-content: center;
-    align-items: center; // Center items vertically
+    align-items: center;
     gap: 1.5rem;
     margin-bottom: 2.5rem;
     position: relative;
     z-index: 1;
-    width: 100%; // Make container fill the padded section width
-    max-width: none; // Remove specific max-width from here
+    width: 100%;
+    max-width: none;
     margin-left: auto;
     margin-right: auto;
-    padding: 1.5rem; // Adjusted padding
-    background: rgba(darken($primary-color, 3%), 0.5);
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 2rem; // Consistent padding
+    // Apply styles similar to intro-container
+    background-color: rgba(lighten($primary-color, 7%), 0.65);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($secondary-color, 0.15);
+    border-radius: 12px; // Match intro container
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); // Match intro container
     box-sizing: border-box;
   }
 

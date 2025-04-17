@@ -411,6 +411,18 @@
   }
 }
 
+// Form control styles
+.form-control {
+
+  // Hide default browser clear button (X) for search inputs
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
+}
+
 // Keep media query for responsiveness
 @media screen and (max-width: 768px) {
 
