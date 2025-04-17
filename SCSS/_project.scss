@@ -4,8 +4,22 @@
 .project {
   position: relative;
   overflow: hidden;
-  padding: 2rem 0; // Add padding similar to certification
+  display: flex; // Use flexbox for centering content vertically
+  flex-direction: column;
+  align-items: center; // Center items horizontally
+  padding: 3rem 0; // Remove horizontal padding here
+  width: 100%; // Ensure full width initially
+  max-width: 1400px; // Apply max-width to the section
+  margin: 0 auto; // Center the section
+  padding-left: 1rem; // Add horizontal padding here
+  padding-right: 1rem;
+  box-sizing: border-box; // Include padding in width calculation
   min-height: calc(100vh - 80px); // Ensure minimum height
+
+  @include media-sm {
+    padding-left: 2rem; // Increase padding on larger screens
+    padding-right: 2rem;
+  }
 
   // Consistent particle background
   &::before {
@@ -27,11 +41,10 @@
 
   // Main heading and intro container - Renamed for clarity and styled like certification intro
   .project__intro-container {
-    // Renamed from .project__project-image
-    width: 100%;
-    max-width: 900px; // Consistent max-width
-    margin: 0 auto 3rem; // Center and add bottom margin
-    padding: 2rem; // Consistent padding
+    width: 100%; // Make container fill the padded section width
+    max-width: none; // Remove specific max-width from here
+    margin: 0 auto 3rem; // Reduced bottom margin
+    padding: 2rem; // Adjust padding (vertical, horizontal for small screens)
     position: relative;
     z-index: 1;
     background-color: rgba(lighten($primary-color, 7%), 0.65); // Match certification intro background
@@ -41,47 +54,52 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); // Match certification intro shadow
     text-align: center; // Center content
 
+    @include media-sm {
+      padding: 2rem 2rem; // Match grid horizontal padding on larger screens
+    }
+
     h2.text-secondary {
       // Style main heading like certification heading
       display: block; // Full width
       text-align: center;
       width: 100%;
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1rem; // Reduced bottom margin
       font-weight: 900;
-      font-size: 2.5rem; // Match certification heading size
+      font-size: 2.8rem; // Increased font size
       padding: 10px 20px;
-      color: $secondary-color;
-      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, lighten($secondary-color, 10%), $secondary-color);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); // Enhanced shadow
       animation: slide-in-heading 0.8s ease-out forwards; // Use existing animation
       position: relative;
       z-index: 1;
-      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6); // Match certification heading shadow
-      // Remove conflicting styles from previous implementation
-      background-color: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      overflow: visible;
 
       &::after {
-        // Remove underline effect if not desired
-        content: none;
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: $secondary-color;
+        margin: 0.5rem auto 0;
+        border-radius: 2px;
+        opacity: 0.8;
       }
 
       &:hover {
-        // Remove hover effect if not desired
         transform: none;
-        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6); // Keep base shadow
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); // Keep base shadow
       }
     }
 
     p {
       // Style intro paragraph like certification intro
       color: $secondary-color;
-      text-align: justify; // Justify text
-      font-size: 1.1rem; // Match certification intro font size
-      line-height: 1.8; // Match certification intro line height
+      text-align: center; // Center align the intro paragraph
+      font-size: 1.15rem; // Slightly increased font size
+      line-height: 1.9; // Slightly increased line height
       opacity: 1;
-      // Remove conflicting styles
       background-color: transparent;
       backdrop-filter: none;
       padding: 0;
@@ -104,18 +122,21 @@
   // Grid container for project cards
   .project-grid {
     display: grid;
-    // Explicitly set 2 columns for medium screens and up
     grid-template-columns: 1fr; // Default to 1 column
-    gap: 2rem;
-    padding: 0 2rem;
-    max-width: 1400px; // Increased max-width for less wasted space
-    margin: 2rem auto;
+    gap: 2.5rem; // Increased gap
+    width: 100%; // Make grid fill the padded section width
+    max-width: none; // Remove specific max-width from here
+    padding: 0; // Remove horizontal padding from here
+    margin: 1rem auto; // Reduced top margin for the grid
     position: relative;
     z-index: 1;
     perspective: 1000px;
 
+    @include media-sm {
+      padding: 0 2rem; // Increase padding on larger screens
+    }
+
     @include media-md {
-      // Apply 2 columns from medium breakpoint upwards
       grid-template-columns: repeat(2, 1fr);
     }
   }
@@ -123,11 +144,11 @@
   // Project Card Styles - Renamed to .project-card for clarity
   .project-card {
     background: rgba(lighten($primary-color, 5%), 0.7); // Match certificate card background
-    border-radius: 12px; // Match certificate card radius
+    border-radius: 15px; // Slightly larger radius
     overflow: hidden;
     backdrop-filter: blur(10px); // Match certificate card blur
     border: 1px solid rgba($secondary-color, 0.15); // Match certificate card border
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); // Match certificate card shadow
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); // Enhanced base shadow
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); // Match certificate card transition
     height: 100%; // Ensure cards in a row have same height
     display: flex;
@@ -137,26 +158,20 @@
     padding: 0; // Remove previous padding
     border-bottom: none; // Remove previous border
 
-    // Apply the 3D hover mixin
     @include card-3d-hover;
 
-    // Add class for scroll animation targeting
     &.animate-on-scroll {
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 
       &.visible {
-        // Style applied by Intersection Observer
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    // Remove previous glass morphism effect if not desired or conflicting
     &::before {
-      // content: none; // Or adjust as needed
-      // Match certificate card overlay effect
       content: "";
       position: absolute;
       top: 0;
@@ -172,13 +187,28 @@
       pointer-events: none;
     }
 
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba($secondary-color, 0.6), rgba($primary-color, 0.3));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+      pointer-events: none;
+    }
+
     &:hover {
-      // Keep hover effects consistent with certificate cards
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-      border-color: rgba($secondary-color, 0.4);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5); // Enhanced hover shadow
+      border-color: transparent; // Hide base border to show gradient
 
       &::before {
         opacity: 1; // Show overlay on hover
+      }
+
+      &::after {
+        opacity: 1; // Show border gradient on hover
       }
 
       .project-image img {
@@ -202,8 +232,8 @@
       height: auto;
       min-height: 200px; // Consistent min-height
       max-height: 280px; // Consistent max-height
-      border-radius: 8px; // Consistent radius
-      margin: 1rem; // Consistent margin
+      border-radius: 10px; // Slightly larger radius
+      margin: 1.5rem; // Increased margin
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); // Consistent shadow
       background-color: transparent; // Remove background if image covers it
 
@@ -213,16 +243,14 @@
         object-fit: cover; // Changed from cover to contain
         object-position: center;
         transition: transform 0.8s ease; // Match certificate image transition
-        border-radius: 6px; // Consistent radius
+        border-radius: 8px; // Slightly larger radius
         display: block;
         background-color: rgba(0, 0, 0, 0.1); // Add subtle background for letterboxing
 
-        // Add aspect ratio attributes for better CLS handling
         &[width][height] {
           aspect-ratio: attr(width) / attr(height);
         }
 
-        // Modern lazy loading support
         &[loading="lazy"] {
           background: linear-gradient(110deg,
               rgba(227, 227, 227, 0.1) 30%,
@@ -236,22 +264,23 @@
 
     // Content Area
     .content {
-      padding: 0 1.5rem 1.5rem; // Consistent padding (top padding removed as image has margin)
+      padding: 0 2rem 2rem; // Increased padding
       flex-grow: 1; // Allow content to fill space
       display: flex;
       flex-direction: column;
+      align-items: center; // Center content items horizontally
+      text-align: center; // Center text within the content area
       color: $secondary-color; // Set default text color for content area
       position: relative; // Ensure content is above ::before pseudo-element
       z-index: 1;
 
       // Date/Status Text
       h2.text-secondary {
-        font-size: 1rem; // Match certificate date size
+        font-size: 1.05rem; // Increased font size
         margin: 0 0 0.5rem; // Adjust margin
         color: $secondary-color; // Ensure color
         font-weight: 600; // Match certificate date weight
         opacity: 0.8; // Match certificate date opacity
-        // Remove conflicting styles
         background-color: transparent;
         padding: 0;
         border-radius: 0;
@@ -262,31 +291,26 @@
           content: none;
         }
 
-        // Remove underline
         &:hover {
           transform: none;
         }
 
-        // Remove hover
         @include shine-effect;
       }
 
       // Project Title
       h3 {
-        font-size: 1.3rem; // Match certificate title size
+        font-size: 1.45rem; // Increased font size
         margin: 0.5rem 0; // Adjust margin
-        font-weight: 700; // Match certificate title weight
+        font-weight: 700; // Ensure bold weight
         line-height: 1.4; // Match certificate title line-height
-        min-height: 2.8rem; // Match certificate title min-height
         transition: color 0.3s ease; // Match certificate title transition
         color: $secondary-color; // Ensure default color
 
-        // Remove conflicting styles
         &::after {
           content: none;
         }
 
-        // Remove underline
         &:hover {
           cursor: default;
           transform: none; // Remove transform, handled by card hover
@@ -302,27 +326,26 @@
         opacity: 0.8; // Slightly reduced default opacity
         transition: opacity 0.4s ease, transform 0.4s ease; // Added transform transition
         transform: translateY(5px); // Slightly move down by default
+        justify-content: center; // Center the links within their container
+        width: 100%; // Ensure container takes full width
 
         a.project-link {
-          // Target specific class
           display: inline-flex;
           align-items: center;
-          padding: 0.4rem 1rem; // Match certificate link padding
+          padding: 0.5rem 1.1rem; // Adjust padding
           background: rgba($secondary-color, 0.1); // Match certificate link background
           color: $secondary-color; // Match certificate link color
           border-radius: 12px; // Match certificate link radius
           text-decoration: none;
-          font-size: 0.9rem; // Match certificate link font size
+          font-size: 0.95rem; // Increased font size
           transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Use smoother transition matching social icons
           border: 1px solid rgba($secondary-color, 0.3); // Match certificate link border
           position: relative;
           overflow: hidden;
 
-          // Apply shine effect mixin
           @include shine-effect;
 
           &:hover {
-            // Replicate social icon hover effect
             transform: translateY(-6px) scale(1.1);
             box-shadow: 0 8px 20px rgba($secondary-color, 0.35);
             color: $primary-color; // Change text color
@@ -330,7 +353,6 @@
             border-color: $secondary-color; // Change border
 
             i {
-              // Animate icon similar to social icons
               color: $primary-color !important; // Ensure icon color changes
               transform: scale(1.2) rotate(-12deg);
             }
@@ -345,19 +367,20 @@
 
       // Tags (h6) - Styled like certificate tags
       .tags-container {
-        // Add a container for tags if needed for layout
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-        margin: 1rem 0; // Adjust margin
+        margin: 1.2rem 0; // Increased margin
+        justify-content: center; // Center tags
+        width: 100%;
       }
 
       h6 {
         display: inline-block;
-        font-size: 0.8rem; // Match certificate tag size
+        font-size: 0.85rem; // Increased font size
         background: rgba($secondary-color, 0.1); // Match certificate tag background
         color: rgba($secondary-color, 0.9); // Match certificate tag color
-        padding: 0.2rem 0.6rem; // Match certificate tag padding
+        padding: 0.25rem 0.7rem; // Adjust padding
         border-radius: 12px; // Match certificate tag radius
         border: 1px solid rgba($secondary-color, 0.15); // Match certificate tag border
         margin: 0; // Remove previous margin
@@ -374,12 +397,16 @@
       // Project Description
       p {
         margin: 1rem 0 0; // Adjust margin (top margin added by tags/links)
-        font-size: 0.95rem; // Match certificate description size
-        line-height: 1.6; // Match certificate description line-height
-        color: rgba($secondary-color, 0.85); // Match certificate description color
+        font-size: 1rem; // Increased font size
+        line-height: 1.7; // Adjusted line height
+        color: rgba($secondary-color, 0.9); // Slightly brighter text
         flex-grow: 1; // Allow paragraph to take remaining space
         position: relative;
         z-index: 1;
+        text-align: left; // Keep description left-aligned for readability
+        max-width: 90%; // Limit width slightly for better centering feel
+        margin-left: auto;
+        margin-right: auto;
       }
     }
   }
@@ -391,7 +418,6 @@
   // Adjusted breakpoint to match grid change
   .project {
     .project-grid {
-      // grid-template-columns: 1fr; // Already default
       padding: 0 1rem;
     }
 

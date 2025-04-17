@@ -4,9 +4,21 @@
 
 .certification {
   position: relative;
-  padding: 2rem 0;
+  padding: 3rem 0; // Remove horizontal padding here
   min-height: calc(100vh - 80px);
   overflow: hidden;
+  align-items: center; // Keep centering items
+  width: 100%; // Ensure full width initially
+  max-width: 1400px; // Apply max-width to the section
+  margin: 0 auto; // Center the section
+  padding-left: 1rem; // Add horizontal padding here
+  padding-right: 1rem;
+  box-sizing: border-box; // Include padding in width calculation
+
+  @include media-sm {
+    padding-left: 2rem; // Increase padding on larger screens
+    padding-right: 2rem;
+  }
 
   // Add subtle particle backgrounds to match projects section
   &::before {
@@ -27,51 +39,84 @@
     animation: gradientBackground 15s ease infinite;
   }
 
+  // New container for heading and intro text
+  .intro-container {
+    width: 100%; // Make container fill the padded section width
+    max-width: none; // Remove specific max-width from here
+    margin: 0 auto 3rem;
+    padding: 2rem; // Keep internal padding for content
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    background-color: rgba(lighten($primary-color, 7%), 0.65);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($secondary-color, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    text-align: center;
+  }
+
   h2#heading {
     display: block; // Ensure it takes full width available
     text-align: center; // Center the heading text
     width: 100%; // Explicitly set width to 100%
     margin: 0 auto 1.5rem; // Center block element and add bottom margin
     font-weight: 900;
-    font-size: 2.5rem; // Slightly larger font size
+    font-size: 2.8rem; // Match project heading size
     padding: 10px 20px; // Add some padding
-    color: $secondary-color;
-    margin-bottom: 1.5rem; // Consistent bottom margin
+    background: linear-gradient(135deg, lighten($secondary-color, 10%), $secondary-color);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); // Enhanced shadow
+    margin-bottom: 1rem; // Reduced bottom margin
     animation: slide-in-heading 0.8s ease-out forwards;
     position: relative;
     z-index: 1;
-    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6); // Enhanced text shadow
+
+    &::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: $secondary-color;
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+      opacity: 0.8;
+    }
   }
 
   p.intro-text {
     width: 100%; // Make paragraph take full width
-    max-width: 900px; // Keep a max-width for readability
+    max-width: 100%; // Allow it to fill parent width
     color: $secondary-color;
-    margin: 0 auto 3rem; // Center block element and add bottom margin
-    text-align: justify; // Justify text
-    padding: 2rem; // Increased padding
-    font-size: 1.1rem;
-    line-height: 1.8; // Slightly increased line-height
+    margin: 0 auto; // Center within parent if needed, but text-align: center on parent works
+    text-align: center; // Center text
+    font-size: 1.15rem; // Match project intro font size
+    line-height: 1.9; // Match project intro line height
     opacity: 1;
     position: relative;
     z-index: 1;
-    background-color: rgba(lighten($primary-color, 7%), 0.65); // Slightly adjusted background
-    backdrop-filter: blur(10px); // Slightly stronger blur
-    border: 1px solid rgba($secondary-color, 0.15); // Slightly more visible border
-    border-radius: 12px; // Slightly larger radius
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); // Enhanced shadow
+    background-color: transparent;
+    backdrop-filter: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0; // Remove padding, handled by parent
   }
 
   // Container for search and filter controls
   .search-filter-container {
-    background-color: rgba(lighten($primary-color, 5%), 0.5); // Transparent background
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba($secondary-color, 0.1);
-    border-radius: 10px;
-    padding: 1.5rem; // Add padding inside the container
-    margin: 0 auto 2.5rem; // Center container and add bottom margin
-    max-width: 900px; // Match intro text max-width
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 100%; // Make container fill the padded section width
+    max-width: none; // Remove specific max-width from here
+    margin: 0 auto 2rem;
+    padding: 1.8rem; // Keep internal padding
+    box-sizing: border-box;
+    background-color: rgba(lighten($primary-color, 7%), 0.6); // Slightly adjust background
+    backdrop-filter: blur(10px); // Increase blur
+    border: 1px solid rgba($secondary-color, 0.2); // Slightly stronger border
+    border-radius: 12px; // Match other containers
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); // Enhance shadow
     position: relative;
     z-index: 1;
   }
@@ -92,12 +137,11 @@
     margin: 0;
 
     .form-control {
-      // Inherit background from container or set slightly different
       background-color: rgba(lighten($primary-color, 12%), 0.6);
       border: 1px solid rgba($secondary-color, 0.25);
       color: $secondary-color;
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
+      border-radius: 10px; // Slightly larger radius
+      padding: 0.8rem 1.1rem; // Adjust padding
       backdrop-filter: blur(5px);
 
       &::placeholder {
@@ -124,8 +168,8 @@
       background: rgba(lighten($primary-color, 8%), 0.5); // Adjust background
       border: 1px solid rgba($secondary-color, 0.8); // Stronger border
       color: $secondary-color;
-      padding: 0.6rem 1.2rem; // Adjust padding
-      border-radius: 15px; // More rounded
+      padding: 0.7rem 1.4rem; // Adjust padding
+      border-radius: 10px; // Match search input
       font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -155,6 +199,11 @@
 
   // Certificate cards container
   .certificates-container {
+    width: 100%; // Make grid fill the padded section width
+    max-width: none; // Remove specific max-width from here
+    margin: 1rem auto;
+    padding: 0; // Remove horizontal padding from here
+    box-sizing: border-box;
     position: relative;
     min-height: 400px; // Ensures container maintains height during filtering
 
@@ -188,44 +237,61 @@
 
   // Certificate card styles
   .certificate-content {
-    background: rgba(lighten($primary-color, 5%), 0.7);
-    border-radius: 12px;
+    background: rgba(lighten($primary-color, 5%), 0.75); // Slightly less transparent
+    border-radius: 15px; // Match project card radius
     overflow: hidden;
     margin-bottom: 2rem;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba($secondary-color, 0.15);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba($secondary-color, 0.2); // Slightly stronger border
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); // Match project card shadow
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; // Adjusted transition for subtle hover
     height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
     z-index: 1;
 
-    // Apply the 3D hover mixin
-    @include card-3d-hover;
+    // Add gradient border effect like project cards
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba($secondary-color, 0.6), rgba($primary-color, 0.3));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    // Remove the 3D hover mixin
 
     &:hover {
-      // Remove the simple transform, keep shadow and border color changes
-      // transform: translateY(-8px) scale(1.02); // Removed
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-      border-color: rgba($secondary-color, 0.4);
+      // Subtle hover effect
+      transform: translateY(-5px) scale(1.01); // Slight lift and scale
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45); // Slightly increased shadow
+      border-color: transparent; // Keep for gradient border
+
+      &::after {
+        // Keep gradient border effect
+        opacity: 1;
+      }
 
       .certificate-image img {
-        transform: scale(1.05); // Keep image scale effect
+        transform: scale(1.03); // Slightly reduced image scale
       }
 
       .certificate-links {
         opacity: 1;
-        transform: translateY(0); // Keep link reveal effect
+        transform: translateY(0);
       }
 
       &::before {
-        opacity: 1; // Keep background overlay effect
+        opacity: 0.5; // Slightly reduced overlay opacity
       }
 
       h3 {
-        color: $secondary-color; // Keep text color change
+        color: $secondary-color;
       }
     }
 
@@ -250,14 +316,11 @@
       overflow: hidden;
       height: auto;
       min-height: 200px;
-      /* Minimum height for consistency */
       max-height: 280px;
-      /* Maximum height to maintain card proportions */
-      border-radius: 8px;
-      margin: 1rem;
+      border-radius: 10px; // Match project image radius
+      margin: 1.5rem; // Match project image margin
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      /* Add cursor pointer to indicate clickable */
 
       &::before {
         content: "";
@@ -279,7 +342,7 @@
         height: auto;
         object-fit: contain;
         transition: transform 0.8s ease;
-        border-radius: 6px;
+        border-radius: 8px; // Match project image radius
       }
 
       .certificate-badge {
@@ -301,7 +364,7 @@
     }
 
     h2.text-secondary {
-      font-size: 1rem;
+      font-size: 1.05rem; // Match project date size
       margin: 0 1.5rem 0.5rem;
       color: $secondary-color;
       font-weight: 600;
@@ -309,7 +372,7 @@
     }
 
     h3 {
-      font-size: 1.3rem;
+      font-size: 1.45rem; // Match project title size
       margin: 0.5rem 1.5rem;
       font-weight: 700;
       line-height: 1.4;
@@ -326,38 +389,45 @@
       .certificate-link {
         display: inline-flex;
         align-items: center;
-        padding: 0.4rem 1rem;
+        padding: 0.5rem 1.1rem; // Match project link padding
         background: rgba($secondary-color, 0.1);
         color: $secondary-color;
-        border-radius: 12px;
+        border-radius: 12px; // Match project link radius
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 0.95rem; // Match project link size
         transition: all 0.3s ease;
         border: 1px solid rgba($secondary-color, 0.3);
         position: relative;
-        overflow: hidden; // Keep for shine effect
+        overflow: hidden;
 
         // Apply shine effect mixin
         @include shine-effect;
 
         &:hover {
-          background: rgba($secondary-color, 0.3);
-          border-color: rgba($secondary-color, 0.5);
-          transform: translateY(-2px);
-          // Hover state for shine effect is handled by the mixin
+          transform: translateY(-6px) scale(1.1);
+          box-shadow: 0 8px 20px rgba($secondary-color, 0.35);
+          color: $primary-color;
+          background-color: $secondary-color;
+          border-color: $secondary-color;
+
+          i {
+            color: $primary-color !important;
+            transform: scale(1.2) rotate(-12deg);
+          }
         }
 
         i {
           margin-right: 0.5rem;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
       }
     }
 
     p {
       margin: 1rem 1.5rem 1.5rem;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: rgba($secondary-color, 0.85);
+      font-size: 1rem; // Match project description size
+      line-height: 1.7; // Match project description line height
+      color: rgba($secondary-color, 0.9); // Match project description color
       flex-grow: 1;
       position: relative;
       z-index: 1;
@@ -366,7 +436,7 @@
     .certificate-meta {
       display: flex;
       align-items: center;
-      margin: 0 1.5rem 1.5rem;
+      margin: 0 2rem 1.5rem; // Match project content padding
       justify-content: space-between;
 
       .certificate-issuer {
@@ -385,19 +455,19 @@
         }
 
         span {
-          font-size: 0.85rem;
-          opacity: 0.7;
+          font-size: 0.9rem; // Slightly larger
+          opacity: 0.8;
           color: $secondary-color;
         }
       }
 
       .certificate-tag {
-        font-size: 0.8rem;
+        font-size: 0.85rem; // Match project tag size
+        padding: 0.25rem 0.7rem; // Match project tag padding
+        border-radius: 12px; // Match project tag radius
         background: rgba($secondary-color, 0.1);
-        color: rgba($secondary-color, 0.9);
-        padding: 0.2rem 0.6rem;
-        border-radius: 12px;
         border: 1px solid rgba($secondary-color, 0.15);
+        color: rgba($secondary-color, 0.9);
       }
     }
   }

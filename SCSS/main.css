@@ -1204,8 +1204,23 @@
 .project {
   position: relative;
   overflow: hidden;
-  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 0;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
   min-height: calc(100vh - 80px);
+}
+@media screen and (min-width: 576px) {
+  .project {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 .project::before {
   content: "";
@@ -1223,7 +1238,7 @@
 }
 .project .project__intro-container {
   width: 100%;
-  max-width: 900px;
+  max-width: none;
   margin: 0 auto 3rem;
   padding: 2rem;
   position: relative;
@@ -1236,37 +1251,47 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   text-align: center;
 }
+@media screen and (min-width: 576px) {
+  .project .project__intro-container {
+    padding: 2rem 2rem;
+  }
+}
 .project .project__intro-container h2.text-secondary {
   display: block;
   text-align: center;
   width: 100%;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1rem;
   font-weight: 900;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   padding: 10px 20px;
-  color: aliceblue;
-  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, white, aliceblue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   animation: slide-in-heading 0.8s ease-out forwards;
   position: relative;
   z-index: 1;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
-  background-color: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  overflow: visible;
 }
 .project .project__intro-container h2.text-secondary::after {
-  content: none;
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: aliceblue;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+  opacity: 0.8;
 }
 .project .project__intro-container h2.text-secondary:hover {
   transform: none;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 .project .project__intro-container p {
   color: aliceblue;
-  text-align: justify;
-  font-size: 1.1rem;
-  line-height: 1.8;
+  text-align: center;
+  font-size: 1.15rem;
+  line-height: 1.9;
   opacity: 1;
   background-color: transparent;
   -webkit-backdrop-filter: none;
@@ -1288,13 +1313,19 @@
 .project .project-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: 0 2rem;
-  max-width: 1400px;
-  margin: 2rem auto;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  margin: 1rem auto;
   position: relative;
   z-index: 1;
   perspective: 1000px;
+}
+@media screen and (min-width: 576px) {
+  .project .project-grid {
+    padding: 0 2rem;
+  }
 }
 @media screen and (min-width: 768px) {
   .project .project-grid {
@@ -1303,12 +1334,12 @@
 }
 .project .project-card {
   background: rgba(52, 52, 52, 0.7);
-  border-radius: 12px;
+  border-radius: 15px;
   overflow: hidden;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   border: 1px solid rgba(240, 248, 255, 0.15);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   height: 100%;
   display: flex;
@@ -1348,11 +1379,25 @@
   z-index: 0;
   pointer-events: none;
 }
+.project .project-card::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(240, 248, 255, 0.6), rgba(39, 39, 39, 0.3));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  pointer-events: none;
+}
 .project .project-card:hover {
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  border-color: rgba(240, 248, 255, 0.4);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  border-color: transparent;
 }
 .project .project-card:hover::before {
+  opacity: 1;
+}
+.project .project-card:hover::after {
   opacity: 1;
 }
 .project .project-card:hover .project-image img {
@@ -1371,8 +1416,8 @@
   height: auto;
   min-height: 200px;
   max-height: 280px;
-  border-radius: 8px;
-  margin: 1rem;
+  border-radius: 10px;
+  margin: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   background-color: transparent;
 }
@@ -1384,7 +1429,7 @@
   -o-object-position: center;
      object-position: center;
   transition: transform 0.8s ease;
-  border-radius: 6px;
+  border-radius: 8px;
   display: block;
   background-color: rgba(0, 0, 0, 0.1);
 }
@@ -1397,16 +1442,18 @@
   animation: shimmer 1.5s linear infinite;
 }
 .project .project-card .content {
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 2rem 2rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   color: aliceblue;
   position: relative;
   z-index: 1;
 }
 .project .project-card .content h2.text-secondary {
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin: 0 0 0.5rem;
   color: aliceblue;
   font-weight: 600;
@@ -1439,11 +1486,10 @@
   left: 100%;
 }
 .project .project-card .content h3 {
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   margin: 0.5rem 0;
   font-weight: 700;
   line-height: 1.4;
-  min-height: 2.8rem;
   transition: color 0.3s ease;
   color: aliceblue;
 }
@@ -1462,16 +1508,18 @@
   opacity: 0.8;
   transition: opacity 0.4s ease, transform 0.4s ease;
   transform: translateY(5px);
+  justify-content: center;
+  width: 100%;
 }
 .project .project-card .content .project-links a.project-link {
   display: inline-flex;
   align-items: center;
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1.1rem;
   background: rgba(240, 248, 255, 0.1);
   color: aliceblue;
   border-radius: 12px;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border: 1px solid rgba(240, 248, 255, 0.3);
   position: relative;
@@ -1511,14 +1559,16 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 1rem 0;
+  margin: 1.2rem 0;
+  justify-content: center;
+  width: 100%;
 }
 .project .project-card .content h6 {
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   background: rgba(240, 248, 255, 0.1);
   color: rgba(240, 248, 255, 0.9);
-  padding: 0.2rem 0.6rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 12px;
   border: 1px solid rgba(240, 248, 255, 0.15);
   margin: 0;
@@ -1532,12 +1582,16 @@
 }
 .project .project-card .content p {
   margin: 1rem 0 0;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: rgba(240, 248, 255, 0.85);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(240, 248, 255, 0.9);
   flex-grow: 1;
   position: relative;
   z-index: 1;
+  text-align: left;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media screen and (max-width: 768px) {
@@ -2039,9 +2093,22 @@
 
 .certification {
   position: relative;
-  padding: 2rem 0;
+  padding: 3rem 0;
   min-height: calc(100vh - 80px);
   overflow: hidden;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
+@media screen and (min-width: 576px) {
+  .certification {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 .certification::before {
   content: "";
@@ -2057,31 +2124,12 @@
   z-index: 0;
   animation: gradientBackground 15s ease infinite;
 }
-.certification h2#heading {
-  display: block;
-  text-align: center;
+.certification .intro-container {
   width: 100%;
-  margin: 0 auto 1.5rem;
-  font-weight: 900;
-  font-size: 2.5rem;
-  padding: 10px 20px;
-  color: aliceblue;
-  margin-bottom: 1.5rem;
-  animation: slide-in-heading 0.8s ease-out forwards;
-  position: relative;
-  z-index: 1;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
-}
-.certification p.intro-text {
-  width: 100%;
-  max-width: 900px;
-  color: aliceblue;
+  max-width: none;
   margin: 0 auto 3rem;
-  text-align: justify;
   padding: 2rem;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  opacity: 1;
+  box-sizing: border-box;
   position: relative;
   z-index: 1;
   background-color: rgba(57, 57, 57, 0.65);
@@ -2090,17 +2138,67 @@
   border: 1px solid rgba(240, 248, 255, 0.15);
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+.certification h2#heading {
+  display: block;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto 1.5rem;
+  font-weight: 900;
+  font-size: 2.8rem;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, white, aliceblue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1rem;
+  animation: slide-in-heading 0.8s ease-out forwards;
+  position: relative;
+  z-index: 1;
+}
+.certification h2#heading::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: aliceblue;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+  opacity: 0.8;
+}
+.certification p.intro-text {
+  width: 100%;
+  max-width: 100%;
+  color: aliceblue;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 1.15rem;
+  line-height: 1.9;
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
 }
 .certification .search-filter-container {
-  background-color: rgba(52, 52, 52, 0.5);
-  -webkit-backdrop-filter: blur(8px);
-          backdrop-filter: blur(8px);
-  border: 1px solid rgba(240, 248, 255, 0.1);
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin: 0 auto 2.5rem;
-  max-width: 900px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: none;
+  margin: 0 auto 2rem;
+  padding: 1.8rem;
+  box-sizing: border-box;
+  background-color: rgba(57, 57, 57, 0.6);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border: 1px solid rgba(240, 248, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
 }
@@ -2120,8 +2218,8 @@
   background-color: rgba(70, 70, 70, 0.6);
   border: 1px solid rgba(240, 248, 255, 0.25);
   color: aliceblue;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  padding: 0.8rem 1.1rem;
   -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);
 }
@@ -2147,8 +2245,8 @@
   background: rgba(59, 59, 59, 0.5);
   border: 1px solid rgba(240, 248, 255, 0.8);
   color: aliceblue;
-  padding: 0.6rem 1.2rem;
-  border-radius: 15px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -2174,6 +2272,11 @@
   }
 }
 .certification .certificates-container {
+  width: 100%;
+  max-width: none;
+  margin: 1rem auto;
+  padding: 0;
+  box-sizing: border-box;
   position: relative;
   min-height: 400px;
 }
@@ -2197,42 +2300,49 @@
   transform: translateY(0);
 }
 .certification .certificate-content {
-  background: rgba(52, 52, 52, 0.7);
-  border-radius: 12px;
+  background: rgba(52, 52, 52, 0.75);
+  border-radius: 15px;
   overflow: hidden;
   margin-bottom: 2rem;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
-  border: 1px solid rgba(240, 248, 255, 0.15);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid rgba(240, 248, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 1;
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+}
+.certification .certificate-content::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(240, 248, 255, 0.6), rgba(39, 39, 39, 0.3));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  pointer-events: none;
 }
 .certification .certificate-content:hover {
-  transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px) scale(1.02);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  border-color: transparent;
 }
-.certification .certificate-content[data-enhanced=true]:hover {
-  transform: none;
-}
-.certification .certificate-content:hover {
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  border-color: rgba(240, 248, 255, 0.4);
+.certification .certificate-content:hover::after {
+  opacity: 1;
 }
 .certification .certificate-content:hover .certificate-image img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 .certification .certificate-content:hover .certificate-links {
   opacity: 1;
   transform: translateY(0);
 }
 .certification .certificate-content:hover::before {
-  opacity: 1;
+  opacity: 0.5;
 }
 .certification .certificate-content:hover h3 {
   color: aliceblue;
@@ -2255,14 +2365,11 @@
   overflow: hidden;
   height: auto;
   min-height: 200px;
-  /* Minimum height for consistency */
   max-height: 280px;
-  /* Maximum height to maintain card proportions */
-  border-radius: 8px;
-  margin: 1rem;
+  border-radius: 10px;
+  margin: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  /* Add cursor pointer to indicate clickable */
 }
 .certification .certificate-content .certificate-image::before {
   content: "";
@@ -2282,7 +2389,7 @@
   -o-object-fit: contain;
      object-fit: contain;
   transition: transform 0.8s ease;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 .certification .certificate-content .certificate-image .certificate-badge {
   position: absolute;
@@ -2302,14 +2409,14 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 .certification .certificate-content h2.text-secondary {
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin: 0 1.5rem 0.5rem;
   color: aliceblue;
   font-weight: 600;
   opacity: 0.8;
 }
 .certification .certificate-content h3 {
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   margin: 0.5rem 1.5rem;
   font-weight: 700;
   line-height: 1.4;
@@ -2325,12 +2432,12 @@
 .certification .certificate-content .certificate-links .certificate-link {
   display: inline-flex;
   align-items: center;
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1.1rem;
   background: rgba(240, 248, 255, 0.1);
   color: aliceblue;
   border-radius: 12px;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
   border: 1px solid rgba(240, 248, 255, 0.3);
   position: relative;
@@ -2352,18 +2459,25 @@
   left: 100%;
 }
 .certification .certificate-content .certificate-links .certificate-link:hover {
-  background: rgba(240, 248, 255, 0.3);
-  border-color: rgba(240, 248, 255, 0.5);
-  transform: translateY(-2px);
+  transform: translateY(-6px) scale(1.1);
+  box-shadow: 0 8px 20px rgba(240, 248, 255, 0.35);
+  color: #272727;
+  background-color: aliceblue;
+  border-color: aliceblue;
+}
+.certification .certificate-content .certificate-links .certificate-link:hover i {
+  color: #272727 !important;
+  transform: scale(1.2) rotate(-12deg);
 }
 .certification .certificate-content .certificate-links .certificate-link i {
   margin-right: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .certification .certificate-content p {
   margin: 1rem 1.5rem 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: rgba(240, 248, 255, 0.85);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(240, 248, 255, 0.9);
   flex-grow: 1;
   position: relative;
   z-index: 1;
@@ -2371,7 +2485,7 @@
 .certification .certificate-content .certificate-meta {
   display: flex;
   align-items: center;
-  margin: 0 1.5rem 1.5rem;
+  margin: 0 2rem 1.5rem;
   justify-content: space-between;
 }
 .certification .certificate-content .certificate-meta .certificate-issuer {
@@ -2390,17 +2504,17 @@
   padding: 2px;
 }
 .certification .certificate-content .certificate-meta .certificate-issuer span {
-  font-size: 0.85rem;
-  opacity: 0.7;
+  font-size: 0.9rem;
+  opacity: 0.8;
   color: aliceblue;
 }
 .certification .certificate-content .certificate-meta .certificate-tag {
-  font-size: 0.8rem;
-  background: rgba(240, 248, 255, 0.1);
-  color: rgba(240, 248, 255, 0.9);
-  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 12px;
+  background: rgba(240, 248, 255, 0.1);
   border: 1px solid rgba(240, 248, 255, 0.15);
+  color: rgba(240, 248, 255, 0.9);
 }
 @media screen and (min-width: 992px) {
   .certification .certificate-grid {
