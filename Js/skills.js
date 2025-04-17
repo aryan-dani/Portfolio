@@ -8,6 +8,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 	// --- START OF DOMContentLoaded LISTENER CODE ---
 
+	const skillsContainer = document.querySelector(".skills"); // Get the main container
 	const searchInput = document.getElementById("skillSearchInput");
 	const categoryTabs = document.querySelectorAll(".category-tab");
 	const allSkillCards = document.querySelectorAll(".skills__card"); // Get all cards once
@@ -144,16 +145,15 @@ document.addEventListener("DOMContentLoaded", () => {
 		let totalVisibleCards = 0;
 		const searchTermLower = currentSearchTerm.toLowerCase();
 
-		// Hide all cards initially
+		// Hide all cards initially (and groups)
 		allSkillCards.forEach((card) => {
 			card.style.display = "none";
-			card.classList.remove("expanded"); // Ensure no leftover expansion state
+			card.classList.remove("expanded");
 		});
-
-		// Hide all groups initially and remove active class
 		skillGroups.forEach((group) => {
 			group.style.display = "none";
 			group.classList.remove("active");
+			delete group.dataset.hasVisibleCard; // Clear flag initially
 		});
 
 		// Determine which cards should be visible
@@ -181,28 +181,27 @@ document.addEventListener("DOMContentLoaded", () => {
 				totalVisibleCards++;
 				// Mark the parent group as needing to be visible
 				parentGroup.dataset.hasVisibleCard = "true";
+			} else {
+				card.style.display = "none"; // Explicitly hide non-matching cards
 			}
 		});
 
-		// Now, make the necessary groups visible
-		skillGroups.forEach((group) => {
-			if (group.dataset.hasVisibleCard === "true") {
-				group.style.display = "grid";
-				group.classList.add("active");
-			}
-			delete group.dataset.hasVisibleCard; // Clean up the temporary attribute
-		});
+		// Now, make the necessary groups visible (using requestAnimationFrame)
+		requestAnimationFrame(() => {
+			skillGroups.forEach((group) => {
+				if (group.dataset.hasVisibleCard === "true") {
+					group.style.display = "grid";
+					group.classList.add("active");
+				} else {
+					group.style.display = "none"; // Ensure non-active groups are hidden
+					group.classList.remove("active");
+				}
+				delete group.dataset.hasVisibleCard; // Clean up the temporary attribute
+			});
 
-		// Show/hide the 'no results' message
-		if (noResultsMsg) {
-			noResultsMsg.style.display = totalVisibleCards === 0 ? "block" : "none";
-		}
-
-		// Animate cards (if function exists) - This part remains the same
-		const activeGroups = document.querySelectorAll(".skills__group.active");
-		activeGroups.forEach((group) => {
-			if (typeof animateSkillCards === "function") {
-				animateSkillCards(group);
+			// Show/hide the 'no results' message
+			if (noResultsMsg) {
+				noResultsMsg.style.display = totalVisibleCards === 0 ? "block" : "none";
 			}
 		});
 	}

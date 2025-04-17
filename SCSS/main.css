@@ -2915,16 +2915,9 @@ a {
   border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  animation: borderFlash 4s infinite;
-}
-.skills__categories .category-tabs .category-tab:nth-child(odd) {
-  animation-delay: 0.7s;
-}
-.skills__categories .category-tabs .category-tab:nth-child(3n) {
-  animation-delay: 1.3s;
 }
 .skills__categories .category-tabs .category-tab::before {
   content: "";
@@ -2936,28 +2929,26 @@ a {
   background: rgba(240, 248, 255, 0.2);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: all 0.5s ease;
-  z-index: -1;
+  transition: all 0.4s ease;
+  z-index: 0;
 }
 .skills__categories .category-tabs .category-tab:hover, .skills__categories .category-tabs .category-tab.active {
   border-color: aliceblue;
-  transform: translateY(-3px) scale(1.1);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  animation: neonPulse 1.5s infinite;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
 }
 .skills__categories .category-tabs .category-tab:hover::before, .skills__categories .category-tabs .category-tab.active::before {
-  width: 300%;
-  height: 300%;
-  animation: spinGlow 8s linear infinite;
+  width: 250%;
+  height: 250%;
 }
 .skills__categories .category-tabs .category-tab.active {
-  background: rgba(240, 248, 255, 0.3);
+  background: rgba(240, 248, 255, 0.2);
   font-weight: bold;
-  text-shadow: 0 0 10px rgba(240, 248, 255, 0.8);
-  box-shadow: 0 0 15px rgba(240, 248, 255, 0.5);
+  text-shadow: 0 0 8px rgba(240, 248, 255, 0.6);
+  box-shadow: 0 0 12px rgba(240, 248, 255, 0.4);
 }
 .skills__categories .category-tabs .category-tab:hover:not(.active) {
-  background: rgba(14, 14, 14, 0.8);
+  background: rgba(19, 19, 19, 0.7);
 }
 .skills__container {
   width: 100%;
