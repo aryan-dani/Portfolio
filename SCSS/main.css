@@ -1322,11 +1322,6 @@
   z-index: 1;
   perspective: 1000px;
 }
-@media screen and (min-width: 576px) {
-  .project .project-grid {
-    padding: 0 2rem;
-  }
-}
 @media screen and (min-width: 768px) {
   .project .project-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1391,24 +1386,25 @@
   pointer-events: none;
 }
 .project .project-card:hover {
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
   border-color: transparent;
 }
 .project .project-card:hover::before {
-  opacity: 1;
+  opacity: 0.15;
 }
 .project .project-card:hover::after {
-  opacity: 1;
+  opacity: 0.8;
 }
 .project .project-card:hover .project-image img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 .project .project-card:hover .project-links {
   opacity: 1;
   transform: translateY(0);
 }
 .project .project-card:hover h3 {
-  color: aliceblue;
+  color: white;
 }
 .project .project-card .project-image {
   position: relative;
@@ -1463,6 +1459,8 @@
   border-radius: 0;
   overflow: visible;
   text-shadow: none;
+  position: relative;
+  z-index: 10;
   position: relative;
   overflow: hidden;
 }
@@ -1541,15 +1539,15 @@
   left: 100%;
 }
 .project .project-card .content .project-links a.project-link:hover {
-  transform: translateY(-6px) scale(1.1);
-  box-shadow: 0 8px 20px rgba(240, 248, 255, 0.35);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(240, 248, 255, 0.25);
   color: #272727;
-  background-color: aliceblue;
-  border-color: aliceblue;
+  background-color: white;
+  border-color: white;
 }
 .project .project-card .content .project-links a.project-link:hover i {
   color: #272727 !important;
-  transform: scale(1.2) rotate(-12deg);
+  transform: scale(1.1) rotate(-8deg);
 }
 .project .project-card .content .project-links a.project-link i {
   margin-right: 0.5rem;
@@ -2331,8 +2329,11 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
   border-color: transparent;
 }
+.certification .certificate-content:hover::before {
+  opacity: 0.15;
+}
 .certification .certificate-content:hover::after {
-  opacity: 1;
+  opacity: 0.8;
 }
 .certification .certificate-content:hover .certificate-image img {
   transform: scale(1.03);
@@ -2341,11 +2342,8 @@
   opacity: 1;
   transform: translateY(0);
 }
-.certification .certificate-content:hover::before {
-  opacity: 0.5;
-}
 .certification .certificate-content:hover h3 {
-  color: aliceblue;
+  color: white;
 }
 .certification .certificate-content::before {
   content: "";
@@ -2414,6 +2412,8 @@
   color: aliceblue;
   font-weight: 600;
   opacity: 0.8;
+  position: relative;
+  z-index: 10;
 }
 .certification .certificate-content h3 {
   font-size: 1.45rem;
@@ -2459,15 +2459,15 @@
   left: 100%;
 }
 .certification .certificate-content .certificate-links .certificate-link:hover {
-  transform: translateY(-6px) scale(1.1);
-  box-shadow: 0 8px 20px rgba(240, 248, 255, 0.35);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(240, 248, 255, 0.25);
   color: #272727;
-  background-color: aliceblue;
-  border-color: aliceblue;
+  background-color: white;
+  border-color: white;
 }
 .certification .certificate-content .certificate-links .certificate-link:hover i {
   color: #272727 !important;
-  transform: scale(1.2) rotate(-12deg);
+  transform: scale(1.1) rotate(-8deg);
 }
 .certification .certificate-content .certificate-links .certificate-link i {
   margin-right: 0.5rem;
@@ -2726,12 +2726,92 @@ a {
 
 .skills {
   min-height: calc(100vh - 60px);
-  padding: 2rem;
+  padding: 3rem 0;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+}
+@media screen and (min-width: 576px) {
+  .skills {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+.skills .intro-container {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto 3rem;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+  background-color: rgba(57, 57, 57, 0.65);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border: 1px solid rgba(240, 248, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  box-sizing: border-box;
+}
+.skills .intro-container .skills__heading {
+  border: none;
+  background: none;
+  text-transform: none;
+  animation: none;
+  padding: 10px 20px;
+  margin: 0 auto 1rem;
+  font-weight: 900;
+  font-size: 2.8rem;
+  background: linear-gradient(135deg, white, aliceblue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  animation: slide-in-heading 0.8s ease-out forwards;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+}
+.skills .intro-container .skills__heading::before, .skills .intro-container .skills__heading::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: aliceblue;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+  opacity: 0.8;
+}
+.skills .intro-container .skills__heading .pulse-effect {
+  display: none;
+}
+.skills .intro-container .intro-text {
+  width: 100%;
+  max-width: 100%;
+  color: aliceblue;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 1.15rem;
+  line-height: 1.9;
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
 }
 .skills__heading {
   font-size: 2.8rem;
@@ -2771,13 +2851,14 @@ a {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 900px;
+  max-width: none;
   margin-left: auto;
   margin-right: auto;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
   background: rgba(31, 31, 31, 0.5);
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 .skills .skills-search {
   width: auto;
@@ -2880,12 +2961,14 @@ a {
 }
 .skills__container {
   width: 100%;
-  max-width: 1200px;
+  max-width: none;
   justify-content: center;
   perspective: 1500px;
   position: relative;
   z-index: 1;
   margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
 }
 .skills__group {
   display: none;

@@ -126,15 +126,11 @@
     gap: 2.5rem; // Increased gap
     width: 100%; // Make grid fill the padded section width
     max-width: none; // Remove specific max-width from here
-    padding: 0; // Remove horizontal padding from here
+    padding: 0; // Ensure no horizontal padding is applied directly to the grid
     margin: 1rem auto; // Reduced top margin for the grid
     position: relative;
     z-index: 1;
     perspective: 1000px;
-
-    @include media-sm {
-      padding: 0 2rem; // Increase padding on larger screens
-    }
 
     @include media-md {
       grid-template-columns: repeat(2, 1fr);
@@ -200,28 +196,29 @@
     }
 
     &:hover {
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5); // Enhanced hover shadow
-      border-color: transparent; // Hide base border to show gradient
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      border-color: transparent;
 
       &::before {
-        opacity: 1; // Show overlay on hover
+        opacity: 0.15; // Further reduced overlay opacity
       }
 
       &::after {
-        opacity: 1; // Show border gradient on hover
+        opacity: 0.8; // Slightly reduced border opacity
       }
 
       .project-image img {
-        transform: scale(1.05); // Image scale effect
+        transform: scale(1.03);
       }
 
       .project-links {
         opacity: 1;
-        transform: translateY(0); // Link reveal effect
+        transform: translateY(0);
       }
 
       h3 {
-        color: $secondary-color; // Text color change
+        color: lighten($secondary-color, 15%); // Less intense color change
       }
     }
 
@@ -286,6 +283,8 @@
         border-radius: 0;
         overflow: visible;
         text-shadow: none;
+        position: relative; // Ensure positioning context for z-index
+        z-index: 10; // Increased z-index significantly
 
         &::after {
           content: none;
@@ -346,15 +345,15 @@
           @include shine-effect;
 
           &:hover {
-            transform: translateY(-6px) scale(1.1);
-            box-shadow: 0 8px 20px rgba($secondary-color, 0.35);
-            color: $primary-color; // Change text color
-            background-color: $secondary-color; // Change background
-            border-color: $secondary-color; // Change border
+            transform: translateY(-4px) scale(1.05); // Slightly less lift/scale
+            box-shadow: 0 6px 15px rgba($secondary-color, 0.25); // Reduced shadow
+            color: $primary-color;
+            background-color: lighten($secondary-color, 10%); // Less intense background
+            border-color: lighten($secondary-color, 10%); // Match background
 
             i {
-              color: $primary-color !important; // Ensure icon color changes
-              transform: scale(1.2) rotate(-12deg);
+              color: $primary-color !important;
+              transform: scale(1.1) rotate(-8deg); // Reduced icon animation
             }
           }
 

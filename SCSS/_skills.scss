@@ -17,12 +17,99 @@
 
 .skills {
   min-height: calc(100vh - 60px);
-  padding: 2rem;
+  padding: 3rem 0; // Remove horizontal padding here
+  width: 100%; // Ensure full width initially
+  max-width: 1400px; // Apply max-width to the section
+  margin: 0 auto; // Center the section
+  padding-left: 1rem; // Add horizontal padding here
+  padding-right: 1rem;
+  box-sizing: border-box; // Include padding in width calculation
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+
+  @include media-sm {
+    padding-left: 2rem; // Increase padding on larger screens
+    padding-right: 2rem;
+  }
+
+  // New Intro Container Styling (Matches certification/project)
+  .intro-container {
+    width: 100%; // Make container fill the padded section width
+    max-width: none; // Remove specific max-width from here
+    margin: 0 auto 3rem; // Consistent margin
+    padding: 2rem; // Consistent padding
+    position: relative;
+    z-index: 1;
+    background-color: rgba(lighten($primary-color, 7%), 0.65);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($secondary-color, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  // Updated Heading Styles (Inside intro-container)
+  .intro-container .skills__heading {
+    // Reset previous heading styles
+    border: none;
+    background: none;
+    text-transform: none;
+    animation: none;
+    padding: 10px 20px;
+    margin: 0 auto 1rem; // Center block element and add bottom margin
+    font-weight: 900;
+    font-size: 2.8rem; // Match project/cert heading size
+    background: linear-gradient(135deg, lighten($secondary-color, 10%), $secondary-color);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); // Enhanced shadow
+    animation: slide-in-heading 0.8s ease-out forwards;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: $secondary-color;
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+      opacity: 0.8;
+    }
+
+    .pulse-effect {
+      display: none;
+    }
+  }
+
+  // Intro Text Styling (Inside intro-container)
+  .intro-container .intro-text {
+    width: 100%;
+    max-width: 100%;
+    color: $secondary-color;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.15rem; // Match project/cert intro font size
+    line-height: 1.9; // Match project/cert intro line height
+    opacity: 1;
+    position: relative;
+    z-index: 1;
+    background-color: transparent;
+    backdrop-filter: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
 
   &__heading {
     font-size: 2.8rem; // Slightly reduced
@@ -68,17 +155,15 @@
     margin-bottom: 2.5rem;
     position: relative;
     z-index: 1;
-    width: 100%;
-    max-width: 900px; // Slightly increase max-width if needed
+    width: 100%; // Make container fill the padded section width
+    max-width: none; // Remove specific max-width from here
     margin-left: auto;
     margin-right: auto;
-    padding: 1rem 1.5rem; // Adjusted padding
+    padding: 1.5rem; // Adjusted padding
     background: rgba(darken($primary-color, 3%), 0.5);
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-
-    // Remove the media-md block changing direction, as row is default now
-    // @include media-md { ... }
+    box-sizing: border-box;
   }
 
   // Skills Search Input Styles
@@ -112,7 +197,6 @@
       }
     }
   }
-
 
   &__categories {
     // Adjust width and flexibility
@@ -196,28 +280,15 @@
   }
 
   &__container {
-    width: 100%;
-    max-width: 1200px;
+    width: 100%; // Make container fill the padded section width
+    max-width: none; // Remove specific max-width from here
     justify-content: center;
     perspective: 1500px;
     position: relative;
     z-index: 1;
     margin: 0 auto;
-    // Remove display: grid from here initially
-
-    // REMOVE this block - it conflicts with the JS logic
-    // &.all-view-active {
-    //   display: grid; 
-    //   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    //   gap: 1.5rem;
-    //   width: 100%;
-    //   .skills__group {
-    //     display: none !important; 
-    //   }
-    //   > .skills__card {
-    //       display: block; 
-    //   }
-    // }
+    padding: 0; // Remove horizontal padding from here
+    box-sizing: border-box;
   }
 
   &__group {

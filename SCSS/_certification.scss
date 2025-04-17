@@ -264,17 +264,17 @@
       pointer-events: none;
     }
 
-    // Remove the 3D hover mixin
-
     &:hover {
-      // Subtle hover effect
       transform: translateY(-5px) scale(1.01); // Slight lift and scale
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45); // Slightly increased shadow
       border-color: transparent; // Keep for gradient border
 
+      &::before {
+        opacity: 0.15; // Further reduced overlay opacity
+      }
+
       &::after {
-        // Keep gradient border effect
-        opacity: 1;
+        opacity: 0.8; // Slightly reduced border opacity
       }
 
       .certificate-image img {
@@ -286,12 +286,8 @@
         transform: translateY(0);
       }
 
-      &::before {
-        opacity: 0.5; // Slightly reduced overlay opacity
-      }
-
       h3 {
-        color: $secondary-color;
+        color: lighten($secondary-color, 15%); // Less intense color change
       }
     }
 
@@ -369,6 +365,8 @@
       color: $secondary-color;
       font-weight: 600;
       opacity: 0.8;
+      position: relative; // Ensure positioning context for z-index
+      z-index: 10; // Increased z-index significantly
     }
 
     h3 {
@@ -404,15 +402,15 @@
         @include shine-effect;
 
         &:hover {
-          transform: translateY(-6px) scale(1.1);
-          box-shadow: 0 8px 20px rgba($secondary-color, 0.35);
+          transform: translateY(-4px) scale(1.05); // Slightly less lift/scale
+          box-shadow: 0 6px 15px rgba($secondary-color, 0.25); // Reduced shadow
           color: $primary-color;
-          background-color: $secondary-color;
-          border-color: $secondary-color;
+          background-color: lighten($secondary-color, 10%); // Less intense background
+          border-color: lighten($secondary-color, 10%); // Match background
 
           i {
             color: $primary-color !important;
-            transform: scale(1.2) rotate(-12deg);
+            transform: scale(1.1) rotate(-8deg); // Reduced icon animation
           }
         }
 
