@@ -26,9 +26,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(circle,
-        rgba(255, 255, 255, 0.05) 1px,
-        transparent 1px);
+    background-image: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    );
     background-size: 25px 25px;
     opacity: 0.6;
     pointer-events: none;
@@ -60,7 +62,11 @@
     font-weight: 900;
     font-size: 2.8rem; // Match project heading size
     padding: 10px 20px; // Add some padding
-    background: linear-gradient(135deg, lighten($secondary-color, 10%), $secondary-color);
+    background: linear-gradient(
+      135deg,
+      lighten($secondary-color, 10%),
+      $secondary-color
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -71,7 +77,7 @@
     z-index: 1;
 
     &::after {
-      content: '';
+      content: "";
       display: block;
       width: 80px;
       height: 3px;
@@ -107,7 +113,10 @@
     margin: 0 auto 2rem;
     padding: 1.8rem; // Keep internal padding
     box-sizing: border-box;
-    background-color: rgba(lighten($primary-color, 7%), 0.6); // Slightly adjust background
+    background-color: rgba(
+      lighten($primary-color, 7%),
+      0.6
+    ); // Slightly adjust background
     backdrop-filter: blur(10px); // Increase blur
     border: 1px solid rgba($secondary-color, 0.2); // Slightly stronger border
     border-radius: 12px; // Match other containers
@@ -158,7 +167,6 @@
         border: none;
         font-size: 1.5rem; // Make 'x' larger
         color: rgba(#fff, 0.6); // Style the 'x' color
-        cursor: pointer;
         padding: 0 5px; // Add some padding for easier clicking
         line-height: 1;
         display: none; // Hide by default, JS will show it
@@ -254,14 +262,18 @@
   }
 
   .certificate-content {
-    background: rgba(lighten($primary-color, 5%), 0.75); // Slightly less transparent
+    background: rgba(
+      lighten($primary-color, 5%),
+      0.75
+    ); // Slightly less transparent
     border-radius: 15px; // Match project card radius
     overflow: hidden;
     margin-bottom: 2rem;
     backdrop-filter: blur(10px);
     border: 1px solid rgba($secondary-color, 0.2); // Slightly stronger border
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); // Match project card shadow
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; // Adjusted transition for subtle hover
+    transition: transform 0.3s ease, box-shadow 0.3s ease,
+      border-color 0.3s ease; // Adjusted transition for subtle hover
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -273,7 +285,11 @@
       position: absolute;
       inset: -2px;
       border-radius: inherit;
-      background: linear-gradient(135deg, rgba($secondary-color, 0.6), rgba($primary-color, 0.3));
+      background: linear-gradient(
+        135deg,
+        rgba($secondary-color, 0.6),
+        rgba($primary-color, 0.3)
+      );
       opacity: 0;
       transition: opacity 0.4s ease;
       z-index: -1;
@@ -314,9 +330,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg,
-          rgba($secondary-color, 0.05) 0%,
-          rgba($secondary-color, 0.1) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba($secondary-color, 0.05) 0%,
+        rgba($secondary-color, 0.1) 100%
+      );
       opacity: 0;
       transition: opacity 0.4s ease;
       z-index: 0;
@@ -332,8 +350,6 @@
       border-radius: 10px; // Match project image radius
       margin: 1.5rem; // Match project image margin
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-
       &::before {
         content: "";
         position: absolute;
@@ -341,9 +357,11 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0.1),
-            rgba(0, 0, 0, 0.3));
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.1),
+          rgba(0, 0, 0, 0.3)
+        );
         z-index: 1;
         pointer-events: none;
         transition: opacity 0.4s ease;
@@ -419,7 +437,10 @@
           transform: translateY(-4px) scale(1.05); // Slightly less lift/scale
           box-shadow: 0 6px 15px rgba($secondary-color, 0.25); // Reduced shadow
           color: $primary-color;
-          background-color: lighten($secondary-color, 10%); // Less intense background
+          background-color: lighten(
+            $secondary-color,
+            10%
+          ); // Less intense background
           border-color: lighten($secondary-color, 10%); // Match background
 
           i {
@@ -544,7 +565,8 @@
   }
 
   .certificate-content.animate-on-scroll {
-    animation: certificate-popup 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985) forwards;
+    animation: certificate-popup 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)
+      forwards;
   }
 }
 
@@ -610,7 +632,6 @@
       align-items: center;
       justify-content: center;
       font-size: 1.8rem;
-      cursor: pointer;
       opacity: 0.9;
       transition: all 0.3s ease;
 

@@ -110,12 +110,13 @@
 
   .toast-content {
     flex-grow: 1;
-    padding: 0 5px; // <<< ADD PADDING HERE for consistency
+    padding: 0 5px;
 
     h4 {
       margin: 0 0 5px;
       font-size: 16px;
       color: #fff; // Brighter title
+      text-align: left; // Ensure title is left-aligned
     }
 
     p {
@@ -123,6 +124,7 @@
       font-size: 14px;
       color: #ddd; // Slightly dimmer paragraph
       opacity: 0.9;
+      text-align: left; // Ensure message is left-aligned
     }
 
     .toast-subtitle {
@@ -136,7 +138,6 @@
     background: none;
     border: none;
     color: rgba(255, 255, 255, 0.8); // Slightly more visible
-    cursor: pointer;
     padding: 0;
     margin-left: auto;
     align-self: flex-start;

@@ -40,6 +40,7 @@ html:focus-within {
   scroll-behavior: smooth;
 }
 
+// Base cursor for the entire page
 body {
   min-height: 100vh;
   text-rendering: optimizeSpeed;
@@ -50,51 +51,58 @@ body {
   overflow-x: hidden; // Prevent horizontal overflow
   transition: background-color $transition-speed ease-in-out,
     color $transition-speed ease-in-out;
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='8' fill='rgba(255, 255, 255, 0.5)'/%3E%3C/svg%3E") 16 16, auto; // Custom cursor
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='8' fill='rgba(255, 255, 255, 0.5)'/%3E%3C/svg%3E")
+      16 16,
+    auto; // Keep the existing small circle cursor as default
 }
 
+// Larger cursor for interactive elements (Increased specificity and broader selection)
 a,
 button,
 [role="button"],
 input[type="submit"],
 input[type="button"],
+input[type="reset"], // Added reset buttons
+input[type="image"], // Added image inputs
+select,
+label, // Keep labels
+summary, // Added for <details> elements
+[onclick], // Target elements with onclick handlers
 .menu-btn,
 .skills__card,
-.project__item,
-.job,
-.certification-card {
-  cursor: pointer; // Standard pointer for interactive elements
-  // Or use a different custom cursor for interactive elements:
-  // cursor: url("data:image/svg+xml,%3Csvg ... pointer variant ... %3E") 16 16, pointer;
+.project-card,
+.certificate-content,
+.certificate-image, // Ensure this is targeted
+.toast-close, // Ensure this is targeted
+.search-clear-btn,
+.retry-button,
+.cached-pages li a,
+.contact-btn,
+.submit-btn,
+.category-tab,
+.skill-modal__close,
+.preview-container .close-preview, // Ensure this is targeted
+.jobs-layout .Jobs h3 a,
+.project-links a,
+.tags-container h6,
+.social-icons a,
+.cta-button,
+.home__name, // Added home page name
+.project-card .content h3, // Added project titles
+[data-interactive] // Add a generic attribute selector if you use data-* for interaction
+{
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='12' fill='rgba(255, 255, 255, 0.7)'/%3E%3C/svg%3E")
+      24 24,
+    auto !important; // Add !important to increase override power
 }
 
-// Ensure Font Awesome icons display correctly
-[class^="fa-"],
-[class*=" fa-"] {
-  display: inline-block; // Ensure icons are treated as inline blocks
-  line-height: 1; // Prevent line-height issues
-}
-
-img,
-picture {
-  max-width: 100%;
-  display: block;
-}
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-:focus {
-  outline: 2px solid $secondary-color;
-  outline-offset: 2px;
-}
-
-:focus:not(:focus-visible) {
-  outline: none;
+// Elements that should explicitly use the default text cursor
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="password"],
+textarea {
+  cursor: text !important; // Add !important here too for consistency
 }
 
 html {

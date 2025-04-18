@@ -7,7 +7,8 @@
   }
 
   50% {
-    box-shadow: 0 2px 15px rgba($secondary-color, 0.5), 0 0 8px rgba($secondary-color, 0.4);
+    box-shadow: 0 2px 15px rgba($secondary-color, 0.5),
+      0 0 8px rgba($secondary-color, 0.4);
   }
 
   100% {
@@ -22,7 +23,6 @@
   top: 0.7rem;
   height: 2.5rem;
   width: 2.5rem;
-  cursor: pointer;
   transition: all 0.3s ease;
   animation: pulseGlow 3s infinite ease-in-out;
   background-color: rgba($primary-color, 0.8);
@@ -139,7 +139,8 @@
     right: auto !important;
     transform: translateX(-50%) translateY(0);
     margin: 0 auto;
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+    transition: opacity 0.8s ease,
+      transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
   }
 
   .menu-nav {
@@ -152,7 +153,11 @@
     align-items: center;
     justify-content: center;
     margin-top: 0.5vh;
-    background: linear-gradient(135deg, rgba(darken($primary-color, 3%), 0.98), rgba($primary-color, 0.98));
+    background: linear-gradient(
+      135deg,
+      rgba(darken($primary-color, 3%), 0.98),
+      rgba($primary-color, 0.98)
+    );
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
     border: 1.5px solid rgba($secondary-color, 0.18);
@@ -186,9 +191,10 @@
       position: relative;
       opacity: 1; // Ensure visible
       transform: none; // Ensure visible
-      border-right: 1.5px solid rgba($secondary-color, 0.10);
+      border-right: 1.5px solid rgba($secondary-color, 0.1);
       padding-right: 1.2rem; // Keep initial padding
-      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+      transition: opacity 0.8s ease,
+        transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 
       &:last-child {
         border-right: none !important;
@@ -197,7 +203,7 @@
       }
     }
 
-    &.active>a {
+    &.active > a {
       color: $secondary-color;
       position: relative;
     }
@@ -235,10 +241,12 @@
 
         &::before {
           width: 100%;
-          background: linear-gradient(to right,
-              rgba($secondary-color, 0.3) 0%,
-              $secondary-color 50%,
-              rgba($secondary-color, 0.3) 100%);
+          background: linear-gradient(
+            to right,
+            rgba($secondary-color, 0.3) 0%,
+            $secondary-color 50%,
+            rgba($secondary-color, 0.3) 100%
+          );
         }
       }
     }

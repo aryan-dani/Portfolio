@@ -904,7 +904,6 @@ function animateSkillCards(container) {
     card.style.transform = "translateY(0)";
     card.style.transition = "none"; // Disable transition temporarily
     card.style.animation = "none"; // Disable other animations temporarily
-    card.style.cursor = "pointer";
     card.title = "Click to see details";
   });
   if (typeof VanillaTilt !== "undefined") {
