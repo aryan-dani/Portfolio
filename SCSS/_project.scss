@@ -1,6 +1,5 @@
 @use "config" as *;
 @use "mixins" as *;
-
 .project {
   position: relative;
   overflow: hidden;
@@ -13,13 +12,10 @@
   margin: 0 auto; // Center the section
   box-sizing: border-box; // Include padding in width calculation
   min-height: calc(100vh - 80px);
-
   @include media-sm {
     padding-left: 2rem; // Increase padding on larger screens
     padding-right: 2rem;
   }
-
-  // Consistent particle background
   &::before {
     content: "";
     position: absolute;
@@ -36,8 +32,6 @@
     z-index: 0;
     animation: gradientBackground 15s ease infinite;
   }
-
-  // Main heading and intro container - Renamed for clarity and styled like certification intro
   .project__intro-container {
     margin-top: 3rem;
     width: 100%; // Make container fill the padded section width
@@ -50,13 +44,10 @@
     border-radius: 12px; // Match certification intro radius
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); // Match certification intro shadow
     text-align: center; // Center content
-
     @include media-sm {
       padding: 2rem 2rem; // Match grid horizontal padding on larger screens
     }
-
     h2.text-secondary {
-      // Style main heading like certification heading
       display: block; // Full width
       text-align: center;
       width: 100%;
@@ -72,7 +63,6 @@
       animation: slide-in-heading 0.8s ease-out forwards; // Use existing animation
       position: relative;
       z-index: 1;
-
       &::after {
         content: '';
         display: block;
@@ -83,17 +73,13 @@
         border-radius: 2px;
         opacity: 0.8;
       }
-
       &:hover {
         transform: none;
         text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); // Keep base shadow
       }
     }
-
     p {
-      // Style intro paragraph like certification intro
       color: $secondary-color;
-      // text-align: center; // Center align the intro paragraph
       text-align: justify; // Justify text
       font-size: 1.15rem; // Slightly increased font size
       line-height: 1.9; // Slightly increased line height
@@ -107,7 +93,6 @@
       border-radius: 0;
       box-shadow: none;
       transition: none;
-
       &:hover {
         background-color: transparent;
         color: $secondary-color;
@@ -116,8 +101,6 @@
       }
     }
   }
-
-  // Grid container for project cards
   .project-grid {
     display: grid;
     grid-template-columns: 1fr; // Default to 1 column
@@ -129,13 +112,10 @@
     position: relative;
     z-index: 1;
     perspective: 1000px;
-
     @include media-md {
       grid-template-columns: repeat(2, 1fr);
     }
   }
-
-  // Project Card Styles - Renamed to .project-card for clarity
   .project-card {
     background: rgba(lighten($primary-color, 5%), 0.7); // Match certificate card background
     border-radius: 15px; // Slightly larger radius
@@ -151,20 +131,16 @@
     z-index: 1;
     padding: 0; // Remove previous padding
     border-bottom: none; // Remove previous border
-
     @include card-3d-hover;
-
     &.animate-on-scroll {
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-
       &.visible {
         opacity: 1;
         transform: translateY(0);
       }
     }
-
     &::before {
       content: "";
       position: absolute;
@@ -180,7 +156,6 @@
       z-index: 0;
       pointer-events: none;
     }
-
     &::after {
       content: "";
       position: absolute;
@@ -192,35 +167,27 @@
       z-index: -1;
       pointer-events: none;
     }
-
     &:hover {
       transform: translateY(-5px) scale(1.01);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
       border-color: transparent;
-
       &::before {
         opacity: 0.15; // Further reduced overlay opacity
       }
-
       &::after {
         opacity: 0.8; // Slightly reduced border opacity
       }
-
       .project-image img {
         transform: scale(1.03);
       }
-
       .project-links {
         opacity: 1;
         transform: translateY(0);
       }
-
       h3 {
         color: lighten($secondary-color, 15%); // Less intense color change
       }
     }
-
-    // Project Image Container
     .project-image {
       position: relative; // Needed for badge positioning
       overflow: hidden;
@@ -231,7 +198,6 @@
       margin: 1.5rem; // Increased margin
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); // Consistent shadow
       background-color: transparent; // Remove background if image covers it
-
       img {
         width: 100%;
         height: 100%; // Ensure image tries to fill container height
@@ -241,11 +207,9 @@
         border-radius: 8px; // Slightly larger radius
         display: block;
         background-color: rgba(0, 0, 0, 0.1); // Add subtle background for letterboxing
-
         &[width][height] {
           aspect-ratio: attr(width) / attr(height);
         }
-
         &[loading="lazy"] {
           background: linear-gradient(110deg,
               rgba(227, 227, 227, 0.1) 30%,
@@ -256,8 +220,6 @@
         }
       }
     }
-
-    // Content Area
     .content {
       padding: 0 2rem 2rem; // Increased padding
       flex-grow: 1; // Allow content to fill space
@@ -268,8 +230,6 @@
       color: $secondary-color; // Set default text color for content area
       position: relative; // Ensure content is above ::before pseudo-element
       z-index: 1;
-
-      // Date/Status Text
       h2.text-secondary {
         font-size: 1.05rem; // Increased font size
         margin: 0 0 0.5rem; // Adjust margin
@@ -283,19 +243,14 @@
         text-shadow: none;
         position: relative; // Ensure positioning context for z-index
         z-index: 10; // Increased z-index significantly
-
         &::after {
           content: none;
         }
-
         &:hover {
           transform: none;
         }
-
         @include shine-effect;
       }
-
-      // Project Title
       h3 {
         font-size: 1.45rem; // Increased font size
         margin: 0.5rem 0; // Adjust margin
@@ -303,19 +258,15 @@
         line-height: 1.4; // Match certificate title line-height
         transition: color 0.3s ease; // Match certificate title transition
         color: $secondary-color; // Ensure default color
-
         &::after {
           content: none;
         }
-
         &:hover {
           cursor: default;
           transform: none; // Remove transform, handled by card hover
           color: $secondary-color; // Keep color change on card hover
         }
       }
-
-      // Project Links Container
       .project-links {
         display: flex;
         gap: 0.5rem;
@@ -325,7 +276,6 @@
         transform: translateY(5px); // Slightly move down by default
         justify-content: center; // Center the links within their container
         width: 100%; // Ensure container takes full width
-
         a.project-link {
           display: inline-flex;
           align-items: center;
@@ -339,30 +289,24 @@
           border: 1px solid rgba($secondary-color, 0.3); // Match certificate link border
           position: relative;
           overflow: hidden;
-
           @include shine-effect;
-
           &:hover {
             transform: translateY(-4px) scale(1.05); // Slightly less lift/scale
             box-shadow: 0 6px 15px rgba($secondary-color, 0.25); // Reduced shadow
             color: $primary-color;
             background-color: lighten($secondary-color, 10%); // Less intense background
             border-color: lighten($secondary-color, 10%); // Match background
-
             i {
               color: $primary-color !important;
               transform: scale(1.1) rotate(-8deg); // Reduced icon animation
             }
           }
-
           i {
             margin-right: 0.5rem; // Consistent icon margin
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Add transition to icon
           }
         }
       }
-
-      // Tags (h6) - Styled like certificate tags
       .tags-container {
         display: flex;
         flex-wrap: wrap;
@@ -371,7 +315,6 @@
         justify-content: center; // Center tags
         width: 100%;
       }
-
       h6 {
         display: inline-block;
         font-size: 0.85rem; // Increased font size
@@ -382,7 +325,6 @@
         border: 1px solid rgba($secondary-color, 0.15); // Match certificate tag border
         margin: 0; // Remove previous margin
         transition: all 0.3s ease;
-
         &:hover {
           cursor: default;
           transform: translateY(-2px); // Simple lift on hover
@@ -390,8 +332,6 @@
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
       }
-
-      // Project Description
       p {
         margin: 1rem 0 0; // Adjust margin (top margin added by tags/links)
         font-size: 1rem; // Increased font size
@@ -400,29 +340,21 @@
         flex-grow: 1; // Allow paragraph to take remaining space
         position: relative;
         z-index: 1;
-        // text-align: left; // Keep description left-aligned for readability
         text-align: justify; // Justify text
         max-width: 90%; // Limit width slightly for better centering feel
         margin-left: auto;
         margin-right: auto;
-
         @media screen and (max-width: 768px) {
           max-width: 95%; // Allow slightly more width on tablets
         }
-
         @media screen and (max-width: 480px) {
           max-width: 100%; // Allow full width on small phones
-          // text-align: justify; // Justify text on very small screens if needed - REMOVED (now default)
         }
       }
     }
   }
 }
-
-// Form control styles
 .form-control {
-
-  // Hide default browser clear button (X) for search inputs
   &::-webkit-search-cancel-button,
   &::-webkit-search-decoration {
     -webkit-appearance: none;
@@ -430,34 +362,24 @@
     display: none;
   }
 }
-
-// Keep media query for responsiveness
 @media screen and (max-width: 768px) {
-
-  // Adjusted breakpoint to match grid change
   .project {
     padding: 2rem 0; // Adjust vertical padding
     padding-left: 0.5rem; // Reduce horizontal padding
     padding-right: 0.5rem;
-
     .project-grid {
-      // padding: 0 1rem; // Removed padding here, handled by parent
       gap: 1.5rem; // Reduce gap
     }
-
     .project__intro-container {
       padding: 1.5rem 1rem; // Adjust padding
       margin-bottom: 2rem; // Adjust margin
-
       h2.text-secondary {
         font-size: 2rem; // Adjust heading size
       }
-
       p {
         font-size: 1rem; // Adjust paragraph size
       }
     }
-
     .project-card {
       .content {
         padding: 0 1rem 1.5rem; // Adjust content padding
@@ -465,57 +387,44 @@
     }
   }
 }
-
-// Add media query for very small screens
 @media screen and (max-width: 480px) {
   .project {
     padding: 1.5rem 0;
     padding-left: 0.25rem;
     padding-right: 0.25rem;
-
     .project__intro-container {
       padding: 1rem 0.5rem;
       margin-bottom: 1.5rem;
-
       h2.text-secondary {
         font-size: 1.8rem;
       }
-
       p {
         font-size: 0.95rem;
       }
     }
-
     .project-grid {
       gap: 1rem;
     }
-
     .project-card {
       .project-image {
         margin: 1rem; // Reduce image margin
       }
-
       .content {
         padding: 0 0.75rem 1rem;
-
         h3 {
           font-size: 1.3rem;
         }
-
         .project-links a.project-link {
           padding: 0.4rem 0.8rem;
           font-size: 0.9rem;
         }
-
         .tags-container {
           margin: 1rem 0;
         }
-
         h6 {
           font-size: 0.8rem;
           padding: 0.2rem 0.6rem;
         }
-
         p {
           font-size: 0.95rem;
         }
@@ -523,38 +432,29 @@
     }
   }
 }
-
-// Add shimmer animation if used
 @keyframes shimmer {
   0% {
     background-position: -1000px 0;
   }
-
   100% {
     background-position: 1000px 0;
   }
 }
-
-// Add slideInUp animation if used
 @keyframes slideInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
-// Ensure slide-in-heading animation exists (likely in _animations.scss)
 @keyframes slide-in-heading {
   0% {
     opacity: 0;
     transform: translateY(-20px);
   }
-
   100% {
     opacity: 1;
     transform: translateY(0);

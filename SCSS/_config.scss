@@ -2,37 +2,29 @@ $primary-color: #272727;
 $secondary-color: aliceblue;
 $transition-speed: 0.3s;
 $text-color: #fff;
-
-
 @function set-text-color($color) {
   @if (lightness($color) > 40%) {
     @return #000;
   }
-
   @else {
     @return #fff;
   }
 }
-
-// Media Query Mixins
 @mixin media-sm {
   @media screen and (min-width: 576px) {
     @content;
   }
 }
-
 @mixin media-md {
   @media screen and (min-width: 768px) {
     @content;
   }
 }
-
 @mixin media-lg {
   @media screen and (min-width: 992px) {
     @content;
   }
 }
-
 @mixin media-xl {
   @media screen and (min-width: 1200px) {
     @content;

@@ -1,18 +1,9 @@
-/** @format */
-
-// Performance Optimizations for Portfolio Website
-// This file contains various optimizations for improving website performance.
-
-// Initialize performance optimizations when DOM is ready
 document.addEventListener("DOMContentLoaded", function () {
 	console.log("Performance.js: DOM loaded, initializing optimizations");
-
-	// Check for and display persisted info toast from sessionStorage
 	const persistedToastData = sessionStorage.getItem("pendingInfoToast");
 	if (persistedToastData) {
 		try {
 			const toastData = JSON.parse(persistedToastData);
-			// Display the toast but don't re-persist it
 			showToast(
 				toastData.message,
 				toastData.type,
@@ -27,26 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
 			sessionStorage.removeItem("pendingInfoToast"); // Clear invalid data
 		}
 	}
-
-	// Handle lazy loading of images - safely
 	initLazyLoading();
-
-	// Register service worker for offline capabilities if supported
 	registerServiceWorker();
-
-	// Add intersection observer for animation on scroll
 	initIntersectionObserver();
-
-	// Apply reduced motion preferences (class toggle only)
 	applyReducedMotionPreferences();
 });
-
-// Global toast container reference
 let toastContainer = null;
-
-/**
- * Ensures the toast container exists in the DOM.
- */
 function ensureToastContainer() {
 	if (!toastContainer) {
 		toastContainer = document.querySelector(".toast-container");
@@ -57,16 +34,6 @@ function ensureToastContainer() {
 		}
 	}
 }
-
-/**
- * Displays a toast notification.
- * @param {string} message - The main message to display.
- * @param {string} type - Type of toast ('success', 'error', 'info', 'warning'). Determines icon and color.
- * @param {number} duration - How long the toast should be visible in milliseconds.
- * @param {string} title - Optional title for the toast.
- * @param {string} iconClass - Optional Font Awesome icon class (e.g., 'fa-solid fa-check-circle').
- * @param {boolean} persistInfo - Internal flag to control saving 'info' toasts. Defaults to true.
- */
 function showToast(
 	message,
 	type = "info",
@@ -76,8 +43,6 @@ function showToast(
 	persistInfo = true // Added parameter to control persistence saving
 ) {
 	ensureToastContainer(); // Make sure the container exists
-
-	// If it's an 'info' toast and we should persist it, save to sessionStorage
 	if (type === "info" && persistInfo) {
 		const toastData = { message, type, duration, title, iconClass };
 		try {
@@ -86,13 +51,10 @@ function showToast(
 			console.error("Error saving toast data to sessionStorage:", e);
 		}
 	}
-
 	const toast = document.createElement("div");
 	toast.className = `toast ${type}`; // Add type class for styling
 	toast.setAttribute("role", "alert");
 	toast.setAttribute("aria-live", "assertive");
-
-	// Determine icon based on type or provided class
 	let iconHtml = "";
 	if (iconClass) {
 		iconHtml = `<i class="${iconClass}"></i>`;
@@ -117,7 +79,6 @@ function showToast(
 				break;
 		}
 	}
-
 	const toastContent = `
         <div class="toast-icon">
             ${iconHtml}
@@ -130,24 +91,17 @@ function showToast(
             <i class="fa-solid fa-times"></i>
         </button>
     `;
-
 	toast.innerHTML = toastContent;
 	toastContainer.appendChild(toast);
-
-	// Trigger animation
 	requestAnimationFrame(() => {
 		toast.classList.add("show");
 	});
-
-	// Auto-dismiss only if duration is positive
 	let dismissTimeout = null;
 	if (duration > 0 && isFinite(duration)) {
 		dismissTimeout = setTimeout(() => {
 			dismissToast(toast);
 		}, duration);
 	}
-
-	// Close button functionality
 	const closeButton = toast.querySelector(".toast-close");
 	closeButton.addEventListener("click", () => {
 		if (dismissTimeout) {
@@ -156,26 +110,15 @@ function showToast(
 		dismissToast(toast);
 	});
 }
-
-/**
- * Dismisses a specific toast notification with animation.
- * @param {HTMLElement} toast - The toast element to dismiss.
- */
 function dismissToast(toast) {
 	toast.classList.remove("show");
-	// Remove the element after the fade-out animation completes
 	setTimeout(() => {
 		if (toast.parentNode) {
 			toast.parentNode.removeChild(toast);
 		}
 	}, 300); // Match animation duration in CSS
 }
-
-/**
- * Initialize lazy loading for images safely without changing source paths
- */
 function initLazyLoading() {
-	// If the browser supports native lazy loading, use it
 	if ("loading" in HTMLImageElement.prototype) {
 		const images = document.querySelectorAll("img:not([loading])");
 		images.forEach((img) => {
@@ -183,10 +126,7 @@ function initLazyLoading() {
 		});
 		console.log("Performance.js: Native lazy loading enabled for images.");
 	} else {
-		// Otherwise use Intersection Observer for lazy loading
-		// Only apply to images with data-src attribute to avoid breaking existing images
 		const lazyImages = document.querySelectorAll("img[data-src]");
-
 		if (lazyImages.length > 0) {
 			const imageObserver = new IntersectionObserver(
 				(entries) => {
@@ -207,7 +147,6 @@ function initLazyLoading() {
 					threshold: 0,
 				}
 			);
-
 			lazyImages.forEach((img) => {
 				imageObserver.observe(img);
 			});
@@ -216,10 +155,7 @@ function initLazyLoading() {
 			);
 		}
 	}
-
-	// Also apply lazy loading to background images with data-background attribute
 	const lazyBackgrounds = document.querySelectorAll("[data-background]");
-
 	if (lazyBackgrounds.length > 0) {
 		const backgroundObserver = new IntersectionObserver(
 			(entries) => {
@@ -239,7 +175,6 @@ function initLazyLoading() {
 				threshold: 0,
 			}
 		);
-
 		lazyBackgrounds.forEach((element) => {
 			backgroundObserver.observe(element);
 		});
@@ -248,23 +183,16 @@ function initLazyLoading() {
 		);
 	}
 }
-
-/**
- * Initialize service worker registration for offline capabilities
- */
 function registerServiceWorker() {
 	if ("serviceWorker" in navigator) {
 		window.addEventListener("load", () => {
-			// Determine the correct path based on hostname
 			const isLocal =
 				window.location.hostname === "localhost" ||
 				window.location.hostname === "127.0.0.1";
 			const swPath = isLocal
 				? "/service-worker.js"
 				: "/Portfolio/service-worker.js"; // Adjust '/Portfolio/' if your repo name is different
-
 			console.log(`Registering Service Worker from: ${swPath}`); // Log the path being used
-
 			navigator.serviceWorker
 				.register(swPath)
 				.then((registration) => {
@@ -272,20 +200,12 @@ function registerServiceWorker() {
 						"Service Worker registered successfully with scope:",
 						registration.scope
 					);
-
-					// Listen for updates to the service worker
 					registration.addEventListener("updatefound", () => {
 						const newWorker = registration.installing;
 						console.log("Service Worker update found. New worker installing.");
-						// Optionally, notify the user about the update
-						// Example: showToast("App Update Available", "Refresh to get the latest version", "fa-solid fa-arrow-rotate-right");
 					});
-
-					// Optionally, handle controller change (when new SW takes control)
 					navigator.serviceWorker.addEventListener("controllerchange", () => {
 						console.log("New Service Worker activated. Refreshing page...");
-						// Optionally, reload the page or show a prompt
-						// window.location.reload();
 					});
 				})
 				.catch((error) => {
@@ -296,28 +216,18 @@ function registerServiceWorker() {
 		console.log("Service Workers not supported in this browser.");
 	}
 }
-
-/**
- * Initialize intersection observer for animation on scroll
- * Adds a 'visible' class to elements when they enter the viewport.
- * CSS should handle the actual animation/transition based on this class.
- */
 function initIntersectionObserver(elements = null) {
-	// Accept optional elements
 	const elementsToObserve =
 		elements ||
 		document.querySelectorAll(
 			".animate-on-scroll, .skills__card" // Default selectors if no elements passed
 		);
-
 	if (elementsToObserve.length > 0 && "IntersectionObserver" in window) {
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
 						entry.target.classList.add("visible");
-
-						// Special handling for skill cards progress bars
 						if (entry.target.classList.contains("skills__card")) {
 							const progressBar = entry.target.querySelector(
 								".skills__progress-bar"
@@ -327,13 +237,11 @@ function initIntersectionObserver(elements = null) {
 								progressBar.dataset.level &&
 								(progressBar.style.width === "0%" || !progressBar.style.width)
 							) {
-								// Animate progress bar width
 								setTimeout(() => {
 									progressBar.style.width = `${progressBar.dataset.level}%`;
 								}, 300); // Small delay for visual effect
 							}
 						}
-
 						observer.unobserve(entry.target); // Stop observing once visible
 					}
 				});
@@ -343,9 +251,7 @@ function initIntersectionObserver(elements = null) {
 				threshold: 0.1, // Trigger when 10% of the element is visible
 			}
 		);
-
 		elementsToObserve.forEach((element) => {
-			// Initialize progress bars to 0 width initially for skill cards
 			if (element.classList.contains("skills__card")) {
 				const progressBar = element.querySelector(".skills__progress-bar");
 				if (progressBar && progressBar.dataset.level) {
@@ -359,7 +265,6 @@ function initIntersectionObserver(elements = null) {
 			`Performance.js: IntersectionObserver initialized for ${elementsToObserve.length} elements.`
 		);
 	} else {
-		// Fallback for browsers without IntersectionObserver or no elements found
 		elementsToObserve.forEach((element) => {
 			element.classList.add("visible"); // Make elements visible immediately
 		});
@@ -370,32 +275,17 @@ function initIntersectionObserver(elements = null) {
 		}
 	}
 }
-
-/**
- * Apply reduced motion settings based on user preference by toggling a class.
- * Recommendation: Define corresponding styles in CSS using the `.reduced-motion` class
- * and `@media (prefers-reduced-motion: reduce)`.
- */
 function applyReducedMotionPreferences() {
 	const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-
 	function updateMotionPreference(event) {
 		if (event.matches) {
 			document.documentElement.classList.add("reduced-motion");
 			console.log("Performance.js: Reduced motion enabled.");
-			// Optionally show a toast notification (ensure showToast function exists)
-			// if (typeof showToast === "function") {
-			//   showToast("Reduced Motion Enabled", "Animations minimized.", "fa-solid fa-universal-access");
-			// }
 		} else {
 			document.documentElement.classList.remove("reduced-motion");
 			console.log("Performance.js: Reduced motion disabled.");
 		}
 	}
-
-	// Initial check
 	updateMotionPreference(mediaQuery);
-
-	// Listen for changes
 	mediaQuery.addEventListener("change", updateMotionPreference);
 }

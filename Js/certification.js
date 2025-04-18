@@ -1,14 +1,9 @@
-/** @format */
-
 document.addEventListener("DOMContentLoaded", function () {
-	// Add a small delay to ensure all elements are fully rendered
 	setTimeout(() => {
 		initCertificationPage();
 	}, 100);
 });
-
 function initCertificationPage() {
-	// Reference elements
 	const filterButtons = document.querySelectorAll(".filter-btn");
 	const certificateItems = document.querySelectorAll(".certificate-item");
 	const noResultsMsg = document.querySelector(".no-certificates");
@@ -24,29 +19,20 @@ function initCertificationPage() {
 	const clearSearchBtn = searchInput
 		? searchInput.parentElement.querySelector(".search-clear-btn")
 		: null; // Get the clear button relative to parent
-
 	let currentFilter = "all"; // Keep track of the current category filter
 	let currentSearchTerm = ""; // Keep track of the current search term
-
-	// Ensure 'no results' message is hidden initially
 	if (noResultsMsg) {
 		noResultsMsg.style.display = "none";
 	}
-
-	// Combined filter and search function
 	function filterAndSearchCertificates() {
-		// Hide all certificates first with fade out
 		certificateItems.forEach((item) => {
 			item.classList.add("filtering-out");
 			item.querySelector(".certificate-content").classList.remove("visible");
 		});
-
-		// Wait for fade out animation
 		setTimeout(() => {
 			certificatesContainer.classList.add("filtering");
 			let visibleCount = 0;
 			const searchTermLower = currentSearchTerm.toLowerCase();
-
 			certificateItems.forEach((item) => {
 				const category = item.getAttribute("data-category");
 				const title = item.querySelector("h3")?.textContent.toLowerCase() || "";
@@ -56,7 +42,6 @@ function initCertificationPage() {
 					item
 						.querySelector(".certificate-issuer span")
 						?.textContent.toLowerCase() || "";
-
 				const matchesCategory =
 					currentFilter === "all" || category === currentFilter;
 				const matchesSearch =
@@ -64,11 +49,9 @@ function initCertificationPage() {
 					title.includes(searchTermLower) ||
 					description.includes(searchTermLower) ||
 					issuer.includes(searchTermLower);
-
 				if (matchesCategory && matchesSearch) {
 					item.style.display = "";
 					item.classList.remove("filtering-out");
-					// Reset position styles that might interfere with new layout
 					item.style.position = "";
 					item.style.left = "";
 					item.style.top = "";
@@ -82,33 +65,22 @@ function initCertificationPage() {
 			} else {
 				noResultsMsg.style.display = "none";
 			}
-
-			// Force layout recalculation
 			certificatesContainer.offsetHeight; // Completely reset and reinitialize masonry
 			const grid = document.querySelector(".row[data-masonry]");
-
-			// Fix for masonry layout
 			if (typeof Masonry !== "undefined" && grid) {
-				// Destroy previous masonry instance if it exists
 				if (grid.masonry) {
 					grid.masonry.destroy();
 					delete grid.masonry;
 				}
-
-				// Remove any masonry attributes that might be causing issues
 				grid.removeAttribute("data-masonry-id");
-
-				// Reset all items to ensure clean layout
 				grid.querySelectorAll(".certificate-item").forEach((item) => {
 					if (item.style.display !== "none") {
-						// Reset all positioning that might have been set by previous masonry
 						item.style.position = "";
 						item.style.left = "";
 						item.style.top = "";
 					}
 				}); // Wait a moment to ensure DOM is ready
 				setTimeout(() => {
-					// Create fresh masonry instance with proper configuration
 					const masonryInstance = new Masonry(grid, {
 						itemSelector: ".certificate-item:not([style*='display: none'])",
 						percentPosition: true,
@@ -118,14 +90,8 @@ function initCertificationPage() {
 						horizontalOrder: true,
 						fitWidth: false,
 					});
-
-					// Force layout recalculation
 					masonryInstance.layout();
-
-					// Store masonry instance on the grid element for future reference
 					grid.masonry = masonryInstance;
-
-					// After layout is applied, animate items in
 					setTimeout(() => {
 						let counter = 0;
 						certificateItems.forEach((item) => {
@@ -138,17 +104,13 @@ function initCertificationPage() {
 								}, 50 * counter);
 							}
 						});
-
-						// Remove filtering class after animations
 						setTimeout(() => {
 							certificatesContainer.classList.remove("filtering");
-							// Do another layout refresh after animations
 							masonryInstance.layout();
 						}, 500);
 					}, 100);
 				}, 50);
 			} else {
-				// If Masonry not available, still do the animations
 				let counter = 0;
 				certificateItems.forEach((item) => {
 					if (item.style.display !== "none") {
@@ -160,40 +122,27 @@ function initCertificationPage() {
 						}, 50 * counter);
 					}
 				});
-
 				setTimeout(() => {
 					certificatesContainer.classList.remove("filtering");
 				}, 500);
 			}
 		}, 300); // Wait for fade out animation
 	}
-
-	// Filter button event listeners
 	filterButtons.forEach((button) => {
 		button.addEventListener("click", () => {
-			// Update active button
 			filterButtons.forEach((btn) => btn.classList.remove("active"));
 			button.classList.add("active");
-
-			// Get filter category
 			const filterValue = button.getAttribute("data-filter");
 			currentFilter = filterValue; // Update current filter
-
 			filterAndSearchCertificates(); // Call combined function
 		});
 	});
-
-	// Search input event listener
 	if (searchInput && clearSearchBtn) {
-		// Check if elements exist
 		searchInput.addEventListener("input", () => {
 			currentSearchTerm = searchInput.value;
-			// Show/hide clear button based on input value
 			clearSearchBtn.style.display = currentSearchTerm ? "block" : "none";
 			filterAndSearchCertificates(); // Call combined function
 		});
-
-		// Clear button event listener
 		clearSearchBtn.addEventListener("click", () => {
 			searchInput.value = ""; // Clear the input
 			currentSearchTerm = ""; // Update the state variable
@@ -201,33 +150,22 @@ function initCertificationPage() {
 			searchInput.focus(); // Keep focus on the input
 			filterAndSearchCertificates(); // Re-filter
 		});
-
-		// Initial check in case the input has a value on load (e.g., browser autofill)
 		clearSearchBtn.style.display = searchInput.value ? "block" : "none";
 	} else if (searchInput) {
-		// Fallback if clear button isn't found (e.g., HTML not updated yet)
 		searchInput.addEventListener("input", () => {
 			currentSearchTerm = searchInput.value;
 			filterAndSearchCertificates();
 		});
 	}
-
-	// Certificate preview functionality with enhanced image viewing
-	// Make both the view buttons and images clickable
 	const viewButtons = document.querySelectorAll(".view-certificate");
 	const certificateImages = document.querySelectorAll(".certificate-image");
-
-	// Create enhanced preview container if it doesn't exist
 	let zoomLevel = 1;
 	let isDragging = false;
 	let startX,
 		startY,
 		translateX = 0,
 		translateY = 0;
-
-	// Add zoom controls to preview
 	if (certificatePreview) {
-		// Create zoom controls if they don't exist
 		if (!certificatePreview.querySelector(".zoom-controls")) {
 			const zoomControls = document.createElement("div");
 			zoomControls.className = "zoom-controls";
@@ -239,8 +177,6 @@ function initCertificationPage() {
 			certificatePreview
 				.querySelector(".preview-container")
 				.appendChild(zoomControls);
-
-			// Style the zoom controls
 			const style = document.createElement("style");
 			style.textContent = `
                 .zoom-controls {
@@ -270,18 +206,14 @@ function initCertificationPage() {
                 }
             `;
 			document.head.appendChild(style);
-
-			// Add zoom functionality
 			const zoomIn = zoomControls.querySelector(".zoom-in");
 			const zoomOut = zoomControls.querySelector(".zoom-out");
 			const zoomReset = zoomControls.querySelector(".zoom-reset");
-
 			zoomIn.addEventListener("click", (e) => {
 				e.stopPropagation();
 				zoomLevel = Math.min(zoomLevel + 0.25, 3);
 				updateImageTransform();
 			});
-
 			zoomOut.addEventListener("click", (e) => {
 				e.stopPropagation();
 				zoomLevel = Math.max(zoomLevel - 0.25, 1);
@@ -292,7 +224,6 @@ function initCertificationPage() {
 					updateImageTransform();
 				}
 			});
-
 			zoomReset.addEventListener("click", (e) => {
 				e.stopPropagation();
 				zoomLevel = 1;
@@ -302,15 +233,11 @@ function initCertificationPage() {
 			});
 		}
 	}
-
-	// Function to update image transform
 	function updateImageTransform() {
 		if (previewImage) {
 			previewImage.style.transform = `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px)`;
 		}
 	}
-
-	// Add drag functionality for panning when zoomed in
 	if (previewImage) {
 		previewImage.addEventListener("mousedown", (e) => {
 			if (zoomLevel > 1) {
@@ -321,7 +248,6 @@ function initCertificationPage() {
 				e.preventDefault();
 			}
 		});
-
 		window.addEventListener("mousemove", (e) => {
 			if (isDragging) {
 				translateX = (e.clientX - startX) / zoomLevel;
@@ -329,22 +255,17 @@ function initCertificationPage() {
 				updateImageTransform();
 			}
 		});
-
 		window.addEventListener("mouseup", () => {
 			if (isDragging) {
 				isDragging = false;
 				previewImage.style.cursor = "grab";
 			}
 		});
-
-		// Add mouse wheel zoom
 		previewImage.addEventListener("wheel", (e) => {
 			e.preventDefault();
 			if (e.deltaY < 0) {
-				// Zoom in
 				zoomLevel = Math.min(zoomLevel + 0.1, 3);
 			} else {
-				// Zoom out
 				zoomLevel = Math.max(zoomLevel - 0.1, 1);
 				if (zoomLevel === 1) {
 					translateX = 0;
@@ -354,56 +275,38 @@ function initCertificationPage() {
 			updateImageTransform();
 		});
 	}
-
-	// Add click handler to certificate images with enhanced animation
 	certificateImages.forEach((imageContainer) => {
 		imageContainer.addEventListener("click", () => {
 			const certCard = imageContainer.closest(".certificate-content");
 			const certImage = imageContainer.querySelector("img");
 			const viewButton = certCard.querySelector(".certificate-link");
-			// Reset zoom and position
 			zoomLevel = 1;
 			translateX = 0;
 			translateY = 0;
-
-			// Get current scroll position to center preview in viewport
 			const scrollY = window.scrollY;
 			const viewportHeight = window.innerHeight;
-
-			// Position the certificate preview container relative to scroll position
 			if (certificatePreview) {
-				// Center the preview in the current viewport
 				certificatePreview.style.top = `${scrollY}px`;
 				certificatePreview.style.height = `${viewportHeight}px`;
 			}
-
-			// Set preview image source with preloading
 			const loader = document.createElement("div");
 			loader.className = "image-loader";
 			loader.innerHTML = '<div class="spinner"></div>';
-
 			const tempImage = new Image();
 			tempImage.onload = () => {
-				// Image loaded successfully
 				if (previewImage) {
 					previewImage.src = tempImage.src;
 					previewImage.alt = certImage.alt;
-
-					// Remove loader if exists
 					const existingLoader =
 						certificatePreview.querySelector(".image-loader");
 					if (existingLoader) {
 						existingLoader.remove();
 					}
-
-					// Show preview with beautiful animation
 					requestAnimationFrame(() => {
 						certificatePreview.classList.add("active");
 					});
 				}
 			};
-
-			// Add loader to preview container
 			if (
 				certificatePreview &&
 				!certificatePreview.querySelector(".image-loader")
@@ -413,8 +316,6 @@ function initCertificationPage() {
 				if (previewContainer) {
 					previewContainer.appendChild(loader);
 				}
-
-				// Add loader styles
 				const style = document.createElement("style");
 				style.textContent = `
                     .image-loader {
@@ -438,82 +339,52 @@ function initCertificationPage() {
                 `;
 				document.head.appendChild(style);
 			}
-
-			// Start loading the image
 			tempImage.src = certImage.src;
-
-			// Show preview immediately with loader
 			certificatePreview.classList.add("active");
-
-			// Disable body scroll
 			document.body.style.overflow = "hidden";
-
-			// If there's a valid link from the view button, store it for later
 			if (viewButton && viewButton.getAttribute("href") !== "#") {
 				previewImage.dataset.linkUrl = viewButton.getAttribute("href");
 			}
 		});
 	});
-
-	// Keep the existing functionality for view certificate buttons
 	viewButtons.forEach((button) => {
 		button.addEventListener("click", (e) => {
-			// Don't prevent default link behavior - allow the link to open naturally
-			// e.preventDefault();
 		});
 	});
-
-	// Close preview
 	closePreviewBtn.addEventListener("click", () => {
 		certificatePreview.classList.remove("active");
 		document.body.style.overflow = "";
 	});
-
-	// Click outside to close
 	certificatePreview.addEventListener("click", (e) => {
 		if (e.target === certificatePreview) {
 			certificatePreview.classList.remove("active");
 			document.body.style.overflow = "";
 		}
 	});
-
-	// Click on preview image to go to certificate link
 	previewImage.addEventListener("click", () => {
 		const linkUrl = previewImage.dataset.linkUrl;
 		if (linkUrl) {
 			window.open(linkUrl, "_blank");
 		}
 	});
-
-	// Escape key to close preview
 	document.addEventListener("keydown", (e) => {
 		if (e.key === "Escape" && certificatePreview.classList.contains("active")) {
 			certificatePreview.classList.remove("active");
 			document.body.style.overflow = "";
 		}
 	});
-
-	// Animation on scroll for certificate cards
 	const animateOnScroll = () => {
 		const cards = document.querySelectorAll(".animate-on-scroll:not(.visible)");
-
 		cards.forEach((card) => {
 			const cardTop = card.getBoundingClientRect().top;
 			const windowHeight = window.innerHeight;
-
 			if (cardTop < windowHeight - 100) {
 				card.classList.add("visible");
 			}
 		});
 	};
-
-	// Initial check for animations
 	setTimeout(animateOnScroll, 100);
-
-	// Add scroll listener for animations
 	window.addEventListener("scroll", animateOnScroll);
-
-	// Initialize masonry layout
 	if (typeof Masonry !== "undefined") {
 		const grid = document.querySelector(".row[data-masonry]");
 		if (grid) {

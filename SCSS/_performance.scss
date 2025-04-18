@@ -1,10 +1,6 @@
 @use "config" as *;
 @use "mixins" as *;
-
-// Improved performance handling
 .performance-optimized {
-
-  // Optimize rendering for transforms
   .menu-btn,
   .home__name,
   .social-icons a,
@@ -14,17 +10,13 @@
     will-change: transform;
     transform: translateZ(0); // Hardware acceleration
   }
-
-  // Reduce GPU usage for background effects when battery is low
   &.battery-saving {
-
     .project::before,
     .certification::before,
     .home::before {
       animation-duration: 30s !important; // Slow down animations
       opacity: 0.3 !important; // Reduce opacity
     }
-
     .skills__card,
     .certificate-content,
     .Projects {
@@ -32,11 +24,7 @@
     }
   }
 }
-
-// Media query for users who prefer reduced motion
 @media (prefers-reduced-motion: reduce) {
-
-  // Apply to all animations and transitions
   *,
   *::before,
   *::after {
@@ -44,43 +32,32 @@
     transition-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
   }
-
-  // Disable background parallax effects
   .home,
   .about,
   .jobs-layout,
   .project__project-image {
     background-attachment: scroll !important;
   }
-
-  // Remove 3D effects
   .skills__card,
   .certificate-content {
     transform: none !important;
     transition: none !important;
-
     &:hover {
       transform: none !important;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
     }
   }
-
-  // Remove float animations
   .float,
   .pulse,
   .shimmer {
     animation: none !important;
   }
 }
-
-// Apply optimizations for high DPI screens
 @media (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   body {
     text-rendering: optimizeLegibility;
   }
-
-  // Optimize border rendering for retina displays
   .menu-btn__burger,
   .nav .menu-nav,
   .home__name,
