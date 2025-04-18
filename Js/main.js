@@ -128,15 +128,21 @@ document.addEventListener("DOMContentLoaded", () => {
 	else if (pagePath.includes("about.html")) pageName = "about";
 	setTrackedTimeout(
 		() => {
-			const globalFirstVisitKey = "portfolioGlobalFirstVisit";
-			if (!sessionStorage.getItem(globalFirstVisitKey)) {
+			// Show navigation tip once per session
+			const navTipKey = "portfolioNavTipShown";
+			if (!sessionStorage.getItem(navTipKey)) {
 				showToast(
-					"Navigation Tip",
-					"Use Alt + Arrow keys or Alt + [Letter] (H, J, P, C, S, A) to navigate between pages.",
-					"fa-solid fa-keyboard"
+					// Corrected arguments: message, type, duration, title, icon
+					"Use Alt + Arrow keys or Alt + [Letter] (H, J, P, C, S, A) to navigate between pages.", // message
+					"info", // type
+					8000, // duration (longer duration)
+					"Navigation Tip", // title
+					"fa-solid fa-keyboard" // iconClass
 				);
-				sessionStorage.setItem(globalFirstVisitKey, "true"); // Mark as visited globally
+				sessionStorage.setItem(navTipKey, "true"); // Mark as shown for this session
 			}
+
+			// Show page-specific welcome message once per page per session
 			if (checkFirstTimeVisit(pageName)) {
 				if (typeof showToast === "function") {
 					if (isHomePage) {
@@ -648,7 +654,7 @@ function addIconHoverEffect(icon) {
 		const x = e.clientX - rect.left;
 		const y = e.clientY - rect.top;
 		const ripple = document.createElement("span");
-		ripple.className = "icon-ripple";
+		ripple.className = "span";
 		ripple.style.position = "absolute";
 		ripple.style.top = `${y}px`;
 		ripple.style.left = `${x}px`;

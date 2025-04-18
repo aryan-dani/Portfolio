@@ -2,24 +2,6 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 	console.log("Performance.js: DOM loaded, initializing optimizations");
-	const persistedToastData = sessionStorage.getItem("pendingInfoToast");
-	if (persistedToastData) {
-		try {
-			const toastData = JSON.parse(persistedToastData);
-			showToast(
-				toastData.message,
-				toastData.type,
-				toastData.duration, // Use original duration or a default
-				toastData.title,
-				toastData.iconClass,
-				false // Add a flag to prevent re-saving
-			);
-			sessionStorage.removeItem("pendingInfoToast"); // Clear after showing
-		} catch (e) {
-			console.error("Error parsing persisted toast data:", e);
-			sessionStorage.removeItem("pendingInfoToast"); // Clear invalid data
-		}
-	}
 	initLazyLoading();
 	registerServiceWorker();
 	initIntersectionObserver();
@@ -41,18 +23,10 @@ function showToast(
 	type = "info",
 	duration = 5000,
 	title = null,
-	iconClass = null,
-	persistInfo = true // Added parameter to control persistence saving
+	iconClass = null
 ) {
 	ensureToastContainer(); // Make sure the container exists
-	if (type === "info" && persistInfo) {
-		const toastData = { message, type, duration, title, iconClass };
-		try {
-			sessionStorage.setItem("pendingInfoToast", JSON.stringify(toastData));
-		} catch (e) {
-			console.error("Error saving toast data to sessionStorage:", e);
-		}
-	}
+
 	const toast = document.createElement("div");
 	toast.className = `toast ${type}`; // Add type class for styling
 	toast.setAttribute("role", "alert");
