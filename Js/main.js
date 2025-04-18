@@ -143,9 +143,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Show page-specific welcome message once per page per session
-      if (checkFirstTimeVisit(pageName)) {
+      console.log(`[WelcomeToast] Checking first visit for page: ${pageName}`); // Log page name
+      const isFirst = checkFirstTimeVisit(pageName);
+      console.log(`[WelcomeToast] checkFirstTimeVisit returned: ${isFirst}`); // Log result
+      if (isFirst) {
+        console.log(`[WelcomeToast] Typeof showToast: ${typeof showToast}`); // Log function type
         if (typeof showToast === "function") {
           if (isHomePage) {
+            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
             showToast(
               "Explore my work and get to know me better", // Message
               "info", // Type
@@ -154,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
               "fa-solid fa-house-user" // Icon
             );
           } else if (pageName === "jobs") {
+            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
             showToast(
               "Learn about my career journey and achievements",
               "info",
@@ -162,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
               "fa-solid fa-briefcase"
             );
           } else if (pageName === "projects") {
+            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
             showToast(
               "Discover the projects I've worked on",
               "info",
@@ -170,6 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
               "fa-solid fa-code"
             );
           } else if (pageName === "certification") {
+            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
             showToast(
               "Check out my professional qualifications",
               "info",
@@ -178,6 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
               "fa-solid fa-certificate"
             );
           } else if (pageName === "skills") {
+            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
             showToast(
               "Explore my expertise across different technologies",
               "info",
@@ -186,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
               "fa-solid fa-laptop-code"
             );
           } else if (pageName === "about") {
+            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
             showToast(
               "Get to know me better",
               "info",
@@ -195,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
           }
         } else {
-          console.error("showToast function is not defined in performance.js");
+          console.error("[WelcomeToast] showToast function is not defined."); // More specific error
         }
       }
     },
@@ -635,16 +645,6 @@ function addIconHoverEffect(icon) {
     if (iconElement) {
       iconElement.style.transform = "scale(1.3)";
       iconElement.style.color = "rgba(240, 248, 255, 1)"; // Full brightness
-      iconElement.style.textShadow = "0 0 15px rgba(240, 248, 255, 0.5)";
-    }
-    icon.style.transform =
-      "perspective(800px) translateY(-5px) translateZ(10px)";
-  });
-  icon.addEventListener("mouseleave", () => {
-    const iconElement = icon.querySelector("i");
-    if (iconElement) {
-      iconElement.style.transform = "scale(1)";
-      iconElement.style.color = "";
       iconElement.style.textShadow = "none";
     }
     icon.style.transform = "perspective(800px) translateY(0) translateZ(0)";
@@ -1149,6 +1149,25 @@ function handleAltNavigation(e) {
   }
 
   if (targetUrl) {
+    // --- START: Added Navigation Toast ---
+    if (typeof showToast === "function") {
+      // Extract a user-friendly page name
+      let pageNameFriendly = targetUrl.replace(".html", "");
+      if (pageNameFriendly === "index") pageNameFriendly = "Home";
+      pageNameFriendly =
+        pageNameFriendly.charAt(0).toUpperCase() + pageNameFriendly.slice(1);
+
+      showToast(
+        `Navigating to ${pageNameFriendly}...`, // Message
+        "info", // Type
+        2000, // Short duration as navigation will happen quickly
+        "Navigation", // Title
+        "fa-solid fa-route" // Icon
+      );
+    } else {
+      console.warn("[Navigation] showToast function not available.");
+    }
+    // --- END: Added Navigation Toast ---
     navigateToPage(targetUrl);
   }
 }
