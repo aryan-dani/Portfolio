@@ -13,53 +13,34 @@
 			content="Aryan Dani's technical skills and expertise in programming, web development, and artificial intelligence." />
 		<meta name="author" content="Aryan Dani" />
 		<meta name="robots" content="index, follow" />
-
-		<!-- Open Graph / Social Media Meta Tags -->
 		<meta property="og:title" content="Skills | Aryan Dani" />
 		<meta
 			property="og:description"
 			content="Aryan Dani's technical skills and expertise in programming, web development, and artificial intelligence." />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="https://aryandani.github.io/skills.html" />
-
-		<!-- Resource hints for faster loading -->
 		<link rel="dns-prefetch" href="//fonts.googleapis.com" />
 		<link rel="dns-prefetch" href="//kit.fontawesome.com" />
 		<link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
 		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-		<!-- Prefetch navigation for likely user paths -->
 		<link rel="prefetch" href="index.html" />
 		<link rel="prefetch" href="projects.html" />
 		<link rel="prefetch" href="about.html" />
-
-		<!-- Favicon -->
 		<link rel="icon" href="Images/favicon.ico" sizes="any" />
 		<link rel="icon" href="Images/favicon.svg" type="image/svg+xml" />
 		<link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
 		<link rel="manifest" href="/Portfolio/manifest.json" />
-
-		<!-- Priority stylesheet loading with preload -->
 		<link rel="preload" href="SCSS/main.css" as="style" />
-		<!-- Main CSS -->
 		<link rel="stylesheet" href="SCSS/main.css" />
-		<!-- Material Icons for toast notifications -->
 		<link
 			href="https://fonts.googleapis.com/icon?family=Material+Icons"
 			rel="stylesheet" />
 	</head>
 	<body>
-		<!-- Removed Progress indicator -->
-
-		<!-- Toast Notifications Container -->
-		<div class="toast-container">
-			<!-- Toasts will be added dynamically here -->
-		</div>
-
-		<!-- Particles Background -->
+		<div class="toast-container"></div>
 		<div id="particles-js"></div>
-
 		<header>
 			<div
 				class="menu-btn"
@@ -105,7 +86,6 @@
 		</header>
 		<main>
 			<section class="skills">
-				<!-- New Intro Container -->
 				<div class="intro-container animate-on-scroll">
 					<h1 class="skills__heading">
 						Technical <span class="text-secondary">Skills</span>
@@ -118,11 +98,8 @@
 						through projects and continuous learning.
 					</p>
 				</div>
-
-				<!-- Search and Filter Controls -->
 				<div
 					class="search-filter-controls skills__search-filter animate-on-scroll">
-					<!-- Search Input -->
 					<div class="skills-search">
 						<input
 							type="search"
@@ -131,7 +108,6 @@
 							placeholder="Search skills..."
 							aria-label="Search skills" />
 					</div>
-					<!-- Skills Categories -->
 					<div class="skills__categories">
 						<div class="category-tabs">
 							<button class="category-tab active" data-category="all">
@@ -143,16 +119,11 @@
 							<button class="category-tab" data-category="machinelearning">
 								AI & ML
 							</button>
-							<!-- Add other categories like 'design' if needed -->
 						</div>
 					</div>
 				</div>
-
-				<!-- Skills Container -->
 				<div class="skills__container">
-					<!-- Web Development Skills -->
 					<div class="skills__group active" data-category="webdev">
-						<!-- Example Card with data-projects and project list -->
 						<div
 							class="skills__card"
 							data-skill-name="HTML5"
@@ -184,7 +155,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="CSS3"
@@ -216,7 +186,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="SASS/SCSS"
@@ -243,7 +212,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="JavaScript"
@@ -276,10 +244,6 @@
 								</div>
 							</div>
 						</div>
-
-						<!-- Add data-skill-name and data-projects to ALL other skill cards -->
-						<!-- Add the <div class="skill-projects">...</div> block to ALL other skill cards -->
-						<!-- Example: -->
 						<div
 							class="skills__card"
 							data-skill-name="Angular"
@@ -308,7 +272,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="React"
@@ -337,7 +300,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="Node.js"
@@ -362,7 +324,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="NPM & Yarn"
@@ -389,7 +350,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="TypeScript"
@@ -416,7 +376,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="Express.js"
@@ -441,7 +400,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="MongoDB"
@@ -466,7 +424,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="REST APIs"
@@ -492,9 +449,7 @@
 							</div>
 						</div>
 					</div>
-					<!-- Machine Learning Skills -->
 					<div class="skills__group" data-category="machinelearning">
-						<!-- Add data-skill-name, data-projects, and project list to ML cards -->
 						<div
 							class="skills__card"
 							data-skill-name="TensorFlow"
@@ -526,7 +481,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="PyTorch"
@@ -555,7 +509,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="Data Analysis"
@@ -584,7 +537,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="NLP"
@@ -609,7 +561,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="Deep Learning"
@@ -638,7 +589,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="Scikit-Learn"
@@ -663,7 +613,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div
 							class="skills__card"
 							data-skill-name="ML Deployment"
@@ -692,9 +641,7 @@
 							</div>
 						</div>
 					</div>
-					<!-- Add other groups like Design if they exist -->
 				</div>
-				<!-- No Results Message -->
 				<div class="no-skills">
 					<i class="fas fa-search"></i>
 					<h3>No skills match your search or filter</h3>
@@ -707,7 +654,6 @@
 				>&copy; 2025 Aryan Dani All Rights Reserved</a
 			>
 		</footer>
-		<!-- Load non-critical scripts with defer and optimal order -->
 		<script
 			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
 			defer></script>
@@ -725,7 +671,6 @@
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 			crossorigin="anonymous"
 			defer></script>
-		<!-- Initialize Particles.js with optimized settings -->
 		<script>
 			// Use requestIdleCallback or fallback to setTimeout for non-critical initialization
 			const initParticles = () => {
@@ -834,7 +779,6 @@
 					});
 				}
 			};
-
 			// Initialize particles when page is fully loaded and idle
 			document.addEventListener("DOMContentLoaded", function () {
 				// Use requestIdleCallback for modern browsers or fallback to setTimeout
@@ -846,10 +790,7 @@
 			});
 		</script>
 		<script src="Js/card-3d-effect.js" defer></script>
-		<!-- Add Skills specific JS -->
 		<script src="Js/skills.js" defer></script>
-
-		<!-- Skill Details Modal -->
 		<div
 			class="skill-modal"
 			id="skillModal"
@@ -876,9 +817,7 @@
 					<p class="skill-modal__description">Skill description goes here.</p>
 					<div class="skill-modal__projects">
 						<h4>Used in:</h4>
-						<ul>
-							<!-- Project links will be added dynamically -->
-						</ul>
+						<ul></ul>
 					</div>
 				</div>
 			</div>
