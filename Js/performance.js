@@ -7,6 +7,27 @@
 document.addEventListener("DOMContentLoaded", function () {
 	console.log("Performance.js: DOM loaded, initializing optimizations");
 
+	// Check for and display persisted info toast from sessionStorage
+	const persistedToastData = sessionStorage.getItem("pendingInfoToast");
+	if (persistedToastData) {
+		try {
+			const toastData = JSON.parse(persistedToastData);
+			// Display the toast but don't re-persist it
+			showToast(
+				toastData.message,
+				toastData.type,
+				toastData.duration, // Use original duration or a default
+				toastData.title,
+				toastData.iconClass,
+				false // Add a flag to prevent re-saving
+			);
+			sessionStorage.removeItem("pendingInfoToast"); // Clear after showing
+		} catch (e) {
+			console.error("Error parsing persisted toast data:", e);
+			sessionStorage.removeItem("pendingInfoToast"); // Clear invalid data
+		}
+	}
+
 	// Handle lazy loading of images - safely
 	initLazyLoading();
 
@@ -44,15 +65,27 @@ function ensureToastContainer() {
  * @param {number} duration - How long the toast should be visible in milliseconds.
  * @param {string} title - Optional title for the toast.
  * @param {string} iconClass - Optional Font Awesome icon class (e.g., 'fa-solid fa-check-circle').
+ * @param {boolean} persistInfo - Internal flag to control saving 'info' toasts. Defaults to true.
  */
 function showToast(
 	message,
 	type = "info",
 	duration = 5000,
 	title = null,
-	iconClass = null
+	iconClass = null,
+	persistInfo = true // Added parameter to control persistence saving
 ) {
 	ensureToastContainer(); // Make sure the container exists
+
+	// If it's an 'info' toast and we should persist it, save to sessionStorage
+	if (type === "info" && persistInfo) {
+		const toastData = { message, type, duration, title, iconClass };
+		try {
+			sessionStorage.setItem("pendingInfoToast", JSON.stringify(toastData));
+		} catch (e) {
+			console.error("Error saving toast data to sessionStorage:", e);
+		}
+	}
 
 	const toast = document.createElement("div");
 	toast.className = `toast ${type}`; // Add type class for styling
@@ -106,15 +139,20 @@ function showToast(
 		toast.classList.add("show");
 	});
 
-	// Auto-dismiss
-	const dismissTimeout = setTimeout(() => {
-		dismissToast(toast);
-	}, duration);
+	// Auto-dismiss only if duration is positive
+	let dismissTimeout = null;
+	if (duration > 0 && isFinite(duration)) {
+		dismissTimeout = setTimeout(() => {
+			dismissToast(toast);
+		}, duration);
+	}
 
 	// Close button functionality
 	const closeButton = toast.querySelector(".toast-close");
 	closeButton.addEventListener("click", () => {
-		clearTimeout(dismissTimeout); // Prevent auto-dismiss if manually closed
+		if (dismissTimeout) {
+			clearTimeout(dismissTimeout); // Prevent auto-dismiss if manually closed
+		}
 		dismissToast(toast);
 	});
 }

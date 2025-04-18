@@ -16,22 +16,22 @@
 }
 
 .toast {
-  background: rgba($primary-color, 0.9);
-  color: $secondary-color;
-  padding: 12px 15px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(darken($primary-color, 5%), 0.95), rgba($primary-color, 0.92)); // Slightly adjusted gradient
+  color: #eee; // Lighter text color for better contrast
+  padding: 15px 20px; // Increased padding
+  border-radius: 10px; // Slightly larger radius
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35); // Enhanced shadow
   display: flex;
-  align-items: center;
-  gap: 12px;
-  transform: translateX(100%);
+  align-items: flex-start; // Align items to the top
+  gap: 15px; // Increased gap
+  transform: translateX(110%); // Start further off-screen
   opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.4s ease; // Smoother transition
   pointer-events: auto;
-  border-left: 4px solid;
+  border-left: 5px solid; // Slightly thicker border
   overflow: hidden;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(12px); // Increased blur
+  backdrop-filter: blur(12px);
 
   &.show {
     transform: translateX(0);
@@ -41,8 +41,8 @@
   // Custom toast styling for portfolio pages
   &.custom {
     border-color: $secondary-color;
-    background: rgba(darken($primary-color, 3%), 0.92);
-    padding: 12px 15px;
+    background: linear-gradient(135deg, rgba(darken($primary-color, 8%), 0.96), rgba(darken($primary-color, 3%), 0.94)); // Adjusted custom background
+    padding: 15px 20px; // Consistent padding
 
     .toast-icon {
       display: flex;
@@ -52,6 +52,7 @@
       height: 36px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.08);
+      margin-top: 2px; // Adjust icon position slightly due to align-items: flex-start
 
       i {
         color: $secondary-color;
@@ -66,11 +67,12 @@
         margin: 0 0 5px;
         font-size: 14px;
         font-weight: 600;
-        opacity: 0.9;
+        color: #fff; // Ensure title is bright
+        opacity: 1;
       }
 
       p {
-        color: $secondary-color;
+        color: #ddd; // Slightly dimmer paragraph text
         font-weight: 400;
         margin: 0;
         font-size: 14px;
@@ -159,6 +161,7 @@
 
   .toast-icon {
     flex-shrink: 0;
+    margin-top: 2px; // Adjust icon position slightly
 
     i {
       font-size: 24px;
@@ -171,28 +174,32 @@
     h4 {
       margin: 0 0 5px;
       font-size: 16px;
+      color: #fff; // Brighter title
     }
 
     p {
       margin: 0;
       font-size: 14px;
-      opacity: 0.8;
+      color: #ddd; // Slightly dimmer paragraph
+      opacity: 0.9;
     }
   }
 
   .toast-close {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.8); // Slightly more visible
     cursor: pointer;
     padding: 0;
     margin-left: auto;
     align-self: flex-start;
-    font-size: 20px;
+    font-size: 22px; // Slightly larger
+    line-height: 1; // Ensure consistent alignment
     transition: color 0.3s ease;
 
     &:hover {
-      color: #fff;
+      color: $secondary-color; // Highlight with secondary color on hover
+      transform: scale(1.1);
     }
   }
 
