@@ -816,28 +816,33 @@ function initCertificationsPageAnimations() {
   }
 }
 function initAboutPageAnimations() {
-  const aboutElements = document.querySelectorAll(
-    ".about h2, .about p, .about .about-details, .about .contact-email"
-  );
-  if (aboutElements.length > 0) {
-    aboutElements.forEach((element, index) => {
-      element.style.animation = "none";
-      element.style.opacity = "0";
-      element.style.transform = "translateY(30px)";
-      element.style.transition = `all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
-        0.3 + index * 0.1
-      }s`;
-      setTrackedTimeout(
-        () => {
-          element.style.opacity = "1";
-          element.style.transform = "translateY(0)";
-        },
-        300 + index * 100,
-        `aboutElementAnimation-${index}`
-      );
+  // Add logic for the contact form toggle
+  const contactFormToggle = document.getElementById("contactFormToggle");
+  const contactFormSection = document.getElementById("contactFormSection");
+
+  if (contactFormToggle && contactFormSection) {
+    contactFormToggle.addEventListener("click", () => {
+      const isHidden = contactFormSection.classList.contains("hidden");
+      if (isHidden) {
+        contactFormSection.classList.remove("hidden");
+        contactFormSection.setAttribute("aria-hidden", "false");
+        // Optional: Focus the first input field when shown
+        const firstInput = contactFormSection.querySelector("input, textarea");
+        if (firstInput) {
+          firstInput.focus();
+        }
+      } else {
+        contactFormSection.classList.add("hidden");
+        contactFormSection.setAttribute("aria-hidden", "true");
+      }
     });
+  } else {
+    console.warn("Contact form toggle button or section not found.");
   }
+
+  // You can add other about-page specific animations here if needed
 }
+
 function initUniversalAnimations() {
   document.addEventListener("click", (e) => {
     const link = e.target.closest("a");

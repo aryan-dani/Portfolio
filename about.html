@@ -2,239 +2,197 @@
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>About | Aryan Dani</title>
-		<meta
-			name="description"
-			content="Learn more about Aryan Dani, a full-stack developer and AI enthusiast with a passion for building innovative solutions." />
-		<link rel="dns-prefetch" href="//fonts.googleapis.com" />
-		<link rel="dns-prefetch" href="//kit.fontawesome.com" />
-		<link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-		<link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
-		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-		<link rel="prefetch" href="index.html" />
-		<link rel="prefetch" href="skills.html" />
-		<link rel="preload" href="SCSS/main.css" as="style" />
-		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-			rel="stylesheet"
-			integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-			crossorigin="anonymous" />
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-		<link rel="stylesheet" href="SCSS/main.css" />
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet" />
-		<style>
-			/* Animation triggers for JS to use */
-			.animate-on-scroll {
-				opacity: 0;
-				transform: translateY(20px);
-				transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-			}
-			.animate-on-scroll.visible {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		</style>
-	</head>
-	<body>
-		<div class="toast-container"></div>
-		<header>
-			<div
-				class="menu-btn"
-				id="menu-btn"
-				tabindex="0"
-				aria-label="Open main menu"
-				aria-controls="main-navigation"
-				aria-expanded="false"
-				role="button"
-				title="Open Menu (Alt+M)">
-				<span class="menu-btn__burger"></span>
-				<span class="menu-toggle-shortcut">Alt+M</span>
-			</div>
-			<nav
-				class="nav"
-				id="main-navigation"
-				role="navigation"
-				aria-label="Main menu">
-				<ul class="menu-nav">
-					<li class="menu-nav__item">
-						<a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="jobs.html" class="menu-nav__link" tabindex="0">Jobs</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="projects.html" class="menu-nav__link" tabindex="0"
-							>Projects</a
-						>
-					</li>
-					<li class="menu-nav__item">
-						<a href="certification.html" class="menu-nav__link" tabindex="0"
-							>Certifications</a
-						>
-					</li>
-					<li class="menu-nav__item">
-						<a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
-					</li>
-					<li class="menu-nav__item active">
-						<a href="about.html" class="menu-nav__link" tabindex="0">About</a>
-					</li>
-				</ul>
-			</nav>
-		</header>
-		<main>
-			<section class="about">
-				<div class="about-content-wrapper">
-					<div class="about-info">
-						<div class="about-details animate-on-scroll">
-							<h2>About</h2>
-							<p>
-								Hey, I'm Aryan Dani, a code-wrangler who sometimes fancies
-								himself a full-stack developer and an AI enthusiast. When I'm
-								not battling CSS for that perfect layout or convincing
-								JavaScript (and my deep learning models) to play nice, you'll
-								find me knee-deep in AI experiments or unwinding with Anime like
-								Haikyu!!, dreaming of a quick attack like Hinata (spoiler: I
-								can't even spike). I'm all about tech and building projects that
-								actually work (most of the time). My portfolio spans everything
-								from an automated expense tracker to cutting-edge AI and deep
-								learning projects—think real-time human detection and adaptive
-								models that learn on the fly (I'm using my powers for good,
-								don't worry). Future goals? Become the Mrwhosetheboss of my
-								generation, but with more AI magic and less coffee (I'm a tea
-								person, fight me). Let's connect and build something epic—or
-								just geek out over tech and anime together.
-							</p>
-						</div>
-						<div class="contact-email animate-on-scroll">
-							<i class="fas fa-envelope"></i>
-							<div class="email">daniaryan212@gmail.com</div>
-							<button id="contactFormToggle" class="contact-btn">
-								<span>Contact Me</span>
-								<i class="fas fa-envelope-open-text"></i>
-							</button>
-						</div>
-					</div>
-					<div id="contactFormSection" class="contact-form-container hidden">
-						<h2>Get In Touch</h2>
-						<p>Send me a message!</p>
-						<form id="contactForm" class="contact-form">
-							<div class="form-group">
-								<label for="name">Your Name</label>
-								<input
-									type="text"
-									id="name"
-									name="name"
-									placeholder="Enter your name"
-									required />
-							</div>
-							<div class="form-group">
-								<label for="email">Your Email</label>
-								<input
-									type="email"
-									id="email"
-									name="email"
-									placeholder="Enter your email"
-									required />
-							</div>
-							<div class="form-group">
-								<label for="subject">Subject</label>
-								<input
-									type="text"
-									id="subject"
-									name="subject"
-									placeholder="What's this about?" />
-							</div>
-							<div class="form-group">
-								<label for="message">Message</label>
-								<textarea
-									id="message"
-									name="message"
-									rows="2"
-									placeholder="Your message..."
-									required></textarea>
-							</div>
-							<button type="submit" class="submit-btn">
-								<span class="btn-text">Send</span>
-								<i class="fas fa-paper-plane"></i>
-							</button>
-						</form>
-					</div>
-				</div>
-			</section>
-		</main>
-		<footer class="footer">
-			<a href="copyright.html" class="copyright-link"
-				>&copy; 2025 Aryan Dani All Rights Reserved</a
-			>
-		</footer>
-		<script src="Js/performance.js" defer></script>
-		<script src="Js/main.js" defer></script>
-		<script
-			src="https://kit.fontawesome.com/1267cf2b7d.js"
-			crossorigin="anonymous"
-			defer></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-			crossorigin="anonymous"
-			defer></script>
-		<script>
-			// Contact form toggle functionality
-			document.addEventListener("DOMContentLoaded", function () {
-				document
-					.getElementById("contactFormToggle")
-					.addEventListener("click", function () {
-						const formSection = document.getElementById("contactFormSection");
-						if (formSection.classList.contains("hidden")) {
-							formSection.classList.remove("hidden");
-							formSection.classList.add("show");
-							this.querySelector("span").textContent = "Hide Form";
-							this.querySelector("i").classList.remove("fa-envelope-open-text");
-							this.querySelector("i").classList.add("fa-times");
-						} else {
-							formSection.classList.add("hidden");
-							formSection.classList.remove("show");
-							this.querySelector("span").textContent = "Contact Me";
-							this.querySelector("i").classList.add("fa-envelope-open-text");
-							this.querySelector("i").classList.remove("fa-times");
-						}
-					});
-				// Contact form submission handling
-				document
-					.getElementById("contactForm")
-					.addEventListener("submit", function (e) {
-						e.preventDefault();
-						// Use the global showToast function from performance.js
-						if (typeof showToast === "function") {
-							showToast(
-								"Thanks for reaching out. I'll get back to you soon!", // Message
-								"success", // Type
-								5000, // Duration
-								"Message Sent!" // Title
-							);
-						} else {
-							// Fallback alert if showToast is somehow not available (shouldn't happen now)
-							console.error(
-								"showToast function not found. Using alert fallback."
-							);
-							alert("Message sent! Thanks for reaching out.");
-						}
-						// Reset form
-						this.reset();
-						// Hide form after successful submission
-						setTimeout(() => {
-							document.getElementById("contactFormToggle").click();
-						}, 1000);
-					});
-			});
-		</script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | Aryan Dani</title>
+    <meta
+      name="description"
+      content="Learn more about Aryan Dani, a full-stack developer and AI enthusiast with a passion for building innovative solutions."
+    />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//kit.fontawesome.com" />
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="prefetch" href="index.html" />
+    <link rel="prefetch" href="skills.html" />
+    <link rel="preload" href="SCSS/main.css" as="style" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href="SCSS/main.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <style>
+      /* Animation triggers for JS to use */
+      .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toast-container"></div>
+    <header>
+      <div
+        class="menu-btn"
+        id="menu-btn"
+        tabindex="0"
+        aria-label="Open main menu"
+        aria-controls="main-navigation"
+        aria-expanded="false"
+        role="button"
+        title="Open Menu (Alt+M)"
+      >
+        <span class="menu-btn__burger"></span>
+        <span class="menu-toggle-shortcut">Alt+M</span>
+      </div>
+      <nav
+        class="nav"
+        id="main-navigation"
+        role="navigation"
+        aria-label="Main menu"
+      >
+        <ul class="menu-nav">
+          <li class="menu-nav__item">
+            <a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="jobs.html" class="menu-nav__link" tabindex="0">Jobs</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="projects.html" class="menu-nav__link" tabindex="0"
+              >Projects</a
+            >
+          </li>
+          <li class="menu-nav__item">
+            <a href="certification.html" class="menu-nav__link" tabindex="0"
+              >Certifications</a
+            >
+          </li>
+          <li class="menu-nav__item">
+            <a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
+          </li>
+          <li class="menu-nav__item active">
+            <a href="about.html" class="menu-nav__link" tabindex="0">About</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="about">
+        <div class="about-content-wrapper">
+          <div class="about-info">
+            <div class="about-details animate-on-scroll">
+              <h2>About</h2>
+              <p>
+                Hey, I'm Aryan Dani, a code-wrangler who sometimes fancies
+                himself a full-stack developer and an AI enthusiast. When I'm
+                not battling CSS for that perfect layout or convincing
+                JavaScript (and my deep learning models) to play nice, you'll
+                find me knee-deep in AI experiments or unwinding with Anime like
+                Haikyu!!, dreaming of a quick attack like Hinata (spoiler: I
+                can't even spike). I'm all about tech and building projects that
+                actually work (most of the time). My portfolio spans everything
+                from an automated expense tracker to cutting-edge AI and deep
+                learning projects—think real-time human detection and adaptive
+                models that learn on the fly (I'm using my powers for good,
+                don't worry). Future goals? Become the Mrwhosetheboss of my
+                generation, but with more AI magic and less coffee (I'm a tea
+                person, fight me). Let's connect and build something epic—or
+                just geek out over tech and anime together.
+              </p>
+            </div>
+            <div class="contact-email animate-on-scroll">
+              <i class="fas fa-envelope"></i>
+              <div class="email">daniaryan212@gmail.com</div>
+              <button id="contactFormToggle" class="contact-btn">
+                <span>Contact Me</span>
+                <i class="fas fa-envelope-open-text"></i>
+              </button>
+            </div>
+          </div>
+          <div id="contactFormSection" class="contact-form-container hidden">
+            <h2>Get In Touch</h2>
+            <p>Send me a message!</p>
+            <form id="contactForm" class="contact-form">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Your Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  placeholder="What's this about?"
+                />
+              </div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="2"
+                  placeholder="Your message..."
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="submit-btn">
+                <span class="btn-text">Send</span>
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <a href="copyright.html" class="copyright-link"
+        >&copy; 2025 Aryan Dani All Rights Reserved</a
+      >
+    </footer>
+    <script src="Js/performance.js" defer></script>
+    <script src="Js/main.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/1267cf2b7d.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script src="Js/card-3d-effect.js" defer></script>
+    <script src="Js/custom-cursor.js" defer></script>
+  </body>
 </html>

@@ -1,5 +1,4 @@
 @use "config" as *;
-@use "mixins" as *;
 @use "animations";
 @use "home";
 @use "menu";
@@ -7,7 +6,6 @@
 @use "project";
 @use "about";
 @use "certification";
-@use "theme";
 @use "skills";
 @use "copyright";
 @use "footer";
@@ -51,9 +49,7 @@ body {
   overflow-x: hidden; // Prevent horizontal overflow
   transition: background-color $transition-speed ease-in-out,
     color $transition-speed ease-in-out;
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='8' fill='rgba(255, 255, 255, 0.5)'/%3E%3C/svg%3E")
-      16 16,
-    auto; // Keep the existing small circle cursor as default
+  cursor: none !important; // Hide default cursor
 }
 
 // Larger cursor for interactive elements (Increased specificity and broader selection)
@@ -62,18 +58,18 @@ button,
 [role="button"],
 input[type="submit"],
 input[type="button"],
-input[type="reset"], // Added reset buttons
-input[type="image"], // Added image inputs
+input[type="reset"],
+input[type="image"],
 select,
-label, // Keep labels
-summary, // Added for <details> elements
-[onclick], // Target elements with onclick handlers
+label,
+summary,
+[onclick],
 .menu-btn,
 .skills__card,
 .project-card,
 .certificate-content,
-.certificate-image, // Ensure this is targeted
-.toast-close, // Ensure this is targeted
+.certificate-image,
+.toast-close,
 .search-clear-btn,
 .retry-button,
 .cached-pages li a,
@@ -81,19 +77,16 @@ summary, // Added for <details> elements
 .submit-btn,
 .category-tab,
 .skill-modal__close,
-.preview-container .close-preview, // Ensure this is targeted
+.preview-container .close-preview,
 .jobs-layout .Jobs h3 a,
 .project-links a,
 .tags-container h6,
 .social-icons a,
 .cta-button,
-.home__name, // Added home page name
-.project-card .content h3, // Added project titles
-[data-interactive] // Add a generic attribute selector if you use data-* for interaction
-{
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='12' fill='rgba(255, 255, 255, 0.7)'/%3E%3C/svg%3E")
-      24 24,
-    auto !important; // Add !important to increase override power
+.home__name,
+.project-card .content h3,
+[data-interactive] {
+  cursor: none !important; // Also hide cursor on interactive elements
 }
 
 // Elements that should explicitly use the default text cursor
@@ -102,7 +95,80 @@ input[type="email"],
 input[type="search"],
 input[type="password"],
 textarea {
-  cursor: text !important; // Add !important here too for consistency
+  cursor: none !important; // Hide cursor here too, custom cursor will adapt
+}
+
+// Custom Cursor Styles
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px; // Size of the outer ring
+  height: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.7); // Outer ring
+  border-radius: 50%;
+  pointer-events: none; // Ignore mouse events on the cursor itself
+  // transform: translate(-50%, -50%); // JS handles transform
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease,
+    background-color 0.3s ease, border-radius 0.3s ease, opacity 0.3s ease,
+    mix-blend-mode 0.1s ease;
+  z-index: 99999; // Ensure it's on top
+  mix-blend-mode: difference; // Cool effect against background
+  opacity: 1; // Make sure it's visible initially
+  display: block; // Keep display block
+
+  &::after {
+    // Inner dot
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease,
+      opacity 0.3s ease;
+    opacity: 1;
+    display: block; // Ensure inner dot is displayed
+  }
+
+  &.cursor--link-hovered {
+    width: 50px; // Expand outer ring
+    height: 50px;
+    border-color: $secondary-color; // Change color
+    background-color: rgba($secondary-color, 0.2); // Add subtle background
+
+    &::after {
+      // Expand inner dot slightly
+      width: 8px;
+      height: 8px;
+      background-color: $secondary-color;
+    }
+  }
+
+  &.cursor--text-hovered {
+    // Style for text input hover
+    width: 2px; // Thin like a caret
+    height: 24px; // Taller like a caret
+    border-radius: 1px;
+    border-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.9);
+    mix-blend-mode: normal; // Normal blend for text caret
+
+    &::after {
+      opacity: 0; // Hide inner dot
+      width: 0;
+      height: 0;
+      display: none; // Explicitly hide inner dot
+    }
+  }
+
+  // Add reduced motion preference
+  @media (prefers-reduced-motion: reduce) {
+    display: none !important; // Keep hiding if reduced motion
+  }
 }
 
 html {

@@ -222,14 +222,12 @@
 
   .contact-form-container {
     width: 100%;
-    max-width: 45rem; // Reduced from 45rem
+    max-width: 40rem; // Reduced from 45rem
     background-color: rgba(darken($primary-color, 2%), 1);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transform: translateY(20px);
-    opacity: 0;
-    animation: slideInUp 0.5s 0.8s ease forwards;
+    transition: opacity 0.3s ease, transform 0.3s ease; // Added transition for smooth toggle
     border-left: 4px solid $secondary-color;
     position: relative;
     overflow: hidden; // Keep for shine effect
@@ -414,16 +412,29 @@
 }
 
 .hidden {
-  display: none;
+  // display: none; // Keep display: none for accessibility and layout calculation
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(20px); // Start slightly lower
+  pointer-events: none; // Prevent interaction when hidden
+  visibility: hidden; // Use visibility for transition
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s; // Delay visibility change
 }
 
-.contact-form-container {
-  &.show {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-    animation: slideInUp 0.5s ease forwards;
-  }
+// Remove the .show class as it's not used by the JS toggle logic
+// .contact-form-container {
+//   &.show {
+//     display: block;
+//     opacity: 1;
+//     transform: translateY(0);
+//     animation: slideInUp 0.5s ease forwards;
+//   }
+// }
+
+// Ensure the form is visible when the hidden class is removed
+.contact-form-container:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
 }

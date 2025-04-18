@@ -1,0 +1,124 @@
+/** @format */
+
+@use "config" as *;
+@use "mixins" as *;
+
+.custom-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 9999; // Ensure it's above most elements
+  mix-blend-mode: difference; // Restore blend mode
+  // Slightly smoother transitions
+  transition: transform 0.1s ease-out, width 0.25s ease-out,
+    height 0.25s ease-out, background-color 0.25s ease-out,
+    border-color 0.25s ease-out, opacity 0.2s ease-out;
+  will-change: transform, width, height, background-color, border-color, opacity;
+
+  &.theme-cursor {
+    width: 10px; // Slightly smaller base size for a cleaner look
+    height: 10px;
+    background-color: var(
+      --cursor-bg,
+      $light-color
+    ); // Use CSS variable or default
+    // Removed border for a cleaner base style
+    border-radius: 50%;
+  }
+
+  // Hover state for interactive elements
+  &.cursor--link-hovered {
+    width: 35px; // Slightly larger expansion
+    height: 35px;
+    background-color: rgba(
+      $primary-color,
+      0.3
+    ); // Semi-transparent primary color
+    mix-blend-mode: normal; // Restore blend mode reset
+  }
+
+  // Hover state for text inputs
+  &.cursor--text-hovered {
+    width: 3px; // Slightly thinner bar
+    height: 22px; // Slightly taller bar
+    background-color: var(--cursor-border, $primary-color);
+    border-radius: 2px;
+    mix-blend-mode: normal; // Restore blend mode reset
+  }
+}
+
+// --- Cursor Trail SVG Styling ---
+.cursor-trail-svg {
+  position: fixed !important; // Force position
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important; // Force dimensions
+  height: 100vh !important;
+  pointer-events: none !important;
+  z-index: 10000 !important; // Force stacking
+  opacity: 1 !important; // Force visibility
+  visibility: visible !important;
+  display: block !important; // Force display
+  // transition: none !important; // Remove transition for debugging
+}
+
+.cursor-trail-line {
+  fill: none !important;
+  stroke: #ff0000 !important; // Bright Red for max visibility
+  stroke-width: 4px !important; // Even thicker
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  visibility: visible !important;
+  display: block !important;
+}
+// --- End Cursor Trail SVG Styling ---
+
+// Hide default cursor when custom cursor is active
+html:has(body .custom-cursor),
+body:has(.custom-cursor) {
+  cursor: none !important; // Force hide default cursor on html and body
+
+  // Ensure interactive elements also hide default cursor forcefully
+  a,
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  select,
+  label,
+  summary,
+  [onclick],
+  .menu-btn,
+  .skills__card,
+  .project-card,
+  .certificate-content,
+  .certificate-image,
+  .toast-close,
+  .search-clear-btn,
+  .retry-button,
+  .cached-pages li a,
+  .contact-btn,
+  .submit-btn,
+  .category-tab,
+  .skill-modal__close,
+  .preview-container .close-preview,
+  .jobs-layout .Jobs h3 a,
+  .project-links a,
+  .tags-container h6,
+  .social-icons a,
+  .cta-button,
+  .home__name,
+  .project-card .content h3,
+  [data-interactive] {
+    cursor: none !important; // Force hide default pointer
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="search"],
+  input[type="password"],
+  textarea {
+    cursor: none !important; // Force hide default text cursor
+  }
+}
