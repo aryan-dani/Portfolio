@@ -1006,19 +1006,22 @@ function initSkillsPageAnimations() {
       });
     });
   }
-  if (isFirstVisit) {
-    setTrackedTimeout(
-      () => {
-        showToast(
-          "Keyboard Shortcuts",
-          "Use Alt + Left/Right arrows to navigate between pages.",
-          "fa-solid fa-keyboard"
-        );
-      },
-      3000,
-      "keyboardHintInit"
-    );
-  }
+  // Corrected showToast call for keyboard hint on skills page
+  // if (isFirstVisit) { // Keep this commented out if you want the hint always
+  setTrackedTimeout(
+    () => {
+      showToast(
+        "Use Alt + Left/Right arrows or Alt + [Letter] (H, J, P, C, S, A) to navigate.", // message
+        "info", // type
+        8000, // duration
+        "Keyboard Navigation", // title
+        "fa-solid fa-keyboard" // iconClass
+      );
+    },
+    3000,
+    "keyboardHintInit"
+  );
+  // } // End of commented out isFirstVisit check
 }
 function updateCopyrightYear() {
   const currentYear = new Date().getFullYear();
@@ -1033,6 +1036,14 @@ function updateCopyrightYear() {
 function detectKeyboardNavigation() {
   let isUsingKeyboard = false;
   function handleKeyDown(e) {
+    // --- START: Added Alt Key Navigation ---
+    if (e.altKey) {
+      handleAltNavigation(e);
+      // Prevent potential browser default actions for Alt+Key combinations
+      // e.preventDefault(); // Be cautious with this, might interfere with other Alt shortcuts
+    }
+    // --- END: Added Alt Key Navigation ---
+
     if (e.key === "Tab") {
       if (!isUsingKeyboard) {
         document.body.classList.add("keyboard-nav-active");
@@ -1056,3 +1067,89 @@ function detectKeyboardNavigation() {
     document.body.classList.add("keyboard-nav-active");
   }
 }
+
+// --- START: Added Navigation Logic ---
+const pageOrder = [
+  "index.html",
+  "jobs.html",
+  "projects.html",
+  "certification.html",
+  "skills.html",
+  "about.html",
+];
+
+const pageShortcuts = {
+  H: "index.html",
+  J: "jobs.html",
+  P: "projects.html",
+  C: "certification.html",
+  S: "skills.html",
+  A: "about.html",
+  M: null, // Reserved for menu toggle
+};
+
+function getCurrentPageIndex() {
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  return pageOrder.indexOf(currentPage);
+}
+
+function navigateToPage(url) {
+  if (!url || window.location.pathname.endsWith(url)) {
+    return; // Don't navigate to the same page or invalid URL
+  }
+
+  const main = document.querySelector("main");
+  if (main) {
+    main.style.opacity = "0";
+    main.style.transform = "translateY(-20px)"; // Use existing transition style
+    setTrackedTimeout(
+      () => {
+        window.location.href = url;
+      },
+      400, // Match existing link transition duration
+      "keyboardNavTransition"
+    );
+  } else {
+    window.location.href = url; // Fallback if main element isn't found
+  }
+}
+
+function handleAltNavigation(e) {
+  const key = e.key.toUpperCase();
+  let targetUrl = null;
+
+  if (key === "ARROWLEFT") {
+    const currentIndex = getCurrentPageIndex();
+    if (currentIndex > 0) {
+      targetUrl = pageOrder[currentIndex - 1];
+    } else {
+      targetUrl = pageOrder[pageOrder.length - 1]; // Wrap around to last page
+    }
+    e.preventDefault(); // Prevent browser back navigation
+  } else if (key === "ARROWRIGHT") {
+    const currentIndex = getCurrentPageIndex();
+    if (currentIndex < pageOrder.length - 1) {
+      targetUrl = pageOrder[currentIndex + 1];
+    } else {
+      targetUrl = pageOrder[0]; // Wrap around to first page
+    }
+    e.preventDefault(); // Prevent potential browser forward navigation
+  } else if (pageShortcuts.hasOwnProperty(key)) {
+    if (key === "M") {
+      // Trigger menu toggle if Alt+M is pressed
+      const menuButton = document.getElementById("menu-btn");
+      if (menuButton) {
+        menuButton.click();
+        e.preventDefault(); // Prevent default Alt+M behavior (like browser menu)
+      }
+    } else {
+      targetUrl = pageShortcuts[key];
+      e.preventDefault(); // Prevent default browser behavior for Alt+[Letter]
+    }
+  }
+
+  if (targetUrl) {
+    navigateToPage(targetUrl);
+  }
+}
+// --- END: Added Navigation Logic ---
