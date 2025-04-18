@@ -6,7 +6,8 @@
   /* Changed from fixed 100% to auto */
   min-height: 100vh;
   /* Set minimum height instead */
-  padding-top: 2vh;
+  // padding-top: 2vh; // REMOVED vh padding
+  padding-top: 1rem; // Use a smaller fixed padding
   padding-bottom: 4rem;
   /* Added padding at bottom */
   overflow: auto;
@@ -162,6 +163,10 @@
       transform: translateY(-3px) scale(1.01);
       background: rgba($primary-color, 0.8);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    @media screen and (max-width: 768px) {
+      max-width: 100%; // Allow full width on smaller screens
     }
   }
 
@@ -403,6 +408,11 @@
   @media screen and (max-width: 991px) {
     .about-content-wrapper {
       flex-direction: column;
+      padding: 0 1rem; // Reduce padding on smaller screens
+    }
+
+    .about-info {
+      max-width: 100%; // Allow info section to take full width
     }
 
     .contact-form-container {

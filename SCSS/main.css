@@ -687,7 +687,7 @@
 
 .nav {
   position: fixed;
-  top: 0;
+  top: 10%;
   left: 50%;
   right: auto;
   transform: translateX(-50%);
@@ -695,7 +695,6 @@
   visibility: hidden;
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   z-index: 2;
-  height: auto;
   max-width: -moz-fit-content;
   max-width: fit-content;
 }
@@ -711,11 +710,12 @@
   transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 }
 .nav .menu-nav {
-  margin-top: 5px;
+  margin-top: 1vh;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  width: 65vw;
+  max-width: 90vw;
+  width: auto;
   align-items: center;
   justify-content: center;
   margin-top: 0.5vh;
@@ -725,7 +725,7 @@
   border: 1.5px solid rgba(240, 248, 255, 0.18);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
   position: relative;
-  padding: 0.8rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   min-height: 30px;
   list-style: none;
   gap: 0.2rem;
@@ -744,6 +744,7 @@
 }
 .nav .menu-nav.open {
   transform: translateY(0);
+  padding: 10px;
 }
 .nav .menu-nav__item {
   position: relative;
@@ -758,17 +759,19 @@
 .nav .menu-nav__item:last-child {
   border-right: none !important;
   padding-right: 0;
+  margin-right: 0;
 }
 .nav .menu-nav.active > a {
   color: aliceblue;
   position: relative;
 }
 .nav .menu-nav.open {
+  margin-top: 1.5vh;
   opacity: 1;
   transform: translateY(0);
 }
 .nav .menu-nav a {
-  padding: 0.5rem 1rem;
+  padding: 1rem 0rem;
   font-weight: 700;
   text-transform: uppercase;
   position: relative;
@@ -778,7 +781,7 @@
 .nav .menu-nav a::before {
   content: "";
   position: absolute;
-  bottom: -8px;
+  bottom: 3px;
   left: 0;
   width: 0;
   height: 3px;
@@ -800,22 +803,58 @@
   .nav {
     left: 50%;
     right: auto;
-    width: 98vw;
-    min-width: 0;
-    max-width: 100vw;
+    max-width: 95vw;
+    width: auto;
     transform: translateX(-50%);
   }
   .nav.open {
     left: 50% !important;
     right: auto !important;
-    width: 98vw;
-    min-width: 0;
-    max-width: 100vw;
+    max-width: 95vw;
+    width: auto;
     transform: translateX(-50%);
   }
   .nav .menu-nav {
     margin-left: auto;
     margin-right: auto;
+    padding: 0.3rem 0.3rem;
+    gap: 0.1rem;
+    flex-wrap: wrap;
+  }
+  .nav .menu-nav__item {
+    margin: 0 0.3rem;
+    padding-right: 0.6rem;
+  }
+  .nav .menu-nav a {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.9em;
+  }
+}
+@media screen and (max-width: 480px) {
+  .nav {
+    max-width: 98vw;
+  }
+  .nav.open {
+    max-width: 98vw;
+  }
+  .nav .menu-nav {
+    padding: 0.2rem 0.1rem;
+    gap: 0.1rem;
+  }
+  .nav .menu-nav__item {
+    margin: 0 0.2rem;
+    padding-right: 0.5rem;
+    border-right: 1px solid rgba(240, 248, 255, 0.08);
+  }
+  .nav .menu-nav__item:last-child {
+    border-right: none !important;
+    padding-right: 0;
+    margin-right: 0;
+  }
+  .nav .menu-nav a {
+    padding: 0.15rem 0.5rem;
+    font-size: 0.85em;
+    white-space: nowrap;
   }
 }
 .jobs-layout {
@@ -1591,6 +1630,17 @@
   margin-left: auto;
   margin-right: auto;
 }
+@media screen and (max-width: 768px) {
+  .project .project-card .content p {
+    max-width: 95%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .project .project-card .content p {
+    max-width: 100%;
+    text-align: justify;
+  }
+}
 
 .form-control::-webkit-search-cancel-button, .form-control::-webkit-search-decoration {
   -webkit-appearance: none;
@@ -1599,17 +1649,69 @@
 }
 
 @media screen and (max-width: 768px) {
+  .project {
+    padding: 2rem 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
   .project .project-grid {
-    padding: 0 1rem;
+    gap: 1.5rem;
   }
   .project .project__intro-container {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
+    margin-bottom: 2rem;
   }
   .project .project__intro-container h2.text-secondary {
     font-size: 2rem;
   }
   .project .project__intro-container p {
     font-size: 1rem;
+  }
+  .project .project-card .content {
+    padding: 0 1rem 1.5rem;
+  }
+}
+@media screen and (max-width: 480px) {
+  .project {
+    padding: 1.5rem 0;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+  .project .project__intro-container {
+    padding: 1rem 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .project .project__intro-container h2.text-secondary {
+    font-size: 1.8rem;
+  }
+  .project .project__intro-container p {
+    font-size: 0.95rem;
+  }
+  .project .project-grid {
+    gap: 1rem;
+  }
+  .project .project-card .project-image {
+    margin: 1rem;
+  }
+  .project .project-card .content {
+    padding: 0 0.75rem 1rem;
+  }
+  .project .project-card .content h3 {
+    font-size: 1.3rem;
+  }
+  .project .project-card .content .project-links a.project-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  .project .project-card .content .tags-container {
+    margin: 1rem 0;
+  }
+  .project .project-card .content h6 {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+  }
+  .project .project-card .content p {
+    font-size: 0.95rem;
   }
 }
 @keyframes shimmer {
@@ -1645,7 +1747,7 @@
   /* Changed from fixed 100% to auto */
   min-height: 100vh;
   /* Set minimum height instead */
-  padding-top: 2vh;
+  padding-top: 1rem;
   padding-bottom: 4rem;
   /* Added padding at bottom */
   overflow: auto;
@@ -1798,6 +1900,11 @@
   transform: translateY(-3px) scale(1.01);
   background: rgba(39, 39, 39, 0.8);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+@media screen and (max-width: 768px) {
+  .about p {
+    max-width: 100%;
+  }
 }
 .about .contact-email {
   width: 100%;
@@ -2059,6 +2166,10 @@
 @media screen and (max-width: 991px) {
   .about .about-content-wrapper {
     flex-direction: column;
+    padding: 0 1rem;
+  }
+  .about .about-info {
+    max-width: 100%;
   }
   .about .contact-form-container {
     max-width: 100%;

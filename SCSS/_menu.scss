@@ -124,7 +124,7 @@
 
 .nav {
   position: fixed;
-  top: 0;
+  top: 10%;
   left: 50%;
   right: auto;
   transform: translateX(-50%);
@@ -132,7 +132,6 @@
   visibility: hidden;
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   z-index: 2; // Increase z-index for visibility
-  height: auto;
   max-width: fit-content; // Prevent any internal scrolling
 
   &.open {
@@ -148,11 +147,12 @@
   }
 
   .menu-nav {
-    margin-top: 5px;
+    margin-top: 1vh; // Keep vh margin
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    width: 65vw;
+    flex-wrap: nowrap; // Keep items on one line initially
+    max-width: 90vw; // Set a maximum width relative to viewport
+    width: auto; // Allow the menu to size based on content
     align-items: center;
     justify-content: center;
     margin-top: 0.5vh;
@@ -162,10 +162,10 @@
     border: 1.5px solid rgba($secondary-color, 0.18);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
     position: relative;
-    padding: 0.8rem 0.5rem;
+    padding: 0.4rem 0.5rem;
     min-height: 30px;
     list-style: none;
-    gap: 0.2rem;
+    gap: 0.2rem; // Keep initial gap
     border-radius: 18px;
 
     // Added subtle noise texture
@@ -183,21 +183,23 @@
 
     &.open {
       transform: translateY(0);
+      padding: 10px;
     }
 
     &__item {
       position: relative;
       opacity: 1; // Ensure visible
       transform: none; // Ensure visible
-      margin: 0 0.6rem;
+      margin: 0 0.6rem; // Keep initial margin
       border-right: 1.5px solid rgba($secondary-color, 0.10);
-      padding-right: 1.2rem;
+      padding-right: 1.2rem; // Keep initial padding
       margin-right: 0;
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 
       &:last-child {
         border-right: none !important;
         padding-right: 0;
+        margin-right: 0;
       }
     }
 
@@ -207,12 +209,13 @@
     }
 
     &.open {
+      margin-top: 1.5vh;
       opacity: 1;
       transform: translateY(0);
     }
 
     a {
-      padding: 0.5rem 1rem;
+      padding: 1rem 0rem;
       font-weight: 700;
       text-transform: uppercase;
       position: relative;
@@ -223,7 +226,7 @@
       &::before {
         content: "";
         position: absolute;
-        bottom: -8px;
+        bottom: 3px; // Bring the line closer to the text
         left: 0;
         width: 0;
         height: 3px;
@@ -253,23 +256,68 @@
   .nav {
     left: 50%;
     right: auto;
-    width: 98vw;
-    min-width: 0;
-    max-width: 100vw;
+    max-width: 95vw; // Adjust max-width for tablets/smaller screens
+    width: auto; // Allow shrinking
     transform: translateX(-50%);
 
     &.open {
       left: 50% !important;
       right: auto !important;
-      width: 98vw;
-      min-width: 0;
-      max-width: 100vw;
+      max-width: 95vw; // Adjust max-width for tablets/smaller screens
+      width: auto; // Allow shrinking
       transform: translateX(-50%);
     }
 
     .menu-nav {
       margin-left: auto;
       margin-right: auto;
+      padding: 0.3rem 0.3rem;
+      gap: 0.1rem; // Reduce gap between items
+      flex-wrap: wrap; // Allow items to wrap onto the next line if needed
+
+      &__item {
+        margin: 0 0.3rem; // Reduce horizontal margin
+        padding-right: 0.6rem; // Reduce padding
+      }
+
+      a {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.9em; // Slightly smaller font size for menu items if needed
+      }
+    }
+  }
+}
+
+// Add a breakpoint for very small screens if wrapping isn't enough
+@media screen and (max-width: 480px) {
+  .nav {
+    max-width: 98vw; // Slightly increase max-width for the container
+
+    &.open {
+      max-width: 98vw; // Match the container width
+    }
+
+    .menu-nav {
+      padding: 0.2rem 0.1rem;
+      gap: 0.1rem; // Keep a minimal gap
+
+      &__item {
+        margin: 0 0.2rem; // Slightly adjust margin
+        padding-right: 0.5rem; // Slightly adjust padding
+        border-right: 1px solid rgba($secondary-color, 0.08); // Make border thinner
+
+        &:last-child {
+          border-right: none !important;
+          padding-right: 0;
+          margin-right: 0;
+        }
+      }
+
+      a {
+        padding: 0.15rem 0.5rem;
+        font-size: 0.85em; // Keep smaller font size
+        white-space: nowrap; // Prevent text like "About" from wrapping
+      }
     }
   }
 }

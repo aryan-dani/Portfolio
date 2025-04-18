@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
 							"Get to know me better",
 							"info",
 							6000,
-							"About Me",
+							"About",
 							"fa-solid fa-user"
 						);
 					}
@@ -361,7 +361,7 @@ function initHomePageAnimations() {
 
 	// Step 2: Execute animations in sequence with proper timing
 	executeHomeAnimationSequence();
-		
+
 	// Step 3: Initialize interactive effects like parallax
 	addHomeContentParallax();
 }
