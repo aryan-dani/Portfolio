@@ -2,12 +2,11 @@
 @use "mixins" as *;
 
 .home {
-  min-height: 100vh;
   padding: 15vh 8vw; // Increased padding for more space
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5rem; // Increased gap
+  gap: 3rem; // Increased gap
   overflow: hidden;
   background: linear-gradient(-45deg, $primary-color, lighten($primary-color, 5%), darken($primary-color, 5%), $primary-color);
   background-size: 400% 400%;
@@ -26,11 +25,11 @@
   // Style the content area
   &__content {
     flex: 1;
-    max-width: 700px; // Increased max width
+    max-width: 800px; // Increased max width
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 2rem; // Increased gap
+    gap: 1rem; // Increased gap
     opacity: 0;
     transform: translateX(-40px); // Start further left
     animation: slideInLeftEnhanced 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.2s; // Smoother cubic-bezier
@@ -42,9 +41,6 @@
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 
-    // Ensure text wraps within the content box
-
-    // Add subtle background glow blob
     &::before {
       content: '';
       position: absolute;
@@ -63,7 +59,7 @@
       color: $secondary-color;
       margin: 0;
       text-align: justify;
-      font-size: 1.1rem;
+      font-size: 1rem;
       line-height: 1.8; // Increased line-height for readability
       position: relative;
       z-index: 1;
@@ -191,7 +187,7 @@
   .social-icons {
     position: relative;
     z-index: 1;
-    margin: 1rem 0 2rem 0; // Adjusted margin
+     // Adjusted margin
 
     .link-list {
       list-style: none;
@@ -200,12 +196,11 @@
       display: flex;
       flex-direction: row; // Display icons horizontally
       flex-wrap: wrap; // Allow wrapping
-      gap: 1.5rem; // Slightly increased gap
+      gap: 0.7rem; // Slightly increased gap
 
       .link-title {
         display: flex;
         align-items: center;
-        gap: 10px; // Adjust gap
         width: fit-content;
 
         a {
@@ -255,16 +250,15 @@
   .cta-button {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     background: linear-gradient(45deg, $secondary-color, lighten($secondary-color, 15%));
     background-size: 200% 200%;
     color: $primary-color;
     font-weight: 600;
-    padding: 0.9rem 2rem; // Slightly larger padding
-    font-size: 1.2rem; // Slightly larger font
+    padding: 0.5rem 1rem; // Slightly larger padding
+    font-size: 1rem; // Slightly larger font
     border-radius: 8px;
     margin-top: 1rem; // Adjusted margin
-    margin-bottom: 0; // Remove bottom margin
     box-shadow: 0 6px 18px rgba(darken($primary-color, 20%), 0.3); // Darker shadow
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Smooth all transitions
     border: 1px solid $secondary-color; // Add border
@@ -274,7 +268,6 @@
     z-index: 1;
     text-decoration: none;
     @include button-hover;
-    animation: none !important; // remove any bounce
 
     &:hover {
       background-position: right center; // Change gradient direction on hover
@@ -299,20 +292,7 @@
   }
 }
 
-// Keyframe for background gradient animation
-@keyframes gradientBG {
-  0% {
-    background-position: 0% 50%;
-  }
 
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
 // Enhanced Keyframe animations
 @keyframes slideInLeftEnhanced {
