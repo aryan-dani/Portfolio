@@ -7,14 +7,12 @@
   display: flex; // Use flexbox for centering content vertically
   flex-direction: column;
   align-items: center; // Center items horizontally
-  padding: 3rem 0; // Remove horizontal padding here
+  padding: 1rem 0; // Remove horizontal padding here
   width: 100%; // Ensure full width initially
   max-width: 1400px; // Apply max-width to the section
   margin: 0 auto; // Center the section
-  padding-left: 1rem; // Add horizontal padding here
-  padding-right: 1rem;
   box-sizing: border-box; // Include padding in width calculation
-  min-height: calc(100vh - 80px); // Ensure minimum height
+  min-height: calc(100vh - 80px);
 
   @include media-sm {
     padding-left: 2rem; // Increase padding on larger screens
@@ -41,10 +39,9 @@
 
   // Main heading and intro container - Renamed for clarity and styled like certification intro
   .project__intro-container {
+    margin-top: 3rem;
     width: 100%; // Make container fill the padded section width
-    max-width: none; // Remove specific max-width from here
-    margin: 0 auto 3rem; // Reduced bottom margin
-    padding: 2rem; // Adjust padding (vertical, horizontal for small screens)
+    max-width: none; // Remove specific max-width from here// Reduced bottom margin
     position: relative;
     z-index: 1;
     background-color: rgba(lighten($primary-color, 7%), 0.65); // Match certification intro background
@@ -96,7 +93,8 @@
     p {
       // Style intro paragraph like certification intro
       color: $secondary-color;
-      text-align: center; // Center align the intro paragraph
+      // text-align: center; // Center align the intro paragraph
+      text-align: justify; // Justify text
       font-size: 1.15rem; // Slightly increased font size
       line-height: 1.9; // Slightly increased line height
       opacity: 1;
@@ -402,7 +400,8 @@
         flex-grow: 1; // Allow paragraph to take remaining space
         position: relative;
         z-index: 1;
-        text-align: left; // Keep description left-aligned for readability
+        // text-align: left; // Keep description left-aligned for readability
+        text-align: justify; // Justify text
         max-width: 90%; // Limit width slightly for better centering feel
         margin-left: auto;
         margin-right: auto;
@@ -413,7 +412,7 @@
 
         @media screen and (max-width: 480px) {
           max-width: 100%; // Allow full width on small phones
-          text-align: justify; // Justify text on very small screens if needed
+          // text-align: justify; // Justify text on very small screens if needed - REMOVED (now default)
         }
       }
     }

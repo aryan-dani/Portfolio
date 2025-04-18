@@ -162,11 +162,12 @@
     border: 1.5px solid rgba($secondary-color, 0.18);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
     position: relative;
-    padding: 0.4rem 0.5rem;
+    padding: 0.4rem 1rem;
     min-height: 30px;
     list-style: none;
-    gap: 0.2rem; // Keep initial gap
+    gap: 0.5rem;
     border-radius: 18px;
+
 
     // Added subtle noise texture
     &::before {
@@ -183,17 +184,16 @@
 
     &.open {
       transform: translateY(0);
-      padding: 10px;
+      padding: 10px 25px;
+      gap: 1rem;
     }
 
     &__item {
       position: relative;
       opacity: 1; // Ensure visible
       transform: none; // Ensure visible
-      margin: 0 0.6rem; // Keep initial margin
       border-right: 1.5px solid rgba($secondary-color, 0.10);
       padding-right: 1.2rem; // Keep initial padding
-      margin-right: 0;
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 
       &:last-child {
@@ -272,7 +272,7 @@
       margin-left: auto;
       margin-right: auto;
       padding: 0.3rem 0.3rem;
-      gap: 0.1rem; // Reduce gap between items
+      gap: 0.3rem;
       flex-wrap: wrap; // Allow items to wrap onto the next line if needed
 
       &__item {
@@ -299,7 +299,7 @@
 
     .menu-nav {
       padding: 0.2rem 0.1rem;
-      gap: 0.1rem; // Keep a minimal gap
+      gap: 0.2rem;
 
       &__item {
         margin: 0 0.2rem; // Slightly adjust margin

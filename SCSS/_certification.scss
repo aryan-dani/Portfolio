@@ -91,7 +91,7 @@
     max-width: 100%; // Allow it to fill parent width
     color: $secondary-color;
     margin: 0 auto; // Center within parent if needed, but text-align: center on parent works
-    text-align: center; // Center text
+    text-align: justify; // Justify text
     font-size: 1.15rem; // Match project intro font size
     line-height: 1.9; // Match project intro line height
     opacity: 1;
@@ -457,6 +457,7 @@
       flex-grow: 1;
       position: relative;
       z-index: 1;
+      text-align: justify; // Justify text
     }
 
     .certificate-meta {
