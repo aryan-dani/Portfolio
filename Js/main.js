@@ -1,3 +1,5 @@
+/** @format */
+
 const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 document.documentElement.style.setProperty(
 	"--scrollbar-width",
@@ -1177,8 +1179,7 @@ document.addEventListener("keydown", (e) => {
 				navigateTo("about.html");
 				break;
 		}
-	}
-	else if (e.key === "Escape" && showMenu) {
+	} else if (e.key === "Escape" && showMenu) {
 		toggleMenu();
 	}
 });

@@ -1,3 +1,5 @@
+/** @format */
+
 document.addEventListener("DOMContentLoaded", () => {
 	const skillsContainer = document.querySelector(".skills"); // Get the main container
 	const searchInput = document.getElementById("skillSearchInput");
@@ -178,4 +180,4 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (allTab) allTab.classList.add("active");
 	}
 	filterAndDisplaySkills(); // Initial filter
-}); 
+});

@@ -1,3 +1,5 @@
+/** @format */
+
 document.addEventListener("DOMContentLoaded", function () {
 	setTimeout(() => {
 		initCertificationPage();
@@ -348,8 +350,7 @@ function initCertificationPage() {
 		});
 	});
 	viewButtons.forEach((button) => {
-		button.addEventListener("click", (e) => {
-		});
+		button.addEventListener("click", (e) => {});
 	});
 	closePreviewBtn.addEventListener("click", () => {
 		certificatePreview.classList.remove("active");

@@ -1,5 +1,6 @@
 @use "config" as *;
 @use "mixins" as *;
+
 .toast-container {
   position: fixed;
   top: 20px;
@@ -11,6 +12,7 @@
   flex-direction: column;
   gap: 10px;
 }
+
 .toast {
   background: linear-gradient(135deg, rgba(darken($primary-color, 5%), 0.95), rgba($primary-color, 0.92)); // Slightly adjusted gradient
   color: #eee; // Lighter text color for better contrast
@@ -28,14 +30,17 @@
   overflow: hidden;
   -webkit-backdrop-filter: blur(12px); // Increased blur
   backdrop-filter: blur(12px);
+
   &.show {
     transform: translateX(0);
     opacity: 1;
   }
+
   &.custom {
     border-color: $secondary-color;
     background: linear-gradient(135deg, rgba(darken($primary-color, 8%), 0.96), rgba(darken($primary-color, 3%), 0.94)); // Adjusted custom background
     padding: 15px 20px; // Consistent padding
+
     .toast-icon {
       display: flex;
       align-items: center;
@@ -45,13 +50,16 @@
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.08);
       margin-top: 2px; // Adjust icon position slightly due to align-items: flex-start
+
       i {
         color: $secondary-color;
         font-size: 20px;
       }
     }
+
     .toast-content {
       padding: 0 5px;
+
       h4 {
         margin: 0 0 5px;
         font-size: 14px;
@@ -59,6 +67,7 @@
         color: #fff; // Ensure title is bright
         opacity: 1;
       }
+
       p {
         color: #ddd; // Slightly dimmer paragraph text
         font-weight: 400;
@@ -66,83 +75,104 @@
         font-size: 14px;
         line-height: 1.4;
       }
+
       overflow-y: auto;
       max-height: 60px; // Adjust as needed based on padding/icon size
+
       .toast-subtitle {
         font-size: 12px;
         opacity: 0.7;
         margin-top: 4px;
       }
     }
+
     &.home {
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
+
     &.about {
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
+
     &.projects {
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
+
     &.skills {
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
+
     &.jobs {
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
+
     &.certification {
       .toast-icon {
         background: rgba($secondary-color, 0.08);
       }
     }
+
     &.success {
       border-color: #4caf50;
+
       .toast-icon i {
         color: #4caf50;
       }
     }
+
     &.error {
       border-color: #f44336;
+
       .toast-icon i {
         color: #f44336;
       }
     }
+
     &.warning {
       border-color: #ff9800;
+
       .toast-icon i {
         color: #ff9800;
       }
     }
+
     &.info {
       border-color: #2196f3;
+
       .toast-icon i {
         color: #2196f3;
       }
     }
   }
+
   .toast-icon {
     flex-shrink: 0;
     margin-top: 2px; // Adjust icon position slightly
+
     i {
       font-size: 24px;
     }
   }
+
   .toast-content {
     flex-grow: 1;
+
     h4 {
       margin: 0 0 5px;
       font-size: 16px;
       color: #fff; // Brighter title
     }
+
     p {
       margin: 0;
       font-size: 14px;
@@ -150,6 +180,7 @@
       opacity: 0.9;
     }
   }
+
   .toast-close {
     background: none;
     border: none;
@@ -161,11 +192,13 @@
     font-size: 22px; // Slightly larger
     line-height: 1; // Ensure consistent alignment
     transition: color 0.3s ease;
+
     &:hover {
       color: $secondary-color; // Highlight with secondary color on hover
       transform: scale(1.1);
     }
   }
+
   @media screen and (max-width: 480px) {
     .toast-container {
       top: 10px;
@@ -173,16 +206,20 @@
       left: 10px;
       max-width: calc(100% - 20px);
     }
+
     .toast {
       padding: 12px;
       gap: 10px;
+
       .toast-icon i {
         font-size: 20px;
       }
+
       .toast-content {
         h4 {
           font-size: 14px;
         }
+
         p {
           font-size: 12px;
         }

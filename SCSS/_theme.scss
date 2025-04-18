@@ -1,20 +1,26 @@
 @use "config" as *;
 @use "mixins" as *;
+
 html {
   font-size: 16px;
+
   @media (max-width: 1200px) {
     font-size: 15px;
   }
+
   @media (max-width: 992px) {
     font-size: 14px;
   }
+
   @media (max-width: 768px) {
     font-size: 13px;
   }
+
   @media screen and (max-width: 576px) {
     font-size: 12px;
   }
 }
+
 body {
   background-color: $primary-color;
   color: #fff;
@@ -22,19 +28,23 @@ body {
   font-family: "Poppins", sans-serif;
   line-height: 1.6;
 }
+
 a {
   text-decoration: none;
   color: #fff;
 }
+
 p {
   text-align: justify;
 }
+
 :focus-visible {
   outline: 3px solid $secondary-color;
   outline-offset: 2px;
   border-radius: 3px;
   transition: outline-offset 0.2s ease;
 }
+
 .menu-nav__link:focus-visible,
 .project-link:focus-visible,
 .cta-button:focus-visible,
@@ -45,9 +55,11 @@ p {
   outline-offset: 2px;
   box-shadow: 0 0 0 3px rgba($secondary-color, 0.3);
 }
+
 .menu-nav__link:focus-visible {
   outline-color: $secondary-color;
 }
+
 .keyboard-nav-active *:focus {
   outline: 3px solid $secondary-color !important;
   outline-offset: 2px !important;

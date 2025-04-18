@@ -1,5 +1,6 @@
 @use "config" as *;
 @use "mixins" as *;
+
 footer {
   background-color: $primary-color;
   color: $secondary-color;
@@ -14,15 +15,18 @@ footer {
   transition: all 0.3s ease;
   @include hover-lift;
   @include glass-effect;
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
+
   .copyright-link {
     color: $secondary-color;
     text-decoration: none;
     position: relative;
     @include focus-styles;
+
     &:hover {
       text-decoration: underline;
     }

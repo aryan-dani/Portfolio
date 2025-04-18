@@ -1,6 +1,7 @@
 @use "config" as *;
 @use "mixins" as *;
 @use "animations" as *;
+
 #particles-js {
   position: fixed;
   top: 0;
@@ -12,6 +13,7 @@
   background-color: $primary-color;
   overflow: hidden;
 }
+
 .skills {
   min-height: calc(100vh - 60px);
   padding: 3rem 0; // Remove horizontal padding here
@@ -26,10 +28,12 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+
   @include media-sm {
     padding-left: 2rem; // Increase padding on larger screens
     padding-right: 2rem;
   }
+
   .intro-container {
     width: 100%; // Make container fill the padded section width
     max-width: none; // Remove specific max-width from here
@@ -45,6 +49,7 @@
     text-align: center;
     box-sizing: border-box;
   }
+
   .intro-container .skills__heading {
     border: none;
     background: none;
@@ -64,6 +69,7 @@
     z-index: 1;
     width: 100%;
     text-align: center;
+
     &::before,
     &::after {
       content: '';
@@ -75,10 +81,12 @@
       border-radius: 2px;
       opacity: 0.8;
     }
+
     .pulse-effect {
       display: none;
     }
   }
+
   .intro-container .intro-text {
     width: 100%;
     max-width: 100%;
@@ -97,6 +105,7 @@
     box-shadow: none;
     padding: 0;
   }
+
   &__heading {
     font-size: 2.8rem; // Slightly reduced
     font-weight: 700;
@@ -110,6 +119,7 @@
     border: 1px solid rgba($secondary-color, 0.3); // Subtle border
     background: linear-gradient(145deg, rgba($primary-color, 0.1), rgba(darken($primary-color, 5%), 0.2)); // Subtle gradient background
     border-radius: 10px; // Slightly rounded corners
+
     &::before {
       content: "";
       position: absolute;
@@ -124,6 +134,7 @@
       opacity: 0.7;
     }
   }
+
   &__search-filter {
     display: flex;
     flex-direction: row;
@@ -146,12 +157,14 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); // Match intro container
     box-sizing: border-box;
   }
+
   .skills-search {
     width: auto; // Let it size based on content/max-width
     flex-grow: 1; // Allow growing
     flex-shrink: 1; // Allow shrinking
     max-width: 400px; // Keep max-width
     margin: 0; // Remove specific margins, rely on gap
+
     .form-control {
       width: 100%;
       padding: 0.8rem 1.2rem; // Increase padding
@@ -161,9 +174,11 @@
       background-color: rgba(lighten($primary-color, 5%), 0.8);
       color: #eee;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
       &::placeholder {
         color: rgba(#eee, 0.6);
       }
+
       &:focus {
         border-color: $secondary-color;
         box-shadow: 0 0 10px rgba($secondary-color, 0.5);
@@ -172,20 +187,24 @@
       }
     }
   }
+
   &__categories {
     width: auto; // Let it size based on content
     flex-grow: 1; // Allow growing (or set to 0 if search should dominate)
     flex-shrink: 1; // Allow shrinking
     margin: 0; // Remove specific margins, rely on gap
+
     .category-tabs {
       display: flex;
       flex-wrap: wrap;
       justify-content: center; // Center tabs within their container
       gap: 10px;
+
       @include media-md {
         justify-content: flex-end; // Align right on larger screens if preferred
         gap: 15px;
       }
+
       .category-tab {
         background: rgba(darken($primary-color, 5%), 0.7);
         border: 2px solid transparent;
@@ -197,6 +216,7 @@
         transition: all 0.3s ease; // Simplified transition
         position: relative;
         overflow: hidden;
+
         &::before {
           content: "";
           position: absolute;
@@ -210,28 +230,33 @@
           transition: all 0.4s ease; // Slightly faster fill
           z-index: 0; // Ensure it's behind text
         }
+
         &:hover,
         &.active {
           border-color: $secondary-color;
           transform: translateY(-3px) scale(1.05); // Keep transform
           box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25); // Slightly reduced shadow
+
           &::before {
             width: 250%; // Adjust size if needed
             height: 250%;
           }
         }
+
         &.active {
           background: rgba($secondary-color, 0.2); // Slightly less intense active background
           font-weight: bold;
           text-shadow: 0 0 8px rgba($secondary-color, 0.6); // Slightly reduced shadow
           box-shadow: 0 0 12px rgba($secondary-color, 0.4); // Slightly reduced shadow
         }
+
         &:hover:not(.active) {
           background: rgba(darken($primary-color, 8%), 0.7); // Slightly adjust hover background
         }
       }
     }
   }
+
   &__container {
     width: 100%; // Make container fill the padded section width
     max-width: none; // Remove specific max-width from here
@@ -243,6 +268,7 @@
     padding: 0; // Remove horizontal padding from here
     box-sizing: border-box;
   }
+
   &__group {
     display: none; // Keep hidden by default
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -252,12 +278,14 @@
     transform: translateY(20px); // Start slightly lower for animation
     transition: opacity 0.5s ease, transform 0.5s ease; // Smooth transition
     margin-bottom: 2rem; // Add some space between groups when multiple are shown (like in 'All')
+
     &.active {
       display: grid; // Ensure grid display when active
       opacity: 1; // Fade in
       transform: translateY(0); // Slide up
     }
   }
+
   &__card {
     border-radius: 10px;
     background: rgba(lighten($primary-color, 3%), 0.8);
@@ -271,31 +299,39 @@
     @include card-hover;
     @include animated-border($secondary-color); // Use mixin from _mixins.scss
     animation: neonPulse 4s infinite; // Use animation from _animations.scss
+
     .active-all & {
       height: 150px;
+
       &.expanded {
         height: 250px;
       }
+
       h3 {
         font-size: 1.1rem;
       }
+
       i {
         font-size: 2.5rem;
       }
     }
+
     &.expanded {
       height: 340px; // Increased expanded height
       transform: scale(1.05);
       z-index: 10;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
       animation: neonPulse 2s infinite; // Use animation from _animations.scss
+
       .skills__card-front {
         transform: translateY(-100%);
       }
+
       .skills__card-back {
         transform: translateY(0);
       }
     }
+
     &::after {
       content: "";
       position: absolute;
@@ -313,19 +349,23 @@
       transition: opacity 0.3s ease;
       border-radius: 10px;
     }
+
     &:hover {
       transform: translateY(-8px) scale(1.02);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
       animation: floatAnimation 3s ease infinite; // Use animation from _animations.scss
+
       &::after {
         opacity: 0.8;
         animation: spinGlow 8s linear infinite; // Use animation from _animations.scss
       }
+
       .skills__card-front i {
         animation: pulse 1.5s ease infinite alternate; // Use animation from _animations.scss
         color: lighten($secondary-color, 10%);
         transform: scale(1.1);
       }
+
       .skills__card-front h3 {
         background-image: linear-gradient(90deg,
             rgba($secondary-color, 0.7),
@@ -338,6 +378,7 @@
         animation: shimmer 2s linear infinite; // Use animation from _animations.scss
       }
     }
+
     &-front,
     &-back {
       position: absolute;
@@ -352,15 +393,18 @@
       padding: 1rem; // Adjusted padding slightly
       backface-visibility: hidden;
       transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+
       i {
         transition: all 0.3s ease;
         margin-bottom: 1rem;
       }
     }
+
     &-front {
       background: linear-gradient(135deg,
           rgba(lighten($primary-color, 5%), 0.9),
           rgba(lighten($primary-color, 2%), 0.9));
+
       h3 {
         margin-top: 0.5rem;
         font-size: 1.2rem;
@@ -369,12 +413,14 @@
         color: #fff;
         text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       }
+
       i {
         color: $secondary-color;
         filter: drop-shadow(0 0 8px rgba($secondary-color, 0.6));
         font-size: 3.2rem;
       }
     }
+
     &-back {
       background: linear-gradient(135deg,
           rgba(darken($primary-color, 5%), 0.95),
@@ -383,6 +429,7 @@
       overflow: hidden;
       justify-content: flex-start; // Align content to the top
       padding: 1.5rem 1rem; // Add more vertical padding
+
       p {
         color: #ddd;
         font-size: 0.85rem;
@@ -394,14 +441,17 @@
         overflow-y: visible; // Change from auto to visible
         max-height: none; // Remove max-height constraint
       }
+
       .skill-projects {
         margin-top: auto; // Push projects towards the bottom
         width: 100%; // Ensure it takes full width
         font-size: 0.8rem;
+
         h4 {
           font-size: 0.85rem;
           margin-bottom: 0.3rem;
         }
+
         ul {
           list-style: none;
           padding: 0;
@@ -411,6 +461,7 @@
           gap: 5px;
           justify-content: center;
         }
+
         li a {
           font-size: 0.75rem;
           padding: 2px 5px;
@@ -418,6 +469,7 @@
           border-radius: 4px;
           text-decoration: none;
           color: lighten($secondary-color, 15%);
+
           &:hover {
             background: rgba($secondary-color, 0.4);
             color: #fff;
@@ -426,6 +478,7 @@
       }
     }
   }
+
   &__progress {
     width: 100%;
     height: 8px;
@@ -436,6 +489,7 @@
     margin-top: 0; // Remove top margin, handled by flex gap or padding
     margin-bottom: 0.5rem; // Add some space below progress bar
     box-shadow: 0 0 10px rgba($secondary-color, 0.3) inset;
+
     &-bar {
       height: 100%;
       background: linear-gradient(90deg,
@@ -447,6 +501,7 @@
       transition: width 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
       position: relative;
       animation: shimmer 2s linear infinite; // Use animation from _animations.scss
+
       &::before {
         content: "";
         position: absolute;
@@ -458,10 +513,12 @@
         opacity: 0.6;
         border-radius: 0 8px 8px 0;
       }
+
       &::after {
         display: none;
       }
     }
+
     &-percent {
       position: absolute;
       right: 5px;
@@ -474,10 +531,12 @@
       transition: opacity 0.5s ease 0.5s; // Fade in after bar animates
     }
   }
+
   &__card.expanded &__progress-percent {
     opacity: 1;
   }
 }
+
 .skill-modal {
   position: fixed;
   top: 0;
@@ -492,15 +551,18 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+
   &.active {
     opacity: 1;
     visibility: visible;
     transition: opacity 0.4s ease;
+
     .skill-modal__content {
       transform: translateY(0) scale(1);
       opacity: 1;
     }
   }
+
   &__overlay {
     position: absolute;
     top: 0;
@@ -509,6 +571,7 @@
     height: 100%;
     cursor: pointer;
   }
+
   &__content {
     position: relative;
     background: linear-gradient(145deg, darken($primary-color, 5%), darken($primary-color, 15%));
@@ -525,6 +588,7 @@
     max-height: 80vh;
     overflow-y: auto;
   }
+
   &__close {
     position: absolute;
     top: 10px;
@@ -538,11 +602,13 @@
     padding: 0; // Remove default padding
     line-height: 1; // Ensure consistent line height
     transition: color 0.3s ease, transform 0.3s ease; // Keep transition for color
+
     &:hover {
       color: $secondary-color;
       transform: scale(1.1); // Optional: Add subtle scale instead
     }
   }
+
   &__header {
     display: flex;
     align-items: center;
@@ -550,40 +616,48 @@
     padding-bottom: 1rem;
     border-bottom: 1px solid rgba($secondary-color, 0.2);
   }
+
   &__icon {
     font-size: 3rem;
     color: $secondary-color;
     margin-right: 1.5rem;
     filter: drop-shadow(0 0 8px rgba($secondary-color, 0.6));
   }
+
   &__title {
     font-size: 1.8rem;
     font-weight: 600;
     color: #fff;
     margin: 0;
   }
+
   &__body {
     color: #ddd;
   }
+
   &__progress {
     margin-bottom: 1.5rem; // Space below progress bar
+
     .skills__progress-percent {
       opacity: 1; // Always show percentage in modal
       top: -20px; // Adjust position if needed
       font-size: 0.85rem;
     }
   }
+
   &__description {
     font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: 1.5rem;
   }
+
   &__projects {
     h4 {
       font-size: 1rem;
       color: $secondary-color;
       margin-bottom: 0.8rem;
     }
+
     ul {
       list-style: none;
       padding: 0;
@@ -592,6 +666,7 @@
       flex-wrap: wrap;
       gap: 8px;
     }
+
     li a {
       font-size: 0.85rem;
       padding: 4px 8px;
@@ -600,6 +675,7 @@
       text-decoration: none;
       color: lighten($secondary-color, 15%);
       transition: background 0.3s ease, color 0.3s ease;
+
       &:hover {
         background: rgba($secondary-color, 0.4);
         color: #fff;
@@ -607,10 +683,12 @@
     }
   }
 }
+
 .tech-stack {
   width: 100%;
   max-width: 1000px;
   margin: 3rem auto 0;
+
   &__heading {
     font-size: 2rem;
     margin-bottom: 2rem;
@@ -619,6 +697,7 @@
     text-align: center;
     color: #fff;
     position: relative;
+
     &::after {
       content: "";
       position: absolute;
@@ -630,31 +709,38 @@
       transform: translateX(-50%);
     }
   }
+
   &__badges {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
     padding: 1rem;
+
     img {
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform: scale(1);
       position: relative;
+
       &:nth-child(odd) {
         animation: floatAnimation 4s ease-in-out infinite; // Use animation from _animations.scss
       }
+
       &:nth-child(even) {
         animation: floatAnimation 4s ease-in-out infinite 0.5s; // Use animation from _animations.scss
       }
+
       &:nth-child(3n) {
         animation: floatAnimation 4s ease-in-out infinite 1s; // Use animation from _animations.scss
       }
+
       &:hover {
         transform: translateY(-10px) scale(1.1) rotate(3deg);
         filter: drop-shadow(0 10px 20px rgba($secondary-color, 0.5));
         animation: none; // Keep this override
         z-index: 10;
       }
+
       &::after {
         content: "";
         position: absolute;
@@ -668,6 +754,7 @@
         opacity: 0;
         transition: opacity 0.3s ease;
       }
+
       &:hover::after {
         opacity: 0.7;
         animation: spinGlow 4s linear infinite; // Use animation from _animations.scss
@@ -675,51 +762,64 @@
     }
   }
 }
+
 @media screen and (max-width: 992px) {
   .skills {
     &__group {
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     }
+
     &__heading {
       font-size: 2.5rem;
     }
   }
 }
+
 @media screen and (max-width: 768px) {
   .skills {
     padding: 1.5rem;
+
     &__group {
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 1.2rem;
     }
+
     &__card {
       height: 150px; // Adjust base height for smaller screens
+
       &.expanded {
         height: 260px; // Adjust expanded height for smaller screens
       }
+
       &-front {
         i {
           font-size: 2.8rem;
         }
+
         h3 {
           font-size: 1rem;
         }
       }
+
       &-back {
         p {
           font-size: 0.8rem; // Adjust font size
           max-height: none; // Remove max-height constraint
         }
+
         .skill-projects {
           font-size: 0.75rem;
+
           li a {
             font-size: 0.7rem;
           }
         }
       }
     }
+
     &__categories .category-tabs {
       gap: 10px;
+
       .category-tab {
         padding: 0.6rem 1rem;
         font-size: 0.9rem;
@@ -727,21 +827,26 @@
     }
   }
 }
+
 @media screen and (max-width: 576px) {
   .skills {
     &__group {
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 1rem;
     }
+
     &__heading {
       font-size: 2rem;
       margin-bottom: 2rem;
     }
+
     &__card {
       height: 140px;
+
       &.expanded {
         height: 250px;
       }
+
       &-back {
         p {
           font-size: 0.75rem;
@@ -750,24 +855,30 @@
       }
     }
   }
+
   .skill-modal {
     &__content {
       padding: 1.5rem;
       max-width: 95%;
     }
+
     &__header {
       margin-bottom: 1rem;
     }
+
     &__icon {
       font-size: 2.5rem;
       margin-right: 1rem;
     }
+
     &__title {
       font-size: 1.5rem;
     }
+
     &__description {
       font-size: 0.9rem;
     }
+
     &__projects {
       li a {
         font-size: 0.8rem;

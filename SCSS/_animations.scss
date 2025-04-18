@@ -1,113 +1,141 @@
 @use "config" as *;
+
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 @keyframes slideInUp {
   from {
     transform: translateY(30px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
   }
 }
+
 @keyframes fadeInStagger {
   from {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 @keyframes pulse {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
+
   100% {
     transform: scale(1);
   }
 }
+
 @keyframes gradient-text {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
+
 @keyframes floatAnimation {
   0% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-15px);
   }
+
   100% {
     transform: translateY(0px);
   }
 }
+
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
+
 @keyframes neonPulse {
   0% {
     box-shadow: 0 0 5px rgba($secondary-color, 0.5),
       0 0 10px rgba($secondary-color, 0.5);
   }
+
   50% {
     box-shadow: 0 0 20px rgba($secondary-color, 0.8),
       0 0 30px rgba($secondary-color, 0.8);
   }
+
   100% {
     box-shadow: 0 0 5px rgba($secondary-color, 0.5),
       0 0 10px rgba($secondary-color, 0.5);
   }
 }
+
 @keyframes borderFlash {
   0% {
     border-color: $secondary-color;
   }
+
   50% {
     border-color: darken($secondary-color, 20%);
   }
+
   100% {
     border-color: $secondary-color;
   }
 }
+
 @keyframes spinGlow {
   0% {
     transform: rotate(0deg);
     opacity: 0.7;
   }
+
   50% {
     transform: rotate(180deg);
     opacity: 1;
   }
+
   100% {
     transform: rotate(360deg);
     opacity: 0.7;
   }
 }
+
 @keyframes bounce {
+
   0%,
   20%,
   50%,
@@ -115,64 +143,81 @@
   100% {
     transform: translateY(0);
   }
+
   40% {
     transform: translateY(-10px);
   }
+
   60% {
     transform: translateY(-5px);
   }
 }
+
 @keyframes gradientBackground {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
+
 .animate {
   animation-duration: 1s;
   animation-fill-mode: both;
+
   &--slow {
     animation-duration: 2s;
   }
+
   &--delay-1 {
     animation-delay: 0.2s;
   }
+
   &--delay-2 {
     animation-delay: 0.4s;
   }
+
   &--delay-3 {
     animation-delay: 0.6s;
   }
+
   &--delay-4 {
     animation-delay: 0.8s;
   }
+
   &--infinite {
     animation-iteration-count: infinite;
   }
 }
+
 .slideInUp {
   animation-name: slideInUp;
 }
+
 .fadeIn {
   animation-name: fadeInStagger;
 }
+
 .float {
   animation-name: floatAnimation;
   animation-duration: 3s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
+
 .pulse {
   animation-name: pulse;
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
+
 .bounce {
   animation-name: bounce;
 }

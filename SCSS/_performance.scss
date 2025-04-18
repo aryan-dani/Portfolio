@@ -1,6 +1,8 @@
 @use "config" as *;
 @use "mixins" as *;
+
 .performance-optimized {
+
   .menu-btn,
   .home__name,
   .social-icons a,
@@ -10,13 +12,16 @@
     will-change: transform;
     transform: translateZ(0); // Hardware acceleration
   }
+
   &.battery-saving {
+
     .project::before,
     .certification::before,
     .home::before {
       animation-duration: 30s !important; // Slow down animations
       opacity: 0.3 !important; // Reduce opacity
     }
+
     .skills__card,
     .certificate-content,
     .Projects {
@@ -24,7 +29,9 @@
     }
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -32,32 +39,38 @@
     transition-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
   }
+
   .home,
   .about,
   .jobs-layout,
   .project__project-image {
     background-attachment: scroll !important;
   }
+
   .skills__card,
   .certificate-content {
     transform: none !important;
     transition: none !important;
+
     &:hover {
       transform: none !important;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
     }
   }
+
   .float,
   .pulse,
   .shimmer {
     animation: none !important;
   }
 }
+
 @media (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   body {
     text-rendering: optimizeLegibility;
   }
+
   .menu-btn__burger,
   .nav .menu-nav,
   .home__name,

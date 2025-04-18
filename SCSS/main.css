@@ -1,8 +1,4 @@
 @charset "UTF-8";
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 @keyframes fadeIn {
   from {
@@ -592,7 +588,6 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
-  /* Ensure menu button is always visible */
   visibility: visible !important;
   opacity: 1 !important;
 }
@@ -850,9 +845,7 @@
   inset: 0;
   z-index: 0;
   overflow-y: auto;
-  /* Ensure content area has enough space */
   padding-bottom: 5rem;
-  /* Enhanced container for jobs content with better spacing */
 }
 .jobs-layout .jobs-container {
   position: relative;
@@ -1176,7 +1169,6 @@
   --item-index: 10;
 }
 
-/* Improved responsive design for various screen sizes */
 @media (max-width: 900px) {
   .jobs-layout {
     background-attachment: scroll;
@@ -1723,20 +1715,15 @@
 }
 .about {
   height: auto;
-  /* Changed from fixed 100% to auto */
   min-height: 100vh;
-  /* Set minimum height instead */
   padding-top: 1rem;
   padding-bottom: 4rem;
-  /* Added padding at bottom */
   overflow: auto;
-  /* Changed from hidden to auto to enable scrolling */
   align-items: center;
   text-align: left;
   background: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0)), url("../Images/Header.jpg") center top;
   background-size: cover;
   background-attachment: fixed;
-  /* Keep background fixed while scrolling */
   position: relative;
 }
 .about::before {
@@ -2714,7 +2701,6 @@
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   overflow-y: auto;
-  /* Enable vertical scrolling */
 }
 .certificate-preview.active {
   opacity: 1;
@@ -2835,10 +2821,6 @@ p {
   outline-offset: 2px !important;
 }
 
-/* 
- * Portfolio Main Stylesheet
- * This file organizes all the imports for the site
- */
 #particles-js {
   position: fixed;
   top: 0;
@@ -3994,7 +3976,6 @@ footer .copyright-link:hover {
   }
 }
 
-/* Modern CSS Reset */
 *,
 *::before,
 *::after {
@@ -4003,7 +3984,6 @@ footer .copyright-link:hover {
   padding: 0;
 }
 
-/* Remove default margin */
 body,
 h1,
 h2,
@@ -4017,12 +3997,10 @@ dd {
   margin: 0;
 }
 
-/* Set core root defaults */
 html:focus-within {
   scroll-behavior: smooth;
 }
 
-/* Set core body defaults */
 body {
   min-height: 100vh;
   text-rendering: optimizeSpeed;
@@ -4034,14 +4012,12 @@ body {
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-/* Make images easier to work with */
 img,
 picture {
   max-width: 100%;
   display: block;
 }
 
-/* Inherit fonts for inputs and buttons */
 input,
 button,
 textarea,
@@ -4049,18 +4025,15 @@ select {
   font: inherit;
 }
 
-/* Improved accessibility focus styles */
 :focus {
   outline: 2px solid aliceblue;
   outline-offset: 2px;
 }
 
-/* Remove focus outline for mouse users, maintain for keyboard */
 :focus:not(:focus-visible) {
   outline: none;
 }
 
-/* Responsive typography */
 html {
   font-size: 16px;
   scroll-behavior: smooth;
@@ -4086,7 +4059,6 @@ html {
   }
 }
 
-/* Links styling */
 a {
   text-decoration: none;
   color: #fff;
@@ -4113,7 +4085,6 @@ header {
   width: 100%;
   padding: 1rem;
   transition: background-color 0.3s ease;
-  /* Add subtle background on scroll */
 }
 header.scrolled {
   background-color: rgba(39, 39, 39, 0.95);
@@ -4127,10 +4098,8 @@ main {
   width: 100%;
   transition: margin-top 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
   will-change: transform, opacity;
-  /* Performance hint for animations */
 }
 
-/* Loading animation */
 .page-loader {
   position: fixed;
   top: 0;

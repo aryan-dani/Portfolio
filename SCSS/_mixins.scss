@@ -1,15 +1,19 @@
 @use "config" as *;
+
 @mixin hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   }
 }
+
 @mixin button-hover {
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
+
   &::before {
     content: "";
     position: absolute;
@@ -23,25 +27,31 @@
         transparent);
     transition: left 0.5s ease;
   }
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
     &::before {
       left: 100%;
     }
   }
 }
+
 @mixin card-hover {
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
   &:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
   }
 }
+
 @mixin shine-effect {
   position: relative;
   overflow: hidden;
+
   &::before {
     content: "";
     position: absolute;
@@ -55,12 +65,15 @@
         transparent);
     transition: left 0.7s ease;
   }
+
   &:hover::before {
     left: 100%;
   }
 }
+
 @mixin underline-animation {
   position: relative;
+
   &::after {
     content: "";
     position: absolute;
@@ -71,37 +84,45 @@
     background: linear-gradient(90deg, $primary-color, transparent);
     transition: width 0.4s ease;
   }
+
   &:hover::after {
     width: 100%;
   }
 }
+
 @mixin glass-effect {
   background-color: rgba($primary-color, 0.7);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+
 @mixin focus-styles {
   &:focus-visible {
     outline: 2px solid $secondary-color;
     outline-offset: 2px;
   }
 }
+
 @mixin card-3d-hover($depth: 10px, $scale: 1.02) {
   transform-style: preserve-3d;
   transition: transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+
   &:hover {
     transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px) scale($scale);
   }
+
   &[data-enhanced="true"] {
     &:hover {
       transform: none; // Let JS handle it
     }
   }
 }
+
 @mixin staggered-animation($base-delay: 0.2s, $item-index: 0) {
   animation-delay: calc($base-delay * $item-index);
 }
+
 @mixin gradient-text($start-color, $end-color) {
   background-image: linear-gradient(90deg, $start-color, $end-color);
   background-size: 200% auto;
@@ -111,12 +132,15 @@
   animation: gradient-text 4s ease infinite;
   will-change: background-position;
 }
+
 @mixin animated-border($color: $secondary-color) {
   border-left: 3px solid $color;
   animation: borderFlash 3s infinite;
+
   &:nth-child(odd) {
     animation-delay: 0.5s;
   }
+
   &:nth-child(3n) {
     animation-delay: 1s;
   }

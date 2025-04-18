@@ -1,3 +1,5 @@
+/** @format */
+
 document.addEventListener("DOMContentLoaded", function () {
 	console.log("Performance.js: DOM loaded, initializing optimizations");
 	const persistedToastData = sessionStorage.getItem("pendingInfoToast");

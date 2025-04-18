@@ -1,16 +1,20 @@
 @use "config" as *;
 @use "mixins" as *;
+
 @keyframes pulseGlow {
   0% {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
+
   50% {
     box-shadow: 0 2px 15px rgba($secondary-color, 0.5), 0 0 8px rgba($secondary-color, 0.4);
   }
+
   100% {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 }
+
 .menu-btn {
   position: fixed;
   z-index: 10000;
@@ -31,12 +35,14 @@
   backdrop-filter: blur(5px);
   visibility: visible !important;
   opacity: 1 !important;
+
   &:hover {
     transform: scale(1.05);
     background-color: rgba($primary-color, 0.9);
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3),
       0 0 8px rgba($secondary-color, 0.7);
   }
+
   &__burger {
     position: relative;
     width: 1.5rem;
@@ -46,6 +52,7 @@
     border-radius: 4px;
     margin: 0 auto;
     box-shadow: 0 0 10px rgba($secondary-color, 0.7);
+
     &::before {
       content: "";
       position: absolute;
@@ -57,6 +64,7 @@
       border-radius: 4px;
       transition: all 0.3s ease;
     }
+
     &::after {
       content: "";
       position: absolute;
@@ -68,14 +76,17 @@
       border-radius: 4px;
       transition: all 0.3s ease;
     }
+
     &.open {
       background-color: transparent;
+
       &::before {
         transform: rotate(45deg) translate(0.3rem, 0.3rem);
         background-color: $secondary-color;
         width: 100%;
         box-shadow: 0 0 10px rgba($secondary-color, 0.7);
       }
+
       &::after {
         width: 100%;
         transform: rotate(-45deg) translate(0.3rem, -0.3rem);
@@ -84,11 +95,13 @@
       }
     }
   }
+
   &:hover .menu-toggle-shortcut {
     opacity: 0.8;
     visibility: visible;
   }
 }
+
 .menu-toggle-shortcut {
   position: absolute;
   top: 130%;
@@ -104,6 +117,7 @@
   pointer-events: none;
   z-index: 999;
 }
+
 .nav {
   position: fixed;
   top: 10%;
@@ -115,6 +129,7 @@
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   z-index: 2; // Increase z-index for visibility
   max-width: fit-content; // Prevent any internal scrolling
+
   &.open {
     visibility: visible;
     opacity: 1;
@@ -126,6 +141,7 @@
     margin: 0 auto;
     transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
   }
+
   .menu-nav {
     margin-top: 1vh; // Keep vh margin
     display: flex;
@@ -147,6 +163,7 @@
     list-style: none;
     gap: 0.5rem;
     border-radius: 18px;
+
     &::before {
       content: "";
       position: absolute;
@@ -158,11 +175,13 @@
       opacity: 0.05;
       pointer-events: none;
     }
+
     &.open {
       transform: translateY(0);
       padding: 10px 25px;
       gap: 1rem;
     }
+
     &__item {
       position: relative;
       opacity: 1; // Ensure visible
@@ -170,21 +189,25 @@
       border-right: 1.5px solid rgba($secondary-color, 0.10);
       padding-right: 1.2rem; // Keep initial padding
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+
       &:last-child {
         border-right: none !important;
         padding-right: 0;
         margin-right: 0;
       }
     }
+
     &.active>a {
       color: $secondary-color;
       position: relative;
     }
+
     &.open {
       margin-top: 1.5vh;
       opacity: 1;
       transform: translateY(0);
     }
+
     a {
       padding: 1rem 0rem;
       font-weight: 700;
@@ -192,6 +215,7 @@
       position: relative;
       letter-spacing: 1px;
       transition: all 0.3s ease;
+
       &::before {
         content: "";
         position: absolute;
@@ -203,10 +227,12 @@
         border-radius: 3px;
         transition: width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
       }
+
       &:hover {
         color: $secondary-color;
         transform: translateY(-3px);
         text-shadow: 0 0 8px rgba($secondary-color, 0.5);
+
         &::before {
           width: 100%;
           background: linear-gradient(to right,
@@ -218,6 +244,7 @@
     }
   }
 }
+
 @media screen and (max-width: 768px) {
   .nav {
     left: 50%;
@@ -225,6 +252,7 @@
     max-width: 95vw; // Adjust max-width for tablets/smaller screens
     width: auto; // Allow shrinking
     transform: translateX(-50%);
+
     &.open {
       left: 50% !important;
       right: auto !important;
@@ -232,16 +260,19 @@
       width: auto; // Allow shrinking
       transform: translateX(-50%);
     }
+
     .menu-nav {
       margin-left: auto;
       margin-right: auto;
       padding: 0.3rem 0.3rem;
       gap: 0.3rem;
       flex-wrap: wrap; // Allow items to wrap onto the next line if needed
+
       &__item {
         margin: 0 0.3rem; // Reduce horizontal margin
         padding-right: 0.6rem; // Reduce padding
       }
+
       a {
         padding: 0.2rem 0.6rem;
         font-size: 0.9em; // Slightly smaller font size for menu items if needed
@@ -249,25 +280,31 @@
     }
   }
 }
+
 @media screen and (max-width: 480px) {
   .nav {
     max-width: 98vw; // Slightly increase max-width for the container
+
     &.open {
       max-width: 98vw; // Match the container width
     }
+
     .menu-nav {
       padding: 0.2rem 0.1rem;
       gap: 0.2rem;
+
       &__item {
         margin: 0 0.2rem; // Slightly adjust margin
         padding-right: 0.5rem; // Slightly adjust padding
         border-right: 1px solid rgba($secondary-color, 0.08); // Make border thinner
+
         &:last-child {
           border-right: none !important;
           padding-right: 0;
           margin-right: 0;
         }
       }
+
       a {
         padding: 0.15rem 0.5rem;
         font-size: 0.85em; // Keep smaller font size

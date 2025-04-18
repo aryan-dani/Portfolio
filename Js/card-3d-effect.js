@@ -1,3 +1,5 @@
+/** @format */
+
 document.addEventListener("DOMContentLoaded", () => {
 	const cards = document.querySelectorAll(
 		".project-card, .certificate-content, .skills__card" // Updated selector to include .project-card

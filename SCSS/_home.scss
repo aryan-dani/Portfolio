@@ -1,5 +1,6 @@
 @use "config" as *;
 @use "mixins" as *;
+
 .home {
   padding: 15vh 8vw; // Increased padding for more space
   display: flex;
@@ -11,6 +12,7 @@
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
   position: relative;
+
   #particles-js {
     position: absolute;
     top: 0;
@@ -19,6 +21,7 @@
     height: 100%;
     z-index: 0; // Place behind content
   }
+
   &__content {
     flex: 1;
     max-width: 800px; // Increased max width
@@ -36,6 +39,7 @@
     border: 1px solid rgba($secondary-color, 0.1);
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
     &::before {
       content: '';
       position: absolute;
@@ -48,6 +52,7 @@
       z-index: 0;
       animation: floatBlob 7s ease-in-out infinite alternate; // Alternate direction
     }
+
     p.intro-text {
       max-width: 700px;
       color: $secondary-color;
@@ -59,6 +64,7 @@
       z-index: 1;
     }
   }
+
   &__image-container {
     flex-basis: 40%; // Adjusted basis
     max-width: 450px; // Adjusted max width for circular image
@@ -70,6 +76,7 @@
     transition: transform 0.4s ease; // Keep transform transition for potential JS effects
     overflow: hidden; // Add this to clip any potential shadow overflow
     border-radius: 50%; // Apply border-radius to the container as well
+
     &::before {
       content: '';
       position: absolute;
@@ -82,11 +89,13 @@
       z-index: 0;
       animation: floatBlob 9s ease-in-out infinite alternate -2s; // Alternate direction, offset start
     }
+
     &:hover {
       transform: scale(1.02); // Only subtle scale on container hover
       box-shadow: none !important; // Force removal of box-shadow on container hover
     }
   }
+
   &__image {
     width: 100%;
     aspect-ratio: 1 / 1; // Maintain square aspect ratio before rounding
@@ -96,10 +105,12 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); // Slightly softer default shadow
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease-out;
     will-change: transform, box-shadow; // Performance hint
+
     &:hover {
       box-shadow: 0 0 25px 3px rgba($secondary-color, 0.6), 0 5px 15px rgba(0, 0, 0, 0.25); // Adjusted glow intensity/spread
     }
   }
+
   &__name {
     font-size: 3.6rem; // Slightly reduced base font size
     margin-top: 0;
@@ -108,14 +119,17 @@
     position: relative;
     z-index: 1;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+
     &:hover {
       cursor: default;
       animation: none;
+
       &::after {
         width: 100%;
         transition: width 0.5s ease;
       }
     }
+
     &--last {
       color: rgba($secondary-color, 0.8);
       position: relative;
@@ -134,6 +148,7 @@
       text-shadow: 0 0 5px rgba($secondary-color, 0.6), // Brighter base glow
         0 0 15px rgba($secondary-color, 0.3),
         0 4px 10px rgba(darken($primary-color, 15%), 0.3); // Darker depth shadow
+
       &:hover {
         cursor: default;
         transform: translateY(-4px) scale(1.02); // More lift and slight scale
@@ -142,6 +157,7 @@
       }
     }
   }
+
   h2 {
     color: $text-color; // Use standard text color for better readability
     background-color: transparent; // Remove background color
@@ -159,9 +175,11 @@
     white-space: normal; // Allow text wrapping
     line-height: 1.4; // Improve line spacing if it wraps
   }
+
   .social-icons {
     position: relative;
     z-index: 1;
+
     .link-list {
       list-style: none;
       padding: 0;
@@ -170,10 +188,12 @@
       flex-direction: row; // Display icons horizontally
       flex-wrap: wrap; // Allow wrapping
       gap: 0.7rem; // Slightly increased gap
+
       .link-title {
         display: flex;
         align-items: center;
         width: fit-content;
+
         a {
           margin: 0.3rem 0;
           font-weight: 700;
@@ -191,6 +211,7 @@
           border: 1px solid rgba($secondary-color, 0.2); // Subtle border
           width: fit-content;
           overflow: hidden; // Needed for potential future effects like shine
+
           i {
             font-size: 1.4rem; // Make icons slightly larger within the link
             color: $secondary-color; // Icon color matches secondary
@@ -199,12 +220,14 @@
             position: relative; // Ensure icon stays aligned
             z-index: 1;
           }
+
           &:hover {
             transform: translateY(-6px) scale(1.1); // More pronounced lift and scale
             box-shadow: 0 8px 20px rgba($secondary-color, 0.35); // Adjusted shadow
             color: $primary-color;
             background-color: $secondary-color;
             border-color: $secondary-color; // Make border solid on hover
+
             i {
               color: $primary-color !important;
               transform: scale(1.2) rotate(-12deg); // More icon movement
@@ -214,6 +237,7 @@
       }
     }
   }
+
   .cta-button {
     display: inline-flex;
     align-items: center;
@@ -235,51 +259,61 @@
     z-index: 1;
     text-decoration: none;
     @include button-hover;
+
     &:hover {
       background-position: right center; // Change gradient direction on hover
       transform: translateY(-5px) scale(1.03); // More lift and slight scale
       box-shadow: 0 12px 25px rgba($secondary-color, 0.4), 0 0 15px rgba($secondary-color, 0.2); // Combined shadow + glow
       background-color: lighten($secondary-color, 5%);
       border-color: lighten($secondary-color, 5%);
+
       i {
         transform: translateX(5px) rotate(10deg); // Add rotation to arrow
       }
     }
+
     &:active {
       transform: translateY(-2px) scale(1.01);
       box-shadow: 0 5px 15px rgba(darken($primary-color, 20%), 0.3);
     }
+
     i {
       transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
   }
 }
+
 @keyframes slideInLeftEnhanced {
   from {
     opacity: 0;
     transform: translateX(-40px) rotateY(10deg); // Add slight rotation
   }
+
   to {
     opacity: 1;
     transform: translateX(0) rotateY(0);
   }
 }
+
 @keyframes slideInRightFadeEnhanced {
   from {
     opacity: 0;
     transform: translateX(40px) scale(0.95) rotateY(-10deg); // Add slight rotation
   }
+
   to {
     opacity: 1;
     transform: translateX(0) scale(1) rotateY(0);
   }
 }
+
 @media (max-width: 992px) {
   .home {
     padding: 10vh 6vw; // Adjust padding
     gap: 3rem; // Adjust gap
     flex-direction: column; // Stack elements vertically
     text-align: center; // Center text
+
     &__content {
       max-width: 100%;
       width: 100%; // Ensure it takes full width when stacked
@@ -287,82 +321,103 @@
       text-align: center; // Center text on tablet/mobile
       animation-name: slideInUpFadeEnhanced; // Use updated up animation
     }
+
     &__image-container {
       order: -1;
       max-width: 300px; // Adjust size for circular image
       margin-bottom: 2.5rem;
       animation-name: slideInUpFadeEnhanced; // Use updated up animation
     }
+
     &__name {
       font-size: 3rem; // Adjust for tablet
     }
+
     h2 {
       font-size: 1.6rem; // Adjust for tablet
       max-width: 100%; // Allow full width
     }
+
     .social-icons .link-list {
       justify-content: center;
     }
+
     .cta-button {
       align-self: center;
     }
   }
 }
+
 @media (max-width: 576px) {
   .home {
     padding: 8vh 5vw;
     gap: 2rem;
+
     &__image-container {
       max-width: 220px; // Smaller image on mobile
     }
+
     &__name {
       font-size: 2.5rem; // Adjust for mobile
     }
+
     h2 {
       font-size: 1.3rem; // Adjust for mobile
     }
+
     .social-icons .link-list {
       gap: 1rem; // Adjust gap for mobile
+
       a {
         font-size: 0.95rem;
         padding: 0.5rem 1rem;
+
         i {
           font-size: 1.2rem;
         }
       }
     }
+
     .cta-button {
       padding: 0.8rem 1.6rem;
       font-size: 1.05rem;
     }
   }
 }
+
 @keyframes slideInUpFadeEnhanced {
   from {
     opacity: 0;
     transform: translateY(40px) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
+
 @keyframes floatBlob {
+
   0%,
   100% {
     transform: translateY(0) translateX(0) rotate(0deg);
   }
+
   50% {
     transform: translateY(-25px) translateX(15px) rotate(5deg);
   }
 }
+
 @keyframes gradient-text {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }

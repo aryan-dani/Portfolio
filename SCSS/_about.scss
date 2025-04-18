@@ -1,5 +1,6 @@
 @use "config" as *;
 @use "mixins" as *;
+
 .about {
   height: auto;
   min-height: 100vh;
@@ -15,6 +16,7 @@
   background-size: cover;
   background-attachment: fixed;
   position: relative;
+
   &::before {
     content: "";
     position: absolute;
@@ -32,6 +34,7 @@
     z-index: 0;
     pointer-events: none;
   }
+
   .about-content-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -40,20 +43,24 @@
     margin: 0 auto;
     padding: 0 2rem;
     gap: 2rem;
+
     @media screen and (min-width: 992px) {
       flex-wrap: nowrap;
       align-items: flex-start;
     }
   }
+
   .about-info {
     flex: 1;
     position: relative;
     z-index: 1;
     min-width: 300px;
+
     @media screen and (min-width: 992px) {
       max-width: 60%;
     }
   }
+
   .about-details {
     font-size: 1rem;
     display: inline-block;
@@ -69,12 +76,14 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow: hidden; // Keep for shine effect
     @include shine-effect;
+
     &:hover {
       cursor: default;
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     }
   }
+
   h2 {
     display: inline-block;
     background-color: $secondary-color;
@@ -91,6 +100,7 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transform-origin: left;
     overflow: hidden;
+
     &::after {
       content: "";
       position: absolute;
@@ -103,12 +113,15 @@
       transition: left 0.7s ease;
       animation: shimmer 3s infinite;
     }
+
     @include hover-lift;
+
     &:hover {
       transform: translateY(-5px) scale(1.05);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
   }
+
   p {
     font-size: 1rem;
     width: 100%;
@@ -128,15 +141,18 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     text-align: justify; // Justify text
     @include hover-lift;
+
     &:hover {
       transform: translateY(-3px) scale(1.01);
       background: rgba($primary-color, 0.8);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
+
     @media screen and (max-width: 768px) {
       max-width: 100%; // Allow full width on smaller screens
     }
   }
+
   .contact-email {
     width: 100%;
     max-width: 25rem;
@@ -158,11 +174,13 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden; // Keep for shine effect
     @include shine-effect;
+
     &:hover {
       cursor: default;
       transform: translateY(-5px) scale(1.03);
       box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
     }
+
     .contact-btn {
       margin-left: auto;
       background-color: transparent;
@@ -177,24 +195,29 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+
       i {
         font-size: 1rem;
         transition: transform 0.3s ease;
       }
+
       &:hover {
         background-color: $primary-color;
         color: $secondary-color;
         transform: translateY(-2px);
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
         i {
           transform: translateY(-2px);
         }
       }
+
       &:active {
         transform: translateY(0);
       }
     }
   }
+
   .contact-form-container {
     width: 100%;
     max-width: 45rem; // Reduced from 45rem
@@ -209,9 +232,11 @@
     position: relative;
     overflow: hidden; // Keep for shine effect
     @include shine-effect;
+
     &:hover::before {
       left: 100%;
     }
+
     h2 {
       color: $secondary-color;
       margin-bottom: 0.5rem;
@@ -220,14 +245,17 @@
       box-shadow: none;
       padding: 0;
       margin-right: 1rem;
+
       &::after {
         display: none;
       }
+
       &:hover {
         transform: none;
         box-shadow: none;
       }
     }
+
     p {
       background: none;
       width: auto;
@@ -237,6 +265,7 @@
       backdrop-filter: none;
       box-shadow: none;
       text-align: justify; // Justify text
+
       &:hover {
         transform: none;
         background: none;
@@ -244,20 +273,24 @@
       }
     }
   }
+
   .contact-form {
     display: flex;
     flex-direction: column;
     gap: 0.8rem; // Reduced from 1.2rem
+
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 0.3rem; // Reduced from 0.5rem
+
       label {
         font-size: 0.85rem; // Reduced from 0.9rem
         font-weight: 600;
         color: $secondary-color;
         margin-bottom: 0.2rem; // Reduced from 0.25rem
       }
+
       input,
       textarea {
         background-color: rgba(lighten($primary-color, 5%), 0.6);
@@ -267,22 +300,26 @@
         color: set-text-color($primary-color);
         font-family: "Poppins", sans-serif;
         transition: all 0.3s ease;
+
         &:focus {
           outline: none;
           border-color: rgba($secondary-color, 0.7);
           background-color: rgba(lighten($primary-color, 8%), 0.8);
           box-shadow: 0 0 8px rgba($secondary-color, 0.4);
         }
+
         &::placeholder {
           color: rgba(set-text-color($primary-color), 0.6);
         }
       }
+
       textarea {
         resize: vertical;
         min-height: 80px; // Reduced from 100px
         max-height: 150px; // Added max-height
       }
     }
+
     .submit-btn {
       display: flex;
       align-items: center;
@@ -300,60 +337,74 @@
       overflow: hidden;
       align-self: flex-start;
       margin-top: 0.5rem;
+
       .btn-text {
         position: relative;
         z-index: 1;
       }
+
       i {
         position: relative;
         z-index: 1;
         transition: transform 0.3s ease;
       }
+
       @include button-hover;
+
       &:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
         i {
           transform: translateX(3px);
         }
       }
+
       &:active {
         transform: translateY(-1px);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       }
     }
   }
+
   @for $i from 1 through 5 {
     .about-element:nth-child(#{$i}) {
       opacity: 0;
       animation: slideInUp 0.5s #{$i * 0.2}s ease forwards;
     }
   }
+
   @media screen and (max-width: 991px) {
     .about-content-wrapper {
       flex-direction: column;
       padding: 0 1rem; // Reduce padding on smaller screens
     }
+
     .about-info {
       max-width: 100%; // Allow info section to take full width
     }
+
     .contact-form-container {
       max-width: 100%;
       margin-top: 2rem;
     }
   }
+
   @media screen and (max-width: 768px) {
     .contact-form-container {
       padding: 1.5rem;
     }
+
     p {
       max-width: 100%;
     }
   }
+
   @media screen and (max-width: 480px) {
     .contact-form-container {
       padding: 1rem;
     }
+
     .contact-form {
       .submit-btn {
         width: 100%;
@@ -361,11 +412,13 @@
     }
   }
 }
+
 .hidden {
   display: none;
   opacity: 0;
   transform: translateY(30px);
 }
+
 .contact-form-container {
   &.show {
     display: block;
