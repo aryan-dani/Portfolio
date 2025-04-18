@@ -3848,6 +3848,13 @@ footer .copyright-link:hover {
   margin-top: 2px;
 }
 .toast.custom .toast-icon i {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
   color: aliceblue;
   font-size: 20px;
 }

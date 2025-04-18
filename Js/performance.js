@@ -18,6 +18,15 @@ function ensureToastContainer() {
 		}
 	}
 }
+function checkFirstTimeVisit(pageName) {
+	const key = `visited_${pageName}`;
+	if (!sessionStorage.getItem(key)) {
+		sessionStorage.setItem(key, "true");
+		return true; // First visit for this page in this session
+	}
+	return false; // Not the first visit
+}
+
 function showToast(
 	message,
 	type = "info",
@@ -32,6 +41,11 @@ function showToast(
 	toast.setAttribute("role", "alert");
 	toast.setAttribute("aria-live", "assertive");
 	let iconHtml = "";
+
+	// --- REMOVE DEBUGGING START ---
+	// console.log("showToast called with:", { message, type, duration, title, iconClass });
+	// --- REMOVE DEBUGGING END ---
+
 	if (iconClass) {
 		iconHtml = `<i class="${iconClass}"></i>`;
 	} else {
@@ -55,6 +69,11 @@ function showToast(
 				break;
 		}
 	}
+
+	// --- REMOVE DEBUGGING START ---
+	// console.log("Generated iconHtml:", iconHtml);
+	// --- REMOVE DEBUGGING END ---
+
 	const toastContent = `
         <div class="toast-icon">
             ${iconHtml}
@@ -165,9 +184,10 @@ function registerServiceWorker() {
 			const isLocal =
 				window.location.hostname === "localhost" ||
 				window.location.hostname === "127.0.0.1";
+			// Use root path for local development, adjust '/Portfolio/' prefix for deployment if needed
 			const swPath = isLocal
 				? "/service-worker.js"
-				: "/Portfolio/service-worker.js"; // Adjust '/Portfolio/' if your repo name is different
+				: "/Portfolio/service-worker.js";
 			console.log(`Registering Service Worker from: ${swPath}`); // Log the path being used
 			navigator.serviceWorker
 				.register(swPath)

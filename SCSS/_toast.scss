@@ -52,6 +52,16 @@
       margin-top: 2px; // Adjust icon position slightly due to align-items: flex-start
 
       i {
+        // Ensure Font Awesome properties are applied
+        font-family: "Font Awesome 6 Free"; // Use the correct Font Awesome font family
+        font-weight: 900; // Required for solid icons
+        display: inline-block; // Ensure correct display
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        // --- End Font Awesome properties ---
+
         color: $secondary-color;
         font-size: 20px;
       }

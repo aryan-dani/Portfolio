@@ -1,3 +1,5 @@
+/** @format */
+
 const CACHE_NAME = "portfolio-cache-v2";
 const STATIC_ASSETS = [
 	"/",
@@ -6,11 +8,12 @@ const STATIC_ASSETS = [
 	"/jobs.html",
 	"/projects.html",
 	"/skills.html",
-	"/certification.html",
-	"/offline.html", // Dedicated offline page
+	"/copyright.html",
+	"/offline.html",
+	// Correct manifest path
+	"/manifest.json",
 	"/Js/main.js",
 	"/Js/performance.js",
-	"/Js/resource-hints.js", // Added new resource hints file
 	"/SCSS/main.css",
 	"/Images/Header.jpg",
 	"/Images/Header_Phone.jpg",
@@ -36,11 +39,25 @@ self.addEventListener("install", (event) => {
 					console.log("[Service Worker] Attempting to cache external assets");
 					return Promise.allSettled(
 						EXTERNAL_ASSETS.map((url) =>
-							fetch(url, { mode: "no-cors" }) // no-cors for cross-origin resources
-								.then((response) => cache.put(url, response))
+							// Remove mode: 'no-cors'
+							fetch(url) // Fetch normally
+								.then((response) => {
+									// Only cache valid responses
+									if (
+										response &&
+										response.status === 200 &&
+										response.type === "basic"
+									) {
+										return cache.put(url, response);
+									}
+									console.log(
+										`[Service Worker] Skipping cache for external asset (invalid response): ${url}`
+									);
+									return Promise.resolve(); // Resolve promise even if not cached
+								})
 								.catch((err) =>
 									console.log(
-										"[Service Worker] Failed to cache external asset:",
+										"[Service Worker] Failed to fetch/cache external asset:",
 										url,
 										err
 									)
