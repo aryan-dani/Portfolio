@@ -3,12 +3,22 @@ $secondary-color: aliceblue;
 $transition-speed: 0.3s;
 $text-color: #fff;
 
+// New color variables
+$border-color-dark: #0e0e0e;
+$tag-bg-color: gray;
+$date-bg-color: #dadada;
+$link-hover-color: grey;
+
+// Added for _project.scss
+$border-color-soft: rgba($secondary-color, 0.1);
+$border-color-soft-hover: rgba($secondary-color, 0.25);
+$link-bg-soft: rgba($secondary-color, 0.12);
+$link-border-soft: rgba($secondary-color, 0.2);
+
 @function set-text-color($color) {
   @if (lightness($color) > 40%) {
     @return #000;
-  }
-
-  @else {
+  } @else {
     @return #fff;
   }
 }

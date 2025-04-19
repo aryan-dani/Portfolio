@@ -187,11 +187,12 @@
       border-radius: 6px;
       border: 1px solid rgba($secondary-color, 0.4);
       background-color: rgba(lighten($primary-color, 5%), 0.8);
-      color: #eee;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      color: $text-color; // Use variable
+      transition: border-color $transition-speed ease,
+        box-shadow $transition-speed ease; // Use variable
 
       &::placeholder {
-        color: rgba(#eee, 0.6);
+        color: rgba($text-color, 0.6); // Use variable
       }
 
       &:focus {
@@ -223,12 +224,12 @@
       .category-tab {
         background: rgba(darken($primary-color, 5%), 0.7);
         border: 2px solid transparent;
-        color: #fff;
+        color: $text-color; // Use variable
         padding: 0.5rem 1rem; // Adjust padding for consistency
         border-radius: 12px;
         font-size: 1rem;
         cursor: pointer;
-        transition: all 0.3s ease; // Simplified transition
+        transition: all $transition-speed ease; // Use variable
         position: relative;
         overflow: hidden;
 
@@ -315,7 +316,8 @@
     height: 160px; // Slightly increase base height for better front face layout
     position: relative;
     transform-style: preserve-3d; // Ensure 3D context
-    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease; // Keep transition for other effects if needed
+    transition: transform $transition-speed ease,
+      box-shadow $transition-speed ease, opacity $transition-speed ease; // Use variable
     @include card-hover;
     @include animated-border($secondary-color); // Use mixin from _mixins.scss
     animation: neonPulse 4s infinite; // Use animation from _animations.scss
@@ -368,7 +370,7 @@
       z-index: -1;
       filter: blur(12px);
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity $transition-speed ease; // Use variable
       border-radius: 10px;
     }
 
@@ -392,7 +394,8 @@
         background-image: linear-gradient(
           90deg,
           rgba($secondary-color, 0.7),
-          rgba(#fff, 0.9),
+          rgba($text-color, 0.9),
+          // Use variable
           rgba($secondary-color, 0.7)
         );
         background-size: 200% auto;

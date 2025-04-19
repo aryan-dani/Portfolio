@@ -2,7 +2,6 @@
 @use "mixins" as *;
 
 .performance-optimized {
-
   .menu-btn,
   .home__name,
   .social-icons a,
@@ -14,7 +13,6 @@
   }
 
   &.battery-saving {
-
     .project::before,
     .certification::before,
     .home::before {
@@ -31,7 +29,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -65,8 +62,7 @@
   }
 }
 
-@media (-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   body {
     text-rendering: optimizeLegibility;
   }

@@ -1,5 +1,3 @@
-/** @format */
-
 const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 document.documentElement.style.setProperty(
   "--scrollbar-width",
@@ -1175,4 +1173,3 @@ function handleAltNavigation(e) {
     navigateToPage(targetUrl);
   }
 }
-// --- END: Added Navigation Logic ---

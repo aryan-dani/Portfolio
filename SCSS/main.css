@@ -80,29 +80,26 @@
     box-shadow: 0 0 5px rgba(240, 248, 255, 0.5), 0 0 10px rgba(240, 248, 255, 0.5);
   }
 }
-@keyframes borderFlash {
+@keyframes gradientBG {
   0% {
-    border-color: aliceblue;
+    background-position: 0% 50%;
   }
   50% {
-    border-color: #8ac8ff;
+    background-position: 100% 50%;
   }
   100% {
-    border-color: aliceblue;
+    background-position: 0% 50%;
   }
 }
-@keyframes spinGlow {
+@keyframes pulseGlow {
   0% {
-    transform: rotate(0deg);
-    opacity: 0.7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
   50% {
-    transform: rotate(180deg);
-    opacity: 1;
+    box-shadow: 0 2px 15px rgba(240, 248, 255, 0.5), 0 0 8px rgba(240, 248, 255, 0.4);
   }
   100% {
-    transform: rotate(360deg);
-    opacity: 0.7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 }
 @keyframes bounce {
@@ -114,17 +111,6 @@
   }
   60% {
     transform: translateY(-5px);
-  }
-}
-@keyframes gradientBackground {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
   }
 }
 .animate {
@@ -1413,6 +1399,7 @@
 }
 .project .project-card:hover h3 {
   color: white;
+  transition: color 0.3s ease;
 }
 .project .project-card .project-image {
   position: relative;
@@ -2222,7 +2209,7 @@
   opacity: 0.6;
   pointer-events: none;
   z-index: 0;
-  animation: gradientBackground 15s ease infinite;
+  animation: gradientBG 15s ease infinite;
 }
 .certification .intro-container {
   width: 100%;
@@ -2932,14 +2919,14 @@
   border-radius: 6px;
   border: 1px solid rgba(240, 248, 255, 0.4);
   background-color: rgba(52, 52, 52, 0.8);
-  color: #eee;
+  color: #fff;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .skills .skills-search .form-control::-moz-placeholder {
-  color: rgba(238, 238, 238, 0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 .skills .skills-search .form-control::placeholder {
-  color: rgba(238, 238, 238, 0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 .skills .skills-search .form-control:focus {
   border-color: aliceblue;

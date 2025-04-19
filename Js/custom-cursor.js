@@ -1,5 +1,3 @@
-/** @format */
-
 document.addEventListener("DOMContentLoaded", () => {
   // Check for reduced motion preference
   const prefersReducedMotion = window.matchMedia(

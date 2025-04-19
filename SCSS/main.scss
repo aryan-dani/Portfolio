@@ -45,7 +45,7 @@ body {
   line-height: 1.6;
   font-family: "Poppins", sans-serif;
   background-color: $primary-color;
-  color: #fff;
+  color: $text-color; // Use variable
   overflow-x: hidden; // Prevent horizontal overflow
   transition: background-color $transition-speed ease-in-out,
     color $transition-speed ease-in-out;
@@ -105,13 +105,14 @@ textarea {
   left: 0;
   width: 30px; // Size of the outer ring
   height: 30px;
-  border: 2px solid rgba(255, 255, 255, 0.7); // Outer ring
+  border: 2px solid rgba($text-color, 0.7); // Use variable
   border-radius: 50%;
   pointer-events: none; // Ignore mouse events on the cursor itself
   // transform: translate(-50%, -50%); // JS handles transform
-  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease,
-    background-color 0.3s ease, border-radius 0.3s ease, opacity 0.3s ease,
-    mix-blend-mode 0.1s ease;
+  transition: width $transition-speed ease, height $transition-speed ease,
+    border-color $transition-speed ease, background-color $transition-speed ease,
+    border-radius $transition-speed ease, opacity $transition-speed ease,
+    mix-blend-mode 0.1s ease; // Keep 0.1s for mix-blend-mode
   z-index: 99999; // Ensure it's on top
   mix-blend-mode: difference; // Cool effect against background
   opacity: 1; // Make sure it's visible initially
@@ -125,11 +126,11 @@ textarea {
     left: 50%;
     width: 6px;
     height: 6px;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba($text-color, 0.9); // Use variable
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease,
-      opacity 0.3s ease;
+    transition: width $transition-speed ease, height $transition-speed ease,
+      background-color $transition-speed ease, opacity $transition-speed ease;
     opacity: 1;
     display: block; // Ensure inner dot is displayed
   }
@@ -153,8 +154,8 @@ textarea {
     width: 2px; // Thin like a caret
     height: 24px; // Taller like a caret
     border-radius: 1px;
-    border-color: rgba(255, 255, 255, 0.9);
-    background-color: rgba(255, 255, 255, 0.9);
+    border-color: rgba($text-color, 0.9); // Use variable
+    background-color: rgba($text-color, 0.9); // Use variable
     mix-blend-mode: normal; // Normal blend for text caret
 
     &::after {
@@ -194,11 +195,11 @@ html {
 
 a {
   text-decoration: none;
-  color: #fff;
+  color: $text-color; // Use variable
   transition: color 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    color: darken(#fff, 10%);
+    color: darken($text-color, 10%); // Use variable
   }
 
   &:focus-visible {
@@ -219,7 +220,7 @@ header {
   z-index: 2;
   width: 100%;
   padding: 1rem;
-  transition: background-color 0.3s ease;
+  transition: background-color $transition-speed ease;
 
   &.scrolled {
     background-color: rgba($primary-color, 0.95);
@@ -257,7 +258,7 @@ main {
   &__spinner {
     width: 50px;
     height: 50px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
+    border: 3px solid rgba($text-color, 0.3); // Use variable
     border-radius: 50%;
     border-top-color: $secondary-color;
     animation: spin 1s ease-in-out infinite;

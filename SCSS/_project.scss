@@ -57,7 +57,7 @@
       lighten($primary-color, 5%),
       0.8
     ); // Slightly adjusted background
-    border: 1px solid rgba($secondary-color, 0.15); // Slightly stronger border
+    border: 1px solid rgba($secondary-color, 0.15); // Keep as is for now, slightly different from soft
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); // Adjusted shadow
     border-radius: 10px; // Add border-radius
     padding: 2rem; // Consistent padding
@@ -104,7 +104,7 @@
       text-align: center; // Center align intro text
       font-size: 1.1rem; // Slightly larger intro text
       line-height: 1.8; // Increase line height for readability
-      color: rgba($secondary-color, 0.9); // Slightly brighter text
+      color: rgba($secondary-color, 0.9); // Keep as is for now
       max-width: 800px; // Limit paragraph width within the container
       margin-left: auto;
       margin-right: auto;
@@ -154,7 +154,7 @@
     border-radius: 15px; // Increased radius
     overflow: hidden;
     backdrop-filter: blur(10px); // Match certificate card blur
-    border: 1px solid rgba($secondary-color, 0.1); // Softer border
+    border: 1px solid $border-color-soft; // Use variable
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); // Adjusted base shadow
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); // Slightly adjusted timing
     height: 100%; // Ensure cards in a row have same height
@@ -209,7 +209,7 @@
     &:hover {
       transform: translateY(-6px) scale(1.02); // Slightly more lift
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); // Adjusted hover shadow
-      border-color: rgba($secondary-color, 0.25); // Stronger hover border
+      border-color: $border-color-soft-hover; // Use variable
 
       &::before {
         opacity: 0.8; // Slightly less opaque overlay
@@ -230,6 +230,7 @@
 
       h3 {
         color: lighten($secondary-color, 10%); // Adjusted color
+        transition: color $transition-speed ease; // Use variable
       }
     }
 
@@ -314,10 +315,10 @@
         font-size: 1.4rem; // Adjusted size
         margin: 0 0 0.8rem; // Adjusted margin (removed top margin)
         padding-bottom: 0.6rem; // Adjusted padding
-        border-bottom: 1px solid rgba($secondary-color, 0.2); // Slightly stronger separator
+        border-bottom: 1px solid $link-border-soft; // Use variable
         font-weight: 700; // Ensure bold weight
         line-height: 1.4; // Match certificate title line-height
-        transition: color 0.3s ease; // Match certificate title transition
+        transition: color $transition-speed ease; // Use variable
         color: $secondary-color; // Ensure default color
 
         &::after {
@@ -345,23 +346,20 @@
           display: inline-flex;
           align-items: center;
           padding: 0.5rem 1.1rem; // Adjusted padding
-          background: rgba(
-            $secondary-color,
-            0.12
-          ); // Slightly darker background
+          background: $link-bg-soft; // Use variable
           color: $secondary-color;
           border-radius: 6px; // Adjusted radius
           text-decoration: none;
           font-size: 0.85rem; // Adjusted font size
-          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Smoother transition
-          border: 1px solid rgba($secondary-color, 0.2); // Softer border
+          transition: all $transition-speed cubic-bezier(0.25, 0.8, 0.25, 1); // Use variable
+          border: 1px solid $link-border-soft; // Use variable
           position: relative;
           overflow: hidden;
           @include shine-effect; // Subtle shine effect - Removed arguments
 
           &:hover {
             transform: translateY(-3px) scale(1.03); // Adjusted hover transform
-            box-shadow: 0 4px 10px rgba($secondary-color, 0.25); // Adjusted shadow
+            box-shadow: 0 4px 10px rgba($secondary-color, 0.25); // Keep as is for now
             color: $primary-color; // Text color change
             background-color: $secondary-color; // Solid background on hover
             border-color: $secondary-color; // Match background
@@ -395,11 +393,8 @@
         align-items: center;
         font-size: 0.75rem; // Adjusted size
         font-weight: 500; // Normal weight
-        color: rgba($secondary-color, 0.85); // Softer color
-        background-color: rgba(
-          $primary-color,
-          0.6
-        ); // Slightly darker tag background
+        color: rgba($secondary-color, 0.85); // Keep as is for now
+        background-color: rgba($primary-color, 0.6); // Keep as is for now
         padding: 0.3rem 0.6rem; // Adjusted padding
         border-radius: 4px; // Adjusted radius
         border: 1px solid rgba($secondary-color, 0.1); // Softer border

@@ -1,10 +1,10 @@
 {
-	"name": "Aryan Dani Portfolio",
-	"short_name": "A.Dani",
-	"description": "Web Development & AI Portfolio",
-	"start_url": "/index.html",
-	"display": "standalone",
-	"background_color": "#272727",
-	"icons": [],
-	"orientation": "portrait"
+  "name": "Aryan Dani Portfolio",
+  "short_name": "A.Dani",
+  "description": "Web Development & AI Portfolio",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#272727",
+  "icons": [],
+  "orientation": "portrait"
 }

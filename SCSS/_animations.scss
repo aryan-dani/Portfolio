@@ -103,34 +103,32 @@
   }
 }
 
-@keyframes borderFlash {
+// Added from _home.scss
+@keyframes gradientBG {
   0% {
-    border-color: $secondary-color;
+    background-position: 0% 50%;
   }
-
   50% {
-    border-color: darken($secondary-color, 20%);
+    background-position: 100% 50%;
   }
-
   100% {
-    border-color: $secondary-color;
+    background-position: 0% 50%;
   }
 }
 
-@keyframes spinGlow {
+// Added from _menu.scss
+@keyframes pulseGlow {
   0% {
-    transform: rotate(0deg);
-    opacity: 0.7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 
   50% {
-    transform: rotate(180deg);
-    opacity: 1;
+    box-shadow: 0 2px 15px rgba($secondary-color, 0.5),
+      0 0 8px rgba($secondary-color, 0.4);
   }
 
   100% {
-    transform: rotate(360deg);
-    opacity: 0.7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -149,20 +147,6 @@
 
   60% {
     transform: translateY(-5px);
-  }
-}
-
-@keyframes gradientBackground {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
   }
 }
 

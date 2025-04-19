@@ -23,7 +23,7 @@
   top: 0.7rem;
   height: 2.5rem;
   width: 2.5rem;
-  transition: all 0.3s ease;
+  transition: all $transition-speed ease;
   animation: pulseGlow 3s infinite ease-in-out;
   background-color: rgba($primary-color, 0.8);
   border-radius: 8px;
@@ -47,8 +47,8 @@
     position: relative;
     width: 1.5rem;
     height: 0.1875rem;
-    background-color: #fff;
-    transition: all 0.3s ease;
+    background-color: $text-color; // Use variable
+    transition: all $transition-speed ease;
     border-radius: 4px;
     margin: 0 auto;
     box-shadow: 0 0 10px rgba($secondary-color, 0.7);
@@ -60,9 +60,9 @@
       left: 0;
       width: 100%;
       height: 0.1875rem;
-      background-color: #fff;
+      background-color: $text-color; // Use variable
       border-radius: 4px;
-      transition: all 0.3s ease;
+      transition: all $transition-speed ease;
     }
 
     &::after {
@@ -72,9 +72,9 @@
       left: 0;
       width: 100%;
       height: 0.1875rem;
-      background-color: #fff;
+      background-color: $text-color; // Use variable
       border-radius: 4px;
-      transition: all 0.3s ease;
+      transition: all $transition-speed ease;
     }
 
     &.open {
@@ -113,7 +113,7 @@
   border-radius: 3px;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: all $transition-speed ease;
   pointer-events: none;
   z-index: 999;
 }
