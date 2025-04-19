@@ -18,32 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(cursorElement);
     console.log("[Cursor] Element appended:", cursorElement);
 
-    // --- Line Trail Setup ---
-    const trailSvg = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "svg"
-    );
-    const trailLine = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polyline"
-    );
-    trailSvg.classList.add("cursor-trail-svg");
-    trailLine.classList.add("cursor-trail-line");
-    trailSvg.appendChild(trailLine);
-    document.body.appendChild(trailSvg);
-
-    const points = []; // Store recent cursor points
-    const maxPoints = 10; // Number of points to create the trail
-    const pointFrequency = 2; // Add a point every N frames
-    let frameCount = 0;
-    // --- End Line Trail Setup ---
-
     // --- Magnetic Effect Setup ---
+    // Broadened selector to target more button-like elements
     const magneticElements = document.querySelectorAll(
-      'button, a, [role="button"], input[type="submit"], input[type="button"], .menu-btn, .toast-close, .contact-btn, .submit-btn, .category-tab, .social-icons a, .cta-button, [data-interactive="true"]'
+      'button, a[href], [role="button"], input[type="submit"], input[type="button"], [data-interactive="true"]'
     );
-    const magneticThreshold = 40; // Distance in pixels to start attracting
-    const magneticForce = 0.3; // Strength of attraction (0-1)
+    const magneticThreshold = 60; // Increased distance
+    const magneticForce = 0.5; // Increased strength
     const magneticDamping = 0.5; // Smoothness of return (lower is faster)
 
     let mouseX = 0;
@@ -56,16 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Store original positions and current offsets for magnetic elements
     const elementStates = new Map();
     magneticElements.forEach((el) => {
-      if (!el.closest(".project-card, .certificate-content, .skills__card")) {
-        // Exclude elements with 3D effect
-        elementStates.set(el, {
-          currentX: 0,
-          currentY: 0,
-          targetX: 0,
-          targetY: 0,
-        });
-        el.style.transition = `transform ${1 - magneticDamping}s ease-out`; // Add transition for smooth return
-      }
+      elementStates.set(el, {
+        currentX: 0,
+        currentY: 0,
+        targetX: 0,
+        targetY: 0,
+      });
+      el.style.transition = `transform ${1 - magneticDamping}s ease-out`; // Add transition for smooth return
     });
 
     // Update mouse position
@@ -74,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mouseY = e.clientY;
     });
 
-    // Animation loop for cursor, line trail, and magnetic effect
+    // Animation loop for cursor and magnetic effect
     function animateCursor() {
       // --- Cursor Lerp ---
       const dxCursor = mouseX - cursorX;
@@ -84,20 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
       cursorElement.style.transform = `translate3d(${
         cursorX - cursorElement.offsetWidth / 2
       }px, ${cursorY - cursorElement.offsetHeight / 2}px, 0)`;
-
-      // --- Line Trail Update ---
-      frameCount++;
-      if (frameCount % pointFrequency === 0) {
-        points.push({ x: cursorX, y: cursorY });
-        if (points.length > maxPoints) {
-          points.shift(); // Remove the oldest point
-        }
-        // Update the polyline points attribute
-        const pointsString = points.map((p) => `${p.x},${p.y}`).join(" ");
-        console.log("[Cursor Trail Points]:", pointsString); // DEBUG: Log points string
-        trailLine.setAttribute("points", pointsString);
-      }
-      // --- End Line Trail Update ---
 
       // --- Magnetic Element Animation ---
       elementStates.forEach((state, el) => {
@@ -195,7 +159,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hide cursor when leaving the window, show when entering
     document.addEventListener("mouseleave", () => {
       cursorElement.style.opacity = "0";
-      trailSvg.style.opacity = "0"; // Hide trail as well
 
       // Reset magnetic elements
       elementStates.forEach((state, el) => {
@@ -208,10 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.addEventListener("mouseenter", () => {
       cursorElement.style.opacity = "1";
-      trailSvg.style.opacity = "1"; // Show trail
-      // Clear points on re-entry to avoid jumping trail
-      points.length = 0;
-      trailLine.setAttribute("points", "");
     });
   } else {
     console.log("Custom cursor disabled due to reduced motion preference.");
@@ -225,10 +184,5 @@ document.addEventListener("DOMContentLoaded", () => {
       'input[type="text"], input[type="email"], input[type="search"], input[type="password"], textarea'
     );
     textInputs.forEach((el) => (el.style.cursor = "text"));
-    // Ensure trail SVG is removed if motion is reduced
-    const existingTrail = document.querySelector(".cursor-trail-svg");
-    if (existingTrail) {
-      existingTrail.remove();
-    }
   }
 });
