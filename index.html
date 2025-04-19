@@ -44,19 +44,6 @@
       src="https://unpkg.com/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"
       defer
     ></script>
-    <link
-      rel="preload"
-      as="image"
-      href="Images/Header.jpg"
-      media="(min-width: 501px)"
-    />
-    <link
-      rel="preload"
-      as="image"
-      href="Images/Header_Phone.jpg"
-      media="(max-width: 500px)"
-    />
-
     <link rel="manifest" href="/manifest.json" />
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content="Aryan Dani - Web Developer Portfolio" />
@@ -329,7 +316,7 @@
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
-            .register("/Portfolio/service-worker.js") // Correct path for GitHub Pages
+            .register("/service-worker.js") // Corrected path for local dev and potentially GitHub Pages root
             .then((registration) => {
               console.log(
                 "Service Worker registered with scope:",
@@ -341,17 +328,20 @@
               // More comprehensive error handling
               const errorMessage = error.message || "Unknown error";
               if (typeof showToast === "function") {
+                // Corrected showToast arguments: message, type, duration, title, iconClass
                 showToast(
-                  "Service Worker Error",
-                  `Registration failed: ${errorMessage}`,
-                  "fa-solid fa-exclamation-triangle"
+                  `Registration failed: ${errorMessage}`, // message
+                  "error", // type
+                  8000, // duration
+                  "Service Worker Error", // title
+                  "fa-solid fa-exclamation-triangle" // iconClass
                 );
               }
               // Try again with a timeout if it was a network error
               if (error.name === "NetworkError") {
                 setTimeout(() => {
                   navigator.serviceWorker
-                    .register("/service-worker.js")
+                    .register("/service-worker.js") // Retry with corrected path
                     .catch((e) => console.error("Retry failed:", e));
                 }, 3000);
               }
