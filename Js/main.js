@@ -1,4 +1,3 @@
-// Debounce function definition
 function debounce(func, wait, immediate) {
   var timeout;
   return function () {

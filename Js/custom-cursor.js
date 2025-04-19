@@ -16,12 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(cursorElement);
     console.log("[Cursor] Element appended:", cursorElement);
 
-    // --- Magnetic Effect Setup ---
-    // Broadened selector to target more button-like elements
     const magneticElements = document.querySelectorAll(
       'button, a[href], [role="button"], input[type="submit"], input[type="button"], [data-interactive="true"]'
     );
-    const magneticThreshold = 60; // Increased distance
+    const magneticThreshold = 80; // Increased distance
     const magneticForce = 0.5; // Increased strength
     const magneticDamping = 0.5; // Smoothness of return (lower is faster)
 
@@ -29,8 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let mouseY = 0;
     let cursorX = 0;
     let cursorY = 0;
-    // Adjusted speed for smoother cursor follow without trail distraction
-    const speed = 0.8;
+    const speed = 1;
 
     // Store original positions and current offsets for magnetic elements
     const elementStates = new Map();
@@ -52,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Animation loop for cursor and magnetic effect
     function animateCursor() {
-      // --- Cursor Lerp ---
       const dxCursor = mouseX - cursorX;
       const dyCursor = mouseY - cursorY;
       cursorX += dxCursor * speed;
@@ -61,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cursorX - cursorElement.offsetWidth / 2
       }px, ${cursorY - cursorElement.offsetHeight / 2}px, 0)`;
 
-      // --- Magnetic Element Animation ---
       elementStates.forEach((state, el) => {
         const rect = el.getBoundingClientRect();
         const elCenterX = rect.left + rect.width / 2;
