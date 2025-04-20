@@ -340,6 +340,18 @@
     @include animated-border($secondary-color); // Use mixin from _mixins.scss
     animation: neonPulse 4s infinite; // Use animation from _animations.scss
 
+    // Disable CSS hover transform if JS 3D effect is active
+    &[data-enhanced="true"]:hover {
+      transform: none; // Prevent CSS hover transform
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); // Keep hover shadow
+      animation: floatAnimation 3s ease infinite; // Keep float animation
+
+      &::after {
+        opacity: 0.8; // Keep border glow
+        animation: spinGlow 8s linear infinite;
+      }
+    }
+
     .active-all & {
       height: 150px;
 

@@ -1378,6 +1378,10 @@
 .project .project-card[data-enhanced=true]:hover {
   transform: none;
 }
+.project .project-card[data-enhanced=true]:hover {
+  transform: none;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+}
 .project .project-card::before {
   content: "";
   position: absolute;
@@ -2441,6 +2445,14 @@
   position: relative;
   z-index: 1;
 }
+.certification .certificate-content[data-enhanced=true]:hover {
+  transform: none;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  border-color: transparent;
+}
+.certification .certificate-content[data-enhanced=true]:hover::after {
+  opacity: 0.8;
+}
 .certification .certificate-content::after {
   content: "";
   position: absolute;
@@ -3072,6 +3084,15 @@
 }
 .skills__card:nth-child(3n) {
   animation-delay: 1s;
+}
+.skills__card[data-enhanced=true]:hover {
+  transform: none;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  animation: floatAnimation 3s ease infinite;
+}
+.skills__card[data-enhanced=true]:hover::after {
+  opacity: 0.8;
+  animation: spinGlow 8s linear infinite;
 }
 .active-all .skills__card {
   height: 150px;

@@ -180,6 +180,12 @@
     @include card-3d-hover;
     transform-style: preserve-3d;
 
+    // Disable CSS hover transform if JS 3D effect is active
+    &[data-enhanced="true"]:hover {
+      transform: none; // Prevent CSS hover transform
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35); // Keep hover shadow
+    }
+
     &::before {
       // Gradient overlay
       content: "";
