@@ -3068,16 +3068,10 @@
   height: 160px;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease, opacity 0.3s ease;
   border-left: 3px solid aliceblue;
   animation: borderFlash 3s infinite;
   animation: neonPulse 4s infinite;
-}
-.skills__card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 .skills__card:nth-child(odd) {
   animation-delay: 0.5s;
@@ -3086,9 +3080,7 @@
   animation-delay: 1s;
 }
 .skills__card[data-enhanced=true]:hover {
-  transform: none;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-  animation: floatAnimation 3s ease infinite;
 }
 .skills__card[data-enhanced=true]:hover::after {
   opacity: 0.8;
@@ -3134,8 +3126,9 @@
   border-radius: 10px;
 }
 .skills__card:hover {
-  transform: translateY(-8px) scale(1.02);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+.skills__card:hover:not([data-enhanced=true]) {
   animation: floatAnimation 3s ease infinite;
 }
 .skills__card:hover::after {

@@ -505,6 +505,7 @@ function executeHomeAnimationSequence() {
             ? "translateY(0)"
             : "perspective(1000px) translateZ(0) rotateX(0)";
           name.style.textShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+          /* Removed call to addNameHoverEffect
           setTrackedTimeout(
             () => {
               addNameHoverEffect(name, isLowPowerDevice);
@@ -512,6 +513,7 @@ function executeHomeAnimationSequence() {
             300,
             "nameHoverEffect"
           );
+          */
         },
         0,
         "nameAnimation"
@@ -566,10 +568,10 @@ function executeHomeAnimationSequence() {
           }
           setTrackedTimeout(
             () => {
-              addIconHoverEffect(icon);
+              // This timeout is no longer needed
             },
             350,
-            `iconHoverEffect-${index}`
+            `iconHoverEffect-${index}` // Longer 200ms stagger for more noticeable sequence
           );
         },
         1000 + index * 300,
@@ -636,84 +638,6 @@ function startTypingAnimation(subtitle) {
     50,
     "typingStart"
   );
-}
-function addNameHoverEffect(name, isLowPowerDevice) {
-  const enhancedHoverHandler = debounce(function (e) {
-    const rect = name.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const rotateY = isLowPowerDevice
-      ? 0
-      : ((mouseX - rect.width / 2) / rect.width) * 5;
-    const rotateX = isLowPowerDevice
-      ? 0
-      : -((mouseY - rect.height / 2) / rect.height) * 5;
-    if (e.type === "mouseenter") {
-      name.style.transform = isLowPowerDevice
-        ? "translateY(-5px)"
-        : `perspective(1000px) translateZ(15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      name.style.textShadow = "0 15px 35px rgba(0, 0, 0, 0.25)";
-      name.style.transition = "transform 0.3s ease, text-shadow 0.3s ease";
-    } else if (e.type === "mousemove") {
-      if (!isLowPowerDevice) {
-        name.style.transform = `perspective(1000px) translateZ(15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        name.style.transition = "transform 0.1s ease-out";
-      }
-    } else {
-      name.style.transform = isLowPowerDevice
-        ? "translateY(0)"
-        : "perspective(1000px) translateZ(0) rotateX(0) rotateY(0)";
-      name.style.textShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
-      name.style.transition = "transform 0.5s ease, text-shadow 0.5s ease";
-    }
-  }, 10);
-  name.addEventListener("mouseenter", enhancedHoverHandler);
-  name.addEventListener("mousemove", enhancedHoverHandler);
-  name.addEventListener("mouseleave", enhancedHoverHandler);
-}
-function addIconHoverEffect(icon) {
-  icon.addEventListener("mouseenter", () => {
-    const iconElement = icon.querySelector("i");
-    if (iconElement) {
-      iconElement.style.transform = "scale(1.3)";
-      iconElement.style.color = "rgba(240, 248, 255, 1)"; // Full brightness
-      iconElement.style.textShadow = "none";
-    }
-    icon.style.transform = "perspective(800px) translateY(0) translateZ(0)";
-  });
-  icon.addEventListener("click", (e) => {
-    const rect = icon.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const ripple = document.createElement("span");
-    ripple.className = "ripple"; // Corrected class name
-    ripple.style.position = "absolute";
-    ripple.style.top = `${y}px`;
-    ripple.style.left = `${x}px`;
-    ripple.style.transform = "translate(-50%, -50%)";
-    ripple.style.width = "0";
-    ripple.style.height = "0";
-    ripple.style.backgroundColor = "rgba(240, 248, 255, 0.4)";
-    ripple.style.borderRadius = "50%";
-    ripple.style.transition = "all 0.4s cubic-bezier(0.26, 0.86, 0.44, 0.985)";
-    icon.appendChild(ripple); // Append to original icon
-    setTrackedTimeout(
-      () => {
-        ripple.style.width = "100px";
-        ripple.style.height = "100px";
-        ripple.style.opacity = "0";
-      },
-      10,
-      "iconRippleExpand"
-    );
-    setTrackedTimeout(
-      () => {
-        ripple.remove();
-      },
-      400,
-      "iconRippleRemove"
-    );
-  });
 }
 
 function initJobsPageAnimations() {

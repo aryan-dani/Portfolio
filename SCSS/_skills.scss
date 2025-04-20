@@ -334,17 +334,16 @@
     height: 160px; // Slightly increase base height for better front face layout
     position: relative;
     transform-style: preserve-3d; // Ensure 3D context
-    transition: transform $transition-speed ease,
-      box-shadow $transition-speed ease, opacity $transition-speed ease; // Use variable
-    @include card-hover;
+    transition: box-shadow $transition-speed ease,
+      opacity $transition-speed ease; // Removed transform from transition
+    // @include card-hover; // Removed conflicting mixin
     @include animated-border($secondary-color); // Use mixin from _mixins.scss
     animation: neonPulse 4s infinite; // Use animation from _animations.scss
 
     // Disable CSS hover transform if JS 3D effect is active
     &[data-enhanced="true"]:hover {
-      transform: none; // Prevent CSS hover transform
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); // Keep hover shadow
-      animation: floatAnimation 3s ease infinite; // Keep float animation
+      // animation: floatAnimation 3s ease infinite; // Keep float animation - Removed, conflicts with JS transform
 
       &::after {
         opacity: 0.8; // Keep border glow
@@ -405,9 +404,14 @@
     }
 
     &:hover {
-      transform: translateY(-8px) scale(1.02);
+      // transform: translateY(-8px) scale(1.02); // Already removed
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-      animation: floatAnimation 3s ease infinite; // Use animation from _animations.scss
+      // animation: floatAnimation 3s ease infinite; // Removed - Let JS handle transform
+
+      // Apply floatAnimation only if JS effect is NOT active
+      &:not([data-enhanced="true"]) {
+        animation: floatAnimation 3s ease infinite;
+      }
 
       &::after {
         opacity: 0.8;
