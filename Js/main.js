@@ -230,8 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   } else if (pagePath.includes("jobs.html")) {
     initJobsPageAnimations();
-  } else if (pagePath.includes("projects.html")) {
-    initProjectsPageAnimations();
   } else if (pagePath.includes("certification.html")) {
     initCertificationsPageAnimations();
   } else if (pagePath.includes("skills.html")) {
@@ -240,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initAboutPageAnimations();
   }
   initUniversalAnimations();
+  initScrollAnimations(); // Initialize scroll animations
   if (
     isHomePage ||
     pagePath.includes("jobs.html") ||
@@ -249,6 +248,35 @@ document.addEventListener("DOMContentLoaded", () => {
     initParallaxEffect();
   }
 }); // <-- Added closing parenthesis and semicolon
+
+// Function to initialize Intersection Observer for scroll animations
+function initScrollAnimations() {
+  const animatedElements = document.querySelectorAll(".animate-on-scroll");
+  if (!animatedElements.length) return;
+
+  const observerOptions = {
+    root: null, // Use the viewport as the root
+    rootMargin: "0px",
+    threshold: 0.1, // Trigger when 10% of the element is visible
+  };
+
+  const observerCallback = (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        // Optional: Unobserve after animation triggers once
+        // observer.unobserve(entry.target);
+      } else {
+        // Optional: Remove class if you want animation to reverse on scroll out
+        // entry.target.classList.remove("is-visible");
+      }
+    });
+  };
+
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+  animatedElements.forEach((el) => observer.observe(el));
+}
+
 function initPageTransition() {
   const main = document.querySelector("main");
   if (main) {
@@ -688,8 +716,6 @@ function addIconHoverEffect(icon) {
   });
 }
 
-
-
 function initJobsPageAnimations() {
   const jobsTitle = document.querySelector(
     ".jobs-layout .heading .text-secondary"
@@ -747,44 +773,7 @@ function initJobsPageAnimations() {
     });
   }
 }
-function initProjectsPageAnimations() {
-  const projectCards = document.querySelectorAll(".Projects");
-  if (projectCards.length > 0) {
-    projectCards.forEach((card, index) => {
-      card.style.animation = "none";
-      card.style.opacity = "0";
-      card.style.transform =
-        "perspective(1000px) rotateY(10deg) translateZ(-50px)";
-      card.style.transition = `all 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985) ${
-        0.3 + index * 0.1
-      }s`;
-      setTrackedTimeout(
-        () => {
-          card.style.opacity = "1";
-          card.style.transform = "perspective(1000px) rotateY(0) translateZ(0)";
-        },
-        300 + index * 100,
-        `projectCardAnimation-${index}`
-      );
-    });
-  }
-  const projectHeader = document.querySelector(".project__project-image");
-  if (projectHeader) {
-    projectHeader.style.animation = "none";
-    projectHeader.style.opacity = "0.6";
-    projectHeader.style.transform = "scale(0.98)";
-    projectHeader.style.transition =
-      "all 1.2s cubic-bezier(0.26, 0.86, 0.44, 0.985)";
-    setTrackedTimeout(
-      () => {
-        projectHeader.style.opacity = "1";
-        projectHeader.style.transform = "scale(1)";
-      },
-      200,
-      "projectHeaderAnimation"
-    );
-  }
-}
+
 function initCertificationsPageAnimations() {
   const certCards = document.querySelectorAll(".certificate-content");
   if (certCards.length > 0) {

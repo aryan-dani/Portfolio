@@ -185,7 +185,8 @@
   // No initial transform needed, just fade
 }
 
-.slide-up-on-scroll {
+// Renamed from .slide-up-on-scroll to match HTML usage
+.animate-on-scroll {
   // Explicitly set initial state
   opacity: 0;
   transform: translateY(40px);
