@@ -157,69 +157,59 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Show page-specific welcome message once per page per session
-      console.log(`[WelcomeToast] Checking first visit for page: ${pageName}`); // Log page name
+      // console.log(`[WelcomeToast] Checking first visit for page: ${pageName}`); // Removed log
       const isFirst = checkFirstTimeVisit(pageName);
-      console.log(`[WelcomeToast] checkFirstTimeVisit returned: ${isFirst}`); // Log result
+      // console.log(`[WelcomeToast] checkFirstTimeVisit returned: ${isFirst}`); // Removed log
       if (isFirst) {
-        console.log(`[WelcomeToast] Typeof showToast: ${typeof showToast}`); // Log function type
+        // console.log(`[WelcomeToast] Typeof showToast: ${typeof showToast}`); // Removed log
         if (typeof showToast === "function") {
-          if (isHomePage) {
-            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
+          // Refactored welcome toast logic
+          const welcomeToasts = {
+            home: {
+              message: "Explore my work and get to know me better",
+              title: "Welcome to My Portfolio",
+              icon: "fa-solid fa-house-user",
+            },
+            jobs: {
+              message: "Learn about my career journey and achievements",
+              title: "Professional Experience",
+              icon: "fa-solid fa-briefcase",
+            },
+            projects: {
+              message: "Discover the projects I've worked on",
+              title: "Portfolio Projects",
+              icon: "fa-solid fa-code",
+            },
+            certification: {
+              message: "Check out my professional qualifications",
+              title: "My Certifications",
+              icon: "fa-solid fa-certificate",
+            },
+            skills: {
+              message: "Explore my expertise across different technologies",
+              title: "Technical Skills",
+              icon: "fa-solid fa-laptop-code",
+            },
+            about: {
+              message: "Get to know me better",
+              title: "About",
+              icon: "fa-solid fa-user",
+            },
+          };
+
+          const toastDetails = welcomeToasts[pageName];
+          if (toastDetails) {
+            // console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Removed log
             showToast(
-              "Explore my work and get to know me better", // Message
+              toastDetails.message,
               "info", // Type
               6000, // Duration
-              "Welcome to My Portfolio", // Title
-              "fa-solid fa-house-user" // Icon
-            );
-          } else if (pageName === "jobs") {
-            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
-            showToast(
-              "Learn about my career journey and achievements",
-              "info",
-              6000,
-              "Professional Experience",
-              "fa-solid fa-briefcase"
-            );
-          } else if (pageName === "projects") {
-            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
-            showToast(
-              "Discover the projects I've worked on",
-              "info",
-              6000,
-              "Portfolio Projects",
-              "fa-solid fa-code"
-            );
-          } else if (pageName === "certification") {
-            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
-            showToast(
-              "Check out my professional qualifications",
-              "info",
-              6000,
-              "My Certifications",
-              "fa-solid fa-certificate"
-            );
-          } else if (pageName === "skills") {
-            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
-            showToast(
-              "Explore my expertise across different technologies",
-              "info",
-              6000,
-              "Technical Skills",
-              "fa-solid fa-laptop-code"
-            );
-          } else if (pageName === "about") {
-            console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Log before call
-            showToast(
-              "Get to know me better",
-              "info",
-              6000,
-              "About",
-              "fa-solid fa-user"
+              toastDetails.title,
+              toastDetails.icon
             );
           }
         } else {
-          console.error("[WelcomeToast] showToast function is not defined."); // More specific error
+          console.error("[WelcomeToast] showToast function is not defined.");
         }
       }
     },
@@ -668,7 +658,7 @@ function addIconHoverEffect(icon) {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const ripple = document.createElement("span");
-    ripple.className = "span";
+    ripple.className = "ripple"; // Corrected class name
     ripple.style.position = "absolute";
     ripple.style.top = `${y}px`;
     ripple.style.left = `${x}px`;
@@ -697,6 +687,9 @@ function addIconHoverEffect(icon) {
     );
   });
 }
+
+
+
 function initJobsPageAnimations() {
   const jobsTitle = document.querySelector(
     ".jobs-layout .heading .text-secondary"

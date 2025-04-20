@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
-  console.log("[Cursor] Prefers Reduced Motion:", prefersReducedMotion); // DEBUG
+  // console.log("[Cursor] Prefers Reduced Motion:", prefersReducedMotion); // DEBUG - Removed
 
   // Only run if motion is not reduced
   if (!prefersReducedMotion) {

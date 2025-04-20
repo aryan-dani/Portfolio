@@ -347,9 +347,6 @@ function initCertificationPage() {
       }
     });
   });
-  viewButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {});
-  });
   closePreviewBtn.addEventListener("click", () => {
     certificatePreview.classList.remove("active");
     document.body.style.overflow = "";
@@ -372,18 +369,6 @@ function initCertificationPage() {
       document.body.style.overflow = "";
     }
   });
-  const animateOnScroll = () => {
-    const cards = document.querySelectorAll(".animate-on-scroll:not(.visible)");
-    cards.forEach((card) => {
-      const cardTop = card.getBoundingClientRect().top;
-      const windowHeight = window.innerHeight;
-      if (cardTop < windowHeight - 100) {
-        card.classList.add("visible");
-      }
-    });
-  };
-  setTimeout(animateOnScroll, 100);
-  window.addEventListener("scroll", animateOnScroll);
   if (typeof Masonry !== "undefined") {
     const grid = document.querySelector(".row[data-masonry]");
     if (grid) {

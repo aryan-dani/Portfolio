@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Performance.js: DOM loaded, initializing optimizations");
   initLazyLoading();
   registerServiceWorker();
   initIntersectionObserver();
@@ -42,16 +41,6 @@ function showToast(
   toast.setAttribute("aria-live", "assertive");
   let iconHtml = "";
 
-  // --- DEBUGGING START ---
-  console.log("[showToast] Called with:", {
-    message,
-    type,
-    duration,
-    title,
-    iconClass,
-  });
-  // --- DEBUGGING END ---
-
   if (iconClass) {
     iconHtml = `<i class="${iconClass}"></i>`;
   } else {
@@ -75,10 +64,6 @@ function showToast(
         break;
     }
   }
-
-  // --- DEBUGGING START ---
-  console.log("[showToast] Generated iconHtml:", iconHtml);
-  // --- DEBUGGING END ---
 
   const toastContent = `
         <div class="toast-icon">
@@ -125,7 +110,6 @@ function initLazyLoading() {
     images.forEach((img) => {
       img.loading = "lazy";
     });
-    console.log("Performance.js: Native lazy loading enabled for images.");
   } else {
     const lazyImages = document.querySelectorAll("img[data-src]");
     if (lazyImages.length > 0) {
@@ -151,9 +135,6 @@ function initLazyLoading() {
       lazyImages.forEach((img) => {
         imageObserver.observe(img);
       });
-      console.log(
-        "Performance.js: IntersectionObserver lazy loading initialized for images."
-      );
     }
   }
   const lazyBackgrounds = document.querySelectorAll("[data-background]");
@@ -179,9 +160,6 @@ function initLazyLoading() {
     lazyBackgrounds.forEach((element) => {
       backgroundObserver.observe(element);
     });
-    console.log(
-      "Performance.js: IntersectionObserver lazy loading initialized for backgrounds."
-    );
   }
 }
 function registerServiceWorker() {
@@ -193,8 +171,7 @@ function registerServiceWorker() {
       // Use root path for local development, adjust '/Portfolio/' prefix for deployment if needed
       const swPath = isLocal
         ? "/service-worker.js"
-        : "/Portfolio/service-worker.js";
-      console.log(`Registering Service Worker from: ${swPath}`); // Log the path being used
+        : "/Portfolio/service-worker.js"; // Assuming deployment is in a /Portfolio/ subdirectory
       navigator.serviceWorker
         .register(swPath)
         .then((registration) => {
@@ -204,10 +181,10 @@ function registerServiceWorker() {
           );
           registration.addEventListener("updatefound", () => {
             const newWorker = registration.installing;
-            console.log("Service Worker update found. New worker installing.");
           });
           navigator.serviceWorker.addEventListener("controllerchange", () => {
-            console.log("New Service Worker activated. Refreshing page...");
+            // Optionally, prompt the user to refresh or refresh automatically
+            // window.location.reload();
           });
         })
         .catch((error) => {
@@ -263,9 +240,6 @@ function initIntersectionObserver(elements = null) {
       }
       observer.observe(element);
     });
-    console.log(
-      `Performance.js: IntersectionObserver initialized for ${elementsToObserve.length} elements.`
-    );
   } else {
     elementsToObserve.forEach((element) => {
       element.classList.add("visible"); // Make elements visible immediately
@@ -282,10 +256,8 @@ function applyReducedMotionPreferences() {
   function updateMotionPreference(event) {
     if (event.matches) {
       document.documentElement.classList.add("reduced-motion");
-      console.log("Performance.js: Reduced motion enabled.");
     } else {
       document.documentElement.classList.remove("reduced-motion");
-      console.log("Performance.js: Reduced motion disabled.");
     }
   }
   updateMotionPreference(mediaQuery);
