@@ -13,10 +13,21 @@
   padding-left: 1rem; // Add horizontal padding here
   padding-right: 1rem;
   box-sizing: border-box; // Include padding in width calculation
+  z-index: 1;
+  pointer-events: none; // Add: Prevent section from blocking pointer events
 
   @include media-sm {
     padding-left: 2rem; // Increase padding on larger screens
     padding-right: 2rem;
+  }
+
+  // Re-enable pointer events for direct content containers
+  .intro-container,
+  .filter-container, // Assuming this holds filters
+  .certificates-grid-container, // Assuming this holds the grid
+  .container {
+    // Or if using a general container class
+    pointer-events: auto;
   }
 
   &::before {

@@ -18,6 +18,7 @@
   background-size: cover;
   background-attachment: fixed;
   position: relative;
+  pointer-events: none; // Add: Prevent section from blocking pointer events
 
   &::before {
     content: "";
@@ -39,7 +40,9 @@
     pointer-events: none;
   }
 
+  // Re-enable pointer events for the main content wrapper
   .about-content-wrapper {
+    pointer-events: auto;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
@@ -420,17 +423,6 @@
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s; // Delay visibility change
 }
 
-// Remove the .show class as it's not used by the JS toggle logic
-// .contact-form-container {
-//   &.show {
-//     display: block;
-//     opacity: 1;
-//     transform: translateY(0);
-//     animation: slideInUp 0.5s ease forwards;
-//   }
-// }
-
-// Ensure the form is visible when the hidden class is removed
 .contact-form-container:not(.hidden) {
   opacity: 1;
   transform: translateY(0);

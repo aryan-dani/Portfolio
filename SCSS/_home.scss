@@ -26,6 +26,13 @@
     width: 100%;
     height: 100%;
     z-index: 0; // Place behind content
+
+    canvas {
+      // Ensure the canvas itself can receive mouse events even if container is behind
+      pointer-events: auto;
+      position: relative; // Needed for z-index stacking context
+      z-index: 0; // Keep canvas visually behind content with z-index 1
+    }
   }
 
   &__content {

@@ -150,6 +150,56 @@
   }
 }
 
+// Smoother slide-in animation
+@keyframes smoothSlideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px); // Start slightly lower
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Gentle fade-in
+@keyframes gentleFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Base style for elements animated on scroll
+.animate-on-scroll {
+  // Keep opacity 0 here as a base, but transition will be defined in specific classes
+  opacity: 0;
+  // Remove transition from the base class
+}
+
+// Specific animation types using the base class
+.fade-in-on-scroll {
+  @extend .animate-on-scroll;
+  // No initial transform needed, just fade
+}
+
+.slide-up-on-scroll {
+  // Explicitly set initial state
+  opacity: 0;
+  transform: translateY(40px);
+  // Define the transition here
+  transition: opacity 0.7s ease-out,
+    transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
+  will-change: opacity, transform; // Hint to the browser for optimization
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate {
   animation-duration: 1s;
   animation-fill-mode: both;
@@ -177,28 +227,6 @@
   &--infinite {
     animation-iteration-count: infinite;
   }
-}
-
-.slideInUp {
-  animation-name: slideInUp;
-}
-
-.fadeIn {
-  animation-name: fadeInStagger;
-}
-
-.float {
-  animation-name: floatAnimation;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-
-.pulse {
-  animation-name: pulse;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
 }
 
 .bounce {

@@ -3,11 +3,13 @@
 
 .project {
   position: relative;
+  z-index: 1; // Add this line
+  pointer-events: none; // Add: Prevent section from blocking pointer events
   overflow: hidden;
   display: flex; // Use flexbox for centering content vertically
   flex-direction: column;
   align-items: center; // Center items horizontally
-  padding: 2rem 0; // Adjusted vertical padding, removed horizontal here
+  padding: 4rem 0; // Increased vertical padding
   width: 100%; // Ensure full width initially
   max-width: 1400px; // Apply max-width to the section
   margin: 0 auto; // Center the section
@@ -33,37 +35,44 @@
     width: 100%;
     height: 100%;
     background-image: radial-gradient(
-        circle,
-        rgba(255, 255, 255, 0.06) 1px,
-        // Slightly adjusted gradient
-        transparent 1px
+        circle at 20% 20%,
+        // Vary the origin points
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1.5px // Slightly larger transparent area
       ),
-      radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-    background-size: 25px 25px;
-    opacity: 0.6;
+      radial-gradient(
+        circle at 80% 70%,
+        // Different origin point
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1.5px
+      );
+    background-size: 40px 40px; // Larger grid pattern
+    opacity: 0.4; // Slightly reduced opacity
     pointer-events: none;
     z-index: 0;
     animation: gradientBackground 15s ease infinite;
   }
 
+  .project__intro-container,
+  .project-grid {
+    pointer-events: auto; // Re-enable pointer events for direct content containers
+  }
+
   .project__intro-container {
     width: 100%; // Make container fill the padded section width by default
     max-width: 100%; // Ensure it doesn't exceed parent padding initially
-    margin-top: 3rem;
-    margin-bottom: 2rem; // Adjusted bottom margin
+    margin-top: 4rem; // Increased top margin
+    margin-bottom: 3rem; // Increased bottom margin
     position: relative;
     z-index: 1;
-    background: rgba(
-      lighten($primary-color, 5%),
-      0.8
-    ); // Slightly adjusted background
-    border: 1px solid rgba($secondary-color, 0.15); // Keep as is for now, slightly different from soft
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); // Adjusted shadow
-    border-radius: 10px; // Add border-radius
-    padding: 2rem; // Consistent padding
+    background: rgba(lighten($primary-color, 3%), 0.7); // Darker, less opaque
+    border: 1px solid rgba($secondary-color, 0.1); // Softer border
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3); // More pronounced shadow
+    border-radius: 12px; // Slightly larger radius
+    padding: 2.5rem; // Increased padding
 
     @include media-lg {
-      max-width: 1200px; // Match grid max-width on large screens
+      max-width: 1100px; // Adjust max-width if needed
       margin-left: auto; // Center the container when max-width applies
       margin-right: auto;
     }
@@ -72,9 +81,9 @@
       display: block; // Full width
       text-align: center;
       width: 100%;
-      margin: 0 auto 1rem; // Adjusted bottom margin
+      margin: 0 auto 1.5rem; // Increased bottom margin
       font-weight: 900;
-      font-size: 2.5rem; // Slightly adjusted size
+      font-size: 2.8rem; // Slightly larger
       padding: 10px 20px;
       background: linear-gradient(
         135deg,
@@ -84,7 +93,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35); // Slightly adjusted shadow
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4); // Enhanced shadow
       animation: slide-in-heading 0.8s ease-out forwards; // Use existing animation
       position: relative;
       z-index: 1;
@@ -95,17 +104,17 @@
 
       &:hover {
         transform: none;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35); // Keep base shadow
+        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4); // Keep base shadow
       }
     }
 
     p {
       color: $secondary-color;
       text-align: center; // Center align intro text
-      font-size: 1.1rem; // Slightly larger intro text
-      line-height: 1.8; // Increase line height for readability
-      color: rgba($secondary-color, 0.9); // Keep as is for now
-      max-width: 800px; // Limit paragraph width within the container
+      font-size: 1.15rem; // Slightly larger
+      line-height: 1.9; // Increased line height
+      color: rgba($secondary-color, 0.85); // Slightly less opaque
+      max-width: 850px; // Adjust max width
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 0;
@@ -125,11 +134,11 @@
   .project-grid {
     display: grid;
     grid-template-columns: 1fr; // Default to 1 column
-    gap: 2rem; // Slightly reduced gap
+    gap: 2.5rem; // Increased gap
     width: 100%; // Make grid fill the padded section width
     max-width: none; // Remove specific max-width from here
     padding: 0; // Ensure no horizontal padding is applied directly to the grid
-    margin: 2rem auto 1rem; // Consistent top margin with intro bottom margin
+    margin: 3rem auto 2rem; // Adjusted margins
     position: relative;
     z-index: 1;
     perspective: 1000px;
@@ -143,20 +152,24 @@
     @include media-lg {
       // Keep 2 columns even on large screens, adjust minmax if needed for spacing
       grid-template-columns: repeat(2, minmax(350px, 1fr));
-      max-width: 1200px; // Ensure this matches intro container max-width
+      max-width: 1150px; // Adjust max-width to contain cards nicely
       margin-left: auto; // Center the grid
       margin-right: auto;
     }
   }
 
   .project-card {
-    background: rgba(lighten($primary-color, 10%), 0.8); // Lighter background
-    border-radius: 15px; // Increased radius
+    background: rgba(
+      lighten($primary-color, 8%),
+      0.75
+    ); // Slightly lighter, less opaque
+    border-radius: 16px; // Smoother radius
     overflow: hidden;
-    backdrop-filter: blur(10px); // Match certificate card blur
-    border: 1px solid $border-color-soft; // Use variable
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); // Adjusted base shadow
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); // Slightly adjusted timing
+    backdrop-filter: blur(12px); // Slightly more blur
+    border: 1px solid $border-color-soft;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); // Adjusted shadow
+    // Use a less bouncy transition for hover effects
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); // Smoother bezier for hover
     height: 100%; // Ensure cards in a row have same height
     display: flex;
     flex-direction: column;
@@ -177,9 +190,9 @@
       height: 100%;
       background: linear-gradient(
         160deg,
-        rgba($secondary-color, 0.01) 0%,
-        // More subtle gradient
-        rgba($secondary-color, 0.06) 100%
+        rgba($secondary-color, 0.02) 0%,
+        // Even more subtle gradient
+        rgba($secondary-color, 0.08) 100%
       );
       opacity: 0;
       transition: opacity 0.4s ease;
@@ -196,9 +209,9 @@
       border-radius: inherit;
       background: linear-gradient(
         135deg,
-        rgba($secondary-color, 0.6),
-        // Slightly stronger start color
-        rgba(lighten($primary-color, 20%), 0.4) // Lighter end color
+        rgba($secondary-color, 0.7),
+        // Stronger start
+        rgba(lighten($primary-color, 25%), 0.5) // Lighter end
       );
       opacity: 0;
       transition: opacity 0.4s ease;
@@ -207,20 +220,21 @@
     }
 
     &:hover {
-      transform: translateY(-6px) scale(1.02); // Slightly more lift
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); // Adjusted hover shadow
-      border-color: $border-color-soft-hover; // Use variable
+      // Keep transform simple or adjust rotate values for less bounce
+      transform: translateY(-6px) scale(1.02); // Simplified hover transform
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35); // Stronger hover shadow
+      border-color: $border-color-soft-hover;
 
       &::before {
-        opacity: 0.8; // Slightly less opaque overlay
+        opacity: 0.9; // Make overlay slightly more visible on hover
       }
 
       &::after {
-        opacity: 0.7; // Slightly stronger border highlight
+        opacity: 0.8; // Make border highlight stronger
       }
 
       .project-image img {
-        transform: scale(1.05); // Slightly increased scale
+        transform: scale(1.08); // More zoom on image
       }
 
       .project-links {
@@ -238,17 +252,17 @@
       position: relative; // Needed for badge positioning
       overflow: hidden;
       height: auto;
-      min-height: 200px; // Increased min-height
-      max-height: 280px; // Increased max-height
+      min-height: 220px; // Increased min-height
+      max-height: 300px; // Increased max-height
       margin: 0; // Remove margin, use padding in content instead if needed
-      border-radius: 15px 15px 0 0; // Match card radius
+      border-radius: 16px 16px 0 0; // Match card radius
 
       img {
         width: 100%;
         height: 100%; // Ensure image tries to fill container height
         object-fit: cover; // Revert back to cover for better filling
         object-position: center;
-        transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // Match card transition
+        transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); // Smoother image transition
         border-radius: 0; // Image itself doesn't need radius if container has it
         display: block;
         background-color: rgba(
@@ -276,7 +290,7 @@
     }
 
     .content {
-      padding: 1.5rem 2rem; // Adjusted padding
+      padding: 1.8rem 2.2rem; // Increased padding
       flex-grow: 1; // Allow content to fill space
       display: flex;
       flex-direction: column;
@@ -287,8 +301,8 @@
       z-index: 1;
 
       h2.text-secondary {
-        font-size: 1rem; // Adjusted size
-        margin: 0 0 0.5rem; // Adjust margin
+        font-size: 0.9rem; // Slightly smaller for subtlety
+        margin: 0 0 0.6rem;
         color: rgba($secondary-color, 0.8); // Softer color
         font-weight: 600; // Match certificate date weight
         opacity: 0.8; // Match certificate date opacity
@@ -312,14 +326,14 @@
       }
 
       h3 {
-        font-size: 1.4rem; // Adjusted size
-        margin: 0 0 0.8rem; // Adjusted margin (removed top margin)
-        padding-bottom: 0.6rem; // Adjusted padding
-        border-bottom: 1px solid $link-border-soft; // Use variable
-        font-weight: 700; // Ensure bold weight
-        line-height: 1.4; // Match certificate title line-height
-        transition: color $transition-speed ease; // Use variable
-        color: $secondary-color; // Ensure default color
+        font-size: 1.5rem; // Slightly larger title
+        margin: 0 0 1rem; // Increased margin
+        padding-bottom: 0.8rem; // Increased padding
+        border-bottom: 1px solid $link-border-soft;
+        font-weight: 700;
+        line-height: 1.45; // Adjusted line height
+        color: $secondary-color;
+        transition: color $transition-speed ease;
 
         &::after {
           content: none;
@@ -327,15 +341,15 @@
 
         &:hover {
           cursor: default;
-          transform: none; // No transform on h3 hover
-          color: $secondary-color; // Keep color same on hover
+          transform: none;
+          color: $secondary-color;
         }
       }
 
       .project-links {
         display: flex;
-        gap: 0.5rem;
-        margin: 1rem 0; // Adjusted margin
+        gap: 0.8rem; // Increased gap between links
+        margin: 1.2rem 0; // Adjusted margin
         opacity: 0.9; // Slightly increased default opacity
         transition: opacity 0.4s ease, transform 0.4s ease; // Added transform transition
         transform: translateY(8px); // Slightly more initial offset
@@ -345,34 +359,33 @@
         a.project-link {
           display: inline-flex;
           align-items: center;
-          padding: 0.5rem 1.1rem; // Adjusted padding
+          padding: 0.6rem 1.3rem; // Increased padding
           background: $link-bg-soft; // Use variable
           color: $secondary-color;
-          border-radius: 6px; // Adjusted radius
+          border-radius: 8px; // Smoother radius
           text-decoration: none;
-          font-size: 0.85rem; // Adjusted font size
-          transition: all $transition-speed cubic-bezier(0.25, 0.8, 0.25, 1); // Use variable
+          font-size: 0.9rem; // Slightly larger font
           border: 1px solid $link-border-soft; // Use variable
           position: relative;
           overflow: hidden;
           @include shine-effect; // Subtle shine effect - Removed arguments
 
           &:hover {
-            transform: translateY(-3px) scale(1.03); // Adjusted hover transform
-            box-shadow: 0 4px 10px rgba($secondary-color, 0.25); // Keep as is for now
+            transform: translateY(-4px) scale(1.05); // Enhanced hover transform
+            box-shadow: 0 6px 15px rgba($secondary-color, 0.3); // Enhanced shadow
             color: $primary-color; // Text color change
             background-color: $secondary-color; // Solid background on hover
             border-color: $secondary-color; // Match background
 
             i {
               color: $primary-color !important; // Ensure icon color matches text
-              transform: scale(1.15) rotate(-10deg); // More icon animation
+              transform: scale(1.2) rotate(-12deg); // More icon animation
             }
           }
 
           i {
             margin-right: 0.3rem; // Space between icon and text
-            font-size: 0.75em; // Make icon slightly smaller than text
+            font-size: 0.8em; // Adjust icon size relative to text
             opacity: 0.8;
           }
         }
@@ -381,54 +394,48 @@
       .tags-container {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
-        margin: 1rem 0 0.5rem; // Adjusted margin
+        gap: 0.6rem; // Increased gap
+        margin: 1.2rem 0 0.8rem; // Adjusted margin
         justify-content: center; // Center tags
         width: 100%;
       }
 
       h6 {
         // Tag styling
-        display: inline-flex; // Use flex for icon alignment
-        align-items: center;
-        font-size: 0.75rem; // Adjusted size
-        font-weight: 500; // Normal weight
-        color: rgba($secondary-color, 0.85); // Keep as is for now
-        background-color: rgba($primary-color, 0.6); // Keep as is for now
-        padding: 0.3rem 0.6rem; // Adjusted padding
-        border-radius: 4px; // Adjusted radius
-        border: 1px solid rgba($secondary-color, 0.1); // Softer border
+        font-size: 0.8rem; // Slightly larger tags
+        font-weight: 500;
+        color: rgba($secondary-color, 0.9); // More visible text
+        background-color: rgba(
+          $primary-color,
+          0.7
+        ); // Slightly more opaque background
+        padding: 0.35rem 0.7rem; // Increased padding
+        border-radius: 5px; // Smoother radius
+        border: 1px solid rgba($secondary-color, 0.15); // Slightly stronger border
         margin: 0.2rem; // Use margin instead of gap for wrapping
         transition: all 0.25s ease; // Faster transition for tags
 
         &:hover {
           cursor: default;
-          transform: translateY(-2px); // Simple lift on hover
-          background: rgba($secondary-color, 0.2); // Adjusted hover background
-          color: $secondary-color; // Full color text
-          border-color: rgba($secondary-color, 0.35); // Adjusted hover border
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); // Adjusted hover shadow
+          transform: translateY(-3px) scale(1.05); // Add scale to lift
+          background: rgba($secondary-color, 0.25); // Lighter hover background
+          color: lighten($secondary-color, 5%); // Slightly lighter text
+          border-color: rgba($secondary-color, 0.4); // Stronger hover border
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25); // Enhanced hover shadow
         }
 
         i {
           margin-right: 0.3rem; // Space between icon and text
-          font-size: 0.75em; // Make icon slightly smaller than text
+          font-size: 0.8em; // Adjust icon size
           opacity: 0.8;
-        }
-
-        &:hover {
-          // ...existing hover styles...
-          i {
-            opacity: 1;
-          }
         }
       }
 
       p {
-        margin-top: 1.2rem; // Adjusted margin
-        font-size: 0.9rem; // Adjusted size
-        color: rgba($secondary-color, 0.8); // Adjusted color
-        flex-grow: 1; // Allow paragraph to take remaining space
+        margin-top: 1.5rem; // Increased margin
+        font-size: 0.95rem; // Slightly larger description text
+        color: rgba($secondary-color, 0.85); // Slightly more contrast
+        line-height: 1.7; // Improved line height
         position: relative;
         z-index: 1;
         text-align: justify; // Justify text for cleaner edges
@@ -467,17 +474,14 @@
 
 @media screen and (max-width: 768px) {
   .project {
-    padding: 1.5rem 0; // Adjusted vertical padding
-    padding-left: 1rem; // Adjusted horizontal padding
-    padding-right: 1rem;
-
+    padding: 3rem 0; // Adjust padding
     .project-grid {
-      gap: 1.8rem; // Adjusted gap
+      gap: 2rem; // Adjusted gap
     }
 
     .project__intro-container {
-      padding: 1.5rem; // Adjusted padding
-      margin-bottom: 1.5rem; // Adjusted margin
+      padding: 2rem; // Adjust padding
+      margin-bottom: 2rem; // Adjust margin
 
       h2.text-secondary {
         font-size: 1.8rem; // Adjusted heading size
@@ -490,14 +494,14 @@
 
     .project-card {
       .project-image {
-        min-height: 160px; // Adjusted height
-        max-height: 220px;
+        min-height: 180px; // Adjust height
+        max-height: 250px;
       }
       .content {
-        padding: 1.2rem; // Adjusted padding
+        padding: 1.5rem; // Adjust padding
 
         h3 {
-          font-size: 1.25rem; // Adjusted size
+          font-size: 1.3rem; // Adjust size
         }
 
         .project-links a.project-link {
@@ -524,18 +528,18 @@
 
 @media screen and (max-width: 480px) {
   .project {
-    padding: 1rem 0.5rem; // Further reduce padding
+    padding: 2rem 0.5rem; // Adjust padding
 
     .project-grid {
-      gap: 1.5rem; // Reduce gap
+      gap: 1.8rem; // Adjust gap
     }
 
     .project-card {
       .content {
-        padding: 1rem; // Reduce padding
+        padding: 1.2rem; // Adjust padding
 
         h3 {
-          font-size: 1.15rem; // Reduce size
+          font-size: 1.2rem; // Adjust size
         }
 
         .project-links {

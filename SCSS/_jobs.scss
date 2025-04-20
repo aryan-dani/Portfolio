@@ -15,10 +15,13 @@
   height: auto;
   inset: 0;
   z-index: 0;
+  pointer-events: none; // Add: Prevent layout from blocking pointer events
   overflow-y: auto;
   padding-bottom: 5rem;
 
+  // Re-enable pointer events for the main content container
   .jobs-container {
+    pointer-events: auto;
     position: relative;
     z-index: 1;
     min-height: calc(100vh - 10rem);

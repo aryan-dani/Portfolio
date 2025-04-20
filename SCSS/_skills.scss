@@ -3,15 +3,22 @@
 @use "animations" as *;
 
 #particles-js {
+  pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
-  pointer-events: none;
+  z-index: 0; // Changed from -1 to 0
   background-color: $primary-color;
   overflow: hidden;
+
+  canvas {
+    // Allow the canvas itself to receive mouse events
+    pointer-events: auto;
+    position: relative; // Needed if you ever need to stack things within #particles-js
+    z-index: 0; // Keep canvas visually behind content with z-index 1
+  }
 }
 
 .skills {
@@ -28,10 +35,21 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  z-index: 1; // Ensure this line is present
+  pointer-events: none; // Add: Prevent section from blocking pointer events
 
   @include media-sm {
     padding-left: 2rem; // Increase padding on larger screens
     padding-right: 2rem;
+  }
+
+  // Re-enable pointer events for direct content containers
+  .intro-container,
+  &__search-filter,
+  &__container,
+  .tech-stack {
+    // Assuming tech-stack is within .skills and needs interaction
+    pointer-events: auto;
   }
 
   .intro-container {
@@ -54,7 +72,6 @@
     border: none;
     background: none;
     text-transform: none;
-    animation: none;
     padding: 10px 20px;
     margin: 0 auto 1rem; // Center block element and add bottom margin
     font-weight: 900;
@@ -68,7 +85,6 @@
     background-clip: text;
     color: transparent;
     text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); // Enhanced shadow
-    animation: slide-in-heading 0.8s ease-out forwards;
     position: relative;
     z-index: 1;
     width: 100%;
@@ -188,6 +204,7 @@
       border: 1px solid rgba($secondary-color, 0.4);
       background-color: rgba(lighten($primary-color, 5%), 0.8);
       color: $text-color; // Use variable
+      font-family: "Poppins", sans-serif; // Ensure Poppins font is used
       transition: border-color $transition-speed ease,
         box-shadow $transition-speed ease; // Use variable
 
@@ -232,6 +249,7 @@
         transition: all $transition-speed ease; // Use variable
         position: relative;
         overflow: hidden;
+        font-family: "Poppins", sans-serif; // Ensure Poppins font is used
 
         &::before {
           content: "";
