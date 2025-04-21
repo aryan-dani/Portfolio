@@ -20,8 +20,7 @@
     background-color: var(
       --cursor-bg,
       $light-color
-    ); // Use CSS variable or default
-    // Removed border for a cleaner base style
+    ); 
     border-radius: 50%;
   }
 

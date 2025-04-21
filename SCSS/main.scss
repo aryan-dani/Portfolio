@@ -221,17 +221,10 @@ header {
   width: 100%;
   padding: 1rem;
   transition: background-color $transition-speed ease;
-
-  &.scrolled {
-    background-color: rgba($primary-color, 0.95);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  }
 }
 
 main {
-  height: 100%;
+  min-height: 100vh !important;
   width: 100%;
   transition: margin-top 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
   will-change: transform, opacity;

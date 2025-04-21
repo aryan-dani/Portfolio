@@ -21,10 +21,12 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
@@ -39,11 +41,13 @@
 }
 
 @mixin animated-gradient-background {
-  background: linear-gradient(-45deg,
-      $primary-color,
-      lighten($primary-color, 5%),
-      darken($primary-color, 5%),
-      $primary-color );
+  background: linear-gradient(
+    -45deg,
+    $primary-color,
+    lighten($primary-color, 5%),
+    darken($primary-color, 5%),
+    $primary-color
+  );
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
 }
@@ -69,10 +73,12 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.7s ease;
   }
 
@@ -119,7 +125,8 @@
   transition: transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985);
 
   &:hover {
-    transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px) scale($scale);
+    transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px)
+      scale($scale);
   }
 
   &[data-enhanced="true"] {

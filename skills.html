@@ -2,826 +2,858 @@
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="color-scheme" content="dark" />
-		<title>Skills | Aryan Dani</title>
-		<meta
-			name="description"
-			content="Aryan Dani's technical skills and expertise in programming, web development, and artificial intelligence." />
-		<meta name="author" content="Aryan Dani" />
-		<meta name="robots" content="index, follow" />
-		<meta property="og:title" content="Skills | Aryan Dani" />
-		<meta
-			property="og:description"
-			content="Aryan Dani's technical skills and expertise in programming, web development, and artificial intelligence." />
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://aryandani.github.io/skills.html" />
-		<link rel="dns-prefetch" href="//fonts.googleapis.com" />
-		<link rel="dns-prefetch" href="//kit.fontawesome.com" />
-		<link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-		<link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
-		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-		<link rel="prefetch" href="index.html" />
-		<link rel="prefetch" href="projects.html" />
-		<link rel="prefetch" href="about.html" />
-		<link
-			rel="apple-touch-icon"
-			sizes="180x180"
-			href="favicons/apple-touch-icon.png" />
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="32x32"
-			href="favicons/favicon-32x32.png" />
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="16x16"
-			href="favicons/favicon-16x16.png" />
-		<link rel="manifest" href="site.webmanifest" />
-		<link rel="shortcut icon" href="favicons/favicon.ico" />
-		<link rel="preload" href="SCSS/main.css" as="style" />
-		<link rel="stylesheet" href="SCSS/main.css" />
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet" />
-	</head>
-	<body>
-		<div class="toast-container"></div>
-		<header>
-			<div
-				class="menu-btn"
-				id="menu-btn"
-				tabindex="0"
-				aria-label="Open main menu"
-				aria-controls="main-navigation"
-				aria-expanded="false"
-				role="button">
-				<span class="menu-btn__burger"></span>
-				<span class="menu-toggle-shortcut">Alt+M</span>
-			</div>
-			<nav
-				class="nav"
-				id="main-navigation"
-				role="navigation"
-				aria-label="Main menu">
-				<ul class="menu-nav">
-					<li class="menu-nav__item">
-						<a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="jobs.html" class="menu-nav__link" tabindex="0">Jobs</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="projects.html" class="menu-nav__link" tabindex="0"
-							>Projects</a
-						>
-					</li>
-					<li class="menu-nav__item">
-						<a href="certification.html" class="menu-nav__link" tabindex="0"
-							>Certifications</a
-						>
-					</li>
-					<li class="menu-nav__item active">
-						<a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="about.html" class="menu-nav__link" tabindex="0">About</a>
-					</li>
-				</ul>
-			</nav>
-		</header>
-		<main>
-			<section class="skills">
-				<div id="particles-js"></div>
-				<div class="intro-container animate-on-scroll">
-					<h1 class="skills__heading">
-						Technical <span class="text-secondary">Skills</span>
-						<span class="pulse-effect"></span>
-					</h1>
-					<p class="intro-text">
-						Here's a showcase of the tools and technologies I wield. From
-						crafting sleek web interfaces to diving deep into data and AI, this
-						is where my digital toolkit lives. Explore the skills I've honed
-						through projects and continuous learning.
-					</p>
-				</div>
-				<div
-					class="search-filter-controls skills__search-filter animate-on-scroll">
-					<div class="skills-search">
-						<input
-							type="search"
-							id="skillSearchInput"
-							class="form-control"
-							placeholder="Search skills..."
-							aria-label="Search skills" />
-					</div>
-					<div class="skills__categories">
-						<div class="category-tabs">
-							<button class="category-tab active" data-category="all">
-								All
-							</button>
-							<button class="category-tab" data-category="webdev">
-								Web Development
-							</button>
-							<button class="category-tab" data-category="machinelearning">
-								AI & ML
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="skills__container">
-					<div class="skills__group active" data-category="webdev">
-						<div
-							class="skills__card"
-							data-skill-name="HTML5"
-							data-projects="portfolio,expense-tracker">
-							<div class="skills__card-front">
-								<i class="fa-brands fa-html5 fa-4x"></i>
-								<h3>HTML5</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="95"></div>
-								</div>
-								<p>
-									Expert level proficiency in semantic HTML5, accessibility
-									standards, and modern markup practices.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#portfolio">Portfolio Site</a>
-										</li>
-										<li>
-											<a href="projects.html#expense-tracker"
-												>Expense Tracker</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="CSS3"
-							data-projects="portfolio,expense-tracker">
-							<div class="skills__card-front">
-								<i class="fa-brands fa-css3-alt fa-4x"></i>
-								<h3>CSS3</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="90"></div>
-								</div>
-								<p>
-									Advanced CSS animations, layouts, and responsive design.
-									Proficient with CSS Grid and Flexbox.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#portfolio">Portfolio Site</a>
-										</li>
-										<li>
-											<a href="projects.html#expense-tracker"
-												>Expense Tracker</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="SASS/SCSS"
-							data-projects="portfolio">
-							<div class="skills__card-front">
-								<i class="fa-brands fa-sass fa-4x"></i>
-								<h3>SASS/SCSS</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="85"></div>
-								</div>
-								<p>
-									Creating modular, maintainable CSS with variables, mixins,
-									nesting, and inheritance.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#portfolio">Portfolio Site</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="JavaScript"
-							data-projects="portfolio,expense-tracker,api-project">
-							<div class="skills__card-front">
-								<i class="fa-brands fa-js fa-4x"></i>
-								<h3>JavaScript</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="66"></div>
-								</div>
-								<p>
-									Strong understanding of ES6+ features, DOM manipulation, async
-									programming with Promises.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#portfolio">Portfolio Site</a>
-										</li>
-										<li>
-											<a href="projects.html#expense-tracker"
-												>Expense Tracker</a
-											>
-										</li>
-										<li><a href="projects.html#api-project">API Project</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="Angular"
-							data-projects="some-angular-project">
-							<div class="skills__card-front">
-								<i class="fa-brands fa-angular fa-4x"></i>
-								<h3>Angular</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="45"></div>
-								</div>
-								<p>
-									Building dynamic SPAs with Angular, including components,
-									services, and routing.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#some-angular-project"
-												>Some Angular Project</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="React"
-							data-projects="some-react-project">
-							<div class="skills__card-front">
-								<i class="fa-brands fa-react fa-4x"></i>
-								<h3>React</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="40"></div>
-								</div>
-								<p>
-									Experience with React hooks, context API, and state
-									management. Familiar with Next.js framework.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#some-react-project"
-												>Some React Project</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="Node.js"
-							data-projects="api-project">
-							<div class="skills__card-front">
-								<i class="fa-brands fa-node-js fa-4x"></i>
-								<h3>Node.js</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="70"></div>
-								</div>
-								<p>
-									Building RESTful APIs, handling file operations, and database
-									integration with Express.js.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li><a href="projects.html#api-project">API Project</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="NPM & Yarn"
-							data-projects="portfolio">
-							<div class="skills__card-front">
-								<i class="fa-brands fa-npm fa-4x"></i>
-								<h3>NPM & Yarn</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="70"></div>
-								</div>
-								<p>
-									Package management, dependency resolution, and project
-									configuration for JavaScript applications.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#portfolio">Portfolio Site</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="TypeScript"
-							data-projects="portfolio">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-code fa-4x"></i>
-								<h3>TypeScript</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="60"></div>
-								</div>
-								<p>
-									Developing type-safe JavaScript applications with interfaces,
-									generics, and advanced type features.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#portfolio">Portfolio Site</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="Express.js"
-							data-projects="api-project">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-server fa-4x"></i>
-								<h3>Express.js</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="75"></div>
-								</div>
-								<p>
-									Building RESTful APIs and server-side applications with
-									Express.js middleware and routing.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li><a href="projects.html#api-project">API Project</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="MongoDB"
-							data-projects="api-project">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-database fa-4x"></i>
-								<h3>MongoDB</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="72"></div>
-								</div>
-								<p>
-									Working with NoSQL databases, document models, and MongoDB
-									Atlas cloud hosting.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li><a href="projects.html#api-project">API Project</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="REST APIs"
-							data-projects="api-project">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-code-compare fa-4x"></i>
-								<h3>REST APIs</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="80"></div>
-								</div>
-								<p>
-									Designing and implementing RESTful APIs with proper status
-									codes and response formats.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li><a href="projects.html#api-project">API Project</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="skills__group" data-category="machinelearning">
-						<div
-							class="skills__card"
-							data-skill-name="TensorFlow"
-							data-projects="dicom-slice,data-science-capstone">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-microchip fa-4x"></i>
-								<h3>TensorFlow</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="60"></div>
-								</div>
-								<p>
-									Working knowledge of TensorFlow for building and deploying
-									basic ML models.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#dicom-slice">DICOM Slice Viewer</a>
-										</li>
-										<li>
-											<a href="projects.html#data-science-capstone"
-												>Data Science Capstone</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="PyTorch"
-							data-projects="deep-learning-project">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-fire fa-4x"></i>
-								<h3>PyTorch</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="55"></div>
-								</div>
-								<p>
-									Building and training basic neural network models with
-									PyTorch.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#deep-learning-project"
-												>Deep Learning Project</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="Data Analysis"
-							data-projects="data-science-capstone">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-chart-line fa-4x"></i>
-								<h3>Data Analysis</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="40"></div>
-								</div>
-								<p>
-									Working with datasets, basic statistical analysis, and data
-									visualization.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#data-science-capstone"
-												>Data Science Capstone</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="NLP"
-							data-projects="nlp-project">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-comments fa-4x"></i>
-								<h3>NLP</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="50"></div>
-								</div>
-								<p>
-									Text preprocessing, sentiment analysis, and basic language
-									models.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li><a href="projects.html#nlp-project">NLP Project</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="Deep Learning"
-							data-projects="deep-learning-project">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-brain fa-4x"></i>
-								<h3>Deep Learning</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="30"></div>
-								</div>
-								<p>
-									Working with neural network architectures and optimization
-									techniques.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#deep-learning-project"
-												>Deep Learning Project</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="Scikit-Learn"
-							data-projects="ml-project">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-code-branch fa-4x"></i>
-								<h3>Scikit-Learn</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="40"></div>
-								</div>
-								<p>
-									Implementation of traditional ML algorithms and evaluation
-									metrics.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li><a href="projects.html#ml-project">ML Project</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div
-							class="skills__card"
-							data-skill-name="ML Deployment"
-							data-projects="ml-deployment-project">
-							<div class="skills__card-front">
-								<i class="fa-solid fa-cloud fa-4x"></i>
-								<h3>ML Deployment</h3>
-							</div>
-							<div class="skills__card-back">
-								<div class="skills__progress">
-									<div class="skills__progress-bar" data-level="55"></div>
-								</div>
-								<p>
-									Deploying machine learning models to production environments.
-								</p>
-								<div class="skill-projects">
-									<h4>Used in:</h4>
-									<ul>
-										<li>
-											<a href="projects.html#ml-deployment-project"
-												>ML Deployment Project</a
-											>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="no-skills">
-					<i class="fas fa-search"></i>
-					<h3>No skills match your search or filter</h3>
-					<p>Try adjusting your search or selecting a different category.</p>
-				</div>
-			</section>
-		</main>
-		<footer class="footer">
-			<a href="copyright.html" class="copyright-link"
-				>&copy; 2025 Aryan Dani All Rights Reserved</a
-			>
-		</footer>
-		<script src="Js/performance.js" defer></script>
-		<script src="Js/main.js" defer></script>
-		<script
-			src="https://kit.fontawesome.com/1267cf2b7d.js"
-			crossorigin="anonymous"
-			defer></script>
-		<script src="Js/card-3d-effect.js" defer></script>
-		<script src="Js/skills.js" defer></script>
-		<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-		<script>
-			document.addEventListener("DOMContentLoaded", () => {
-				// Wrap in DOMContentLoaded
-				// Check if the element exists before initializing
-				if (document.getElementById("particles-js")) {
-					// Add particles config from index.html
-					particlesJS("particles-js", {
-						particles: {
-							number: {
-								value: 100, // Increased particle count
-								density: {
-									enable: true,
-									value_area: 800,
-								},
-							},
-							color: {
-								value: "#00adb5",
-							},
-							shape: {
-								type: "circle",
-								stroke: {
-									width: 0,
-									color: "#000000",
-								},
-								polygon: {
-									nb_sides: 5,
-								},
-							},
-							opacity: {
-								value: 0.6, // Increased opacity
-								random: true, // Make opacity random
-								anim: {
-									enable: true,
-									speed: 0.5,
-									opacity_min: 0.2,
-									sync: false,
-								},
-							},
-							size: {
-								value: 4, // Increased size
-								random: true,
-								anim: {
-									enable: true,
-									speed: 3,
-									size_min: 1,
-									sync: false,
-								},
-							},
-							line_linked: {
-								enable: true,
-								distance: 120, // Decreased distance for denser lines
-								color: "#ffffff",
-								opacity: 0.5, // Increased line opacity
-								width: 1,
-							},
-							move: {
-								enable: true,
-								speed: 3, // Increased speed
-								direction: "none",
-								random: true, // Random direction
-								straight: false,
-								out_mode: "out",
-								bounce: false,
-								attract: {
-									enable: true, // Enable attraction
-									rotateX: 600,
-									rotateY: 1200,
-								},
-							},
-						},
-						interactivity: {
-							detect_on: "canvas",
-							events: {
-								onhover: {
-									enable: true,
-									mode: "grab", // Changed to grab
-								},
-								onclick: {
-									enable: true,
-									mode: "push",
-								},
-								resize: true,
-							},
-							modes: {
-								grab: {
-									distance: 180, // Increased grab distance
-									line_linked: {
-										opacity: 0.8, // Stronger line on grab
-									},
-								},
-								bubble: {
-									distance: 400,
-									size: 40,
-									duration: 2,
-									opacity: 8,
-									speed: 3,
-								},
-								repulse: {
-									distance: 200,
-									duration: 0.4,
-								},
-								push: {
-									particles_nb: 4,
-								},
-								remove: {
-									particles_nb: 2,
-								},
-							},
-						},
-						retina_detect: true,
-					});
-				} else {
-					console.error("Could not find element with ID 'particles-js'");
-				}
-			}); // End DOMContentLoaded
-		</script>
-		<script src="Js/custom-cursor.js" defer></script>
-		<div
-			class="skill-modal"
-			id="skillModal"
-			aria-hidden="true"
-			role="dialog"
-			aria-labelledby="skillModalTitle">
-			<div class="skill-modal__overlay" tabindex="-1" data-close-modal></div>
-			<div class="skill-modal__content" role="document">
-				<button
-					class="skill-modal__close"
-					aria-label="Close skill details"
-					data-close-modal>
-					&times;
-				</button>
-				<div class="skill-modal__header">
-					<i class="skill-modal__icon" aria-hidden="true"></i>
-					<h2 id="skillModalTitle" class="skill-modal__title">Skill Title</h2>
-				</div>
-				<div class="skill-modal__body">
-					<div class="skills__progress skill-modal__progress">
-						<div class="skills__progress-bar" data-level="0"></div>
-						<span class="skills__progress-percent">0%</span>
-					</div>
-					<p class="skill-modal__description">Skill description goes here.</p>
-					<div class="skill-modal__projects">
-						<h4>Used in:</h4>
-						<ul></ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="dark" />
+    <title>Skills | Aryan Dani</title>
+    <meta
+      name="description"
+      content="Aryan Dani's technical skills and expertise in programming, web development, and artificial intelligence."
+    />
+    <meta name="author" content="Aryan Dani" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Skills | Aryan Dani" />
+    <meta
+      property="og:description"
+      content="Aryan Dani's technical skills and expertise in programming, web development, and artificial intelligence."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aryandani.github.io/skills.html" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//kit.fontawesome.com" />
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="prefetch" href="index.html" />
+    <link rel="prefetch" href="projects.html" />
+    <link rel="prefetch" href="about.html" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <link rel="preload" href="SCSS/main.css" as="style" />
+    <link rel="stylesheet" href="SCSS/main.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="toast-container"></div>
+    <header>
+      <div
+        class="menu-btn"
+        id="menu-btn"
+        tabindex="0"
+        aria-label="Open main menu"
+        aria-controls="main-navigation"
+        aria-expanded="false"
+        role="button"
+      >
+        <span class="menu-btn__burger"></span>
+        <span class="menu-toggle-shortcut">Alt+M</span>
+      </div>
+      <nav
+        class="nav"
+        id="main-navigation"
+        role="navigation"
+        aria-label="Main menu"
+      >
+        <ul class="menu-nav">
+          <li class="menu-nav__item">
+            <a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="jobs.html" class="menu-nav__link" tabindex="0">Jobs</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="projects.html" class="menu-nav__link" tabindex="0"
+              >Projects</a
+            >
+          </li>
+          <li class="menu-nav__item">
+            <a href="certification.html" class="menu-nav__link" tabindex="0"
+              >Certifications</a
+            >
+          </li>
+          <li class="menu-nav__item active">
+            <a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="about.html" class="menu-nav__link" tabindex="0">About</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="skills">
+        <div id="particles-js"></div>
+        <div class="intro-container animate-on-scroll">
+          <h1 class="skills__heading">
+            Technical <span class="text-secondary">Skills</span>
+            <span class="pulse-effect"></span>
+          </h1>
+          <p class="intro-text">
+            Here's a showcase of the tools and technologies I wield. From
+            crafting sleek web interfaces to diving deep into data and AI, this
+            is where my digital toolkit lives. Explore the skills I've honed
+            through projects and continuous learning.
+          </p>
+        </div>
+        <div
+          class="search-filter-controls skills__search-filter animate-on-scroll"
+        >
+          <div class="skills-search">
+            <input
+              type="search"
+              id="skillSearchInput"
+              class="form-control"
+              placeholder="Search skills..."
+              aria-label="Search skills"
+            />
+          </div>
+          <div class="skills__categories">
+            <div class="category-tabs">
+              <button class="category-tab active" data-category="all">
+                All
+              </button>
+              <button class="category-tab" data-category="webdev">
+                Web Development
+              </button>
+              <button class="category-tab" data-category="machinelearning">
+                AI & ML
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="skills__container">
+          <div class="skills__group active" data-category="webdev">
+            <div
+              class="skills__card"
+              data-skill-name="HTML5"
+              data-projects="portfolio,expense-tracker"
+            >
+              <div class="skills__card-front">
+                <i class="fa-brands fa-html5 fa-4x"></i>
+                <h3>HTML5</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="95"></div>
+                </div>
+                <p>
+                  Expert level proficiency in semantic HTML5, accessibility
+                  standards, and modern markup practices.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#portfolio">Portfolio Site</a>
+                    </li>
+                    <li>
+                      <a href="projects.html#expense-tracker"
+                        >Expense Tracker</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="CSS3"
+              data-projects="portfolio,expense-tracker"
+            >
+              <div class="skills__card-front">
+                <i class="fa-brands fa-css3-alt fa-4x"></i>
+                <h3>CSS3</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="90"></div>
+                </div>
+                <p>
+                  Advanced CSS animations, layouts, and responsive design.
+                  Proficient with CSS Grid and Flexbox.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#portfolio">Portfolio Site</a>
+                    </li>
+                    <li>
+                      <a href="projects.html#expense-tracker"
+                        >Expense Tracker</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="SASS/SCSS"
+              data-projects="portfolio"
+            >
+              <div class="skills__card-front">
+                <i class="fa-brands fa-sass fa-4x"></i>
+                <h3>SASS/SCSS</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="85"></div>
+                </div>
+                <p>
+                  Creating modular, maintainable CSS with variables, mixins,
+                  nesting, and inheritance.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#portfolio">Portfolio Site</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="JavaScript"
+              data-projects="portfolio,expense-tracker,api-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-brands fa-js fa-4x"></i>
+                <h3>JavaScript</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="66"></div>
+                </div>
+                <p>
+                  Strong understanding of ES6+ features, DOM manipulation, async
+                  programming with Promises.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#portfolio">Portfolio Site</a>
+                    </li>
+                    <li>
+                      <a href="projects.html#expense-tracker"
+                        >Expense Tracker</a
+                      >
+                    </li>
+                    <li><a href="projects.html#api-project">API Project</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="Angular"
+              data-projects="some-angular-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-brands fa-angular fa-4x"></i>
+                <h3>Angular</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="45"></div>
+                </div>
+                <p>
+                  Building dynamic SPAs with Angular, including components,
+                  services, and routing.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#some-angular-project"
+                        >Some Angular Project</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="React"
+              data-projects="some-react-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-brands fa-react fa-4x"></i>
+                <h3>React</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="40"></div>
+                </div>
+                <p>
+                  Experience with React hooks, context API, and state
+                  management. Familiar with Next.js framework.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#some-react-project"
+                        >Some React Project</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="Node.js"
+              data-projects="api-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-brands fa-node-js fa-4x"></i>
+                <h3>Node.js</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="70"></div>
+                </div>
+                <p>
+                  Building RESTful APIs, handling file operations, and database
+                  integration with Express.js.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li><a href="projects.html#api-project">API Project</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="NPM & Yarn"
+              data-projects="portfolio"
+            >
+              <div class="skills__card-front">
+                <i class="fa-brands fa-npm fa-4x"></i>
+                <h3>NPM & Yarn</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="70"></div>
+                </div>
+                <p>
+                  Package management, dependency resolution, and project
+                  configuration for JavaScript applications.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#portfolio">Portfolio Site</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="TypeScript"
+              data-projects="portfolio"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-code fa-4x"></i>
+                <h3>TypeScript</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="60"></div>
+                </div>
+                <p>
+                  Developing type-safe JavaScript applications with interfaces,
+                  generics, and advanced type features.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#portfolio">Portfolio Site</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="Express.js"
+              data-projects="api-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-server fa-4x"></i>
+                <h3>Express.js</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="75"></div>
+                </div>
+                <p>
+                  Building RESTful APIs and server-side applications with
+                  Express.js middleware and routing.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li><a href="projects.html#api-project">API Project</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="MongoDB"
+              data-projects="api-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-database fa-4x"></i>
+                <h3>MongoDB</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="72"></div>
+                </div>
+                <p>
+                  Working with NoSQL databases, document models, and MongoDB
+                  Atlas cloud hosting.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li><a href="projects.html#api-project">API Project</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="REST APIs"
+              data-projects="api-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-code-compare fa-4x"></i>
+                <h3>REST APIs</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="80"></div>
+                </div>
+                <p>
+                  Designing and implementing RESTful APIs with proper status
+                  codes and response formats.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li><a href="projects.html#api-project">API Project</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="skills__group" data-category="machinelearning">
+            <div
+              class="skills__card"
+              data-skill-name="TensorFlow"
+              data-projects="dicom-slice,data-science-capstone"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-microchip fa-4x"></i>
+                <h3>TensorFlow</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="60"></div>
+                </div>
+                <p>
+                  Working knowledge of TensorFlow for building and deploying
+                  basic ML models.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#dicom-slice">DICOM Slice Viewer</a>
+                    </li>
+                    <li>
+                      <a href="projects.html#data-science-capstone"
+                        >Data Science Capstone</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="PyTorch"
+              data-projects="deep-learning-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-fire fa-4x"></i>
+                <h3>PyTorch</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="55"></div>
+                </div>
+                <p>
+                  Building and training basic neural network models with
+                  PyTorch.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#deep-learning-project"
+                        >Deep Learning Project</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="Data Analysis"
+              data-projects="data-science-capstone"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-chart-line fa-4x"></i>
+                <h3>Data Analysis</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="40"></div>
+                </div>
+                <p>
+                  Working with datasets, basic statistical analysis, and data
+                  visualization.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#data-science-capstone"
+                        >Data Science Capstone</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="NLP"
+              data-projects="nlp-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-comments fa-4x"></i>
+                <h3>NLP</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="50"></div>
+                </div>
+                <p>
+                  Text preprocessing, sentiment analysis, and basic language
+                  models.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li><a href="projects.html#nlp-project">NLP Project</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="Deep Learning"
+              data-projects="deep-learning-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-brain fa-4x"></i>
+                <h3>Deep Learning</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="30"></div>
+                </div>
+                <p>
+                  Working with neural network architectures and optimization
+                  techniques.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#deep-learning-project"
+                        >Deep Learning Project</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="Scikit-Learn"
+              data-projects="ml-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-code-branch fa-4x"></i>
+                <h3>Scikit-Learn</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="40"></div>
+                </div>
+                <p>
+                  Implementation of traditional ML algorithms and evaluation
+                  metrics.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li><a href="projects.html#ml-project">ML Project</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="skills__card"
+              data-skill-name="ML Deployment"
+              data-projects="ml-deployment-project"
+            >
+              <div class="skills__card-front">
+                <i class="fa-solid fa-cloud fa-4x"></i>
+                <h3>ML Deployment</h3>
+              </div>
+              <div class="skills__card-back">
+                <div class="skills__progress">
+                  <div class="skills__progress-bar" data-level="55"></div>
+                </div>
+                <p>
+                  Deploying machine learning models to production environments.
+                </p>
+                <div class="skill-projects">
+                  <h4>Used in:</h4>
+                  <ul>
+                    <li>
+                      <a href="projects.html#ml-deployment-project"
+                        >ML Deployment Project</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="no-skills">
+          <i class="fas fa-search"></i>
+          <h3>No skills match your search or filter</h3>
+          <p>Try adjusting your search or selecting a different category.</p>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <a href="copyright.html" class="copyright-link"
+        >&copy; 2025 Aryan Dani All Rights Reserved</a
+      >
+    </footer>
+    <script src="Js/performance.js" defer></script>
+    <script src="Js/main.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/1267cf2b7d.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script src="Js/card-3d-effect.js" defer></script>
+    <script src="Js/skills.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Wrap in DOMContentLoaded
+        // Check if the element exists before initializing
+        if (document.getElementById("particles-js")) {
+          // Add particles config from index.html
+          particlesJS("particles-js", {
+            particles: {
+              number: {
+                value: 100, // Increased particle count
+                density: {
+                  enable: true,
+                  value_area: 800,
+                },
+              },
+              color: {
+                value: "#00adb5",
+              },
+              shape: {
+                type: "circle",
+                stroke: {
+                  width: 0,
+                  color: "#000000",
+                },
+                polygon: {
+                  nb_sides: 5,
+                },
+              },
+              opacity: {
+                value: 0.6, // Increased opacity
+                random: true, // Make opacity random
+                anim: {
+                  enable: true,
+                  speed: 0.5,
+                  opacity_min: 0.2,
+                  sync: false,
+                },
+              },
+              size: {
+                value: 4, // Increased size
+                random: true,
+                anim: {
+                  enable: true,
+                  speed: 3,
+                  size_min: 1,
+                  sync: false,
+                },
+              },
+              line_linked: {
+                enable: true,
+                distance: 120, // Decreased distance for denser lines
+                color: "#ffffff",
+                opacity: 0.5, // Increased line opacity
+                width: 1,
+              },
+              move: {
+                enable: true,
+                speed: 3, // Increased speed
+                direction: "none",
+                random: true, // Random direction
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+                attract: {
+                  enable: true, // Enable attraction
+                  rotateX: 600,
+                  rotateY: 1200,
+                },
+              },
+            },
+            interactivity: {
+              detect_on: "canvas",
+              events: {
+                onhover: {
+                  enable: true,
+                  mode: "grab", // Changed to grab
+                },
+                onclick: {
+                  enable: true,
+                  mode: "push",
+                },
+                resize: true,
+              },
+              modes: {
+                grab: {
+                  distance: 180, // Increased grab distance
+                  line_linked: {
+                    opacity: 0.8, // Stronger line on grab
+                  },
+                },
+                bubble: {
+                  distance: 400,
+                  size: 40,
+                  duration: 2,
+                  opacity: 8,
+                  speed: 3,
+                },
+                repulse: {
+                  distance: 200,
+                  duration: 0.4,
+                },
+                push: {
+                  particles_nb: 4,
+                },
+                remove: {
+                  particles_nb: 2,
+                },
+              },
+            },
+            retina_detect: true,
+          });
+        } else {
+          console.error("Could not find element with ID 'particles-js'");
+        }
+      }); // End DOMContentLoaded
+    </script>
+    <script src="Js/custom-cursor.js" defer></script>
+    <div
+      class="skill-modal"
+      id="skillModal"
+      aria-hidden="true"
+      role="dialog"
+      aria-labelledby="skillModalTitle"
+    >
+      <div class="skill-modal__overlay" tabindex="-1" data-close-modal></div>
+      <div class="skill-modal__content" role="document">
+        <button
+          class="skill-modal__close"
+          aria-label="Close skill details"
+          data-close-modal
+        >
+          &times;
+        </button>
+        <div class="skill-modal__header">
+          <i class="skill-modal__icon" aria-hidden="true"></i>
+          <h2 id="skillModalTitle" class="skill-modal__title">Skill Title</h2>
+        </div>
+        <div class="skill-modal__body">
+          <div class="skills__progress skill-modal__progress">
+            <div class="skills__progress-bar" data-level="0"></div>
+            <span class="skills__progress-percent">0%</span>
+          </div>
+          <p class="skill-modal__description">Skill description goes here.</p>
+          <div class="skill-modal__projects">
+            <h4>Used in:</h4>
+            <ul></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

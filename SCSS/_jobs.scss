@@ -207,7 +207,10 @@
           color: $text-color; // Ensure text is light
           opacity: 0;
           animation: slideInUp 0.5s forwards;
-          animation-delay: calc((var(--job-index, 0) * 0.15s) + 0.3s + (var(--item-index, 0) * 0.08s)); // Adjusted animation delay
+          animation-delay: calc(
+            (var(--job-index, 0) * 0.15s) + 0.3s +
+              (var(--item-index, 0) * 0.08s)
+          ); // Adjusted animation delay
 
           &:hover {
             transform: translateY(-5px) scale(1.02); // Subtle hover effect

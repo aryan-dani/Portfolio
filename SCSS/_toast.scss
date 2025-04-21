@@ -14,9 +14,11 @@
 }
 
 .toast {
-  background: linear-gradient(135deg,
-      rgba(darken($primary-color, 5%), 0.95),
-      rgba($primary-color, 0.92)); // Slightly adjusted gradient
+  background: linear-gradient(
+    135deg,
+    rgba(darken($primary-color, 5%), 0.95),
+    rgba($primary-color, 0.92)
+  ); // Slightly adjusted gradient
   color: #eee; // Lighter text color for better contrast
   padding: 15px 20px; // Increased padding
   border-radius: 10px; // Slightly larger radius
@@ -40,9 +42,11 @@
 
   &.custom {
     border-color: $secondary-color;
-    background: linear-gradient(135deg,
-        rgba(darken($primary-color, 8%), 0.96),
-        rgba(darken($primary-color, 3%), 0.94)); // Adjusted custom background
+    background: linear-gradient(
+      135deg,
+      rgba(darken($primary-color, 8%), 0.96),
+      rgba(darken($primary-color, 3%), 0.94)
+    ); // Adjusted custom background
     padding: 15px 20px; // Consistent padding
 
     .toast-icon {
