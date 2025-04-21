@@ -14,11 +14,9 @@
 }
 
 .toast {
-  background: linear-gradient(
-    135deg,
-    rgba(darken($primary-color, 5%), 0.95),
-    rgba($primary-color, 0.92)
-  ); // Slightly adjusted gradient
+  background: linear-gradient(135deg,
+      rgba(darken($primary-color, 5%), 0.95),
+      rgba($primary-color, 0.92)); // Slightly adjusted gradient
   color: #eee; // Lighter text color for better contrast
   padding: 15px 20px; // Increased padding
   border-radius: 10px; // Slightly larger radius
@@ -42,11 +40,9 @@
 
   &.custom {
     border-color: $secondary-color;
-    background: linear-gradient(
-      135deg,
-      rgba(darken($primary-color, 8%), 0.96),
-      rgba(darken($primary-color, 3%), 0.94)
-    ); // Adjusted custom background
+    background: linear-gradient(135deg,
+        rgba(darken($primary-color, 8%), 0.96),
+        rgba(darken($primary-color, 3%), 0.94)); // Adjusted custom background
     padding: 15px 20px; // Consistent padding
 
     .toast-icon {
@@ -63,6 +59,7 @@
   // Type-specific styles (Moved outside .custom)
   &.success {
     border-color: #4caf50;
+
     .toast-icon i {
       color: #4caf50; // Override default color
     }
@@ -70,6 +67,7 @@
 
   &.error {
     border-color: #f44336;
+
     .toast-icon i {
       color: #f44336; // Override default color
     }
@@ -77,6 +75,7 @@
 
   &.warning {
     border-color: #ff9800; // Consistent warning color
+
     .toast-icon i {
       color: #ff9800; // Override default color
     }
@@ -84,6 +83,7 @@
 
   &.info {
     border-color: aliceblue; // Changed from #2196f3
+
     .toast-icon i {
       color: aliceblue; // Changed from #2196f3
     }
