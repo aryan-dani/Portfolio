@@ -24,23 +24,7 @@
   overflow: hidden;
   display: flex; // Use flexbox for centering content vertically
   flex-direction: column;
-  align-items: center; // Center items horizontally
-  padding: 4rem 0; // Increased vertical padding
-  width: 100%; // Ensure full width initially
-  max-width: 1400px; // Apply max-width to the section
-  margin: 0 auto; // Center the section
-  box-sizing: border-box; // Include padding in width calculation
-  min-height: calc(100vh - 80px); // Ensure it takes at least viewport height minus header
-
-  @include media-sm {
-    padding-left: 1.5rem; // Adjusted padding for small screens
-    padding-right: 1.5rem;
-  }
-
-  @include media-md {
-    padding-left: 2rem; // Keep padding for medium screens and up
-    padding-right: 2rem;
-  }
+  @include animated-gradient-background; // Added animated gradient background mixin
 
   &::before {
     content: "";

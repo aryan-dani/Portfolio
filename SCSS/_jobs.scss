@@ -8,6 +8,7 @@
   position: relative; // Keep relative for absolute positioning of children
   overflow: hidden; // Contain particles within this section
   z-index: 0; // Base stacking context
+  @include animated-gradient-background; // Added animated gradient background mixin
 
   // Added particles styling specific to this layout, similar to _home.scss
   #particles-js {

@@ -31,7 +31,7 @@
   box-sizing: border-box; // Include padding in width calculation
   z-index: 0; // CHANGED from 1 - Make this the base stacking context
   // pointer-events: none; // REMOVE this
-
+  @include animated-gradient-background;
   @include media-sm {
     padding-left: 2rem; // Increase padding on larger screens
     padding-right: 2rem;

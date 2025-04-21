@@ -842,6 +842,9 @@
   position: relative;
   overflow: hidden;
   z-index: 0;
+  background: linear-gradient(-45deg, #272727, #343434, #1a1a1a, #272727);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
 }
 .jobs-layout #particles-js {
   position: absolute;
@@ -1234,25 +1237,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 4rem 0;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  min-height: calc(100vh - 80px);
-}
-@media screen and (min-width: 576px) {
-  .project {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-@media screen and (min-width: 768px) {
-  .project {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
+  background: linear-gradient(-45deg, #272727, #343434, #1a1a1a, #272727);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
 }
 .project::before {
   content: "";
@@ -2222,6 +2209,9 @@
   padding-right: 1rem;
   box-sizing: border-box;
   z-index: 0;
+  background: linear-gradient(-45deg, #272727, #343434, #1a1a1a, #272727);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
 }
 @media screen and (min-width: 576px) {
   .certification {
@@ -2824,6 +2814,9 @@
   align-items: center;
   position: relative;
   z-index: 0;
+  background: linear-gradient(-45deg, #272727, #343434, #1a1a1a, #272727);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
 }
 @media screen and (min-width: 576px) {
   .skills {
