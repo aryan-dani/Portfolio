@@ -5,7 +5,7 @@ const STATIC_ASSETS = [
   "/",
   "/index.html",
   "/about.html",
-  "/jobs.html",
+  "/experience.html",
   "/projects.html",
   "/skills.html",
   "/copyright.html",

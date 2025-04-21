@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const pagePath = window.location.pathname;
   const isHomePage = pagePath.includes("index.html") || pagePath.endsWith("/");
   let pageName = "home";
-  if (pagePath.includes("jobs.html")) pageName = "jobs";
+  if (pagePath.includes("experience.html")) pageName = "experience";
   else if (pagePath.includes("projects.html")) pageName = "projects";
   else if (pagePath.includes("certification.html")) pageName = "certification";
   else if (pagePath.includes("skills.html")) pageName = "skills";
@@ -641,27 +641,27 @@ function startTypingAnimation(subtitle) {
 }
 
 function initJobsPageAnimations() {
-  const jobsTitle = document.querySelector(
-    ".jobs-layout .heading .text-secondary"
+  const experienceTitle = document.querySelector(
+    ".experience-layout .heading .text-secondary"
   );
-  if (jobsTitle) {
-    jobsTitle.style.animation = "none";
-    jobsTitle.style.opacity = "0";
-    jobsTitle.style.transform = "translateY(-20px)";
-    jobsTitle.style.transition =
+  if (experienceTitle) {
+    experienceTitle.style.animation = "none";
+    experienceTitle.style.opacity = "0";
+    experienceTitle.style.transform = "translateY(-20px)";
+    experienceTitle.style.transition =
       "all 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)";
     setTrackedTimeout(
       () => {
-        jobsTitle.style.opacity = "1";
-        jobsTitle.style.transform = "translateY(0)";
+        experienceTitle.style.opacity = "1";
+        experienceTitle.style.transform = "translateY(0)";
       },
       300,
-      "jobsTitleAnimation"
+      "experienceTitleAnimation"
     );
   }
-  const jobCards = document.querySelectorAll(".Jobs");
-  if (jobCards.length > 0) {
-    jobCards.forEach((card, index) => {
+  const experienceCards = document.querySelectorAll(".Experience");
+  if (experienceCards.length > 0) {
+    experienceCards.forEach((card, index) => {
       card.style.animation = "none";
       card.style.opacity = "0";
       card.style.transform =
@@ -796,7 +796,7 @@ function initUniversalAnimations() {
 } // <-- Corrected closing brace
 function initParallaxEffect() {
   const parallaxElements = document.querySelectorAll(
-    ".home, .about, .jobs-layout, .project__project-image"
+    ".home, .about, .experience-layout, .project__project-image"
   );
   let ticking = false;
   window.addEventListener("scroll", () => {
@@ -995,7 +995,7 @@ function detectKeyboardNavigation() {
 // --- START: Added Navigation Logic ---
 const pageOrder = [
   "index.html",
-  "jobs.html",
+  "experience.html",
   "projects.html",
   "certification.html",
   "skills.html",
@@ -1004,7 +1004,7 @@ const pageOrder = [
 
 const pageShortcuts = {
   H: "index.html",
-  J: "jobs.html",
+  E: "experience.html", // Changed from jobs.html to experience.html but keeping the same shortcut key
   P: "projects.html",
   C: "certification.html",
   S: "skills.html",

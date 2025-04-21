@@ -835,7 +835,7 @@
     white-space: nowrap;
   }
 }
-.jobs-layout {
+.experience-layout {
   padding: 4rem 1rem 5rem 1rem;
   min-height: 100vh;
   width: 100%;
@@ -846,7 +846,7 @@
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
 }
-.jobs-layout #particles-js {
+.experience-layout #particles-js {
   position: absolute;
   top: 0;
   left: 0;
@@ -854,19 +854,19 @@
   height: 100%;
   z-index: -1;
 }
-.jobs-layout #particles-js canvas {
+.experience-layout #particles-js canvas {
   pointer-events: auto;
   position: relative;
   z-index: 0;
 }
-.jobs-layout .jobs-container {
+.experience-layout .experience-container {
   position: relative;
   max-width: 950px;
   margin: 0 auto;
   padding: 0 1rem;
   z-index: 1;
 }
-.jobs-layout .heading {
+.experience-layout .heading {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -876,7 +876,7 @@
   animation: fadeInStagger 0.8s ease forwards;
   margin-bottom: 2rem;
 }
-.jobs-layout .heading .text-secondary {
+.experience-layout .heading .text-secondary {
   margin-top: 0;
   background-color: aliceblue;
   color: #272727;
@@ -890,7 +890,7 @@
   position: relative;
   overflow: hidden;
 }
-.jobs-layout .heading .text-secondary::before {
+.experience-layout .heading .text-secondary::before {
   content: "";
   position: absolute;
   top: 0;
@@ -900,14 +900,14 @@
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s ease;
 }
-.jobs-layout .heading .text-secondary:hover::before {
+.experience-layout .heading .text-secondary:hover::before {
   left: 100%;
 }
-.jobs-layout .heading .text-secondary:hover {
+.experience-layout .heading .text-secondary:hover {
   transform: scale(1.05) translateY(-2px);
   box-shadow: 0 4px 15px rgba(39, 39, 39, 0.4);
 }
-.jobs-layout .Jobs {
+.experience-layout .Experience {
   background-color: rgba(39, 39, 39, 0.85);
   -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);
@@ -924,14 +924,14 @@
   opacity: 0;
   transform: perspective(1000px) translateY(30px);
   animation: slideInUp 0.6s forwards;
-  animation-delay: calc(var(--job-index, 0) * 0.15s);
+  animation-delay: calc(var(--experience-index, 0) * 0.15s);
 }
-.jobs-layout .Jobs:hover {
+.experience-layout .Experience:hover {
   transform: perspective(1000px) translateY(-10px) scale(1.02);
   box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
   border-color: rgba(240, 248, 255, 0.4);
 }
-.jobs-layout .Jobs h2 {
+.experience-layout .Experience h2 {
   display: inline-block;
   padding: 0.3rem 1.2rem;
   background-color: aliceblue;
@@ -944,11 +944,11 @@
   position: relative;
   overflow: hidden;
 }
-.jobs-layout .Jobs h2:hover {
+.experience-layout .Experience h2:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
-.jobs-layout .Jobs h2::before {
+.experience-layout .Experience h2::before {
   content: "";
   position: absolute;
   top: 0;
@@ -958,18 +958,18 @@
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s ease;
 }
-.jobs-layout .Jobs h2:hover::before {
+.experience-layout .Experience h2:hover::before {
   left: 100%;
 }
-.jobs-layout .Jobs h2:hover {
+.experience-layout .Experience h2:hover {
   cursor: default;
   transform: translateY(-5px) scale(1.08);
 }
-.jobs-layout .Jobs h3 {
+.experience-layout .Experience h3 {
   margin-bottom: 0.8rem;
   position: relative;
 }
-.jobs-layout .Jobs h3 a {
+.experience-layout .Experience h3 a {
   font-size: 1.6rem;
   color: aliceblue;
   text-decoration: none;
@@ -978,7 +978,7 @@
   position: relative;
   padding-bottom: 3px;
 }
-.jobs-layout .Jobs h3 a::after {
+.experience-layout .Experience h3 a::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -988,14 +988,14 @@
   background-color: grey;
   transition: width 0.4s ease;
 }
-.jobs-layout .Jobs h3 a:hover {
+.experience-layout .Experience h3 a:hover {
   color: grey;
   text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-.jobs-layout .Jobs h3 a:hover::after {
+.experience-layout .Experience h3 a:hover::after {
   width: 100%;
 }
-.jobs-layout .Jobs h4 {
+.experience-layout .Experience h4 {
   display: inline-block;
   background-color: rgba(240, 248, 255, 0.2);
   color: #fff;
@@ -1007,16 +1007,16 @@
   transform-origin: center left;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.jobs-layout .Jobs h4:hover {
+.experience-layout .Experience h4:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
-.jobs-layout .Jobs h4:hover {
+.experience-layout .Experience h4:hover {
   cursor: default;
   transform: translateY(-5px) scale(1.08);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-.jobs-layout .Jobs h6 {
+.experience-layout .Experience h6 {
   display: inline-block;
   font-size: 0.8rem;
   background-color: rgba(240, 248, 255, 0.3);
@@ -1033,7 +1033,7 @@
   position: relative;
   overflow: hidden;
 }
-.jobs-layout .Jobs h6::before {
+.experience-layout .Experience h6::before {
   content: "";
   position: absolute;
   top: 0;
@@ -1043,19 +1043,19 @@
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s ease;
 }
-.jobs-layout .Jobs h6:hover::before {
+.experience-layout .Experience h6:hover::before {
   left: 100%;
 }
-.jobs-layout .Jobs h6:hover {
+.experience-layout .Experience h6:hover {
   cursor: default;
   transform: translateY(-5px) scale(1.15);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-.jobs-layout .Jobs .content {
+.experience-layout .Experience .content {
   color: #fff;
   margin-top: 1.5rem;
 }
-.jobs-layout .Jobs .content ul {
+.experience-layout .Experience .content ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -1063,7 +1063,7 @@
   grid-template-columns: 1fr;
   gap: 1rem;
 }
-.jobs-layout .Jobs .content ul li {
+.experience-layout .Experience .content ul li {
   font-size: 1rem;
   background: rgba(39, 39, 39, 0.6);
   border-left: 4px solid aliceblue;
@@ -1075,139 +1075,129 @@
   color: #fff;
   opacity: 0;
   animation: slideInUp 0.5s forwards;
-  animation-delay: calc(var(--job-index, 0) * 0.15s + 0.3s + var(--item-index, 0) * 0.08s);
+  animation-delay: calc(var(--experience-index, 0) * 0.15s + 0.3s + var(--item-index, 0) * 0.08s);
 }
-.jobs-layout .Jobs .content ul li:hover {
+.experience-layout .Experience .content ul li:hover {
   transform: translateY(-5px) scale(1.02);
   background: rgba(39, 39, 39, 0.8);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   border-left-color: white;
 }
 
-.Jobs:nth-child(2) {
-  --job-index: 1;
+.Experience:nth-child(2) {
+  --experience-index: 1;
 }
-.Jobs:nth-child(2) .content ul li:nth-child(1) {
+.Experience:nth-child(2) .content ul li:nth-child(1) {
   --item-index: 1;
 }
 
-.Jobs:nth-child(3) {
-  --job-index: 2;
+.Experience:nth-child(3) {
+  --experience-index: 2;
 }
-.Jobs:nth-child(3) .content ul li:nth-child(2) {
+.Experience:nth-child(3) .content ul li:nth-child(2) {
   --item-index: 2;
 }
 
-.Jobs:nth-child(4) {
-  --job-index: 3;
+.Experience:nth-child(4) {
+  --experience-index: 3;
 }
-.Jobs:nth-child(4) .content ul li:nth-child(3) {
+.Experience:nth-child(4) .content ul li:nth-child(3) {
   --item-index: 3;
 }
 
-.Jobs:nth-child(5) {
-  --job-index: 4;
+.Experience:nth-child(5) {
+  --experience-index: 4;
 }
-.Jobs:nth-child(5) .content ul li:nth-child(4) {
+.Experience:nth-child(5) .content ul li:nth-child(4) {
   --item-index: 4;
 }
 
-.Jobs:nth-child(6) {
-  --job-index: 5;
+.Experience:nth-child(6) {
+  --experience-index: 5;
 }
-.Jobs:nth-child(6) .content ul li:nth-child(5) {
+.Experience:nth-child(6) .content ul li:nth-child(5) {
   --item-index: 5;
 }
 
-.Jobs:nth-child(7) {
-  --job-index: 6;
+.Experience:nth-child(7) {
+  --experience-index: 6;
 }
-.Jobs:nth-child(7) .content ul li:nth-child(6) {
+.Experience:nth-child(7) .content ul li:nth-child(6) {
   --item-index: 6;
 }
 
-.Jobs:nth-child(8) {
-  --job-index: 7;
+.Experience:nth-child(8) {
+  --experience-index: 7;
 }
-.Jobs:nth-child(8) .content ul li:nth-child(7) {
+.Experience:nth-child(8) .content ul li:nth-child(7) {
   --item-index: 7;
 }
 
-.Jobs:nth-child(9) {
-  --job-index: 8;
+.Experience:nth-child(9) {
+  --experience-index: 8;
 }
-.Jobs:nth-child(9) .content ul li:nth-child(8) {
+.Experience:nth-child(9) .content ul li:nth-child(8) {
   --item-index: 8;
 }
 
-.Jobs:nth-child(10) {
-  --job-index: 9;
+.Experience:nth-child(10) {
+  --experience-index: 9;
 }
-.Jobs:nth-child(10) .content ul li:nth-child(9) {
+.Experience:nth-child(10) .content ul li:nth-child(9) {
   --item-index: 9;
 }
 
-.Jobs:nth-child(11) {
-  --job-index: 10;
+.Experience:nth-child(11) {
+  --experience-index: 10;
 }
-.Jobs:nth-child(11) .content ul li:nth-child(10) {
+.Experience:nth-child(11) .content ul li:nth-child(10) {
   --item-index: 10;
 }
 
 @media (max-width: 900px) {
-  .jobs-layout .Jobs {
+  .experience-layout .Experience {
     max-width: 95%;
     padding: 1.2rem;
   }
-  .jobs-layout .Jobs h3 a {
+  .experience-layout .Experience h3 a {
     font-size: 1.5rem;
   }
 }
 @media (max-width: 600px) {
-  .jobs-layout {
+  .experience-layout {
     padding: 2rem 0.5rem 3rem 0.5rem;
   }
-  .jobs-layout .Jobs {
+  .experience-layout .Experience {
     padding: 1.5rem;
     margin: 1.5rem auto;
     border-radius: 10px;
   }
-  .jobs-layout .Jobs h2 {
+  .experience-layout .Experience h2 {
     font-size: 1.2rem;
     padding: 0.2rem 0.8rem;
   }
-  .jobs-layout .Jobs h3 a {
+  .experience-layout .Experience h3 a {
     font-size: 1.3rem;
   }
-  .jobs-layout .Jobs h4 {
+  .experience-layout .Experience h4 {
     font-size: 1rem;
     padding: 0.3rem 0.8rem;
   }
-  .jobs-layout .Jobs h6 {
+  .experience-layout .Experience h6 {
     font-size: 0.7rem;
     padding: 0.1rem 0.5rem;
     margin-bottom: 8px;
   }
-  .jobs-layout .Jobs .content ul {
+  .experience-layout .Experience .content ul {
     gap: 1rem;
   }
-  .jobs-layout .Jobs .content ul li {
+  .experience-layout .Experience .content ul li {
     padding: 0.8rem 1rem;
     font-size: 0.9rem;
     transform: none;
   }
 }
 @keyframes fadeInStagger {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes slideInUp {
   0% {
     opacity: 0;
     transform: translateY(20px);
@@ -3732,7 +3722,7 @@ footer .copyright-link:hover {
   }
   .home,
   .about,
-  .jobs-layout,
+  .experience-layout,
   .project__project-image {
     background-attachment: scroll !important;
   }
@@ -3972,7 +3962,7 @@ summary,
 .category-tab,
 .skill-modal__close,
 .preview-container .close-preview,
-.jobs-layout .Jobs h3 a,
+.experience-layout .Experience h3 a,
 .project-links a,
 .tags-container h6,
 .social-icons a,

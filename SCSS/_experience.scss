@@ -1,7 +1,7 @@
 @use "config" as *;
 @use "mixins" as *;
 
-.jobs-layout {
+.experience-layout {
   padding: 4rem 1rem 5rem 1rem;
   min-height: 100vh;
   width: 100%;
@@ -12,7 +12,7 @@
 
   // Added particles styling specific to this layout, similar to _home.scss
   #particles-js {
-    position: absolute; // Position relative to jobs-layout
+    position: absolute; // Position relative to experience-layout
     top: 0;
     left: 0;
     width: 100%;
@@ -26,7 +26,7 @@
     }
   }
 
-  .jobs-container {
+  .experience-container {
     position: relative;
     max-width: 950px;
     margin: 0 auto;
@@ -64,7 +64,7 @@
     }
   }
 
-  .Jobs {
+  .Experience {
     background-color: rgba($primary-color, 0.85);
     backdrop-filter: blur(5px);
     max-width: 900px;
@@ -76,11 +76,11 @@
     border: 1px solid rgba($secondary-color, 0.2);
     border-bottom: 3px solid $secondary-color;
     position: relative;
-    z-index: 1; // Ensure job cards are above particles
+    z-index: 1; // Ensure experience cards are above particles
     opacity: 0;
     transform: perspective(1000px) translateY(30px);
     animation: slideInUp 0.6s forwards;
-    animation-delay: calc(var(--job-index, 0) * 0.15s);
+    animation-delay: calc(var(--experience-index, 0) * 0.15s);
 
     &:hover {
       transform: perspective(1000px) translateY(-10px) scale(1.02);
@@ -208,7 +208,7 @@
           opacity: 0;
           animation: slideInUp 0.5s forwards;
           animation-delay: calc(
-            (var(--job-index, 0) * 0.15s) + 0.3s +
+            (var(--experience-index, 0) * 0.15s) + 0.3s +
               (var(--item-index, 0) * 0.08s)
           ); // Adjusted animation delay
 
@@ -225,8 +225,8 @@
 }
 
 @for $i from 1 through 10 {
-  .Jobs:nth-child(#{$i + 1}) {
-    --job-index: #{$i};
+  .Experience:nth-child(#{$i + 1}) {
+    --experience-index: #{$i};
 
     .content ul li:nth-child(#{$i}) {
       --item-index: #{$i};
@@ -235,8 +235,8 @@
 }
 
 @media (max-width: 900px) {
-  .jobs-layout {
-    .Jobs {
+  .experience-layout {
+    .Experience {
       max-width: 95%;
       padding: 1.2rem;
 
@@ -248,10 +248,10 @@
 }
 
 @media (max-width: 600px) {
-  .jobs-layout {
+  .experience-layout {
     padding: 2rem 0.5rem 3rem 0.5rem; // Adjust padding for mobile
 
-    .Jobs {
+    .Experience {
       padding: 1.5rem;
       margin: 1.5rem auto;
       border-radius: 10px;
@@ -290,18 +290,6 @@
 }
 
 @keyframes fadeInStagger {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInUp {
   0% {
     opacity: 0;
     transform: translateY(20px);

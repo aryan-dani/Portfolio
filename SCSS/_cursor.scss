@@ -17,10 +17,7 @@
   &.theme-cursor {
     width: 10px; // Slightly smaller base size for a cleaner look
     height: 10px;
-    background-color: var(
-      --cursor-bg,
-      $light-color
-    ); 
+    background-color: var(--cursor-bg, $light-color);
     border-radius: 50%;
   }
 
@@ -100,7 +97,7 @@ body:has(.custom-cursor) {
   .category-tab,
   .skill-modal__close,
   .preview-container .close-preview,
-  .jobs-layout .Jobs h3 a,
+  .experience-layout .Experience h3 a,
   .project-links a,
   .tags-container h6,
   .social-icons a,
