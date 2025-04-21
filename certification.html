@@ -544,7 +544,9 @@
 			defer></script>
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
+				// Wrap in DOMContentLoaded
 				if (document.getElementById("particles-js")) {
+					// Add element check
 					particlesJS("particles-js", {
 						particles: {
 							number: {
@@ -647,8 +649,10 @@
 						},
 						retina_detect: true,
 					});
+				} else {
+					console.error("Could not find element with ID 'particles-js'");
 				}
-			});
+			}); // End DOMContentLoaded
 		</script>
 		<script src="Js/card-3d-effect.js" defer></script>
 		<script src="Js/custom-cursor.js" defer></script>

@@ -18,6 +18,17 @@
 		<link rel="prefetch" href="index.html" />
 		<link rel="prefetch" href="projects.html" />
 		<link rel="preload" href="SCSS/main.css" as="style" />
+		<!-- Added Font Awesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+			integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer" />
+		<!-- Added Animate.css -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 		<link rel="stylesheet" href="SCSS/main.css" />
 		<link
 			href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -36,20 +47,9 @@
 			type="image/png"
 			sizes="16x16"
 			href="favicons/favicon-16x16.png" />
-		<link rel="manifest" href="site.webmanifest" />
+		<!-- Updated manifest link -->
+		<link rel="manifest" href="manifest.json" />
 		<link rel="shortcut icon" href="favicons/favicon.ico" />
-		<style>
-			/* Animation triggers for JS to use */
-			.animate-on-scroll {
-				opacity: 0;
-				transform: translateY(20px);
-				transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-			}
-			.animate-on-scroll.visible {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		</style>
 	</head>
 	<body>
 		<div class="toast-container"></div>
@@ -98,6 +98,8 @@
 		</header>
 		<main>
 			<section class="jobs-layout">
+				<div id="particles-js"></div>
+				<!-- Added particles container -->
 				<div class="heading animate-on-scroll">
 					<h2 class="text-secondary">Jobs</h2>
 				</div>
@@ -148,16 +150,141 @@
 		</footer>
 		<script src="Js/performance.js" defer></script>
 		<script src="Js/main.js" defer></script>
-		<script
-			src="https://kit.fontawesome.com/1267cf2b7d.js"
-			crossorigin="anonymous"
-			defer></script>
+		<script src="Js/custom-cursor.js" defer></script>
+		<!-- Added particles.js library -->
 		<script
 			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
 			defer></script>
+		<!-- Added particles.js initialization script -->
 		<script>
-			// particlesJS config...
+			document.addEventListener("DOMContentLoaded", () => {
+				// Wrap in DOMContentLoaded
+				// Check if the element exists before initializing
+				if (document.getElementById("particles-js")) {
+					particlesJS("particles-js", {
+						particles: {
+							number: {
+								value: 140, // Increased particle count
+								density: {
+									enable: true,
+									value_area: 600,
+								},
+							},
+							color: {
+								value: "#00adb5",
+							},
+							shape: {
+								type: "circle",
+								stroke: {
+									width: 0,
+									color: "#000000",
+								},
+								polygon: {
+									nb_sides: 5,
+								},
+							},
+							opacity: {
+								value: 0.6, // Increased opacity
+								random: true, // Make opacity random
+								anim: {
+									enable: true,
+									speed: 0.5,
+									opacity_min: 0.2,
+									sync: false,
+								},
+							},
+							size: {
+								value: 4, // Increased size
+								random: true,
+								anim: {
+									enable: true,
+									speed: 3,
+									size_min: 1,
+									sync: false,
+								},
+							},
+							line_linked: {
+								enable: true,
+								distance: 120, // Decreased distance for denser lines
+								color: "#ffffff",
+								opacity: 0.5, // Increased line opacity
+								width: 1,
+							},
+							move: {
+								enable: true,
+								speed: 3, // Increased speed
+								direction: "none",
+								random: true, // Random direction
+								straight: false,
+								out_mode: "out",
+								bounce: false,
+								attract: {
+									enable: true, // Enable attraction
+									rotateX: 600,
+									rotateY: 1200,
+								},
+							},
+						},
+						interactivity: {
+							detect_on: "canvas",
+							events: {
+								onhover: {
+									enable: true,
+									mode: "grab", // Changed to grab
+								},
+								onclick: {
+									enable: true,
+									mode: "push", // Keep push on click
+								},
+								resize: true,
+							},
+							modes: {
+								grab: {
+									distance: 180, // Increased grab distance
+									line_linked: {
+										opacity: 0.8, // Stronger line on grab
+									},
+								},
+								bubble: {
+									distance: 250,
+									size: 10,
+									duration: 2,
+									opacity: 8,
+									speed: 3,
+								},
+								repulse: {
+									distance: 150,
+									duration: 0.6,
+								},
+								push: {
+									particles_nb: 4,
+								},
+								remove: {
+									particles_nb: 2,
+								},
+							},
+						},
+						retina_detect: true,
+					});
+				} else {
+					console.error("Could not find element with ID 'particles-js'");
+				}
+			}); // End DOMContentLoaded
 		</script>
-		<script src="Js/custom-cursor.js" defer></script>
+		<!-- Added Intersection Observer script -->
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("visible");
+						}
+					});
+				});
+				document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+					observer.observe(el);
+				});
+			});
+		</script>
 	</body>
 </html>
