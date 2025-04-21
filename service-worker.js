@@ -1,4 +1,4 @@
-/** @format */
+
 
 const CACHE_NAME = "portfolio-cache-v2";
 const STATIC_ASSETS = [

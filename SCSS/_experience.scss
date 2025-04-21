@@ -2,90 +2,198 @@
 @use "mixins" as *;
 
 .experience-layout {
-  padding: 4rem 1rem 5rem 1rem;
+  padding: 4rem 0rem;
   min-height: 100vh;
   width: 100%;
-  position: relative; // Keep relative for absolute positioning of children
-  overflow: hidden; // Contain particles within this section
-  z-index: 0; // Base stacking context
-  @include animated-gradient-background; // Added animated gradient background mixin
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  @include animated-gradient-background;
 
-  // Added particles styling specific to this layout, similar to _home.scss
+  // Particles styling
   #particles-js {
-    position: absolute; // Position relative to experience-layout
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; // Set z-index to -1 to ensure it's behind other content
+    z-index: -1;
 
     canvas {
-      pointer-events: auto; // Allow interaction if needed by particles.js config
+      pointer-events: auto;
       position: relative;
       z-index: 0;
     }
   }
 
-  .experience-container {
-    position: relative;
-    max-width: 950px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    z-index: 1; // Ensure container is above particles
-  }
-
+  // Heading styling - consistent with other pages
   .heading {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 2.5rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
-    z-index: 1; // Ensure heading is above particles
+    z-index: 1;
     opacity: 0;
     animation: fadeInStagger 0.8s ease forwards;
-    margin-bottom: 2rem;
+    text-align: center;
 
     .text-secondary {
-      margin-top: 0;
-      background-color: $secondary-color;
-      color: $primary-color;
-      padding: 0rem 0.5rem;
-      border-radius: 8px;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 auto 1rem;
       font-weight: 900;
-      box-shadow: 0 2px 10px rgba($primary-color, 0.3);
-      transition: all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+      font-size: 2.8rem;
+      background: linear-gradient(
+        135deg,
+        lighten($secondary-color, 10%),
+        $secondary-color
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
       position: relative;
-      overflow: hidden;
-      @include shine-effect;
+      z-index: 1;
+      width: 100%;
+      text-align: center;
 
-      &:hover {
-        transform: scale(1.05) translateY(-2px);
-        box-shadow: 0 4px 15px rgba($primary-color, 0.4);
-      }
+      // Removed top and bottom lines (::before and ::after)
+    }
+
+    // Added styling for the introduction text
+    .experience-intro {
+      max-width: 800px;
+      margin: 0 auto 1.5rem;
+      color: $text-color;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      opacity: 0.9;
+      text-align: center;
+      padding: 0 1rem;
+      background-color: rgba($primary-color, 0.6);
+      backdrop-filter: blur(5px);
+      border-radius: 12px;
+      padding: 1.2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba($secondary-color, 0.1);
+      animation: fadeIn 1s ease-in-out forwards;
+      animation-delay: 0.3s;
     }
   }
 
+  .experience-container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    z-index: 1;
+
+    // Timeline visual element
+    &::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: calc(100% - 40px);
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        $secondary-color 15%,
+        $secondary-color 85%,
+        transparent 100%
+      );
+      opacity: 0.8;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba($secondary-color, 0.5);
+    }
+
+    @media screen and (max-width: 768px) {
+      &::before {
+        left: 20px;
+      }
+    }
+  }
   .Experience {
     background-color: rgba($primary-color, 0.85);
     backdrop-filter: blur(5px);
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    max-width: 47%; // Reduced to push cards more to the sides
+    padding: 25px;
     border-radius: 12px;
+    margin: 3rem 0;
+    position: relative;
     box-shadow: 0 10px 25px rgba(black, 0.3);
-    transition: all 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
     border: 1px solid rgba($secondary-color, 0.2);
     border-bottom: 3px solid $secondary-color;
-    position: relative;
-    z-index: 1; // Ensure experience cards are above particles
-    opacity: 0;
-    transform: perspective(1000px) translateY(30px);
-    animation: slideInUp 0.6s forwards;
-    animation-delay: calc(var(--experience-index, 0) * 0.15s);
 
+    // Timeline dot
+    &::before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: $secondary-color;
+      box-shadow: 0 0 0 6px rgba($secondary-color, 0.3),
+        0 0 20px rgba($secondary-color, 0.5);
+      z-index: 2;
+      animation: pulse-dot 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+    }
+
+    // Add connecting line to timeline
+    &::after {
+      content: "";
+      position: absolute;
+      width: 40px;
+      height: 4px;
+      background-color: $secondary-color;
+      z-index: 1;
+    }
+
+    // Position experience cards alternately on the timeline
+    &:nth-child(odd) {
+      margin-right: auto;
+
+      &::before {
+        right: -45px; // Increased to position dot closer to center timeline
+        top: 2.5rem;
+      }
+
+      &::after {
+        right: -40px; // Increased to extend connecting line
+        top: calc(2.5rem + 8px);
+      }
+    }
+
+    &:nth-child(even) {
+      margin-left: auto;
+      margin-right: 10px; // Added right margin to push further right
+
+      &::before {
+        left: -65px; // Increased to position dot closer to center timeline
+        top: 2.5rem;
+      }
+
+      &::after {
+        left: -55px; // Increased to extend connecting line
+        top: calc(2.5rem + 8px);
+      }
+    }
+
+    // Improved card styling
     &:hover {
       transform: perspective(1000px) translateY(-10px) scale(1.02);
-      box-shadow: 0 20px 35px rgba(black, 0.4);
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
       border-color: rgba($secondary-color, 0.4);
+
+      &::before {
+        transform: scale(1.2);
+      }
     }
 
     h2 {
@@ -111,10 +219,10 @@
       position: relative;
 
       a {
-        font-size: 1.6rem; // Adjusted size
+        font-size: 1.6rem;
         color: $secondary-color;
         text-decoration: none;
-        transition: all 0.4s ease; // Keep 0.4s
+        transition: all 0.4s ease;
         display: inline-block;
         position: relative;
         padding-bottom: 3px;
@@ -126,12 +234,12 @@
           left: 0;
           width: 0;
           height: 2px;
-          background-color: $link-hover-color; // Use variable
-          transition: width 0.4s ease; // Keep 0.4s
+          background-color: $link-hover-color;
+          transition: width 0.4s ease;
         }
 
         &:hover {
-          color: $link-hover-color; // Use variable
+          color: $link-hover-color;
           text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
           &::after {
@@ -143,13 +251,13 @@
 
     h4 {
       display: inline-block;
-      background-color: rgba($secondary-color, 0.2); // More subtle background
-      color: $text-color; // Ensure text is light
+      background-color: rgba($secondary-color, 0.2);
+      color: $text-color;
       margin-bottom: 1rem;
       padding: 0.4rem 1rem;
       border-radius: 8px;
       font-weight: 700;
-      transition: all $transition-speed ease; // Use variable (was 0.3s)
+      transition: all $transition-speed ease;
       transform-origin: center left;
       @include hover-lift;
 
@@ -160,80 +268,152 @@
       }
     }
 
-    h6 {
-      display: inline-block;
-      font-size: 0.8rem;
-      background-color: rgba($secondary-color, 0.3); // More subtle background
-      color: $text-color; // Ensure text is light
-      padding: 0.2rem 0.6rem;
-      border-radius: 8px;
-      margin-right: 8px;
-      margin-bottom: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      transition: all $transition-speed ease; // Use variable (was 0.3s)
-      position: relative;
-      overflow: hidden; // Keep for shine effect
-      @include shine-effect;
-
-      &:hover {
-        cursor: default;
-        transform: translateY(-5px) scale(1.15);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-    }
-
     .content {
-      color: $text-color; // Ensure content text is light
-      margin-top: 1.5rem;
+      color: $text-color;
+      margin-top: 0.5rem;
 
+      // Job header section
+      .job-header {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+
+        .company-logo {
+          width: 50px;
+          height: 50px;
+          margin-right: 1rem;
+          border-radius: 8px;
+          object-fit: contain;
+          background-color: white;
+          padding: 5px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+
+        .job-title {
+          flex: 1;
+          position: relative;
+
+          // Adding styling for the toggle button
+          .toggle-details {
+            position: absolute;
+            right: 0;
+            top: 5px;
+            background: none;
+            border: none;
+            color: $secondary-color;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            height: 36px;
+            width: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            background-color: rgba($secondary-color, 0.1);
+
+            &:hover {
+              background-color: rgba($secondary-color, 0.2);
+              transform: scale(1.1);
+            }
+
+            i {
+              transition: transform 0.3s ease;
+            }
+
+            &.active i {
+              transform: rotate(180deg);
+            }
+          }
+        }
+      }
+
+      // Tech tags container
+      .tech-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+
+        h6 {
+          display: inline-block;
+          font-size: 0.8rem;
+          background-color: rgba($secondary-color, 0.3);
+          color: $text-color;
+          padding: 0.2rem 0.6rem;
+          border-radius: 8px;
+          margin-right: 8px;
+          margin-bottom: 0.5rem;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+          transition: all $transition-speed ease;
+          position: relative;
+          overflow: hidden;
+          @include shine-effect;
+          transform-origin: center;
+
+          &:hover {
+            cursor: default;
+            transform: translateY(-5px) scale(1.15);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          }
+        }
+      }
+
+      // List items
       ul {
         list-style: none;
         padding: 0;
         margin: 0;
         display: grid;
         grid-template-columns: 1fr;
-        gap: 1rem; // Adjusted gap
+        gap: 1rem;
 
         li {
+          position: relative;
           font-size: 1rem;
-          background: rgba($primary-color, 0.6); // Darker list item background
-          border-left: 4px solid $secondary-color; // Use secondary color for border
-          border-radius: 8px; // Adjusted radius
+          background: rgba($primary-color, 0.6);
+          border-left: 4px solid $secondary-color;
           padding: 1rem 1.2rem;
-          box-shadow: 0 4px 8px rgba(black, 0.2); // Adjusted shadow
-          line-height: 1.7; // Increased line height
-          transition: all 0.3s ease; // Faster transition
-          color: $text-color; // Ensure text is light
-          opacity: 0;
-          animation: slideInUp 0.5s forwards;
-          animation-delay: calc(
-            (var(--experience-index, 0) * 0.15s) + 0.3s +
-              (var(--item-index, 0) * 0.08s)
-          ); // Adjusted animation delay
+          border-radius: 6px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
 
           &:hover {
-            transform: translateY(-5px) scale(1.02); // Subtle hover effect
+            transform: translateX(5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
             background: rgba($primary-color, 0.8);
-            box-shadow: 0 6px 12px rgba(black, 0.3);
-            border-left-color: lighten($secondary-color, 10%);
+            border-left-width: 8px;
           }
+        }
+      }
+
+      // Adding styles for collapsible experience details
+      .experience-details {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out;
+        opacity: 0;
+
+        &.expanded {
+          max-height: 1000px; // Large enough to show all content
+          opacity: 1;
+          transition: max-height 0.5s ease-in, opacity 0.3s ease-in 0.2s;
         }
       }
     }
   }
 }
 
-@for $i from 1 through 10 {
-  .Experience:nth-child(#{$i + 1}) {
-    --experience-index: #{$i};
-
-    .content ul li:nth-child(#{$i}) {
-      --item-index: #{$i};
-    }
-  }
-}
-
+// Responsive design for different screen sizes
 @media (max-width: 900px) {
   .experience-layout {
     .Experience {
@@ -247,9 +427,32 @@
   }
 }
 
+@media (max-width: 768px) {
+  .experience-layout {
+    .Experience {
+      max-width: 90%;
+      margin-left: 40px !important;
+      margin-right: 0 !important;
+
+      &::before {
+        left: -28px !important;
+        right: auto !important;
+        top: 2.5rem !important;
+      }
+
+      &::after {
+        left: -28px !important;
+        right: auto !important;
+        width: 20px;
+        top: calc(2.5rem + 8px) !important;
+      }
+    }
+  }
+}
+
 @media (max-width: 600px) {
   .experience-layout {
-    padding: 2rem 0.5rem 3rem 0.5rem; // Adjust padding for mobile
+    padding: 2rem 0.5rem 3rem 0.5rem;
 
     .Experience {
       padding: 1.5rem;
@@ -289,6 +492,18 @@
   }
 }
 
+// Helper classes for staggered animations
+@for $i from 1 through 10 {
+  .Experience:nth-child(#{$i + 1}) {
+    --experience-index: #{$i};
+
+    .content ul li:nth-child(#{$i}) {
+      --item-index: #{$i};
+    }
+  }
+}
+
+// Animations
 @keyframes fadeInStagger {
   0% {
     opacity: 0;
@@ -298,5 +513,65 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes pulse-dot {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 5px rgba($secondary-color, 0.3);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 8px rgba($secondary-color, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 5px rgba($secondary-color, 0.3);
+  }
+}
+
+@keyframes pulse-width {
+  0% {
+    width: 100px;
+    opacity: 0.7;
+  }
+  50% {
+    width: 150px;
+    opacity: 1;
+  }
+  100% {
+    width: 100px;
+    opacity: 0.7;
+  }
+}
+
+// Scroll animations
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.Experience {
+  &.visible {
+    animation: card-entrance 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985) forwards;
+  }
+}
+
+@keyframes card-entrance {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(5deg) translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0) translateY(0);
   }
 }

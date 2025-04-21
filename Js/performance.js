@@ -1,4 +1,4 @@
-/** @format */
+
 
 document.addEventListener("DOMContentLoaded", function () {
 	initLazyLoading();

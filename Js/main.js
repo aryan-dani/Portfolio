@@ -505,15 +505,7 @@ function executeHomeAnimationSequence() {
             ? "translateY(0)"
             : "perspective(1000px) translateZ(0) rotateX(0)";
           name.style.textShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
-          /* Removed call to addNameHoverEffect
-          setTrackedTimeout(
-            () => {
-              addNameHoverEffect(name, isLowPowerDevice);
-            },
-            300,
-            "nameHoverEffect"
-          );
-          */
+          
         },
         0,
         "nameAnimation"
