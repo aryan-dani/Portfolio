@@ -3,14 +3,12 @@
 @use "animations" as *;
 
 #particles-js {
-  pointer-events: none;
-  position: fixed;
+  position: absolute; // CHANGED from fixed
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0; // Changed from -1 to 0
-  background-color: $primary-color;
+  z-index: -1; // CHANGED from 0
   overflow: hidden;
 
   canvas {
@@ -35,21 +33,11 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  z-index: 1; // Ensure this line is present
-  pointer-events: none; // Add: Prevent section from blocking pointer events
+  z-index: 0; // CHANGED from 1 - Make this the base stacking context
 
   @include media-sm {
     padding-left: 2rem; // Increase padding on larger screens
     padding-right: 2rem;
-  }
-
-  // Re-enable pointer events for direct content containers
-  .intro-container,
-  &__search-filter,
-  &__container,
-  .tech-stack {
-    // Assuming tech-stack is within .skills and needs interaction
-    pointer-events: auto;
   }
 
   .intro-container {
@@ -76,11 +64,9 @@
     margin: 0 auto 1rem; // Center block element and add bottom margin
     font-weight: 900;
     font-size: 2.8rem; // Match project/cert heading size
-    background: linear-gradient(
-      135deg,
-      lighten($secondary-color, 10%),
-      $secondary-color
-    );
+    background: linear-gradient(135deg,
+        lighten($secondary-color, 10%),
+        $secondary-color );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -137,11 +123,9 @@
     color: $secondary-color;
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); // Adjusted shadow
     border: 1px solid rgba($secondary-color, 0.3); // Subtle border
-    background: linear-gradient(
-      145deg,
-      rgba($primary-color, 0.1),
-      rgba(darken($primary-color, 5%), 0.2)
-    ); // Subtle gradient background
+    background: linear-gradient(145deg,
+        rgba($primary-color, 0.1),
+        rgba(darken($primary-color, 5%), 0.2)); // Subtle gradient background
     border-radius: 10px; // Slightly rounded corners
 
     &::before {
@@ -151,14 +135,12 @@
       left: -8px;
       right: -8px;
       bottom: -8px;
-      background: linear-gradient(
-        45deg,
-        rgba($secondary-color, 0.3),
-        transparent 40%,
-        rgba($secondary-color, 0.3) 60%,
-        transparent 80%,
-        rgba($secondary-color, 0.3)
-      );
+      background: linear-gradient(45deg,
+          rgba($secondary-color, 0.3),
+          transparent 40%,
+          rgba($secondary-color, 0.3) 60%,
+          transparent 80%,
+          rgba($secondary-color, 0.3));
       background-size: 300% 300%;
       z-index: -1;
       filter: blur(15px); // Slightly more blur
@@ -278,20 +260,16 @@
         }
 
         &.active {
-          background: rgba(
-            $secondary-color,
-            0.2
-          ); // Slightly less intense active background
+          background: rgba($secondary-color,
+              0.2); // Slightly less intense active background
           font-weight: bold;
           text-shadow: 0 0 8px rgba($secondary-color, 0.6); // Slightly reduced shadow
           box-shadow: 0 0 12px rgba($secondary-color, 0.4); // Slightly reduced shadow
         }
 
         &:hover:not(.active) {
-          background: rgba(
-            darken($primary-color, 8%),
-            0.7
-          ); // Slightly adjust hover background
+          background: rgba(darken($primary-color, 8%),
+              0.7); // Slightly adjust hover background
         }
       }
     }
@@ -390,12 +368,10 @@
       left: -2px;
       right: -2px;
       bottom: -2px;
-      background: linear-gradient(
-        45deg,
-        $secondary-color,
-        darken($secondary-color, 20%),
-        $secondary-color
-      );
+      background: linear-gradient(45deg,
+          $secondary-color,
+          darken($secondary-color, 20%),
+          $secondary-color );
       z-index: -1;
       filter: blur(12px);
       opacity: 0;
@@ -404,7 +380,6 @@
     }
 
     &:hover {
-      // transform: translateY(-8px) scale(1.02); // Already removed
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
       // animation: floatAnimation 3s ease infinite; // Removed - Let JS handle transform
 
@@ -425,13 +400,11 @@
       }
 
       .skills__card-front h3 {
-        background-image: linear-gradient(
-          90deg,
-          rgba($secondary-color, 0.7),
-          rgba($text-color, 0.9),
-          // Use variable
-          rgba($secondary-color, 0.7)
-        );
+        background-image: linear-gradient(90deg,
+            rgba($secondary-color, 0.7),
+            rgba($text-color, 0.9),
+            // Use variable
+            rgba($secondary-color, 0.7));
         background-size: 200% auto;
         color: transparent;
         -webkit-background-clip: text;
@@ -462,11 +435,9 @@
     }
 
     &-front {
-      background: linear-gradient(
-        135deg,
-        rgba(lighten($primary-color, 5%), 0.9),
-        rgba(lighten($primary-color, 2%), 0.9)
-      );
+      background: linear-gradient(135deg,
+          rgba(lighten($primary-color, 5%), 0.9),
+          rgba(lighten($primary-color, 2%), 0.9));
 
       h3 {
         margin-top: 0.5rem;
@@ -485,11 +456,9 @@
     }
 
     &-back {
-      background: linear-gradient(
-        135deg,
-        rgba(darken($primary-color, 5%), 0.95),
-        rgba(darken($primary-color, 15%), 0.95)
-      );
+      background: linear-gradient(135deg,
+          rgba(darken($primary-color, 5%), 0.95),
+          rgba(darken($primary-color, 15%), 0.95));
       transform: translateY(100%);
       overflow: hidden;
       justify-content: flex-start; // Align content to the top
@@ -557,11 +526,9 @@
 
     &-bar {
       height: 100%;
-      background: linear-gradient(
-        90deg,
-        $secondary-color,
-        lighten($secondary-color, 20%)
-      );
+      background: linear-gradient(90deg,
+          $secondary-color,
+          lighten($secondary-color, 20%));
       background-size: 200% 100%;
       border-radius: 8px;
       width: 0;
@@ -641,11 +608,9 @@
 
   &__content {
     position: relative;
-    background: linear-gradient(
-      145deg,
-      darken($primary-color, 5%),
-      darken($primary-color, 15%)
-    );
+    background: linear-gradient(145deg,
+        darken($primary-color, 5%),
+        darken($primary-color, 15%));
     padding: 2rem 2.5rem;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);

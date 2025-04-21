@@ -1215,10 +1215,23 @@
     transform: translateY(0);
   }
 }
+#particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+#particles-js canvas {
+  pointer-events: auto;
+  position: relative;
+  z-index: 0;
+}
+
 .project {
   position: relative;
-  z-index: 1;
-  pointer-events: none;
+  z-index: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1255,10 +1268,6 @@
   pointer-events: none;
   z-index: 0;
   animation: gradientBackground 15s ease infinite;
-}
-.project .project__intro-container,
-.project .project-grid {
-  pointer-events: auto;
 }
 .project .project__intro-container {
   width: 100%;
@@ -2187,6 +2196,20 @@
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
 }
 
+#particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+#particles-js canvas {
+  pointer-events: auto;
+  position: relative;
+  z-index: 0;
+}
+
 .certification {
   position: relative;
   padding: 3rem 0;
@@ -2199,20 +2222,13 @@
   padding-left: 1rem;
   padding-right: 1rem;
   box-sizing: border-box;
-  z-index: 1;
-  pointer-events: none;
+  z-index: 0;
 }
 @media screen and (min-width: 576px) {
   .certification {
     padding-left: 2rem;
     padding-right: 2rem;
   }
-}
-.certification .intro-container,
-.certification .filter-container,
-.certification .certificates-grid-container,
-.certification .container {
-  pointer-events: auto;
 }
 .certification::before {
   content: "";
@@ -2780,14 +2796,12 @@
 }
 
 #particles-js {
-  pointer-events: none;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
-  background-color: #272727;
+  z-index: -1;
   overflow: hidden;
 }
 #particles-js canvas {
@@ -2810,18 +2824,13 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  z-index: 1;
-  pointer-events: none;
+  z-index: 0;
 }
 @media screen and (min-width: 576px) {
   .skills {
     padding-left: 2rem;
     padding-right: 2rem;
   }
-}
-.skills .intro-container, .skills__search-filter, .skills__container,
-.skills .tech-stack {
-  pointer-events: auto;
 }
 .skills .intro-container {
   width: 100%;

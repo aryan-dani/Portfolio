@@ -1,10 +1,26 @@
 @use "config" as *;
 @use "mixins" as *;
 
+// Added particles styling specific to this layout, similar to _jobs.scss
+#particles-js {
+  position: absolute; // Position relative to parent
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; // Set z-index to -1 to ensure it's behind other content
+
+  canvas {
+    pointer-events: auto; // Allow interaction if needed by particles.js config
+    position: relative;
+    z-index: 0;
+  }
+}
+
 .project {
   position: relative;
-  z-index: 1; // Add this line
-  pointer-events: none; // Add: Prevent section from blocking pointer events
+  z-index: 0; // CHANGED from 1 - Make this the base stacking context
+  // pointer-events: none; // REMOVE this
   overflow: hidden;
   display: flex; // Use flexbox for centering content vertically
   flex-direction: column;
@@ -14,14 +30,13 @@
   max-width: 1400px; // Apply max-width to the section
   margin: 0 auto; // Center the section
   box-sizing: border-box; // Include padding in width calculation
-  min-height: calc(
-    100vh - 80px
-  ); // Ensure it takes at least viewport height minus header
+  min-height: calc(100vh - 80px); // Ensure it takes at least viewport height minus header
 
   @include media-sm {
     padding-left: 1.5rem; // Adjusted padding for small screens
     padding-right: 1.5rem;
   }
+
   @include media-md {
     padding-left: 2rem; // Keep padding for medium screens and up
     padding-right: 2rem;
@@ -34,28 +49,20 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(
-        circle at 20% 20%,
+    background-image: radial-gradient(circle at 20% 20%,
         // Vary the origin points
         rgba(255, 255, 255, 0.05) 1px,
         transparent 1.5px // Slightly larger transparent area
       ),
-      radial-gradient(
-        circle at 80% 70%,
+      radial-gradient(circle at 80% 70%,
         // Different origin point
         rgba(255, 255, 255, 0.05) 1px,
-        transparent 1.5px
-      );
+        transparent 1.5px);
     background-size: 40px 40px; // Larger grid pattern
     opacity: 0.4; // Slightly reduced opacity
     pointer-events: none;
     z-index: 0;
     animation: gradientBackground 15s ease infinite;
-  }
-
-  .project__intro-container,
-  .project-grid {
-    pointer-events: auto; // Re-enable pointer events for direct content containers
   }
 
   .project__intro-container {
@@ -85,11 +92,9 @@
       font-weight: 900;
       font-size: 2.8rem; // Slightly larger
       padding: 10px 20px;
-      background: linear-gradient(
-        135deg,
-        lighten($secondary-color, 10%),
-        $secondary-color
-      );
+      background: linear-gradient(135deg,
+          lighten($secondary-color, 10%),
+          $secondary-color );
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -144,11 +149,10 @@
     perspective: 1000px;
 
     @include media-md {
-      grid-template-columns: repeat(
-        2,
-        1fr
-      ); // Ensure 2 columns on medium screens
+      grid-template-columns: repeat(2,
+          1fr); // Ensure 2 columns on medium screens
     }
+
     @include media-lg {
       // Keep 2 columns even on large screens, adjust minmax if needed for spacing
       grid-template-columns: repeat(2, minmax(350px, 1fr));
@@ -159,10 +163,8 @@
   }
 
   .project-card {
-    background: rgba(
-      lighten($primary-color, 8%),
-      0.75
-    ); // Slightly lighter, less opaque
+    background: rgba(lighten($primary-color, 8%),
+        0.75); // Slightly lighter, less opaque
     border-radius: 16px; // Smoother radius
     overflow: hidden;
     backdrop-filter: blur(12px); // Slightly more blur
@@ -194,12 +196,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        160deg,
-        rgba($secondary-color, 0.02) 0%,
-        // Even more subtle gradient
-        rgba($secondary-color, 0.08) 100%
-      );
+      background: linear-gradient(160deg,
+          rgba($secondary-color, 0.02) 0%,
+          // Even more subtle gradient
+          rgba($secondary-color, 0.08) 100%);
       opacity: 0;
       transition: opacity 0.4s ease;
       z-index: 0; // Behind content
@@ -213,12 +213,11 @@
       position: absolute;
       inset: -1px; // Position slightly outside
       border-radius: inherit;
-      background: linear-gradient(
-        135deg,
-        rgba($secondary-color, 0.7),
-        // Stronger start
-        rgba(lighten($primary-color, 25%), 0.5) // Lighter end
-      );
+      background: linear-gradient(135deg,
+          rgba($secondary-color, 0.7),
+          // Stronger start
+          rgba(lighten($primary-color, 25%), 0.5) // Lighter end
+        );
       opacity: 0;
       transition: opacity 0.4s ease;
       z-index: -1; // Behind card background
@@ -271,24 +270,20 @@
         transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); // Smoother image transition
         border-radius: 0; // Image itself doesn't need radius if container has it
         display: block;
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.1
-        ); // Add subtle background for letterboxing
+        background-color: rgba(0,
+            0,
+            0,
+            0.1); // Add subtle background for letterboxing
 
         &[width][height] {
           aspect-ratio: attr(width) / attr(height);
         }
 
         &[loading="lazy"] {
-          background: linear-gradient(
-            110deg,
-            rgba(227, 227, 227, 0.1) 30%,
-            rgba(177, 177, 177, 0.1) 50%,
-            rgba(227, 227, 227, 0.1) 70%
-          );
+          background: linear-gradient(110deg,
+              rgba(227, 227, 227, 0.1) 30%,
+              rgba(177, 177, 177, 0.1) 50%,
+              rgba(227, 227, 227, 0.1) 70%);
           background-size: 200% 100%;
           animation: shimmer 1.5s linear infinite;
         }
@@ -411,10 +406,8 @@
         font-size: 0.8rem; // Slightly larger tags
         font-weight: 500;
         color: rgba($secondary-color, 0.9); // More visible text
-        background-color: rgba(
-          $primary-color,
-          0.7
-        ); // Slightly more opaque background
+        background-color: rgba($primary-color,
+            0.7); // Slightly more opaque background
         padding: 0.35rem 0.7rem; // Increased padding
         border-radius: 5px; // Smoother radius
         border: 1px solid rgba($secondary-color, 0.15); // Slightly stronger border
@@ -460,6 +453,7 @@
 }
 
 .form-control {
+
   &::-webkit-search-cancel-button,
   &::-webkit-search-decoration {
     -webkit-appearance: none;
@@ -469,18 +463,18 @@
 }
 
 @media screen and (max-width: 992px) {
+
   // Adjust breakpoint for grid changes if needed
   .project .project-grid {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(320px, 1fr)
-    ); // Adjust minmax for smaller screens
+    grid-template-columns: repeat(auto-fit,
+        minmax(320px, 1fr)); // Adjust minmax for smaller screens
   }
 }
 
 @media screen and (max-width: 768px) {
   .project {
     padding: 3rem 0; // Adjust padding
+
     .project-grid {
       gap: 2rem; // Adjusted gap
     }
@@ -503,6 +497,7 @@
         min-height: 180px; // Adjust height
         max-height: 250px;
       }
+
       .content {
         padding: 1.5rem; // Adjust padding
 
