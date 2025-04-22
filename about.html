@@ -211,47 +211,5 @@
 		<script
 			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
 			defer></script>
-		<!-- Wrapped inline scripts in DOMContentLoaded -->
-		<script>
-			document.addEventListener("DOMContentLoaded", () => {
-				const observer = new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting) {
-							entry.target.classList.add("visible");
-						}
-					});
-				});
-				document.querySelectorAll(".animate-on-scroll").forEach((el) => {
-					observer.observe(el);
-				});
-
-				// Contact form toggle logic
-				const contactFormToggle = document.getElementById("contactFormToggle");
-				const contactFormSection =
-					document.getElementById("contactFormSection");
-				const contactForm = document.getElementById("contactForm");
-
-				if (contactFormToggle && contactFormSection) {
-					contactFormToggle.addEventListener("click", () => {
-						contactFormSection.classList.toggle("hidden");
-						contactFormToggle.querySelector("span").textContent =
-							contactFormSection.classList.contains("hidden")
-								? "Contact Me"
-								: "Close Form";
-					});
-				}
-
-				if (contactForm) {
-					contactForm.addEventListener("submit", (e) => {
-						e.preventDefault();
-						// Handle form submission logic here (e.g., send data via fetch)
-						console.log("Form submitted");
-						// Optionally hide form after submission
-						// contactFormSection.classList.add('hidden');
-						// contactFormToggle.querySelector('span').textContent = 'Contact Me';
-					});
-				}
-			});
-		</script>
 	</body>
 </html>
