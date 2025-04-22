@@ -836,11 +836,10 @@
   }
 }
 .experience-layout {
-  padding: 4rem 0rem;
+  padding: 4rem 1rem;
   min-height: 100vh;
   width: 100%;
   position: relative;
-  overflow: hidden;
   z-index: 0;
   background: linear-gradient(-45deg, #272727, #343434, #1a1a1a, #272727);
   background-size: 400% 400%;
@@ -855,9 +854,10 @@
   z-index: -1;
 }
 .experience-layout #particles-js canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
   pointer-events: auto;
-  position: relative;
-  z-index: 0;
 }
 .experience-layout .heading {
   width: 100%;
@@ -932,19 +932,20 @@
   }
 }
 .experience-layout .Experience {
-  background-color: rgba(39, 39, 39, 0.85);
-  -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px);
+  background: linear-gradient(145deg, rgba(49, 49, 49, 0.85), rgba(42, 42, 42, 0.75));
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
   max-width: 47%;
-  padding: 25px;
-  border-radius: 12px;
-  margin: 3rem 0;
+  padding: 1rem;
+  border-radius: 16px;
+  margin: 2rem 0rem;
   position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(240, 248, 255, 0.2);
-  border-bottom: 3px solid aliceblue;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(240, 248, 255, 0.1);
+  border-bottom: 2px solid rgba(240, 248, 255, 0.4);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .experience-layout .Experience::before {
   content: "";
@@ -969,40 +970,44 @@
   margin-right: auto;
 }
 .experience-layout .Experience:nth-child(odd)::before {
-  right: -45px;
-  top: 2.5rem;
+  right: calc(-3vw - 10px);
+  top: 3rem;
 }
 .experience-layout .Experience:nth-child(odd)::after {
-  right: -40px;
-  top: calc(2.5rem + 8px);
+  right: -3vw;
+  top: calc(3rem + 8px);
+  width: 3vw;
 }
 .experience-layout .Experience:nth-child(even) {
   margin-left: auto;
-  margin-right: 10px;
 }
 .experience-layout .Experience:nth-child(even)::before {
-  left: -65px;
-  top: 2.5rem;
+  left: calc(-3vw - 10px);
+  top: 3rem;
 }
 .experience-layout .Experience:nth-child(even)::after {
-  left: -55px;
-  top: calc(2.5rem + 8px);
+  left: -3vw;
+  top: calc(3rem + 8px);
+  width: 3vw;
 }
 .experience-layout .Experience:hover {
-  transform: perspective(1000px) translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
-  border-color: rgba(240, 248, 255, 0.4);
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.22);
+  background: linear-gradient(145deg, rgba(54, 54, 54, 0.9), rgba(47, 47, 47, 0.8));
+  border-color: rgba(240, 248, 255, 0.25);
 }
 .experience-layout .Experience:hover::before {
-  transform: scale(1.2);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 8px rgba(240, 248, 255, 0.25), 0 0 25px rgba(240, 248, 255, 0.4);
 }
 .experience-layout .Experience h2 {
   display: inline-block;
-  padding: 0.3rem 1.2rem;
+  padding: 0.25rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
   background-color: aliceblue;
   color: #272727;
   border-radius: 8px;
-  margin-bottom: 0.8rem;
   font-weight: bold;
   letter-spacing: 0.5px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -1031,11 +1036,12 @@
   transform: translateY(-5px) scale(1.08);
 }
 .experience-layout .Experience h3 {
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   position: relative;
 }
 .experience-layout .Experience h3 a {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: aliceblue;
   text-decoration: none;
   transition: all 0.4s ease;
@@ -1064,8 +1070,8 @@
   display: inline-block;
   background-color: rgba(240, 248, 255, 0.2);
   color: #fff;
-  margin-bottom: 1rem;
-  padding: 0.4rem 1rem;
+  margin-bottom: 1.2rem;
+  padding: 0.35rem 0.9rem;
   border-radius: 8px;
   font-weight: 700;
   transition: all 0.3s ease;
@@ -1148,15 +1154,15 @@
 .experience-layout .Experience .content .tech-tags h6 {
   display: inline-block;
   font-size: 0.8rem;
-  background-color: rgba(240, 248, 255, 0.3);
-  color: #fff;
-  padding: 0.2rem 0.6rem;
-  border-radius: 8px;
+  background-color: rgba(240, 248, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
   margin-right: 8px;
   margin-bottom: 0.5rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
   position: relative;
@@ -1177,9 +1183,8 @@
   left: 100%;
 }
 .experience-layout .Experience .content .tech-tags h6:hover {
-  cursor: default;
-  transform: translateY(-5px) scale(1.15);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
+  background-color: rgba(240, 248, 255, 0.28);
 }
 .experience-layout .Experience .content ul {
   list-style: none;
@@ -1192,19 +1197,20 @@
 .experience-layout .Experience .content ul li {
   position: relative;
   font-size: 1rem;
-  background: rgba(39, 39, 39, 0.6);
-  border-left: 4px solid aliceblue;
+  background: rgba(54, 54, 54, 0.45);
+  border-left: 3px solid rgba(240, 248, 255, 0.6);
   padding: 1rem 1.2rem;
   border-radius: 6px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
   overflow: hidden;
 }
 .experience-layout .Experience .content ul li:hover {
-  transform: translateX(5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  background: rgba(39, 39, 39, 0.8);
-  border-left-width: 8px;
+  transform: translateX(4px);
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.14);
+  background: rgba(62, 62, 62, 0.55);
+  border-left-color: aliceblue;
+  border-left-width: 4px;
 }
 .experience-layout .Experience .content .experience-details {
   max-height: 0;
@@ -1228,42 +1234,60 @@
   }
 }
 @media (max-width: 768px) {
+  .experience-layout .experience-container::before {
+    left: 30px;
+    transform: translateX(0);
+  }
   .experience-layout .Experience {
-    max-width: 90%;
-    margin-left: 40px !important;
+    max-width: calc(100% - 60px);
+    margin-left: 60px !important;
     margin-right: 0 !important;
   }
   .experience-layout .Experience::before {
-    left: -28px !important;
+    left: -40px !important;
     right: auto !important;
-    top: 2.5rem !important;
+    top: 3rem !important;
   }
   .experience-layout .Experience::after {
-    left: -28px !important;
+    left: -30px !important;
     right: auto !important;
-    width: 20px;
-    top: calc(2.5rem + 8px) !important;
+    width: 30px !important;
+    top: calc(3rem + 8px) !important;
   }
 }
 @media (max-width: 600px) {
   .experience-layout {
     padding: 2rem 0.5rem 3rem 0.5rem;
   }
+  .experience-layout .experience-container::before {
+    left: 25px;
+  }
   .experience-layout .Experience {
-    padding: 1.5rem;
-    margin: 1.5rem auto;
-    border-radius: 10px;
+    max-width: calc(100% - 50px);
+    margin-left: 50px !important;
+    padding: 1.2rem;
+  }
+  .experience-layout .Experience::before {
+    left: -35px !important;
+    top: 2.5rem !important;
+  }
+  .experience-layout .Experience::after {
+    left: -25px !important;
+    width: 25px !important;
+    top: calc(2.5rem + 8px) !important;
   }
   .experience-layout .Experience h2 {
-    font-size: 1.2rem;
+    font-size: 0.85rem;
     padding: 0.2rem 0.8rem;
+    margin-bottom: 0.8rem;
   }
   .experience-layout .Experience h3 a {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
   .experience-layout .Experience h4 {
-    font-size: 1rem;
+    font-size: 0.9rem;
     padding: 0.3rem 0.8rem;
+    margin-bottom: 1rem;
   }
   .experience-layout .Experience h6 {
     font-size: 0.7rem;

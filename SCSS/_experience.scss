@@ -2,27 +2,27 @@
 @use "mixins" as *;
 
 .experience-layout {
-  padding: 4rem 0rem;
+  padding: 4rem 1rem; // Reverted padding
   min-height: 100vh;
   width: 100%;
   position: relative;
-  overflow: hidden;
   z-index: 0;
   @include animated-gradient-background;
 
   // Particles styling
   #particles-js {
-    position: absolute;
+    position: absolute; // Revert to absolute
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100%; // Cover parent height
     z-index: -1;
 
     canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
       pointer-events: auto;
-      position: relative;
-      z-index: 0;
     }
   }
 
@@ -47,11 +47,9 @@
       margin: 0 auto 1rem;
       font-weight: 900;
       font-size: 2.8rem;
-      background: linear-gradient(
-        135deg,
-        lighten($secondary-color, 10%),
-        $secondary-color
-      );
+      background: linear-gradient(135deg,
+          lighten($secondary-color, 10%),
+          $secondary-color );
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -99,13 +97,11 @@
       transform: translateX(-50%);
       width: 6px;
       height: calc(100% - 40px);
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        $secondary-color 15%,
-        $secondary-color 85%,
-        transparent 100%
-      );
+      background: linear-gradient(to bottom,
+          transparent 0%,
+          $secondary-color 15%,
+          $secondary-color 85%,
+          transparent 100%);
       opacity: 0.8;
       border-radius: 8px;
       box-shadow: 0 0 15px rgba($secondary-color, 0.5);
@@ -117,19 +113,21 @@
       }
     }
   }
+
   .Experience {
-    background-color: rgba($primary-color, 0.85);
-    backdrop-filter: blur(5px);
+    background: linear-gradient(145deg, rgba(lighten($primary-color, 4%), 0.85), rgba(lighten($primary-color, 1%), 0.75)); // Subtle gradient background
+    backdrop-filter: blur(8px); // Slightly more blur
     display: flex;
     flex-direction: column;
     max-width: 47%; // Reduced to push cards more to the sides
-    padding: 25px;
-    border-radius: 12px;
-    margin: 3rem 0;
+    padding: 1rem; // Adjusted padding
+    border-radius: 16px; // Slightly rounder corners
+    margin: 2rem 0rem;
     position: relative;
-    box-shadow: 0 10px 25px rgba(black, 0.3);
-    border: 1px solid rgba($secondary-color, 0.2);
-    border-bottom: 3px solid $secondary-color;
+    box-shadow: 0 6px 18px rgba(black, 0.18); // Even softer shadow
+    border: 1px solid rgba($secondary-color, 0.1); // Very subtle border
+    border-bottom: 2px solid rgba($secondary-color, 0.4); // Slightly less prominent bottom border
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // Add transition for smooth hover
 
     // Timeline dot
     &::before {
@@ -160,49 +158,55 @@
       margin-right: auto;
 
       &::before {
-        right: -45px; // Increased to position dot closer to center timeline
-        top: 2.5rem;
+        right: calc(-3vw - 10px); // Position relative to viewport width (adjust as needed)
+        top: 3rem; // Align vertically better
       }
 
       &::after {
-        right: -40px; // Increased to extend connecting line
-        top: calc(2.5rem + 8px);
+        right: calc(-3vw); // Connect from dot edge
+        top: calc(3rem + 8px); // Align vertically
+        width: 3vw; // Adjust width based on viewport
       }
     }
 
     &:nth-child(even) {
       margin-left: auto;
-      margin-right: 10px; // Added right margin to push further right
 
       &::before {
-        left: -65px; // Increased to position dot closer to center timeline
-        top: 2.5rem;
+        left: calc(-3vw - 10px); // Position relative to viewport width (adjust as needed)
+        top: 3rem; // Align vertically better
       }
 
       &::after {
-        left: -55px; // Increased to extend connecting line
-        top: calc(2.5rem + 8px);
+        left: calc(-3vw); // Connect from dot edge
+        top: calc(3rem + 8px); // Align vertically
+        width: 3vw; // Adjust width based on viewport
       }
     }
 
-    // Improved card styling
+    // Improved card styling on hover
     &:hover {
-      transform: perspective(1000px) translateY(-10px) scale(1.02);
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
-      border-color: rgba($secondary-color, 0.4);
+      transform: translateY(-6px) scale(1.015); // Slightly more lift, less scale
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.22); // Adjusted hover shadow
+      background: linear-gradient(145deg, rgba(lighten($primary-color, 6%), 0.9), rgba(lighten($primary-color, 3%), 0.8)); // Lighter gradient on hover
+      border-color: rgba($secondary-color, 0.25); // Slightly more visible border on hover
 
       &::before {
-        transform: scale(1.2);
+        transform: scale(1.1); // Keep dot pulse subtle
+        box-shadow: 0 0 0 8px rgba($secondary-color, 0.25), // Adjusted dot shadow
+          0 0 25px rgba($secondary-color, 0.4);
       }
     }
 
     h2 {
+      // Year styling
       display: inline-block;
-      padding: 0.3rem 1.2rem;
+      padding: 0.25rem 1rem; // Slightly reduced padding
+      margin-bottom: 1rem; // Increased bottom margin
+      font-size: 0.9rem; // Slightly smaller font size
       background-color: $secondary-color;
       color: $primary-color;
       border-radius: 8px;
-      margin-bottom: 0.8rem;
       font-weight: bold;
       letter-spacing: 0.5px;
       @include hover-lift;
@@ -215,11 +219,13 @@
     }
 
     h3 {
-      margin-bottom: 0.8rem;
+      // Title styling
+      margin-bottom: 0.5rem; // Reduced bottom margin
       position: relative;
 
       a {
-        font-size: 1.6rem;
+        font-size: 1.5rem; // Slightly smaller title
+        font-weight: 700; // Ensure weight
         color: $secondary-color;
         text-decoration: none;
         transition: all 0.4s ease;
@@ -250,11 +256,12 @@
     }
 
     h4 {
+      // Company/Location styling
       display: inline-block;
       background-color: rgba($secondary-color, 0.2);
       color: $text-color;
-      margin-bottom: 1rem;
-      padding: 0.4rem 1rem;
+      margin-bottom: 1.2rem; // Adjusted margin
+      padding: 0.35rem 0.9rem; // Adjusted padding
       border-radius: 8px;
       font-weight: 700;
       transition: all $transition-speed ease;
@@ -345,24 +352,23 @@
         h6 {
           display: inline-block;
           font-size: 0.8rem;
-          background-color: rgba($secondary-color, 0.3);
-          color: $text-color;
-          padding: 0.2rem 0.6rem;
-          border-radius: 8px;
+          background-color: rgba($secondary-color, 0.15); // More subtle background
+          color: rgba($text-color, 0.9); // Slightly darker text
+          padding: 0.3rem 0.7rem; // Adjust padding
+          border-radius: 6px; // Softer corners
           margin-right: 8px;
           margin-bottom: 0.5rem;
           font-weight: 700;
           letter-spacing: 0.5px;
-          transition: all $transition-speed ease;
+          transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease; // Refined transition
           position: relative;
           overflow: hidden;
           @include shine-effect;
           transform-origin: center;
 
           &:hover {
-            cursor: default;
-            transform: translateY(-5px) scale(1.15);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18); // Adjusted softer shadow
+            background-color: rgba($secondary-color, 0.28); // Slightly adjusted hover background
           }
         }
       }
@@ -379,19 +385,20 @@
         li {
           position: relative;
           font-size: 1rem;
-          background: rgba($primary-color, 0.6);
-          border-left: 4px solid $secondary-color;
+          background: rgba(lighten($primary-color, 6%), 0.45); // Slightly adjusted background
+          border-left: 3px solid rgba($secondary-color, 0.6); // Adjusted border
           padding: 1rem 1.2rem;
           border-radius: 6px;
           transition: all 0.3s ease;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07); // Softer shadow
           overflow: hidden;
 
           &:hover {
-            transform: translateX(5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            background: rgba($primary-color, 0.8);
-            border-left-width: 8px;
+            transform: translateX(4px); // Less movement
+            box-shadow: 0 4px 9px rgba(0, 0, 0, 0.14); // Adjusted hover shadow
+            background: rgba(lighten($primary-color, 9%), 0.55); // Adjusted hover background
+            border-left-color: $secondary-color; // Full color border on hover
+            border-left-width: 4px; // Keep consistent width
           }
         }
       }
@@ -429,22 +436,30 @@
 
 @media (max-width: 768px) {
   .experience-layout {
+    .experience-container::before {
+      // Adjust timeline position itself
+      left: 30px; // Give more space from edge
+      transform: translateX(0); // No need for translateX
+    }
+
     .Experience {
-      max-width: 90%;
-      margin-left: 40px !important;
+      max-width: calc(100% - 60px); // Adjust width based on new timeline pos
+      margin-left: 60px !important; // Adjust margin based on new timeline pos
       margin-right: 0 !important;
 
       &::before {
-        left: -28px !important;
+        // Dot position for stacked layout
+        left: -40px !important; // (Timeline Left + Dot Radius) = 30px + 10px = 40px offset from card margin
         right: auto !important;
-        top: 2.5rem !important;
+        top: 3rem !important; // Consistent vertical alignment
       }
 
       &::after {
-        left: -28px !important;
+        // Connector position for stacked layout
+        left: -30px !important; // Start from dot edge
         right: auto !important;
-        width: 20px;
-        top: calc(2.5rem + 8px) !important;
+        width: 30px !important; // Connect to timeline
+        top: calc(3rem + 8px) !important; // Consistent vertical alignment
       }
     }
   }
@@ -454,23 +469,40 @@
   .experience-layout {
     padding: 2rem 0.5rem 3rem 0.5rem;
 
+    .experience-container::before {
+      left: 25px; // Adjust for smaller screens
+    }
+
     .Experience {
-      padding: 1.5rem;
-      margin: 1.5rem auto;
-      border-radius: 10px;
+      max-width: calc(100% - 50px); // Adjust width
+      margin-left: 50px !important; // Adjust margin
+      padding: 1.2rem; // Adjust padding
+
+      &::before {
+        left: -35px !important; // 25px + 10px
+        top: 2.5rem !important; // Adjust top slightly for smaller cards
+      }
+
+      &::after {
+        left: -25px !important;
+        width: 25px !important;
+        top: calc(2.5rem + 8px) !important; // Adjust top slightly
+      }
 
       h2 {
-        font-size: 1.2rem;
+        font-size: 0.85rem; // Further reduce size
         padding: 0.2rem 0.8rem;
+        margin-bottom: 0.8rem;
       }
 
       h3 a {
-        font-size: 1.3rem;
+        font-size: 1.25rem; // Further reduce size
       }
 
       h4 {
-        font-size: 1rem;
+        font-size: 0.9rem; // Further reduce size
         padding: 0.3rem 0.8rem;
+        margin-bottom: 1rem;
       }
 
       h6 {
@@ -521,10 +553,12 @@
     transform: scale(1);
     box-shadow: 0 0 0 5px rgba($secondary-color, 0.3);
   }
+
   50% {
     transform: scale(1.15);
     box-shadow: 0 0 0 8px rgba($secondary-color, 0.2);
   }
+
   100% {
     transform: scale(1);
     box-shadow: 0 0 0 5px rgba($secondary-color, 0.3);
@@ -536,10 +570,12 @@
     width: 100px;
     opacity: 0.7;
   }
+
   50% {
     width: 150px;
     opacity: 1;
   }
+
   100% {
     width: 100px;
     opacity: 0.7;
@@ -570,6 +606,7 @@
     opacity: 0;
     transform: perspective(1000px) rotateX(5deg) translateY(50px);
   }
+
   100% {
     opacity: 1;
     transform: perspective(1000px) rotateX(0) translateY(0);
