@@ -617,6 +617,18 @@
 				} else {
 					console.error("Could not find element with ID 'particles-js'");
 				}
+
+				// Initialize IntersectionObserver for animations
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("visible");
+						}
+					});
+				});
+				document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+					observer.observe(el);
+				});
 			}); // End DOMContentLoaded
 		</script>
 		<script src="Js/card-3d-effect.js" defer></script>

@@ -208,7 +208,92 @@
 		<footer class="footer">
 			<div class="copyright-link">© 2025 Aryan Dani</div>
 		</footer>
-		<script></script>
 		<script src="Js/custom-cursor.js" defer></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"
+			defer></script>
+		<script
+			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
+			defer></script>
+		<script
+			src="https://kit.fontawesome.com/1267cf2b7d.js"
+			crossorigin="anonymous"
+			defer></script>
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				// Particles Init
+				if (document.getElementById("particles-js")) {
+					particlesJS("particles-js", {
+						particles: {
+							number: {
+								value: 100,
+								density: {
+									enable: true,
+									value_area: 800,
+								},
+							},
+							color: {
+								value: "#ff6b6b", // Adjusted color for offline page
+							},
+							shape: {
+								type: "circle",
+							},
+							opacity: {
+								value: 0.5,
+								random: true,
+							},
+							size: {
+								value: 3,
+								random: true,
+							},
+							line_linked: {
+								enable: true,
+								distance: 150,
+								color: "#ff8e8e",
+								opacity: 0.4,
+								width: 1,
+							},
+							move: {
+								enable: true,
+								speed: 2,
+								direction: "none",
+								random: true,
+								straight: false,
+								out_mode: "out",
+							},
+						},
+						interactivity: {
+							detect_on: "canvas",
+							events: {
+								onhover: {
+									enable: false, // Disabled interactivity for offline page
+								},
+								onclick: {
+									enable: false,
+								},
+								resize: true,
+							},
+						},
+						retina_detect: true,
+					});
+				} else {
+					console.error("Could not find element with ID 'particles-js'");
+				}
+
+				// IntersectionObserver for animations (if needed on offline page)
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("visible");
+						}
+					});
+				});
+				document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+					observer.observe(el);
+				});
+			});
+		</script>
 	</body>
 </html>

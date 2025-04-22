@@ -1,4 +1,4 @@
-
+/** @format */
 
 document.addEventListener("DOMContentLoaded", () => {
 	// Check for reduced motion preference
@@ -100,91 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			requestAnimationFrame(animateCursor);
 		}
 
-		requestAnimationFrame(animateCursor);
-
-		// ... (rest of the existing code for hover effects) ...
-
-		// Define selectors for different interaction types
-		const interactiveElementsSelector = `\
-      a, button, [role="button"], input[type="submit"], input[type="button"],
-      input[type="reset"], input[type="image"], select, label, summary, [onclick],
-      .menu-btn, .skills__card, .project-card, .certificate-content,
-      .certificate-image, .toast-close, .search-clear-btn, .retry-button,
-      .cached-pages li a, .contact-btn, .submit-btn, .category-tab,
-      .skill-modal__close, .preview-container .close-preview, .jobs-layout .Jobs h3 a,
-      .project-links a, .tags-container h6, .social-icons a, .cta-button,
-      .home__name, .project-card .content h3, [data-interactive]
-    `;
-		const textInputSelector = `\
-      input[type="text"], input[type="email"], input[type="search"],
-      input[type="password"], textarea
-    `;
-
-		// Use event delegation on the body for efficiency
-		document.body.addEventListener("mouseover", (e) => {
-			const target = e.target;
-			if (target.closest(interactiveElementsSelector)) {
-				cursorElement.classList.add("cursor--link-hovered");
-				cursorElement.classList.remove("cursor--text-hovered");
-			} else if (target.closest(textInputSelector)) {
-				cursorElement.classList.add("cursor--text-hovered");
-				cursorElement.classList.remove("cursor--link-hovered");
-			} else {
-				cursorElement.classList.remove(
-					"cursor--link-hovered",
-					"cursor--text-hovered"
-				);
-			}
-		});
-
-		document.body.addEventListener("mouseout", (e) => {
-			const target = e.target;
-			// Check if the element itself or its parent matches the selectors
-			if (
-				target.closest(interactiveElementsSelector) ||
-				target.closest(textInputSelector)
-			) {
-				// Check if the relatedTarget (where the mouse moved to) is outside the body or not interactive
-				if (
-					!document.body.contains(e.relatedTarget) ||
-					(!e.relatedTarget?.closest(interactiveElementsSelector) &&
-						!e.relatedTarget?.closest(textInputSelector))
-				) {
-					cursorElement.classList.remove(
-						"cursor--link-hovered",
-						"cursor--text-hovered"
-					);
-				}
-			}
-		});
-
-		// Hide cursor when leaving the window, show when entering
-		document.addEventListener("mouseleave", () => {
-			cursorElement.style.opacity = "0";
-
-			// Reset magnetic elements
-			elementStates.forEach((state, el) => {
-				el.style.transition = `transform ${1 - magneticDamping}s ease-out`;
-				el.style.transform = "translate(0px, 0px)";
-				state.currentX = 0;
-				state.currentY = 0;
-			});
-		});
-
-		document.addEventListener("mouseenter", () => {
-			cursorElement.style.opacity = "1";
-		});
+		// Start the animation loop
+		animateCursor();
 	} else {
-		console.log("Custom cursor disabled due to reduced motion preference.");
-		// Restore default cursors if motion is reduced
-		document.body.style.cursor = "auto"; // Ensure default is restored
-		const interactiveElements = document.querySelectorAll(
-			'a, button, [role="button"], input[type="submit"], input[type="button"], input[type="reset"], input[type="image"], select, label, summary, [onclick], .menu-btn, .skills__card, .project-card, .certificate-content, .certificate-image, .toast-close, .search-clear-btn, .retry-button, .cached-pages li a, .contact-btn, .submit-btn, .category-tab, .skill-modal__close, .preview-container .close-preview, .jobs-layout .Jobs h3 a, .project-links a, .tags-container h6, .social-icons a, .cta-button, .home__name, .project-card .content h3, [data-interactive]'
-		);
-		interactiveElements.forEach((el) => (el.style.cursor = "pointer"));
-		const textInputs = document.querySelectorAll(
-			'input[type="text"], input[type="email"], input[type="search"], input[type="password"], textarea'
-		);
-		textInputs.forEach((el) => (el.style.cursor = "text"));
+		// If reduced motion is preferred, ensure the default cursor is visible
+		document.body.style.cursor = "auto";
 	}
 });

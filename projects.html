@@ -345,7 +345,16 @@
 			crossorigin="anonymous"
 			defer></script>
 		<script src="Js/card-3d-effect.js" defer></script>
-		<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
+			defer></script>
+		<!-- Added defer -->
+		<!-- Added missing Bootstrap JS with defer -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"
+			defer></script>
 
 		<script>
 			document.addEventListener("DOMContentLoaded", () => {
@@ -461,6 +470,18 @@
 				} else {
 					console.error("Could not find element with ID 'particles-js'");
 				}
+
+				// Initialize IntersectionObserver for animations
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("visible");
+						}
+					});
+				});
+				document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+					observer.observe(el);
+				});
 			}); // End DOMContentLoaded
 		</script>
 		<script src="Js/custom-cursor.js" defer></script>
