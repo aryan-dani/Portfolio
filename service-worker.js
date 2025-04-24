@@ -1,6 +1,6 @@
 /** @format */
 
-const CACHE_NAME = "portfolio-cache-v2";
+const CACHE_NAME = "portfolio-cache-v4"; // Increment cache version
 const STATIC_ASSETS = [
 	"/",
 	"/index.html",
@@ -8,25 +8,32 @@ const STATIC_ASSETS = [
 	"/experience.html",
 	"/projects.html",
 	"/skills.html",
+	"/certification.html",
 	"/copyright.html",
 	"/offline.html",
-	// Correct manifest path
 	"/manifest.json",
+	"/SCSS/main.css",
 	"/Js/main.js",
 	"/Js/performance.js",
-	"/SCSS/main.css",
+	"/Js/card-3d-effect.js",
+	"/Js/custom-cursor.js",
+	"/Js/skills.js",
+	"/Js/certification.js",
 	"/Images/Header.jpg",
 	"/Images/Header_Phone.jpg",
+	"/Images/Profile photo.jpg", // Added profile photo
 ];
 const EXTERNAL_ASSETS = [
 	"https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js",
 	"https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js",
 	"https://kit.fontawesome.com/1267cf2b7d.js",
 	"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
+	"https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css",
+	"https://fonts.googleapis.com/icon?family=Material+Icons",
 ];
 
 self.addEventListener("install", (event) => {
-	self.skipWaiting();
+	self.skipWaiting(); // Keep this to activate new SW faster
 	event.waitUntil(
 		caches
 			.open(CACHE_NAME)
@@ -76,11 +83,12 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
 	// console.log("[Service Worker] Activating Service Worker...");
-	clients.claim();
+	clients.claim(); // Ensure the new SW controls clients immediately
 	event.waitUntil(
 		caches.keys().then((cacheNames) => {
 			return Promise.all(
 				cacheNames.map((cacheName) => {
+					// Delete caches that are not the current static or external cache
 					if (
 						cacheName !== CACHE_NAME &&
 						cacheName !== CACHE_NAME + "-externals"
@@ -99,107 +107,98 @@ self.addEventListener("fetch", (event) => {
 		event.request.method !== "GET" ||
 		event.request.url.startsWith("chrome-extension://")
 	) {
-		return;
+		return; // Ignore non-GET requests and browser extensions
 	}
 
 	const requestUrl = new URL(event.request.url);
 	const isExternal = EXTERNAL_ASSETS.includes(requestUrl.href);
 	const cacheToUse = isExternal ? CACHE_NAME + "-externals" : CACHE_NAME;
 
-	// Network first, falling back to cache for all GET requests
-	event.respondWith(
-		caches.open(cacheToUse).then(async (cache) => {
-			try {
-				// 1. Try network first
-				const networkResponse = await fetch(event.request);
-				// console.log(`[SW] Fetched from Network: ${requestUrl.href}, Status: ${networkResponse.status}, Type: ${networkResponse.type}`);
-
-				// 2. If successful (basic or opaque), cache it and return
-				if (
-					networkResponse &&
-					(networkResponse.ok || networkResponse.type === "opaque")
-				) {
-					// console.log(`[SW] Caching network response: ${requestUrl.href}, Type: ${networkResponse.type}`);
-					// Use event.request as key, networkResponse.clone() as value
-					cache.put(event.request, networkResponse.clone());
-					return networkResponse;
-				}
-				// 3. If network failed but gave a specific error response (e.g., 404, 500)
-				// Check cache first before returning the error response
-				else if (networkResponse && !networkResponse.ok) {
-					console.warn(
-						`[SW] Network request failed with status ${networkResponse.status} for: ${requestUrl.href}`
-					);
-					const cachedResponse = await cache.match(event.request);
-					if (cachedResponse) {
-						// console.log(`[SW] Serving from cache (Network Error ${networkResponse.status}): ${requestUrl.href}`);
-						return cachedResponse;
+	// Strategy: Network first for HTML, Cache first for others
+	if (event.request.mode === "navigate") {
+		// Network first for HTML navigation requests
+		event.respondWith(
+			fetch(event.request)
+				.then((networkResponse) => {
+					// Check if we got a valid response
+					if (networkResponse && networkResponse.ok) {
+						// Cache the fetched HTML page
+						const responseClone = networkResponse.clone();
+						caches.open(CACHE_NAME).then((cache) => {
+							cache.put(event.request, responseClone);
+						});
+						return networkResponse;
 					}
-					// If not in cache, return the network error response
-					return networkResponse;
-				}
-
-				// This part should ideally not be reached if fetch succeeded or failed with a response
-				// But as a fallback, check cache if networkResponse was somehow undefined
+					// If network fails, try cache
+					return caches.match(event.request).then((cachedResponse) => {
+						return cachedResponse || caches.match("/offline.html"); // Fallback to offline page
+					});
+				})
+				.catch(() => {
+					// Network totally failed (offline), try cache
+					return caches.match(event.request).then((cachedResponse) => {
+						return cachedResponse || caches.match("/offline.html"); // Fallback to offline page
+					});
+				})
+		);
+	} else {
+		// Cache first for static assets (CSS, JS, Images, Fonts, etc.)
+		event.respondWith(
+			caches.open(cacheToUse).then(async (cache) => {
+				// 1. Try cache first
 				const cachedResponse = await cache.match(event.request);
 				if (cachedResponse) {
-					// console.log(`[SW] Serving from cache (Network response undefined?): ${requestUrl.href}`);
+					// console.log(`[SW] Serving from Cache: ${requestUrl.href}`);
 					return cachedResponse;
 				}
 
-				// Should not happen with the logic above, but safety net
-				return networkResponse; // Return whatever networkResponse was
-			} catch (error) {
-				// 4. Network fetch failed completely (e.g., offline)
-				console.log(`[SW] Network fetch failed for: ${requestUrl.href}`, error);
-				const cachedResponse = await cache.match(event.request);
-				if (cachedResponse) {
-					// console.log(`[SW] Serving from cache (Network fetch failed): ${requestUrl.href}`);
-					return cachedResponse;
+				// 2. If not in cache, try network
+				// console.log(`[SW] Not in cache, fetching from Network: ${requestUrl.href}`);
+				try {
+					const networkResponse = await fetch(event.request);
+					// 3. If fetch is successful, cache it and return
+					if (
+						networkResponse &&
+						(networkResponse.ok || networkResponse.type === "opaque")
+					) {
+						// console.log(`[SW] Caching network response: ${requestUrl.href}`);
+						const responseClone = networkResponse.clone();
+						cache.put(event.request, responseClone);
+						return networkResponse;
+					}
+					// Handle network errors (like 404) gracefully for assets - don't cache error responses
+					console.warn(
+						`[SW] Network request for asset failed with status ${networkResponse?.status}: ${requestUrl.href}`
+					);
+					// Return the error response directly without caching
+					return (
+						networkResponse || new Response("Asset not found", { status: 404 })
+					);
+				} catch (error) {
+					// 4. Network fetch failed completely (offline)
+					console.error(
+						`[SW] Network fetch failed for asset: ${requestUrl.href}`,
+						error
+					);
+					// For assets, we might not need a specific fallback beyond a standard error
+					return new Response(
+						"Network error: Resource not available offline.",
+						{
+							status: 408, // Request Timeout
+							headers: { "Content-Type": "text/plain" },
+						}
+					);
 				}
-
-				// 5. Cache miss and network failure - Fallback for HTML pages
-				if (
-					event.request.mode === "navigate" &&
-					event.request.headers.get("accept").includes("text/html")
-				) {
-					console.log("[SW] Serving offline fallback page.");
-					// Use the main cache for the offline page
-					return caches
-						.open(CACHE_NAME)
-						.then((mainCache) => mainCache.match("/offline.html"));
-				}
-
-				// 6. For non-HTML assets, return a generic error response if not cached and network failed
-				return new Response("Network error: Resource not available offline.", {
-					status: 408, // Request Timeout
-					headers: { "Content-Type": "text/plain" },
-				});
-			}
-		})
-	);
+			})
+		);
+	}
 });
 
+// Listener to handle the SKIP_WAITING message from the client
 self.addEventListener("message", (event) => {
 	if (event.data && event.data.type === "SKIP_WAITING") {
 		self.skipWaiting();
 	}
 });
 
-self.addEventListener("sync", (event) => {
-	if (event.tag === "sync-assets") {
-		event.waitUntil(
-			caches.open(CACHE_NAME).then((cache) => {
-				return Promise.all(
-					STATIC_ASSETS.map((url) =>
-						fetch(url)
-							.then((response) => cache.put(url, response))
-							.catch((err) => console.log("[Service Worker] Sync error:", err))
-					)
-				);
-			})
-		);
-	}
-});
-
-console.log("[Service Worker] Service worker loaded successfully");
+console.log("[Service Worker] Service worker loaded successfully (v4)");

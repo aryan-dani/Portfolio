@@ -102,28 +102,6 @@ document.addEventListener("click", (e) => {
 	}
 });
 document.addEventListener("DOMContentLoaded", () => {
-	if (!document.querySelector(".page-loader")) {
-		const loader = document.createElement("div");
-		loader.className = "page-loader";
-		loader.innerHTML = '<div class="page-loader__spinner"></div>';
-		document.body.appendChild(loader);
-		setTrackedTimeout(
-			() => {
-				loader.classList.add("loaded");
-				setTrackedTimeout(
-					() => {
-						if (loader.parentNode) {
-							loader.parentNode.removeChild(loader);
-						}
-					},
-					500,
-					"loaderRemove"
-				);
-			},
-			800,
-			"loaderShow"
-		);
-	}
 	const header = document.querySelector("header");
 	if (header) {
 		window.addEventListener("scroll", () => {

@@ -133,6 +133,19 @@
 		<script src="Js/performance.js" defer></script>
 	</head>
 	<body>
+		<!-- Instant Spinner: appears before any CSS/JS loads -->
+		<div id="instant-spinner"><div class="instant-spinner__circle"></div></div>
+		<script>
+			window.addEventListener("load", function () {
+				var s = document.getElementById("instant-spinner");
+				if (s) {
+					s.style.opacity = "0";
+					setTimeout(function () {
+						s.remove();
+					}, 400);
+				}
+			});
+		</script>
 		<div id="particles-js"></div>
 		<header>
 			<div

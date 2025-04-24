@@ -1,0 +1,31 @@
+// _spinner.scss
+// Spinner styles for instant page loader
+
+#instant-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #181818;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    .instant-spinner__circle {
+        width: 54px;
+        height: 54px;
+        border: 6px solid #00adb5;
+        border-top: 6px solid #fff;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

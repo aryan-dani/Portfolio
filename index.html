@@ -59,6 +59,20 @@
 		<link rel="shortcut icon" href="favicons/favicon.ico" />
 	</head>
 	<body>
+		<!-- Instant Spinner: appears before any CSS/JS loads -->
+		<div id="instant-spinner"><div class="instant-spinner__circle"></div></div>
+		<script>
+			// Hide spinner after all content is loaded
+			window.addEventListener("load", function () {
+				var s = document.getElementById("instant-spinner");
+				if (s) {
+					s.style.opacity = "0";
+					setTimeout(function () {
+						s.remove();
+					}, 400);
+				}
+			});
+		</script>
 		<div class="toast-container"></div>
 		<header>
 			<div
