@@ -317,6 +317,8 @@
     // @include card-hover; // Removed conflicting mixin
     @include animated-border($secondary-color); // Use mixin from _mixins.scss
     animation: neonPulse 4s infinite; // Use animation from _animations.scss
+    contain: layout style paint; // Added contain
+    will-change: transform, box-shadow, opacity; // Added will-change
 
     // Disable CSS hover transform if JS 3D effect is active
     &[data-enhanced="true"]:hover {

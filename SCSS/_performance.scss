@@ -5,14 +5,17 @@
   .menu-btn,
   .home__name,
   .social-icons a,
-  .Projects,
+  .project-card,
+  // Added project-card
   .certificate-content,
   .skills__card {
-    will-change: transform;
-    transform: translateZ(0); // Hardware acceleration
+    will-change: transform, opacity; // Add opacity if it's animated
+    transform: translateZ(0); // Force layer creation (use cautiously)
+    contain: layout style paint; // Isolate rendering, layout, style, paint
   }
 
   &.battery-saving {
+
     .project::before,
     .certification::before,
     .home::before {
@@ -29,6 +32,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -62,7 +66,8 @@
   }
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
   body {
     text-rendering: optimizeLegibility;
   }

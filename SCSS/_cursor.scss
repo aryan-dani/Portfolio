@@ -8,11 +8,14 @@
   pointer-events: none;
   z-index: 9999; // Ensure it's above most elements
   mix-blend-mode: difference; // Restore blend mode
-  // Slightly smoother transitions
-  transition: transform 0.1s ease-out, width 0.25s ease-out,
-    height 0.25s ease-out, background-color 0.25s ease-out,
-    border-color 0.25s ease-out, opacity 0.2s ease-out;
-  will-change: transform, width, height, background-color, border-color, opacity;
+  transition: transform 0.05s linear, // Keep transform fast and linear
+    width 0.15s ease-out, // Faster style transitions (was 0.2s)
+    height 0.15s ease-out,
+    background-color 0.15s ease-out,
+    border-color 0.15s ease-out,
+    opacity 0.15s ease-out;
+  will-change: transform; // Hint browser about upcoming changes
+  contain: layout style paint; // Isolate rendering
 
   &.theme-cursor {
     width: 10px; // Slightly smaller base size for a cleaner look
@@ -25,10 +28,8 @@
   &.cursor--link-hovered {
     width: 35px; // Slightly larger expansion
     height: 35px;
-    background-color: rgba(
-      $primary-color,
-      0.3
-    ); // Semi-transparent primary color
+    background-color: rgba($primary-color,
+        0.3); // Semi-transparent primary color
     mix-blend-mode: normal; // Restore blend mode reset
   }
 
@@ -39,6 +40,11 @@
     background-color: var(--cursor-border, $primary-color);
     border-radius: 2px;
     mix-blend-mode: normal; // Restore blend mode reset
+  }
+
+  // Add reduced motion preference
+  @media (prefers-reduced-motion: reduce) {
+    display: none !important; // Keep hiding if reduced motion
   }
 }
 
@@ -66,53 +72,27 @@
   visibility: visible !important;
   display: block !important;
 }
+
 // --- End Cursor Trail SVG Styling ---
 
 // Hide default cursor when custom cursor is active
 html:has(body .custom-cursor),
 body:has(.custom-cursor) {
-  cursor: none !important; // Force hide default cursor on html and body
 
-  // Ensure interactive elements also hide default cursor forcefully
-  a,
-  button,
-  [role="button"],
-  input[type="submit"],
-  input[type="button"],
-  select,
-  label,
-  summary,
-  [onclick],
-  .menu-btn,
-  .skills__card,
-  .project-card,
-  .certificate-content,
-  .certificate-image,
-  .toast-close,
-  .search-clear-btn,
-  .retry-button,
-  .cached-pages li a,
-  .contact-btn,
-  .submit-btn,
-  .category-tab,
-  .skill-modal__close,
-  .preview-container .close-preview,
-  .experience-layout .Experience h3 a,
-  .project-links a,
-  .tags-container h6,
-  .social-icons a,
-  .cta-button,
-  .home__name,
-  .project-card .content h3,
-  [data-interactive] {
-    cursor: none !important; // Force hide default pointer
+  // Force hide default cursor on html and body and almost all descendants
+  & *,
+  & {
+    &:not(.custom-cursor):not(.custom-cursor *):not(input[type="text"]):not(input[type="email"]):not(input[type="search"]):not(input[type="password"]):not(textarea) {
+      cursor: none !important;
+    }
   }
 
+  // Specific overrides for text inputs (redundant with above but safe)
   input[type="text"],
   input[type="email"],
   input[type="search"],
   input[type="password"],
   textarea {
-    cursor: none !important; // Force hide default text cursor
+    cursor: text !important; // Ensure text cursor shows for inputs
   }
 }

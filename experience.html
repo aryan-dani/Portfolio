@@ -118,8 +118,9 @@
 							<div class="job-header">
 								<img
 									src="Images/Artem_Health.png"
-									alt="Artem HealthTech Logo"
-									class="company-logo" />
+									alt="Artem Health Logo"
+									class="company-logo"
+									loading="lazy" />
 								<div class="job-title">
 									<h2 class="text-secondary">2025 Current</h2>
 									<h3>
@@ -167,9 +168,10 @@
 						<div class="content">
 							<div class="job-header">
 								<img
-									src="https://cdn-icons-png.flaticon.com/512/1051/1051328.png"
-									alt="Personal Project Logo"
-									class="company-logo" />
+									src="Images/Data_Sceince_Capstone.jpg"
+									alt="IBM Logo"
+									class="company-logo"
+									loading="lazy" />
 								<div class="job-title">
 									<h2 class="text-secondary">2024 - 2025</h2>
 									<h3>
@@ -215,7 +217,8 @@
 								<img
 									src="https://cdn-icons-png.flaticon.com/512/2537/2537338.png"
 									alt="Tech Company Logo"
-									class="company-logo" />
+									class="company-logo"
+									loading="lazy" />
 								<div class="job-title">
 									<h2 class="text-secondary">2023 - 2024</h2>
 									<h3>
@@ -263,9 +266,10 @@
 						<div class="content">
 							<div class="job-header">
 								<img
-									src="https://cdn-icons-png.flaticon.com/512/7838/7838457.png"
-									alt="Data Company Logo"
-									class="company-logo" />
+									src="https://cdn-icons-png.flaticon.com/512/1005/1005141.png"
+									alt="AI Startup Logo"
+									class="company-logo"
+									loading="lazy" />
 								<div class="job-title">
 									<h2 class="text-secondary">2022 - 2023</h2>
 									<h3>
@@ -372,134 +376,113 @@
 		<script src="Js/main.js" defer></script>
 		<script src="Js/custom-cursor.js" defer></script>
 
-		<script
-			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
-			defer></script>
-
-		<!-- Added missing Bootstrap JS with defer -->
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-			crossorigin="anonymous"
-			defer></script>
-		<!-- Added missing FontAwesome kit script with defer -->
-		<script
-			src="https://kit.fontawesome.com/1267cf2b7d.js"
-			crossorigin="anonymous"
-			defer></script>
-
+		<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 		<script>
-			document.addEventListener("DOMContentLoaded", () => {
-				if (document.getElementById("particles-js")) {
-					particlesJS("particles-js", {
-						particles: {
-							number: {
-								value: 140, // Increased particle count
-								density: {
-									enable: true,
-									value_area: 600,
-								},
-							},
-							color: {
-								value: "#00adb5",
-							},
-							shape: {
-								type: "circle",
-								stroke: {
-									width: 0,
-									color: "#000000",
-								},
-								polygon: {
-									nb_sides: 5,
-								},
-							},
-							opacity: {
-								value: 0.6, // Increased opacity
-								random: true, // Make opacity random
-								anim: {
-									enable: true,
-									speed: 0.5,
-									opacity_min: 0.2,
-									sync: false,
-								},
-							},
-							size: {
-								value: 4, // Increased size
-								random: true,
-								anim: {
-									enable: true,
-									speed: 3,
-									size_min: 1,
-									sync: false,
-								},
-							},
+			particlesJS("particles-js", {
+				particles: {
+					number: {
+						value: 50, // Reduced particle count
+						density: {
+							enable: true,
+							value_area: 800,
+						},
+					},
+					color: {
+						value: "#00adb5",
+					},
+					shape: {
+						type: "circle",
+						stroke: {
+							width: 0,
+							color: "#000000",
+						},
+						polygon: {
+							nb_sides: 5,
+						},
+					},
+					opacity: {
+						value: 0.6, // Reduced opacity
+						random: true,
+						anim: {
+							enable: false, // Disabled opacity animation
+							speed: 0.5,
+							opacity_min: 0.2,
+							sync: false,
+						},
+					},
+					size: {
+						value: 3, // Reduced size
+						random: true,
+						anim: {
+							enable: false, // Disabled size animation
+							speed: 3,
+							size_min: 1,
+							sync: false,
+						},
+					},
+					line_linked: {
+						enable: true,
+						distance: 150, // Adjusted distance
+						color: "#ffffff",
+						opacity: 0.3, // Reduced line opacity
+						width: 1,
+					},
+					move: {
+						enable: true,
+						speed: 2, // Reduced speed
+						direction: "none",
+						random: true,
+						straight: false,
+						out_mode: "out", // Keep particles moving out
+						bounce: false,
+						attract: {
+							enable: true,
+							rotateX: 600,
+							rotateY: 1200,
+						},
+					},
+				},
+				interactivity: {
+					detect_on: "canvas",
+					events: {
+						onhover: {
+							enable: true,
+							mode: "repulse",
+						},
+						onclick: {
+							enable: true,
+							mode: "push",
+						},
+						resize: true,
+					},
+					modes: {
+						grab: {
+							distance: 100, // Reduced grab distance
 							line_linked: {
-								enable: true,
-								distance: 120, // Decreased distance for denser lines
-								color: "#ffffff",
-								opacity: 0.5, // Increased line opacity
-								width: 1,
-							},
-							move: {
-								enable: true,
-								speed: 3, // Increased speed
-								direction: "none",
-								random: true, // Random direction
-								straight: false,
-								out_mode: "out",
-								bounce: false,
-								attract: {
-									enable: true, // Enable attraction
-									rotateX: 600,
-									rotateY: 1200,
-								},
+								opacity: 1,
 							},
 						},
-						interactivity: {
-							detect_on: "canvas",
-							events: {
-								onhover: {
-									enable: true,
-									mode: "grab", // Changed to grab
-								},
-								onclick: {
-									enable: true,
-									mode: "push", // Keep push on click
-								},
-								resize: false, // Set resize handling to false
-							},
-							modes: {
-								grab: {
-									distance: 200, // Increased grab distance
-									line_linked: {
-										opacity: 1, // Stronger line on grab
-									},
-								},
-								bubble: {
-									distance: 250,
-									size: 10,
-									duration: 2,
-									opacity: 8,
-									speed: 3,
-								},
-								repulse: {
-									distance: 150,
-									duration: 0.6,
-								},
-								push: {
-									particles_nb: 4,
-								},
-								remove: {
-									particles_nb: 2,
-								},
-							},
+						bubble: {
+							distance: 200, // Reduced bubble distance
+							size: 40,
+							duration: 2,
+							opacity: 8,
+							speed: 3,
 						},
-						retina_detect: true,
-					});
-				} else {
-					console.error("Could not find element with ID 'particles-js'");
-				}
-			}); // End DOMContentLoaded
+						repulse: {
+							distance: 100, // Reduced repulse distance
+							duration: 0.4,
+						},
+						push: {
+							particles_nb: 4,
+						},
+						remove: {
+							particles_nb: 2,
+						},
+					},
+				},
+				retina_detect: true,
+			});
 		</script>
 
 		<script>

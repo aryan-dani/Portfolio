@@ -23,14 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
 		);
 		const magneticThreshold = 80; // Increased distance
 		const magneticForce = 0.5; // Increased strength
-		const magneticDamping = 0.5; // Smoothness of return (lower is faster)
+		// Adjusted damping for even faster return
+		const magneticDamping = 0.1; // Smoothness of return (lower is faster, was 0.05)
 
 		let mouseX = 0;
 		let mouseY = 0;
 		let cursorX = 0;
 		let cursorY = 0;
-		// Adjusted speed for smoother cursor movement
-		const speed = 1;
+		// Speed remains 1 for direct following - removed lerp below
+		// const speed = 1;
 
 		// Store original positions and current offsets for magnetic elements
 		const elementStates = new Map();
@@ -41,7 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				targetX: 0,
 				targetY: 0,
 			});
-			el.style.transition = `transform ${1 - magneticDamping}s ease-out`; // Add transition for smooth return
+			// Removed setting transition here, will be set dynamically
+			// el.style.transition = `transform ${1 - magneticDamping}s ease-out`;
 		});
 
 		// Update mouse position
@@ -52,49 +54,81 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Animation loop for cursor and magnetic effect
 		function animateCursor() {
-			// Use lerp for smoother cursor following
-			cursorX += (mouseX - cursorX) * speed;
-			cursorY += (mouseY - cursorY) * speed;
+			// Direct assignment for immediate following (removed lerp)
+			cursorX = mouseX;
+			cursorY = mouseY;
 
-			// Round values to avoid subpixel rendering issues that might cause blur/lag
-			const roundedCursorX = Math.round(cursorX);
-			const roundedCursorY = Math.round(cursorY);
-
+			// Remove rounding for potentially smoother movement
 			cursorElement.style.transform = `translate3d(${
-				roundedCursorX - cursorElement.offsetWidth / 2
-			}px, ${roundedCursorY - cursorElement.offsetHeight / 2}px, 0)`;
+				cursorX - cursorElement.offsetWidth / 2
+			}px, ${cursorY - cursorElement.offsetHeight / 2}px, 0)`;
+
+			// --- Optimization: Only check visible elements ---
+			const viewportHeight = window.innerHeight;
+			const viewportWidth = window.innerWidth;
 
 			elementStates.forEach((state, el) => {
 				const rect = el.getBoundingClientRect();
-				const elCenterX = rect.left + rect.width / 2;
-				const elCenterY = rect.top + rect.height / 2;
 
-				const dx = roundedCursorX - elCenterX; // Use rounded cursor position
-				const dy = roundedCursorY - elCenterY; // Use rounded cursor position
-				const distance = Math.sqrt(dx * dx + dy * dy);
+				// Check if element is roughly within the viewport before calculating distance
+				const isVisible =
+					rect.top < viewportHeight &&
+					rect.bottom > 0 &&
+					rect.left < viewportWidth &&
+					rect.right > 0;
 
 				let targetX = 0;
 				let targetY = 0;
 
-				if (distance < magneticThreshold) {
-					// Calculate attraction force towards cursor
-					targetX = dx * magneticForce * (1 - distance / magneticThreshold);
-					targetY = dy * magneticForce * (1 - distance / magneticThreshold);
-					// Ensure transition is fast when attracting
-					el.style.transition = "transform 0.1s ease-out";
+				if (isVisible) {
+					const elCenterX = rect.left + rect.width / 2;
+					const elCenterY = rect.top + rect.height / 2;
+
+					// Use direct cursor position (no rounding)
+					const dx = cursorX - elCenterX;
+					const dy = cursorY - elCenterY;
+					const distance = Math.sqrt(dx * dx + dy * dy);
+
+					if (distance < magneticThreshold) {
+						// Calculate attraction force towards cursor
+						targetX = dx * magneticForce * (1 - distance / magneticThreshold);
+						targetY = dy * magneticForce * (1 - distance / magneticThreshold);
+						// Ensure transition is very fast when attracting
+						el.style.transition = "transform 0.05s ease-out";
+					} else {
+						// Ensure transition is faster when returning
+						if (state.currentX !== 0 || state.currentY !== 0) {
+							el.style.transition = "transform 0.08s ease-out"; // Faster return (was 0.15s)
+						}
+					}
 				} else {
-					// Ensure transition is smooth when returning
-					el.style.transition = `transform ${1 - magneticDamping}s ease-out`;
+					// If not visible, ensure it returns to 0,0 with the faster return transition
+					if (state.currentX !== 0 || state.currentY !== 0) {
+						el.style.transition = "transform 0.08s ease-out"; // Faster return (was 0.15s)
+					}
 				}
 
 				// Lerp the element's position towards the target (or 0,0)
+				// magneticDamping controls the return speed
 				state.currentX += (targetX - state.currentX) * (1 - magneticDamping);
 				state.currentY += (targetY - state.currentY) * (1 - magneticDamping);
 
-				// Apply the transform - round values here too
-				el.style.transform = `translate(${Math.round(
-					state.currentX
-				)}px, ${Math.round(state.currentY)}px)`;
+				// Apply the transform only if needed (avoids unnecessary style changes)
+				// Remove rounding here too
+				if (
+					Math.abs(state.currentX) > 0.01 || // Use a small threshold instead of 0.1
+					Math.abs(state.currentY) > 0.01 ||
+					targetX !== 0 ||
+					targetY !== 0
+				) {
+					el.style.transform = `translate(${state.currentX}px, ${state.currentY}px)`;
+				} else if (
+					el.style.transform !== "translate(0px, 0px)" &&
+					el.style.transform !== ""
+				) {
+					// Explicitly reset transform if it's close to zero and not already reset
+					el.style.transform = "translate(0px, 0px)";
+				}
 			});
 
 			requestAnimationFrame(animateCursor);

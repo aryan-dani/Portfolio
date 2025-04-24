@@ -345,144 +345,113 @@
 			crossorigin="anonymous"
 			defer></script>
 		<script src="Js/card-3d-effect.js" defer></script>
-		<script
-			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
-			defer></script>
-		<!-- Added defer -->
-		<!-- Added missing Bootstrap JS with defer -->
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-			crossorigin="anonymous"
-			defer></script>
-
+		<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 		<script>
-			document.addEventListener("DOMContentLoaded", () => {
-				// Wrap in DOMContentLoaded
-				// Check if the element exists before initializing
-				if (document.getElementById("particles-js")) {
-					// Add particles config from index.html
-					particlesJS("particles-js", {
-						particles: {
-							number: {
-								value: 100, // Increased particle count
-								density: {
-									enable: true,
-									value_area: 800,
-								},
-							},
-							color: {
-								value: "#00adb5",
-							},
-							shape: {
-								type: "circle",
-								stroke: {
-									width: 0,
-									color: "#000000",
-								},
-								polygon: {
-									nb_sides: 5,
-								},
-							},
-							opacity: {
-								value: 0.6, // Increased opacity
-								random: true, // Make opacity random
-								anim: {
-									enable: true,
-									speed: 0.5,
-									opacity_min: 0.2,
-									sync: false,
-								},
-							},
-							size: {
-								value: 4, // Increased size
-								random: true,
-								anim: {
-									enable: true,
-									speed: 3,
-									size_min: 1,
-									sync: false,
-								},
-							},
+			particlesJS("particles-js", {
+				particles: {
+					number: {
+						value: 50, // Reduced particle count
+						density: {
+							enable: true,
+							value_area: 800,
+						},
+					},
+					color: {
+						value: "#00adb5",
+					},
+					shape: {
+						type: "circle",
+						stroke: {
+							width: 0,
+							color: "#000000",
+						},
+						polygon: {
+							nb_sides: 5,
+						},
+					},
+					opacity: {
+						value: 0.6, // Reduced opacity
+						random: true,
+						anim: {
+							enable: false, // Disabled opacity animation
+							speed: 0.5,
+							opacity_min: 0.2,
+							sync: false,
+						},
+					},
+					size: {
+						value: 3, // Reduced size
+						random: true,
+						anim: {
+							enable: false, // Disabled size animation
+							speed: 3,
+							size_min: 1,
+							sync: false,
+						},
+					},
+					line_linked: {
+						enable: true,
+						distance: 150, // Adjusted distance
+						color: "#ffffff",
+						opacity: 0.3, // Reduced line opacity
+						width: 1,
+					},
+					move: {
+						enable: true,
+						speed: 2, // Reduced speed
+						direction: "none",
+						random: true,
+						straight: false,
+						out_mode: "out", // Keep particles moving out
+						bounce: false,
+						attract: {
+							enable: true,
+							rotateX: 600,
+							rotateY: 1200,
+						},
+					},
+				},
+				interactivity: {
+					detect_on: "canvas",
+					events: {
+						onhover: {
+							enable: true,
+							mode: "repulse",
+						},
+						onclick: {
+							enable: true,
+							mode: "push",
+						},
+						resize: true,
+					},
+					modes: {
+						grab: {
+							distance: 100, // Reduced grab distance
 							line_linked: {
-								enable: true,
-								distance: 120, // Decreased distance for denser lines
-								color: "#ffffff",
-								opacity: 0.5, // Increased line opacity
-								width: 1,
-							},
-							move: {
-								enable: true,
-								speed: 3, // Increased speed
-								direction: "none",
-								random: true, // Random direction
-								straight: false,
-								out_mode: "out",
-								bounce: false,
-								attract: {
-									enable: true, // Enable attraction
-									rotateX: 600,
-									rotateY: 1200,
-								},
+								opacity: 1,
 							},
 						},
-						interactivity: {
-							detect_on: "canvas",
-							events: {
-								onhover: {
-									enable: true,
-									mode: "grab", // Changed to grab
-								},
-								onclick: {
-									enable: true,
-									mode: "push",
-								},
-								resize: true,
-							},
-							modes: {
-								grab: {
-									distance: 180, // Increased grab distance
-									line_linked: {
-										opacity: 0.8, // Stronger line on grab
-									},
-								},
-								bubble: {
-									distance: 400,
-									size: 40,
-									duration: 2,
-									opacity: 8,
-									speed: 3,
-								},
-								repulse: {
-									distance: 200,
-									duration: 0.4,
-								},
-								push: {
-									particles_nb: 4,
-								},
-								remove: {
-									particles_nb: 2,
-								},
-							},
+						bubble: {
+							distance: 200, // Reduced bubble distance
+							size: 40,
+							duration: 2,
+							opacity: 8,
+							speed: 3,
 						},
-						retina_detect: true,
-					});
-				} else {
-					console.error("Could not find element with ID 'particles-js'");
-				}
-
-				// Initialize IntersectionObserver for animations
-				const observer = new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting) {
-							entry.target.classList.add("visible");
-						}
-					});
-				});
-				document.querySelectorAll(".animate-on-scroll").forEach((el) => {
-					observer.observe(el);
-				});
-			}); // End DOMContentLoaded
+						repulse: {
+							distance: 100, // Reduced repulse distance
+							duration: 0.4,
+						},
+						push: {
+							particles_nb: 4,
+						},
+						remove: {
+							particles_nb: 2,
+						},
+					},
+				},
+				retina_detect: true,
+			});
 		</script>
 		<script src="Js/custom-cursor.js" defer></script>
 	</body>

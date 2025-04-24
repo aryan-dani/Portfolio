@@ -228,7 +228,7 @@
 					particlesJS("particles-js", {
 						particles: {
 							number: {
-								value: 100,
+								value: 60, // Further reduced for offline page
 								density: {
 									enable: true,
 									value_area: 800,
@@ -241,23 +241,35 @@
 								type: "circle",
 							},
 							opacity: {
-								value: 0.5,
+								value: 0.4, // Reduced opacity
 								random: true,
+								anim: {
+									enable: false, // Disabled opacity animation
+									speed: 0.5,
+									opacity_min: 0.1,
+									sync: false,
+								},
 							},
 							size: {
-								value: 3,
+								value: 2.5, // Reduced size
 								random: true,
+								anim: {
+									enable: false, // Disabled size animation
+									speed: 3,
+									size_min: 0.5,
+									sync: false,
+								},
 							},
 							line_linked: {
 								enable: true,
 								distance: 150,
 								color: "#ff8e8e",
-								opacity: 0.4,
+								opacity: 0.2, // Reduced line opacity
 								width: 1,
 							},
 							move: {
 								enable: true,
-								speed: 2,
+								speed: 1.5, // Reduced speed
 								direction: "none",
 								random: true,
 								straight: false,
@@ -274,6 +286,20 @@
 									enable: false,
 								},
 								resize: true,
+							},
+							modes: {
+								// Keep modes defined even if disabled
+								grab: { distance: 140, line_linked: { opacity: 1 } },
+								bubble: {
+									distance: 400,
+									size: 40,
+									duration: 2,
+									opacity: 8,
+									speed: 3,
+								},
+								repulse: { distance: 200, duration: 0.4 },
+								push: { particles_nb: 4 },
+								remove: { particles_nb: 2 },
 							},
 						},
 						retina_detect: true,

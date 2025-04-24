@@ -249,6 +249,7 @@
   transition: transform 0.4s ease;
   overflow: hidden;
   border-radius: 50%;
+  contain: layout style paint;
 }
 .home__image-container::before {
   content: "";
@@ -276,6 +277,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease-out;
   will-change: transform, box-shadow;
+  contain: layout style paint;
 }
 .home__image:hover {
   box-shadow: 0 0 25px 3px rgba(240, 248, 255, 0.6), 0 5px 15px rgba(0, 0, 0, 0.25);
@@ -288,6 +290,8 @@
   position: relative;
   z-index: 1;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  contain: layout style paint;
+  will-change: transform, opacity, text-shadow;
 }
 .home__name:hover {
   cursor: default;
@@ -590,6 +594,8 @@
   backdrop-filter: blur(5px);
   visibility: visible !important;
   opacity: 1 !important;
+  contain: layout style paint;
+  will-change: transform, background-color, box-shadow;
 }
 .menu-btn:hover {
   transform: scale(1.05);
@@ -672,10 +678,12 @@
   transform: translateX(-50%);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease, visibility 0.5s ease;
   z-index: 2;
   max-width: -moz-fit-content;
   max-width: fit-content;
+  contain: layout style paint;
+  will-change: transform, opacity, visibility;
 }
 .nav.open {
   visibility: visible;
@@ -946,6 +954,7 @@
   border: 1px solid rgba(240, 248, 255, 0.1);
   border-bottom: 2px solid rgba(240, 248, 255, 0.4);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  contain: layout style;
 }
 .experience-layout .Experience::before {
   content: "";
@@ -1581,6 +1590,8 @@
   transform-style: preserve-3d;
   transition: transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985);
   transform-style: preserve-3d;
+  contain: layout style paint;
+  will-change: transform, box-shadow, opacity;
 }
 .project .project-card:hover {
   transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px) scale(1.02);
@@ -2026,7 +2037,6 @@
   left: 100%;
 }
 .about .about-details:hover {
-  cursor: default;
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
@@ -2642,6 +2652,7 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
+  contain: layout style;
 }
 .certification .certificate-item .certificate-content.visible {
   opacity: 1;
@@ -3334,6 +3345,8 @@
   border-left: 3px solid aliceblue;
   animation: borderFlash 3s infinite;
   animation: neonPulse 4s infinite;
+  contain: layout style paint;
+  will-change: transform, box-shadow, opacity;
 }
 .skills__card:nth-child(odd) {
   animation-delay: 0.5s;
@@ -3972,11 +3985,12 @@ footer .copyright-link:hover {
 .performance-optimized .menu-btn,
 .performance-optimized .home__name,
 .performance-optimized .social-icons a,
-.performance-optimized .Projects,
+.performance-optimized .project-card,
 .performance-optimized .certificate-content,
 .performance-optimized .skills__card {
-  will-change: transform;
+  will-change: transform, opacity;
   transform: translateZ(0);
+  contain: layout style paint;
 }
 .performance-optimized.battery-saving .project::before,
 .performance-optimized.battery-saving .certification::before,
