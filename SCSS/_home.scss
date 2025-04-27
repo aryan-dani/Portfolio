@@ -9,11 +9,13 @@
   justify-content: space-between;
   gap: 3rem; // Increased gap
   overflow: hidden;
-  background: linear-gradient(-45deg,
-      $primary-color,
-      lighten($primary-color, 5%),
-      darken($primary-color, 5%),
-      $primary-color );
+  background: linear-gradient(
+    -45deg,
+    $primary-color,
+    lighten($primary-color, 5%),
+    darken($primary-color, 5%),
+    $primary-color
+  );
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
   position: relative;
@@ -41,11 +43,14 @@
     gap: 1rem; // Increased gap
     opacity: 0;
     transform: translateX(-40px); // Start further left
-    animation: slideInLeftEnhanced 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.2s; // Smoother cubic-bezier
+    animation: slideInLeftEnhanced 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      forwards 0.2s; // Smoother cubic-bezier
     position: relative;
     padding: 2rem; // Added padding for internal spacing
-    background-color: rgba(lighten($primary-color, 8%),
-        0.5); // Slightly adjusted opacity/lightness
+    background-color: rgba(
+      lighten($primary-color, 8%),
+      0.5
+    ); // Slightly adjusted opacity/lightness
     backdrop-filter: blur(10px); // Slightly increased blur
     border: 1px solid rgba($secondary-color, 0.1);
     border-radius: 10px;
@@ -56,9 +61,11 @@
       position: absolute;
       width: 200px;
       height: 200px;
-      background: radial-gradient(circle at center,
-          rgba($secondary-color, 0.3),
-          transparent 70%);
+      background: radial-gradient(
+        circle at center,
+        rgba($secondary-color, 0.3),
+        transparent 70%
+      );
       filter: blur(90px);
       top: -50px;
       left: -60px;
@@ -85,7 +92,8 @@
     position: relative;
     opacity: 0;
     transform: translateX(40px) scale(0.95); // Start further right and slightly scaled down
-    animation: slideInRightFadeEnhanced 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.5s; // Smoother, delayed animation
+    animation: slideInRightFadeEnhanced 1.4s
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.5s; // Smoother, delayed animation
     transition: transform 0.4s ease; // Keep transform transition for potential JS effects
     overflow: hidden; // Add this to clip any potential shadow overflow
     border-radius: 50%; // Apply border-radius to the container as well
@@ -96,9 +104,11 @@
       position: absolute;
       width: 280px;
       height: 250px;
-      background: radial-gradient(circle at center,
-          rgba($secondary-color, 0.25),
-          transparent 70%);
+      background: radial-gradient(
+        circle at center,
+        rgba($secondary-color, 0.25),
+        transparent 70%
+      );
       filter: blur(110px);
       bottom: -60px;
       right: -60px;
@@ -157,12 +167,14 @@
       display: inline-block;
       -webkit-background-clip: text;
       background-clip: text;
-      background-image: linear-gradient(60deg,
-          lighten($secondary-color, 10%),
-          $secondary-color,
-          darken($secondary-color, 10%),
-          $secondary-color,
-          lighten($secondary-color, 10%));
+      background-image: linear-gradient(
+        60deg,
+        lighten($secondary-color, 10%),
+        $secondary-color,
+        darken($secondary-color, 10%),
+        $secondary-color,
+        lighten($secondary-color, 10%)
+      );
       background-size: 250% auto;
       color: transparent;
       animation: gradient-text 8s ease infinite;
@@ -175,7 +187,9 @@
         cursor: default;
         transform: translateY(-4px) scale(1.02); // More lift and slight scale
         animation-play-state: paused;
-        filter: drop-shadow(0 0 12px rgba($secondary-color, 0.8)); // Brighter glow on hover
+        filter: drop-shadow(
+          0 0 12px rgba($secondary-color, 0.8)
+        ); // Brighter glow on hover
       }
     }
   }
@@ -228,8 +242,10 @@
           gap: 10px;
           padding: 0.6rem 1.1rem; // Slightly adjust padding
           border-radius: 8px;
-          background-color: rgba($secondary-color,
-              0.1); // Slightly less intense background
+          background-color: rgba(
+            $secondary-color,
+            0.1
+          ); // Slightly less intense background
           color: lighten($text-color, 10%); // Lighter default text
           border: 1px solid rgba($secondary-color, 0.2); // Subtle border
           width: fit-content;
@@ -265,9 +281,11 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: linear-gradient(45deg,
-        $secondary-color,
-        lighten($secondary-color, 15%));
+    background: linear-gradient(
+      45deg,
+      $secondary-color,
+      lighten($secondary-color, 15%)
+    );
     background-size: 200% 200%;
     color: $primary-color;
     font-weight: 600;
@@ -424,7 +442,6 @@
 }
 
 @keyframes floatBlob {
-
   0%,
   100% {
     transform: translateY(0) translateX(0) rotate(0deg);

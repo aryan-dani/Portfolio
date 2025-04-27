@@ -8,11 +8,12 @@
   pointer-events: none;
   z-index: 9999; // Ensure it's above most elements
   mix-blend-mode: difference; // Restore blend mode
-  transition: transform 0.05s linear, // Keep transform fast and linear
-    width 0.15s ease-out, // Faster style transitions (was 0.2s)
+  transition: transform 0.05s linear,
+    // Keep transform fast and linear
+    width 0.15s ease-out,
+    // Faster style transitions (was 0.2s)
     height 0.15s ease-out,
-    background-color 0.15s ease-out,
-    border-color 0.15s ease-out,
+    background-color 0.15s ease-out, border-color 0.15s ease-out,
     opacity 0.15s ease-out;
   will-change: transform; // Hint browser about upcoming changes
   contain: layout style paint; // Isolate rendering
@@ -28,8 +29,10 @@
   &.cursor--link-hovered {
     width: 35px; // Slightly larger expansion
     height: 35px;
-    background-color: rgba($primary-color,
-        0.3); // Semi-transparent primary color
+    background-color: rgba(
+      $primary-color,
+      0.3
+    ); // Semi-transparent primary color
     mix-blend-mode: normal; // Restore blend mode reset
   }
 
@@ -78,11 +81,12 @@
 // Hide default cursor when custom cursor is active
 html:has(body .custom-cursor),
 body:has(.custom-cursor) {
-
   // Force hide default cursor on html and body and almost all descendants
   & *,
   & {
-    &:not(.custom-cursor):not(.custom-cursor *):not(input[type="text"]):not(input[type="email"]):not(input[type="search"]):not(input[type="password"]):not(textarea) {
+    &:not(.custom-cursor):not(.custom-cursor *):not(input[type="text"]):not(
+        input[type="email"]
+      ):not(input[type="search"]):not(input[type="password"]):not(textarea) {
       cursor: none !important;
     }
   }

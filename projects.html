@@ -2,470 +2,491 @@
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Projects | Aryan Dani</title>
-		<meta
-			name="description"
-			content="Portfolio projects by Aryan Dani, showcasing work in web development, AI, and data science." />
-		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-		<link rel="dns-prefetch" href="https://kit.fontawesome.com" />
-		<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-		<link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
-		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-		<link rel="prefetch" href="experience.html" />
-		<link rel="prefetch" href="skills.html" />
-		<link rel="preload" href="SCSS/main.css" as="style" />
-		<link rel="stylesheet" href="SCSS/main.css" />
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet" />
-		<link
-			rel="apple-touch-icon"
-			sizes="180x180"
-			href="favicons/apple-touch-icon.png" />
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="32x32"
-			href="favicons/favicon-32x32.png" />
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="16x16"
-			href="favicons/favicon-16x16.png" />
-		<link rel="manifest" href="manifest.json" />
-		<link rel="shortcut icon" href="favicons/favicon.ico" />
-	</head>
-	<body>
-		<!-- Instant Spinner: appears before any CSS/JS loads -->
-		<div id="instant-spinner"><div class="instant-spinner__circle"></div></div>
-		<script>
-			window.addEventListener("load", function () {
-				var s = document.getElementById("instant-spinner");
-				if (s) {
-					s.style.opacity = "0";
-					setTimeout(function () {
-						s.remove();
-					}, 400);
-				}
-			});
-		</script>
-		<div class="toast-container"></div>
-		<header>
-			<div
-				class="menu-btn"
-				id="menu-btn"
-				tabindex="0"
-				aria-label="Open main menu"
-				aria-controls="main-navigation"
-				aria-expanded="false"
-				role="button">
-				<span class="menu-btn__burger"></span>
-				<span class="menu-toggle-shortcut">Alt+M</span>
-			</div>
-			<nav
-				class="nav"
-				id="main-navigation"
-				role="navigation"
-				aria-label="Main menu">
-				<ul class="menu-nav">
-					<li class="menu-nav__item">
-						<a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="experience.html" class="menu-nav__link" tabindex="0"
-							>Experience</a
-						>
-					</li>
-					<li class="menu-nav__item active">
-						<a href="projects.html" class="menu-nav__link" tabindex="0"
-							>Projects</a
-						>
-					</li>
-					<li class="menu-nav__item">
-						<a href="certification.html" class="menu-nav__link" tabindex="0"
-							>Certifications</a
-						>
-					</li>
-					<li class="menu-nav__item">
-						<a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="about.html" class="menu-nav__link" tabindex="0">About</a>
-					</li>
-				</ul>
-			</nav>
-		</header>
-		<main>
-			<section class="project">
-				<div id="particles-js"></div>
-				<div class="project__intro-container animate-on-scroll">
-					<h2 class="text-secondary">PROJECTS</h2>
-					<p>
-						I know, I know, it’s not the Netflix catalog of projects yet, but
-						hey, greatness takes time! Most of these are still
-						“work-in-progress” (aka me battling bugs at 2 AM), but I promise
-						I’ll blow your mind soon (hopefully). Stick around; we’re just
-						getting started!
-					</p>
-				</div>
-				<div class="project-grid">
-					<div class="project-card animate-on-scroll">
-						<div class="project-image">
-							<img
-								src="Images/Home_Page.jpg"
-								alt="Real Time Threat Detection System"
-								loading="lazy" />
-						</div>
-						<div class="content">
-							<h2 class="text-secondary">2024 - 2025 Ongoing</h2>
-							<h3>Real Time Threat Detection System</h3>
-							<div class="project-links">
-								<a
-									href="https://aryan-dani.github.io/Threat_Detection_System/"
-									class="project-link"
-									target="_blank"
-									rel="noopener">
-									<i class="fas fa-eye"></i>
-									Preview
-								</a>
-								<a
-									href="https://github.com/aryan-dani/Threat_Detection_System"
-									class="project-link"
-									target="_blank"
-									rel="noopener">
-									<i class="fa-brands fa-github"></i>
-									Github
-								</a>
-							</div>
-							<div class="tags-container">
-								<h6>Python</h6>
-								<h6>Yolo v11</h6>
-								<h6>Deep Learning</h6>
-								<h6>EfficientNetV2</h6>
-								<h6>Angular</h6>
-							</div>
-							<p>
-								The Capstone Project I'm developing in my College focuses on
-								Real-Time threat detection using YOLO v11 and EfficientNetV2.
-								This deep learning project aims to identify potential security
-								risks through video analysis and identify threats in X-ray
-								scans, with a specific focus on detecting weapons. Currently in
-								development, this system will integrate with existing security
-								infrastructure to provide automated alerts and monitoring
-								capabilities (it's a long shot i know). To provide a
-								comprehensive solution to the problem we have also designed an
-								adaptive frontend that integrates these two models together.
-							</p>
-						</div>
-					</div>
-					<div class="project-card animate-on-scroll">
-						<div class="project-image">
-							<img
-								src="Images/Dicom-Slice.jpg"
-								alt="Automated Dicom Slice Analyzer"
-								loading="lazy" />
-						</div>
-						<div class="content">
-							<h2 class="text-secondary">2025 Ongoing</h2>
-							<h3>Automated Dicom Slice Analyzer</h3>
-							<div class="project-links">
-								<a
-									href="https://github.com/aryan-dani/Dicom-Classifier"
-									class="project-link"
-									target="_blank"
-									rel="noopener">
-									<i class="fa-brands fa-github"></i>
-									Github
-								</a>
-							</div>
-							<div class="tags-container">
-								<h6>Convolutional Neural Networks</h6>
-								<h6>VIsion Language Models</h6>
-								<h6>Vision Transformers</h6>
-							</div>
-							<p>
-								Upon experimenting various CNN models like InceptionResnetV2 and
-								Vision Transformers, optimizing them to identify anomalies in
-								Dicom Slices and then deploying a Vision Language Model to
-								describe what the anomaly is and in which slice it is presented.
-								This project aims to assist radiologists in identifying and
-								diagnosing anomalies more efficiently, reducing the time
-								required for manual analysis and improving the accuracy of
-								diagnoses. The final developed system will also provide a
-								user-friendly interface for visualizing the results and
-								integrating with existing medical imaging systems (hopefully).
-							</p>
-						</div>
-					</div>
-					<div class="project-card animate-on-scroll">
-						<div class="project-image">
-							<img
-								src="Images/API-Screenshot.jpg"
-								srcset="
-									Images/API-Screenshot-small.jpg  500w,
-									Images/API-Screenshot.jpg       1000w
-								"
-								sizes="(max-width: 600px) 100vw, 800px"
-								alt="API Demonstration Application"
-								width="800"
-								height="450"
-								loading="lazy" />
-						</div>
-						<div class="content">
-							<h2 class="text-secondary">2025 Completed</h2>
-							<h3>API Demonstration Application</h3>
-							<div class="project-links">
-								<a
-									href="https://aryan-dani.github.io/API-Demonstration/"
-									class="project-link"
-									target="_blank"
-									rel="noopener">
-									<i class="fas fa-eye"></i>
-									Preview
-								</a>
-								<a
-									href="https://github.com/aryan-dani/API-Demonstration"
-									class="project-link"
-									target="_blank"
-									rel="noopener">
-									<i class="fa-brands fa-github"></i>
-									Github
-								</a>
-							</div>
-							<div class="tags-container">
-								<h6>Axios</h6>
-								<h6>Javascript</h6>
-								<h6>API Development</h6>
-								<h6>Github Copilot</h6>
-							</div>
-							<p>
-								Sometimes projects aren’t just about showing off skills—they’re
-								about satisfying pure curiosity! I used this project as a
-								hands-on experiment to finally understand client-side APIs. I
-								was always confused about how they work, especially with async
-								operations and client-side calls. So, I built simple projects
-								that call three different API endpoints, which helped me see how
-								requests, responses, and asynchronous flows all come together in
-								real time. Big shoutout to GitHub Copilot, which totally
-								transformed my coding game by whipping up CSS and streamlining
-								my workflow. It’s crazy advanced and makes coding not only more
-								efficient but also a lot more fun!
-							</p>
-						</div>
-					</div>
-					<div class="project-card animate-on-scroll">
-						<div class="project-image">
-							<img
-								src="Images/Data_Sceince_Capstone.jpg"
-								alt="Capstone Data Science"
-								loading="lazy" />
-						</div>
-						<div class="content">
-							<h2 class="text-secondary">2025 Completed</h2>
-							<h3>Capstone Data Science</h3>
-							<div class="project-links">
-								<a
-									href="https://github.com/aryan-dani/Capstone_ds"
-									class="project-link"
-									target="_blank"
-									rel="noopener">
-									<i class="fa-brands fa-github"></i>
-									Github
-								</a>
-							</div>
-							<div class="tags-container">
-								<h6>Exploratory Data Analysis (EDA)</h6>
-								<h6>Machine Learning</h6>
-								<h6>Data Visualization</h6>
-							</div>
-							<p>
-								This capstone project, a key milestone in my data science
-								journey, showcases my ability to address real-world challenges
-								through data-driven solutions. Using Python and essential
-								libraries like NumPy, Pandas, and Scikit-learn, I analyzed a
-								complex dataset to uncover actionable insights and develop
-								predictive models. The project highlights my skills in data
-								wrangling, exploratory data analysis, and machine learning,
-								while reflecting my problem-solving abilities and attention to
-								detail. This experience deepened my expertise in applying
-								theoretical knowledge to practical scenarios, reinforcing my
-								passion for leveraging data science to create impactful
-								outcomes.
-							</p>
-						</div>
-					</div>
-					<div class="project-card animate-on-scroll">
-						<div class="project-image">
-							<img
-								src="Images/Expense_Tracker.jpg"
-								alt="Automated Expense Tracker"
-								loading="lazy" />
-						</div>
-						<div class="content">
-							<h2 class="text-secondary">2025 Ongoing</h2>
-							<h3>Automated Expense Tracker</h3>
-							<div class="project-links">
-								<a
-									href="https://forms.gle/J35XaV3uiy2hpTf68"
-									class="project-link"
-									target="_blank"
-									rel="noopener">
-									<i class="fas fa-eye"></i>
-									Preview
-								</a>
-								<a
-									href="https://www.linkedin.com/in/aryandani/"
-									class="project-link"
-									target="_blank"
-									rel="noopener">
-									<i class="fa-brands fa-linkedin"></i>
-									Linkedin
-								</a>
-							</div>
-							<div class="tags-container">
-								<h6>Google Forms</h6>
-								<h6>Google Sheets</h6>
-								<h6>Make.com</h6>
-								<h6>Open AI</h6>
-							</div>
-							<p>
-								My attempt at developing an automated experience by building an
-								expense tracking system using Google Forms, Google Sheets, and
-								Make.com. The system collects user inputs using Google forms ( I
-								had to start somewhere ) , categorizes expenses, sends email
-								notifications, and provides summaries through an email. I have a
-								lot to do and this is an ongoing project. Check out the LinkedIn
-								link for more details
-							</p>
-						</div>
-					</div>
-				</div>
-			</section>
-		</main>
-		<footer class="footer">
-			<a href="copyright.html" class="copyright-link"
-				>&copy; 2025 Aryan Dani All Rights Reserved</a
-			>
-		</footer>
-		<script src="Js/performance.js" defer></script>
-		<script src="Js/main.js" defer></script>
-		<script
-			src="https://kit.fontawesome.com/1267cf2b7d.js"
-			crossorigin="anonymous"
-			defer></script>
-		<script src="Js/card-3d-effect.js" defer></script>
-		<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-		<script>
-			particlesJS("particles-js", {
-				particles: {
-					number: {
-						value: 50, // Reduced particle count
-						density: {
-							enable: true,
-							value_area: 800,
-						},
-					},
-					color: {
-						value: "#00adb5",
-					},
-					shape: {
-						type: "circle",
-						stroke: {
-							width: 0,
-							color: "#000000",
-						},
-						polygon: {
-							nb_sides: 5,
-						},
-					},
-					opacity: {
-						value: 0.6, // Reduced opacity
-						random: true,
-						anim: {
-							enable: false, // Disabled opacity animation
-							speed: 0.5,
-							opacity_min: 0.2,
-							sync: false,
-						},
-					},
-					size: {
-						value: 3, // Reduced size
-						random: true,
-						anim: {
-							enable: false, // Disabled size animation
-							speed: 3,
-							size_min: 1,
-							sync: false,
-						},
-					},
-					line_linked: {
-						enable: true,
-						distance: 150, // Adjusted distance
-						color: "#ffffff",
-						opacity: 0.3, // Reduced line opacity
-						width: 1,
-					},
-					move: {
-						enable: true,
-						speed: 2, // Reduced speed
-						direction: "none",
-						random: true,
-						straight: false,
-						out_mode: "out", // Keep particles moving out
-						bounce: false,
-						attract: {
-							enable: true,
-							rotateX: 600,
-							rotateY: 1200,
-						},
-					},
-				},
-				interactivity: {
-					detect_on: "canvas",
-					events: {
-						onhover: {
-							enable: true,
-							mode: "repulse",
-						},
-						onclick: {
-							enable: true,
-							mode: "push",
-						},
-						resize: true,
-					},
-					modes: {
-						grab: {
-							distance: 100, // Reduced grab distance
-							line_linked: {
-								opacity: 1,
-							},
-						},
-						bubble: {
-							distance: 200, // Reduced bubble distance
-							size: 40,
-							duration: 2,
-							opacity: 8,
-							speed: 3,
-						},
-						repulse: {
-							distance: 100, // Reduced repulse distance
-							duration: 0.4,
-						},
-						push: {
-							particles_nb: 4,
-						},
-						remove: {
-							particles_nb: 2,
-						},
-					},
-				},
-				retina_detect: true,
-			});
-		</script>
-		<script src="Js/custom-cursor.js" defer></script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Aryan Dani</title>
+    <meta
+      name="description"
+      content="Portfolio projects by Aryan Dani, showcasing work in web development, AI, and data science."
+    />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://kit.fontawesome.com" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="prefetch" href="experience.html" />
+    <link rel="prefetch" href="skills.html" />
+    <link rel="preload" href="SCSS/main.css" as="style" />
+    <link rel="stylesheet" href="SCSS/main.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+  </head>
+  <body>
+    <!-- Instant Spinner: appears before any CSS/JS loads -->
+    <div id="instant-spinner"><div class="instant-spinner__circle"></div></div>
+    <script>
+      window.addEventListener("load", function () {
+        var s = document.getElementById("instant-spinner");
+        if (s) {
+          s.style.opacity = "0";
+          setTimeout(function () {
+            s.remove();
+          }, 400);
+        }
+      });
+    </script>
+    <div class="toast-container"></div>
+    <header>
+      <div
+        class="menu-btn"
+        id="menu-btn"
+        tabindex="0"
+        aria-label="Open main menu"
+        aria-controls="main-navigation"
+        aria-expanded="false"
+        role="button"
+      >
+        <span class="menu-btn__burger"></span>
+        <span class="menu-toggle-shortcut">Alt+M</span>
+      </div>
+      <nav
+        class="nav"
+        id="main-navigation"
+        role="navigation"
+        aria-label="Main menu"
+      >
+        <ul class="menu-nav">
+          <li class="menu-nav__item">
+            <a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="experience.html" class="menu-nav__link" tabindex="0"
+              >Experience</a
+            >
+          </li>
+          <li class="menu-nav__item active">
+            <a href="projects.html" class="menu-nav__link" tabindex="0"
+              >Projects</a
+            >
+          </li>
+          <li class="menu-nav__item">
+            <a href="certification.html" class="menu-nav__link" tabindex="0"
+              >Certifications</a
+            >
+          </li>
+          <li class="menu-nav__item">
+            <a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="about.html" class="menu-nav__link" tabindex="0">About</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="project">
+        <div id="particles-js"></div>
+        <div class="project__intro-container animate-on-scroll">
+          <h2 class="text-secondary">PROJECTS</h2>
+          <p>
+            I know, I know, it’s not the Netflix catalog of projects yet, but
+            hey, greatness takes time! Most of these are still
+            “work-in-progress” (aka me battling bugs at 2 AM), but I promise
+            I’ll blow your mind soon (hopefully). Stick around; we’re just
+            getting started!
+          </p>
+        </div>
+        <div class="project-grid">
+          <div class="project-card animate-on-scroll">
+            <div class="project-image">
+              <img
+                src="Images/Home_Page.jpg"
+                alt="Real Time Threat Detection System"
+                loading="lazy"
+              />
+            </div>
+            <div class="content">
+              <h2 class="text-secondary">2024 - 2025 Ongoing</h2>
+              <h3>Real Time Threat Detection System</h3>
+              <div class="project-links">
+                <a
+                  href="https://aryan-dani.github.io/Threat_Detection_System/"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fas fa-eye"></i>
+                  Preview
+                </a>
+                <a
+                  href="https://github.com/aryan-dani/Threat_Detection_System"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fa-brands fa-github"></i>
+                  Github
+                </a>
+              </div>
+              <div class="tags-container">
+                <h6>Python</h6>
+                <h6>Yolo v11</h6>
+                <h6>Deep Learning</h6>
+                <h6>EfficientNetV2</h6>
+                <h6>Angular</h6>
+              </div>
+              <p>
+                The Capstone Project I'm developing in my College focuses on
+                Real-Time threat detection using YOLO v11 and EfficientNetV2.
+                This deep learning project aims to identify potential security
+                risks through video analysis and identify threats in X-ray
+                scans, with a specific focus on detecting weapons. Currently in
+                development, this system will integrate with existing security
+                infrastructure to provide automated alerts and monitoring
+                capabilities (it's a long shot i know). To provide a
+                comprehensive solution to the problem we have also designed an
+                adaptive frontend that integrates these two models together.
+              </p>
+            </div>
+          </div>
+          <div class="project-card animate-on-scroll">
+            <div class="project-image">
+              <img
+                src="Images/Dicom-Slice.jpg"
+                alt="Automated Dicom Slice Analyzer"
+                loading="lazy"
+              />
+            </div>
+            <div class="content">
+              <h2 class="text-secondary">2025 Ongoing</h2>
+              <h3>Automated Dicom Slice Analyzer</h3>
+              <div class="project-links">
+                <a
+                  href="https://github.com/aryan-dani/Dicom-Classifier"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fa-brands fa-github"></i>
+                  Github
+                </a>
+              </div>
+              <div class="tags-container">
+                <h6>Convolutional Neural Networks</h6>
+                <h6>VIsion Language Models</h6>
+                <h6>Vision Transformers</h6>
+              </div>
+              <p>
+                Upon experimenting various CNN models like InceptionResnetV2 and
+                Vision Transformers, optimizing them to identify anomalies in
+                Dicom Slices and then deploying a Vision Language Model to
+                describe what the anomaly is and in which slice it is presented.
+                This project aims to assist radiologists in identifying and
+                diagnosing anomalies more efficiently, reducing the time
+                required for manual analysis and improving the accuracy of
+                diagnoses. The final developed system will also provide a
+                user-friendly interface for visualizing the results and
+                integrating with existing medical imaging systems (hopefully).
+              </p>
+            </div>
+          </div>
+          <div class="project-card animate-on-scroll">
+            <div class="project-image">
+              <img
+                src="Images/API-Screenshot.jpg"
+                srcset="
+                  Images/API-Screenshot-small.jpg  500w,
+                  Images/API-Screenshot.jpg       1000w
+                "
+                sizes="(max-width: 600px) 100vw, 800px"
+                alt="API Demonstration Application"
+                width="800"
+                height="450"
+                loading="lazy"
+              />
+            </div>
+            <div class="content">
+              <h2 class="text-secondary">2025 Completed</h2>
+              <h3>API Demonstration Application</h3>
+              <div class="project-links">
+                <a
+                  href="https://aryan-dani.github.io/API-Demonstration/"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fas fa-eye"></i>
+                  Preview
+                </a>
+                <a
+                  href="https://github.com/aryan-dani/API-Demonstration"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fa-brands fa-github"></i>
+                  Github
+                </a>
+              </div>
+              <div class="tags-container">
+                <h6>Axios</h6>
+                <h6>Javascript</h6>
+                <h6>API Development</h6>
+                <h6>Github Copilot</h6>
+              </div>
+              <p>
+                Sometimes projects aren’t just about showing off skills—they’re
+                about satisfying pure curiosity! I used this project as a
+                hands-on experiment to finally understand client-side APIs. I
+                was always confused about how they work, especially with async
+                operations and client-side calls. So, I built simple projects
+                that call three different API endpoints, which helped me see how
+                requests, responses, and asynchronous flows all come together in
+                real time. Big shoutout to GitHub Copilot, which totally
+                transformed my coding game by whipping up CSS and streamlining
+                my workflow. It’s crazy advanced and makes coding not only more
+                efficient but also a lot more fun!
+              </p>
+            </div>
+          </div>
+          <div class="project-card animate-on-scroll">
+            <div class="project-image">
+              <img
+                src="Images/Data_Sceince_Capstone.jpg"
+                alt="Capstone Data Science"
+                loading="lazy"
+              />
+            </div>
+            <div class="content">
+              <h2 class="text-secondary">2025 Completed</h2>
+              <h3>Capstone Data Science</h3>
+              <div class="project-links">
+                <a
+                  href="https://github.com/aryan-dani/Capstone_ds"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fa-brands fa-github"></i>
+                  Github
+                </a>
+              </div>
+              <div class="tags-container">
+                <h6>Exploratory Data Analysis (EDA)</h6>
+                <h6>Machine Learning</h6>
+                <h6>Data Visualization</h6>
+              </div>
+              <p>
+                This capstone project, a key milestone in my data science
+                journey, showcases my ability to address real-world challenges
+                through data-driven solutions. Using Python and essential
+                libraries like NumPy, Pandas, and Scikit-learn, I analyzed a
+                complex dataset to uncover actionable insights and develop
+                predictive models. The project highlights my skills in data
+                wrangling, exploratory data analysis, and machine learning,
+                while reflecting my problem-solving abilities and attention to
+                detail. This experience deepened my expertise in applying
+                theoretical knowledge to practical scenarios, reinforcing my
+                passion for leveraging data science to create impactful
+                outcomes.
+              </p>
+            </div>
+          </div>
+          <div class="project-card animate-on-scroll">
+            <div class="project-image">
+              <img
+                src="Images/Expense_Tracker.jpg"
+                alt="Automated Expense Tracker"
+                loading="lazy"
+              />
+            </div>
+            <div class="content">
+              <h2 class="text-secondary">2025 Ongoing</h2>
+              <h3>Automated Expense Tracker</h3>
+              <div class="project-links">
+                <a
+                  href="https://forms.gle/J35XaV3uiy2hpTf68"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fas fa-eye"></i>
+                  Preview
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/aryandani/"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fa-brands fa-linkedin"></i>
+                  Linkedin
+                </a>
+              </div>
+              <div class="tags-container">
+                <h6>Google Forms</h6>
+                <h6>Google Sheets</h6>
+                <h6>Make.com</h6>
+                <h6>Open AI</h6>
+              </div>
+              <p>
+                My attempt at developing an automated experience by building an
+                expense tracking system using Google Forms, Google Sheets, and
+                Make.com. The system collects user inputs using Google forms ( I
+                had to start somewhere ) , categorizes expenses, sends email
+                notifications, and provides summaries through an email. I have a
+                lot to do and this is an ongoing project. Check out the LinkedIn
+                link for more details
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <a href="copyright.html" class="copyright-link"
+        >&copy; 2025 Aryan Dani All Rights Reserved</a
+      >
+    </footer>
+    <script src="Js/performance.js" defer></script>
+    <script src="Js/main.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/1267cf2b7d.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script src="Js/card-3d-effect.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+      particlesJS("particles-js", {
+        particles: {
+          number: {
+            value: 50, // Reduced particle count
+            density: {
+              enable: true,
+              value_area: 800,
+            },
+          },
+          color: {
+            value: "#00adb5",
+          },
+          shape: {
+            type: "circle",
+            stroke: {
+              width: 0,
+              color: "#000000",
+            },
+            polygon: {
+              nb_sides: 5,
+            },
+          },
+          opacity: {
+            value: 0.6, // Reduced opacity
+            random: true,
+            anim: {
+              enable: false, // Disabled opacity animation
+              speed: 0.5,
+              opacity_min: 0.2,
+              sync: false,
+            },
+          },
+          size: {
+            value: 3, // Reduced size
+            random: true,
+            anim: {
+              enable: false, // Disabled size animation
+              speed: 3,
+              size_min: 1,
+              sync: false,
+            },
+          },
+          line_linked: {
+            enable: true,
+            distance: 150, // Adjusted distance
+            color: "#ffffff",
+            opacity: 0.3, // Reduced line opacity
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 2, // Reduced speed
+            direction: "none",
+            random: true,
+            straight: false,
+            out_mode: "out", // Keep particles moving out
+            bounce: false,
+            attract: {
+              enable: true,
+              rotateX: 600,
+              rotateY: 1200,
+            },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: {
+              enable: true,
+              mode: "repulse",
+            },
+            onclick: {
+              enable: true,
+              mode: "push",
+            },
+            resize: true,
+          },
+          modes: {
+            grab: {
+              distance: 100, // Reduced grab distance
+              line_linked: {
+                opacity: 1,
+              },
+            },
+            bubble: {
+              distance: 200, // Reduced bubble distance
+              size: 40,
+              duration: 2,
+              opacity: 8,
+              speed: 3,
+            },
+            repulse: {
+              distance: 100, // Reduced repulse distance
+              duration: 0.4,
+            },
+            push: {
+              particles_nb: 4,
+            },
+            remove: {
+              particles_nb: 2,
+            },
+          },
+        },
+        retina_detect: true,
+      });
+    </script>
+    <script src="Js/custom-cursor.js" defer></script>
+  </body>
 </html>

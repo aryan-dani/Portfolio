@@ -108,9 +108,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -133,6 +135,7 @@
 }
 
 @keyframes bounce {
+
   0%,
   20%,
   50%,
@@ -156,6 +159,7 @@
     opacity: 0;
     transform: translateY(40px); // Start slightly lower
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -167,6 +171,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

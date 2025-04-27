@@ -2,337 +2,347 @@
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Offline | Aryan Dani</title>
-		<meta
-			name="description"
-			content="Currently offline - Aryan Dani's Portfolio" />
-		<link rel="stylesheet" href="SCSS/main.css" />
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet" />
-		<link
-			rel="apple-touch-icon"
-			sizes="180x180"
-			href="favicons/apple-touch-icon.png" />
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="32x32"
-			href="favicons/favicon-32x32.png" />
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="16x16"
-			href="favicons/favicon-16x16.png" />
-		<link rel="manifest" href="manifest.json" />
-		<link rel="shortcut icon" href="favicons/favicon.ico" />
-		<style>
-			.offline-container {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				min-height: 80vh;
-				padding: 2rem;
-				text-align: center;
-			}
-			.offline-icon {
-				font-size: 4rem;
-				margin-bottom: 2rem;
-				color: #ff6b6b;
-				animation: pulse 2s infinite;
-			}
-			.offline-title {
-				font-size: 2.5rem;
-				margin-bottom: 1rem;
-				color: #f0f8ff;
-			}
-			.offline-message {
-				font-size: 1.2rem;
-				margin-bottom: 2rem;
-				max-width: 600px;
-				color: #ddd;
-				line-height: 1.6;
-			}
-			.retry-button {
-				padding: 0.8rem 1.5rem;
-				background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-				color: white;
-				border: none;
-				border-radius: 30px;
-				font-size: 1.1rem;
-				cursor: pointer;
-				transition: transform 0.3s ease, box-shadow 0.3s ease;
-				box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-			}
-			.retry-button:hover {
-				transform: translateY(-5px);
-				box-shadow: 0 10px 20px rgba(255, 107, 107, 0.4);
-			}
-			.cached-pages {
-				margin-top: 3rem;
-				border-top: 1px solid rgba(255, 255, 255, 0.1);
-				padding-top: 2rem;
-				width: 100%;
-				max-width: 600px;
-			}
-			.cached-pages h3 {
-				color: #f0f8ff;
-				margin-bottom: 1rem;
-			}
-			.cached-pages ul {
-				list-style: none;
-				padding: 0;
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: center;
-				gap: 1rem;
-			}
-			.cached-pages li a {
-				display: inline-block;
-				padding: 0.5rem 1rem;
-				background: rgba(255, 255, 255, 0.1);
-				border-radius: 20px;
-				color: #f0f8ff;
-				text-decoration: none;
-				transition: all 0.3s ease;
-			}
-			.cached-pages li a:hover {
-				background: rgba(255, 255, 255, 0.2);
-				transform: translateY(-3px);
-			}
-			@keyframes pulse {
-				0% {
-					transform: scale(1);
-					opacity: 1;
-				}
-				50% {
-					transform: scale(1.1);
-					opacity: 0.7;
-				}
-				100% {
-					transform: scale(1);
-					opacity: 1;
-				}
-			}
-			/* Particles background styles */
-			#particles-js {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				z-index: -1;
-				background-color: #0d1117;
-			}
-		</style>
-		<script src="Js/main.js" defer></script>
-		<script src="Js/performance.js" defer></script>
-	</head>
-	<body>
-		<!-- Instant Spinner: appears before any CSS/JS loads -->
-		<div id="instant-spinner"><div class="instant-spinner__circle"></div></div>
-		<script>
-			window.addEventListener("load", function () {
-				var s = document.getElementById("instant-spinner");
-				if (s) {
-					s.style.opacity = "0";
-					setTimeout(function () {
-						s.remove();
-					}, 400);
-				}
-			});
-		</script>
-		<div id="particles-js"></div>
-		<header>
-			<div
-				class="menu-btn"
-				id="menu-btn"
-				tabindex="0"
-				aria-label="Open main menu"
-				aria-controls="main-navigation"
-				aria-expanded="false"
-				role="button">
-				<span class="menu-btn__burger"></span>
-				<span class="menu-toggle-shortcut">Alt+M</span>
-			</div>
-			<nav
-				class="nav"
-				id="main-navigation"
-				role="navigation"
-				aria-label="Main menu">
-				<ul class="menu-nav">
-					<li class="menu-nav__item">
-						<a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="experience.html" class="menu-nav__link" tabindex="0"
-							>Experience</a
-						>
-					</li>
-					<li class="menu-nav__item">
-						<a href="projects.html" class="menu-nav__link" tabindex="0"
-							>Projects</a
-						>
-					</li>
-					<li class="menu-nav__item">
-						<a href="certification.html" class="menu-nav__link" tabindex="0"
-							>Certifications</a
-						>
-					</li>
-					<li class="menu-nav__item">
-						<a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
-					</li>
-					<li class="menu-nav__item">
-						<a href="about.html" class="menu-nav__link" tabindex="0">About</a>
-					</li>
-				</ul>
-			</nav>
-		</header>
-		<main>
-			<div class="offline-container">
-				<div class="offline-icon">
-					<i class="fa-solid fa-wifi-slash"></i>
-				</div>
-				<h1 class="offline-title">You're Offline</h1>
-				<p class="offline-message">
-					It seems you don't have an internet connection right now. Some of my
-					portfolio content may still be available if you've visited it before.
-				</p>
-				<button class="retry-button" onclick="window.location.reload()">
-					<i class="fa-solid fa-rotate-right"></i> Try Again
-				</button>
-				<div class="cached-pages">
-					<h3>Available Pages</h3>
-					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li><a href="experience.html">Experience</a></li>
-						<li><a href="projects.html">Projects</a></li>
-						<li><a href="skills.html">Skills</a></li>
-						<li><a href="certification.html">Certifications</a></li>
-						<li><a href="about.html">About</a></li>
-					</ul>
-				</div>
-			</div>
-		</main>
-		<footer class="footer">
-			<div class="copyright-link">© 2025 Aryan Dani</div>
-		</footer>
-		<script src="Js/custom-cursor.js" defer></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-			crossorigin="anonymous"
-			defer></script>
-		<script
-			src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
-			defer></script>
-		<script
-			src="https://kit.fontawesome.com/1267cf2b7d.js"
-			crossorigin="anonymous"
-			defer></script>
-		<script>
-			document.addEventListener("DOMContentLoaded", () => {
-				// Particles Init
-				if (document.getElementById("particles-js")) {
-					particlesJS("particles-js", {
-						particles: {
-							number: {
-								value: 60, // Further reduced for offline page
-								density: {
-									enable: true,
-									value_area: 800,
-								},
-							},
-							color: {
-								value: "#ff6b6b", // Adjusted color for offline page
-							},
-							shape: {
-								type: "circle",
-							},
-							opacity: {
-								value: 0.4, // Reduced opacity
-								random: true,
-								anim: {
-									enable: false, // Disabled opacity animation
-									speed: 0.5,
-									opacity_min: 0.1,
-									sync: false,
-								},
-							},
-							size: {
-								value: 2.5, // Reduced size
-								random: true,
-								anim: {
-									enable: false, // Disabled size animation
-									speed: 3,
-									size_min: 0.5,
-									sync: false,
-								},
-							},
-							line_linked: {
-								enable: true,
-								distance: 150,
-								color: "#ff8e8e",
-								opacity: 0.2, // Reduced line opacity
-								width: 1,
-							},
-							move: {
-								enable: true,
-								speed: 1.5, // Reduced speed
-								direction: "none",
-								random: true,
-								straight: false,
-								out_mode: "out",
-							},
-						},
-						interactivity: {
-							detect_on: "canvas",
-							events: {
-								onhover: {
-									enable: false, // Disabled interactivity for offline page
-								},
-								onclick: {
-									enable: false,
-								},
-								resize: true,
-							},
-							modes: {
-								// Keep modes defined even if disabled
-								grab: { distance: 140, line_linked: { opacity: 1 } },
-								bubble: {
-									distance: 400,
-									size: 40,
-									duration: 2,
-									opacity: 8,
-									speed: 3,
-								},
-								repulse: { distance: 200, duration: 0.4 },
-								push: { particles_nb: 4 },
-								remove: { particles_nb: 2 },
-							},
-						},
-						retina_detect: true,
-					});
-				} else {
-					console.error("Could not find element with ID 'particles-js'");
-				}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offline | Aryan Dani</title>
+    <meta
+      name="description"
+      content="Currently offline - Aryan Dani's Portfolio"
+    />
+    <link rel="stylesheet" href="SCSS/main.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <style>
+      .offline-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        padding: 2rem;
+        text-align: center;
+      }
+      .offline-icon {
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        color: #ff6b6b;
+        animation: pulse 2s infinite;
+      }
+      .offline-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #f0f8ff;
+      }
+      .offline-message {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        color: #ddd;
+        line-height: 1.6;
+      }
+      .retry-button {
+        padding: 0.8rem 1.5rem;
+        background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+      }
+      .retry-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.4);
+      }
+      .cached-pages {
+        margin-top: 3rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        width: 100%;
+        max-width: 600px;
+      }
+      .cached-pages h3 {
+        color: #f0f8ff;
+        margin-bottom: 1rem;
+      }
+      .cached-pages ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+      .cached-pages li a {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        color: #f0f8ff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      .cached-pages li a:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.7;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      /* Particles background styles */
+      #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-color: #0d1117;
+      }
+    </style>
+    <script src="Js/main.js" defer></script>
+    <script src="Js/performance.js" defer></script>
+  </head>
+  <body>
+    <!-- Instant Spinner: appears before any CSS/JS loads -->
+    <div id="instant-spinner"><div class="instant-spinner__circle"></div></div>
+    <script>
+      window.addEventListener("load", function () {
+        var s = document.getElementById("instant-spinner");
+        if (s) {
+          s.style.opacity = "0";
+          setTimeout(function () {
+            s.remove();
+          }, 400);
+        }
+      });
+    </script>
+    <div id="particles-js"></div>
+    <header>
+      <div
+        class="menu-btn"
+        id="menu-btn"
+        tabindex="0"
+        aria-label="Open main menu"
+        aria-controls="main-navigation"
+        aria-expanded="false"
+        role="button"
+      >
+        <span class="menu-btn__burger"></span>
+        <span class="menu-toggle-shortcut">Alt+M</span>
+      </div>
+      <nav
+        class="nav"
+        id="main-navigation"
+        role="navigation"
+        aria-label="Main menu"
+      >
+        <ul class="menu-nav">
+          <li class="menu-nav__item">
+            <a href="index.html" class="menu-nav__link" tabindex="0">Home</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="experience.html" class="menu-nav__link" tabindex="0"
+              >Experience</a
+            >
+          </li>
+          <li class="menu-nav__item">
+            <a href="projects.html" class="menu-nav__link" tabindex="0"
+              >Projects</a
+            >
+          </li>
+          <li class="menu-nav__item">
+            <a href="certification.html" class="menu-nav__link" tabindex="0"
+              >Certifications</a
+            >
+          </li>
+          <li class="menu-nav__item">
+            <a href="skills.html" class="menu-nav__link" tabindex="0">Skills</a>
+          </li>
+          <li class="menu-nav__item">
+            <a href="about.html" class="menu-nav__link" tabindex="0">About</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="offline-container">
+        <div class="offline-icon">
+          <i class="fa-solid fa-wifi-slash"></i>
+        </div>
+        <h1 class="offline-title">You're Offline</h1>
+        <p class="offline-message">
+          It seems you don't have an internet connection right now. Some of my
+          portfolio content may still be available if you've visited it before.
+        </p>
+        <button class="retry-button" onclick="window.location.reload()">
+          <i class="fa-solid fa-rotate-right"></i> Try Again
+        </button>
+        <div class="cached-pages">
+          <h3>Available Pages</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="certification.html">Certifications</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="copyright-link">© 2025 Aryan Dani</div>
+    </footer>
+    <script src="Js/custom-cursor.js" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
+      defer
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/1267cf2b7d.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Particles Init
+        if (document.getElementById("particles-js")) {
+          particlesJS("particles-js", {
+            particles: {
+              number: {
+                value: 60, // Further reduced for offline page
+                density: {
+                  enable: true,
+                  value_area: 800,
+                },
+              },
+              color: {
+                value: "#ff6b6b", // Adjusted color for offline page
+              },
+              shape: {
+                type: "circle",
+              },
+              opacity: {
+                value: 0.4, // Reduced opacity
+                random: true,
+                anim: {
+                  enable: false, // Disabled opacity animation
+                  speed: 0.5,
+                  opacity_min: 0.1,
+                  sync: false,
+                },
+              },
+              size: {
+                value: 2.5, // Reduced size
+                random: true,
+                anim: {
+                  enable: false, // Disabled size animation
+                  speed: 3,
+                  size_min: 0.5,
+                  sync: false,
+                },
+              },
+              line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#ff8e8e",
+                opacity: 0.2, // Reduced line opacity
+                width: 1,
+              },
+              move: {
+                enable: true,
+                speed: 1.5, // Reduced speed
+                direction: "none",
+                random: true,
+                straight: false,
+                out_mode: "out",
+              },
+            },
+            interactivity: {
+              detect_on: "canvas",
+              events: {
+                onhover: {
+                  enable: false, // Disabled interactivity for offline page
+                },
+                onclick: {
+                  enable: false,
+                },
+                resize: true,
+              },
+              modes: {
+                // Keep modes defined even if disabled
+                grab: { distance: 140, line_linked: { opacity: 1 } },
+                bubble: {
+                  distance: 400,
+                  size: 40,
+                  duration: 2,
+                  opacity: 8,
+                  speed: 3,
+                },
+                repulse: { distance: 200, duration: 0.4 },
+                push: { particles_nb: 4 },
+                remove: { particles_nb: 2 },
+              },
+            },
+            retina_detect: true,
+          });
+        } else {
+          console.error("Could not find element with ID 'particles-js'");
+        }
 
-				// IntersectionObserver for animations (if needed on offline page)
-				const observer = new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting) {
-							entry.target.classList.add("visible");
-						}
-					});
-				});
-				document.querySelectorAll(".animate-on-scroll").forEach((el) => {
-					observer.observe(el);
-				});
-			});
-		</script>
-	</body>
+        // IntersectionObserver for animations (if needed on offline page)
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        });
+        document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+          observer.observe(el);
+        });
+      });
+    </script>
+  </body>
 </html>
