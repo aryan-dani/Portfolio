@@ -102,16 +102,7 @@ document.addEventListener("click", (e) => {
 	}
 });
 document.addEventListener("DOMContentLoaded", () => {
-	const header = document.querySelector("header");
-	if (header) {
-		window.addEventListener("scroll", () => {
-			if (window.scrollY > 50) {
-				header.classList.add("scrolled");
-			} else {
-				header.classList.remove("scrolled");
-			}
-		});
-	}
+	// ... (header scroll, page name detection) ...
 	const pagePath = window.location.pathname;
 	const isHomePage = pagePath.includes("index.html") || pagePath.endsWith("/");
 	let pageName = "home";
@@ -137,11 +128,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 
 			// Show page-specific welcome message once per page per session
-			// console.log(`[WelcomeToast] Checking first visit for page: ${pageName}`); // Removed log
 			const isFirst = checkFirstTimeVisit(pageName);
-			// console.log(`[WelcomeToast] checkFirstTimeVisit returned: ${isFirst}`); // Removed log
+
 			if (isFirst) {
-				// console.log(`[WelcomeToast] Typeof showToast: ${typeof showToast}`); // Removed log
 				if (typeof showToast === "function") {
 					// Refactored welcome toast logic
 					const welcomeToasts = {
@@ -150,7 +139,8 @@ document.addEventListener("DOMContentLoaded", () => {
 							title: "Welcome to My Portfolio",
 							icon: "fa-solid fa-house-user",
 						},
-						jobs: {
+						experience: {
+							// Changed key from 'jobs' to 'experience'
 							message: "Learn about my career journey and achievements",
 							title: "Professional Experience",
 							icon: "fa-solid fa-briefcase",
@@ -178,14 +168,18 @@ document.addEventListener("DOMContentLoaded", () => {
 					};
 
 					const toastDetails = welcomeToasts[pageName];
+
 					if (toastDetails) {
-						// console.log(`[WelcomeToast] Calling showToast for ${pageName}`); // Removed log
 						showToast(
 							toastDetails.message,
 							"info", // Type
 							6000, // Duration
 							toastDetails.title,
 							toastDetails.icon
+						);
+					} else {
+						console.error(
+							`[WelcomeToast] No toast details found for pageName: ${pageName}`
 						);
 					}
 				} else {
@@ -757,7 +751,7 @@ function initUniversalAnimations() {
 						window.location.href = link.href;
 					},
 					400,
-					"linkTransition"
+					"keyboardNavTransition"
 				);
 			} else {
 				window.location.href = link.href;

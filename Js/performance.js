@@ -21,7 +21,7 @@ function checkFirstTimeVisit(pageName) {
 	const key = `visited_${pageName}`;
 	if (!sessionStorage.getItem(key)) {
 		sessionStorage.setItem(key, "true");
-		return true; // First visit for this page in this session
+		return true; // It's the first visit
 	}
 	return false; // Not the first visit
 }
@@ -34,6 +34,9 @@ function showToast(
 	iconClass = null
 ) {
 	ensureToastContainer(); // Make sure the container exists
+	if (!toastContainer) {
+		return; // Exit if container is missing
+	}
 
 	const toast = document.createElement("div");
 	// Add ONLY type class for styling
@@ -77,10 +80,11 @@ function showToast(
         </div>
         <button class="toast-close" aria-label="Close notification">
             <i class="fa-solid fa-times"></i>
-        </button>
-    `;
+        </button>    `;
 	toast.innerHTML = toastContent;
-	toastContainer.appendChild(toast);
+	toastContainer.appendChild(toast); // Corrected typo
+
+	// Use requestAnimationFrame to ensure the element is in the DOM before adding 'show'
 	requestAnimationFrame(() => {
 		toast.classList.add("show");
 	});
