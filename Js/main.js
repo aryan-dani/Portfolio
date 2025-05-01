@@ -209,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	} else if (pagePath.includes("skills.html")) {
 		initSkillsPageAnimations();
 	} else if (pagePath.includes("about.html")) {
+		console.log("Initializing About Page Animations..."); // <-- Add this log
 		initAboutPageAnimations();
 	}
 	initUniversalAnimations();
@@ -701,12 +702,18 @@ function initCertificationsPageAnimations() {
 	}
 }
 function initAboutPageAnimations() {
+	console.log("Inside initAboutPageAnimations function."); // Log entry into the function
 	// Add logic for the contact form toggle
 	const contactFormToggle = document.getElementById("contactFormToggle");
 	const contactFormSection = document.getElementById("contactFormSection");
 
+	console.log("contactFormToggle found:", !!contactFormToggle); // Log if button element exists
+	console.log("contactFormSection found:", !!contactFormSection); // Log if section element exists
+
 	if (contactFormToggle && contactFormSection) {
+		console.log("Attempting to add click listener to:", contactFormToggle); // Log before adding listener
 		contactFormToggle.addEventListener("click", () => {
+			console.log("Contact Me button clicked!"); // Log inside the listener
 			// Revert to simpler toggle logic
 			contactFormSection.classList.toggle("hidden");
 
@@ -729,11 +736,22 @@ function initAboutPageAnimations() {
 				}
 			}
 		});
+		console.log("Click listener added successfully."); // Log after adding listener
 	} else {
-		console.warn("Contact form toggle button or section not found.");
+		console.warn(
+			"Contact form toggle button or section not found. Listener not added."
+		);
+		// Log which specific element was not found
+		if (!contactFormToggle) {
+			console.error("Element with ID 'contactFormToggle' NOT FOUND.");
+		}
+		if (!contactFormSection) {
+			console.error("Element with ID 'contactFormSection' NOT FOUND.");
+		}
 	}
 
 	// You can add other about-page specific animations here if needed
+	console.log("Exiting initAboutPageAnimations function."); // Log exit from the function
 }
 
 function initUniversalAnimations() {
