@@ -29,10 +29,8 @@
   &.cursor--link-hovered {
     width: 35px; // Slightly larger expansion
     height: 35px;
-    background-color: rgba(
-      $primary-color,
-      0.3
-    ); // Semi-transparent primary color
+    background-color: rgba($primary-color,
+        0.3); // Semi-transparent primary color
     mix-blend-mode: normal; // Restore blend mode reset
   }
 
@@ -81,12 +79,11 @@
 // Hide default cursor when custom cursor is active
 html:has(body .custom-cursor),
 body:has(.custom-cursor) {
+
   // Force hide default cursor on html and body and almost all descendants
   & *,
   & {
-    &:not(.custom-cursor):not(.custom-cursor *):not(input[type="text"]):not(
-        input[type="email"]
-      ):not(input[type="search"]):not(input[type="password"]):not(textarea) {
+    &:not(.custom-cursor):not(.custom-cursor *):not(input[type="text"]):not(input[type="email"]):not(input[type="search"]):not(input[type="password"]):not(textarea) {
       cursor: none !important;
     }
   }

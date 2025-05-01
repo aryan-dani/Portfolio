@@ -707,20 +707,26 @@ function initAboutPageAnimations() {
 
 	if (contactFormToggle && contactFormSection) {
 		contactFormToggle.addEventListener("click", () => {
+			// Revert to simpler toggle logic
+			contactFormSection.classList.toggle("hidden");
+
+			// Update ARIA hidden attribute based on the class
 			const isHidden = contactFormSection.classList.contains("hidden");
-			if (isHidden) {
-				contactFormSection.classList.remove("hidden");
-				contactFormSection.setAttribute("aria-hidden", "false");
-				contactFormToggle.querySelector("span").textContent = "Close Form"; // Update button text
-				// Optional: Focus the first input field when shown
+			contactFormSection.setAttribute("aria-hidden", isHidden.toString());
+
+			// Update button text (optional, but good UX)
+			const buttonTextSpan = contactFormToggle.querySelector("span");
+			if (buttonTextSpan) {
+				buttonTextSpan.textContent = isHidden ? "Contact Me" : "Close Form";
+			}
+
+			// Optional: Focus first input when shown
+			if (!isHidden) {
 				const firstInput = contactFormSection.querySelector("input, textarea");
 				if (firstInput) {
-					firstInput.focus();
+					// Delay focus slightly to allow transition
+					setTimeout(() => firstInput.focus(), 50);
 				}
-			} else {
-				contactFormSection.classList.add("hidden");
-				contactFormSection.setAttribute("aria-hidden", "true");
-				contactFormToggle.querySelector("span").textContent = "Contact Me"; // Update button text
 			}
 		});
 	} else {
