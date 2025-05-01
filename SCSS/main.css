@@ -1450,12 +1450,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 0;
 }
 #particles-js canvas {
   pointer-events: auto;
   position: relative;
-  z-index: 0;
+  z-index: 1;
 }
 
 .project {
@@ -1480,7 +1480,6 @@
   opacity: 0.4;
   pointer-events: none;
   z-index: 0;
-  animation: gradientBackground 15s ease infinite;
 }
 .project .project__intro-container {
   width: 100%;
@@ -1620,7 +1619,10 @@
 .project .project-card::after {
   content: "";
   position: absolute;
-  inset: -1px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border-radius: inherit;
   background: linear-gradient(135deg, rgba(240, 248, 255, 0.7), rgba(103, 103, 103, 0.5));
   opacity: 0;
@@ -1629,7 +1631,6 @@
   pointer-events: none;
 }
 .project .project-card:hover {
-  transform: translateY(-6px) scale(1.02);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
   border-color: rgba(240, 248, 255, 0.25);
 }
@@ -1832,7 +1833,7 @@
 .project .project-card .content p {
   margin-top: 1.5rem;
   font-size: 0.95rem;
-  color: rgba(240, 248, 255, 0.85);
+  color: #e8f4ff;
   line-height: 1.7;
   position: relative;
   z-index: 1;

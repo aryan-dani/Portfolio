@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	initScrollAnimations(); // Initialize scroll animations
 	if (
 		isHomePage ||
-		pagePath.includes("jobs.html") ||
+		pagePath.includes("experience.html") || // Corrected from jobs.html
 		pagePath.includes("about.html") ||
 		pagePath.includes("projects.html") // Assuming parallax is used here too based on initParallaxEffect querySelector
 	) {
@@ -1001,7 +1001,7 @@ function navigateToPage(url) {
 			"keyboardNavTransition"
 		);
 	} else {
-		window.location.href = url; // Fallback if main element isn't found
+		window.location.href = url;
 	}
 }
 
@@ -1013,52 +1013,115 @@ function handleAltNavigation(e) {
 		const currentIndex = getCurrentPageIndex();
 		if (currentIndex > 0) {
 			targetUrl = pageOrder[currentIndex - 1];
-		} else {
-			targetUrl = pageOrder[pageOrder.length - 1]; // Wrap around to last page
 		}
-		e.preventDefault(); // Prevent browser back navigation
 	} else if (key === "ARROWRIGHT") {
 		const currentIndex = getCurrentPageIndex();
 		if (currentIndex < pageOrder.length - 1) {
 			targetUrl = pageOrder[currentIndex + 1];
-		} else {
-			targetUrl = pageOrder[0]; // Wrap around to first page
 		}
-		e.preventDefault(); // Prevent potential browser forward navigation
 	} else if (pageShortcuts.hasOwnProperty(key)) {
 		if (key === "M") {
-			// Trigger menu toggle if Alt+M is pressed
-			const menuButton = document.getElementById("menu-btn");
-			if (menuButton) {
-				menuButton.click();
-				e.preventDefault(); // Prevent default Alt+M behavior (like browser menu)
-			}
+			toggleMenu(); // Toggle menu if Alt+M is pressed
 		} else {
 			targetUrl = pageShortcuts[key];
-			e.preventDefault(); // Prevent default browser behavior for Alt+[Letter]
 		}
 	}
 
 	if (targetUrl) {
-		// --- START: Added Navigation Toast ---
-		if (typeof showToast === "function") {
-			// Extract a user-friendly page name
-			let pageNameFriendly = targetUrl.replace(".html", "");
-			if (pageNameFriendly === "index") pageNameFriendly = "Home";
-			pageNameFriendly =
-				pageNameFriendly.charAt(0).toUpperCase() + pageNameFriendly.slice(1);
-
-			showToast(
-				`Navigating to ${pageNameFriendly}...`, // Message
-				"info", // Type
-				2000, // Short duration as navigation will happen quickly
-				"Navigation", // Title
-				"fa-solid fa-route" // Icon
-			);
-		} else {
-			console.warn("[Navigation] showToast function not available.");
-		}
-		// --- END: Added Navigation Toast ---
+		e.preventDefault(); // Prevent default browser action only if we are navigating
 		navigateToPage(targetUrl);
 	}
+}
+// --- END: Added Navigation Logic ---
+
+// --- START: Toast Notification Logic ---
+const toastContainer = document.querySelector(".toast-container");
+
+function showToast(
+	message,
+	type = "info",
+	duration = 5000,
+	title = "Notification",
+	iconClass = "fa-solid fa-circle-info" // Default icon
+) {
+	if (!toastContainer) {
+		console.error("Toast container not found!");
+		return;
+	}
+
+	const toast = document.createElement("div");
+	toast.className = `toast toast--${type}`;
+	toast.setAttribute("role", "alert");
+	toast.setAttribute("aria-live", "assertive");
+	toast.setAttribute("aria-atomic", "true");
+
+	const toastContent = `
+        <div class="toast-header">
+            <i class="${iconClass} toast-icon"></i>
+            <strong class="toast-title">${title}</strong>
+            <button type="button" class="toast-close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            ${message}
+        </div>
+    `;
+
+	toast.innerHTML = toastContent;
+
+	// Add toast to container
+	toastContainer.appendChild(toast);
+
+	// Animate in
+	requestAnimationFrame(() => {
+		toast.classList.add("show");
+	});
+
+	// Close button functionality
+	const closeButton = toast.querySelector(".toast-close");
+	closeButton.addEventListener("click", () => closeToast(toast));
+
+	// Auto-dismiss after duration
+	const timeoutId = setTrackedTimeout(
+		() => closeToast(toast),
+		duration,
+		`toast-${Date.now()}`
+	);
+
+	// Store timeout ID on the element for potential cancellation
+	toast.dataset.timeoutId = timeoutId;
+}
+
+function closeToast(toast) {
+	if (!toast) return;
+
+	// Clear the auto-dismiss timeout if it exists
+	if (toast.dataset.timeoutId) {
+		clearTrackedTimeout(toast.dataset.timeoutId);
+	}
+
+	// Animate out
+	toast.classList.remove("show");
+
+	// Remove from DOM after animation
+	toast.addEventListener(
+		"transitionend",
+		() => {
+			if (toast.parentNode === toastContainer) {
+				toastContainer.removeChild(toast);
+			}
+		},
+		{ once: true }
+	);
+}
+
+// Function to check if it's the first time visiting a specific page during the session
+function checkFirstTimeVisit(pageIdentifier) {
+	const key = `visited_${pageIdentifier}`;
+	if (!sessionStorage.getItem(key)) {
+		sessionStorage.setItem(key, "true");
+		return true;
+	}
+	return false;
 }

@@ -8,12 +8,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; // Set z-index to -1 to ensure it's behind other content
+  z-index: 0; // Set z-index to 0 (was -1)
 
   canvas {
     pointer-events: auto; // Allow interaction if needed by particles.js config
     position: relative;
-    z-index: 0;
+    z-index: 1; // Set z-index to 1 (was 0)
   }
 }
 
@@ -46,7 +46,7 @@
     opacity: 0.4; // Slightly reduced opacity
     pointer-events: none;
     z-index: 0;
-    animation: gradientBackground 15s ease infinite;
+    // animation: gradientBackground 15s ease infinite; // REMOVED - Redundant with mixin on parent
   }
 
   .project__intro-container {
@@ -169,6 +169,7 @@
     will-change: transform, box-shadow, opacity; // Added will-change
 
     // Disable CSS hover transform if JS 3D effect is active
+    // CONSOLIDATED redundant selectors
     &[data-enhanced="true"]:hover {
       transform: none; // Prevent CSS hover transform
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35); // Keep hover shadow
@@ -197,7 +198,11 @@
       // Border highlight effect
       content: "";
       position: absolute;
-      inset: -1px; // Position slightly outside
+      // inset: -1px; // REMOVED - Conflicts with overflow: hidden
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0; // Replaced inset: -1px
       border-radius: inherit;
       background: linear-gradient(135deg,
           rgba($secondary-color, 0.7),
@@ -212,7 +217,7 @@
 
     &:hover {
       // Keep transform simple or adjust rotate values for less bounce
-      transform: translateY(-6px) scale(1.02); // Simplified hover transform
+      // transform: translateY(-6px) scale(1.02); // REMOVED - Conflicted with JS hover
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35); // Stronger hover shadow
       border-color: $border-color-soft-hover;
 
@@ -419,7 +424,8 @@
       p {
         margin-top: 1.5rem; // Increased margin
         font-size: 0.95rem; // Slightly larger description text
-        color: rgba($secondary-color, 0.85); // Slightly more contrast
+        // color: rgba($secondary-color, 0.85); // Slightly more contrast - REPLACED with solid color
+        color: #e8f4ff; // Solid, slightly less bright than aliceblue
         line-height: 1.7; // Improved line height
         position: relative;
         z-index: 1;

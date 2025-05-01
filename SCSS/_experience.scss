@@ -47,11 +47,9 @@
       margin: 0 auto 1rem;
       font-weight: 900;
       font-size: 2.8rem;
-      background: linear-gradient(
-        135deg,
-        lighten($secondary-color, 10%),
-        $secondary-color
-      );
+      background: linear-gradient(135deg,
+          lighten($secondary-color, 10%),
+          $secondary-color );
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -99,13 +97,11 @@
       transform: translateX(-50%);
       width: 6px;
       height: calc(100% - 40px);
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        $secondary-color 15%,
-        $secondary-color 85%,
-        transparent 100%
-      );
+      background: linear-gradient(to bottom,
+          transparent 0%,
+          $secondary-color 15%,
+          $secondary-color 85%,
+          transparent 100%);
       opacity: 0.8;
       border-radius: 8px;
       box-shadow: 0 0 15px rgba($secondary-color, 0.5);
@@ -119,11 +115,9 @@
   }
 
   .Experience {
-    background: linear-gradient(
-      145deg,
-      rgba(lighten($primary-color, 4%), 0.85),
-      rgba(lighten($primary-color, 1%), 0.75)
-    ); // Subtle gradient background
+    background: linear-gradient(145deg,
+        rgba(lighten($primary-color, 4%), 0.85),
+        rgba(lighten($primary-color, 1%), 0.75)); // Subtle gradient background
     backdrop-filter: blur(8px); // Slightly more blur
     display: flex;
     flex-direction: column;
@@ -167,9 +161,7 @@
       margin-right: auto;
 
       &::before {
-        right: calc(
-          -3vw - 10px
-        ); // Position relative to viewport width (adjust as needed)
+        right: calc(-3vw - 10px); // Position relative to viewport width (adjust as needed)
         top: 3rem; // Align vertically better
       }
 
@@ -184,9 +176,7 @@
       margin-left: auto;
 
       &::before {
-        left: calc(
-          -3vw - 10px
-        ); // Position relative to viewport width (adjust as needed)
+        left: calc(-3vw - 10px); // Position relative to viewport width (adjust as needed)
         top: 3rem; // Align vertically better
       }
 
@@ -201,15 +191,11 @@
     &:hover {
       transform: translateY(-6px) scale(1.015); // Slightly more lift, less scale
       box-shadow: 0 12px 25px rgba(0, 0, 0, 0.22); // Adjusted hover shadow
-      background: linear-gradient(
-        145deg,
-        rgba(lighten($primary-color, 6%), 0.9),
-        rgba(lighten($primary-color, 3%), 0.8)
-      ); // Lighter gradient on hover
-      border-color: rgba(
-        $secondary-color,
-        0.25
-      ); // Slightly more visible border on hover
+      background: linear-gradient(145deg,
+          rgba(lighten($primary-color, 6%), 0.9),
+          rgba(lighten($primary-color, 3%), 0.8)); // Lighter gradient on hover
+      border-color: rgba($secondary-color,
+          0.25); // Slightly more visible border on hover
 
       &::before {
         transform: scale(1.1); // Keep dot pulse subtle
@@ -373,10 +359,8 @@
         h6 {
           display: inline-block;
           font-size: 0.8rem;
-          background-color: rgba(
-            $secondary-color,
-            0.15
-          ); // More subtle background
+          background-color: rgba($secondary-color,
+              0.15); // More subtle background
           color: rgba($text-color, 0.9); // Slightly darker text
           padding: 0.3rem 0.7rem; // Adjust padding
           border-radius: 6px; // Softer corners
@@ -393,10 +377,8 @@
 
           &:hover {
             box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18); // Adjusted softer shadow
-            background-color: rgba(
-              $secondary-color,
-              0.28
-            ); // Slightly adjusted hover background
+            background-color: rgba($secondary-color,
+                0.28); // Slightly adjusted hover background
           }
         }
       }
@@ -413,10 +395,8 @@
         li {
           position: relative;
           font-size: 1rem;
-          background: rgba(
-            lighten($primary-color, 6%),
-            0.45
-          ); // Slightly adjusted background
+          background: rgba(lighten($primary-color, 6%),
+              0.45); // Slightly adjusted background
           border-left: 3px solid rgba($secondary-color, 0.6); // Adjusted border
           padding: 1rem 1.2rem;
           border-radius: 6px;
@@ -427,10 +407,8 @@
           &:hover {
             transform: translateX(4px); // Less movement
             box-shadow: 0 4px 9px rgba(0, 0, 0, 0.14); // Adjusted hover shadow
-            background: rgba(
-              lighten($primary-color, 9%),
-              0.55
-            ); // Adjusted hover background
+            background: rgba(lighten($primary-color, 9%),
+                0.55); // Adjusted hover background
             border-left-color: $secondary-color; // Full color border on hover
             border-left-width: 4px; // Keep consistent width
           }
