@@ -9,1514 +9,366 @@
   overflow: auto;
   align-items: center;
   text-align: left;
-  background: linear-gradient(to right,
-      rgba($primary-color, 0.9),
-      rgba($primary-color, 0)),
-    url("../Images/Header.jpg") center top;
-  background-size: cover;
-  background-attachment: fixed;
-  position: relative;
-  pointer-events: none; // Add: Prevent section from blocking pointer events
+  position: relative; // Ensure positioning context for particles
 
-  &::before {
-    content: "";
+  @include animated-gradient-background; // Use the consistent gradient background
+
+  #particles-js {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(circle,
-        rgba(255, 255, 255, 0.08) 1px,
-        transparent 1px),
-      radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 30px 30px, 20px 20px;
-    background-position: 0 0, 15px 15px;
-    animation: gradientBackground 15s ease infinite;
-    z-index: 0;
-    pointer-events: none;
+    z-index: -1; // Set behind everything, including ::before
+    overflow: hidden; // Prevent canvas overflow issues
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      pointer-events: auto; // Allow interaction if configured
+    }
+  }
+
+  &::before {
+    z-index: 0; // Above particles, below content
   }
 
   // Re-enable pointer events for the main content wrapper
   .about-content-wrapper {
     pointer-events: auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; // Allow wrapping
     width: 100%;
-    max-width: 1600px;
+    max-width: 1400px; // Consistent max-width
     margin: 0 auto;
-    padding: 0 1rem; // Reduce horizontal padding on smaller screens
-    gap: 1.5rem; // Reduce gap slightly
+    padding: 2rem; // Consistent padding
+    gap: 2rem; // Consistent gap
+    position: relative; // Ensure content is above particles/overlays
+    z-index: 1; // Above particles and ::before
 
-    @media screen and (min-width: 768px) {
-      padding: 0 2rem; // Restore padding on medium screens
-      gap: 2rem; // Restore gap
-    }
-
-    @media screen and (min-width: 1200px) {
-      padding: 0 3rem; // Increase padding on large screens
-      max-width: 1400px; // Adjust max-width if needed
+    @media screen and (max-width: 991px) {
+      flex-direction: column; // Stack vertically on smaller screens
+      padding: 1.5rem 1rem;
     }
   }
 
   .about-info {
-    flex: 1;
-    position: relative;
-    z-index: 1;
+    flex: 2 1 500px; // Grow more, base width 500px
     min-width: 300px;
-
-    @media screen and (min-width: 992px) {
-      max-width: none; // Allow info to take more space if form is narrow
-      flex-basis: 60%; // Suggest a basis percentage
-      flex-grow: 1;
-    }
-  }
-
-  .about-details {
-    font-size: 1rem;
-    display: inline-block;
-    background-color: $primary-color;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    transition: all 0.5s ease;
     position: relative;
-    z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.5s ease forwards;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    overflow: hidden; // Keep for shine effect
-    @include shine-effect;
+    z-index: 1; // Keep relative z-index within wrapper
 
-    &:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-    }
-  }
-
-  h2 {
-    display: inline-block;
-    background-color: $secondary-color;
-    color: $primary-color;
-    font-weight: 800;
-    padding: 0.1rem 0.5rem;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.5s 0.2s ease forwards;
-    transition: all 0.4s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transform-origin: left;
-    overflow: hidden;
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -60%;
-      width: 20%;
-      height: 200%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: rotate(30deg);
-      transition: left 0.7s ease;
-      animation: shimmer 3s infinite;
-    }
-
-    @include hover-lift;
-
-    &:hover {
-      transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-  }
-
-  p {
-    font-size: 1rem;
-    width: 100%;
-    max-width: 35rem; // Increased from 30rem for better text flow
-    margin-left: 4px;
-    position: relative;
-    z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.5s 0.4s ease forwards;
-    background: rgba($primary-color, 0.7);
-    padding: 8px; // Increased from 3px for better readability
-    border-radius: 8px;
-    transform-origin: left;
-    transition: all 0.4s ease;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    text-align: justify; // Justify text
-    @include hover-lift;
-
-    &:hover {
-      transform: translateY(-3px) scale(1.01);
-      background: rgba($primary-color, 0.8);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    @media screen and (max-width: 768px) {
-      max-width: 100%; // Allow full width on smaller screens
-    }
-  }
-
-  .contact-email {
-    width: 100%;
-    max-width: 25rem;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 0.3rem;
-    color: $primary-color;
-    background-color: $secondary-color;
-    border-radius: 8px;
-    position: relative;
-    z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.5s 0.6s ease forwards;
-    transition: all 0.4s ease; // Slightly faster transition
-
-    &:hover {
-      cursor: default;
-      transform: translateY(-4px) scale(1.02); // Slightly less scale
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); // Softer shadow
-    }
-
-    .contact-btn {
-      margin-left: auto;
-      background-color: transparent;
-      border: 2px solid $primary-color;
-      color: $primary-color;
-      border-radius: 6px;
-      padding: 0.4rem 0.8rem;
-      font-weight: 600;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: background-color 0.3s ease, transform 0.3s ease;
+    // Simplify nested element styles
+    .about-details,
+    h2,
+    p,
+    .contact-email,
+    .resume-download {
+      background: rgba($primary-color, 0.7);
+      padding: 1rem 1.5rem;
+      border-radius: $border-radius-medium;
+      margin-bottom: 1.5rem;
+      box-shadow: $shadow-light;
+      backdrop-filter: blur(5px);
+      border-left: 4px solid $secondary-color;
+      transition: all 0.3s ease-out;
+      opacity: 0; // Keep initial animation state
+      animation: slideInUp 0.5s ease forwards;
 
       &:hover {
-        background-color: $primary-color;
-        color: $secondary-color;
-        transform: scale(1.05); // Add subtle scale on hover
-      }
-
-      &:active {
-        transform: scale(0.98); // Add active state feedback
-      }
-
-      i {
-        transition: transform 0.3s ease;
-      }
-
-      &:hover i {
-        transform: rotate(10deg); // Slight icon rotation on hover
+        transform: translateY(-4px);
+        box-shadow: $shadow-medium;
+        background: rgba($primary-color, 0.8);
       }
     }
-  }
 
-  // Resume Download Section Styles
-  .resume-download {
-    margin-top: 1.5rem; // Add space above the section
-    padding: 1rem;
-    background: rgba($primary-color, 0.7);
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px); // Corrected order
-    position: relative;
-    z-index: 1;
-    opacity: 0;
-    animation: slideInUp 0.5s 0.8s ease forwards; // Delay animation slightly
-    transition: all 0.4s ease;
-    @include hover-lift;
-
-    &:hover {
-      transform: translateY(-5px) scale(1.02);
-      background: rgba($primary-color, 0.8);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    h3 {
-      color: $secondary-color;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      font-size: 1.2rem; // Slightly larger heading
-    }
-
-    p {
-      font-size: 0.95rem; // Adjust paragraph size
-      margin-bottom: 1rem;
-      max-width: none; // Allow full width within this container
-      background: none; // Remove nested background
-      padding: 0;
-      box-shadow: none;
-      -webkit-backdrop-filter: none; // Corrected order
-      backdrop-filter: none; // Corrected order
-      text-align: left; // Align text left
-      animation: none; // Remove redundant animation
-      opacity: 1; // Ensure visible
-    }
-
-    .btn-resume {
-      display: inline-flex; // Use inline-flex for icon alignment
-      align-items: center;
-      gap: 0.5rem;
+    // Specific overrides
+    h2 {
+      display: inline-block;
       background-color: $secondary-color;
       color: $primary-color;
-      padding: 0.6rem 1.2rem; // Adjust padding
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-left: none;
+      animation-delay: 0.2s;
+
+      // Remove shimmer/hover effects if simplifying
+      &::after {
+        content: none;
+      }
 
       &:hover {
-        background-color: darken($secondary-color, 10%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        transform: none;
+        box-shadow: $shadow-light;
       }
 
-      &:active {
-        transform: translateY(0);
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+      // Simpler hover
+    }
+
+    p {
+      font-size: 1rem; // Reset font size
+      max-width: none; // Allow full width within info container
+      text-align: justify;
+      animation-delay: 0.4s;
+
+      // Remove hover lift/scale if simplifying
+      &:hover {
+        transform: none;
+        box-shadow: $shadow-light;
+        background: rgba($primary-color, 0.7);
+      }
+    }
+
+    .contact-email {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      animation-delay: 0.6s;
+      max-width: 30rem; // Limit width
+
+      .contact-btn {
+        margin-left: auto;
+        padding: 0.6rem 1.2rem; // Consistent padding
+        font-size: 0.95rem; // Consistent font size
+        font-weight: 600;
+        @include button-hover; // Apply button mixin
+        background-color: $secondary-color;
+        color: $primary-color;
+        border: none;
+        border-radius: $border-radius-small;
+        cursor: pointer;
+        display: inline-flex; // Use flex for icon alignment
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+
+        i {
+          font-size: 1em; // Match icon size to text
+        }
+      }
+    }
+
+    .resume-download {
+      animation-delay: 0.8s;
+      max-width: 30rem; // Keep max-width
+
+      h3 {
+        color: $secondary-color;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
       }
 
-      i {
-        font-size: 1rem; // Adjust icon size if needed
+      p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        background: none;
+        padding: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        border-left: none;
+        text-align: left;
+        animation: none;
+        opacity: 1;
+      }
+
+      .btn-resume {
+        padding: 0.7rem 1.4rem; // Slightly larger padding
+        font-size: 1rem;
+        font-weight: 600;
+        @include button-hover; // Apply button mixin
+        background-color: darken($secondary-color, 5%); // Slightly darker background
+        color: $primary-color;
+        border: none;
+        border-radius: $border-radius-small;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none;
+
+        i {
+          font-size: 1.1em;
+        }
       }
     }
   }
 
-  // End Resume Download Section Styles
-
   .contact-form-container {
-    flex: 1 1 500px; // Allow grow, allow shrink, base width 300px
-    min-width: 800px; // Ensure it doesn't get too small
-    max-width: 850px; // Slightly increase max-width for better spacing
+    flex: 1 1 400px; // Grow less, base width 400px
+    min-width: 320px;
+    max-width: 600px; // Adjust max-width as needed
     background: rgba($primary-color, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    -webkit-backdrop-filter: blur(8px);
+    border-radius: $border-radius-large;
+    box-shadow: $shadow-medium;
     backdrop-filter: blur(8px);
     position: relative;
-    z-index: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease, border 0.4s ease, flex-basis 0.4s ease; // Added flex-basis to transition
+    z-index: 1; // Keep relative z-index within wrapper
+    transition: all 0.4s ease; // Simplified transition
     overflow: hidden;
-    border-left: 4px solid $secondary-color; // Keep the left border consistent
-    padding: 1.2rem 1.5rem 1.2rem 2rem; // Base padding
-    margin-top: 1rem; // Base margin
-    border-top: 1px solid rgba($secondary-color, 0.1); // Base border (example)
-    border-right: 1px solid rgba($secondary-color, 0.1);
-    border-bottom: 1px solid rgba($secondary-color, 0.1);
+    border-left: 4px solid $secondary-color;
+    padding: 1.5rem 2rem; // Adjusted padding
+    margin-top: 0; // Remove margin-top for flex alignment
 
     &.hidden {
+      // Keep hidden styles
       max-height: 0;
       padding-top: 0;
       padding-bottom: 0;
       margin-top: 0;
-      margin-bottom: 0; // Add margin-bottom collapse
-      border-width: 0; // Collapse borders
-      overflow: hidden;
-      flex-basis: 0; // Collapse flex basis when hidden
+      margin-bottom: 0;
+      border-width: 0;
+      opacity: 0;
+      transform: translateY(20px);
+      flex-basis: 0;
     }
 
     &:not(.hidden) {
-      max-height: 1000px; // Or a sufficiently large value
+      // Keep visible styles
+      max-height: 1000px;
       opacity: 1;
       transform: translateY(0);
-      // Padding, margin, borders are already set by default
-    }
-
-    @media screen and (min-width: 992px) {
-      margin-top: 0; // No top margin needed on larger screens next to info
-
-      &.hidden {
-        margin-top: 0;
-      }
     }
 
     h2 {
       color: $secondary-color;
       text-align: center;
-      margin-bottom: 0.5rem; // Reduced margin
-      font-size: 1.5rem; // Adjust size
-      font-weight: 700; // Bolder
-      background: none; // Remove background inherited from general h2
+      margin-bottom: 1rem; // Adjusted margin
+      font-size: 1.6rem;
+      font-weight: 700;
+      // Remove inherited styles
+      background: none;
       padding: 0;
       box-shadow: none;
-      animation: none; // Remove animation
-      opacity: 1; // Ensure visible
-      overflow: visible; // Remove overflow hidden
+      animation: none;
+      opacity: 1;
+      overflow: visible;
 
       &::after {
-        content: none; // Remove shimmer effect
+        content: none;
       }
     }
 
     p {
       text-align: center;
-      margin-bottom: 1.5rem; // Increased margin
-      font-size: 1rem; // Adjust size
-      color: lighten($text-color, 20%); // Lighter text color
-      background: none; // Remove inherited background
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      color: lighten($text-color, 15%);
+      // Remove inherited styles
+      background: none;
       padding: 0;
       box-shadow: none;
-      -webkit-backdrop-filter: none; // Corrected order
-      backdrop-filter: none; // Corrected order
-      animation: none; // Remove animation
-      opacity: 1; // Ensure visible
-      max-width: none; // Allow full width
-      border-left: none; // Remove the inherited left border
+      backdrop-filter: none;
+      animation: none;
+      opacity: 1;
+      max-width: none;
+      border-left: none;
     }
 
     .contact-form {
       display: flex;
       flex-direction: column;
-      gap: 0.8rem; // Reduce gap slightly
+      gap: 1rem; // Adjusted gap
 
       .form-group {
-        display: flex;
-        flex-direction: column;
-
         label {
+          // ... existing styles ...
+          display: block; // Ensure label is block
           margin-bottom: 0.3rem;
-          font-weight: 600;
-          font-size: 0.85rem; // Slightly smaller label
-          color: darken($text-color, 10%);
         }
 
         input,
         textarea {
-          width: 100%; // Ensure inputs take full width of container
-          padding: 0.6rem 0.8rem; // Adjust padding
-          border: 1px solid darken($primary-color, 10%);
-          border-radius: 5px;
-          background-color: lighten($primary-color, 5%);
+          width: 100%;
+          padding: 0.8rem 1rem; // Increased padding
+          font-size: 1rem;
+          background-color: lighten($primary-color, 8%); // Slightly lighter background
+          border: 1px solid lighten($primary-color, 15%); // Softer border
           color: $text-color;
-          font-size: 0.9rem;
+          border-radius: $border-radius-small;
           transition: border-color 0.3s ease, box-shadow 0.3s ease;
+          line-height: 1.4;
+
+          &::placeholder {
+            color: darken($text-color, 30%);
+            opacity: 0.8;
+          }
 
           &:focus {
             outline: none;
             border-color: $secondary-color;
-            box-shadow: 0 0 0 2px rgba($secondary-color, 0.3);
+            box-shadow: 0 0 0 3px rgba($secondary-color, 0.25);
+            background-color: lighten($primary-color, 5%); // Darken slightly on focus
           }
         }
 
         textarea {
-          resize: vertical; // Allow vertical resize only
-          min-height: 80px; // Set a minimum height
+          min-height: 120px; // Increased min-height
+          resize: vertical;
         }
       }
 
       .submit-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center; // Center content
-        gap: 0.6rem;
-        padding: 0.7rem 1.5rem; // Adjust padding
+        padding: 0.8rem 1.8rem;
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin-top: 1rem;
+        @include button-hover; // Apply button mixin
         background-color: $secondary-color;
         color: $primary-color;
         border: none;
-        border-radius: 6px;
+        border-radius: $border-radius-small;
         cursor: pointer;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        margin-top: 0.5rem; // Add some margin above the button
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-        &:hover {
-          background-color: darken($secondary-color, 10%);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        &:active {
-          transform: translateY(0);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-text {
-          display: inline-block;
-        }
+        align-self: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        text-decoration: none;
 
         i {
-          font-size: 1rem; // Adjust icon size
-          transition: transform 0.3s ease;
-        }
-
-        &:hover i {
-          transform: translateX(3px); // Move icon slightly on hover
+          font-size: 1.1em;
         }
       }
     }
   }
 
-  @for $i from 1 through 5 {
-    .about-element:nth-child(#{$i}) {
-      opacity: 0;
-      animation: slideInUp 0.5s #{$i * 0.2}s ease forwards;
-    }
-  }
-
+  // Keep media queries for adjustments
   @media screen and (max-width: 991px) {
-    .about-content-wrapper {
-      flex-direction: column;
-      padding: 0 1rem; // Reduce padding on smaller screens
-    }
 
-    .about-info {
-      max-width: 100%; // Allow info section to take full width
+    .about-info,
+    .contact-form-container {
+      flex-basis: 100%; // Take full width when stacked
+      max-width: 100%;
     }
 
     .contact-form-container {
-      max-width: 100%;
-      margin-top: 2rem;
+      margin-top: 2rem; // Add margin when stacked
     }
   }
 
   @media screen and (max-width: 768px) {
-    .contact-form-container {
-      padding: 1.5rem;
+    .about-content-wrapper {
+      padding: 1rem;
+      gap: 1.5rem;
     }
 
-    p {
-      max-width: 100%;
+    // Removed empty ruleset for .about-info
+
+    .contact-form-container {
+      padding: 1.5rem;
     }
   }
 
   @media screen and (max-width: 480px) {
     .contact-form-container {
       padding: 1rem;
-    }
 
-    .contact-form {
-      .submit-btn {
-        width: 100%;
-      }
-    }
-  }
-}
-
-// Utility class to hide elements, used for the contact form toggle
-.hidden {
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  visibility: hidden;
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
-}
-
-// Styles for when the contact form is visible (not hidden)
-.contact-form-container:not(.hidden) {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  visibility: visible;
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
-}
-
-// General Style Revamp Adjustments
-.about {
-  padding-top: 4rem; // Increase top padding for header space
-  padding-bottom: 5rem; // Increase bottom padding
-
-  .about-content-wrapper {
-    padding: 0 1rem; // Reduce horizontal padding on smaller screens
-    gap: 1.5rem; // Reduce gap slightly
-
-    @media screen and (min-width: 768px) {
-      padding: 0 2rem; // Restore padding on medium screens
-      gap: 2rem; // Restore gap
-    }
-
-    @media screen and (min-width: 1200px) {
-      padding: 0 3rem; // Increase padding on large screens
-      max-width: 1400px; // Adjust max-width if needed
-    }
-  }
-
-  .about-info {
-    @media screen and (min-width: 992px) {
-      max-width: none; // Allow info to take more space if form is narrow
-      flex-basis: 60%; // Suggest a basis percentage
-      flex-grow: 1;
-    }
-  }
-
-  .about-details {
-    padding: 0.8rem 1rem 0.8rem 1.5rem; // Adjusted padding for border
-    margin-bottom: 1.2rem; // Slightly adjusted margin
-    border-left: 4px solid $secondary-color; // Added left border
-    font-size: 0.95rem; // Reduced font size
-
-    @media screen and (max-width: 768px) {
-      font-size: 0.9rem; // Further reduce on smaller screens
-    }
-  }
-
-  h2 {
-    // General h2 within .about-info (excluding form h2)
-    font-size: 1.3rem; // Reduced font size
-    padding: 0.25rem 0.7rem; // Adjusted padding
-    margin-bottom: 0.8rem; // Adjusted margin
-
-    @media screen and (max-width: 768px) {
-      font-size: 1.2rem; // Further reduce on smaller screens
-    }
-  }
-
-  p {
-    // General p within .about-info (excluding form/resume p)
-    font-size: 0.9rem; // Reduced font size
-    line-height: 1.5; // Adjusted line-height
-    padding: 0.7rem 0.7rem 0.7rem 1rem; // Adjusted padding for border
-    border-left: 4px solid rgba($secondary-color, 0.5); // Added subtle left border
-
-    @media screen and (min-width: 768px) {
-      font-size: 0.95rem; // Slightly larger on bigger screens
-    }
-
-    @media screen and (min-width: 992px) {
-      max-width: 45rem; // Reintroduce max-width on large screens if desired
-    }
-  }
-
-  .contact-email {
-    padding: 0.4rem 0.8rem 0.4rem 1.2rem; // Adjusted padding for border
-    border-left: 4px solid $secondary-color; // Added left border
-    max-width: none; // Allow full width initially
-
-    @media screen and (min-width: 768px) {
-      max-width: 28rem; // Limit width on larger screens again
-    }
-
-    .email {
-      font-size: 0.9rem; // Reduced email font size
-    }
-
-    .contact-btn {
-      padding: 0.4rem 0.8rem; // Adjusted button padding
-      font-size: 0.8rem; // Reduced button font size
-    }
-  }
-
-  // Resume Download Section Styles
-  .resume-download {
-    padding: 0.8rem 1rem 0.8rem 1.5rem; // Adjusted padding for border
-    border-left: 4px solid $secondary-color; // Added left border
-
-    h3 {
-      font-size: 1.1rem; // Reduced heading size
-    }
-
-    p {
-      font-size: 0.85rem; // Reduced paragraph size
-      border-left: none; // Remove duplicate border from general p rule
-    }
-
-    .btn-resume {
-      padding: 0.5rem 1rem; // Adjusted padding
-      font-size: 0.9rem; // Reduced font size
-
-      i {
-        font-size: 0.9rem; // Adjust icon size
-      }
-    }
-  }
-
-  // End Resume Download Section Styles
-
-  .contact-form-container {
-    flex: 1 1 300px; // Allow grow, allow shrink, base width 300px
-    min-width: 300px; // Ensure it doesn't get too small
-    max-width: 550px; // Slightly increase max-width for better spacing
-    background: rgba($primary-color, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    position: relative;
-    z-index: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease, border 0.4s ease, flex-basis 0.4s ease; // Added flex-basis to transition
-    overflow: hidden;
-    border-left: 4px solid $secondary-color; // Keep the left border consistent
-    padding: 1.2rem 1.5rem 1.2rem 2rem; // Base padding
-    margin-top: 1rem; // Base margin
-    border-top: 1px solid rgba($secondary-color, 0.1); // Base border (example)
-    border-right: 1px solid rgba($secondary-color, 0.1);
-    border-bottom: 1px solid rgba($secondary-color, 0.1);
-
-    &.hidden {
-      max-height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      margin-top: 0;
-      margin-bottom: 0; // Add margin-bottom collapse
-      border-width: 0; // Collapse borders
-      overflow: hidden;
-      flex-basis: 0; // Collapse flex basis when hidden
-    }
-
-    &:not(.hidden) {
-      max-height: 1000px; // Or a sufficiently large value
-      opacity: 1;
-      transform: translateY(0);
-      // Padding, margin, borders are already set by default
-    }
-
-    @media screen and (min-width: 992px) {
-      margin-top: 0; // No top margin needed on larger screens next to info
-
-      &.hidden {
-        margin-top: 0;
-      }
-    }
-
-    h2 {
-      color: $secondary-color;
-      text-align: center;
-      margin-bottom: 0.5rem; // Reduced margin
-      font-size: 1.5rem; // Adjust size
-      font-weight: 700; // Bolder
-      background: none; // Remove background inherited from general h2
-      padding: 0;
-      box-shadow: none;
-      animation: none; // Remove animation
-      opacity: 1; // Ensure visible
-      overflow: visible; // Remove overflow hidden
-
-      &::after {
-        content: none; // Remove shimmer effect
-      }
-    }
-
-    p {
-      text-align: center;
-      margin-bottom: 1.5rem; // Increased margin
-      font-size: 1rem; // Adjust size
-      color: lighten($text-color, 20%); // Lighter text color
-      background: none; // Remove inherited background
-      padding: 0;
-      box-shadow: none;
-      -webkit-backdrop-filter: none; // Corrected order
-      backdrop-filter: none; // Corrected order
-      animation: none; // Remove animation
-      opacity: 1; // Ensure visible
-      max-width: none; // Allow full width
-      border-left: none; // Remove the inherited left border
-    }
-
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem; // Reduce gap slightly
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-
-        label {
-          margin-bottom: 0.3rem;
-          font-weight: 600;
-          font-size: 0.85rem; // Slightly smaller label
-          color: darken($text-color, 10%);
+      .contact-form {
+        .submit-btn {
+          width: 100%;
         }
-
-        input,
-        textarea {
-          width: 100%; // Ensure inputs take full width of container
-          padding: 0.6rem 0.8rem; // Adjust padding
-          border: 1px solid darken($primary-color, 10%);
-          border-radius: 5px;
-          background-color: lighten($primary-color, 5%);
-          color: $text-color;
-          font-size: 0.9rem;
-          transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-          &:focus {
-            outline: none;
-            border-color: $secondary-color;
-            box-shadow: 0 0 0 2px rgba($secondary-color, 0.3);
-          }
-        }
-
-        textarea {
-          resize: vertical; // Allow vertical resize only
-          min-height: 80px; // Set a minimum height
-        }
-      }
-
-      .submit-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center; // Center content
-        gap: 0.6rem;
-        padding: 0.7rem 1.5rem; // Adjust padding
-        background-color: $secondary-color;
-        color: $primary-color;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        margin-top: 0.5rem; // Add some margin above the button
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-        &:hover {
-          background-color: darken($secondary-color, 10%);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        &:active {
-          transform: translateY(0);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-text {
-          display: inline-block;
-        }
-
-        i {
-          font-size: 1rem; // Adjust icon size
-          transition: transform 0.3s ease;
-        }
-
-        &:hover i {
-          transform: translateX(3px); // Move icon slightly on hover
-        }
-      }
-    }
-  }
-
-  @for $i from 1 through 5 {
-    .about-element:nth-child(#{$i}) {
-      opacity: 0;
-      animation: slideInUp 0.5s #{$i * 0.2}s ease forwards;
-    }
-  }
-
-  @media screen and (max-width: 991px) {
-    .about-content-wrapper {
-      flex-direction: column;
-      padding: 0 1rem; // Reduce padding on smaller screens
-    }
-
-    .about_info {
-      max-width: 100%; // Allow info section to take full width
-    }
-
-    .contact-form-container {
-      max-width: 100%;
-      margin-top: 2rem;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .contact-form-container {
-      padding: 1.5rem;
-    }
-
-    p {
-      max-width: 100%;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .contact-form-container {
-      padding: 1rem;
-    }
-
-    .contact-form {
-      .submit-btn {
-        width: 100%;
-      }
-    }
-  }
-}
-
-// Utility class to hide elements, used for the contact form toggle
-.hidden {
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  visibility: hidden;
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
-}
-
-// Styles for when the contact form is visible (not hidden)
-.contact-form-container:not(.hidden) {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  visibility: visible;
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
-}
-
-// General Style Revamp Adjustments
-.about {
-  padding-top: 4rem; // Increase top padding for header space
-  padding-bottom: 5rem; // Increase bottom padding
-
-  .about-content-wrapper {
-    padding: 0 1rem; // Reduce horizontal padding on smaller screens
-    gap: 1.5rem; // Reduce gap slightly
-
-    @media screen and (min-width: 768px) {
-      padding: 0 2rem; // Restore padding on medium screens
-      gap: 2rem; // Restore gap
-    }
-
-    @media screen and (min-width: 1200px) {
-      padding: 0 3rem; // Increase padding on large screens
-      max-width: 1400px; // Adjust max-width if needed
-    }
-  }
-
-  .about-info {
-    @media screen and (min-width: 992px) {
-      max-width: none; // Allow info to take more space if form is narrow
-      flex-basis: 60%; // Suggest a basis percentage
-      flex-grow: 1;
-    }
-  }
-
-  .about-details {
-    padding: 0.8rem 1rem 0.8rem 1.5rem; // Adjusted padding for border
-    margin-bottom: 1.2rem; // Slightly adjusted margin
-    border-left: 4px solid $secondary-color; // Added left border
-    font-size: 0.95rem; // Reduced font size
-
-    @media screen and (max-width: 768px) {
-      font-size: 0.9rem; // Further reduce on smaller screens
-    }
-  }
-
-  h2 {
-    // General h2 within .about-info (excluding form h2)
-    font-size: 1.3rem; // Reduced font size
-    padding: 0.25rem 0.7rem; // Adjusted padding
-    margin-bottom: 0.8rem; // Adjusted margin
-
-    @media screen and (max-width: 768px) {
-      font-size: 1.2rem; // Further reduce on smaller screens
-    }
-  }
-
-  p {
-    // General p within .about-info (excluding form/resume p)
-    font-size: 0.9rem; // Reduced font size
-    line-height: 1.5; // Adjusted line-height
-    padding: 0.7rem 0.7rem 0.7rem 1rem; // Adjusted padding for border
-    border-left: 4px solid rgba($secondary-color, 0.5); // Added subtle left border
-
-    @media screen and (min-width: 768px) {
-      font-size: 0.95rem; // Slightly larger on bigger screens
-    }
-
-    @media screen and (min-width: 992px) {
-      max-width: 45rem; // Reintroduce max-width on large screens if desired
-    }
-  }
-
-  .contact-email {
-    padding: 0.4rem 0.8rem 0.4rem 1.2rem; // Adjusted padding for border
-    border-left: 4px solid $secondary-color; // Added left border
-    max-width: none; // Allow full width initially
-
-    @media screen and (min-width: 768px) {
-      max-width: 28rem; // Limit width on larger screens again
-    }
-
-    .email {
-      font-size: 0.9rem; // Reduced email font size
-    }
-
-    .contact-btn {
-      padding: 0.4rem 0.8rem; // Adjusted button padding
-      font-size: 0.8rem; // Reduced button font size
-    }
-  }
-
-  // Resume Download Section Styles
-  .resume-download {
-    padding: 0.8rem 1rem 0.8rem 1.5rem; // Adjusted padding for border
-    border-left: 4px solid $secondary-color; // Added left border
-
-    h3 {
-      font-size: 1.1rem; // Reduced heading size
-    }
-
-    p {
-      font-size: 0.85rem; // Reduced paragraph size
-      border-left: none; // Remove duplicate border from general p rule
-    }
-
-    .btn-resume {
-      padding: 0.5rem 1rem; // Adjusted padding
-      font-size: 0.9rem; // Reduced font size
-
-      i {
-        font-size: 0.9rem; // Adjust icon size
-      }
-    }
-  }
-
-  // End Resume Download Section Styles
-
-  .contact-form-container {
-    flex: 1 1 300px; // Allow grow, allow shrink, base width 300px
-    min-width: 300px; // Ensure it doesn't get too small
-    max-width: 550px; // Slightly increase max-width for better spacing
-    background: rgba($primary-color, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    position: relative;
-    z-index: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease, border 0.4s ease, flex-basis 0.4s ease; // Added flex-basis to transition
-    overflow: hidden;
-    border-left: 4px solid $secondary-color; // Keep the left border consistent
-    padding: 1.2rem 1.5rem 1.2rem 2rem; // Base padding
-    margin-top: 1rem; // Base margin
-    border-top: 1px solid rgba($secondary-color, 0.1); // Base border (example)
-    border-right: 1px solid rgba($secondary-color, 0.1);
-    border-bottom: 1px solid rgba($secondary-color, 0.1);
-
-    &.hidden {
-      max-height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      margin-top: 0;
-      margin-bottom: 0; // Add margin-bottom collapse
-      border-width: 0; // Collapse borders
-      overflow: hidden;
-      flex-basis: 0; // Collapse flex basis when hidden
-    }
-
-    &:not(.hidden) {
-      max-height: 1000px; // Or a sufficiently large value
-      opacity: 1;
-      transform: translateY(0);
-      // Padding, margin, borders are already set by default
-    }
-
-    @media screen and (min-width: 992px) {
-      margin-top: 0; // No top margin needed on larger screens next to info
-
-      &.hidden {
-        margin-top: 0;
-      }
-    }
-
-    h2 {
-      color: $secondary-color;
-      text-align: center;
-      margin-bottom: 0.5rem; // Reduced margin
-      font-size: 1.5rem; // Adjust size
-      font-weight: 700; // Bolder
-      background: none; // Remove background inherited from general h2
-      padding: 0;
-      box-shadow: none;
-      animation: none; // Remove animation
-      opacity: 1; // Ensure visible
-      overflow: visible; // Remove overflow hidden
-
-      &::after {
-        content: none; // Remove shimmer effect
-      }
-    }
-
-    p {
-      text-align: center;
-      margin-bottom: 1.5rem; // Increased margin
-      font-size: 1rem; // Adjust size
-      color: lighten($text-color, 20%); // Lighter text color
-      background: none; // Remove inherited background
-      padding: 0;
-      box-shadow: none;
-      -webkit-backdrop-filter: none; // Corrected order
-      backdrop-filter: none; // Corrected order
-      animation: none; // Remove animation
-      opacity: 1; // Ensure visible
-      max-width: none; // Allow full width
-      border-left: none; // Remove the inherited left border
-    }
-
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem; // Reduce gap slightly
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-
-        label {
-          margin-bottom: 0.3rem;
-          font-weight: 600;
-          font-size: 0.85rem; // Slightly smaller label
-          color: darken($text-color, 10%);
-        }
-
-        input,
-        textarea {
-          width: 100%; // Ensure inputs take full width of container
-          padding: 0.6rem 0.8rem; // Adjust padding
-          border: 1px solid darken($primary-color, 10%);
-          border-radius: 5px;
-          background-color: lighten($primary-color, 5%);
-          color: $text-color;
-          font-size: 0.9rem;
-          transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-          &:focus {
-            outline: none;
-            border-color: $secondary-color;
-            box-shadow: 0 0 0 2px rgba($secondary-color, 0.3);
-          }
-        }
-
-        textarea {
-          resize: vertical; // Allow vertical resize only
-          min-height: 80px; // Set a minimum height
-        }
-      }
-
-      .submit-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center; // Center content
-        gap: 0.6rem;
-        padding: 0.7rem 1.5rem; // Adjust padding
-        background-color: $secondary-color;
-        color: $primary-color;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        margin-top: 0.5rem; // Add some margin above the button
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-        &:hover {
-          background-color: darken($secondary-color, 10%);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        &:active {
-          transform: translateY(0);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-text {
-          display: inline-block;
-        }
-
-        i {
-          font-size: 1rem; // Adjust icon size
-          transition: transform 0.3s ease;
-        }
-
-        &:hover i {
-          transform: translateX(3px); // Move icon slightly on hover
-        }
-      }
-    }
-  }
-
-  @for $i from 1 through 5 {
-    .about-element:nth-child(#{$i}) {
-      opacity: 0;
-      animation: slideInUp 0.5s #{$i * 0.2}s ease forwards;
-    }
-  }
-
-  @media screen and (max-width: 991px) {
-    .about-content-wrapper {
-      flex-direction: column;
-      padding: 0 1rem; // Reduce padding on smaller screens
-    }
-
-    .about_info {
-      max-width: 100%; // Allow info section to take full width
-    }
-
-    .contact-form-container {
-      max-width: 100%;
-      margin-top: 2rem;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .contact-form-container {
-      padding: 1.5rem;
-    }
-
-    p {
-      max-width: 100%;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .contact-form-container {
-      padding: 1rem;
-    }
-
-    .contact-form {
-      .submit-btn {
-        width: 100%;
-      }
-    }
-  }
-}
-
-// Utility class to hide elements, used for the contact form toggle
-.hidden {
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  visibility: hidden;
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
-}
-
-// Styles for when the contact form is visible (not hidden)
-.contact-form-container:not(.hidden) {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  visibility: visible;
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
-}
-
-// General Style Revamp Adjustments
-.about {
-  padding-top: 4rem; // Increase top padding for header space
-  padding-bottom: 5rem; // Increase bottom padding
-
-  .about-content-wrapper {
-    padding: 0 1rem; // Reduce horizontal padding on smaller screens
-    gap: 1.5rem; // Reduce gap slightly
-
-    @media screen and (min-width: 768px) {
-      padding: 0 2rem; // Restore padding on medium screens
-      gap: 2rem; // Restore gap
-    }
-
-    @media screen and (min-width: 1200px) {
-      padding: 0 3rem; // Increase padding on large screens
-      max-width: 1400px; // Adjust max-width if needed
-    }
-  }
-
-  .about-info {
-    @media screen and (min-width: 992px) {
-      max-width: none; // Allow info to take more space if form is narrow
-      flex-basis: 60%; // Suggest a basis percentage
-      flex-grow: 1;
-    }
-  }
-
-  .about-details {
-    padding: 0.8rem 1rem 0.8rem 1.5rem; // Adjusted padding for border
-    margin-bottom: 1.2rem; // Slightly adjusted margin
-    border-left: 4px solid $secondary-color; // Added left border
-    font-size: 0.95rem; // Reduced font size
-
-    @media screen and (max-width: 768px) {
-      font-size: 0.9rem; // Further reduce on smaller screens
-    }
-  }
-
-  h2 {
-    // General h2 within .about-info (excluding form h2)
-    font-size: 1.3rem; // Reduced font size
-    padding: 0.25rem 0.7rem; // Adjusted padding
-    margin-bottom: 0.8rem; // Adjusted margin
-
-    @media screen and (max-width: 768px) {
-      font-size: 1.2rem; // Further reduce on smaller screens
-    }
-  }
-
-  p {
-    // General p within .about-info (excluding form/resume p)
-    font-size: 0.9rem; // Reduced font size
-    line-height: 1.5; // Adjusted line-height
-    padding: 0.7rem 0.7rem 0.7rem 1rem; // Adjusted padding for border
-    border-left: 4px solid rgba($secondary-color, 0.5); // Added subtle left border
-
-    @media screen and (min-width: 768px) {
-      font-size: 0.95rem; // Slightly larger on bigger screens
-    }
-
-    @media screen and (min-width: 992px) {
-      max-width: 45rem; // Reintroduce max-width on large screens if desired
-    }
-  }
-
-  .contact-email {
-    padding: 0.4rem 0.8rem 0.4rem 1.2rem; // Adjusted padding for border
-    border-left: 4px solid $secondary-color; // Added left border
-    max-width: none; // Allow full width initially
-
-    @media screen and (min-width: 768px) {
-      max-width: 28rem; // Limit width on larger screens again
-    }
-
-    .email {
-      font-size: 0.9rem; // Reduced email font size
-    }
-
-    .contact-btn {
-      padding: 0.4rem 0.8rem; // Adjusted button padding
-      font-size: 0.8rem; // Reduced button font size
-    }
-  }
-
-  // Resume Download Section Styles
-  .resume-download {
-    padding: 0.8rem 1rem 0.8rem 1.5rem; // Adjusted padding for border
-    border-left: 4px solid $secondary-color; // Added left border
-
-    h3 {
-      font-size: 1.1rem; // Reduced heading size
-    }
-
-    p {
-      font-size: 0.85rem; // Reduced paragraph size
-      border-left: none; // Remove duplicate border from general p rule
-    }
-
-    .btn-resume {
-      padding: 0.5rem 1rem; // Adjusted padding
-      font-size: 0.9rem; // Reduced font size
-
-      i {
-        font-size: 0.9rem; // Adjust icon size
-      }
-    }
-  }
-
-  // End Resume Download Section Styles
-
-  .contact-form-container {
-    flex: 1 1 300px; // Allow grow, allow shrink, base width 300px
-    min-width: 300px; // Ensure it doesn't get too small
-    max-width: 550px; // Slightly increase max-width for better spacing
-    background: rgba($primary-color, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    position: relative;
-    z-index: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease, border 0.4s ease, flex-basis 0.4s ease; // Added flex-basis to transition
-    overflow: hidden;
-    border-left: 4px solid $secondary-color; // Keep the left border consistent
-    padding: 1.2rem 1.5rem 1.2rem 2rem; // Base padding
-    margin-top: 1rem; // Base margin
-    border-top: 1px solid rgba($secondary-color, 0.1); // Base border (example)
-    border-right: 1px solid rgba($secondary-color, 0.1);
-    border-bottom: 1px solid rgba($secondary-color, 0.1);
-
-    &.hidden {
-      max-height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      margin-top: 0;
-      margin-bottom: 0; // Add margin-bottom collapse
-      border-width: 0; // Collapse borders
-      overflow: hidden;
-      flex-basis: 0; // Collapse flex basis when hidden
-    }
-
-    &:not(.hidden) {
-      max-height: 1000px; // Or a sufficiently large value
-      opacity: 1;
-      transform: translateY(0);
-      // Padding, margin, borders are already set by default
-    }
-
-    @media screen and (min-width: 992px) {
-      margin-top: 0; // No top margin needed on larger screens next to info
-
-      &.hidden {
-        margin-top: 0;
-      }
-    }
-
-    h2 {
-      color: $secondary-color;
-      text-align: center;
-      margin-bottom: 0.5rem; // Reduced margin
-      font-size: 1.5rem; // Adjust size
-      font-weight: 700; // Bolder
-      background: none; // Remove background inherited from general h2
-      padding: 0;
-      box-shadow: none;
-      animation: none; // Remove animation
-      opacity: 1; // Ensure visible
-      overflow: visible; // Remove overflow hidden
-
-      &::after {
-        content: none; // Remove shimmer effect
-      }
-    }
-
-    p {
-      text-align: center;
-      margin-bottom: 1.5rem; // Increased margin
-      font-size: 1rem; // Adjust size
-      color: lighten($text-color, 20%); // Lighter text color
-      background: none; // Remove inherited background
-      padding: 0;
-      box-shadow: none;
-      -webkit-backdrop-filter: none; // Corrected order
-      backdrop-filter: none; // Corrected order
-      animation: none; // Remove animation
-      opacity: 1; // Ensure visible
-      max-width: none; // Allow full width
-      border-left: none; // Remove the inherited left border
-    }
-
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem; // Reduce gap slightly
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-
-        label {
-          margin-bottom: 0.3rem;
-          font-weight: 600;
-          font-size: 0.85rem; // Slightly smaller label
-          color: darken($text-color, 10%);
-        }
-
-        input,
-        textarea {
-          width: 100%; // Ensure inputs take full width of container
-          padding: 0.6rem 0.8rem; // Adjust padding
-          border: 1px solid darken($primary-color, 10%);
-          border-radius: 5px;
-          background-color: lighten($primary-color, 5%);
-          color: $text-color;
-          font-size: 0.9rem;
-          transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-          &:focus {
-            outline: none;
-            border-color: $secondary-color;
-            box-shadow: 0 0 0 2px rgba($secondary-color, 0.3);
-          }
-        }
-
-        textarea {
-          resize: vertical; // Allow vertical resize only
-          min-height: 80px; // Set a minimum height
-        }
-      }
-
-      .submit-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center; // Center content
-        gap: 0.6rem;
-        padding: 0.7rem 1.5rem; // Adjust padding
-        background-color: $secondary-color;
-        color: $primary-color;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        margin-top: 0.5rem; // Add some margin above the button
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-        &:hover {
-          background-color: darken($secondary-color, 10%);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        &:active {
-          transform: translateY(0);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-text {
-          display: inline-block;
-        }
-
-        i {
-          font-size: 1rem; // Adjust icon size
-          transition: transform 0.3s ease;
-        }
-
-        &:hover i {
-          transform: translateX(3px); // Move icon slightly on hover
-        }
-      }
-    }
-  }
-
-  @for $i from 1 through 5 {
-    .about-element:nth-child(#{$i}) {
-      opacity: 0;
-      animation: slideInUp 0.5s #{$i * 0.2}s ease forwards;
-    }
-  }
-
-  @media screen and (max-width: 991px) {
-    .about-content-wrapper {
-      flex-direction: column;
-      padding: 0 1rem; // Reduce padding on smaller screens
-    }
-
-    .about_info {
-      max-width: 100%; // Allow info section to take full width
-    }
-
-    .contact-form-container {
-      max-width: 100%;
-      margin-top: 2rem;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .contact-form-container {
-      padding: 1.5rem;
-    }
-
-    p {
-      max-width: 100%;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .contact-form-container {
-      padding: 1rem;
-    }
-
-    .contact-form {
-      .submit-btn {
-        width: 100%;
       }
     }
   }
@@ -1558,4 +410,22 @@
   100% {
     background-position: 0% 50%;
   }
+}
+
+// Utility class to hide elements, used for the contact form toggle
+.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+}
+
+// Styles for when the contact form is visible (not hidden)
+.contact-form-container:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
 }
