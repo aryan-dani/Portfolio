@@ -319,6 +319,16 @@
     animation: neonPulse 4s infinite; // Use animation from _animations.scss
     contain: layout style paint; // Added contain
     will-change: transform, box-shadow, opacity; // Added will-change
+    width: 100%; // Ensure card takes full width of its grid column
+    max-width: 400px; // Increased max-width for wider cards
+
+    @include media-md {
+      max-width: 450px; // Allow slightly wider cards on medium screens
+    }
+
+    @include media-lg {
+      max-width: 500px; // Allow even wider cards on large screens
+    }
 
     // Disable CSS hover transform if JS 3D effect is active
     &[data-enhanced="true"]:hover {
@@ -824,7 +834,7 @@
     }
 
     &__card {
-      height: 150px; // Adjust base height for smaller screens
+      height: 150px; // Adjust base height for better front face layout
 
       &.expanded {
         height: 260px; // Adjust expanded height for smaller screens

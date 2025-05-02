@@ -6,97 +6,100 @@
   bottom: 20px; // Position at the bottom
   left: 50%; // Center horizontally
   transform: translateX(-50%); // Adjust for centering
-  max-width: 550px; // Increased max-width for more width
+  max-width: 550px; // Reduced max-width back
   width: calc(100% - 40px); // Responsive width with padding
   z-index: 9999;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: center; // Center toasts horizontally if container is wider
-  gap: 8px; // Slightly reduced gap
+  gap: 10px; // Reduced gap
 }
 
 .toast {
-  // background: linear-gradient(135deg,
-  //     rgba(darken($primary-color, 10%), 0.97), // Darker gradient
-  //     rgba($primary-color, 0.95));
-  background: rgba(255, 255, 255, 0.97); // White background with slight transparency
-  color: $text-color; // Darker text for contrast
-  border-radius: 6px; // Slightly smaller radius
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); // Adjusted shadow for lighter background
+  background: rgba(30, 30, 30, 0.96); // Slightly adjusted background
+  color: $secondary-color; // Base text color
+  border-radius: $border-radius-medium; // Use variable
+  box-shadow: $shadow-medium; // Use variable
   display: flex;
   align-items: flex-start; // Align items to the top
   gap: 12px; // Reduced gap
-  padding: 12px; // Reduced padding for less height
-  transform: translateY(110%); // Start below the screen
+  padding: 12px 18px; // Reduced padding
+  transform: translateY(120%); // Start further below for a more noticeable animation
   opacity: 0;
-  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1), // Smoother transition
-    opacity 0.5s ease;
+  transition: transform 0.55s cubic-bezier(0.215, 0.61, 0.355, 1.05), // Smoother, slightly bouncier easing
+    opacity 0.5s ease-out;
   pointer-events: auto;
-  border-left: 4px solid; // Slightly thinner border accent
+  border-left: 6px solid; // Thicker border accent
+  border-left-color: rgba($secondary-color, 0.5); // Default border color using secondary
   overflow: hidden;
-  // -webkit-backdrop-filter: blur(5px); // Optional: reduce blur or remove if not desired with white bg
-  // backdrop-filter: blur(5px);
+  backdrop-filter: blur(4px); // Subtle blur effect
   width: 100%; // Make toast take full width of container
 
   &.show {
-    transform: translateY(0); // Animate upwards
+    transform: translateY(0); // Animate upwards to final position
     opacity: 1;
   }
 
-  // Icon styles (no separate container needed in HTML)
+  // Icon styles
   .toast-icon {
     flex-shrink: 0;
-    font-size: 22px; // Slightly smaller icon
-    line-height: 1.2; // Adjust line-height for better vertical alignment
+    font-size: 24px; // Slightly smaller icon
+    line-height: 1.2;
     margin-top: 1px; // Fine-tune vertical alignment
-    // Color is set by type-specific styles below
   }
 
   // Container for title, message, close button
   .toast-content {
     flex-grow: 1;
-    padding: 0; // Remove padding here, handled by .toast
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 5px; // Space between header and body
+    gap: 4px; // Reduced gap
+    min-width: 0; // Allow content to shrink if needed, helps prevent overflow issues
   }
 
   .toast-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // Removed margin-bottom, using gap in .toast-content now
+    width: 100%; // Ensure header takes full width of the content area
   }
 
   .toast-title {
-    font-weight: 600;
-    font-size: 16px; // Slightly smaller title
-    color: darken($primary-color, 5%); // Darker color for title
-    margin-right: 10px;
+    font-weight: 600; // Slightly less bold
+    font-size: 16px; // Smaller title
+    color: $primary-color; // Use primary color for title
+    margin-right: 12px;
+    flex-shrink: 1; // Allow title to shrink if needed, prevents pushing close button
+    min-width: 0; // Helps with shrinking
+    overflow-wrap: break-word; // Allow long titles to wrap
   }
 
   .toast-body {
-    font-size: 14px; // Slightly smaller body text
-    color: lighten($text-color, 15%); // Adjusted body color for readability
-    opacity: 0.95;
+    font-size: 14px; // Smaller body text
+    color: $secondary-color; // Use secondary color for body
+    opacity: 0.85; // Slightly adjusted opacity
     line-height: 1.4; // Adjusted line height
+    width: 100%; // Ensure body takes full width
+    overflow-wrap: break-word; // Allow long messages to wrap properly
+    word-wrap: break-word; // Older browser support for wrapping
   }
 
   .toast-close {
     background: none;
     border: none;
-    color: rgba(0, 0, 0, 0.5); // Darker close button for white background
-    padding: 0 5px;
-    margin: -6px -6px 0 0; // Adjust position
-    font-size: 24px; // Slightly smaller close icon
+    color: rgba($secondary-color, 0.6); // Use secondary color for close button
+    padding: 2px 6px;
+    margin: -8px -8px 0 0; // Adjust position
+    font-size: 26px; // Slightly smaller close icon
     line-height: 1;
     cursor: pointer;
     transition: color 0.3s ease, transform 0.2s ease;
 
     &:hover {
-      color: $secondary-color; // Keep hover color or change to black
-      transform: scale(1.1);
+      color: $secondary-color; // Hover uses secondary color
+      transform: scale(1.15); // Slightly more pronounced hover scale
     }
   }
 
@@ -126,46 +129,49 @@
   }
 
   &--info {
-    border-color: #2196F3;
+    border-color: rgba($secondary-color, 0.5); // Use secondary-based border for info
 
     .toast-icon {
-      color: #2196F3;
+      color: $secondary-color; // Use secondary color for info icon
     }
   }
 
   @media screen and (max-width: 600px) {
 
-    // Adjust breakpoint if needed
     // Container width is already responsive
     .toast {
       gap: 10px;
-      padding: 10px;
+      padding: 10px 14px;
     }
 
     .toast-title {
-      font-size: 15px;
+      font-size: 16px;
     }
 
     .toast-body {
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .toast-icon {
-      font-size: 20px;
+      font-size: 22px;
     }
 
     .toast-close {
-      font-size: 22px;
+      font-size: 24px;
     }
   }
 
   @media screen and (max-width: 480px) {
-
-    // Further adjustments for very small screens if needed
     .toast-container {
-      max-width: calc(100% - 20px); // Use almost full width on small screens
+      max-width: calc(100% - 20px);
       width: calc(100% - 20px);
       bottom: 10px;
+      gap: 10px;
+    }
+
+    .toast {
+      padding: 10px 14px;
+      border-left-width: 5px;
     }
   }
 }

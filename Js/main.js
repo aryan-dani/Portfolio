@@ -101,6 +101,32 @@ document.addEventListener("click", (e) => {
 		toggleMenu();
 	}
 });
+// --- START: Session Visit Tracking ---
+/**
+ * Checks if a page has been visited during the current browser session.
+ * If it's the first visit, it marks the page as visited in sessionStorage.
+ * @param {string} pageIdentifier - A unique identifier for the page (e.g., 'home', 'skills').
+ * @returns {boolean} True if it's the first visit in this session, false otherwise.
+ */
+function checkFirstTimeVisit(pageIdentifier) {
+	const storageKey = "visitedPages";
+	try {
+		let visited = JSON.parse(sessionStorage.getItem(storageKey) || "{}");
+		if (!visited[pageIdentifier]) {
+			visited[pageIdentifier] = true;
+			sessionStorage.setItem(storageKey, JSON.stringify(visited));
+			return true; // It's the first visit
+		} else {
+			return false; // Already visited
+		}
+	} catch (error) {
+		console.error("Error accessing sessionStorage for visit tracking:", error);
+		// Fallback: Assume it's not the first visit to avoid spamming toasts on error
+		return false;
+	}
+}
+// --- END: Session Visit Tracking ---
+
 document.addEventListener("DOMContentLoaded", () => {
 	// ... (header scroll, page name detection) ...
 	const pagePath = window.location.pathname;
@@ -1131,9 +1157,40 @@ function showToast(
 
 	// Close button functionality
 	const closeButton = toast.querySelector(".toast-close");
-	closeButton.addEventListener("click", () => {
-		clearTrackedTimeout(timerId); // Clear the auto-close timer
-		closeToast(toast);
-	});
+	if (closeButton) {
+		// Add check to ensure button exists
+		closeButton.addEventListener("click", () => {
+			clearTrackedTimeout(timerId); // Clear the auto-close timer
+			closeToast(toast);
+		});
+	} else {
+		console.warn("Toast close button not found in generated HTML.");
+	}
 }
 
+/**
+ * Closes a specific toast notification with an animation.
+ * @param {HTMLElement} toastElement - The toast element to close.
+ */
+function closeToast(toastElement) {
+	if (!toastElement || !toastElement.parentNode) return; // Ignore if already removed
+
+	// Add class to trigger fade-out/slide-down animation (defined in CSS)
+	toastElement.classList.remove("show");
+	// Optional: Add a specific hide class if needed for animation
+	// toastElement.classList.add("hide");
+
+	// Remove the element after the animation completes
+	const animationDuration = 500; // Match the CSS transition duration
+	setTrackedTimeout(
+		() => {
+			if (toastElement.parentNode) {
+				toastElement.parentNode.removeChild(toastElement);
+			}
+		},
+		animationDuration,
+		`toast-remove-${toastElement.id || Date.now()}` // Unique ID for removal
+	);
+}
+
+// --- END: Toast Notification Logic ---
