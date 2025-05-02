@@ -17,19 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	const modalIcon = modal.querySelector(".skill-modal__icon");
 	const modalTitle = modal.querySelector(".skill-modal__title");
 	const modalProgressBar = modal.querySelector(".skills__progress-bar");
-	const modalProgressPercent = modal.querySelector(".skills__progress-percent");
 	const modalDescription = modal.querySelector(".skill-modal__description");
 	const modalProjectsList = modal.querySelector(".skill-modal__projects ul");
 	let lastFocusedElement = null; // To restore focus when modal closes
 	let currentCategory = "all";
 	let currentSearchTerm = "";
-	function animateProgressBar(progressBar, progressPercent, level) {
-		if (progressBar && progressPercent) {
+	function animateProgressBar(progressBar, level) {
+		if (progressBar) {
 			progressBar.style.width = "0%";
-			progressPercent.textContent = "0%";
 			setTimeout(() => {
 				progressBar.style.width = `${level}%`;
-				progressPercent.textContent = `${level}%`;
 			}, 100); // Small delay
 		}
 	}
@@ -53,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		modalTitle.textContent = titleElement.textContent;
 		modalDescription.textContent = descriptionElement.textContent;
 		const level = progressElement.getAttribute("data-level") || 0;
-		animateProgressBar(modalProgressBar, modalProgressPercent, level);
+		animateProgressBar(modalProgressBar, level);
 		modalProjectsList.innerHTML = ""; // Clear previous projects
 		if (projectsContainer) {
 			const projectLinks = projectsContainer.querySelectorAll("li");
