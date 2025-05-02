@@ -1,6 +1,6 @@
 /** @format */
 
-const CACHE_NAME = "portfolio-cache-v5"; // Increment cache version
+const CACHE_NAME = "portfolio-cache-v6"; // Increment cache version
 const STATIC_ASSETS = [
 	"/",
 	"/index.html",
