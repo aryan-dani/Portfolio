@@ -62,7 +62,7 @@
   .toast-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; // Align items to the top of the header
+    align-items: center; // Vertically center items in the header
     width: 100%;
   }
 
@@ -89,19 +89,13 @@
   .toast-close {
     background: none;
     border: none;
-    color: rgba($secondary-color, 0.6); // Use secondary color for close button
+    color: $primary-color; // Use primary color for close button
     padding: 0; // Remove padding
     margin: 0 0 0 10px; // Remove negative margins, add left margin for spacing
     font-size: 26px; // Slightly smaller close icon
     line-height: 1; // Ensure line height doesn't add extra space
     cursor: pointer;
     transition: color 0.3s ease, transform 0.2s ease;
-    align-self: center; // Vertically center button within the header
-
-    &:hover {
-      color: $secondary-color; // Hover uses secondary color
-      transform: scale(1.15); // Slightly more pronounced hover scale
-    }
   }
 
   // Type-specific styles (border and icon colors remain)
