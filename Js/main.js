@@ -107,29 +107,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	const isHomePage = pagePath.includes("index.html") || pagePath.endsWith("/");
 	let pageName = "home";
 	if (pagePath.includes("experience.html")) pageName = "experience";
-	else if (pagePath.includes("projects.html")) pageName = "projects";
+	else if (pagePath.includes("projects.html"))
+		pageName = "projects"; // Corrected missing assignment
 	else if (pagePath.includes("certification.html")) pageName = "certification";
 	else if (pagePath.includes("skills.html")) pageName = "skills";
 	else if (pagePath.includes("about.html")) pageName = "about";
+
+	// Show page-specific welcome message once per page per session
 	setTrackedTimeout(
 		() => {
-			// Show navigation tip once per session
-			const navTipKey = "portfolioNavTipShown";
-			if (!sessionStorage.getItem(navTipKey)) {
-				showToast(
-					// Corrected arguments: message, type, duration, title, icon
-					"Use Alt + Arrow keys or Alt + [Letter] (H, J, P, C, S, A) to navigate between pages.", // message
-					"info", // type
-					8000, // duration (longer duration)
-					"Navigation Tip", // title
-					"fa-solid fa-keyboard" // iconClass
-				);
-				sessionStorage.setItem(navTipKey, "true"); // Mark as shown for this session
-			}
-
-			// Show page-specific welcome message once per page per session
 			const isFirst = checkFirstTimeVisit(pageName);
-
 			if (isFirst) {
 				if (typeof showToast === "function") {
 					// Refactored welcome toast logic
@@ -140,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
 							icon: "fa-solid fa-house-user",
 						},
 						experience: {
-							// Changed key from 'jobs' to 'experience'
 							message: "Learn about my career journey and achievements",
 							title: "Professional Experience",
 							icon: "fa-solid fa-briefcase",
@@ -162,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						},
 						about: {
 							message: "Get to know me better",
-							title: "About",
+							title: "About Me", // Changed title slightly for consistency
 							icon: "fa-solid fa-user",
 						},
 					};
@@ -190,6 +176,31 @@ document.addEventListener("DOMContentLoaded", () => {
 		1200, // Keep the original delay for welcome toasts
 		"welcomeToast"
 	);
+
+	// Show navigation tip once per session, delayed, and NOT on the home page
+	setTrackedTimeout(
+		() => {
+			const navTipKey = "portfolioNavTipShown";
+			// Only show if not on home page and not already shown this session
+			if (!isHomePage && !sessionStorage.getItem(navTipKey)) {
+				if (typeof showToast === "function") {
+					showToast(
+						"Use Alt + Arrow keys or Alt + [Letter] (H, E, P, C, S, A) to navigate between pages.", // Updated shortcut keys
+						"info", // type
+						8000, // duration
+						"Navigation Tip", // title
+						"fa-solid fa-keyboard" // iconClass
+					);
+					sessionStorage.setItem(navTipKey, "true"); // Mark as shown for this session
+				} else {
+					console.error("[NavTipToast] showToast function is not defined.");
+				}
+			}
+		},
+		3500, // Show navigation tip after 3.5 seconds
+		"navTipToast" // Unique ID for this timeout
+	);
+
 	initPageTransition();
 	if (isHomePage) {
 		initHomePageAnimations();
@@ -922,21 +933,24 @@ function initSkillsPageAnimations() {
 		});
 	}
 	// Corrected showToast call for keyboard hint on skills page
-	// if (isFirstVisit) { // Keep this commented out if you want the hint always
-	setTrackedTimeout(
-		() => {
-			showToast(
-				"Use Alt + Left/Right arrows or Alt + [Letter] (H, J, P, C, S, A) to navigate.", // message
-				"info", // type
-				8000, // duration
-				"Keyboard Navigation", // title
-				"fa-solid fa-keyboard" // iconClass
-			);
-		},
-		3000,
-		"keyboardHintInit"
-	);
-	// } // End of commented out isFirstVisit check
+	// Only show if NOT on the home page
+	if (!isHomePage) {
+		// if (isFirstVisit) { // Keep this commented out if you want the hint always
+		setTrackedTimeout(
+			() => {
+				showToast(
+					"Hint: Use Alt + Left/Right arrows to navigate between pages, Alt + M to toggle menu.",
+					"info",
+					8000, // Longer duration for hint
+					"Navigation Tip",
+					"fa-solid fa-keyboard"
+				);
+			},
+			3000,
+			"keyboardHintInit"
+		);
+		// } // End of commented out isFirstVisit check
+	}
 }
 function updateCopyrightYear() {
 	const currentYear = new Date().getFullYear();
@@ -1079,73 +1093,47 @@ function showToast(
 	toast.setAttribute("aria-live", "assertive");
 	toast.setAttribute("aria-atomic", "true");
 
-	const toastContent = `
-        <div class="toast-header">
-            <i class="${iconClass} toast-icon"></i>
-            <strong class="toast-title">${title}</strong>
-            <button type="button" class="toast-close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            ${message}
+	// Simplified HTML structure to match CSS (.toast-icon directly inside .toast)
+	toast.innerHTML = `
+        <i class="${iconClass} toast-icon"></i>
+        <div class="toast-content">
+            <div class="toast-header">
+                <strong class="toast-title">${title}</strong>
+                <button type="button" class="toast-close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                ${message}
+            </div>
         </div>
     `;
-
-	toast.innerHTML = toastContent;
 
 	// Add toast to container
 	toastContainer.appendChild(toast);
 
 	// Animate in
 	requestAnimationFrame(() => {
-		toast.classList.add("show");
+		requestAnimationFrame(() => {
+			// Double requestAnimationFrame ensures the element is rendered before adding the class
+			toast.classList.add("show");
+		});
 	});
+
+	// Auto-close timer
+	const timerId = setTrackedTimeout(
+		() => {
+			closeToast(toast);
+		},
+		duration,
+		`toast-${Date.now()}` // Unique ID for each toast timer
+	);
 
 	// Close button functionality
 	const closeButton = toast.querySelector(".toast-close");
-	closeButton.addEventListener("click", () => closeToast(toast));
-
-	// Auto-dismiss after duration
-	const timeoutId = setTrackedTimeout(
-		() => closeToast(toast),
-		duration,
-		`toast-${Date.now()}`
-	);
-
-	// Store timeout ID on the element for potential cancellation
-	toast.dataset.timeoutId = timeoutId;
+	closeButton.addEventListener("click", () => {
+		clearTrackedTimeout(timerId); // Clear the auto-close timer
+		closeToast(toast);
+	});
 }
 
-function closeToast(toast) {
-	if (!toast) return;
-
-	// Clear the auto-dismiss timeout if it exists
-	if (toast.dataset.timeoutId) {
-		clearTrackedTimeout(toast.dataset.timeoutId);
-	}
-
-	// Animate out
-	toast.classList.remove("show");
-
-	// Remove from DOM after animation
-	toast.addEventListener(
-		"transitionend",
-		() => {
-			if (toast.parentNode === toastContainer) {
-				toastContainer.removeChild(toast);
-			}
-		},
-		{ once: true }
-	);
-}
-
-// Function to check if it's the first time visiting a specific page during the session
-function checkFirstTimeVisit(pageIdentifier) {
-	const key = `visited_${pageIdentifier}`;
-	if (!sessionStorage.getItem(key)) {
-		sessionStorage.setItem(key, "true");
-		return true;
-	}
-	return false;
-}

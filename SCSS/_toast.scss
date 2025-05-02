@@ -3,179 +3,169 @@
 
 .toast-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  max-width: 350px;
+  bottom: 20px; // Position at the bottom
+  left: 50%; // Center horizontally
+  transform: translateX(-50%); // Adjust for centering
+  max-width: 550px; // Increased max-width for more width
+  width: calc(100% - 40px); // Responsive width with padding
   z-index: 9999;
   pointer-events: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center; // Center toasts horizontally if container is wider
+  gap: 8px; // Slightly reduced gap
 }
 
 .toast {
-  background: linear-gradient(135deg,
-      rgba(darken($primary-color, 5%), 0.95),
-      rgba($primary-color, 0.92)); // Slightly adjusted gradient
-  color: #eee; // Lighter text color for better contrast
-  padding: 15px 20px; // Increased padding
-  border-radius: 10px; // Slightly larger radius
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35); // Enhanced shadow
+  // background: linear-gradient(135deg,
+  //     rgba(darken($primary-color, 10%), 0.97), // Darker gradient
+  //     rgba($primary-color, 0.95));
+  background: rgba(255, 255, 255, 0.97); // White background with slight transparency
+  color: $text-color; // Darker text for contrast
+  border-radius: 6px; // Slightly smaller radius
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); // Adjusted shadow for lighter background
   display: flex;
   align-items: flex-start; // Align items to the top
-  gap: 15px; // Increased gap
-  transform: translateX(110%); // Start further off-screen
+  gap: 12px; // Reduced gap
+  padding: 12px; // Reduced padding for less height
+  transform: translateY(110%); // Start below the screen
   opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1),
-    opacity 0.4s ease; // Smoother transition
+  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1), // Smoother transition
+    opacity 0.5s ease;
   pointer-events: auto;
-  border-left: 5px solid; // Slightly thicker border
-  -webkit-backdrop-filter: blur(12px); // Increased blur
-  backdrop-filter: blur(12px);
+  border-left: 4px solid; // Slightly thinner border accent
+  overflow: hidden;
+  // -webkit-backdrop-filter: blur(5px); // Optional: reduce blur or remove if not desired with white bg
+  // backdrop-filter: blur(5px);
+  width: 100%; // Make toast take full width of container
 
   &.show {
-    transform: translateX(0);
+    transform: translateY(0); // Animate upwards
     opacity: 1;
   }
 
-  &.custom {
-    border-color: $secondary-color;
-    background: linear-gradient(135deg,
-        rgba(darken($primary-color, 8%), 0.96),
-        rgba(darken($primary-color, 3%), 0.94)); // Adjusted custom background
-    padding: 15px 20px; // Consistent padding
-
-    .toast-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      margin-top: 2px; // Adjust icon position slightly due to align-items: flex-start
-    }
-  }
-
-  // Type-specific styles (Moved outside .custom)
-  &.success {
-    border-color: #4caf50;
-
-    .toast-icon i {
-      color: #4caf50; // Override default color
-    }
-  }
-
-  &.error {
-    border-color: #f44336;
-
-    .toast-icon i {
-      color: #f44336; // Override default color
-    }
-  }
-
-  &.warning {
-    border-color: #ff9800; // Consistent warning color
-
-    .toast-icon i {
-      color: #ff9800; // Override default color
-    }
-  }
-
-  &.info {
-    border-color: aliceblue; // Changed from #2196f3
-
-    .toast-icon i {
-      color: aliceblue; // Changed from #2196f3
-    }
-  }
-
-  // Apply base Font Awesome styles to all toast icons with higher specificity
-  .toast .toast-icon i {
-    // Increased specificity
-    font-family: "Font Awesome 6 Free"; // Use the correct Font Awesome font family
-    font-weight: 900; // Required for solid icons
-    display: inline-block; // Ensure correct display
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    font-size: 24px; // Consolidated font size
-    color: #eee; // Default icon color (same as base text color) - CAN BE OVERRIDDEN by type styles
-  }
-
+  // Icon styles (no separate container needed in HTML)
   .toast-icon {
     flex-shrink: 0;
-    margin-top: 2px; // Adjust icon position slightly
+    font-size: 22px; // Slightly smaller icon
+    line-height: 1.2; // Adjust line-height for better vertical alignment
+    margin-top: 1px; // Fine-tune vertical alignment
+    // Color is set by type-specific styles below
   }
 
+  // Container for title, message, close button
   .toast-content {
     flex-grow: 1;
-    padding: 0 5px;
+    padding: 0; // Remove padding here, handled by .toast
+    display: flex;
+    flex-direction: column;
+    gap: 5px; // Space between header and body
+  }
 
-    h4 {
-      margin: 0 0 5px;
-      font-size: 16px;
-      color: #fff; // Brighter title
-      text-align: left; // Ensure title is left-aligned
-    }
+  .toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // Removed margin-bottom, using gap in .toast-content now
+  }
 
-    p {
-      margin: 0;
-      font-size: 14px;
-      color: #ddd; // Slightly dimmer paragraph
-      opacity: 0.9;
-      text-align: left; // Ensure message is left-aligned
-    }
+  .toast-title {
+    font-weight: 600;
+    font-size: 16px; // Slightly smaller title
+    color: darken($primary-color, 5%); // Darker color for title
+    margin-right: 10px;
+  }
 
-    .toast-subtitle {
-      font-size: 12px;
-      opacity: 0.7;
-      margin-top: 4px;
-    }
+  .toast-body {
+    font-size: 14px; // Slightly smaller body text
+    color: lighten($text-color, 15%); // Adjusted body color for readability
+    opacity: 0.95;
+    line-height: 1.4; // Adjusted line height
   }
 
   .toast-close {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.8); // Slightly more visible
-    padding: 0;
-    margin-left: auto;
-    align-self: flex-start;
-    font-size: 22px; // Slightly larger
-    line-height: 1; // Ensure consistent alignment
-    transition: color 0.3s ease;
+    color: rgba(0, 0, 0, 0.5); // Darker close button for white background
+    padding: 0 5px;
+    margin: -6px -6px 0 0; // Adjust position
+    font-size: 24px; // Slightly smaller close icon
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
 
     &:hover {
-      color: $secondary-color; // Highlight with secondary color on hover
+      color: $secondary-color; // Keep hover color or change to black
       transform: scale(1.1);
     }
   }
 
-  @media screen and (max-width: 480px) {
-    .toast-container {
-      top: 10px;
-      right: 10px;
-      left: 10px;
-      max-width: calc(100% - 20px);
+  // Type-specific styles (border and icon colors remain)
+  &--success {
+    border-color: #4caf50;
+
+    .toast-icon {
+      color: #4caf50;
+    }
+  }
+
+  &--error {
+    border-color: #f44336;
+
+    .toast-icon {
+      color: #f44336;
+    }
+  }
+
+  &--warning {
+    border-color: #ff9800;
+
+    .toast-icon {
+      color: #ff9800;
+    }
+  }
+
+  &--info {
+    border-color: #2196F3;
+
+    .toast-icon {
+      color: #2196F3;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+
+    // Adjust breakpoint if needed
+    // Container width is already responsive
+    .toast {
+      gap: 10px;
+      padding: 10px;
     }
 
-    .toast {
-      padding: 12px;
-      gap: 10px;
+    .toast-title {
+      font-size: 15px;
+    }
 
-      .toast-icon i {
-        font-size: 20px;
-      }
+    .toast-body {
+      font-size: 13px;
+    }
 
-      .toast-content {
-        h4 {
-          font-size: 14px;
-        }
+    .toast-icon {
+      font-size: 20px;
+    }
 
-        p {
-          font-size: 12px;
-        }
-      }
+    .toast-close {
+      font-size: 22px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+
+    // Further adjustments for very small screens if needed
+    .toast-container {
+      max-width: calc(100% - 20px); // Use almost full width on small screens
+      width: calc(100% - 20px);
+      bottom: 10px;
     }
   }
 }
