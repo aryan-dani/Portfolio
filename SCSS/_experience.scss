@@ -85,26 +85,32 @@
 
   .experience-container {
     position: relative;
-    max-width: 1400px;
+    max-width: 1200px; // Restrict maximum width
+    width: 100%;
     margin: 0 auto;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0; // Ensure consistent spacing between cards
+    padding: 0 20px; // Add some padding
 
-    // Timeline visual element
+    // Timeline visual element - improved positioning
     &::before {
       content: "";
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6px;
+      left: 50%; // Keep at exact center
+      transform: translateX(-50%); // Ensure perfect centering
+      width: 3px; // Slightly thinner for elegance
       height: calc(100% - 40px);
       background: linear-gradient(to bottom,
           transparent 0%,
           $secondary-color 15%,
           $secondary-color 85%,
           transparent 100%);
-      opacity: 0.8;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba($secondary-color, 0.5);
+      opacity: 0.7;
+      border-radius: 4px;
+      // Removed box-shadow
     }
 
     @media screen and (max-width: 768px) {
@@ -121,9 +127,10 @@
     backdrop-filter: blur(8px); // Slightly more blur
     display: flex;
     flex-direction: column;
-    max-width: 47%; // Reduced to push cards more to the sides
+    max-width: 40%; // Reduced from 42%
+    width: 40%; // Reduced from 42%
     padding: 1rem; // Adjusted padding
-    border-radius: 16px; // Slightly rounder corners
+    border-radius: 8px; // Further reduced from 10px for less roundness
     margin: 2rem 0rem;
     position: relative;
     box-shadow: 0 6px 18px rgba(black, 0.18); // Even softer shadow
@@ -132,58 +139,74 @@
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // Add transition for smooth hover
     contain: layout style; // Added for performance optimization
 
-    // Timeline dot
+    // Timeline dot with enhanced styling
     &::before {
       content: "";
       position: absolute;
-      width: 20px;
-      height: 20px;
+      width: 16px; // Smaller dot
+      height: 16px; // Smaller dot
       border-radius: 50%;
       background-color: $secondary-color;
-      box-shadow: 0 0 0 6px rgba($secondary-color, 0.3),
-        0 0 20px rgba($secondary-color, 0.5);
+      box-shadow:
+        0 0 0 4px rgba($secondary-color, 0.2),
+        0 0 15px rgba($secondary-color, 0.6);
       z-index: 2;
-      animation: pulse-dot 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+      animation: pulse-dot 3s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
     }
 
-    // Add connecting line to timeline
+    // Add connecting line to timeline with enhanced styling
     &::after {
       content: "";
       position: absolute;
-      width: 40px;
-      height: 4px;
-      background-color: $secondary-color;
+      height: 3px;
+      background: linear-gradient(to right,
+          rgba($secondary-color, 0.2),
+          $secondary-color);
       z-index: 1;
+      box-shadow: 0 0 10px rgba($secondary-color, 0.3);
     }
 
-    // Position experience cards alternately on the timeline
+    // Position experience cards alternately on the timeline - fixed positioning
     &:nth-child(odd) {
       margin-right: auto;
+      margin-left: 30px;
 
       &::before {
-        right: calc(-3vw - 10px); // Position relative to viewport width (adjust as needed)
-        top: 3rem; // Align vertically better
+        // Precisely position dot on the center line
+        right: -95px; // Fixed position: 10px gap + 8px (half dot width)
+        top: 2.5rem;
+        transform: translateX(50%); // Center the dot on the timeline
       }
 
       &::after {
-        right: calc(-3vw); // Connect from dot edge
-        top: calc(3rem + 8px); // Align vertically
-        width: 3vw; // Adjust width based on viewport
+        left: 455px;
+        right: -95px; // Start exactly at the card's edge
+        top: calc(2.5rem + 7px); // Center vertically with dot
+        width: 85px; // Fixed width to exactly reach the dot center
+        background: linear-gradient(to left,
+            $secondary-color,
+            rgba($secondary-color, 0.2)); // Gradient from dot to card
       }
     }
 
     &:nth-child(even) {
       margin-left: auto;
+      margin-right: 30px;
 
       &::before {
-        left: calc(-3vw - 10px); // Position relative to viewport width (adjust as needed)
-        top: 3rem; // Align vertically better
+        left: -95px; // Fixed position: 10px gap + 8px (half dot width)
+        top: 2.5rem;
+        transform: translateX(-50%); // Center the dot on the timeline
       }
 
       &::after {
-        left: calc(-3vw); // Connect from dot edge
-        top: calc(3rem + 8px); // Align vertically
-        width: 3vw; // Adjust width based on viewport
+        right: 420px; // Connector line from dot towards card
+        left: -95px; // Fixed to start at the card's border
+        top: calc(2.5rem + 7px); // Center vertically with dot
+        width: 95px; // Width to reach from border to dot
+        background: linear-gradient(to right,
+            $secondary-color,
+            rgba($secondary-color, 0.2)); // Gradient from dot to card
       }
     }
 
@@ -206,22 +229,39 @@
     }
 
     h2 {
-      // Year styling
       display: inline-block;
-      padding: 0.25rem 1rem; // Slightly reduced padding
-      margin-bottom: 1rem; // Increased bottom margin
-      font-size: 0.9rem; // Slightly smaller font size
-      background-color: $secondary-color;
-      color: $primary-color;
-      border-radius: 8px;
-      font-weight: bold;
-      letter-spacing: 0.5px;
+      padding: 0.25rem 0.7rem; // Reduced padding
+      margin-bottom: 0.8rem;
+      font-size: 0.75rem; // Reverted font size
+      background: linear-gradient(135deg, lighten($primary-color, 15%), lighten($primary-color, 5%)); // Changed background away from secondary color
+      color: $secondary-color; // Changed text color
+      border-radius: 4px; // Further reduced radius
+      font-weight: 600; // Slightly less bold
+      letter-spacing: 0.4px;
+      box-shadow: 0 2px 6px rgba(black, 0.15); // Softer shadow, less color influence
+      position: relative;
+      overflow: hidden; // For shine effect
       @include hover-lift;
       @include shine-effect;
 
+      // Add subtle pulsing border - fixed radius to match new border radius
+      &::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border: 1px solid rgba($secondary-color, 0.2); // Thinner border
+        border-radius: 8px; // Match the parent's new radius plus 2px
+        animation: pulse-border 2s infinite;
+        pointer-events: none;
+      }
+
       &:hover {
         cursor: default;
-        transform: translateY(-5px) scale(1.08);
+        transform: translateY(-6px) scale(1.1);
+        box-shadow: 0 8px 20px rgba(darken($secondary-color, 20%), 0.4); // Enhanced shadow on hover
       }
     }
 
@@ -231,7 +271,7 @@
       position: relative;
 
       a {
-        font-size: 1.5rem; // Slightly smaller title
+        font-size: 1.3rem; // Reduced from 1.5rem
         font-weight: 700; // Ensure weight
         color: $secondary-color;
         text-decoration: none;
@@ -267,10 +307,11 @@
       display: inline-block;
       background-color: rgba($secondary-color, 0.2);
       color: $text-color;
-      margin-bottom: 1.2rem; // Adjusted margin
-      padding: 0.35rem 0.9rem; // Adjusted padding
-      border-radius: 8px;
+      margin-bottom: 1rem; // Reduced from 1.2rem
+      padding: 0.25rem 0.8rem; // Reduced padding
+      border-radius: 6px; // Reduced from 8px
       font-weight: 700;
+      font-size: 0.9rem; // Added to reduce font size
       transition: all $transition-speed ease;
       transform-origin: center left;
       @include hover-lift;
@@ -284,28 +325,67 @@
 
     .content {
       color: $text-color;
-      margin-top: 0.5rem;
+      margin-top: 0.5rem; // Job header section with enhanced design
 
-      // Job header section
       .job-header {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.5rem; // Reduced from 2rem
+        position: relative;
+
+        // Add a subtle divider below the job header - only visible when expanded
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(to right,
+              transparent,
+              rgba($secondary-color, 0.3),
+              transparent);
+          opacity: 0; // Hidden by default
+        }
 
         .company-logo {
-          width: 50px;
-          height: 50px;
-          margin-right: 1rem;
-          border-radius: 8px;
+          width: 50px; // Reduced from 60px
+          height: 50px; // Reduced from 60px
+          margin-right: 1.2rem; // Reduced from 1.5rem
+          border-radius: 8px; // Reduced from 12px
           object-fit: contain;
           background-color: white;
-          padding: 5px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-          transition: transform 0.3s ease;
+          padding: 4px; // Reduced from 6px
+          box-shadow:
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            0 0 0 1px rgba(0, 0, 0, 0.05);
+          transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+          position: relative;
+
+          // Add glow effect
+          &::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 16px;
+            background: transparent;
+            border: 1px solid rgba($secondary-color, 0.2);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+          }
 
           &:hover {
-            transform: scale(1.1);
+            transform: scale(1.15); // Removed rotate(3deg)
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), // Adjusted shadow
+              0 0 0 2px rgba($secondary-color, 0.1); // Subtle border highlight
+
+            &::after {
+              opacity: 1; // Show glow effect
+            }
           }
         }
 
@@ -313,121 +393,322 @@
           flex: 1;
           position: relative;
 
-          // Adding styling for the toggle button
+          // Enhanced toggle button styling
           .toggle-details {
             position: absolute;
             right: 0;
             top: 5px;
-            background: none;
             border: none;
             color: $secondary-color;
-            font-size: 1.2rem;
+            font-size: 1rem; // Reduced from 1.1rem
             cursor: pointer;
-            padding: 5px;
-            border-radius: 50%;
-            height: 36px;
-            width: 36px;
+            height: 36px; // Reduced from 40px
+            width: 36px; // Reduced from 40px
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.3s ease;
-            background-color: rgba($secondary-color, 0.1);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 50%;
+            background: rgba($secondary-color, 0.12);
+            backdrop-filter: blur(5px);
+            box-shadow:
+              0 2px 10px rgba(0, 0, 0, 0.1),
+              0 1px 0 rgba(255, 255, 255, 0.1) inset;
+
+            // Add pulsing effect
+            &::after {
+              content: '';
+              position: absolute;
+              top: -4px;
+              left: -4px;
+              right: -4px;
+              bottom: -4px;
+              border-radius: 50%;
+              border: 2px solid rgba($secondary-color, 0.2);
+              opacity: 0;
+              transition: opacity 0.4s ease;
+            }
 
             &:hover {
-              background-color: rgba($secondary-color, 0.2);
-              transform: scale(1.1);
+              background: rgba($secondary-color, 0.25);
+              transform: scale(1.15);
+              box-shadow: 0 4px 15px rgba($secondary-color, 0.3);
+              color: darken($secondary-color, 10%);
+
+              &::after {
+                opacity: 1;
+                animation: pulse-border 2s infinite;
+              }
+            }
+
+            &:focus {
+              outline: none;
+              box-shadow:
+                0 0 0 3px rgba($secondary-color, 0.3),
+                0 4px 15px rgba($secondary-color, 0.2);
             }
 
             i {
-              transition: transform 0.3s ease;
+              transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+              position: relative;
+              top: 1px;
             }
 
             &.active i {
               transform: rotate(180deg);
             }
+
+            &.active {
+              background: rgba($secondary-color, 0.25);
+              box-shadow:
+                0 4px 15px rgba($secondary-color, 0.2),
+                0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+            }
           }
         }
       }
 
-      // Tech tags container
+      // Tech tags container with enhanced styling
       .tech-tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
+        gap: 0.6rem; // Reduced from 0.7rem
+        margin-bottom: 1.5rem; // Reduced from 1.8rem
+
+        // Add label for tech stack
+        &::before {
+          content: 'Technologies';
+          display: block;
+          width: 100%;
+          font-size: 0.7rem; // Reduced from 0.75rem
+          color: rgba($text-color, 0.7);
+          margin-bottom: 0.4rem; // Reduced from 0.5rem
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-weight: 600;
+          border-bottom: 1px dashed rgba($secondary-color, 0.2);
+          padding-bottom: 0.4rem; // Reduced from 0.5rem
+        }
 
         h6 {
-          display: inline-block;
-          font-size: 0.8rem;
-          background-color: rgba($secondary-color,
-              0.15); // More subtle background
-          color: rgba($text-color, 0.9); // Slightly darker text
-          padding: 0.3rem 0.7rem; // Adjust padding
-          border-radius: 6px; // Softer corners
-          margin-right: 8px;
-          margin-bottom: 0.5rem;
-          font-weight: 700;
-          letter-spacing: 0.5px;
-          transition: transform 0.25s ease, background-color 0.25s ease,
-            box-shadow 0.25s ease; // Refined transition
+          display: inline-flex;
+          align-items: center;
+          font-size: 0.75rem;
+          background: linear-gradient(to bottom,
+              rgba($secondary-color, 0.15),
+              rgba($secondary-color, 0.2));
+          color: rgba($text-color, 0.95);
+          padding: 0.25rem 0.6rem; // Further reduced padding
+          border-radius: 10px; // Further reduced from 15px
+          margin-bottom: 0.4rem;
+          font-weight: 600;
+          letter-spacing: 0.4px;
+          box-shadow:
+            0 2px 6px rgba(0, 0, 0, 0.08),
+            0 1px 0 rgba(255, 255, 255, 0.2) inset;
           position: relative;
           overflow: hidden;
-          @include shine-effect;
+          transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
           transform-origin: center;
+          border: 1px solid rgba($secondary-color, 0.1);
+          @include shine-effect;
+
+          // Remove the dot/bullet that was creating extra space
+          &::before {
+            content: '';
+            display: none;
+          }
 
           &:hover {
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18); // Adjusted softer shadow
-            background-color: rgba($secondary-color,
-                0.28); // Slightly adjusted hover background
+            transform: translateY(-2px) scale(1.03); // Reduced transform
+            box-shadow:
+              0 4px 12px rgba(0, 0, 0, 0.15),
+              0 1px 0 rgba(255, 255, 255, 0.3) inset;
+            background: linear-gradient(to bottom,
+                rgba($secondary-color, 0.25),
+                rgba($secondary-color, 0.35));
+            color: darken($text-color, 15%);
+            border-color: rgba($secondary-color, 0.2);
           }
         }
       }
 
-      // List items
+      // List items with enhanced styling
       ul {
-        list-style: none;
+        list-style-type: none; // Explicitly set to none
         padding: 0;
         margin: 0;
         display: grid;
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 1rem; // Reduced from 1.2rem
+
+        // Add heading for responsibilities
+        &::before {
+          content: 'Key Responsibilities';
+          display: block;
+          font-size: 0.7rem; // Reduced from 0.75rem
+          color: rgba($text-color, 0.7);
+          margin-bottom: 0.6rem; // Reduced from 0.8rem
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-weight: 600;
+          border-bottom: 1px dashed rgba($secondary-color, 0.2);
+          padding-bottom: 0.4rem; // Reduced from 0.5rem
+        }
 
         li {
           position: relative;
-          font-size: 1rem;
-          background: rgba(lighten($primary-color, 6%),
-              0.45); // Slightly adjusted background
-          border-left: 3px solid rgba($secondary-color, 0.6); // Adjusted border
-          padding: 1rem 1.2rem;
-          border-radius: 6px;
-          transition: all 0.3s ease;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07); // Softer shadow
+          font-size: 0.9rem; // Reduced from 1rem
+          line-height: 1.5; // Reduced from 1.6
+          background: linear-gradient(to right,
+              rgba(lighten($primary-color, 8%), 0.5),
+              rgba(lighten($primary-color, 5%), 0.5));
+          border-left: 3px solid rgba($secondary-color, 0.7); // Reduced from 4px
+          padding: 0.9rem 1.2rem; // Reduced from 1.2rem 1.4rem
+          border-radius: 6px; // Reduced from 10px
+          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+          box-shadow:
+            0 3px 8px rgba(0, 0, 0, 0.08),
+            0 1px 0 rgba(255, 255, 255, 0.1) inset;
           overflow: hidden;
 
+          // Add pseudo-element for hover indicator
+          &::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: $secondary-color;
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+          }
+
+          // Add subtle indicator icon
+          &::after {
+            content: '→';
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%) translateX(5px);
+            color: rgba($secondary-color, 0.5);
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: all 0.4s ease;
+          }
+
           &:hover {
-            transform: translateX(4px); // Less movement
-            box-shadow: 0 4px 9px rgba(0, 0, 0, 0.14); // Adjusted hover shadow
-            background: rgba(lighten($primary-color, 9%),
-                0.55); // Adjusted hover background
-            border-left-color: $secondary-color; // Full color border on hover
-            border-left-width: 4px; // Keep consistent width
+            transform: translateX(6px);
+            box-shadow:
+              0 5px 15px rgba(0, 0, 0, 0.12),
+              0 1px 0 rgba(255, 255, 255, 0.2) inset;
+            background: linear-gradient(to right,
+                rgba(lighten($primary-color, 10%), 0.6),
+                rgba(lighten($primary-color, 7%), 0.6));
+            padding-right: 2rem;
+
+            &::before {
+              transform: scaleY(1);
+            }
+
+            &::after {
+              transform: translateY(-50%) translateX(0);
+              opacity: 1;
+            }
           }
         }
       }
 
-      // Adding styles for collapsible experience details
+      // Enhanced styles for collapsible experience details
       .experience-details {
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.5s ease-out;
+        transition:
+          max-height 0.6s cubic-bezier(0, 1, 0, 1),
+          opacity 0.4s ease-out,
+          transform 0.4s ease-out;
         opacity: 0;
+        transform: translateY(-20px);
+        padding: 0 0.5rem;
 
         &.expanded {
-          max-height: 1000px; // Large enough to show all content
+          max-height: 2000px; // Large enough for all content
           opacity: 1;
-          transition: max-height 0.5s ease-in, opacity 0.3s ease-in 0.2s;
+          transform: translateY(0);
+          transition:
+            max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.5s ease-in 0.1s,
+            transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+          // Add animation for child elements when expanded
+          .tech-tags h6 {
+            animation: fadeInUp 0.5s forwards;
+            animation-delay: calc(0.1s * var(--index, 0));
+            opacity: 0;
+            transform: translateY(10px);
+          }
+
+          ul li {
+            animation: fadeInRight 0.5s forwards;
+            animation-delay: calc(0.15s * var(--index, 0) + 0.2s);
+            opacity: 0;
+            transform: translateX(-10px);
+          }
         }
       }
+
+      // Add these new animations to _animations.scss
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInRight {
+        from {
+          opacity: 0;
+          transform: translateX(-10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes pulse-border {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+
+        70% {
+          transform: scale(1.1);
+          opacity: 0.7;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    }
+
+    // Highlight effect when clicking on a year
+    &.highlighted {
+      animation: highlight-pulse 2s ease-out;
+      box-shadow:
+        0 0 0 3px rgba($secondary-color, 0.5),
+        0 15px 35px rgba(0, 0, 0, 0.2);
+      z-index: 10;
     }
   }
 }
@@ -436,8 +717,9 @@
 @media (max-width: 900px) {
   .experience-layout {
     .Experience {
-      max-width: 95%;
-      padding: 1.2rem;
+      max-width: 80%; // Reduced from 95% for better layout
+      width: 80%; // Added explicit width
+      padding: 1rem;
 
       h3 a {
         font-size: 1.5rem;
@@ -448,30 +730,35 @@
 
 @media (max-width: 768px) {
   .experience-layout {
-    .experience-container::before {
-      // Adjust timeline position itself
-      left: 30px; // Give more space from edge
-      transform: translateX(0); // No need for translateX
+    .experience-container {
+      align-items: flex-start; // Align to the left instead of center on mobile
+
+      &::before {
+        left: 20px;
+        transform: translateX(0);
+      }
     }
 
     .Experience {
-      max-width: calc(100% - 60px); // Adjust width based on new timeline pos
-      margin-left: 60px !important; // Adjust margin based on new timeline pos
+      max-width: calc(100% - 45px); // Adjusted width
+      width: calc(100% - 45px); // Added explicit width
+      margin-left: 45px !important; // Adjusted margin
       margin-right: 0 !important;
 
       &::before {
         // Dot position for stacked layout
-        left: -40px !important; // (Timeline Left + Dot Radius) = 30px + 10px = 40px offset from card margin
+        left: -28px !important; // Adjusted for better alignment
         right: auto !important;
-        top: 3rem !important; // Consistent vertical alignment
+        top: 2.5rem !important; // Consistent vertical alignment
       }
 
       &::after {
         // Connector position for stacked layout
-        left: -30px !important; // Start from dot edge
+        left: -20px !important; // Start from dot edge
         right: auto !important;
-        width: 30px !important; // Connect to timeline
-        top: calc(3rem + 8px) !important; // Consistent vertical alignment
+        width: 20px !important; // Connect to timeline
+        top: 2.5rem !important; // Consistent vertical alignment
+        transform: translateX(0) !important; // Reset transform
       }
     }
   }

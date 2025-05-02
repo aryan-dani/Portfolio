@@ -518,6 +518,44 @@
 				initCollapsibleExperiences();
 			});
 
+			// Get the secondary color and convert it to RGB format for variable opacity uses
+			function getRGBFromVariable() {
+				// Get the computed style of body to extract secondary color
+				const style = getComputedStyle(document.body);
+				const secondaryColor =
+					style.getPropertyValue("--secondary-color") || "#41b883";
+
+				// Create a temporary element to convert hex to RGB
+				const tempElem = document.createElement("div");
+				tempElem.style.color = secondaryColor.trim();
+				document.body.appendChild(tempElem);
+
+				// Get computed RGB values
+				const computedColor = getComputedStyle(tempElem).color;
+				document.body.removeChild(tempElem);
+
+				// Extract RGB values
+				const rgbMatch = computedColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+				if (rgbMatch) {
+					const r = rgbMatch[1];
+					const g = rgbMatch[2];
+					const b = rgbMatch[3];
+
+					// Set RGB values as CSS variable
+					document.documentElement.style.setProperty(
+						"--secondary-rgb",
+						`${r}, ${g}, ${b}`
+					);
+					return `${r}, ${g}, ${b}`;
+				}
+
+				// Default fallback
+				return "65, 184, 131"; // Default green RGB values
+			}
+
+			// Call the function when page loads
+			window.addEventListener("DOMContentLoaded", getRGBFromVariable);
+
 			// Function to initialize and handle collapsible experience sections
 			function initCollapsibleExperiences() {
 				const toggleButtons = document.querySelectorAll(".toggle-details");
@@ -526,6 +564,18 @@
 				document.querySelectorAll(".experience-details").forEach((detail) => {
 					// Initially hide all details
 					detail.classList.remove("expanded");
+
+					// Add index attributes to tech tags for staggered animation
+					const techTags = detail.querySelectorAll(".tech-tags h6");
+					techTags.forEach((tag, index) => {
+						tag.style.setProperty("--index", index);
+					});
+
+					// Add index attributes to list items for staggered animation
+					const listItems = detail.querySelectorAll("ul li");
+					listItems.forEach((item, index) => {
+						item.style.setProperty("--index", index);
+					});
 				});
 
 				// Add click event listeners to all toggle buttons
@@ -542,6 +592,65 @@
 
 						// Toggle the expanded class
 						details.classList.toggle("expanded");
+
+						// Apply focus state to the current card
+						const allCards = document.querySelectorAll(".Experience");
+						allCards.forEach((card) => {
+							if (card !== experienceCard) {
+								card.style.opacity = details.classList.contains("expanded")
+									? "0.7"
+									: "1";
+								card.style.transform = details.classList.contains("expanded")
+									? "scale(0.98)"
+									: "";
+							} else {
+								card.style.opacity = "1";
+								if (details.classList.contains("expanded")) {
+									card.style.boxShadow =
+										"0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(var(--secondary-rgb), 0.2)";
+								} else {
+									card.style.boxShadow = "";
+								}
+							}
+						});
+
+						// Scroll to the card if it's expanded and not fully visible
+						if (details.classList.contains("expanded")) {
+							const cardRect = experienceCard.getBoundingClientRect();
+							const isFullyVisible =
+								cardRect.top >= 0 && cardRect.bottom <= window.innerHeight;
+
+							if (!isFullyVisible) {
+								experienceCard.scrollIntoView({
+									behavior: "smooth",
+									block: "nearest",
+								});
+							}
+						}
+					});
+				});
+
+				// Add click event to year headings for jumping to specific periods
+				document.querySelectorAll(".Experience h2").forEach((yearHeading) => {
+					yearHeading.addEventListener("click", function () {
+						const experienceCard = this.closest(".Experience");
+
+						// Add highlighted effect to indicate selection
+						document.querySelectorAll(".Experience").forEach((card) => {
+							card.classList.remove("highlighted");
+						});
+						experienceCard.classList.add("highlighted");
+
+						// Smooth scroll to this experience card
+						experienceCard.scrollIntoView({
+							behavior: "smooth",
+							block: "center",
+						});
+
+						// Remove highlight after some time
+						setTimeout(() => {
+							experienceCard.classList.remove("highlighted");
+						}, 2000);
 					});
 				});
 			}
