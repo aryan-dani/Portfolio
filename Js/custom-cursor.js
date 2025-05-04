@@ -1,4 +1,4 @@
-/** @format */
+
 
 document.addEventListener("DOMContentLoaded", () => {
 	// Check for reduced motion preference

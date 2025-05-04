@@ -3,17 +3,15 @@
 
 .toast-container {
   position: fixed;
-  bottom: 20px; // Position at the bottom
-  left: 50%; // Center horizontally
-  transform: translateX(-50%); // Adjust for centering
-  max-width: 550px; // Reduced max-width
-  width: calc(100% - 40px); // Responsive width with padding
-  z-index: 9999;
-  pointer-events: none;
+  top: 20px; // Position from the top
+  right: 20px; // Position to the right
+  z-index: 10000;
   display: flex;
   flex-direction: column;
-  align-items: center; // Center toasts horizontally if container is wider
-  gap: 10px; // Reduced gap
+  gap: 10px;
+  align-items: flex-end; // Align toasts to the right edge of the container
+  width: 350px; // Set a fixed width for the container
+  max-width: calc(100% - 40px); // Ensure it doesn't overflow viewport
 }
 
 .toast {
@@ -22,16 +20,22 @@
   border-radius: $border-radius-medium; // Use variable
   box-shadow: $shadow-medium; // Use variable
   display: flex;
-  align-items: flex-start; // Align items to the top
-  gap: 12px; // Reduced gap
+  align-items: baseline; // Align icon baseline with text baseline
+  gap: 12px; // Slightly increased gap
   padding: 12px 18px; // Reduced padding
-  transform: translateY(120%); // Start further below for a more noticeable animation
+  transform: translateY(
+    120%
+  ); // Start further below for a more noticeable animation
   opacity: 0;
-  transition: transform 0.55s cubic-bezier(0.215, 0.61, 0.355, 1.05), // Smoother, slightly bouncier easing
+  transition: transform 0.55s cubic-bezier(0.215, 0.61, 0.355, 1.05),
+    // Smoother, slightly bouncier easing
     opacity 0.5s ease-out;
   pointer-events: auto;
   border-left: 6px solid; // Thicker border accent
-  border-left-color: rgba($secondary-color, 0.5); // Default border color using secondary
+  border-left-color: rgba(
+    $secondary-color,
+    0.5
+  ); // Default border color using secondary
   overflow: hidden;
   backdrop-filter: blur(4px); // Subtle blur effect
   width: 100%; // Make toast take full width of container
@@ -43,10 +47,14 @@
 
   // Icon styles
   .toast-icon {
-    flex-shrink: 0;
+    // Ensure the icon itself is centered if it has internal padding/margin issues
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; // Prevent icon from shrinking
     font-size: 24px; // Slightly smaller icon
     line-height: 1.2;
-    margin-top: 1px; // Fine-tune vertical alignment
+    margin-top: 2px; // Fine-tune vertical alignment
   }
 
   // Container for title, message, close button
@@ -125,7 +133,10 @@
   }
 
   &--info {
-    border-color: rgba($secondary-color, 0.5); // Use secondary-based border for info
+    border-color: rgba(
+      $secondary-color,
+      0.5
+    ); // Use secondary-based border for info
 
     .toast-icon {
       color: $secondary-color; // Use secondary color for info icon
@@ -133,7 +144,6 @@
   }
 
   @media screen and (max-width: 600px) {
-
     // Container width is already responsive
     .toast {
       gap: 10px;
@@ -161,7 +171,7 @@
     .toast-container {
       max-width: calc(100% - 20px);
       width: calc(100% - 20px);
-      bottom: 10px;
+      top: 10px;
       gap: 10px;
     }
 

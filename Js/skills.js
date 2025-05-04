@@ -1,4 +1,4 @@
-/** @format */
+
 
 document.addEventListener("DOMContentLoaded", () => {
 	const skillsContainer = document.querySelector(".skills"); // Get the main container

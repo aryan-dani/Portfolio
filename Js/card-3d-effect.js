@@ -1,4 +1,4 @@
-/** @format */
+
 
 // Debounce function (simple version)
 function debounce(func, wait) {

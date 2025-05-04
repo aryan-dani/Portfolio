@@ -1,4 +1,4 @@
-/** @format */
+
 
 // Use a static cache name. Updates rely on Network-First strategy
 // and the browser detecting changes to this service-worker.js file.

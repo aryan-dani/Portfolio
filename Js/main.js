@@ -1,4 +1,4 @@
-/** @format */
+
 
 function debounce(func, wait, immediate) {
   var timeout;
@@ -102,12 +102,7 @@ document.addEventListener("click", (e) => {
   }
 });
 // --- START: Session Visit Tracking ---
-/**
- * Checks if a page has been visited during the current browser session.
- * If it's the first visit, it marks the page as visited in sessionStorage.
- * @param {string} pageIdentifier - A unique identifier for the page (e.g., 'home', 'skills').
- * @returns {boolean} True if it's the first visit in this session, false otherwise.
- */
+
 function checkFirstTimeVisit(pageIdentifier) {
   const storageKey = "visitedPages";
   try {
@@ -1232,10 +1227,7 @@ function showToast(
   }
 }
 
-/**
- * Closes a specific toast notification with an animation.
- * @param {HTMLElement} toastElement - The toast element to close.
- */
+
 function closeToast(toastElement) {
   if (!toastElement || !toastElement.parentNode) return; // Ignore if already removed
 
@@ -1257,4 +1249,4 @@ function closeToast(toastElement) {
   );
 }
 
-// --- END: Toast Notification Logic ---
+
