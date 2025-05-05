@@ -64,9 +64,11 @@
     margin: 0 auto 1rem; // Center block element and add bottom margin
     font-weight: 900;
     font-size: 2.8rem; // Match project/cert heading size
-    background: linear-gradient(135deg,
-        lighten($secondary-color, 10%),
-        $secondary-color );
+    background: linear-gradient(
+      135deg,
+      lighten($secondary-color, 10%),
+      $secondary-color
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -123,9 +125,11 @@
     color: $secondary-color;
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); // Adjusted shadow
     border: 1px solid rgba($secondary-color, 0.3); // Subtle border
-    background: linear-gradient(145deg,
-        rgba($primary-color, 0.1),
-        rgba(darken($primary-color, 5%), 0.2)); // Subtle gradient background
+    background: linear-gradient(
+      145deg,
+      rgba($primary-color, 0.1),
+      rgba(darken($primary-color, 5%), 0.2)
+    ); // Subtle gradient background
     border-radius: 10px; // Slightly rounded corners
 
     &::before {
@@ -135,12 +139,14 @@
       left: -8px;
       right: -8px;
       bottom: -8px;
-      background: linear-gradient(45deg,
-          rgba($secondary-color, 0.3),
-          transparent 40%,
-          rgba($secondary-color, 0.3) 60%,
-          transparent 80%,
-          rgba($secondary-color, 0.3));
+      background: linear-gradient(
+        45deg,
+        rgba($secondary-color, 0.3),
+        transparent 40%,
+        rgba($secondary-color, 0.3) 60%,
+        transparent 80%,
+        rgba($secondary-color, 0.3)
+      );
       background-size: 300% 300%;
       z-index: -1;
       filter: blur(15px); // Slightly more blur
@@ -260,16 +266,20 @@
         }
 
         &.active {
-          background: rgba($secondary-color,
-              0.2); // Slightly less intense active background
+          background: rgba(
+            $secondary-color,
+            0.2
+          ); // Slightly less intense active background
           font-weight: bold;
           text-shadow: 0 0 8px rgba($secondary-color, 0.6); // Slightly reduced shadow
           box-shadow: 0 0 12px rgba($secondary-color, 0.4); // Slightly reduced shadow
         }
 
         &:hover:not(.active) {
-          background: rgba(darken($primary-color, 8%),
-              0.7); // Slightly adjust hover background
+          background: rgba(
+            darken($primary-color, 8%),
+            0.7
+          ); // Slightly adjust hover background
         }
       }
     }
@@ -380,10 +390,12 @@
       left: -2px;
       right: -2px;
       bottom: -2px;
-      background: linear-gradient(45deg,
-          $secondary-color,
-          darken($secondary-color, 20%),
-          $secondary-color );
+      background: linear-gradient(
+        45deg,
+        $secondary-color,
+        darken($secondary-color, 20%),
+        $secondary-color
+      );
       z-index: -1;
       filter: blur(12px);
       opacity: 0;
@@ -412,11 +424,13 @@
       }
 
       .skills__card-front h3 {
-        background-image: linear-gradient(90deg,
-            rgba($secondary-color, 0.7),
-            rgba($text-color, 0.9),
-            // Use variable
-            rgba($secondary-color, 0.7));
+        background-image: linear-gradient(
+          90deg,
+          rgba($secondary-color, 0.7),
+          rgba($text-color, 0.9),
+          // Use variable
+          rgba($secondary-color, 0.7)
+        );
         background-size: 200% auto;
         color: transparent;
         -webkit-background-clip: text;
@@ -447,9 +461,11 @@
     }
 
     &-front {
-      background: linear-gradient(135deg,
-          rgba(lighten($primary-color, 5%), 0.9),
-          rgba(lighten($primary-color, 2%), 0.9));
+      background: linear-gradient(
+        135deg,
+        rgba(lighten($primary-color, 5%), 0.9),
+        rgba(lighten($primary-color, 2%), 0.9)
+      );
 
       h3 {
         margin-top: 0.5rem;
@@ -468,9 +484,11 @@
     }
 
     &-back {
-      background: linear-gradient(135deg,
-          rgba(darken($primary-color, 5%), 0.95),
-          rgba(darken($primary-color, 15%), 0.95));
+      background: linear-gradient(
+        135deg,
+        rgba(darken($primary-color, 5%), 0.95),
+        rgba(darken($primary-color, 15%), 0.95)
+      );
       transform: translateY(100%);
       overflow: hidden;
       justify-content: flex-start; // Align content to the top
@@ -537,9 +555,11 @@
 
     &-bar {
       height: 100%;
-      background: linear-gradient(90deg,
-          lighten($secondary-color, 15%),
-          $secondary-color ); // Gradient fill
+      background: linear-gradient(
+        90deg,
+        lighten($secondary-color, 15%),
+        $secondary-color
+      ); // Gradient fill
       border-radius: 9px; // Apply radius to the bar itself for better look when width < 100%
       // Smooth width transition for JS update
       transition: width 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -554,9 +574,12 @@
         left: 0;
         width: 50%;
         height: 100%;
-        background: linear-gradient(to right,
-            rgba(white, 0.3), // Brighter shine
-            rgba(white, 0.05)); // Fades out
+        background: linear-gradient(
+          to right,
+          rgba(white, 0.3),
+          // Brighter shine
+          rgba(white, 0.05)
+        ); // Fades out
         transform: skewX(-25deg);
         // Animate the shine effect
         animation: progress-shine 2.5s infinite linear;
@@ -615,9 +638,11 @@
 
   &__content {
     position: relative;
-    background: linear-gradient(145deg,
-        darken($primary-color, 5%),
-        darken($primary-color, 15%));
+    background: linear-gradient(
+      145deg,
+      darken($primary-color, 5%),
+      darken($primary-color, 15%)
+    );
     padding: 2rem 2.5rem;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -691,7 +716,11 @@
     // Style for the inner progress bar in the modal
     .skills__progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, $secondary-color, lighten($secondary-color, 20%));
+      background: linear-gradient(
+        90deg,
+        $secondary-color,
+        lighten($secondary-color, 20%)
+      );
       border-radius: 12px;
       transition: width 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); // Smooth animation
       box-shadow: 0 0 8px rgba($secondary-color, 0.5);

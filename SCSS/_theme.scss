@@ -23,7 +23,7 @@ html {
 
 body {
   background-color: $primary-color;
-  color: #fff;
+  color: $text-color; // Use variable
   height: 100vh;
   font-family: "Poppins", sans-serif;
   line-height: 1.6;
@@ -31,7 +31,7 @@ body {
 
 a {
   text-decoration: none;
-  color: #fff;
+  color: $text-color; // Use variable
 }
 
 :focus-visible {
@@ -56,7 +56,5 @@ a {
   outline-color: $secondary-color;
 }
 
-.keyboard-nav-active *:focus {
-  outline: 3px solid $secondary-color !important;
-  outline-offset: 2px !important;
-}
+// Commenting out this overly broad rule with !important as it might conflict
+

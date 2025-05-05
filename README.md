@@ -1,42 +1,44 @@
-# 🚀 My Portfolio – A No-Framework Challenge  
+# 🚀 My Portfolio – A No-Framework Challenge
 
-Welcome to my personal portfolio! 🎨💻 This project is a **self-imposed challenge** to build a fully functional, responsive, and visually appealing portfolio using **only HTML, CSS, JavaScript, and SCSS** – **no frameworks, no libraries, just pure code!**  
+Welcome to my personal portfolio! 🎨💻 This project is a **self-imposed challenge** to build a fully functional, responsive, and visually appealing portfolio using **only HTML, CSS, JavaScript, and SCSS** – **no frameworks, no libraries, just pure code!**
 
-## 🌟 Why This Challenge?  
+## 🌟 Why This Challenge?
 
-In a world dominated by frameworks like React, Angular, and Vue, I wanted to **push my limits** and strengthen my core front-end skills. This project is about:  
-- **Mastering Vanilla JavaScript** for interactivity  
-- **Crafting beautiful UI/UX with only CSS & SCSS**  
-- **Building everything from scratch** without dependencies  
+In a world dominated by frameworks like React, Angular, and Vue, I wanted to **push my limits** and strengthen my core front-end skills. This project is about:
 
-## 🔥 Features  
+- **Mastering Vanilla JavaScript** for interactivity
+- **Crafting beautiful UI/UX with only CSS & SCSS**
+- **Building everything from scratch** without dependencies
 
-- 🎭 **Minimal & Modern Design** – Clean, intuitive, and easy to navigate  
-- 📱 **Fully Responsive** – Looks great on all devices  
-- 🎨 **SCSS for Styling** – Clean, maintainable, and scalable styles  
-- 📂 **Custom-Built Components** – No Bootstrap, Tailwind, or UI libraries  
+## 🔥 Features
 
-## 🛠️ Technologies Used  
+- 🎭 **Minimal & Modern Design** – Clean, intuitive, and easy to navigate
+- 📱 **Fully Responsive** – Looks great on all devices
+- 🎨 **SCSS for Styling** – Clean, maintainable, and scalable styles
+- 📂 **Custom-Built Components** – No Tailwind, just a Bootstrap Grid
 
-- **HTML5** – Semantic, structured markup  
-- **CSS3 / SCSS** – Custom styling with modular SCSS  
-- **Vanilla JavaScript (ES6+)** – For the navigation pane animation 
-- **Git & GitHub** – Version control and project hosting  
+## 🛠️ Technologies Used
 
-## 🚀 Getting Started  
+- **HTML5** – Semantic, structured markup
+- **CSS3 / SCSS** – Custom styling with modular SCSS
+- **Vanilla JavaScript (ES6+)** – For the navigation pane animation
+- **Git & GitHub** – Version control and project hosting
 
-Clone this repository and open `index.html` in your browser.  
+## 🚀 Getting Started
+
+Clone this repository and open `index.html` in your browser.
 
 ```sh
 git clone https://github.com/aryan-dani/Portfolio.git
 cd Portfolio
 open index.html
 ```
+
 ## 📌 To-Do
 
 - Add more animations and effects
 - Improve performance and optimize assets
-- Add more javascript features 
+- Add more javascript features
 
 ## 🎯 What I Learned
 
@@ -68,7 +70,7 @@ If you have questions, ideas, or just want to connect, feel free to reach out:
 
 ## ⭐ Show Your Support
 
-If you like this project, consider starring ⭐ the repo and sharing it with others. Every bit of support helps! 
+If you like this project, consider starring ⭐ the repo and sharing it with others. Every bit of support helps!
 
 📄 License
 This project is licensed under the MIT License – see the LICENSE file for details.

@@ -4269,7 +4269,6 @@ footer .copyright-link:hover {
   overflow: hidden;
   -webkit-backdrop-filter: blur(4px);
           backdrop-filter: blur(4px);
-  width: 100%;
 }
 .toast.show {
   transform: translateY(0);
@@ -4297,7 +4296,6 @@ footer .copyright-link:hover {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border-radius: 12px;
 }
 .toast .toast-title {
   font-weight: 600;
@@ -4315,7 +4313,6 @@ footer .copyright-link:hover {
   line-height: 1.4;
   width: 100%;
   overflow-wrap: break-word;
-  word-wrap: break-word;
 }
 .toast .toast-close {
   background: none;
@@ -4447,50 +4444,6 @@ body {
   cursor: none !important;
 }
 
-a,
-button,
-[role=button],
-input[type=submit],
-input[type=button],
-input[type=reset],
-input[type=image],
-select,
-label,
-summary,
-[onclick],
-.menu-btn,
-.skills__card,
-.project-card,
-.certificate-content,
-.certificate-image,
-.toast-close,
-.search-clear-btn,
-.retry-button,
-.cached-pages li a,
-.contact-btn,
-.submit-btn,
-.category-tab,
-.skill-modal__close,
-.preview-container .close-preview,
-.experience-layout .Experience h3 a,
-.project-links a,
-.tags-container h6,
-.social-icons a,
-.cta-button,
-.home__name,
-.project-card .content h3,
-[data-interactive] {
-  cursor: none !important;
-}
-
-input[type=text],
-input[type=email],
-input[type=search],
-input[type=password],
-textarea {
-  cursor: none !important;
-}
-
 .custom-cursor {
   position: fixed;
   top: 0;
@@ -4549,51 +4502,6 @@ textarea {
   .custom-cursor {
     display: none !important;
   }
-}
-
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
-}
-@media (max-width: 1200px) {
-  html {
-    font-size: 15px;
-  }
-}
-@media (max-width: 992px) {
-  html {
-    font-size: 14px;
-  }
-}
-@media (max-width: 768px) {
-  html {
-    font-size: 13px;
-  }
-}
-@media screen and (max-width: 576px) {
-  html {
-    font-size: 12px;
-  }
-}
-
-a {
-  text-decoration: none;
-  color: #fff;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-a:hover {
-  color: #e6e6e6;
-}
-a:focus-visible {
-  outline: 2px solid aliceblue;
-  outline-offset: 2px;
-}
-
-.text-secondary {
-  color: rgba(14, 14, 14, 0.8);
-  position: relative;
-  display: inline-block;
-  font-weight: bold;
 }
 
 header {

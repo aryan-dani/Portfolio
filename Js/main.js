@@ -1,5 +1,3 @@
-
-
 function debounce(func, wait, immediate) {
   var timeout;
   return function () {
@@ -1227,7 +1225,6 @@ function showToast(
   }
 }
 
-
 function closeToast(toastElement) {
   if (!toastElement || !toastElement.parentNode) return; // Ignore if already removed
 
@@ -1248,5 +1245,3 @@ function closeToast(toastElement) {
     `toast-remove-${toastElement.id || Date.now()}` // Unique ID for removal
   );
 }
-
-

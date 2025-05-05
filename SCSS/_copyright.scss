@@ -6,9 +6,11 @@
   height: auto;
   min-height: 100vh;
   overflow: auto;
-  background: linear-gradient(to bottom right,
-      rgba(lighten($primary-color, 5%), 0.9),
-      rgba(darken($primary-color, 5%), 0.9));
+  background: linear-gradient(
+    to bottom right,
+    rgba(lighten($primary-color, 5%), 0.9),
+    rgba(darken($primary-color, 5%), 0.9)
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,12 +33,14 @@
       transform: translateX(-50%);
       width: 60%;
       height: 4px;
-      background: linear-gradient(to right,
-          transparent,
-          rgba($secondary-color, 0.6),
-          $secondary-color,
-          rgba($secondary-color, 0.6),
-          transparent);
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba($secondary-color, 0.6),
+        $secondary-color,
+        rgba($secondary-color, 0.6),
+        transparent
+      );
       border-radius: 2px;
     }
   }
@@ -75,7 +79,7 @@
     }
 
     p {
-      color: set-text-color($primary-color);
+      color: $text-color;
       font-size: 1.1rem;
       line-height: 1.6;
       margin-bottom: 0.5rem;
@@ -87,7 +91,7 @@
 
       li {
         margin-bottom: 0.5rem;
-        color: set-text-color($primary-color);
+        color: $text-color;
         position: relative;
 
         &::before {

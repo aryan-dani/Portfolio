@@ -25,17 +25,6 @@ $shadow-light: 0 2px 8px rgba(0, 0, 0, 0.15);
 $shadow-medium: 0 5px 15px rgba(0, 0, 0, 0.2);
 $shadow-dark: 0 8px 25px rgba(0, 0, 0, 0.3);
 
-
-@function set-text-color($color) {
-  @if (lightness($color) > 40%) {
-    @return #000;
-  }
-
-  @else {
-    @return #fff;
-  }
-}
-
 @mixin media-sm {
   @media screen and (min-width: 576px) {
     @content;

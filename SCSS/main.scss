@@ -53,52 +53,6 @@ body {
   cursor: none !important; // Hide default cursor
 }
 
-// Larger cursor for interactive elements (Increased specificity and broader selection)
-a,
-button,
-[role="button"],
-input[type="submit"],
-input[type="button"],
-input[type="reset"],
-input[type="image"],
-select,
-label,
-summary,
-[onclick],
-.menu-btn,
-.skills__card,
-.project-card,
-.certificate-content,
-.certificate-image,
-.toast-close,
-.search-clear-btn,
-.retry-button,
-.cached-pages li a,
-.contact-btn,
-.submit-btn,
-.category-tab,
-.skill-modal__close,
-.preview-container .close-preview,
-.experience-layout .Experience h3 a,
-.project-links a,
-.tags-container h6,
-.social-icons a,
-.cta-button,
-.home__name,
-.project-card .content h3,
-[data-interactive] {
-  cursor: none !important; // Also hide cursor on interactive elements
-}
-
-// Elements that should explicitly use the default text cursor
-input[type="text"],
-input[type="email"],
-input[type="search"],
-input[type="password"],
-textarea {
-  cursor: none !important; // Hide cursor here too, custom cursor will adapt
-}
-
 // Custom Cursor Styles
 .custom-cursor {
   position: fixed;
@@ -170,49 +124,6 @@ textarea {
   @media (prefers-reduced-motion: reduce) {
     display: none !important; // Keep hiding if reduced motion
   }
-}
-
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
-
-  @media (max-width: 1200px) {
-    font-size: 15px;
-  }
-
-  @media (max-width: 992px) {
-    font-size: 14px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 13px;
-  }
-
-  @media screen and (max-width: 576px) {
-    font-size: 12px;
-  }
-}
-
-a {
-  text-decoration: none;
-  color: $text-color; // Use variable
-  transition: color 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    color: darken($text-color, 10%); // Use variable
-  }
-
-  &:focus-visible {
-    outline: 2px solid $secondary-color;
-    outline-offset: 2px;
-  }
-}
-
-.text-secondary {
-  color: rgba(darken($primary-color, 10%), 0.8);
-  position: relative;
-  display: inline-block;
-  font-weight: bold;
 }
 
 header {
