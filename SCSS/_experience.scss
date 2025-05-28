@@ -278,7 +278,7 @@
       }
 
       &:hover {
-        cursor: default;
+        // cursor: default; // Handled globally in _cursor-override.scss
         transform: translateY(-6px) scale(1.1);
         box-shadow: 0 8px 20px rgba(darken($secondary-color, 20%), 0.4); // Enhanced shadow on hover
       }
@@ -336,7 +336,7 @@
       @include hover-lift;
 
       &:hover {
-        cursor: default;
+        // cursor: default; // Handled globally in _cursor-override.scss
         transform: translateY(-5px) scale(1.08);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
@@ -422,7 +422,7 @@
             border: none;
             color: $secondary-color;
             font-size: 1rem; // Reduced from 1.1rem
-            cursor: pointer;
+            // cursor: pointer; // Handled globally in _cursor-override.scss
             height: 36px; // Reduced from 40px
             width: 36px; // Reduced from 40px
             display: flex;

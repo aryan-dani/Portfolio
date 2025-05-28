@@ -3,16 +3,15 @@
 
 @keyframes pulseGlow {
   0% {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
   }
 
   50% {
-    box-shadow: 0 2px 15px rgba($secondary-color, 0.5),
-      0 0 8px rgba($secondary-color, 0.4);
+    box-shadow: 0 0 8px rgba($secondary-color, 0.3);
   }
 
   100% {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
   }
 }
 
@@ -30,19 +29,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: none; // Removed bottom shadow
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   visibility: visible !important;
   opacity: 1 !important;
-  contain: layout style paint; // Added contain
   will-change: transform, background-color, box-shadow; // Added will-change
 
   &:hover {
     transform: scale(1.05);
     background-color: rgba($primary-color, 0.9);
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3),
-      0 0 8px rgba($secondary-color, 0.7);
+    box-shadow: 0 0 8px rgba($secondary-color, 0.5); // Only glow effect, no bottom shadow
   }
 
   &__burger {
@@ -132,7 +129,6 @@
     visibility 0.5s ease;
   z-index: 2; // Increase z-index for visibility
   max-width: fit-content; // Prevent any internal scrolling
-  contain: layout style paint; // Added contain
   will-change: transform, opacity, visibility; // Added will-change
 
   &.open {
@@ -226,6 +222,14 @@
       position: relative;
       letter-spacing: 1px;
       transition: all 0.3s ease;
+      color: $text-color;
+      text-decoration: none;
+
+      &:link,
+      &:visited {
+        color: $text-color;
+        text-decoration: none;
+      }
 
       &::before {
         content: "";
@@ -243,6 +247,7 @@
         color: $secondary-color;
         transform: translateY(-3px);
         text-shadow: 0 0 8px rgba($secondary-color, 0.5);
+        text-decoration: none;
 
         &::before {
           width: 100%;

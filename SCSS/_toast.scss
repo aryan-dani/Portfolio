@@ -36,7 +36,7 @@
     $secondary-color,
     0.5
   ); // Default border color using secondary
-  overflow: hidden;
+  overflow: hidden; // This ensures all child elements respect the border radius
   backdrop-filter: blur(4px); // Subtle blur effect
 
   &.show {
@@ -70,6 +70,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center; // Vertically center items in the header
+    border-radius: 12px;
     width: 100%;
   }
 
@@ -100,7 +101,7 @@
     margin: 0 0 0 10px; // Remove negative margins, add left margin for spacing
     font-size: 26px; // Slightly smaller close icon
     line-height: 1; // Ensure line height doesn't add extra space
-    cursor: pointer;
+    // cursor: pointer; // Handled globally in _cursor-override.scss
     transition: color 0.3s ease, transform 0.2s ease;
   }
 

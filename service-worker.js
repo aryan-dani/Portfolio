@@ -92,6 +92,11 @@ self.addEventListener("activate", (evt) => {
 
 // Fetch logic remains the same (Network-first for dynamic, Cache-first for static)
 self.addEventListener("fetch", (evt) => {
+  // Skip non-HTTP requests (like chrome-extension://, moz-extension://, etc.)
+  if (!evt.request.url.startsWith("http")) {
+    return;
+  }
+
   // Network-first for CSS/JS/External Scripts, fallback to cache
   if (
     evt.request.url.match(/(\.css|\.js)$/i) ||

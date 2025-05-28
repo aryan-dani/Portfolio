@@ -984,14 +984,6 @@ function updateCopyrightYear() {
 function detectKeyboardNavigation() {
   let isUsingKeyboard = false;
   function handleKeyDown(e) {
-    // --- START: Added Alt Key Navigation ---
-    if (e.altKey) {
-      handleAltNavigation(e);
-      // Prevent potential browser default actions for Alt+Key combinations
-      // e.preventDefault(); // Be cautious with this, might interfere with other Alt shortcuts
-    }
-    // --- END: Added Alt Key Navigation ---
-
     if (e.key === "Tab") {
       if (!isUsingKeyboard) {
         document.body.classList.add("keyboard-nav-active");
@@ -1078,6 +1070,16 @@ function handleAltNavigation(event) {
   }
 
   if (event.altKey) {
+    // Debug logging for Alt+M specifically
+    if (event.key === "M" || event.key === "m") {
+      console.log("Alt+M detected, current showMenu state:", showMenu);
+      console.log("Menu elements exist:", {
+        menuBtn: !!document.querySelector(".menu-btn"),
+        nav: !!document.querySelector(".nav"),
+        menuNav: !!document.querySelector(".menu-nav"),
+      });
+    }
+
     let nextPage = null;
     const currentPage =
       window.location.pathname.split("/").pop() || "index.html"; // Default to index.html if path ends in /
@@ -1135,9 +1137,10 @@ function handleAltNavigation(event) {
         break;
       case "m":
       case "M":
+        console.log("Alt+M pressed - toggling menu");
         toggleMenu(); // Toggle menu with Alt+M
         event.preventDefault(); // Prevent default Alt+M behavior (like browser menu)
-        // console.log("Toggling menu via Alt+M");
+        event.stopPropagation(); // Prevent event bubbling
         return; // Don't navigate
     }
 

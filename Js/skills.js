@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && modal.classList.contains("active")) {
       closeSkillModal();
+      event.stopPropagation(); // Prevent event from bubbling up
     }
   });
   const initialActiveTab = document.querySelector(".category-tab.active");

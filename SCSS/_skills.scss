@@ -233,7 +233,7 @@
         padding: 0.5rem 1rem; // Adjust padding for consistency
         border-radius: 12px;
         font-size: 1rem;
-        cursor: pointer;
+        // cursor: pointer; // Handled globally in _cursor-override.scss
         transition: all $transition-speed ease; // Use variable
         position: relative;
         overflow: hidden;
@@ -318,7 +318,7 @@
     border-radius: 10px;
     background: rgba(lighten($primary-color, 3%), 0.8);
     overflow: hidden;
-    cursor: pointer;
+    // cursor: pointer; // Handled globally in _cursor-override.scss
     height: 160px; // Slightly increase base height for better front face layout
     position: relative;
     transform-style: preserve-3d; // Ensure 3D context
@@ -633,7 +633,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    cursor: pointer;
+    // cursor: pointer; // Handled globally in _cursor-override.scss
   }
 
   &__content {
@@ -667,7 +667,7 @@
     outline: none; // Ensure no outline
     font-size: 2rem;
     color: rgba(#fff, 0.7);
-    cursor: pointer;
+    // cursor: pointer; // Handled globally in _cursor-override.scss
     padding: 0; // Remove default padding
     line-height: 1; // Ensure consistent line height
     transition: color 0.3s ease, transform 0.3s ease; // Keep transition for color

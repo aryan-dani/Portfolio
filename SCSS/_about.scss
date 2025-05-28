@@ -137,7 +137,7 @@
         color: $primary-color;
         border: none;
         border-radius: $border-radius-small;
-        cursor: pointer;
+        // cursor: pointer; // Handled globally in _cursor-override.scss
         display: inline-flex; // Use flex for icon alignment
         align-items: center;
         gap: 0.5rem;
@@ -185,7 +185,7 @@
         color: $primary-color;
         border: none;
         border-radius: $border-radius-small;
-        cursor: pointer;
+        // cursor: pointer; // Handled globally in _cursor-override.scss
         display: inline-flex;
         align-items: center;
         gap: 0.6rem;
@@ -328,7 +328,7 @@
         color: $primary-color;
         border: none;
         border-radius: $border-radius-small;
-        cursor: pointer;
+        // cursor: pointer; // Handled globally in _cursor-override.scss
         align-self: center;
         display: inline-flex;
         align-items: center;

@@ -348,7 +348,7 @@
         }
 
         &:hover {
-          cursor: default;
+          // cursor: default; // Handled globally in _cursor-override.scss
           transform: none;
           color: $secondary-color;
         }
@@ -424,7 +424,7 @@
         transition: all 0.25s ease; // Faster transition for tags
 
         &:hover {
-          cursor: default;
+          // cursor: default; // Handled globally in _cursor-override.scss
           transform: translateY(-3px) scale(1.05); // Add scale to lift
           background: rgba($secondary-color, 0.25); // Lighter hover background
           color: lighten($secondary-color, 5%); // Slightly lighter text

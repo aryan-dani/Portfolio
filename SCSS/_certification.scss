@@ -215,7 +215,7 @@
       padding: 0.7rem 1.4rem; // Adjust padding
       border-radius: 10px; // Match search input
       font-size: 0.9rem;
-      cursor: pointer;
+      // cursor: pointer; // Handled globally in _cursor-override.scss
       transition: all $transition-speed ease; // Use variable
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
@@ -639,11 +639,9 @@
       max-height: 80vh;
       border-radius: 12px;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-      cursor: grab;
+      // cursor: grab; // Handled globally in _cursor-override.scss
 
-      &:active {
-        cursor: grabbing;
-      }
+      // &:active cursor: grabbing; // Handled globally in _cursor-override.scss
     }
 
     .close-preview {
@@ -688,7 +686,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    cursor: pointer;
+    // cursor: pointer; // Handled globally in _cursor-override.scss
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
