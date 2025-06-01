@@ -1940,23 +1940,35 @@
   width: 100%;
   margin: 0 auto 1.5rem;
   font-weight: 900;
-  font-size: 2.8rem;
-  padding: 10px 20px;
-  background: linear-gradient(135deg, white, aliceblue);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  padding: 15px 25px;
+  background: linear-gradient(135deg, white, aliceblue, #d7ecff);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.1) !important;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
   animation: slide-in-heading 0.8s ease-out forwards;
   position: relative;
   z-index: 1;
+  letter-spacing: 1px;
 }
 .project .project__intro-container h2.text-secondary::after {
-  content: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: blur(3px);
+  opacity: 0.3;
+  z-index: -1;
 }
 .project .project__intro-container h2.text-secondary:hover {
   transform: none;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
 }
 .project .project__intro-container p {
   color: aliceblue;
@@ -1997,8 +2009,8 @@
 }
 @media screen and (min-width: 992px) {
   .project .project-grid {
-    grid-template-columns: repeat(2, minmax(350px, 1fr));
-    max-width: 1150px;
+    grid-template-columns: repeat(2, minmax(450px, 1fr));
+    max-width: 1300px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -2042,7 +2054,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(160deg, rgba(240, 248, 255, 0.02) 0%, rgba(240, 248, 255, 0.08) 100%);
+  background: transparent;
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: 0;
@@ -2068,10 +2080,10 @@
   border-color: rgba(240, 248, 255, 0.25);
 }
 .project .project-card:hover::before {
-  opacity: 0.9;
+  opacity: 0;
 }
 .project .project-card:hover::after {
-  opacity: 0.8;
+  opacity: 0;
 }
 .project .project-card:hover .project-image img {
   transform: scale(1.08);
@@ -2124,57 +2136,60 @@
   position: relative;
   z-index: 1;
 }
-.project .project-card .content h2.text-secondary {
-  font-size: 0.9rem;
-  margin: 0 0 0.6rem;
-  color: rgba(240, 248, 255, 0.8);
-  font-weight: 600;
-  opacity: 0.8;
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
-  overflow: visible;
-  text-shadow: none;
-  position: relative;
-  z-index: 10;
-  position: relative;
-  overflow: hidden;
-}
-.project .project-card .content h2.text-secondary::after {
-  content: none;
-}
-.project .project-card .content h2.text-secondary:hover {
-  transform: none;
-}
-.project .project-card .content h2.text-secondary::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
+.project .project-card .content .project-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1.2rem;
+  background: rgba(240, 248, 255, 0.08);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(240, 248, 255, 0.15);
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.7s ease;
+  max-width: 100%;
+  position: relative;
+  transition: all 0.3s ease;
 }
-.project .project-card .content h2.text-secondary:hover::before {
-  left: 100%;
+@media screen and (min-width: 576px) {
+  .project .project-card .content .project-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
 }
-.project .project-card .content h3 {
+.project .project-card .content .project-meta .year {
+  background: rgba(240, 248, 255, 0.12);
+  color: aliceblue;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  min-width: 110px;
+  border: 1px solid rgba(240, 248, 255, 0.2);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+}
+.project .project-card .content .project-meta .title {
+  flex: 1;
   font-size: 1.5rem;
-  margin: 0 0 1rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 1px solid rgba(240, 248, 255, 0.2);
   font-weight: 700;
-  line-height: 1.45;
   color: aliceblue;
-  transition: color 0.3s ease;
+  text-align: left;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
 }
-.project .project-card .content h3::after {
-  content: none;
-}
-.project .project-card .content h3:hover {
-  transform: none;
-  color: aliceblue;
+@media screen and (min-width: 576px) {
+  .project .project-card .content .project-meta .title {
+    text-align: center;
+    font-size: 1.3rem;
+  }
 }
 .project .project-card .content .project-links {
   display: flex;
@@ -2269,16 +2284,21 @@
   position: relative;
   z-index: 1;
   text-align: justify;
-  max-width: 100%;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
 }
 @media screen and (max-width: 768px) {
   .project .project-card .content p {
     max-width: 95%;
+    padding: 0 0.5rem;
   }
 }
 @media screen and (max-width: 480px) {
   .project .project-card .content p {
     max-width: 100%;
+    padding: 0;
   }
 }
 

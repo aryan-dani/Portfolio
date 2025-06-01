@@ -77,28 +77,46 @@
       width: 100%;
       margin: 0 auto 1.5rem; // Increased bottom margin
       font-weight: 900;
-      font-size: 2.8rem; // Slightly larger
-      padding: 10px 20px;
+      font-size: clamp(
+        2.2rem,
+        4vw,
+        3.2rem
+      ); // Responsive font sizing like experience page
+      padding: 15px 25px; // Better padding like experience page
       background: linear-gradient(
         135deg,
-        lighten($secondary-color, 10%),
-        $secondary-color
-      );
+        lighten($secondary-color, 15%),
+        $secondary-color,
+        darken($secondary-color, 5%)
+      ); // Enhanced gradient like experience page
       -webkit-background-clip: text;
       background-clip: text;
-      color: transparent;
-      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4); // Enhanced shadow
+      color: rgba($text-color, 0.1) !important; // Match experience page
+      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); // Enhanced shadow like experience page
       animation: slide-in-heading 0.8s ease-out forwards; // Use existing animation
       position: relative;
       z-index: 1;
+      letter-spacing: 1px; // Better letter spacing like experience page
 
+      // Add subtle glow effect like experience page
       &::after {
-        content: none; // Remove the underline
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: inherit;
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: blur(3px);
+        opacity: 0.3;
+        z-index: -1;
       }
 
       &:hover {
         transform: none;
-        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4); // Keep base shadow
+        text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); // Keep base shadow
       }
     }
 
@@ -146,8 +164,11 @@
 
     @include media-lg {
       // Keep 2 columns even on large screens, adjust minmax if needed for spacing
-      grid-template-columns: repeat(2, minmax(350px, 1fr));
-      max-width: 1150px; // Adjust max-width to contain cards nicely
+      grid-template-columns: repeat(
+        2,
+        minmax(450px, 1fr)
+      ); // Increased from 350px to 450px
+      max-width: 1300px; // Increased from 1150px to accommodate wider cards
       margin-left: auto; // Center the grid
       margin-right: auto;
     }
@@ -185,19 +206,14 @@
     }
 
     &::before {
-      // Gradient overlay
+      // Gradient overlay - removed to eliminate weird white background
       content: "";
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        160deg,
-        rgba($secondary-color, 0.02) 0%,
-        // Even more subtle gradient
-        rgba($secondary-color, 0.08) 100%
-      );
+      background: transparent; // Made transparent
       opacity: 0;
       transition: opacity 0.4s ease;
       z-index: 0; // Behind content
@@ -234,11 +250,11 @@
       border-color: $border-color-soft-hover;
 
       &::before {
-        opacity: 0.9; // Make overlay slightly more visible on hover
+        opacity: 0; // Keep overlay hidden on hover
       }
 
       &::after {
-        opacity: 0.8; // Make border highlight stronger
+        opacity: 0; // Keep border highlight subtle
       }
 
       .project-image img {
@@ -308,49 +324,58 @@
       position: relative; // Ensure content is above ::before pseudo-element
       z-index: 1;
 
-      h2.text-secondary {
-        font-size: 0.9rem; // Slightly smaller for subtlety
-        margin: 0 0 0.6rem;
-        color: rgba($secondary-color, 0.8); // Softer color
-        font-weight: 600; // Match certificate date weight
-        opacity: 0.8; // Match certificate date opacity
-        background-color: transparent;
-        padding: 0;
-        border-radius: 0;
-        overflow: visible;
-        text-shadow: none;
-        position: relative; // Ensure positioning context for z-index
-        z-index: 10; // Increased z-index significantly
+      // New project-meta styling similar to job-meta
+      .project-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding: 0.8rem 1.2rem;
+        background: rgba($secondary-color, 0.08);
+        backdrop-filter: blur(8px);
+        border-radius: 12px;
+        border: 1px solid rgba($secondary-color, 0.15);
+        width: 100%;
+        max-width: 100%;
+        position: relative;
+        transition: all 0.3s ease;
 
-        &::after {
-          content: none;
+        @include media-sm {
+          flex-direction: column;
+          gap: 0.5rem;
+          text-align: center;
         }
 
-        &:hover {
-          transform: none;
-        }
-
-        @include shine-effect;
-      }
-
-      h3 {
-        font-size: 1.5rem; // Slightly larger title
-        margin: 0 0 1rem; // Increased margin
-        padding-bottom: 0.8rem; // Increased padding
-        border-bottom: 1px solid $link-border-soft;
-        font-weight: 700;
-        line-height: 1.45; // Adjusted line height
-        color: $secondary-color;
-        transition: color $transition-speed ease;
-
-        &::after {
-          content: none;
-        }
-
-        &:hover {
-          // cursor: default; // Handled globally in _cursor-override.scss
-          transform: none;
+        .year {
+          background: rgba($secondary-color, 0.12);
           color: $secondary-color;
+          padding: 0.7rem 1.2rem;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 0.9rem;
+          text-align: center;
+          min-width: 110px;
+          border: 1px solid rgba($secondary-color, 0.2);
+          backdrop-filter: blur(4px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          letter-spacing: 0.5px;
+        }
+
+        .title {
+          flex: 1;
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: $secondary-color;
+          text-align: left;
+          line-height: 1.4;
+          letter-spacing: 0.3px;
+
+          @include media-sm {
+            text-align: center;
+            font-size: 1.3rem;
+          }
         }
       }
 
@@ -447,15 +472,20 @@
         line-height: 1.7; // Improved line height
         position: relative;
         z-index: 1;
-        text-align: justify; // Justify text for cleaner edges
-        max-width: 100%; // Allow full width within padding
+        text-align: justify; // Back to justify alignment as requested
+        max-width: 90%; // Limit width to create better margins on both sides
+        margin-left: auto; // Center the text block
+        margin-right: auto; // Center the text block
+        padding: 0 1rem; // Add some internal padding for better spacing
 
         @media screen and (max-width: 768px) {
           max-width: 95%; // Allow slightly more width on tablets
+          padding: 0 0.5rem; // Reduce padding on smaller screens
         }
 
         @media screen and (max-width: 480px) {
           max-width: 100%; // Allow full width on small phones
+          padding: 0; // Remove padding on very small screens
         }
       }
     }

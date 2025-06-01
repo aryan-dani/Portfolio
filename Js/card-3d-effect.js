@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cards.forEach((card) => {
     card.setAttribute("data-enhanced", "true"); // Mark card for CSS to ignore hover transform
-    const intensity = 2;
+    const intensity = 1.2; // Reduced intensity from 2 to 1.2
 
     card.addEventListener("mousemove", (e) => {
       handleMouseMove(e, card, intensity);
@@ -47,9 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // Use requestAnimationFrame for smoother reset
       requestAnimationFrame(() => {
         card.style.transform =
-          "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
+          "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)"; // Explicit reset values
         card.style.transition =
-          "transform 0.6s cubic-bezier(0.26, 0.86, 0.44, 0.985)"; // Reset transition from mixin
+          "transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985)"; // Slower reset transition for smoother effect
+
+        // Force complete reset after transition
+        setTimeout(() => {
+          card.style.transform = "";
+          card.style.transition = "";
+        }, 800);
       });
     });
   });
