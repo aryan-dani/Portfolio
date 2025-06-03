@@ -19,12 +19,123 @@
 
 .project {
   position: relative;
-  z-index: 0; // CHANGED from 1 - Make this the base stacking context
-  // pointer-events: none; // REMOVE this
+  z-index: 0;
   overflow: hidden;
-  display: flex; // Use flexbox for centering content vertically
+  display: flex;
   flex-direction: column;
-  @include animated-gradient-background; // Added animated gradient background mixin
+  padding: 4rem 1rem;
+  min-height: 100vh;
+  width: 100%;
+  @include animated-gradient-background;
+
+  // Heading styling - consistent with experience page
+  .heading {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeInStagger 0.8s ease forwards;
+    text-align: center;
+
+    .text-secondary {
+      border: none;
+      padding: 15px 25px;
+      margin: 0 auto 1.5rem;
+      font-weight: 900;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      background: linear-gradient(
+        135deg,
+        lighten($secondary-color, 15%),
+        $secondary-color,
+        darken($secondary-color, 5%)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: rgba($text-color, 0.1) !important;
+      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      text-align: center;
+      letter-spacing: 1px;
+
+      // Add subtle glow effect
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: inherit;
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: blur(3px);
+        opacity: 0.3;
+        z-index: -1;
+      }
+    }
+
+    // Enhanced introduction text with better visual hierarchy
+    .project-intro {
+      max-width: 900px;
+      margin: 0 auto 2rem;
+      color: $text-color;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      line-height: 1.7;
+      opacity: 0.95;
+      text-align: center;
+      padding: 0 1rem;
+      background: linear-gradient(
+        145deg,
+        rgba($primary-color, 0.8),
+        rgba($primary-color, 0.6)
+      );
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.8rem 2rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3),
+        0 2px 10px rgba($secondary-color, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba($secondary-color, 0.15);
+      animation: fadeIn 1s ease-in-out forwards;
+      animation-delay: 0.3s;
+      position: relative;
+      overflow: hidden;
+
+      // Add subtle shine effect
+      &::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba($secondary-color, 0.05),
+          transparent
+        );
+        transform: rotate(45deg);
+        animation: subtle-shine 4s ease-in-out infinite;
+      }
+
+      // Enhanced hover effect
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4),
+          0 4px 15px rgba($secondary-color, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
+    }
+  }
 
   &::before {
     content: "";
@@ -50,97 +161,6 @@
     pointer-events: none;
     z-index: 0;
     // animation: gradientBackground 15s ease infinite; // REMOVED - Redundant with mixin on parent
-  }
-
-  .project__intro-container {
-    width: 100%; // Make container fill the padded section width by default
-    max-width: 100%; // Ensure it doesn't exceed parent padding initially
-    margin-top: 4rem; // Increased top margin
-    margin-bottom: 3rem; // Increased bottom margin
-    position: relative;
-    z-index: 1;
-    background: rgba(lighten($primary-color, 3%), 0.7); // Darker, less opaque
-    border: 1px solid rgba($secondary-color, 0.1); // Softer border
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3); // More pronounced shadow
-    border-radius: 12px; // Slightly larger radius
-    padding: 2.5rem; // Increased padding
-
-    @include media-lg {
-      max-width: 1100px; // Adjust max-width if needed
-      margin-left: auto; // Center the container when max-width applies
-      margin-right: auto;
-    }
-
-    h2.text-secondary {
-      display: block; // Full width
-      text-align: center;
-      width: 100%;
-      margin: 0 auto 1.5rem; // Increased bottom margin
-      font-weight: 900;
-      font-size: clamp(
-        2.2rem,
-        4vw,
-        3.2rem
-      ); // Responsive font sizing like experience page
-      padding: 15px 25px; // Better padding like experience page
-      background: linear-gradient(
-        135deg,
-        lighten($secondary-color, 15%),
-        $secondary-color,
-        darken($secondary-color, 5%)
-      ); // Enhanced gradient like experience page
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: rgba($text-color, 0.1) !important; // Match experience page
-      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); // Enhanced shadow like experience page
-      animation: slide-in-heading 0.8s ease-out forwards; // Use existing animation
-      position: relative;
-      z-index: 1;
-      letter-spacing: 1px; // Better letter spacing like experience page
-
-      // Add subtle glow effect like experience page
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: inherit;
-        -webkit-background-clip: text;
-        background-clip: text;
-        filter: blur(3px);
-        opacity: 0.3;
-        z-index: -1;
-      }
-
-      &:hover {
-        transform: none;
-        text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); // Keep base shadow
-      }
-    }
-
-    p {
-      color: $secondary-color;
-      text-align: center; // Center align intro text
-      font-size: 1.15rem; // Slightly larger
-      line-height: 1.9; // Increased line height
-      color: rgba($secondary-color, 0.85); // Slightly less opaque
-      max-width: 850px; // Adjust max width
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 0;
-      border-radius: 0;
-      box-shadow: none;
-      transition: none;
-
-      &:hover {
-        background-color: transparent;
-        color: $secondary-color;
-        transform: none;
-        box-shadow: none;
-      }
-    }
   }
 
   .project-grid {
@@ -490,6 +510,167 @@
       }
     }
   }
+
+  // Search and filter container styling
+  .search-filter-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    padding: 1.8rem;
+    box-sizing: border-box;
+    background-color: rgba(lighten($primary-color, 7%), 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($secondary-color, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+
+    .search-filter-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .project-search {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+
+      .form-control {
+        background-color: rgba(lighten($primary-color, 12%), 0.6);
+        border: 1px solid rgba($secondary-color, 0.25);
+        color: $secondary-color;
+        border-radius: 10px;
+        padding: 0.8rem 1.1rem;
+        backdrop-filter: blur(5px);
+        padding-right: 2.5rem;
+        width: 100%;
+
+        &::placeholder {
+          color: rgba($secondary-color, 0.65);
+        }
+
+        &:focus {
+          background-color: rgba(lighten($primary-color, 18%), 0.7);
+          border-color: $secondary-color;
+          box-shadow: 0 0 0 0.2rem rgba($secondary-color, 0.25);
+          color: $secondary-color;
+          outline: none;
+        }
+
+        &::-webkit-search-cancel-button,
+        &::-webkit-search-decoration {
+          -webkit-appearance: none;
+          appearance: none;
+          display: none;
+        }
+      }
+
+      .search-clear-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: rgba($text-color, 0.6);
+        padding: 0 5px;
+        line-height: 1;
+        display: none;
+        cursor: pointer;
+
+        &:hover {
+          color: $secondary-color;
+        }
+      }
+    }
+
+    .project-filters {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-bottom: 0;
+
+      .filter-btn {
+        background: rgba(lighten($primary-color, 8%), 0.5);
+        border: 1px solid rgba($secondary-color, 0.8);
+        color: $secondary-color;
+        padding: 0.7rem 1.4rem;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all $transition-speed ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+        &:hover {
+          background: rgba($secondary-color, 0.25);
+          transform: translateY(-2px);
+          border-color: $secondary-color;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        &.active {
+          background: $secondary-color;
+          color: $primary-color;
+          font-weight: 600;
+          box-shadow: 0 4px 12px rgba($secondary-color, 0.3);
+          border-color: $secondary-color;
+        }
+
+        @include media-md {
+          font-size: 1rem;
+          padding: 0.7rem 1.6rem;
+        }
+      }
+    }
+  }
+
+  // No results message styling
+  .no-projects {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+    background: rgba(lighten($primary-color, 5%), 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba($secondary-color, 0.15);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+
+    .no-results-content {
+      i {
+        font-size: 3rem;
+        color: rgba($secondary-color, 0.6);
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        color: $secondary-color;
+        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+      }
+
+      p {
+        color: rgba($secondary-color, 0.8);
+        margin: 0;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  // Filtering animation
+  .filtering .project-item {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .project-item.filtering-out {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
 }
 
 .form-control {
@@ -626,5 +807,30 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+// Animation from experience page for heading fade in
+@keyframes fadeInStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Animation for subtle shine effect
+@keyframes subtle-shine {
+  0% {
+    transform: rotate(45deg) translateX(-200%);
+  }
+  50% {
+    transform: rotate(45deg) translateX(-50%);
+  }
+  100% {
+    transform: rotate(45deg) translateX(200%);
   }
 }

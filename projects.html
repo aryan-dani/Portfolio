@@ -115,21 +115,65 @@
     <main>
       <section class="project">
         <div id="particles-js"></div>
-        <div class="project__intro-container animate-on-scroll">
+
+        <div class="heading animate-on-scroll">
           <h2 class="text-secondary">Projects</h2>
-          <p>
-            I know, I know, it’s not the Netflix catalog of projects yet, but
+          <p class="project-intro">
+            I know, I know, it's not the Netflix catalog of projects yet, but
             hey, greatness takes time! Most of these are still
-            “work-in-progress” (aka me battling bugs at 2 AM), but I promise
-            I’ll blow your mind soon (hopefully). Stick around; we’re just
+            "work-in-progress" (aka me battling bugs at 2 AM), but I promise
+            I'll blow your mind soon (hopefully). Stick around; we're just
             getting started!
           </p>
         </div>
+
+        <div class="search-filter-container animate-on-scroll">
+          <div class="search-filter-controls">
+            <div class="project-search">
+              <input
+                type="search"
+                id="projectSearchInput"
+                class="form-control"
+                placeholder="Search projects..."
+                aria-label="Search projects"
+              />
+              <button
+                type="button"
+                class="search-clear-btn"
+                aria-label="Clear search"
+              >
+                ×
+              </button>
+            </div>
+            <div class="project-filters">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="web-dev">Web Dev</button>
+              <button class="filter-btn" data-filter="ai-ml">AI & ML</button>
+              <button class="filter-btn" data-filter="mobile">Mobile</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="no-projects" style="display: none">
+          <div class="no-results-content">
+            <i class="fas fa-search"></i>
+            <h3>No projects found</h3>
+            <p>
+              Try adjusting your search terms or filters to find what you're
+              looking for.
+            </p>
+          </div>
+        </div>
+
+        <div id="particles-js"></div>
         <div class="project-grid">
-          <div class="project-card animate-on-scroll">
+          <div
+            class="project-card animate-on-scroll project-item"
+            data-category="ai-ml"
+          >
             <div class="project-image">
               <img
-                src="Images/Home_Page.jpg"
+                src="Images/Projects/Threat_Detection_System.jpg"
                 alt="Real Time Threat Detection System"
                 loading="lazy"
               />
@@ -180,10 +224,13 @@
               </p>
             </div>
           </div>
-          <div class="project-card animate-on-scroll">
+          <div
+            class="project-card animate-on-scroll project-item"
+            data-category="ai-ml"
+          >
             <div class="project-image">
               <img
-                src="Images/Dicom-Slice.jpg"
+                src="Images/Projects/Dicom_Slice.jpg"
                 alt="Automated Dicom Slice Analyzer"
                 loading="lazy"
               />
@@ -223,15 +270,13 @@
               </p>
             </div>
           </div>
-          <div class="project-card animate-on-scroll">
+          <div
+            class="project-card animate-on-scroll project-item"
+            data-category="web-dev"
+          >
             <div class="project-image">
               <img
-                src="Images/API-Screenshot.jpg"
-                srcset="
-                  Images/API-Screenshot-small.jpg  500w,
-                  Images/API-Screenshot.jpg       1000w
-                "
-                sizes="(max-width: 600px) 100vw, 800px"
+                src="Images/Projects/API_Demonstration.jpg"
                 alt="API Demonstration Application"
                 width="800"
                 height="450"
@@ -284,10 +329,13 @@
               </p>
             </div>
           </div>
-          <div class="project-card animate-on-scroll">
+          <div
+            class="project-card animate-on-scroll project-item"
+            data-category="ai-ml"
+          >
             <div class="project-image">
               <img
-                src="Images/Data_Sceince_Capstone.jpg"
+                src="Images/Projects/Data_Sceince_Capstone.jpg"
                 alt="Capstone Data Science"
                 loading="lazy"
               />
@@ -329,10 +377,73 @@
               </p>
             </div>
           </div>
-          <div class="project-card animate-on-scroll">
+          <div
+            class="project-card animate-on-scroll project-item"
+            data-category="web-dev"
+          >
             <div class="project-image">
               <img
-                src="Images/Expense_Tracker.jpg"
+                src="Images/Projects/MedGrid.jpg"
+                alt="MedGrid - Hospital Management Information System"
+                loading="lazy"
+              />
+            </div>
+            <div class="content">
+              <div class="project-meta">
+                <div class="year">2024 - 2025</div>
+                <div class="title">
+                  MedGrid - Hospital Management Information System
+                </div>
+              </div>
+              <div class="project-links">
+                <a
+                  href="https://aryan-dani.github.io/HMIS_System/"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fas fa-eye"></i>
+                  Preview
+                </a>
+                <a
+                  href="https://github.com/aryan-dani/HMIS_System"
+                  class="project-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fa-brands fa-github"></i>
+                  Github
+                </a>
+              </div>
+              <div class="tags-container">
+                <h6>React</h6>
+                <h6>Material UI</h6>
+                <h6>Supabase</h6>
+                <h6>React Router</h6>
+                <h6>JavaScript</h6>
+              </div>
+              <p>
+                MedGrid is a comprehensive web-based Hospital Management
+                Information System designed to streamline healthcare operations.
+                Built with React and Material UI, it features secure
+                authentication, patient and doctor management, room tracking,
+                billing systems, and pathology report management. The
+                application utilizes Supabase for backend services and database
+                management, providing a responsive and intuitive interface for
+                healthcare professionals. This project demonstrates full-stack
+                development capabilities and modern web application
+                architecture, with features like real-time data updates,
+                comprehensive CRUD operations, and role-based access control.
+              </p>
+            </div>
+          </div>
+          <div
+            class="project-card animate-on-scroll project-item"
+            data-category="mobile"
+          >
+            <div class="project-image">
+              <img
+                src="Images/Projects/Automated_Expense_Tracker.jpg"
                 alt="Automated Expense Tracker"
                 loading="lazy"
               />
@@ -503,6 +614,7 @@
         retina_detect: true,
       });
     </script>
+    <script src="Js/projects.js" defer></script>
     <script src="Js/custom-cursor.js" defer></script>
   </body>
 </html>
