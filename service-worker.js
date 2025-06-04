@@ -1,6 +1,6 @@
-// Use a static cache name. Updates rely on Network-First strategy
-// and the browser detecting changes to this service-worker.js file.
-const CACHE_NAME = "portfolio-cache";
+// Use a versioned cache name to force updates when needed
+const CACHE_VERSION = "v2.0.1";
+const CACHE_NAME = `portfolio-cache-${CACHE_VERSION}`;
 
 // List all assets you want to pre-cache
 const PRECACHE_URLS = [
@@ -70,8 +70,7 @@ self.addEventListener("activate", (evt) => {
     caches
       .keys()
       .then((keys) => {
-        // Delete ALL caches that don't match the current static CACHE_NAME
-        // This cleans up old versioned caches if they exist.
+        // Delete ALL old caches to ensure fresh content
         return Promise.all(
           keys.map((key) => {
             if (key !== CACHE_NAME) {
@@ -83,8 +82,20 @@ self.addEventListener("activate", (evt) => {
         );
       })
       .then(() => {
-        console.log("Old caches deleted.");
+        console.log("Old caches deleted, taking control...");
         return self.clients.claim(); // Take control immediately
+      })
+      .then(() => {
+        // Notify all clients to refresh for new content
+        return self.clients.matchAll();
+      })
+      .then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({
+            type: "CACHE_UPDATED",
+            message: "New content available, consider refreshing",
+          });
+        });
       })
       .catch((err) => console.error("Failed to activate service worker:", err))
   );
@@ -181,51 +192,37 @@ self.addEventListener("fetch", (evt) => {
         })
     );
   } else {
-    // Cache-first for other assets (images, fonts, etc.)
+    // Network-first for images and other assets to ensure fresh content
     evt.respondWith(
-      caches.match(evt.request).then((cachedResponse) => {
-        return (
-          cachedResponse ||
-          fetch(evt.request)
-            .then((networkResponse) => {
-              if (
-                !networkResponse ||
-                networkResponse.status !== 200 ||
-                (networkResponse.type !== "basic" &&
-                  networkResponse.type !== "cors")
-              ) {
-                if (!evt.request.url.startsWith("http")) {
-                  // Only warn for local assets
-                  console.warn(
-                    "Fetch returned invalid response for other asset:",
-                    evt.request.url,
-                    networkResponse?.status
-                  );
-                }
-                return networkResponse;
-              }
-              const responseClone = networkResponse.clone();
-              caches
-                .open(CACHE_NAME)
-                .then((cache) => cache.put(evt.request, responseClone))
-                .catch((err) =>
-                  console.warn(
-                    "Failed to cache other asset:",
-                    evt.request.url,
-                    err
-                  )
-                );
-              return networkResponse;
-            })
-            .catch(() => {
-              console.log(
-                "Failed to fetch other asset from network and cache:",
-                evt.request.url
-              );
-              // Let the browser handle the failure
-            })
-        );
-      })
+      fetch(evt.request)
+        .then((networkResponse) => {
+          if (
+            !networkResponse ||
+            networkResponse.status !== 200 ||
+            (networkResponse.type !== "basic" &&
+              networkResponse.type !== "cors")
+          ) {
+            // If network fails, try cache
+            return caches.match(evt.request).then((cachedResponse) => {
+              return cachedResponse || networkResponse;
+            });
+          }
+
+          // Cache the fresh network response
+          const responseClone = networkResponse.clone();
+          caches
+            .open(CACHE_NAME)
+            .then((cache) => cache.put(evt.request, responseClone))
+            .catch((err) =>
+              console.warn("Failed to cache asset:", evt.request.url, err)
+            );
+          return networkResponse;
+        })
+        .catch(() => {
+          // Network failed, try cache as fallback
+          console.log("Network failed, trying cache for:", evt.request.url);
+          return caches.match(evt.request);
+        })
     );
   }
 });

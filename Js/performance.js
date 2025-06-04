@@ -80,12 +80,38 @@ function registerServiceWorker() {
             "Service Worker registered successfully with scope:",
             registration.scope
           );
+
+          // Handle updates
           registration.addEventListener("updatefound", () => {
             const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.addEventListener("statechange", () => {
+                if (
+                  newWorker.state === "installed" &&
+                  navigator.serviceWorker.controller
+                ) {
+                  // New service worker is installed, prompt user to refresh
+                  console.log(
+                    "New service worker installed, updates available"
+                  );
+                  // Optionally show a notification to user about updates
+                }
+              });
+            }
           });
+
           navigator.serviceWorker.addEventListener("controllerchange", () => {
-            // Optionally, prompt the user to refresh or refresh automatically
-            // window.location.reload();
+            // Service worker has taken control, refresh to get latest content
+            console.log("Service worker controller changed, refreshing...");
+            window.location.reload();
+          });
+
+          // Listen for cache update messages
+          navigator.serviceWorker.addEventListener("message", (event) => {
+            if (event.data && event.data.type === "CACHE_UPDATED") {
+              console.log("Cache updated:", event.data.message);
+              // Could show a toast notification here
+            }
           });
         })
         .catch((error) => {
