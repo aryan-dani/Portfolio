@@ -165,58 +165,56 @@
 
   .project-grid {
     display: grid;
-    grid-template-columns: 1fr; // Default to 1 column
-    gap: 2.5rem; // Increased gap
-    width: 100%; // Make grid fill the padded section width
-    max-width: none; // Remove specific max-width from here
-    padding: 0; // Ensure no horizontal padding is applied directly to the grid
-    margin: 3rem auto 2rem; // Adjusted margins
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    margin: 4rem auto 3rem;
     position: relative;
     z-index: 1;
-    perspective: 1000px;
+    perspective: 1200px;
 
     @include media-md {
-      grid-template-columns: repeat(
-        2,
-        1fr
-      ); // Ensure 2 columns on medium screens
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3.5rem;
     }
 
     @include media-lg {
-      // Keep 2 columns even on large screens, adjust minmax if needed for spacing
-      grid-template-columns: repeat(
-        2,
-        minmax(450px, 1fr)
-      ); // Increased from 350px to 450px
-      max-width: 1300px; // Increased from 1150px to accommodate wider cards
-      margin-left: auto; // Center the grid
+      grid-template-columns: repeat(2, minmax(500px, 1fr));
+      max-width: 1400px;
+      margin-left: auto;
       margin-right: auto;
+      gap: 4rem;
     }
   }
 
   .project-card {
-    background: rgba(
-      lighten($primary-color, 8%),
-      0.75
-    ); // Slightly lighter, less opaque
-    border-radius: 16px; // Smoother radius
+    background: linear-gradient(
+      145deg,
+      rgba(lighten($primary-color, 12%), 0.85),
+      rgba(lighten($primary-color, 8%), 0.75),
+      rgba(lighten($primary-color, 4%), 0.8)
+    );
+    border-radius: 20px;
     overflow: hidden;
-    backdrop-filter: blur(12px); // Slightly more blur
-    border: 1px solid $border-color-soft;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); // Adjusted shadow
-    // Use a less bouncy transition for hover effects
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); // Smoother bezier for hover
-    height: 100%; // Ensure cards in a row have same height
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba($secondary-color, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+      0 1px 8px rgba($secondary-color, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
     z-index: 1;
-    padding: 0; // Remove previous padding
-    border-bottom: none; // Remove previous border
+    padding: 0;
+    border-bottom: none;
     @include card-3d-hover;
     transform-style: preserve-3d;
-    contain: layout style paint; // Updated contain property
-    will-change: transform, box-shadow, opacity; // Added will-change
+    contain: layout style paint;
+    will-change: transform, box-shadow, opacity;
 
     // Disable CSS hover transform if JS 3D effect is active
     // CONSOLIDATED redundant selectors
@@ -226,59 +224,62 @@
     }
 
     &::before {
-      // Gradient overlay - removed to eliminate weird white background
       content: "";
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: transparent; // Made transparent
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      z-index: 0; // Behind content
-      pointer-events: none;
-      border-radius: inherit; // Inherit border radius
-    }
-
-    &::after {
-      // Border highlight effect
-      content: "";
-      position: absolute;
-      // inset: -1px; // REMOVED - Conflicts with overflow: hidden
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0; // Replaced inset: -1px
-      border-radius: inherit;
       background: linear-gradient(
         135deg,
-        rgba($secondary-color, 0.7),
-        // Stronger start
-        rgba(lighten($primary-color, 25%), 0.5) // Lighter end
+        rgba($secondary-color, 0.05),
+        rgba(lighten($primary-color, 20%), 0.1),
+        rgba($secondary-color, 0.03)
       );
       opacity: 0;
       transition: opacity 0.4s ease;
-      z-index: -1; // Behind card background
+      z-index: 0;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        135deg,
+        rgba($secondary-color, 0.8),
+        rgba(lighten($primary-color, 30%), 0.6),
+        rgba($secondary-color, 0.4)
+      );
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
       pointer-events: none;
     }
 
     &:hover {
-      // Keep transform simple or adjust rotate values for less bounce
-      // transform: translateY(-6px) scale(1.02); // REMOVED - Conflicted with JS hover
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35); // Stronger hover shadow
-      border-color: $border-color-soft-hover;
+      transform: translateY(-12px) scale(1.03);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+        0 5px 20px rgba($secondary-color, 0.2),
+        inset 0 2px 0 rgba(255, 255, 255, 0.15);
+      border-color: rgba($secondary-color, 0.3);
 
       &::before {
-        opacity: 0; // Keep overlay hidden on hover
+        opacity: 0.05;
       }
 
       &::after {
-        opacity: 0; // Keep border highlight subtle
+        opacity: 0.6;
       }
 
       .project-image img {
-        transform: scale(1.08); // More zoom on image
+        transform: scale(1.1);
       }
 
       .project-links {
@@ -286,9 +287,14 @@
         transform: translateY(0);
       }
 
-      h3 {
-        color: lighten($secondary-color, 10%); // Adjusted color
-        transition: color $transition-speed ease; // Use variable
+      .project-meta {
+        transform: translateY(-2px);
+        background: rgba($secondary-color, 0.12);
+        border-color: rgba($secondary-color, 0.25);
+      }
+
+      .tags-container h6 {
+        transform: translateY(-2px) scale(1.02);
       }
     }
 
@@ -348,98 +354,175 @@
       .project-meta {
         display: flex;
         align-items: center;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        padding: 0.8rem 1.2rem;
-        background: rgba($secondary-color, 0.08);
-        backdrop-filter: blur(8px);
-        border-radius: 12px;
-        border: 1px solid rgba($secondary-color, 0.15);
+        gap: 1.2rem;
+        margin-bottom: 1.8rem;
+        padding: 1rem 1.5rem;
+        background: linear-gradient(
+          135deg,
+          rgba($secondary-color, 0.1),
+          rgba($secondary-color, 0.06)
+        );
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        border: 1px solid rgba($secondary-color, 0.2);
         width: 100%;
         max-width: 100%;
         position: relative;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
         @include media-sm {
           flex-direction: column;
-          gap: 0.5rem;
+          gap: 0.8rem;
           text-align: center;
         }
 
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba($secondary-color, 0.3),
+            transparent
+          );
+          border-radius: inherit;
+        }
+
         .year {
-          background: rgba($secondary-color, 0.12);
+          background: linear-gradient(
+            135deg,
+            rgba($secondary-color, 0.15),
+            rgba($secondary-color, 0.1)
+          );
           color: $secondary-color;
-          padding: 0.7rem 1.2rem;
-          border-radius: 8px;
-          font-weight: 600;
+          padding: 0.8rem 1.4rem;
+          border-radius: 10px;
+          font-weight: 700;
           font-size: 0.9rem;
           text-align: center;
-          min-width: 110px;
-          border: 1px solid rgba($secondary-color, 0.2);
-          backdrop-filter: blur(4px);
+          min-width: 120px;
+          border: 1px solid rgba($secondary-color, 0.25);
+          backdrop-filter: blur(6px);
           display: flex;
           align-items: center;
           justify-content: center;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.8px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: scale(1.05);
+            background: linear-gradient(
+              135deg,
+              rgba($secondary-color, 0.2),
+              rgba($secondary-color, 0.15)
+            );
+          }
         }
 
         .title {
           flex: 1;
-          font-size: 1.5rem;
-          font-weight: 700;
+          font-size: 1.6rem;
+          font-weight: 800;
           color: $secondary-color;
           text-align: left;
-          line-height: 1.4;
-          letter-spacing: 0.3px;
+          line-height: 1.3;
+          letter-spacing: 0.5px;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          background: linear-gradient(
+            135deg,
+            $secondary-color,
+            lighten($secondary-color, 10%)
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
 
           @include media-sm {
             text-align: center;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
           }
         }
       }
 
       .project-links {
         display: flex;
-        gap: 0.8rem; // Increased gap between links
-        margin: 1.2rem 0; // Adjusted margin
-        opacity: 0.9; // Slightly increased default opacity
-        transition: opacity 0.4s ease, transform 0.4s ease; // Added transform transition
-        transform: translateY(8px); // Slightly more initial offset
-        justify-content: center; // Center the links within their container
-        width: 100%; // Ensure container takes full width
+        gap: 1rem;
+        margin: 1.5rem 0;
+        opacity: 0.95;
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        transform: translateY(5px);
+        justify-content: center;
+        width: 100%;
 
         a.project-link {
           display: inline-flex;
           align-items: center;
-          padding: 0.6rem 1.3rem; // Increased padding
-          background: $link-bg-soft; // Use variable
+          padding: 0.8rem 1.6rem;
+          background: linear-gradient(
+            135deg,
+            rgba($secondary-color, 0.15),
+            rgba($secondary-color, 0.1)
+          );
           color: $secondary-color;
-          border-radius: 8px; // Smoother radius
+          border-radius: 12px;
           text-decoration: none;
-          font-size: 0.9rem; // Slightly larger font
-          border: 1px solid $link-border-soft; // Use variable
+          font-size: 0.95rem;
+          font-weight: 600;
+          border: 1px solid rgba($secondary-color, 0.25);
           position: relative;
           overflow: hidden;
-          @include shine-effect; // Subtle shine effect - Removed arguments
+          backdrop-filter: blur(8px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+          letter-spacing: 0.3px;
+
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba($secondary-color, 0.1),
+              transparent
+            );
+            transition: left 0.6s ease;
+          }
 
           &:hover {
-            transform: translateY(-4px) scale(1.05); // Enhanced hover transform
-            box-shadow: 0 6px 15px rgba($secondary-color, 0.3); // Enhanced shadow
-            color: $primary-color; // Text color change
-            background-color: $secondary-color; // Solid background on hover
-            border-color: $secondary-color; // Match background
+            transform: translateY(-6px) scale(1.08);
+            box-shadow: 0 8px 25px rgba($secondary-color, 0.25);
+            color: $primary-color;
+            background: linear-gradient(
+              135deg,
+              rgba($secondary-color, 0.95),
+              rgba($secondary-color, 0.85)
+            );
+            border-color: $secondary-color;
+
+            &::before {
+              left: 100%;
+            }
 
             i {
-              color: $primary-color !important; // Ensure icon color matches text
-              transform: scale(1.2) rotate(-12deg); // More icon animation
+              color: $primary-color !important;
+              transform: scale(1.3) rotate(-15deg);
             }
           }
 
           i {
-            margin-right: 0.3rem; // Space between icon and text
-            font-size: 0.8em; // Adjust icon size relative to text
-            opacity: 0.8;
+            margin-right: 0.4rem;
+            font-size: 0.9em;
+            opacity: 0.9;
+            transition: all 0.3s ease;
           }
         }
       }
@@ -454,33 +537,61 @@
       }
 
       h6 {
-        // Tag styling
-        font-size: 0.8rem; // Slightly larger tags
-        font-weight: 500;
-        color: rgba($secondary-color, 0.9); // More visible text
-        background-color: rgba(
-          $primary-color,
-          0.7
-        ); // Slightly more opaque background
-        padding: 0.35rem 0.7rem; // Increased padding
-        border-radius: 5px; // Smoother radius
-        border: 1px solid rgba($secondary-color, 0.15); // Slightly stronger border
-        margin: 0.2rem; // Use margin instead of gap for wrapping
-        transition: all 0.25s ease; // Faster transition for tags
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: rgba($secondary-color, 0.95);
+        background: linear-gradient(
+          135deg,
+          rgba($primary-color, 0.8),
+          rgba($primary-color, 0.6)
+        );
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba($secondary-color, 0.2);
+        margin: 0.2rem;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.3px;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba($secondary-color, 0.1),
+            transparent
+          );
+          transition: left 0.5s ease;
+        }
 
         &:hover {
-          // cursor: default; // Handled globally in _cursor-override.scss
-          transform: translateY(-3px) scale(1.05); // Add scale to lift
-          background: rgba($secondary-color, 0.25); // Lighter hover background
-          color: lighten($secondary-color, 5%); // Slightly lighter text
-          border-color: rgba($secondary-color, 0.4); // Stronger hover border
-          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25); // Enhanced hover shadow
+          transform: translateY(-4px) scale(1.08);
+          background: linear-gradient(
+            135deg,
+            rgba($secondary-color, 0.3),
+            rgba($secondary-color, 0.2)
+          );
+          color: lighten($secondary-color, 8%);
+          border-color: rgba($secondary-color, 0.4);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+          &::before {
+            left: 100%;
+          }
         }
 
         i {
-          margin-right: 0.3rem; // Space between icon and text
-          font-size: 0.8em; // Adjust icon size
-          opacity: 0.8;
+          margin-right: 0.3rem;
+          font-size: 0.8em;
+          opacity: 0.9;
         }
       }
 
@@ -514,24 +625,50 @@
   // Search and filter container styling
   .search-filter-container {
     width: 100%;
-    max-width: 1100px;
-    margin: 0 auto 2rem;
-    padding: 1.8rem;
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 2.5rem;
     box-sizing: border-box;
-    background-color: rgba(lighten($primary-color, 7%), 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba($secondary-color, 0.2);
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(
+      145deg,
+      rgba(lighten($primary-color, 10%), 0.85),
+      rgba(lighten($primary-color, 7%), 0.75),
+      rgba(lighten($primary-color, 5%), 0.8)
+    );
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba($secondary-color, 0.25);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+      0 2px 10px rgba($secondary-color, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: relative;
     z-index: 1;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba($secondary-color, 0.4),
+        rgba($secondary-color, 0.6),
+        rgba($secondary-color, 0.4),
+        transparent
+      );
+      border-radius: inherit;
+    }
 
     .search-filter-controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 1.5rem;
     }
 
     .project-search {
@@ -539,27 +676,43 @@
       display: flex;
       align-items: center;
       flex-grow: 1;
+      max-width: 400px;
 
       .form-control {
-        background-color: rgba(lighten($primary-color, 12%), 0.6);
-        border: 1px solid rgba($secondary-color, 0.25);
+        background: linear-gradient(
+          135deg,
+          rgba(lighten($primary-color, 15%), 0.8),
+          rgba(lighten($primary-color, 12%), 0.6)
+        );
+        border: 1px solid rgba($secondary-color, 0.3);
         color: $secondary-color;
-        border-radius: 10px;
-        padding: 0.8rem 1.1rem;
-        backdrop-filter: blur(5px);
-        padding-right: 2.5rem;
+        border-radius: 15px;
+        padding: 1rem 1.5rem;
+        backdrop-filter: blur(8px);
+        padding-right: 3rem;
         width: 100%;
+        font-size: 1rem;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 
         &::placeholder {
-          color: rgba($secondary-color, 0.65);
+          color: rgba($secondary-color, 0.7);
+          font-weight: 400;
         }
 
         &:focus {
-          background-color: rgba(lighten($primary-color, 18%), 0.7);
-          border-color: $secondary-color;
-          box-shadow: 0 0 0 0.2rem rgba($secondary-color, 0.25);
+          background: linear-gradient(
+            135deg,
+            rgba(lighten($primary-color, 20%), 0.9),
+            rgba(lighten($primary-color, 18%), 0.7)
+          );
+          border-color: rgba($secondary-color, 0.5);
+          box-shadow: 0 0 0 3px rgba($secondary-color, 0.2),
+            0 6px 20px rgba(0, 0, 0, 0.2);
           color: $secondary-color;
           outline: none;
+          transform: translateY(-2px);
         }
 
         &::-webkit-search-cancel-button,
@@ -572,20 +725,26 @@
 
       .search-clear-btn {
         position: absolute;
-        right: 10px;
+        right: 15px;
         top: 50%;
         transform: translateY(-50%);
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: rgba($text-color, 0.6);
-        padding: 0 5px;
+        background: rgba($secondary-color, 0.1);
+        border: 1px solid rgba($secondary-color, 0.2);
+        border-radius: 6px;
+        width: 24px;
+        height: 24px;
+        font-size: 1.2rem;
+        color: rgba($secondary-color, 0.7);
+        padding: 0;
         line-height: 1;
         display: none;
         cursor: pointer;
+        transition: all 0.3s ease;
 
         &:hover {
           color: $secondary-color;
+          background: rgba($secondary-color, 0.2);
+          transform: translateY(-50%) scale(1.1);
         }
       }
     }
@@ -593,38 +752,76 @@
     .project-filters {
       display: flex;
       justify-content: flex-end;
-      gap: 0.75rem;
+      gap: 1rem;
       margin-bottom: 0;
 
       .filter-btn {
-        background: rgba(lighten($primary-color, 8%), 0.5);
-        border: 1px solid rgba($secondary-color, 0.8);
+        background: linear-gradient(
+          135deg,
+          rgba(lighten($primary-color, 12%), 0.7),
+          rgba(lighten($primary-color, 8%), 0.5)
+        );
+        border: 1px solid rgba($secondary-color, 0.3);
         color: $secondary-color;
-        padding: 0.7rem 1.4rem;
-        border-radius: 10px;
-        font-size: 0.9rem;
+        padding: 0.9rem 1.8rem;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 600;
         cursor: pointer;
-        transition: all $transition-speed ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(6px);
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.3px;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba($secondary-color, 0.1),
+            transparent
+          );
+          transition: left 0.5s ease;
+        }
 
         &:hover {
-          background: rgba($secondary-color, 0.25);
-          transform: translateY(-2px);
-          border-color: $secondary-color;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          background: linear-gradient(
+            135deg,
+            rgba($secondary-color, 0.2),
+            rgba($secondary-color, 0.15)
+          );
+          transform: translateY(-3px) scale(1.05);
+          border-color: rgba($secondary-color, 0.5);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+
+          &::before {
+            left: 100%;
+          }
         }
 
         &.active {
-          background: $secondary-color;
+          background: linear-gradient(
+            135deg,
+            rgba($secondary-color, 0.9),
+            rgba($secondary-color, 0.8)
+          );
           color: $primary-color;
-          font-weight: 600;
-          box-shadow: 0 4px 12px rgba($secondary-color, 0.3);
+          font-weight: 700;
+          box-shadow: 0 6px 20px rgba($secondary-color, 0.3);
           border-color: $secondary-color;
+          transform: translateY(-2px);
         }
 
         @include media-md {
           font-size: 1rem;
-          padding: 0.7rem 1.6rem;
+          padding: 0.9rem 2rem;
         }
       }
     }
