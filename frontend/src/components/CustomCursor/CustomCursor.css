@@ -1,58 +1,82 @@
 .custom-cursor {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 30px;
-  height: 30px;
-  border: 2px solid aliceblue;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(240, 248, 255, 0.5);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.4s ease, background-color 0.4s ease, border-radius 0.4s ease, opacity 0.3s ease, visibility 0.3s ease;
+  transition: width 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.25s ease, background-color 0.25s ease, border-radius 0.25s ease, opacity 0.2s ease, visibility 0.2s ease;
   will-change: transform, width, height;
+  mix-blend-mode: difference;
 }
 .custom-cursor--visible {
   opacity: 1;
   visibility: visible;
 }
-.custom-cursor__inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  background-color: aliceblue;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.4s ease, opacity 0.4s ease;
+.custom-cursor--clicking {
+  width: 35px;
+  height: 35px;
+  top: -17.5px;
+  left: -17.5px;
+  border-width: 3px;
 }
 .custom-cursor--link {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  left: -30px;
   border-color: aliceblue;
-  background-color: rgba(240, 248, 255, 0.15);
-}
-.custom-cursor--link .custom-cursor__inner {
-  width: 8px;
-  height: 8px;
-  background-color: aliceblue;
+  background-color: rgba(240, 248, 255, 0.1);
+  mix-blend-mode: normal;
 }
 .custom-cursor--text {
   width: 4px;
-  height: 28px;
+  height: 30px;
+  top: -15px;
+  left: -2px;
   border-radius: 2px;
   border-color: aliceblue;
   background-color: aliceblue;
-}
-.custom-cursor--text .custom-cursor__inner {
-  opacity: 0;
-  width: 0;
-  height: 0;
+  mix-blend-mode: normal;
 }
 @media (prefers-reduced-motion: reduce) {
   .custom-cursor {
+    display: none !important;
+  }
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background-color: aliceblue;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease, width 0.15s ease, height 0.15s ease;
+  will-change: transform;
+}
+.custom-cursor-dot--visible {
+  opacity: 1;
+  visibility: visible;
+}
+.custom-cursor-dot--clicking {
+  width: 12px;
+  height: 12px;
+  top: -6px;
+  left: -6px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor-dot {
     display: none !important;
   }
 }

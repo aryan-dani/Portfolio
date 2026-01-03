@@ -1,11 +1,11 @@
 .footer {
   position: relative;
   z-index: 1;
-  padding: 1.5rem;
+  padding: 2rem 1.5rem;
   text-align: center;
-  background: rgba(39, 39, 39, 0.8);
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  background: rgba(39, 39, 39, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(240, 248, 255, 0.1);
 }
 .footer__content {
@@ -14,8 +14,8 @@
 }
 .footer__copyright {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  transition: color 0.3s;
+  font-size: 0.875rem;
+  transition: color 0.3s ease-out;
 }
 .footer__copyright:hover {
   color: aliceblue;

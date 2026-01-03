@@ -30,11 +30,14 @@ $border-radius-medium: 8px;
 $border-radius-large: 12px;
 $border-radius-xl: 20px;
 
-// Shadows
-$shadow-light: 0 2px 8px rgba(0, 0, 0, 0.15);
-$shadow-medium: 0 5px 15px rgba(0, 0, 0, 0.2);
-$shadow-dark: 0 8px 25px rgba(0, 0, 0, 0.3);
-$shadow-glow: 0 0 20px rgba(240, 248, 255, 0.3);
+// Shadows - Enhanced with glow effects
+$shadow-light: 0 2px 10px rgba(0, 0, 0, 0.2);
+$shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.25);
+$shadow-dark: 0 15px 50px rgba(0, 0, 0, 0.35);
+$shadow-glow: 0 0 30px rgba(240, 248, 255, 0.2);
+$shadow-glow-strong: 0 0 40px rgba(240, 248, 255, 0.35);
+$shadow-card: 0 4px 20px rgba(0, 0, 0, 0.25),
+  inset 0 0 0 1px rgba(240, 248, 255, 0.05);
 
 // Z-index layers
 $z-particles: 0;
@@ -83,22 +86,27 @@ $breakpoint-xl: 1200px;
 }
 
 @mixin card-style {
-  background: $card-bg;
+  background: rgba(39, 39, 39, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: $border-radius-large;
-  box-shadow: $shadow-medium;
+  box-shadow: $shadow-card;
   border: 1px solid $border-color-soft;
-  transition: transform $transition-speed, box-shadow $transition-speed,
-    border-color $transition-speed;
+  transition: transform $transition-speed ease-out,
+    box-shadow $transition-speed ease-out,
+    border-color $transition-speed ease-out,
+    background $transition-speed ease-out;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.01);
     box-shadow: $shadow-dark, $shadow-glow;
     border-color: $border-color-soft-hover;
+    background: rgba(45, 45, 45, 0.85);
   }
 }
 
 @mixin gradient-text {
-  background: linear-gradient(135deg, $text-color, $secondary-color);
+  background: linear-gradient(135deg, $text-color 0%, $secondary-color 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -108,22 +116,44 @@ $breakpoint-xl: 1200px;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(
-    135deg,
-    $secondary-color,
-    color.adjust($secondary-color, $lightness: -8%)
-  );
+  padding: 0.875rem 1.75rem;
+  background: $secondary-color;
   color: $primary-color;
   border: none;
   border-radius: $border-radius-medium;
   font-weight: 600;
   cursor: pointer;
-  transition: all $transition-speed;
+  transition: all $transition-speed ease-out;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-glow;
+    transform: translateY(-3px);
+    box-shadow: $shadow-glow-strong, 0 10px 30px rgba(240, 248, 255, 0.25);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
   }
 }
 

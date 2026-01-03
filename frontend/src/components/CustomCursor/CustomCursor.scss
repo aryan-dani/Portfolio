@@ -1,67 +1,91 @@
 @use "../../styles/variables" as *;
 
+// Outer ring cursor
 .custom-cursor {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 30px;
-  height: 30px;
-  border: 2px solid $secondary-color;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba($secondary-color, 0.5);
   border-radius: 50%;
   pointer-events: none;
   z-index: $z-cursor;
   opacity: 0;
   visibility: hidden;
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.4s ease,
-    background-color 0.4s ease, border-radius 0.4s ease, opacity 0.3s ease,
-    visibility 0.3s ease;
+  transition: width 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    height 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.25s ease,
+    background-color 0.25s ease, border-radius 0.25s ease, opacity 0.2s ease,
+    visibility 0.2s ease;
   will-change: transform, width, height;
+  mix-blend-mode: difference;
 
   &--visible {
     opacity: 1;
     visibility: visible;
   }
 
-  &__inner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6px;
-    height: 6px;
-    background-color: $secondary-color;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      background-color 0.4s ease, opacity 0.4s ease;
+  &--clicking {
+    width: 35px;
+    height: 35px;
+    top: -17.5px;
+    left: -17.5px;
+    border-width: 3px;
   }
 
   &--link {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    left: -30px;
     border-color: $secondary-color;
-    background-color: rgba($secondary-color, 0.15);
-
-    .custom-cursor__inner {
-      width: 8px;
-      height: 8px;
-      background-color: $secondary-color;
-    }
+    background-color: rgba($secondary-color, 0.1);
+    mix-blend-mode: normal;
   }
 
   &--text {
     width: 4px;
-    height: 28px;
+    height: 30px;
+    top: -15px;
+    left: -2px;
     border-radius: 2px;
     border-color: $secondary-color;
     background-color: $secondary-color;
+    mix-blend-mode: normal;
+  }
 
-    .custom-cursor__inner {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    display: none !important;
+  }
+}
+
+// Inner dot cursor
+.custom-cursor-dot {
+  position: fixed;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background-color: $secondary-color;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: $z-cursor + 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease, width 0.15s ease,
+    height 0.15s ease;
+  will-change: transform;
+
+  &--visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &--clicking {
+    width: 12px;
+    height: 12px;
+    top: -6px;
+    left: -6px;
   }
 
   @media (prefers-reduced-motion: reduce) {

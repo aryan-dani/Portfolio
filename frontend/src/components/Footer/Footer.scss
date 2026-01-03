@@ -3,11 +3,12 @@
 .footer {
   position: relative;
   z-index: $z-content;
-  padding: 1.5rem;
+  padding: 2rem 1.5rem;
   text-align: center;
-  background: rgba($primary-color, 0.8);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid $border-color-soft;
+  background: rgba($primary-color, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba($secondary-color, 0.1);
 
   &__content {
     max-width: 1200px;
@@ -16,8 +17,8 @@
 
   &__copyright {
     color: $text-muted;
-    font-size: 0.9rem;
-    transition: color $transition-speed;
+    font-size: 0.875rem;
+    transition: color $transition-speed ease-out;
 
     &:hover {
       color: $secondary-color;

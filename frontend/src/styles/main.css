@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -296,13 +296,12 @@ body {
   font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
   background-color: #272727;
   color: #ffffff;
-  line-height: 1.6;
+  line-height: 1.7;
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeSpeed;
-  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
   position: relative;
 }
 
@@ -313,17 +312,19 @@ h4,
 h5,
 h6 {
   font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.15;
   margin-bottom: 1rem;
+  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
 }
 
 h2 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
 }
 
 h3 {
@@ -334,13 +335,14 @@ p {
   font-family: "Poppins", sans-serif;
   margin-bottom: 1rem;
   color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
 }
 
 a {
   font-family: "Poppins", sans-serif;
   color: inherit;
   text-decoration: none;
-  transition: color 0.4s ease;
+  transition: color 0.3s ease;
 }
 a:hover {
   color: aliceblue;
@@ -396,7 +398,7 @@ header {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #ffffff, aliceblue);
+  background: linear-gradient(135deg, #ffffff 0%, aliceblue 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -410,18 +412,36 @@ header {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, aliceblue, rgb(199.2, 228.96, 255));
+  padding: 0.875rem 1.75rem;
+  background: aliceblue;
   color: #272727;
   border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
 }
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(240, 248, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 0 40px rgba(240, 248, 255, 0.35), 0 10px 30px rgba(240, 248, 255, 0.25);
+}
+.btn:hover::before {
+  left: 100%;
+}
+.btn:active {
+  transform: translateY(-1px);
 }
 
 .btn-outline {
@@ -435,17 +455,20 @@ header {
 }
 
 .card {
-  background: rgba(39, 39, 39, 0.95);
+  background: rgba(39, 39, 39, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(240, 248, 255, 0.05);
   border: 1px solid rgba(240, 248, 255, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out, background 0.3s ease-out;
   padding: 1.5rem;
 }
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(240, 248, 255, 0.3);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35), 0 0 30px rgba(240, 248, 255, 0.2);
   border-color: rgba(240, 248, 255, 0.25);
+  background: rgba(45, 45, 45, 0.85);
 }
 
 .grid {
@@ -530,28 +553,49 @@ header {
 .section-header {
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 3rem;
+  margin: 0 auto 4rem;
 }
 .section-header h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
 }
 .section-header h2 span {
   color: aliceblue;
 }
+.section-header h2::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: aliceblue;
+  border-radius: 2px;
+}
 .section-header .intro-text {
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.7);
-  line-height: 1.8;
+  line-height: 1.9;
+  margin-top: 1.5rem;
 }
 
 .tag {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  font-size: 0.85rem;
+  padding: 0.4rem 0.9rem;
+  background: rgba(240, 248, 255, 0.08);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: aliceblue;
-  border: 1px solid rgba(240, 248, 255, 0.1);
+  border: 1px solid rgba(240, 248, 255, 0.15);
+  transition: all 0.25s ease;
+}
+.tag:hover {
+  background: rgba(240, 248, 255, 0.15);
+  border-color: rgba(240, 248, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 .tags-container {
