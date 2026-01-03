@@ -1,0 +1,148 @@
+// Color Variables
+$primary-color: #272727;
+$secondary-color: aliceblue;
+$text-color: #ffffff;
+$text-muted: rgba(255, 255, 255, 0.7);
+
+// Additional Colors
+$border-color-dark: #0e0e0e;
+$tag-bg-color: rgba(255, 255, 255, 0.1);
+$date-bg-color: rgba(240, 248, 255, 0.2);
+$link-hover-color: aliceblue;
+$card-bg: rgba(39, 39, 39, 0.95);
+
+// Soft Colors (based on aliceblue)
+$border-color-soft: rgba(240, 248, 255, 0.1);
+$border-color-soft-hover: rgba(240, 248, 255, 0.25);
+$link-bg-soft: rgba(240, 248, 255, 0.12);
+$link-border-soft: rgba(240, 248, 255, 0.2);
+
+// Transition Speed
+$transition-speed: 0.3s;
+$transition-fast: 0.15s;
+$transition-slow: 0.5s;
+
+// Border Radius
+$border-radius-small: 4px;
+$border-radius-medium: 8px;
+$border-radius-large: 12px;
+$border-radius-xl: 20px;
+
+// Shadows
+$shadow-light: 0 2px 8px rgba(0, 0, 0, 0.15);
+$shadow-medium: 0 5px 15px rgba(0, 0, 0, 0.2);
+$shadow-dark: 0 8px 25px rgba(0, 0, 0, 0.3);
+$shadow-glow: 0 0 20px rgba(240, 248, 255, 0.3);
+
+// Z-index layers
+$z-particles: 0;
+$z-content: 1;
+$z-header: 100;
+$z-menu: 1000;
+$z-modal: 2000;
+$z-cursor: 9999;
+$z-toast: 10000;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Mixins
+@mixin media-sm {
+  @media screen and (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin media-md {
+  @media screen and (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin media-lg {
+  @media screen and (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin media-xl {
+  @media screen and (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin card-style {
+  background: $card-bg;
+  border-radius: $border-radius-large;
+  box-shadow: $shadow-medium;
+  border: 1px solid $border-color-soft;
+  transition: transform $transition-speed, box-shadow $transition-speed,
+    border-color $transition-speed;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-dark, $shadow-glow;
+    border-color: $border-color-soft-hover;
+  }
+}
+
+@mixin gradient-text {
+  background: linear-gradient(135deg, $text-color, $secondary-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin button-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    $secondary-color,
+    darken($secondary-color, 8%)
+  );
+  color: $primary-color;
+  border: none;
+  border-radius: $border-radius-medium;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-speed;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-glow;
+  }
+}
+
+@mixin button-hover {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}

@@ -1,57 +1,77 @@
-# 🚀 My Portfolio – A No-Framework Challenge
+# 🚀 My Portfolio – React Edition
 
-Welcome to my personal portfolio! 🎨💻 This project is a **self-imposed challenge** to build a fully functional, responsive, and visually appealing portfolio using **only HTML, CSS, JavaScript, and SCSS** – **no frameworks, no libraries, just pure code!**
+Welcome to my personal portfolio! 🎨💻 This project showcases my work as a **Web Developer and AI Engineer**, built with **React, Vite, and Framer Motion** for a modern, performant experience.
 
-## 🌟 Why This Challenge?
+## 🌟 About This Project
 
-In a world dominated by frameworks like React, Angular, and Vue, I wanted to **push my limits** and strengthen my core front-end skills. This project is about:
-
-- **Mastering Vanilla JavaScript** for interactivity
-- **Crafting beautiful UI/UX with only CSS & SCSS**
-- **Building everything from scratch** without dependencies
+A complete portfolio website featuring smooth animations, interactive particles background, custom cursor, and responsive design. Built to showcase my projects, skills, certifications, and experience.
 
 ## 🔥 Features
 
-- 🎭 **Minimal & Modern Design** – Clean, intuitive, and easy to navigate
+- 🎭 **Modern Design** – Clean, intuitive, and easy to navigate
 - 📱 **Fully Responsive** – Looks great on all devices
-- 🎨 **SCSS for Styling** – Clean, maintainable, and scalable styles
-- 📂 **Custom-Built Components** – No Tailwind, just a Bootstrap Grid
+- ✨ **Smooth Animations** – Framer Motion page transitions and interactions
+- 🌌 **Interactive Particles** – Dynamic particle background
+- 🖱️ **Custom Cursor** – Unique cursor effects on hover
+- 🔍 **Search & Filter** – Projects and certifications filtering
+- 📊 **Skills Visualization** – Progress bars and skill modals
 
 ## 🛠️ Technologies Used
 
-- **HTML5** – Semantic, structured markup
-- **CSS3 / SCSS** – Custom styling with modular SCSS
-- **Vanilla JavaScript (ES6+)** – For the navigation pane animation
-- **Git & GitHub** – Version control and project hosting
+- **React 18** – Component-based UI
+- **Vite 5** – Fast build tool and dev server
+- **Framer Motion** – Smooth animations and transitions
+- **React Router** – Client-side routing
+- **SCSS** – Modular and maintainable styles
+- **react-tsparticles** – Interactive particle effects
+- **react-icons** – Icon library
+- **vanilla-tilt** – 3D tilt effects
 
 ## 🚀 Getting Started
 
-Clone this repository and open `index.html` in your browser.
+Clone this repository and install dependencies:
 
 ```sh
 git clone https://github.com/aryan-dani/Portfolio.git
-cd Portfolio
-open index.html
+cd Portfolio/frontend
+npm install
+npm run dev
 ```
 
-## 📌 To-Do
+Build for production:
 
-- Add more animations and effects
-- Improve performance and optimize assets
-- Add more javascript features
+```sh
+npm run build
+```
 
-## 🎯 What I Learned
+## 📁 Project Structure
 
-This project helped me enhance my skills in:
-
-- Deep dive into CSS animations and transitions
-- SCSS structuring for maintainability
-- DOM manipulation without libraries
-- Responsive design techniques without a framework
+```
+Portfolio/
+├── frontend/               # React application
+│   ├── src/
+│   │   ├── components/     # Reusable components
+│   │   ├── pages/          # Page components
+│   │   ├── context/        # React context providers
+│   │   ├── data/           # Data files (projects, skills, etc.)
+│   │   ├── styles/         # Global SCSS styles
+│   │   ├── App.jsx         # Main app component
+│   │   └── main.jsx        # Entry point
+│   ├── public/             # Static assets
+│   │   ├── Images/         # Project images
+│   │   ├── favicons/       # Site favicons
+│   │   └── manifest.json   # PWA manifest
+│   ├── index.html          # HTML template
+│   ├── vite.config.js      # Vite configuration
+│   └── package.json        # Dependencies
+├── .gitignore              # Git ignore rules
+├── LICENSE                 # MIT License
+└── README.md               # This file
+```
 
 ## 🤝 Contributing
 
-Want to improve this project? I’d love your help! Here’s how you can contribute:
+Want to improve this project? I'd love your help! Here's how you can contribute:
 
 1. Fork the Repository
 2. Create a New Branch (`git checkout -b feature-name`)
@@ -67,6 +87,7 @@ If you have questions, ideas, or just want to connect, feel free to reach out:
 
 - 📧 **Email:** daniaryan212@gmail.com
 - 🔗 **LinkedIn:** [Aryan Dani](https://www.linkedin.com/in/aryandani/)
+- 🐙 **GitHub:** [aryan-dani](https://github.com/aryan-dani)
 
 ## ⭐ Show Your Support
 

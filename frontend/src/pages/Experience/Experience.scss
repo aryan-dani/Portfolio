@@ -1,0 +1,243 @@
+@use "../../styles/variables" as *;
+
+.experience {
+  min-height: 100vh;
+  padding: 6rem 1.5rem 3rem;
+
+  &__container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  &__timeline {
+    position: relative;
+    padding-left: 2rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(
+        to bottom,
+        $secondary-color,
+        rgba($secondary-color, 0.2)
+      );
+    }
+
+    @include media-md {
+      padding-left: 3rem;
+    }
+  }
+
+  &__card {
+    position: relative;
+    background: $card-bg;
+    border: 1px solid $border-color-soft;
+    border-radius: $border-radius-large;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    transition: all $transition-speed;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: -2rem;
+      top: 2rem;
+      width: 12px;
+      height: 12px;
+      background: $secondary-color;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 10px rgba($secondary-color, 0.5);
+
+      @include media-md {
+        left: -3rem;
+      }
+    }
+
+    &:hover {
+      border-color: $border-color-soft-hover;
+      box-shadow: $shadow-medium, $shadow-glow;
+      transform: translateX(5px);
+    }
+
+    &--expanded {
+      border-color: rgba($secondary-color, 0.3);
+
+      &::before {
+        animation: pulse-dot 1.5s ease-in-out infinite;
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  &__logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: $border-radius-medium;
+    background: rgba($text-color, 0.1);
+    padding: 0.5rem;
+    flex-shrink: 0;
+
+    @include media-md {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  &__period {
+    color: $secondary-color;
+    background: rgba($secondary-color, 0.15);
+    padding: 0.25rem 0.5rem;
+    border-radius: $border-radius-small;
+  }
+
+  &__position {
+    color: $text-muted;
+    background: rgba($text-color, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: $border-radius-small;
+  }
+
+  &__company {
+    font-size: 1.25rem;
+    margin: 0;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: $text-color;
+
+      svg {
+        font-size: 0.75rem;
+        opacity: 0;
+        transition: opacity $transition-speed;
+      }
+
+      &:hover {
+        color: $secondary-color;
+
+        svg {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &__toggle {
+    background: rgba($text-color, 0.1);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all $transition-speed;
+    flex-shrink: 0;
+
+    svg {
+      color: $text-muted;
+      transition: transform $transition-speed;
+    }
+
+    &:hover {
+      background: rgba($secondary-color, 0.2);
+
+      svg {
+        color: $secondary-color;
+      }
+    }
+
+    &--active {
+      background: rgba($secondary-color, 0.2);
+
+      svg {
+        color: $secondary-color;
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__details {
+    overflow: hidden;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid $border-color-soft;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    .tag {
+      font-size: 0.8rem;
+    }
+  }
+
+  &__responsibilities {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: $text-muted;
+      line-height: 1.6;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        width: 6px;
+        height: 6px;
+        background: $secondary-color;
+        border-radius: 50%;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba($secondary-color, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba($secondary-color, 0.8),
+      0 0 30px rgba($secondary-color, 0.4);
+  }
+}

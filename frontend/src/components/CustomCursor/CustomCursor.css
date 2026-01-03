@@ -1,0 +1,70 @@
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border: 2px solid aliceblue;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.4s ease, background-color 0.4s ease, border-radius 0.4s ease, opacity 0.3s ease, visibility 0.3s ease;
+  will-change: transform, width, height;
+}
+.custom-cursor--visible {
+  opacity: 1;
+  visibility: visible;
+}
+.custom-cursor__inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: aliceblue;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.4s ease, opacity 0.4s ease;
+}
+.custom-cursor--link {
+  width: 50px;
+  height: 50px;
+  border-color: aliceblue;
+  background-color: rgba(240, 248, 255, 0.15);
+}
+.custom-cursor--link .custom-cursor__inner {
+  width: 8px;
+  height: 8px;
+  background-color: aliceblue;
+}
+.custom-cursor--text {
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+  border-color: aliceblue;
+  background-color: aliceblue;
+}
+.custom-cursor--text .custom-cursor__inner {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+body.custom-cursor-active {
+  cursor: none !important;
+}
+body.custom-cursor-active *,
+body.custom-cursor-active a,
+body.custom-cursor-active button,
+body.custom-cursor-active input,
+body.custom-cursor-active textarea,
+body.custom-cursor-active select {
+  cursor: none !important;
+}/*# sourceMappingURL=CustomCursor.css.map */

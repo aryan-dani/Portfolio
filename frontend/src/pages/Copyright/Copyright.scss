@@ -1,0 +1,219 @@
+// Copyright page styles - variables injected globally via vite.config.js
+
+.copyright-page {
+  min-height: 100vh;
+  padding: 120px 0 60px;
+  font-family: "Poppins", sans-serif;
+
+  &__container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  &__back {
+    margin-bottom: 40px;
+  }
+
+  &__back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: rgba($primary-color, 0.6);
+    border: 2px solid rgba($secondary-color, 0.2);
+    border-radius: 30px;
+    color: $text-color;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.4s ease;
+
+    &:hover {
+      border-color: $secondary-color;
+      color: $secondary-color;
+      transform: translateX(-5px);
+    }
+
+    svg {
+      transition: transform 0.4s ease;
+    }
+
+    &:hover svg {
+      transform: translateX(-5px);
+    }
+  }
+
+  &__content {
+    text-align: center;
+  }
+
+  &__title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: $text-color;
+    margin-bottom: 40px;
+    font-family: "Poppins", sans-serif;
+
+    span {
+      color: $secondary-color;
+      font-size: 1.2em;
+    }
+  }
+
+  &__card {
+    background: rgba($primary-color, 0.6);
+    border: 2px solid rgba($secondary-color, 0.15);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+    text-align: left;
+
+    h2 {
+      font-size: 1.8rem;
+      color: $secondary-color;
+      margin-bottom: 15px;
+      font-family: "Poppins", sans-serif;
+    }
+  }
+
+  &__year {
+    font-size: 1.2rem;
+    color: $text-color;
+    font-weight: 600;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba($secondary-color, 0.2);
+  }
+
+  &__license-text {
+    p {
+      color: rgba($text-color, 0.85);
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+  }
+
+  &__disclaimer {
+    font-size: 0.85rem !important;
+    color: rgba($text-color, 0.6) !important;
+    font-style: italic;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border-left: 3px solid $secondary-color;
+  }
+
+  &__attribution {
+    background: rgba($primary-color, 0.6);
+    border: 2px solid rgba($secondary-color, 0.15);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 40px;
+
+    h3 {
+      font-size: 1.5rem;
+      color: $text-color;
+      margin-bottom: 15px;
+      font-family: "Poppins", sans-serif;
+    }
+
+    p {
+      color: rgba($text-color, 0.85);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 10px;
+
+      strong {
+        color: $secondary-color;
+      }
+    }
+
+    .heart-icon {
+      color: #ff6b6b;
+      animation: heartbeat 1.5s ease-in-out infinite;
+      vertical-align: middle;
+      margin: 0 5px;
+    }
+  }
+
+  &__contact {
+    h3 {
+      font-size: 1.5rem;
+      color: $text-color;
+      margin-bottom: 20px;
+      font-family: "Poppins", sans-serif;
+    }
+  }
+
+  &__links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: rgba($secondary-color, 0.1);
+    border: 2px solid rgba($secondary-color, 0.3);
+    border-radius: 30px;
+    color: $text-color;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.4s ease;
+
+    svg {
+      font-size: 1.2rem;
+      color: $secondary-color;
+      transition: transform 0.4s ease;
+    }
+
+    &:hover {
+      background: $secondary-color;
+      color: $primary-color;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba($secondary-color, 0.3);
+
+      svg {
+        color: $primary-color;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .copyright-page {
+    padding-top: 100px;
+
+    &__card {
+      padding: 25px 20px;
+    }
+
+    &__links {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__link {
+      width: 100%;
+      max-width: 280px;
+      justify-content: center;
+    }
+  }
+}

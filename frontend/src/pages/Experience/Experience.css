@@ -1,0 +1,207 @@
+.experience {
+  min-height: 100vh;
+  padding: 6rem 1.5rem 3rem;
+}
+.experience__container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.experience__timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+.experience__timeline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, aliceblue, rgba(240, 248, 255, 0.2));
+}
+@media screen and (min-width: 768px) {
+  .experience__timeline {
+    padding-left: 3rem;
+  }
+}
+.experience__card {
+  position: relative;
+  background: rgba(39, 39, 39, 0.95);
+  border: 1px solid rgba(240, 248, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  transition: all 0.3s;
+}
+.experience__card::before {
+  content: "";
+  position: absolute;
+  left: -2rem;
+  top: 2rem;
+  width: 12px;
+  height: 12px;
+  background: aliceblue;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(240, 248, 255, 0.5);
+}
+@media screen and (min-width: 768px) {
+  .experience__card::before {
+    left: -3rem;
+  }
+}
+.experience__card:hover {
+  border-color: rgba(240, 248, 255, 0.25);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 20px rgba(240, 248, 255, 0.3);
+  transform: translateX(5px);
+}
+.experience__card--expanded {
+  border-color: rgba(240, 248, 255, 0.3);
+}
+.experience__card--expanded::before {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+.experience__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.experience__logo {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  flex-shrink: 0;
+}
+@media screen and (min-width: 768px) {
+  .experience__logo {
+    width: 60px;
+    height: 60px;
+  }
+}
+.experience__info {
+  flex: 1;
+  min-width: 0;
+}
+.experience__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+.experience__period {
+  color: aliceblue;
+  background: rgba(240, 248, 255, 0.15);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+.experience__position {
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+.experience__company {
+  font-size: 1.25rem;
+  margin: 0;
+}
+.experience__company a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff;
+}
+.experience__company a svg {
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.experience__company a:hover {
+  color: aliceblue;
+}
+.experience__company a:hover svg {
+  opacity: 1;
+}
+.experience__toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.experience__toggle svg {
+  color: rgba(255, 255, 255, 0.7);
+  transition: transform 0.3s;
+}
+.experience__toggle:hover {
+  background: rgba(240, 248, 255, 0.2);
+}
+.experience__toggle:hover svg {
+  color: aliceblue;
+}
+.experience__toggle--active {
+  background: rgba(240, 248, 255, 0.2);
+}
+.experience__toggle--active svg {
+  color: aliceblue;
+  transform: rotate(180deg);
+}
+.experience__details {
+  overflow: hidden;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(240, 248, 255, 0.1);
+}
+.experience__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.experience__tags .tag {
+  font-size: 0.8rem;
+}
+.experience__responsibilities {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.experience__responsibilities li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+.experience__responsibilities li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 6px;
+  height: 6px;
+  background: aliceblue;
+  border-radius: 50%;
+}
+.experience__responsibilities li:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(240, 248, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(240, 248, 255, 0.8), 0 0 30px rgba(240, 248, 255, 0.4);
+  }
+}/*# sourceMappingURL=Experience.css.map */

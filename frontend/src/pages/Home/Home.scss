@@ -1,0 +1,492 @@
+@use "../../styles/variables" as *;
+
+.home {
+  min-height: 100vh;
+  padding: 15vh 8vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  overflow: hidden;
+  background: linear-gradient(
+    -45deg,
+    $primary-color,
+    lighten($primary-color, 5%),
+    darken($primary-color, 5%),
+    $primary-color
+  );
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  position: relative;
+
+  &__container {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 3rem;
+
+    @include media-lg {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 4rem;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateX(-40px);
+    animation: slideInLeftEnhanced 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      forwards 0.2s;
+    position: relative;
+    padding: 2rem;
+    background-color: rgba(lighten($primary-color, 8%), 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($secondary-color, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+
+    @include media-lg {
+      text-align: left;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(
+        circle at center,
+        rgba($secondary-color, 0.3),
+        transparent 70%
+      );
+      filter: blur(90px);
+      top: -50px;
+      left: -60px;
+      z-index: 0;
+      animation: floatBlob 7s ease-in-out infinite alternate;
+    }
+
+    .intro-text {
+      max-width: 700px;
+      color: $secondary-color;
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  &__name {
+    font-size: 3.6rem;
+    margin-top: 0;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+
+    @include media-md {
+      font-size: 3.6rem;
+    }
+
+    @media (max-width: 576px) {
+      font-size: 2.5rem;
+    }
+
+    &--last {
+      color: rgba($secondary-color, 0.8);
+      position: relative;
+      display: inline-block;
+      -webkit-background-clip: text;
+      background-clip: text;
+      background-image: linear-gradient(
+        60deg,
+        lighten($secondary-color, 10%),
+        $secondary-color,
+        darken($secondary-color, 10%),
+        $secondary-color,
+        lighten($secondary-color, 10%)
+      );
+      background-size: 250% auto;
+      color: transparent;
+      animation: gradient-text 8s ease infinite;
+      text-shadow: 0 0 5px rgba($secondary-color, 0.6),
+        0 0 15px rgba($secondary-color, 0.3),
+        0 4px 10px rgba(darken($primary-color, 15%), 0.3);
+
+      &:hover {
+        transform: translateY(-4px) scale(1.02);
+        animation-play-state: paused;
+        filter: drop-shadow(0 0 12px rgba($secondary-color, 0.8));
+      }
+    }
+  }
+
+  &__title {
+    color: $text-color;
+    background-color: transparent;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+    padding: 0;
+    display: block;
+    position: relative;
+    z-index: 1;
+    line-height: 1.4;
+
+    @media (max-width: 576px) {
+      font-size: 1.3rem;
+    }
+  }
+
+  &__intro {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: $secondary-color;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__socials {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+
+    @include media-lg {
+      justify-content: flex-start;
+    }
+  }
+
+  &__social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0.3rem 0;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    padding: 0.6rem 1.1rem;
+    border-radius: 8px;
+    background-color: rgba($secondary-color, 0.1);
+    color: lighten($text-color, 10%);
+    border: 1px solid rgba($secondary-color, 0.2);
+    width: fit-content;
+    overflow: hidden;
+
+    svg {
+      font-size: 1.4rem;
+      color: $secondary-color;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    &:hover {
+      transform: translateY(-6px) scale(1.1);
+      box-shadow: 0 8px 20px rgba($secondary-color, 0.35);
+      color: $primary-color;
+      background-color: $secondary-color;
+      border-color: $secondary-color;
+
+      svg {
+        color: $primary-color !important;
+        transform: scale(1.2) rotate(-12deg);
+      }
+    }
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(
+      45deg,
+      $secondary-color,
+      lighten($secondary-color, 15%)
+    );
+    background-size: 200% 200%;
+    color: $primary-color;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    box-shadow: 0 6px 18px rgba(darken($primary-color, 20%), 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid $secondary-color;
+    position: relative;
+    overflow: hidden;
+    align-self: flex-start;
+    z-index: 1;
+    text-decoration: none;
+
+    @include media-md {
+      align-self: flex-start;
+    }
+
+    @media (max-width: 768px) {
+      align-self: center;
+    }
+
+    &:hover {
+      background-position: right center;
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 12px 25px rgba($secondary-color, 0.4),
+        0 0 15px rgba($secondary-color, 0.2);
+      color: $primary-color;
+
+      svg {
+        transform: translateX(5px) rotate(10deg);
+      }
+    }
+
+    svg {
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+  }
+
+  &__image-wrapper {
+    flex-basis: 40%;
+    max-width: 450px;
+    z-index: 1;
+    position: relative;
+    opacity: 0;
+    transform: translateX(40px) scale(0.95);
+    animation: slideInRightFadeEnhanced 1.4s
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.5s;
+    transition: transform 0.4s ease;
+    perspective: 1000px;
+
+    @include media-lg {
+      flex-shrink: 0;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 250px;
+      background: radial-gradient(
+        circle at center,
+        rgba($secondary-color, 0.25),
+        transparent 70%
+      );
+      filter: blur(110px);
+      bottom: -60px;
+      right: -60px;
+      z-index: 0;
+      animation: floatBlob 9s ease-in-out infinite alternate -2s;
+    }
+  }
+
+  &__image-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba($secondary-color, 0.3);
+    transform-style: preserve-3d;
+
+    @include media-md {
+      width: 350px;
+      height: 350px;
+    }
+
+    @include media-lg {
+      width: 400px;
+      height: 400px;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: linear-gradient(
+        135deg,
+        $secondary-color,
+        transparent,
+        $secondary-color
+      );
+      animation: spin 8s linear infinite;
+      z-index: -1;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      box-shadow 0.4s ease-out;
+
+    &:hover {
+      box-shadow: 0 0 25px 3px rgba($secondary-color, 0.6),
+        0 5px 15px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  &__image-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: inset 0 0 50px rgba($secondary-color, 0.3);
+    pointer-events: none;
+  }
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes slideInLeftEnhanced {
+  from {
+    opacity: 0;
+    transform: translateX(-40px) rotateY(10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0);
+  }
+}
+
+@keyframes slideInRightFadeEnhanced {
+  from {
+    opacity: 0;
+    transform: translateX(40px) scale(0.95) rotateY(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotateY(0);
+  }
+}
+
+@keyframes floatBlob {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-25px) translateX(15px) rotate(5deg);
+  }
+}
+
+@keyframes gradient-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba($secondary-color, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba($secondary-color, 0);
+  }
+}
+
+@media (max-width: 992px) {
+  .home {
+    padding: 10vh 6vw;
+    gap: 3rem;
+    flex-direction: column;
+    text-align: center;
+
+    &__content {
+      max-width: 100%;
+      width: 100%;
+      align-items: center;
+      text-align: center;
+      animation-name: slideInUpFadeEnhanced;
+    }
+
+    &__image-wrapper {
+      order: -1;
+      max-width: 300px;
+      margin-bottom: 2.5rem;
+      animation-name: slideInUpFadeEnhanced;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .home {
+    padding: 8vh 5vw;
+    gap: 2rem;
+
+    &__image-wrapper {
+      max-width: 220px;
+    }
+
+    &__socials {
+      gap: 1rem;
+    }
+
+    &__social-link {
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem;
+
+      svg {
+        font-size: 1.2rem;
+      }
+    }
+
+    &__cta {
+      padding: 0.8rem 1.6rem;
+      font-size: 1.05rem;
+    }
+  }
+}
+
+@keyframes slideInUpFadeEnhanced {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

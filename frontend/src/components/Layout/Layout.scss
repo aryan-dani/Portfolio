@@ -1,0 +1,14 @@
+@use "../../styles/variables" as *;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  position: relative;
+  z-index: $z-content;
+}
