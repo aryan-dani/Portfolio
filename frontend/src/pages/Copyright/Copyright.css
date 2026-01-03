@@ -1,0 +1,182 @@
+.copyright-page {
+  min-height: 100vh;
+  padding: 120px 0 60px;
+  font-family: "Poppins", sans-serif;
+}
+.copyright-page__container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.copyright-page__back {
+  margin-bottom: 40px;
+}
+.copyright-page__back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(39, 39, 39, 0.6);
+  border: 2px solid rgba(240, 248, 255, 0.2);
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.4s ease;
+}
+.copyright-page__back-link:hover {
+  border-color: aliceblue;
+  color: aliceblue;
+  transform: translateX(-5px);
+}
+.copyright-page__back-link svg {
+  transition: transform 0.4s ease;
+}
+.copyright-page__back-link:hover svg {
+  transform: translateX(-5px);
+}
+.copyright-page__content {
+  text-align: center;
+}
+.copyright-page__title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 40px;
+  font-family: "Poppins", sans-serif;
+}
+.copyright-page__title span {
+  color: aliceblue;
+  font-size: 1.2em;
+}
+.copyright-page__card {
+  background: rgba(39, 39, 39, 0.6);
+  border: 2px solid rgba(240, 248, 255, 0.15);
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+.copyright-page__card h2 {
+  font-size: 1.8rem;
+  color: aliceblue;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+.copyright-page__year {
+  font-size: 1.2rem;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(240, 248, 255, 0.2);
+}
+.copyright-page__license-text p {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.8;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+.copyright-page__disclaimer {
+  font-size: 0.85rem !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-style: italic;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border-left: 3px solid aliceblue;
+}
+.copyright-page__attribution {
+  background: rgba(39, 39, 39, 0.6);
+  border: 2px solid rgba(240, 248, 255, 0.15);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+}
+.copyright-page__attribution h3 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+.copyright-page__attribution p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.copyright-page__attribution p strong {
+  color: aliceblue;
+}
+.copyright-page__attribution .heart-icon {
+  color: #ff6b6b;
+  animation: heartbeat 1.5s ease-in-out infinite;
+  vertical-align: middle;
+  margin: 0 5px;
+}
+.copyright-page__contact h3 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-family: "Poppins", sans-serif;
+}
+.copyright-page__links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.copyright-page__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: rgba(240, 248, 255, 0.1);
+  border: 2px solid rgba(240, 248, 255, 0.3);
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.4s ease;
+}
+.copyright-page__link svg {
+  font-size: 1.2rem;
+  color: aliceblue;
+  transition: transform 0.4s ease;
+}
+.copyright-page__link:hover {
+  background: aliceblue;
+  color: #272727;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(240, 248, 255, 0.3);
+}
+.copyright-page__link:hover svg {
+  color: #272727;
+  transform: scale(1.1);
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+@media (max-width: 768px) {
+  .copyright-page {
+    padding-top: 100px;
+  }
+  .copyright-page__card {
+    padding: 25px 20px;
+  }
+  .copyright-page__links {
+    flex-direction: column;
+    align-items: center;
+  }
+  .copyright-page__link {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}/*# sourceMappingURL=Copyright.css.map */
