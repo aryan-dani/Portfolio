@@ -6,9 +6,7 @@
   justify-content: space-between;
   gap: 3rem;
   overflow: hidden;
-  background: linear-gradient(-45deg, #272727, rgb(51.75, 51.75, 51.75), rgb(26.25, 26.25, 26.25), #272727);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
+  background: transparent;
   position: relative;
 }
 .home__container {
@@ -96,7 +94,7 @@
   display: inline-block;
   -webkit-background-clip: text;
   background-clip: text;
-  background-image: linear-gradient(60deg, white, aliceblue, rgb(189, 224.2, 255), aliceblue, white);
+  background-image: linear-gradient(60deg, hsl(208, 100%, 107.0588235294%), aliceblue, rgb(189, 224.2, 255), aliceblue, hsl(208, 100%, 107.0588235294%));
   background-size: 250% auto;
   color: transparent;
   animation: gradient-text 8s ease infinite;
@@ -160,7 +158,7 @@
   padding: 0.6rem 1.1rem;
   border-radius: 8px;
   background-color: rgba(240, 248, 255, 0.1);
-  color: white;
+  color: hsl(0, 0%, 110%);
   border: 1px solid rgba(240, 248, 255, 0.2);
   width: -moz-fit-content;
   width: fit-content;
@@ -186,7 +184,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(45deg, aliceblue, white);
+  background: linear-gradient(45deg, aliceblue, hsl(208, 100%, 112.0588235294%));
   background-size: 200% 200%;
   color: #272727;
   font-weight: 600;
@@ -194,7 +192,7 @@
   font-size: 1rem;
   border-radius: 8px;
   margin-top: 1rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 18px hsla(0, 0%, -4.7058823529%, 0.3);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border: 1px solid aliceblue;
   position: relative;

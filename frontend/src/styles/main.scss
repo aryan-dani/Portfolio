@@ -1,5 +1,6 @@
-@import "variables";
-@import "animations";
+@use "variables" as *;
+@use "animations";
+@use "sass:color";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 // CSS Reset
@@ -33,6 +34,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeSpeed;
   transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  position: relative;
 }
 
 // Typography - Ensure Poppins everywhere
@@ -341,7 +343,7 @@ header {
 }
 
 ::-webkit-scrollbar-track {
-  background: darken($primary-color, 5%);
+  background: color.adjust($primary-color, $lightness: -5%);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -349,7 +351,7 @@ header {
   border-radius: 4px;
 
   &:hover {
-    background: lighten($secondary-color, 10%);
+    background: color.adjust($secondary-color, $lightness: 10%);
   }
 }
 

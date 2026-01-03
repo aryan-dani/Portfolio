@@ -197,7 +197,7 @@
 }
 .skill-card__progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, aliceblue, white);
+  background: linear-gradient(90deg, aliceblue, hsl(208, 100%, 112.0588235294%));
   border-radius: 3px;
   transition: width 0.5s ease;
 }
@@ -275,7 +275,7 @@
 }
 .skill-modal__progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, aliceblue, white);
+  background: linear-gradient(90deg, aliceblue, hsl(208, 100%, 112.0588235294%));
   border-radius: 5px;
 }
 .skill-modal__level {

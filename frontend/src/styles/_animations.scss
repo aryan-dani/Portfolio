@@ -1,4 +1,5 @@
-@import "variables";
+@use "variables" as *;
+@use "sass:color";
 
 // Keyframe Animations
 @keyframes fadeIn {

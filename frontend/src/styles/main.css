@@ -303,6 +303,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeSpeed;
   transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  position: relative;
 }
 
 h1,
@@ -632,7 +633,7 @@ header {
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: white;
+  background: hsl(208, 100%, 107.0588235294%);
 }
 
 ::-moz-selection {

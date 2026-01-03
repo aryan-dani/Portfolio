@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Color Variables
 $primary-color: #272727;
 $secondary-color: aliceblue;
@@ -110,7 +112,7 @@ $breakpoint-xl: 1200px;
   background: linear-gradient(
     135deg,
     $secondary-color,
-    darken($secondary-color, 8%)
+    color.adjust($secondary-color, $lightness: -8%)
   );
   color: $primary-color;
   border: none;

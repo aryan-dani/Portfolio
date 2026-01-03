@@ -1,11 +1,14 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import "./ParticlesBackground.scss";
 
 function ParticlesBackground() {
+  const [init, setInit] = useState(false);
+
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
+    setInit(true);
   }, []);
 
   const options = useMemo(
