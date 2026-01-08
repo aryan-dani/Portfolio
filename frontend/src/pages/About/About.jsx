@@ -5,6 +5,8 @@ import {
   FaEnvelope,
   FaLinkedin,
   FaGithub,
+  FaInstagram,
+  FaTwitter,
   FaFileDownload,
   FaChevronDown,
   FaChevronUp,
@@ -116,20 +118,29 @@ function About() {
             <p className="about-page__tagline">{aboutInfo.tagline}</p>
 
             <div className="about-page__social">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="about-page__social-link"
-                  aria-label={link.name}
-                >
-                  {link.name === "LinkedIn" && <FaLinkedin />}
-                  {link.name === "GitHub" && <FaGithub />}
-                  {link.name === "Email" && <FaEnvelope />}
-                </a>
-              ))}
+              {socialLinks.map((link) => {
+                const iconMap = {
+                  LinkedIn: FaLinkedin,
+                  GitHub: FaGithub,
+                  Email: FaEnvelope,
+                  Instagram: FaInstagram,
+                  Twitter: FaTwitter,
+                };
+                const IconComponent = iconMap[link.name];
+                return IconComponent ? (
+                  <a
+                    key={link.name}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="about-page__social-link"
+                    aria-label={link.name}
+                    title={link.name}
+                  >
+                    <IconComponent />
+                  </a>
+                ) : null;
+              })}
             </div>
           </div>
         </motion.div>

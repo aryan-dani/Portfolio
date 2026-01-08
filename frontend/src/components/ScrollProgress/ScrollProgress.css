@@ -1,0 +1,16 @@
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, aliceblue, rgba(240, 248, 255, 0.6));
+  transform-origin: 0%;
+  z-index: 110;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  box-shadow: 0 0 10px rgba(240, 248, 255, 0.5);
+}
+.scroll-progress--visible {
+  opacity: 1;
+}/*# sourceMappingURL=ScrollProgress.css.map */

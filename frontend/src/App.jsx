@@ -15,6 +15,9 @@ import About from "./pages/About/About";
 import Copyright from "./pages/Copyright/Copyright";
 import { ToastProvider } from "./context/ToastContext";
 import CustomCursor from "./components/CustomCursor/CustomCursor";
+import ScrollProgress from "./components/ScrollProgress/ScrollProgress";
+import BackToTop from "./components/BackToTop/BackToTop";
+import PageLoader from "./components/PageLoader/PageLoader";
 
 // Get base path from Vite config
 const basename = import.meta.env.BASE_URL;
@@ -42,11 +45,14 @@ function AnimatedRoutes() {
 function App() {
   return (
     <ToastProvider>
+      <PageLoader />
       <Router
         basename={basename}
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
         <CustomCursor />
+        <ScrollProgress />
+        <BackToTop />
         <AnimatedRoutes />
       </Router>
     </ToastProvider>

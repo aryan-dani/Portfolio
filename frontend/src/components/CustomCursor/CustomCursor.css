@@ -4,45 +4,48 @@
   left: -20px;
   width: 40px;
   height: 40px;
-  border: 2px solid rgba(240, 248, 255, 0.5);
+  border: 2px solid aliceblue;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition: width 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.25s ease, background-color 0.25s ease, border-radius 0.25s ease, opacity 0.2s ease, visibility 0.2s ease;
+  transition: width 0.2s ease-out, height 0.2s ease-out, border-color 0.2s ease, background-color 0.2s ease, opacity 0.15s ease, visibility 0.15s ease;
   will-change: transform, width, height;
-  mix-blend-mode: difference;
 }
 .custom-cursor--visible {
   opacity: 1;
   visibility: visible;
 }
 .custom-cursor--clicking {
-  width: 35px;
-  height: 35px;
-  top: -17.5px;
-  left: -17.5px;
+  width: 32px;
+  height: 32px;
+  top: -16px;
+  left: -16px;
   border-width: 3px;
+  background-color: rgba(240, 248, 255, 0.1);
 }
 .custom-cursor--link {
-  width: 60px;
-  height: 60px;
-  top: -30px;
-  left: -30px;
+  width: 55px;
+  height: 55px;
+  top: -27.5px;
+  left: -27.5px;
   border-color: aliceblue;
-  background-color: rgba(240, 248, 255, 0.1);
-  mix-blend-mode: normal;
+  background-color: rgba(240, 248, 255, 0.15);
 }
 .custom-cursor--text {
   width: 4px;
-  height: 30px;
-  top: -15px;
+  height: 28px;
+  top: -14px;
   left: -2px;
   border-radius: 2px;
   border-color: aliceblue;
   background-color: aliceblue;
-  mix-blend-mode: normal;
+}
+@media (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .custom-cursor {
@@ -52,17 +55,17 @@
 
 .custom-cursor-dot {
   position: fixed;
-  top: -4px;
-  left: -4px;
-  width: 8px;
-  height: 8px;
+  top: -5px;
+  left: -5px;
+  width: 10px;
+  height: 10px;
   background-color: aliceblue;
   border-radius: 50%;
   pointer-events: none;
   z-index: 10000;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease, width 0.15s ease, height 0.15s ease;
+  transition: opacity 0.15s ease, visibility 0.15s ease, width 0.15s ease, height 0.15s ease;
   will-change: transform;
 }
 .custom-cursor-dot--visible {
@@ -70,10 +73,15 @@
   visibility: visible;
 }
 .custom-cursor-dot--clicking {
-  width: 12px;
-  height: 12px;
-  top: -6px;
-  left: -6px;
+  width: 6px;
+  height: 6px;
+  top: -3px;
+  left: -3px;
+}
+@media (pointer: coarse) {
+  .custom-cursor-dot {
+    display: none !important;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .custom-cursor-dot {

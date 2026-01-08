@@ -1,19 +1,19 @@
 import { createContext, useContext, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ToastContext = createContext();
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
-  const addToast = useCallback((message, options = {}) => {
+  const addToast = useCallback((message, type = "info", options = {}) => {
     const id = Date.now();
     const toast = {
       id,
       message,
-      type: options.type || "info",
-      title: options.title || "Notification",
-      icon: options.icon || "info",
-      duration: options.duration || 5000,
+      type,
+      title: options.title || getDefaultTitle(type),
+      duration: options.duration || 4000,
     };
 
     setToasts((prev) => [...prev, toast]);
@@ -29,24 +29,39 @@ export function ToastProvider({ children }) {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
 
+  // Alias for backward compatibility
+  const showToast = addToast;
+
   return (
-    <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
+    <ToastContext.Provider value={{ toasts, addToast, showToast, removeToast }}>
       {children}
       <ToastContainer toasts={toasts} removeToast={removeToast} />
     </ToastContext.Provider>
   );
 }
 
+function getDefaultTitle(type) {
+  const titles = {
+    info: "Info",
+    success: "Success",
+    warning: "Warning",
+    error: "Error",
+  };
+  return titles[type] || "Notification";
+}
+
 function ToastContainer({ toasts, removeToast }) {
   return (
     <div className="toast-container">
-      {toasts.map((toast) => (
-        <Toast
-          key={toast.id}
-          toast={toast}
-          onClose={() => removeToast(toast.id)}
-        />
-      ))}
+      <AnimatePresence>
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            toast={toast}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </AnimatePresence>
     </div>
   );
 }
@@ -60,18 +75,23 @@ function Toast({ toast, onClose }) {
   };
 
   return (
-    <div className={`toast toast--${toast.type}`} role="alert">
-      <span className="toast-icon">{icons[toast.type]}</span>
-      <div className="toast-content">
-        <div className="toast-header">
-          <strong className="toast-title">{toast.title}</strong>
-          <button className="toast-close" onClick={onClose} aria-label="Close">
-            ×
-          </button>
-        </div>
-        <div className="toast-body">{toast.message}</div>
+    <motion.div
+      className={`toast toast--${toast.type}`}
+      role="alert"
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 20, scale: 0.9 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
+      <span className="toast__icon">{icons[toast.type]}</span>
+      <div className="toast__content">
+        <strong className="toast__title">{toast.title}</strong>
+        <p className="toast__message">{toast.message}</p>
       </div>
-    </div>
+      <button className="toast__close" onClick={onClose} aria-label="Close">
+        ×
+      </button>
+    </motion.div>
   );
 }
 

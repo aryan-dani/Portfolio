@@ -28,35 +28,36 @@ function ParticlesBackground() {
           },
           onHover: {
             enable: true,
-            mode: "repulse",
+            mode: "grab",
           },
           resize: true,
         },
         modes: {
           push: {
-            quantity: 3,
+            quantity: 2,
           },
           repulse: {
             distance: 100,
             duration: 0.4,
           },
           grab: {
-            distance: 150,
+            distance: 180,
             links: {
-              opacity: 0.8,
+              opacity: 0.6,
+              color: "#f0f8ff",
             },
           },
         },
       },
       particles: {
         color: {
-          value: "#00adb5",
+          value: ["#f0f8ff", "#b0d4f1", "#87ceeb"],
         },
         links: {
-          color: "#ffffff",
+          color: "#f0f8ff",
           distance: 150,
           enable: true,
-          opacity: 0.3,
+          opacity: 0.2,
           width: 1,
         },
         move: {
@@ -66,7 +67,7 @@ function ParticlesBackground() {
             default: "out",
           },
           random: true,
-          speed: 2,
+          speed: 1.5,
           straight: false,
           attract: {
             enable: true,
@@ -77,13 +78,19 @@ function ParticlesBackground() {
         number: {
           density: {
             enable: true,
-            area: 800,
+            area: 900,
           },
-          value: 50,
+          value: 60,
         },
         opacity: {
-          value: { min: 0.3, max: 0.6 },
+          value: { min: 0.2, max: 0.5 },
           random: true,
+          animation: {
+            enable: true,
+            speed: 0.5,
+            minimumValue: 0.1,
+            sync: false,
+          },
         },
         shape: {
           type: "circle",
@@ -91,6 +98,12 @@ function ParticlesBackground() {
         size: {
           value: { min: 1, max: 3 },
           random: true,
+          animation: {
+            enable: true,
+            speed: 2,
+            minimumValue: 0.5,
+            sync: false,
+          },
         },
       },
       detectRetina: true,

@@ -144,17 +144,28 @@
   background: rgba(240, 248, 255, 0.03);
   border: 1px solid rgba(240, 248, 255, 0.1);
   border-radius: 14px;
-  padding: 1.75rem 1.25rem;
+  padding: 1.75rem 1.25rem 3.5rem;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.3s ease-out;
+  transition: border-color 0.3s ease-out, box-shadow 0.3s ease-out;
+  min-height: 140px;
 }
 .skill-card:hover {
   border-color: rgba(240, 248, 255, 0.3);
-  transform: translateY(-4px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 0 25px rgba(240, 248, 255, 0.08);
 }
+.skill-card:hover .skill-card__icon {
+  transform: scale(1.1);
+}
+.skill-card:hover .skill-card__back {
+  opacity: 1;
+  transform: translateY(0);
+}
 .skill-card:focus {
+  outline: 2px solid aliceblue;
+  outline-offset: 2px;
+}
+.skill-card:focus-visible {
   outline: 2px solid aliceblue;
   outline-offset: 2px;
 }
@@ -162,52 +173,46 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 .skill-card__icon {
-  font-size: 2.75rem;
+  font-size: 2.5rem;
   color: aliceblue;
   transition: transform 0.3s ease-out;
 }
-.skill-card:hover .skill-card__icon {
-  transform: scale(1.15);
-}
 .skill-card__name {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #ffffff;
   text-align: center;
+  line-height: 1.3;
 }
 .skill-card__back {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 0.75rem 1.25rem 1rem;
-  background: linear-gradient(transparent, rgba(39, 39, 39, 0.98));
+  padding: 0.5rem 1rem 0.75rem;
+  background: rgba(39, 39, 39, 0.95);
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(100%);
   transition: all 0.3s ease-out;
 }
-.skill-card:hover .skill-card__back {
-  opacity: 1;
-  transform: translateY(0);
-}
 .skill-card__progress {
-  height: 5px;
+  height: 4px;
   background: rgba(240, 248, 255, 0.15);
-  border-radius: 3px;
+  border-radius: 2px;
   overflow: hidden;
-  margin-bottom: 0.375rem;
+  margin-bottom: 0.25rem;
 }
 .skill-card__progress-bar {
   height: 100%;
-  background: aliceblue;
-  border-radius: 3px;
+  background: linear-gradient(90deg, aliceblue, rgba(240, 248, 255, 0.7));
+  border-radius: 2px;
   transition: width 0.6s ease-out;
 }
 .skill-card__level {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: aliceblue;
   text-align: center;
   font-weight: 600;

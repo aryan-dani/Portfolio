@@ -1,0 +1,43 @@
+@use "../../styles/variables" as *;
+
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  width: 50px;
+  height: 50px;
+  background: rgba($secondary-color, 0.15);
+  border: 1px solid rgba($secondary-color, 0.3);
+  border-radius: 12px;
+  color: $secondary-color;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-header - 1;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all $transition-speed ease-out;
+
+  svg {
+    font-size: 1.2rem;
+    transition: transform $transition-speed ease-out;
+  }
+
+  &:hover {
+    background: $secondary-color;
+    color: $primary-color;
+    box-shadow: 0 8px 25px rgba($secondary-color, 0.3);
+
+    svg {
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 44px;
+    height: 44px;
+  }
+}

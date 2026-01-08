@@ -1,0 +1,23 @@
+@use "../../styles/variables" as *;
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    $secondary-color,
+    rgba($secondary-color, 0.6)
+  );
+  transform-origin: 0%;
+  z-index: $z-header + 10;
+  opacity: 0;
+  transition: opacity $transition-speed ease-out;
+  box-shadow: 0 0 10px rgba($secondary-color, 0.5);
+
+  &--visible {
+    opacity: 1;
+  }
+}

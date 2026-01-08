@@ -11,6 +11,7 @@ import {
 import VanillaTilt from "vanilla-tilt";
 import { socialLinks, aboutInfo } from "../../data/experience";
 import { getAssetPath } from "../../utils/paths";
+import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import "./Home.scss";
 
 const iconMap = {
@@ -57,6 +58,13 @@ const imageVariants = {
   },
 };
 
+const roles = [
+  "Web Developer",
+  "AI Engineer",
+  "Tech Enthusiast",
+  "Problem Solver",
+];
+
 function Home() {
   const imageRef = useRef(null);
 
@@ -95,7 +103,12 @@ function Home() {
           </motion.h1>
 
           <motion.h2 className="home__title" variants={itemVariants}>
-            {aboutInfo.title}
+            <TypeWriter
+              texts={roles}
+              speed={80}
+              deleteSpeed={40}
+              pauseTime={2500}
+            />
           </motion.h2>
 
           <motion.p className="home__intro intro-text" variants={itemVariants}>

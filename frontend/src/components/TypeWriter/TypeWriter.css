@@ -1,0 +1,9 @@
+.typewriter {
+  display: inline;
+}
+.typewriter__cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: aliceblue;
+  font-weight: 400;
+}/*# sourceMappingURL=TypeWriter.css.map */

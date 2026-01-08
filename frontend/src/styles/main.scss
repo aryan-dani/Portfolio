@@ -408,3 +408,114 @@ header {
     transform: rotate(360deg);
   }
 }
+
+// Toast Notifications
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: $z-toast;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 400px;
+  pointer-events: none;
+
+  @media (max-width: $breakpoint-sm) {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: rgba(39, 39, 39, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: $border-radius-large;
+  border: 1px solid rgba($secondary-color, 0.15);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  min-width: 280px;
+
+  &--success {
+    border-color: rgba(#4ade80, 0.3);
+
+    .toast__icon {
+      background: rgba(#4ade80, 0.15);
+    }
+  }
+
+  &--error {
+    border-color: rgba(#f87171, 0.3);
+
+    .toast__icon {
+      background: rgba(#f87171, 0.15);
+    }
+  }
+
+  &--warning {
+    border-color: rgba(#fbbf24, 0.3);
+
+    .toast__icon {
+      background: rgba(#fbbf24, 0.15);
+    }
+  }
+
+  &--info {
+    border-color: rgba($secondary-color, 0.3);
+
+    .toast__icon {
+      background: rgba($secondary-color, 0.15);
+    }
+  }
+
+  &__icon {
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    border-radius: $border-radius-medium;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text-color;
+    margin-bottom: 0.25rem;
+  }
+
+  &__message {
+    font-size: 0.85rem;
+    color: $text-muted;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    color: $text-muted;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0.5rem;
+    transition: color $transition-speed;
+    flex-shrink: 0;
+
+    &:hover {
+      color: $text-color;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@use "../../styles/variables" as *;
+
+.typewriter {
+  display: inline;
+
+  &__cursor {
+    display: inline-block;
+    margin-left: 2px;
+    color: $secondary-color;
+    font-weight: 400;
+  }
+}

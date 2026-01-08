@@ -214,11 +214,12 @@ function SkillCard({ skill, icon, onClick }) {
     <motion.div
       className="skill-card"
       variants={cardVariants}
-      whileHover={{ y: -5, scale: 1.02 }}
+      whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       role="button"
       tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && onClick()}
     >
       <div className="skill-card__front">
         <span className="skill-card__icon">{icon}</span>
