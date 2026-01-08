@@ -1,6 +1,6 @@
 .about-page {
   min-height: 100vh;
-  padding: 7rem 0 4rem;
+  padding: 4rem 0;
 }
 .about-page__container {
   max-width: 960px;
@@ -96,9 +96,12 @@
 .about-page__bio {
   margin-bottom: 4rem;
   padding: 2.5rem;
-  background: rgba(240, 248, 255, 0.03);
-  border: 1px solid rgba(240, 248, 255, 0.1);
+  background: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(240, 248, 255, 0.12);
   border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 .about-page__bio h3 {
   font-size: 1.5rem;
@@ -131,16 +134,19 @@
 }
 .about-page__highlight {
   padding: 2rem;
-  background: rgba(240, 248, 255, 0.03);
+  background: rgba(30, 30, 30, 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(240, 248, 255, 0.1);
   border-radius: 16px;
   text-align: center;
   transition: all 0.3s ease-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 .about-page__highlight:hover {
   border-color: rgba(240, 248, 255, 0.25);
   transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 0 25px rgba(240, 248, 255, 0.05);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 0 25px rgba(240, 248, 255, 0.08);
 }
 .about-page__highlight-icon {
   font-size: 2.25rem;
@@ -160,17 +166,33 @@
 }
 .about-page__contact {
   padding: 3rem;
-  background: rgba(240, 248, 255, 0.03);
-  border: 1px solid rgba(240, 248, 255, 0.1);
-  border-radius: 20px;
+  background: rgba(25, 25, 25, 0.95);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(240, 248, 255, 0.12);
+  border-radius: 24px;
   text-align: center;
   margin-bottom: 2.5rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+.about-page__contact::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: linear-gradient(to bottom, rgba(240, 248, 255, 0.03), transparent);
+  pointer-events: none;
 }
 .about-page__contact h3 {
   font-size: 1.75rem;
   color: #ffffff;
   margin-bottom: 1rem;
   font-weight: 600;
+  position: relative;
 }
 .about-page__contact-intro {
   max-width: 550px;
@@ -178,6 +200,7 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 1rem;
   line-height: 1.7;
+  position: relative;
 }
 .about-page__contact-buttons {
   display: flex;
@@ -185,12 +208,13 @@
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 2rem;
+  position: relative;
 }
 .about-page__email-btn, .about-page__form-toggle, .about-page__resume-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.625rem;
-  padding: 0.875rem 1.75rem;
+  padding: 0.9rem 1.75rem;
   border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 500;
@@ -207,15 +231,16 @@
   background: aliceblue;
   color: #272727;
   border-color: aliceblue;
+  box-shadow: 0 8px 25px rgba(240, 248, 255, 0.2);
 }
 .about-page__form-toggle {
-  background: rgba(240, 248, 255, 0.08);
-  border: 1px solid rgba(240, 248, 255, 0.15);
+  background: rgba(240, 248, 255, 0.1);
+  border: 1px solid rgba(240, 248, 255, 0.2);
   color: #ffffff;
 }
 .about-page__form-toggle:hover {
-  border-color: rgba(240, 248, 255, 0.35);
-  background: rgba(240, 248, 255, 0.15);
+  border-color: rgba(240, 248, 255, 0.4);
+  background: rgba(240, 248, 255, 0.18);
 }
 .about-page__resume-btn {
   background: aliceblue;
@@ -225,28 +250,35 @@
 .about-page__resume-btn:hover {
   background: transparent;
   color: aliceblue;
+  box-shadow: 0 8px 25px rgba(240, 248, 255, 0.2);
 }
 .about-page__form {
-  max-width: 480px;
+  max-width: 500px;
   margin: 0 auto;
   overflow: hidden;
+  padding: 2rem;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(240, 248, 255, 0.1);
+  border-radius: 18px;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 .about-page__form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   text-align: left;
 }
 .about-page__form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
   color: #ffffff;
   font-weight: 500;
   font-size: 0.9rem;
+  letter-spacing: 0.01em;
 }
 .about-page__form-group input,
 .about-page__form-group textarea {
   width: 100%;
-  padding: 0.875rem 1.25rem;
-  background: rgba(240, 248, 255, 0.05);
+  padding: 1rem 1.25rem;
+  background: rgba(35, 35, 35, 0.9);
   border: 1px solid rgba(240, 248, 255, 0.15);
   border-radius: 12px;
   color: #ffffff;
@@ -255,28 +287,29 @@
   transition: all 0.3s ease-out;
 }
 .about-page__form-group input::-moz-placeholder, .about-page__form-group textarea::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 .about-page__form-group input::placeholder,
 .about-page__form-group textarea::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 .about-page__form-group input:focus,
 .about-page__form-group textarea:focus {
   outline: none;
-  border-color: rgba(240, 248, 255, 0.4);
-  background: rgba(240, 248, 255, 0.08);
-  box-shadow: 0 0 0 4px rgba(240, 248, 255, 0.08);
+  border-color: rgba(240, 248, 255, 0.5);
+  background: rgb(40, 40, 40);
+  box-shadow: 0 0 0 4px rgba(240, 248, 255, 0.1), 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 .about-page__form-group textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 130px;
+  line-height: 1.6;
 }
 .about-page__submit-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.625rem;
-  padding: 0.875rem 2.5rem;
+  padding: 1rem 2.5rem;
   background: aliceblue;
   border: none;
   border-radius: 12px;
@@ -288,7 +321,7 @@
 }
 .about-page__submit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(240, 248, 255, 0.3);
+  box-shadow: 0 12px 30px rgba(240, 248, 255, 0.35);
 }
 .about-page__footer {
   text-align: center;
@@ -310,7 +343,7 @@
 }
 @media (max-width: 768px) {
   .about-page {
-    padding-top: 6rem;
+    padding-top: 3rem;
   }
   .about-page__image-wrapper {
     width: 200px;
@@ -319,6 +352,9 @@
   }
   .about-page__bio, .about-page__contact {
     padding: 2rem 1.5rem;
+  }
+  .about-page__form {
+    padding: 1.5rem;
   }
   .about-page__highlight {
     padding: 1.75rem 1.5rem;

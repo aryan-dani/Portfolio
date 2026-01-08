@@ -9,11 +9,19 @@ function CustomCursor() {
   const [isEnabled, setIsEnabled] = useState(true);
   const [isClicking, setIsClicking] = useState(false);
 
+  // Use refs for animation values to avoid re-renders
+  const mousePos = useRef({ x: 0, y: 0 });
+  const cursorPos = useRef({ x: 0, y: 0 });
+  const dotPos = useRef({ x: 0, y: 0 });
+  const animationRef = useRef(null);
+  const isVisibleRef = useRef(false);
+
   const checkIfTouchDevice = useCallback(() => {
-    // More reliable: check if device has fine pointer (mouse)
+    // Check if device has fine pointer (mouse)
     const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
-    // If device has a fine pointer, it's likely a desktop/laptop with mouse
-    return !hasFinePointer;
+    // Also check screen width as backup
+    const isLargeScreen = window.innerWidth > 768;
+    return !hasFinePointer && !isLargeScreen;
   }, []);
 
   useEffect(() => {
@@ -37,22 +45,27 @@ function CustomCursor() {
 
     const cursor = cursorRef.current;
     const cursorDot = cursorDotRef.current;
-    let mouseX = 0;
-    let mouseY = 0;
-    let cursorX = 0;
-    let cursorY = 0;
-    let dotX = 0;
-    let dotY = 0;
-    let animationId;
+
+    if (!cursor || !cursorDot) return;
 
     const handleMouseMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      if (!isVisible) setIsVisible(true);
+      mousePos.current = { x: e.clientX, y: e.clientY };
+      if (!isVisibleRef.current) {
+        isVisibleRef.current = true;
+        setIsVisible(true);
+      }
     };
 
-    const handleMouseEnter = () => setIsVisible(true);
-    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => {
+      isVisibleRef.current = true;
+      setIsVisible(true);
+    };
+
+    const handleMouseLeave = () => {
+      isVisibleRef.current = false;
+      setIsVisible(false);
+    };
+
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
 
@@ -61,46 +74,56 @@ function CustomCursor() {
 
       if (
         target.closest(
-          'a, button, [role="button"], .clickable, .nav__link, .home__social-link, .home__cta, .project-card, .skill-card, .cert-card, .experience__card'
+          'a, button, [role="button"], .clickable, .nav__link, .home__social-link, .home__cta, .project-card, .skill-card, .cert-card, .experience__card, .menu-btn, input, textarea, select'
         )
       ) {
-        setCursorState("link");
-      } else if (
-        target.closest('input, textarea, select, [contenteditable="true"]')
-      ) {
-        setCursorState("text");
+        if (
+          target.closest('input, textarea, select, [contenteditable="true"]')
+        ) {
+          setCursorState("text");
+        } else {
+          setCursorState("link");
+        }
       } else {
         setCursorState("default");
       }
     };
 
-    // Smooth cursor animation with easing
+    // Smooth cursor animation with easing using requestAnimationFrame
     const animateCursor = () => {
-      const ease = 0.15;
-      const dotEase = 0.3;
+      const ease = 0.12;
+      const dotEase = 0.25;
 
-      cursorX += (mouseX - cursorX) * ease;
-      cursorY += (mouseY - cursorY) * ease;
-      dotX += (mouseX - dotX) * dotEase;
-      dotY += (mouseY - dotY) * dotEase;
+      // Calculate eased positions
+      cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * ease;
+      cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * ease;
+      dotPos.current.x += (mousePos.current.x - dotPos.current.x) * dotEase;
+      dotPos.current.y += (mousePos.current.y - dotPos.current.y) * dotEase;
 
+      // Apply transforms directly using transform
       if (cursor) {
-        cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+        cursor.style.left = `${cursorPos.current.x}px`;
+        cursor.style.top = `${cursorPos.current.y}px`;
       }
       if (cursorDot) {
-        cursorDot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0)`;
+        cursorDot.style.left = `${dotPos.current.x}px`;
+        cursorDot.style.top = `${dotPos.current.y}px`;
       }
 
-      animationId = requestAnimationFrame(animateCursor);
+      animationRef.current = requestAnimationFrame(animateCursor);
     };
 
-    document.addEventListener("mousemove", handleMouseMove);
+    // Add event listeners
+    document.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.addEventListener("mouseenter", handleMouseEnter);
     document.addEventListener("mouseleave", handleMouseLeave);
-    document.addEventListener("mouseover", handleElementHover);
+    document.addEventListener("mouseover", handleElementHover, {
+      passive: true,
+    });
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
 
+    // Start animation loop
     animateCursor();
 
     return () => {
@@ -111,9 +134,11 @@ function CustomCursor() {
       document.removeEventListener("mousedown", handleMouseDown);
       document.removeEventListener("mouseup", handleMouseUp);
       document.body.classList.remove("custom-cursor-active");
-      if (animationId) cancelAnimationFrame(animationId);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
-  }, [isVisible, checkIfTouchDevice]);
+  }, [checkIfTouchDevice]);
 
   if (!isEnabled) return null;
 

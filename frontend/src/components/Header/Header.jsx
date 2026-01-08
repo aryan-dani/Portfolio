@@ -12,38 +12,28 @@ import {
 import "./Header.scss";
 
 const navItems = [
-  { path: "/", label: "Home", icon: FaHome, shortcut: "h" },
+  { path: "/", label: "Home", icon: FaHome, shortcut: "H" },
   {
     path: "/experience",
     label: "Experience",
     icon: FaBriefcase,
-    shortcut: "e",
+    shortcut: "E",
   },
-  { path: "/projects", label: "Projects", icon: FaCode, shortcut: "p" },
+  { path: "/projects", label: "Projects", icon: FaCode, shortcut: "P" },
   {
     path: "/certifications",
     label: "Certifications",
     icon: FaCertificate,
-    shortcut: "c",
+    shortcut: "C",
   },
-  { path: "/skills", label: "Skills", icon: FaLaptopCode, shortcut: "s" },
-  { path: "/about", label: "About", icon: FaUser, shortcut: "a" },
+  { path: "/skills", label: "Skills", icon: FaLaptopCode, shortcut: "S" },
+  { path: "/about", label: "About & Contact", icon: FaUser, shortcut: "A" },
 ];
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     // Close menu on route change
@@ -64,7 +54,9 @@ function Header() {
         }
 
         // Navigate to pages with shortcuts
-        const navItem = navItems.find((item) => item.shortcut === key);
+        const navItem = navItems.find(
+          (item) => item.shortcut.toLowerCase() === key
+        );
         if (navItem) {
           e.preventDefault();
           navigate(navItem.path);
@@ -120,7 +112,7 @@ function Header() {
   };
 
   return (
-    <header className={`header ${isScrolled ? "header--scrolled" : ""}`}>
+    <header className="header">
       <button
         className={`menu-btn ${isMenuOpen ? "menu-btn--open" : ""}`}
         onClick={toggleMenu}
@@ -156,17 +148,30 @@ function Header() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <item.icon className="nav__icon" />
-                    <span>{item.label}</span>
+                    <span className="nav__label">{item.label}</span>
+                    <span className="nav__shortcut">Alt+{item.shortcut}</span>
                   </NavLink>
                 </motion.li>
               ))}
             </ul>
+            <div className="nav__footer">
+              <span className="nav__hint">
+                Press <kbd>Alt</kbd>+<kbd>M</kbd> to toggle menu
+              </span>
+            </div>
           </motion.nav>
         )}
       </AnimatePresence>
 
       {isMenuOpen && (
-        <div className="nav-overlay" onClick={() => setIsMenuOpen(false)} />
+        <motion.div
+          className="nav-overlay"
+          onClick={() => setIsMenuOpen(false)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        />
       )}
     </header>
   );

@@ -371,8 +371,7 @@ header {
   position: fixed;
   z-index: 100;
   width: 100%;
-  padding: 1rem;
-  transition: background-color 0.3s ease;
+  pointer-events: none;
 }
 
 .container {
@@ -385,11 +384,11 @@ header {
 .section {
   position: relative;
   min-height: 100vh;
-  padding: 6rem 0;
+  padding: 4rem 0;
 }
 @media screen and (min-width: 768px) {
   .section {
-    padding: 8rem 0;
+    padding: 5rem 0;
   }
 }
 

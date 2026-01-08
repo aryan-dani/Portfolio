@@ -227,7 +227,7 @@ function About() {
                     name="name"
                     value={formData.name}
                     onChange={handleFormChange}
-                    placeholder="John Doe"
+                    placeholder="Enter your name"
                     required
                   />
                 </div>
@@ -240,7 +240,7 @@ function About() {
                     name="email"
                     value={formData.email}
                     onChange={handleFormChange}
-                    placeholder="john@example.com"
+                    placeholder="your.email@example.com"
                     required
                   />
                 </div>

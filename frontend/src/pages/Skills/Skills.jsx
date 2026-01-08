@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { FaSearch, FaTimes, FaExternalLinkAlt } from "react-icons/fa";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -25,6 +26,7 @@ import {
   SiScikitlearn,
 } from "react-icons/si";
 import { skills, skillCategories } from "../../data/skills";
+import { projects } from "../../data/projects";
 import "./Skills.scss";
 
 const iconMap = {
@@ -78,6 +80,7 @@ function Skills() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedSkill, setSelectedSkill] = useState(null);
+  const navigate = useNavigate();
 
   const filteredSkills = useMemo(() => {
     const allSkills = [];
@@ -202,6 +205,10 @@ function Skills() {
             skill={selectedSkill}
             icon={getIcon(selectedSkill.icon)}
             onClose={() => setSelectedSkill(null)}
+            onProjectClick={(projectName) => {
+              setSelectedSkill(null);
+              navigate(`/projects?search=${encodeURIComponent(projectName)}`);
+            }}
           />
         )}
       </AnimatePresence>
@@ -238,7 +245,7 @@ function SkillCard({ skill, icon, onClick }) {
   );
 }
 
-function SkillModal({ skill, icon, onClose }) {
+function SkillModal({ skill, icon, onClose, onProjectClick }) {
   return (
     <motion.div
       className="skill-modal"
@@ -282,7 +289,14 @@ function SkillModal({ skill, icon, onClose }) {
             <h4>Used in:</h4>
             <ul>
               {skill.projects.map((project) => (
-                <li key={project}>{project}</li>
+                <li
+                  key={project}
+                  onClick={() => onProjectClick(project)}
+                  className="skill-modal__project-link"
+                >
+                  <span>{project}</span>
+                  <FaExternalLinkAlt className="skill-modal__project-icon" />
+                </li>
               ))}
             </ul>
           </div>

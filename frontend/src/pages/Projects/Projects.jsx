@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch, FaTimes, FaEye, FaGithub, FaLinkedin } from "react-icons/fa";
 import { projects, projectCategories } from "../../data/projects";
@@ -38,8 +39,19 @@ const cardVariants = {
 };
 
 function Projects() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
+
+  // Handle search query from URL (e.g., coming from Skills page)
+  useEffect(() => {
+    const searchQuery = searchParams.get("search");
+    if (searchQuery) {
+      setSearchTerm(searchQuery);
+      // Clear the URL param after setting the search term
+      setSearchParams({});
+    }
+  }, [searchParams, setSearchParams]);
 
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {

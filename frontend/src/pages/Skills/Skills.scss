@@ -3,7 +3,7 @@
 
 .skills-page {
   min-height: 100vh;
-  padding: 7rem 0 4rem;
+  padding: 4rem 0;
 
   &__container {
     max-width: 1200px;
@@ -59,22 +59,23 @@
     &-input {
       width: 100%;
       padding: 0.875rem 1rem 0.875rem 3rem;
-      background: rgba($secondary-color, 0.05);
+      background: rgba(35, 35, 35, 0.9);
       border: 1px solid rgba($secondary-color, 0.15);
       border-radius: 12px;
       color: $text-color;
       font-size: 0.95rem;
       transition: all $transition-speed ease-out;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 
       &::placeholder {
-        color: $text-muted;
+        color: rgba($text-muted, 0.6);
       }
 
       &:focus {
         outline: none;
         border-color: rgba($secondary-color, 0.4);
-        background: rgba($secondary-color, 0.08);
-        box-shadow: 0 0 0 4px rgba($secondary-color, 0.08);
+        background: rgba(40, 40, 40, 1);
+        box-shadow: 0 0 0 4px rgba($secondary-color, 0.1);
       }
     }
 
@@ -164,7 +165,9 @@
 // Skill Card
 .skill-card {
   position: relative;
-  background: rgba($secondary-color, 0.03);
+  background: rgba(30, 30, 30, 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba($secondary-color, 0.1);
   border-radius: 14px;
   padding: 1.75rem 1.25rem 3.5rem;
@@ -173,6 +176,7 @@
   transition: border-color $transition-speed ease-out,
     box-shadow $transition-speed ease-out;
   min-height: 140px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 
   &:hover {
     border-color: rgba($secondary-color, 0.3);
@@ -384,12 +388,37 @@
       color: $secondary-color;
     }
   }
+
+  &__project-link {
+    display: flex !important;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all $transition-speed ease-out;
+
+    &:hover {
+      background: rgba($secondary-color, 0.2) !important;
+      border-color: rgba($secondary-color, 0.4) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($secondary-color, 0.15);
+    }
+  }
+
+  &__project-icon {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    transition: opacity $transition-speed;
+  }
+
+  &__project-link:hover &__project-icon {
+    opacity: 1;
+  }
 }
 
 // Responsive
 @media (max-width: 768px) {
   .skills-page {
-    padding-top: 6rem;
+    padding-top: 3rem;
 
     &__grid {
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));

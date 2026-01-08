@@ -99,13 +99,12 @@ main {
   will-change: transform, opacity;
 }
 
-// Header
+// Header - Minimal floating button style
 header {
   position: fixed;
   z-index: $z-header;
   width: 100%;
-  padding: 1rem;
-  transition: background-color $transition-speed ease;
+  pointer-events: none; // Allow clicking through
 }
 
 // Global utility classes
@@ -119,10 +118,10 @@ header {
 .section {
   position: relative;
   min-height: 100vh;
-  padding: 6rem 0;
+  padding: 4rem 0;
 
   @include media-md {
-    padding: 8rem 0;
+    padding: 5rem 0;
   }
 }
 

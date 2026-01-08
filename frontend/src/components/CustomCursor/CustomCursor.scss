@@ -3,19 +3,23 @@
 // Outer ring cursor
 .custom-cursor {
   position: fixed;
-  top: -20px;
-  left: -20px;
   width: 40px;
   height: 40px;
+  margin-left: -20px;
+  margin-top: -20px;
   border: 2px solid $secondary-color;
   border-radius: 50%;
   pointer-events: none;
   z-index: $z-cursor;
   opacity: 0;
   visibility: hidden;
-  transition: width 0.2s ease-out, height 0.2s ease-out, border-color 0.2s ease,
-    background-color 0.2s ease, opacity 0.15s ease, visibility 0.15s ease;
-  will-change: transform, width, height;
+  transition: width 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    height 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    margin 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.2s ease,
+    background-color 0.2s ease, opacity 0.2s ease, visibility 0.2s ease,
+    border-radius 0.25s ease, border-width 0.2s ease;
+  will-change: left, top, width, height;
+  mix-blend-mode: difference;
 
   &--visible {
     opacity: 1;
@@ -23,31 +27,33 @@
   }
 
   &--clicking {
-    width: 32px;
-    height: 32px;
-    top: -16px;
-    left: -16px;
+    width: 30px;
+    height: 30px;
+    margin-left: -15px;
+    margin-top: -15px;
     border-width: 3px;
-    background-color: rgba($secondary-color, 0.1);
+    background-color: rgba($secondary-color, 0.15);
   }
 
   &--link {
-    width: 55px;
-    height: 55px;
-    top: -27.5px;
-    left: -27.5px;
+    width: 60px;
+    height: 60px;
+    margin-left: -30px;
+    margin-top: -30px;
     border-color: $secondary-color;
-    background-color: rgba($secondary-color, 0.15);
+    background-color: rgba($secondary-color, 0.1);
+    mix-blend-mode: normal;
   }
 
   &--text {
     width: 4px;
-    height: 28px;
-    top: -14px;
-    left: -2px;
+    height: 30px;
+    margin-left: -2px;
+    margin-top: -15px;
     border-radius: 2px;
     border-color: $secondary-color;
     background-color: $secondary-color;
+    mix-blend-mode: normal;
   }
 
   @media (pointer: coarse) {
@@ -62,19 +68,19 @@
 // Inner dot cursor
 .custom-cursor-dot {
   position: fixed;
-  top: -5px;
-  left: -5px;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  margin-top: -4px;
   background-color: $secondary-color;
   border-radius: 50%;
   pointer-events: none;
   z-index: $z-cursor + 1;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.15s ease, visibility 0.15s ease, width 0.15s ease,
-    height 0.15s ease;
-  will-change: transform;
+  transition: opacity 0.2s ease, visibility 0.2s ease, width 0.2s ease,
+    height 0.2s ease, margin 0.2s ease;
+  will-change: left, top;
 
   &--visible {
     opacity: 1;
@@ -82,10 +88,10 @@
   }
 
   &--clicking {
-    width: 6px;
-    height: 6px;
-    top: -3px;
-    left: -3px;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    margin-top: -2.5px;
   }
 
   @media (pointer: coarse) {
@@ -106,7 +112,8 @@ body.custom-cursor-active {
   button,
   input,
   textarea,
-  select {
+  select,
+  [role="button"] {
     cursor: none !important;
   }
 }

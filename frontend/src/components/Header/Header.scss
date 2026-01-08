@@ -1,37 +1,42 @@
 @use "../../styles/variables" as *;
 
+// Minimal floating header - no background bar
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: $z-header;
-  padding: 1.25rem 1.5rem;
-  transition: all $transition-speed ease-out;
+  padding: 0;
+  pointer-events: none; // Allow clicking through the header area
 
-  &--scrolled {
-    background-color: rgba($primary-color, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-  }
+  // No background or scrolled styles - completely transparent
 }
 
 .menu-btn {
-  position: relative;
-  width: 50px;
-  height: 50px;
-  background: rgba($secondary-color, 0.08);
-  border: 1px solid rgba($secondary-color, 0.15);
-  border-radius: 12px;
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 56px;
+  height: 56px;
+  background: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba($secondary-color, 0.12);
+  border-radius: 16px;
   cursor: pointer;
   z-index: $z-menu + 1;
-  transition: all $transition-speed ease-out;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  pointer-events: auto; // Re-enable pointer events for the button
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 
   &:hover {
-    background: rgba($secondary-color, 0.15);
+    background: rgba(35, 35, 35, 0.95);
     border-color: rgba($secondary-color, 0.25);
     transform: scale(1.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
+      0 0 20px rgba($secondary-color, 0.1);
   }
 
   &__burger {
@@ -39,10 +44,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 22px;
+    width: 24px;
     height: 2px;
     background: $secondary-color;
-    transition: all $transition-speed ease-out;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     border-radius: 2px;
 
     &::before,
@@ -53,22 +58,25 @@
       width: 100%;
       height: 2px;
       background: $secondary-color;
-      transition: all $transition-speed ease-out;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       border-radius: 2px;
     }
 
     &::before {
-      top: -7px;
-      width: 70%;
+      top: -8px;
+      width: 65%;
     }
 
     &::after {
-      bottom: -7px;
+      bottom: -8px;
+      width: 80%;
     }
   }
 
   &--open {
-    background: rgba($secondary-color, 0.15);
+    background: rgba($secondary-color, 0.12);
+    border-color: rgba($secondary-color, 0.3);
+    transform: rotate(0deg);
 
     .menu-btn__burger {
       background: transparent;
@@ -77,32 +85,39 @@
         top: 0;
         width: 100%;
         transform: rotate(45deg);
+        background: $secondary-color;
       }
 
       &::after {
         bottom: 0;
+        width: 100%;
         transform: rotate(-45deg);
+        background: $secondary-color;
       }
     }
   }
 
   &__shortcut {
     position: absolute;
-    bottom: -22px;
+    bottom: -28px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 0.65rem;
     color: $text-muted;
     opacity: 0;
-    transition: opacity $transition-speed;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     white-space: nowrap;
-    background: rgba($primary-color, 0.9);
-    padding: 2px 6px;
-    border-radius: 4px;
+    background: rgba(20, 20, 20, 0.95);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba($secondary-color, 0.15);
+    backdrop-filter: blur(10px);
+    pointer-events: none;
   }
 
   &:hover &__shortcut {
     opacity: 1;
+    transform: translateX(-50%) translateY(2px);
   }
 }
 
@@ -111,76 +126,124 @@
   top: 0;
   right: 0;
   width: 100%;
-  max-width: 380px;
+  max-width: 360px;
   height: 100vh;
-  background: rgba($primary-color, 0.95);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  height: 100dvh; // Use dynamic viewport height for mobile
+  background: rgba(20, 20, 20, 0.97);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
   z-index: $z-menu;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-left: 1px solid rgba($secondary-color, 0.1);
-  box-shadow: -10px 0 50px rgba(0, 0, 0, 0.3);
+  border-left: 1px solid rgba($secondary-color, 0.08);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5), -5px 0 20px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(
+      to bottom,
+      rgba($secondary-color, 0.03),
+      transparent
+    );
+    pointer-events: none;
+  }
 
   &__list {
     list-style: none;
-    padding: 2rem 1.5rem;
+    padding: 2rem;
     width: 100%;
   }
 
   &__item {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   &__link {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-    font-size: 1.1rem;
+    gap: 1.125rem;
+    padding: 1.1rem 1.5rem;
+    font-size: 1.05rem;
     font-weight: 500;
-    color: $text-muted;
-    border-radius: 12px;
-    transition: all $transition-speed ease-out;
+    color: rgba($text-color, 0.7);
+    border-radius: 14px;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     overflow: hidden;
+    letter-spacing: 0.01em;
 
     &::before {
       content: "";
       position: absolute;
       left: 0;
       top: 50%;
-      transform: translateY(-50%);
-      width: 0;
-      height: 60%;
-      background: $secondary-color;
+      transform: translateY(-50%) scaleY(0);
+      width: 4px;
+      height: 50%;
+      background: linear-gradient(
+        to bottom,
+        $secondary-color,
+        rgba($secondary-color, 0.5)
+      );
       border-radius: 0 4px 4px 0;
-      transition: width $transition-speed ease-out;
+      transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba($secondary-color, 0.08),
+        transparent
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      border-radius: 14px;
     }
 
     &:hover {
-      background: rgba($secondary-color, 0.08);
-      color: $secondary-color;
-      padding-left: 2rem;
+      color: $text-color;
+      padding-left: 1.75rem;
+      background: rgba($secondary-color, 0.06);
 
       &::before {
-        width: 4px;
+        transform: translateY(-50%) scaleY(1);
+      }
+
+      &::after {
+        opacity: 1;
       }
 
       .nav__icon {
         color: $secondary-color;
-        transform: scale(1.1);
+        transform: scale(1.15) translateX(2px);
       }
     }
 
     &--active {
-      color: $secondary-color;
+      color: $text-color;
       background: rgba($secondary-color, 0.1);
-      padding-left: 2rem;
+      padding-left: 1.75rem;
 
       &::before {
-        width: 4px;
+        transform: translateY(-50%) scaleY(1);
+      }
+
+      &::after {
+        opacity: 1;
       }
 
       .nav__icon {
@@ -190,9 +253,59 @@
   }
 
   &__icon {
-    font-size: 1.3rem;
-    color: $text-muted;
-    transition: all $transition-speed ease-out;
+    font-size: 1.35rem;
+    color: rgba($text-color, 0.5);
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    flex-shrink: 0;
+  }
+
+  &__label {
+    flex: 1;
+  }
+
+  &__shortcut {
+    font-size: 0.7rem;
+    color: rgba($text-muted, 0.4);
+    background: rgba($secondary-color, 0.05);
+    padding: 3px 8px;
+    border-radius: 5px;
+    border: 1px solid rgba($secondary-color, 0.1);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+  }
+
+  &__link:hover &__shortcut {
+    opacity: 1;
+    color: $secondary-color;
+    border-color: rgba($secondary-color, 0.25);
+  }
+
+  // Footer inside nav
+  &__footer {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+    padding: 0 2rem;
+    text-align: center;
+  }
+
+  &__hint {
+    font-size: 0.75rem;
+    color: rgba($text-muted, 0.5);
+    letter-spacing: 0.02em;
+
+    kbd {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 0 2px;
+      background: rgba($secondary-color, 0.08);
+      border: 1px solid rgba($secondary-color, 0.15);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.7rem;
+      color: $secondary-color;
+    }
   }
 }
 
@@ -202,7 +315,45 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: $z-menu - 1;
+  pointer-events: auto;
+}
+
+// Mobile adjustments
+@media (max-width: $breakpoint-sm) {
+  .menu-btn {
+    top: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+
+    &__burger {
+      width: 20px;
+
+      &::before {
+        top: -7px;
+      }
+
+      &::after {
+        bottom: -7px;
+      }
+    }
+  }
+
+  .nav {
+    max-width: 100%;
+
+    &__list {
+      padding: 1.5rem;
+    }
+
+    &__link {
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+    }
+  }
 }

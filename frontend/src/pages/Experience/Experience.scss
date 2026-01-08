@@ -2,7 +2,7 @@
 
 .experience {
   min-height: 100vh;
-  padding: 7rem 1.5rem 4rem;
+  padding: 4rem 1.5rem;
 
   &__container {
     max-width: 900px;
@@ -35,12 +35,15 @@
 
   &__card {
     position: relative;
-    background: rgba($secondary-color, 0.03);
+    background: rgba(30, 30, 30, 0.75);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba($secondary-color, 0.1);
     border-radius: 16px;
     padding: 1.75rem;
     margin-bottom: 1.75rem;
     transition: all $transition-speed ease-out;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 
     &::before {
       content: "";
