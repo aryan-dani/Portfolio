@@ -1,0 +1,10 @@
+# robots.txt for https://www.aryandani.com/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.aryandani.com/sitemap.xml
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -20,8 +20,18 @@
       content="Aryan Dani, Web Developer, AI Engineer, Portfolio, React, Python, Machine Learning, Deep Learning, Frontend Developer, Full Stack"
     />
     <meta name="author" content="Aryan Dani" />
-    <meta name="robots" content="index, follow" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
     <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+    <meta name="geo.region" content="IN" />
+    <meta name="geo.placename" content="India" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.aryandani.com/" />
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#272727" />
@@ -34,7 +44,8 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://aryan-dani.github.io/Portfolio/" />
+    <meta property="og:url" content="https://www.aryandani.com/" />
+    <meta property="og:locale" content="en_US" />
     <meta
       property="og:title"
       content="Aryan Dani | Web Developer & AI Engineer Portfolio"
@@ -45,16 +56,19 @@
     />
     <meta
       property="og:image"
-      content="https://aryan-dani.github.io/Portfolio/Images/Home_Page.jpg"
+      content="https://www.aryandani.com/Images/Home_Page.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Aryan Dani Portfolio - Web Developer & AI Engineer"
     />
     <meta property="og:site_name" content="Aryan Dani Portfolio" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta
-      property="twitter:url"
-      content="https://aryan-dani.github.io/Portfolio/"
-    />
+    <meta property="twitter:url" content="https://www.aryandani.com/" />
     <meta
       property="twitter:title"
       content="Aryan Dani | Web Developer & AI Engineer Portfolio"
@@ -65,9 +79,14 @@
     />
     <meta
       property="twitter:image"
-      content="https://aryan-dani.github.io/Portfolio/Images/Home_Page.jpg"
+      content="https://www.aryandani.com/Images/Home_Page.jpg"
+    />
+    <meta
+      property="twitter:image:alt"
+      content="Aryan Dani Portfolio - Web Developer & AI Engineer"
     />
     <meta property="twitter:creator" content="@Killfall15" />
+    <meta property="twitter:site" content="@Killfall15" />
 
     <!-- Favicons -->
     <link
@@ -98,19 +117,71 @@
       rel="stylesheet"
     />
 
-    <!-- Structured Data -->
+    <!-- Structured Data - Person -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
+        "@id": "https://www.aryandani.com/#person",
         "name": "Aryan Dani",
-        "url": "https://aryan-dani.github.io/Portfolio/",
+        "url": "https://www.aryandani.com/",
+        "image": "https://www.aryandani.com/Images/Home_Page.jpg",
         "jobTitle": "Web Developer & AI Engineer",
+        "description": "A passionate Web Developer and AI Engineer specializing in React, Python, Machine Learning, and Full Stack Development.",
+        "knowsAbout": [
+          "Web Development",
+          "React",
+          "JavaScript",
+          "Python",
+          "Machine Learning",
+          "Artificial Intelligence",
+          "Deep Learning",
+          "Frontend Development",
+          "Full Stack Development"
+        ],
         "sameAs": [
           "https://www.linkedin.com/in/aryandani/",
           "https://github.com/aryan-dani",
           "https://x.com/Killfall15"
         ]
+      }
+    </script>
+
+    <!-- Structured Data - WebSite -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.aryandani.com/#website",
+        "url": "https://www.aryandani.com/",
+        "name": "Aryan Dani Portfolio",
+        "description": "Portfolio of Aryan Dani - Web Developer & AI Engineer",
+        "publisher": {
+          "@id": "https://www.aryandani.com/#person"
+        },
+        "inLanguage": "en-US"
+      }
+    </script>
+
+    <!-- Structured Data - ProfilePage -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "@id": "https://www.aryandani.com/#profilepage",
+        "url": "https://www.aryandani.com/",
+        "name": "Aryan Dani | Web Developer & AI Engineer Portfolio",
+        "isPartOf": {
+          "@id": "https://www.aryandani.com/#website"
+        },
+        "about": {
+          "@id": "https://www.aryandani.com/#person"
+        },
+        "description": "Portfolio of Aryan Dani - a passionate Web Developer and AI Engineer. Explore my projects, skills, certifications, and professional experience.",
+        "inLanguage": "en-US",
+        "mainEntity": {
+          "@id": "https://www.aryandani.com/#person"
+        }
       }
     </script>
   </head>
