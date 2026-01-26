@@ -5,6 +5,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Experience from "./pages/Experience/Experience";
@@ -54,6 +55,7 @@ function App() {
         <ScrollProgress />
         <BackToTop />
         <AnimatedRoutes />
+        <Analytics />
       </Router>
     </ToastProvider>
   );
