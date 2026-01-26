@@ -41,7 +41,7 @@
       padding: 0.875rem 1rem 0.875rem 3rem;
       background: rgba(35, 35, 35, 0.9);
       border: 1px solid rgba($secondary-color, 0.15);
-      border-radius: 12px;
+      border-radius: $border-radius-large;
       color: $text-color;
       font-size: 0.95rem;
       transition: all $transition-speed ease-out;
@@ -87,7 +87,7 @@
     padding: 0.625rem 1.25rem;
     background: rgba($secondary-color, 0.05);
     border: 1px solid rgba($secondary-color, 0.15);
-    border-radius: 10px;
+    border-radius: $border-radius-medium;
     color: $text-muted;
     font-size: 0.875rem;
     font-weight: 500;
@@ -141,7 +141,7 @@
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba($secondary-color, 0.1);
-  border-radius: 16px;
+  border-radius: $border-radius-large;
   overflow: hidden;
   transition: all $transition-speed ease-out;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -149,7 +149,8 @@
   &:hover {
     border-color: rgba($secondary-color, 0.25);
     transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.2),
       0 0 30px rgba($secondary-color, 0.05);
 
     .project-card__overlay {
@@ -196,7 +197,7 @@
     width: 48px;
     height: 48px;
     background: $secondary-color;
-    border-radius: 12px;
+    border-radius: $border-radius-large;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -224,7 +225,7 @@
     color: $secondary-color;
     background: rgba($secondary-color, 0.12);
     padding: 0.3rem 0.75rem;
-    border-radius: 6px;
+    border-radius: $border-radius-small;
     letter-spacing: 0.02em;
   }
 
@@ -247,7 +248,7 @@
       padding: 0.25rem 0.6rem;
       background: rgba($secondary-color, 0.08);
       border: 1px solid rgba($secondary-color, 0.12);
-      border-radius: 5px;
+      border-radius: $border-radius-small;
       color: $text-muted;
     }
   }

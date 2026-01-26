@@ -65,7 +65,7 @@
   &__card {
     background: rgba($primary-color, 0.6);
     border: 2px solid rgba($secondary-color, 0.15);
-    border-radius: 20px;
+    border-radius: $border-radius-xl;
     padding: 40px;
     margin-bottom: 40px;
     text-align: left;
@@ -102,14 +102,14 @@
     font-style: italic;
     padding: 20px;
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    border-radius: $border-radius-medium;
     border-left: 3px solid $secondary-color;
   }
 
   &__attribution {
     background: rgba($primary-color, 0.6);
     border: 2px solid rgba($secondary-color, 0.15);
-    border-radius: 20px;
+    border-radius: $border-radius-xl;
     padding: 30px;
     margin-bottom: 40px;
 
@@ -162,7 +162,7 @@
     padding: 14px 28px;
     background: rgba($secondary-color, 0.1);
     border: 2px solid rgba($secondary-color, 0.3);
-    border-radius: 30px;
+    border-radius: $border-radius-xl;
     color: $text-color;
     font-size: 1rem;
     font-weight: 500;

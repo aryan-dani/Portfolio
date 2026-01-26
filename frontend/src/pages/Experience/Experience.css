@@ -31,7 +31,7 @@
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(240, 248, 255, 0.1);
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 1.75rem;
   margin-bottom: 1.75rem;
   transition: all 0.3s ease-out;
@@ -107,7 +107,7 @@
   color: aliceblue;
   background: rgba(240, 248, 255, 0.12);
   padding: 0.3rem 0.75rem;
-  border-radius: 6px;
+  border-radius: 4px;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
@@ -115,7 +115,7 @@
   color: rgba(255, 255, 255, 0.7);
   background: rgba(240, 248, 255, 0.06);
   padding: 0.3rem 0.75rem;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 .experience__company {
   font-size: 1.2rem;
@@ -147,7 +147,7 @@
   border: 1px solid rgba(240, 248, 255, 0.15);
   width: 38px;
   height: 38px;
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,7 +191,7 @@
   padding: 0.25rem 0.6rem;
   background: rgba(240, 248, 255, 0.08);
   border: 1px solid rgba(240, 248, 255, 0.12);
-  border-radius: 5px;
+  border-radius: 4px;
   color: rgba(255, 255, 255, 0.7);
 }
 .experience__responsibilities {

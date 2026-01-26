@@ -42,7 +42,7 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba($secondary-color, 0.1);
-    border-radius: 24px;
+    border-radius: $border-radius-xl;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     text-align: center;
 
@@ -141,7 +141,7 @@
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
-    border-radius: 12px;
+    border-radius: $border-radius-large;
     background: rgba($secondary-color, 0.08);
     color: $text-color;
     border: 1px solid rgba($secondary-color, 0.15);
@@ -179,7 +179,7 @@
     font-weight: 600;
     padding: 1rem 2rem;
     font-size: 1rem;
-    border-radius: 12px;
+    border-radius: $border-radius-large;
     margin-top: 0.5rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);

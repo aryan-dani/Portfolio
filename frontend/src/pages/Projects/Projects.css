@@ -79,7 +79,7 @@
   padding: 0.625rem 1.25rem;
   background: rgba(240, 248, 255, 0.05);
   border: 1px solid rgba(240, 248, 255, 0.15);
-  border-radius: 10px;
+  border-radius: 8px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.875rem;
   font-weight: 500;
@@ -127,7 +127,7 @@
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(240, 248, 255, 0.1);
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease-out;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -200,7 +200,7 @@
   color: aliceblue;
   background: rgba(240, 248, 255, 0.12);
   padding: 0.3rem 0.75rem;
-  border-radius: 6px;
+  border-radius: 4px;
   letter-spacing: 0.02em;
 }
 .project-card__title {
@@ -221,7 +221,7 @@
   padding: 0.25rem 0.6rem;
   background: rgba(240, 248, 255, 0.08);
   border: 1px solid rgba(240, 248, 255, 0.12);
-  border-radius: 5px;
+  border-radius: 4px;
   color: rgba(255, 255, 255, 0.7);
 }
 .project-card__description {

@@ -97,7 +97,7 @@
   padding: 0.625rem 1.5rem;
   background: rgba(240, 248, 255, 0.05);
   border: 1px solid rgba(240, 248, 255, 0.15);
-  border-radius: 10px;
+  border-radius: 8px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
   font-weight: 500;
@@ -146,7 +146,7 @@
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(240, 248, 255, 0.1);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 1.75rem 1.25rem 3.5rem;
   cursor: pointer;
   overflow: hidden;
@@ -258,7 +258,7 @@
   padding: 0.5rem;
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;

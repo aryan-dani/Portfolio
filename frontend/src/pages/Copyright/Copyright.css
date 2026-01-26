@@ -83,7 +83,7 @@
   font-style: italic;
   padding: 20px;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  border-radius: 8px;
   border-left: 3px solid aliceblue;
 }
 .copyright-page__attribution {
@@ -133,7 +133,7 @@
   padding: 14px 28px;
   background: rgba(240, 248, 255, 0.1);
   border: 2px solid rgba(240, 248, 255, 0.3);
-  border-radius: 30px;
+  border-radius: 20px;
   color: #ffffff;
   font-size: 1rem;
   font-weight: 500;

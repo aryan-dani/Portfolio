@@ -39,7 +39,7 @@
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba($secondary-color, 0.1);
-    border-radius: 16px;
+    border-radius: $border-radius-large;
     padding: 1.75rem;
     margin-bottom: 1.75rem;
     transition: all $transition-speed ease-out;
@@ -67,12 +67,14 @@
     &:hover {
       border-color: rgba($secondary-color, 0.25);
       transform: translateX(6px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15),
+      box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.15),
         0 0 25px rgba($secondary-color, 0.05);
 
       &::before {
         background: $secondary-color;
-        box-shadow: 0 0 0 6px rgba($secondary-color, 0.2),
+        box-shadow:
+          0 0 0 6px rgba($secondary-color, 0.2),
           0 0 20px rgba($secondary-color, 0.4);
       }
     }
@@ -96,7 +98,7 @@
     width: 52px;
     height: 52px;
     object-fit: contain;
-    border-radius: 12px;
+    border-radius: $border-radius-large;
     background: rgba($secondary-color, 0.08);
     padding: 0.5rem;
     flex-shrink: 0;
@@ -124,7 +126,7 @@
     color: $secondary-color;
     background: rgba($secondary-color, 0.12);
     padding: 0.3rem 0.75rem;
-    border-radius: 6px;
+    border-radius: $border-radius-small;
     font-weight: 600;
     letter-spacing: 0.02em;
   }
@@ -133,7 +135,7 @@
     color: $text-muted;
     background: rgba($secondary-color, 0.06);
     padding: 0.3rem 0.75rem;
-    border-radius: 6px;
+    border-radius: $border-radius-small;
   }
 
   &__company {
@@ -171,7 +173,7 @@
     border: 1px solid rgba($secondary-color, 0.15);
     width: 38px;
     height: 38px;
-    border-radius: 10px;
+    border-radius: $border-radius-medium;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -222,7 +224,7 @@
       padding: 0.25rem 0.6rem;
       background: rgba($secondary-color, 0.08);
       border: 1px solid rgba($secondary-color, 0.12);
-      border-radius: 5px;
+      border-radius: $border-radius-small;
       color: $text-muted;
     }
   }
@@ -261,11 +263,13 @@
 @keyframes pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 0 6px rgba($secondary-color, 0.2),
+    box-shadow:
+      0 0 0 6px rgba($secondary-color, 0.2),
       0 0 20px rgba($secondary-color, 0.4);
   }
   50% {
-    box-shadow: 0 0 0 10px rgba($secondary-color, 0.1),
+    box-shadow:
+      0 0 0 10px rgba($secondary-color, 0.1),
       0 0 30px rgba($secondary-color, 0.6);
   }
 }

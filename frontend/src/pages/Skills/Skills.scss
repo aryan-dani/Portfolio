@@ -61,7 +61,7 @@
       padding: 0.875rem 1rem 0.875rem 3rem;
       background: rgba(35, 35, 35, 0.9);
       border: 1px solid rgba($secondary-color, 0.15);
-      border-radius: 12px;
+      border-radius: $border-radius-large;
       color: $text-color;
       font-size: 0.95rem;
       transition: all $transition-speed ease-out;
@@ -111,7 +111,7 @@
     padding: 0.625rem 1.5rem;
     background: rgba($secondary-color, 0.05);
     border: 1px solid rgba($secondary-color, 0.15);
-    border-radius: 10px;
+    border-radius: $border-radius-medium;
     color: $text-muted;
     font-size: 0.9rem;
     font-weight: 500;
@@ -169,18 +169,20 @@
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba($secondary-color, 0.1);
-  border-radius: 14px;
+  border-radius: $border-radius-large;
   padding: 1.75rem 1.25rem 3.5rem;
   cursor: pointer;
   overflow: hidden;
-  transition: border-color $transition-speed ease-out,
+  transition:
+    border-color $transition-speed ease-out,
     box-shadow $transition-speed ease-out;
   min-height: 140px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 
   &:hover {
     border-color: rgba($secondary-color, 0.3);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15),
+    box-shadow:
+      0 15px 35px rgba(0, 0, 0, 0.15),
       0 0 25px rgba($secondary-color, 0.08);
 
     .skill-card__icon {
@@ -278,7 +280,7 @@
   &__content {
     background: $primary-color;
     border: 1px solid rgba($secondary-color, 0.2);
-    border-radius: 20px;
+    border-radius: $border-radius-xl;
     padding: 2.5rem;
     max-width: 480px;
     width: 100%;
@@ -300,7 +302,7 @@
     padding: 0.5rem;
     width: 40px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: $border-radius-medium;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -338,7 +340,7 @@
   &__progress-bar {
     height: 8px;
     background: rgba($secondary-color, 0.15);
-    border-radius: 4px;
+    border-radius: $border-radius-small;
     overflow: hidden;
     margin-bottom: 0.75rem;
   }
@@ -346,7 +348,7 @@
   &__progress-fill {
     height: 100%;
     background: $secondary-color;
-    border-radius: 4px;
+    border-radius: $border-radius-small;
   }
 
   &__level {
@@ -383,7 +385,7 @@
       padding: 0.5rem 1rem;
       background: rgba($secondary-color, 0.08);
       border: 1px solid rgba($secondary-color, 0.15);
-      border-radius: 8px;
+      border-radius: $border-radius-medium;
       font-size: 0.85rem;
       color: $secondary-color;
     }
