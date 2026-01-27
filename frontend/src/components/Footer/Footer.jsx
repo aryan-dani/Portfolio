@@ -10,12 +10,6 @@ function Footer() {
         <Link to="/copyright" className="footer__copyright">
           © {currentYear} Aryan Dani. All Rights Reserved
         </Link>
-
-        <div className="footer__shortcuts">
-          <span className="footer__shortcut-hint">
-            Press <kbd>Alt</kbd> + <kbd>M</kbd> for menu
-          </span>
-        </div>
       </div>
     </footer>
   );

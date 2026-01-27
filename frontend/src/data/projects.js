@@ -33,25 +33,12 @@ export const projects = [
     image: "/Images/Projects/API_Demonstration.jpg",
     tags: ["Axios", "Javascript", "API Development", "Github Copilot"],
     links: {
-      preview: "https://aryan-dani.github.io/API-Demonstration/",
-      github: "https://github.com/aryan-dani/API-Demonstration",
+      preview: "https://aryan-dani.github.io/API_Demonstration/",
+      github: "https://github.com/aryan-dani/API_Demonstration",
     },
   },
   {
     id: 4,
-    title: "MedGrid - Hospital Management Information System",
-    category: "web-dev",
-    year: "2024 - 2025",
-    description: `MedGrid is a comprehensive web-based Hospital Management Information System designed to streamline healthcare operations. Built with React and Material UI, it features secure authentication, patient and doctor management, room tracking, billing systems, and pathology report management.`,
-    image: "/Images/Projects/MedGrid.jpg",
-    tags: ["React", "Material UI", "Supabase", "React Router", "JavaScript"],
-    links: {
-      preview: "https://aryan-dani.github.io/HMIS_System/",
-      github: "https://github.com/aryan-dani/HMIS_System",
-    },
-  },
-  {
-    id: 5,
     title: "Speech-to-Text Web Application",
     category: "web-dev",
     year: "2024",
@@ -65,12 +52,11 @@ export const projects = [
       "Speech Recognition",
     ],
     links: {
-      preview: "https://aryan-dani.github.io/Speech_To_Text/",
       github: "https://github.com/aryan-dani/Speech_To_Text",
     },
   },
   {
-    id: 6,
+    id: 5,
     title: "Capstone Data Science",
     category: "ai-ml",
     year: "2025",
@@ -85,24 +71,10 @@ export const projects = [
       github: "https://github.com/aryan-dani/Capstone_ds",
     },
   },
-  {
-    id: 7,
-    title: "Automated Expense Tracker",
-    category: "mobile",
-    year: "2025",
-    description: `My attempt at developing an automated experience by building an expense tracking system using Google Forms, Google Sheets, and Make.com. The system collects user inputs, categorizes expenses, sends email notifications, and provides summaries through email.`,
-    image: "/Images/Projects/Automated_Expense_Tracker.jpg",
-    tags: ["Google Forms", "Google Sheets", "Make.com", "Open AI"],
-    links: {
-      preview: "https://forms.gle/J35XaV3uiy2hpTf68",
-      linkedin: "https://www.linkedin.com/in/aryandani/",
-    },
-  },
 ];
 
 export const projectCategories = [
   { id: "all", label: "All" },
   { id: "web-dev", label: "Web Dev" },
   { id: "ai-ml", label: "AI & ML" },
-  { id: "mobile", label: "Mobile" },
 ];

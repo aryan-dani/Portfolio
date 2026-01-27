@@ -3,7 +3,7 @@
 .footer {
   position: relative;
   z-index: $z-content;
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   background: rgba($primary-color, 0.6);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -13,45 +13,23 @@
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 1rem;
   }
 
   &__copyright {
     color: $text-muted;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     transition: color $transition-speed ease-out;
 
     &:hover {
       color: $secondary-color;
     }
   }
-
-  &__shortcuts {
-    margin-top: 0.25rem;
-  }
-
-  &__shortcut-hint {
-    font-size: 0.75rem;
-    color: rgba($text-muted, 0.6);
-
-    kbd {
-      display: inline-block;
-      padding: 0.15rem 0.4rem;
-      background: rgba($secondary-color, 0.1);
-      border: 1px solid rgba($secondary-color, 0.2);
-      border-radius: 4px;
-      font-family: inherit;
-      font-size: 0.7rem;
-      color: $secondary-color;
-      margin: 0 0.15rem;
-    }
-  }
 }
 
 @media (max-width: $breakpoint-sm) {
   .footer {
-    padding: 1.5rem 1rem;
+    padding: 0.875rem 1rem;
   }
 }
