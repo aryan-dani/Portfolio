@@ -301,7 +301,7 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
-  z-index: $z-modal;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -13,24 +13,11 @@ export const experiences = [
     ],
     responsibilities: [
       "Developing and deploying an automated system using Convolutional Neural networks and Vision Language Models to accurately classify and analyze anomalies in DICOM slices",
-      "Built an Angular-based frontend for a speech-to-text recognition web application utilizing web sockets and enhancing user engagement.",
+      "Developed a real-time '<a href='https://github.com/aryan-dani/Speech_To_Text' target='_blank' rel='noopener noreferrer' style='color: aliceblue; text-decoration: underline;'>Speech to Text</a>' recognition system as a core project during the internship at Artem Health Tech, utilizing Angular.js and WebSockets to enable seamless voice-controlled interactions.",
       "Collaborating with cross-functional teams to reduce inference time of various large language models and enhance user experience and optimize overall platform performance.",
     ],
   },
-  {
-    id: 2,
-    company: "Sample Company",
-    companyUrl: "#",
-    logo: "https://cdn-icons-png.flaticon.com/512/2537/2537338.png",
-    position: "Sample Position",
-    period: "Sample",
-    technologies: ["Sample Tech 1", "Sample Tech 2", "Sample Tech 3"],
-    responsibilities: [
-      "This is a sample experience card to showcase the timeline design",
-      "Sample bullet point for demonstration purposes",
-      "Another sample description to show the layout",
-    ],
-  },
+
 ];
 
 export const socialLinks = [

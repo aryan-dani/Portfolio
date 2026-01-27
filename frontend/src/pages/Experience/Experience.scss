@@ -2,7 +2,7 @@
 
 .experience {
   min-height: 100vh;
-  padding: 4rem 1.5rem;
+  padding: 8rem 1.5rem 4rem; // Increased top padding for navbar
 
   &__container {
     max-width: 900px;
@@ -20,11 +20,11 @@
       top: 0;
       bottom: 0;
       width: 2px;
-      background: linear-gradient(
-        to bottom,
-        $secondary-color,
-        rgba($secondary-color, 0.1)
-      );
+      // Premium gradient line
+      background: linear-gradient(to bottom,
+          $secondary-color,
+          rgba($secondary-color, 0.2) 80%,
+          transparent);
       border-radius: 1px;
     }
 
@@ -35,29 +35,31 @@
 
   &__card {
     position: relative;
-    background: rgba(30, 30, 30, 0.75);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba($secondary-color, 0.1);
+    // Darker, more premium glassmorphism
+    background: rgba(15, 15, 15, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05); // Subtle border
     border-radius: $border-radius-large;
-    padding: 1.75rem;
-    margin-bottom: 1.75rem;
-    transition: all $transition-speed ease-out;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    margin-bottom: 2.5rem; // Increased spacing
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3); // Deeper shadow
 
     &::before {
       content: "";
       position: absolute;
-      left: -2.5rem;
+      left: -2.5rem; // Must match timeline padding
       top: 2rem;
       width: 14px;
       height: 14px;
-      background: $primary-color;
-      border: 3px solid $secondary-color;
+      background: $primary-color; // Hollow look with border
+      border: 2px solid $secondary-color;
       border-radius: 50%;
       transform: translateX(-50%);
-      box-shadow: 0 0 0 4px rgba($secondary-color, 0.15);
-      transition: all $transition-speed ease-out;
+      box-shadow: 0 0 0 4px $primary-color; // Mask line behind
+      z-index: 1;
+      transition: all 0.3s ease;
 
       @include media-md {
         left: -3.5rem;
@@ -65,17 +67,17 @@
     }
 
     &:hover {
-      border-color: rgba($secondary-color, 0.25);
-      transform: translateX(6px);
+      border-color: rgba($secondary-color, 0.4);
+      transform: translateY(-4px); // Lift up instead of right
       box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.15),
-        0 0 25px rgba($secondary-color, 0.05);
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba($secondary-color, 0.1); // subtle border glow
 
       &::before {
-        background: $secondary-color;
+        background: $secondary-color; // Fill dot on hover
         box-shadow:
-          0 0 0 6px rgba($secondary-color, 0.2),
-          0 0 20px rgba($secondary-color, 0.4);
+          0 0 0 6px rgba($secondary-color, 0.15),
+          0 0 15px rgba($secondary-color, 0.3);
       }
     }
 
@@ -83,29 +85,32 @@
       border-color: rgba($secondary-color, 0.3);
 
       &::before {
-        animation: pulse-dot 1.5s ease-in-out infinite;
+        background: $secondary-color;
+        animation: pulse-dot 2s infinite;
       }
     }
   }
 
+  // Logo styling refinement
   &__header {
     display: flex;
     align-items: flex-start;
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
   &__logo {
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     object-fit: contain;
-    border-radius: $border-radius-large;
-    background: rgba($secondary-color, 0.08);
+    border-radius: 12px; // slightly softer
+    background: rgba(255, 255, 255, 0.03); // very subtle bg
     padding: 0.5rem;
     flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 
     @include media-md {
-      width: 60px;
-      height: 60px;
+      width: 64px;
+      height: 64px;
     }
   }
 
@@ -261,12 +266,14 @@
 }
 
 @keyframes pulse-dot {
+
   0%,
   100% {
     box-shadow:
       0 0 0 6px rgba($secondary-color, 0.2),
       0 0 20px rgba($secondary-color, 0.4);
   }
+
   50% {
     box-shadow:
       0 0 0 10px rgba($secondary-color, 0.1),

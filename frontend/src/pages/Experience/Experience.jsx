@@ -45,26 +45,14 @@ function Experience() {
       variants={containerVariants}
     >
       <div className="experience__container">
-        <motion.div className="section-header" variants={cardVariants}>
-          <h2>
-            Professional <span>Experience</span>
-          </h2>
-          <p className="intro-text">
-            My professional journey has been driven by a passion for blending
-            technology with creativity. From AI engineering to frontend
-            development, I've focused on creating meaningful solutions that
-            merge cutting-edge innovation with user-friendly design. Below is a
-            timeline of my professional growth.
-          </p>
-        </motion.div>
+
 
         <div className="experience__timeline">
           {experiences.map((exp) => (
             <motion.div
               key={exp.id}
-              className={`experience__card ${
-                expandedId === exp.id ? "experience__card--expanded" : ""
-              }`}
+              className={`experience__card ${expandedId === exp.id ? "experience__card--expanded" : ""
+                }`}
               variants={cardVariants}
             >
               <div className="experience__header">
@@ -91,9 +79,8 @@ function Experience() {
                   </h3>
                 </div>
                 <button
-                  className={`experience__toggle ${
-                    expandedId === exp.id ? "experience__toggle--active" : ""
-                  }`}
+                  className={`experience__toggle ${expandedId === exp.id ? "experience__toggle--active" : ""
+                    }`}
                   onClick={() => toggleExpand(exp.id)}
                   aria-label="Toggle details"
                 >
@@ -124,9 +111,8 @@ function Experience() {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.1 }}
-                        >
-                          {resp}
-                        </motion.li>
+                          dangerouslySetInnerHTML={{ __html: resp }}
+                        />
                       ))}
                     </ul>
                   </motion.div>

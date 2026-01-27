@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch, FaTimes, FaEye, FaExternalLinkAlt } from "react-icons/fa";
 import {
@@ -50,129 +51,147 @@ function Certifications() {
     });
   }, [searchTerm, activeFilter]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (previewImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [previewImage]);
+
   return (
-    <motion.section
-      className="certifications"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      <div className="certifications__container">
-        <motion.div className="section-header" variants={cardVariants}>
-          <h2>
-            My <span>Certifications</span>
-          </h2>
-          <p className="intro-text">
-            Welcome to my digital trophy cabinet "Yes, I actually did that."
-            This is where my collection of shiny badges and fancy titles
-            lives—proof that I've clicked "Next Lesson" more times than I care
-            to admit. Browse away, and remember: behind every certificate is a
-            lot of tea and questionable life choices!
-          </p>
-        </motion.div>
+    <>
+      <motion.section
+        className="certifications"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <div className="certifications__container">
+          <motion.div className="section-header" variants={cardVariants}>
+            <h2>
+              My <span>Certifications</span>
+            </h2>
+            <p className="intro-text">
+              Welcome to my digital trophy cabinet "Yes, I actually did that."
+              This is where my collection of shiny badges and fancy titles
+              lives—proof that I've clicked "Next Lesson" more times than I care
+              to admit. Browse away, and remember: behind every certificate is a
+              lot of tea and questionable life choices!
+            </p>
+          </motion.div>
 
-        <motion.div
-          className="certifications__controls"
-          variants={cardVariants}
-        >
-          <div className="certifications__search">
-            <FaSearch className="certifications__search-icon" />
-            <input
-              type="search"
-              placeholder="Search certificates..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="certifications__search-input"
-            />
-            {searchTerm && (
-              <button
-                className="certifications__search-clear"
-                onClick={() => setSearchTerm("")}
-                aria-label="Clear search"
-              >
-                <FaTimes />
-              </button>
-            )}
-          </div>
+          <motion.div
+            className="certifications__controls"
+            variants={cardVariants}
+          >
+            <div className="certifications__search">
+              <FaSearch className="certifications__search-icon" />
+              <input
+                type="search"
+                placeholder="Search certificates..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="certifications__search-input"
+              />
+              {searchTerm && (
+                <button
+                  className="certifications__search-clear"
+                  onClick={() => setSearchTerm("")}
+                  aria-label="Clear search"
+                >
+                  <FaTimes />
+                </button>
+              )}
+            </div>
 
-          <div className="certifications__filters">
-            {certificationCategories.map((category) => (
-              <button
-                key={category.id}
-                className={`certifications__filter-btn ${
-                  activeFilter === category.id
+            <div className="certifications__filters">
+              {certificationCategories.map((category) => (
+                <button
+                  key={category.id}
+                  className={`certifications__filter-btn ${activeFilter === category.id
                     ? "certifications__filter-btn--active"
                     : ""
-                }`}
-                onClick={() => setActiveFilter(category.id)}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
-        </motion.div>
-
-        <AnimatePresence mode="wait">
-          {filteredCerts.length > 0 ? (
-            <motion.div
-              className="certifications__grid"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {filteredCerts.map((cert) => (
-                <CertificationCard
-                  key={cert.id}
-                  cert={cert}
-                  onImageClick={() => setPreviewImage(cert.image)}
-                />
+                    }`}
+                  onClick={() => setActiveFilter(category.id)}
+                >
+                  {category.label}
+                </button>
               ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              className="certifications__empty"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <FaSearch />
-              <h3>No certificates found</h3>
-              <p>
-                Try selecting a different category or view all certificates.
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Image Preview Modal */}
-      <AnimatePresence>
-        {previewImage && (
-          <motion.div
-            className="cert-preview"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setPreviewImage(null)}
-          >
-            <motion.div
-              className="cert-preview__content"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="cert-preview__close"
-                onClick={() => setPreviewImage(null)}
-              >
-                <FaTimes />
-              </button>
-              <img src={getAssetPath(previewImage)} alt="Certificate Preview" />
-            </motion.div>
+            </div>
           </motion.div>
+
+          <AnimatePresence mode="wait">
+            {filteredCerts.length > 0 ? (
+              <motion.div
+                className="certifications__grid"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {filteredCerts.map((cert) => (
+                  <CertificationCard
+                    key={cert.id}
+                    cert={cert}
+                    onImageClick={() => setPreviewImage(cert.image)}
+                  />
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                className="certifications__empty"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <FaSearch />
+                <h3>No certificates found</h3>
+                <p>
+                  Try selecting a different category or view all certificates.
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.section>
+
+      {/* Image Preview Modal - Rendered via Portal */}
+      {previewImage &&
+        createPortal(
+          <AnimatePresence>
+            <motion.div
+              className="cert-preview"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setPreviewImage(null)}
+            >
+              <motion.div
+                className="cert-preview__content"
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.8 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  className="cert-preview__close"
+                  onClick={() => setPreviewImage(null)}
+                >
+                  <FaTimes />
+                </button>
+                <img
+                  src={getAssetPath(previewImage)}
+                  alt="Certificate Preview"
+                />
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
-    </motion.section>
+    </>
   );
 }
 

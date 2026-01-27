@@ -9,7 +9,7 @@ import { AnimatePresence } from "framer-motion";
 import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout/Layout";
 import { ToastProvider } from "./context/ToastContext";
-import CustomCursor from "./components/CustomCursor/CustomCursor";
+
 import ScrollProgress from "./components/ScrollProgress/ScrollProgress";
 import BackToTop from "./components/BackToTop/BackToTop";
 import PageLoader from "./components/PageLoader/PageLoader";
@@ -109,7 +109,7 @@ function App() {
         basename={basename}
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
-        <CustomCursor />
+
         <ScrollProgress />
         <BackToTop />
         <AnimatedRoutes />

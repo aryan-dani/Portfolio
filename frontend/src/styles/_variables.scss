@@ -45,7 +45,7 @@ $z-content: 1;
 $z-header: 100;
 $z-menu: 1000;
 $z-modal: 2000;
-$z-cursor: 9999;
+
 $z-toast: 10000;
 
 // Breakpoints
@@ -134,12 +134,10 @@ $breakpoint-xl: 1200px;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.3),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent);
     transition: left 0.5s ease;
   }
 
@@ -165,12 +163,10 @@ $breakpoint-xl: 1200px;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent);
     transition: left 0.5s ease;
   }
 
