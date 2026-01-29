@@ -2,7 +2,8 @@
 
 .about-page {
   min-height: 100vh;
-  padding: 4rem 0;
+  padding: 0;
+
 
   &__container {
     max-width: 960px;
@@ -214,11 +215,9 @@
       left: 0;
       right: 0;
       height: 150px;
-      background: linear-gradient(
-        to bottom,
-        rgba($secondary-color, 0.03),
-        transparent
-      );
+      background: linear-gradient(to bottom,
+          rgba($secondary-color, 0.03),
+          transparent);
       pointer-events: none;
     }
 
@@ -391,10 +390,12 @@
 }
 
 @keyframes heartbeat {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.15);
   }
@@ -432,6 +433,33 @@
       a {
         justify-content: center;
       }
+    }
+  }
+}
+
+// About visual icon for hero
+.about-visual {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($secondary-color, 0.05);
+  border: 1px solid rgba($secondary-color, 0.15);
+  border-radius: 50%;
+
+  @include media-md {
+    width: 200px;
+    height: 200px;
+  }
+
+  &__icon {
+    font-size: 4rem;
+    color: $secondary-color;
+    opacity: 0.8;
+
+    @include media-md {
+      font-size: 5rem;
     }
   }
 }

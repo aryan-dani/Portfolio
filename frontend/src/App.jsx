@@ -10,7 +10,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout/Layout";
 import { ToastProvider } from "./context/ToastContext";
 
-import ScrollProgress from "./components/ScrollProgress/ScrollProgress";
+// ScrollProgress removed per user request
 import BackToTop from "./components/BackToTop/BackToTop";
 import PageLoader from "./components/PageLoader/PageLoader";
 
@@ -110,7 +110,7 @@ function App() {
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
 
-        <ScrollProgress />
+
         <BackToTop />
         <AnimatedRoutes />
         <Analytics />

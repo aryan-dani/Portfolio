@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaGithub, FaLinkedin, FaEnvelope, FaArrowLeft } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaEnvelope, FaArrowLeft, FaBalanceScale } from "react-icons/fa";
+import PageHero from "../../components/PageHero/PageHero";
 import "./Copyright.scss";
 
 const containerVariants = {
@@ -26,6 +27,12 @@ const itemVariants = {
   },
 };
 
+const CopyrightVisual = () => (
+  <div className="copyright-visual">
+    <FaBalanceScale className="copyright-visual__icon" />
+  </div>
+);
+
 function Copyright() {
   const currentYear = new Date().getFullYear();
 
@@ -36,6 +43,18 @@ function Copyright() {
       animate="visible"
       variants={containerVariants}
     >
+      <PageHero
+        category="Legal"
+        title="Copyright"
+        titleHighlight="& license"
+        highlights={[
+          "MIT License - Free to use and modify",
+          "Open source portfolio template",
+          "Built with modern web technologies",
+        ]}
+        visual={<CopyrightVisual />}
+      />
+
       <div className="copyright-page__container">
         <motion.div className="copyright-page__back" variants={itemVariants}>
           <Link to="/" className="copyright-page__back-link">
@@ -43,6 +62,8 @@ function Copyright() {
             <span>Back to Home</span>
           </Link>
         </motion.div>
+
+
 
         <motion.div className="copyright-page__content" variants={itemVariants}>
           <motion.h1 className="copyright-page__title" variants={itemVariants}>

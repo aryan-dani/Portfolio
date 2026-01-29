@@ -4,7 +4,8 @@
 
 .copyright-page {
   min-height: 100vh;
-  padding: 120px 0 60px;
+  padding: 0 0 60px;
+
   font-family: "Poppins", sans-serif;
 
   &__container {
@@ -189,10 +190,12 @@
 }
 
 @keyframes heartbeat {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.15);
   }
@@ -216,6 +219,33 @@
       width: 100%;
       max-width: 280px;
       justify-content: center;
+    }
+  }
+}
+
+// Copyright visual icon for hero
+.copyright-visual {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($secondary-color, 0.05);
+  border: 1px solid rgba($secondary-color, 0.15);
+  border-radius: 50%;
+
+  @include media-md {
+    width: 200px;
+    height: 200px;
+  }
+
+  &__icon {
+    font-size: 4rem;
+    color: $secondary-color;
+    opacity: 0.8;
+
+    @include media-md {
+      font-size: 5rem;
     }
   }
 }

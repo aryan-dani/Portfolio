@@ -1,12 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaTimes, FaEye, FaExternalLinkAlt } from "react-icons/fa";
+import { FaSearch, FaTimes, FaEye, FaExternalLinkAlt, FaCertificate } from "react-icons/fa";
 import {
   certifications,
   certificationCategories,
 } from "../../data/certifications";
 import { getAssetPath } from "../../utils/paths";
+import PageHero from "../../components/PageHero/PageHero";
 import "./Certifications.scss";
 
 const containerVariants = {
@@ -32,6 +33,12 @@ const cardVariants = {
     },
   },
 };
+
+const CertificationsVisual = () => (
+  <div className="certifications-visual">
+    <FaCertificate className="certifications-visual__icon" />
+  </div>
+);
 
 function Certifications() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -71,19 +78,19 @@ function Certifications() {
         animate="visible"
         variants={containerVariants}
       >
+        <PageHero
+          category="Certifications"
+          title="Credentials that"
+          titleHighlight="validate expertise"
+          highlights={[
+            "Industry-recognized certifications and credentials",
+            "Continuous learning and professional development",
+            "Proof of skills from leading tech organizations",
+          ]}
+          visual={<CertificationsVisual />}
+        />
+
         <div className="certifications__container">
-          <motion.div className="section-header" variants={cardVariants}>
-            <h2>
-              My <span>Certifications</span>
-            </h2>
-            <p className="intro-text">
-              Welcome to my digital trophy cabinet "Yes, I actually did that."
-              This is where my collection of shiny badges and fancy titles
-              lives—proof that I've clicked "Next Lesson" more times than I care
-              to admit. Browse away, and remember: behind every certificate is a
-              lot of tea and questionable life choices!
-            </p>
-          </motion.div>
 
           <motion.div
             className="certifications__controls"

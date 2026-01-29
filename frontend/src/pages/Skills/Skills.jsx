@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { FaSearch, FaTimes, FaExternalLinkAlt } from "react-icons/fa";
+import { FaSearch, FaTimes, FaExternalLinkAlt, FaLaptopCode } from "react-icons/fa";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -27,6 +27,7 @@ import {
 } from "react-icons/si";
 import { skills, skillCategories } from "../../data/skills";
 import { projects } from "../../data/projects";
+import PageHero from "../../components/PageHero/PageHero";
 import "./Skills.scss";
 
 const iconMap = {
@@ -76,6 +77,12 @@ const cardVariants = {
   },
 };
 
+const SkillsVisual = () => (
+  <div className="skills-visual">
+    <FaLaptopCode className="skills-visual__icon" />
+  </div>
+);
+
 function Skills() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
@@ -114,18 +121,20 @@ function Skills() {
       animate="visible"
       variants={containerVariants}
     >
+      <PageHero
+        category="Skills"
+        title="Technical expertise"
+        titleHighlight="and proficiency"
+        highlights={[
+          "Comprehensive toolkit for modern development",
+          "From frontend frameworks to AI/ML technologies",
+          "Continuous learning and skill refinement",
+        ]}
+        visual={<SkillsVisual />}
+      />
+
       <div className="skills-page__container">
-        <motion.div className="section-header" variants={cardVariants}>
-          <h2>
-            Technical <span>Skills</span>
-          </h2>
-          <p className="intro-text">
-            Here's a showcase of the tools and technologies I wield. From
-            crafting sleek web interfaces to diving deep into data and AI, this
-            is where my digital toolkit lives. Explore the skills I've honed
-            through projects and continuous learning.
-          </p>
-        </motion.div>
+
 
         <motion.div className="skills-page__controls" variants={cardVariants}>
           <div className="skills-page__search">
@@ -152,11 +161,10 @@ function Skills() {
             {skillCategories.map((category) => (
               <button
                 key={category.id}
-                className={`skills-page__tab ${
-                  activeCategory === category.id
+                className={`skills-page__tab ${activeCategory === category.id
                     ? "skills-page__tab--active"
                     : ""
-                }`}
+                  }`}
                 onClick={() => setActiveCategory(category.id)}
               >
                 {category.label}

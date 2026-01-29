@@ -2,7 +2,8 @@
 
 .experience {
   min-height: 100vh;
-  padding: 8rem 1.5rem 4rem; // Increased top padding for navbar
+  padding: 0 1.5rem 4rem;
+
 
   &__container {
     max-width: 900px;
@@ -278,5 +279,32 @@
     box-shadow:
       0 0 0 10px rgba($secondary-color, 0.1),
       0 0 30px rgba($secondary-color, 0.6);
+  }
+}
+
+// Experience visual icon for hero
+.experience-visual {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($secondary-color, 0.05);
+  border: 1px solid rgba($secondary-color, 0.15);
+  border-radius: 50%;
+
+  @include media-md {
+    width: 200px;
+    height: 200px;
+  }
+
+  &__icon {
+    font-size: 4rem;
+    color: $secondary-color;
+    opacity: 0.8;
+
+    @include media-md {
+      font-size: 5rem;
+    }
   }
 }

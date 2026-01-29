@@ -25,14 +25,16 @@
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    // Increased padding for premium look
-    padding: 0.6rem 0.8rem;
+    border-radius: 100px;
+    padding: 0.5rem 0.6rem;
     box-shadow:
       0 8px 40px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.02) inset;
     pointer-events: auto;
-    // CRITICAL: No transition on width/layout properties to prevent fighting JS
+    overflow: hidden;
   }
+
+
 
   &--expanded {
     .floating-nav__container {
@@ -42,11 +44,17 @@
 
   // Brand
   &__brand {
+    &-wrapper {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
     &-link {
       display: flex;
       align-items: center;
-      height: 44px;
-      padding: 0 12px;
+      height: 42px;
+      padding: 0 4px;
       color: $text-color;
       font-size: 0.9375rem;
       font-weight: 700;
@@ -58,24 +66,38 @@
       &:hover {
         color: $secondary-color;
       }
+    }
 
-      // Fix vertical alignment
-      span {
-        line-height: 1;
-        display: block;
-        padding-top: 2px; // Optical adjustment
-      }
+    &-text {
+      line-height: 1;
+      display: block;
+      padding-top: 2px;
     }
   }
 
+
   &__list {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 4px; // Increased gap slightly
+    gap: 2px;
     list-style: none;
     margin: 0;
     padding: 0;
   }
+
+  // Sliding hover pill
+  &__hover-pill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba($secondary-color, 0.12);
+    border-radius: 100px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
 
   &__item {
     position: relative;
@@ -87,15 +109,27 @@
     display: flex;
     align-items: center;
     height: 44px;
-    padding: 0 14px; // More horizontal padding
+    padding: 0 14px;
     border-radius: 100px;
     color: rgba($text-color, 0.6);
     text-decoration: none;
-    font-size: 0.875rem; // Slightly larger font
+    font-size: 0.875rem;
     font-weight: 500;
     letter-spacing: 0.01em;
     white-space: nowrap;
     transition: color 0.2s ease;
+
+    // Hover background - pure CSS, no JS needed
+    &-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba($secondary-color, 0.12);
+      border-radius: 100px;
+      z-index: -1;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
 
     &:hover,
     &--active {
@@ -104,18 +138,14 @@
       .floating-nav__icon {
         color: $secondary-color;
       }
-    }
 
-    // Animated background highlight
-    &-bg {
-      position: absolute;
-      inset: 0; // Fill entire link
-      background: rgba($secondary-color, 0.12);
-      border-radius: 100px;
-      z-index: -1;
-      pointer-events: none;
+      .floating-nav__link-bg {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
   }
+
 
   &__icon {
     display: flex;
@@ -127,9 +157,10 @@
   }
 
   &__label {
-    // Styling handled mostly by JS variants now
+    display: inline-block;
     font-weight: 500;
   }
+
 
   // GitHub button
   &__github {
@@ -163,7 +194,12 @@
       border-color: rgba($secondary-color, 0.3);
       box-shadow: 0 0 24px rgba($secondary-color, 0.2);
     }
+
+    &-text {
+      display: inline-block;
+    }
   }
+
 }
 
 // ================================================

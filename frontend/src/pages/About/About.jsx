@@ -11,10 +11,12 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaPaperPlane,
+  FaUserAlt,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
+import PageHero from "../../components/PageHero/PageHero";
 import "./About.scss";
 
 const containerVariants = {
@@ -37,6 +39,12 @@ const itemVariants = {
     transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
   },
 };
+
+const AboutVisual = () => (
+  <div className="about-visual">
+    <FaUserAlt className="about-visual__icon" />
+  </div>
+);
 
 function About() {
   const [showEmail, setShowEmail] = useState(false);
@@ -99,7 +107,21 @@ function About() {
       animate="visible"
       variants={containerVariants}
     >
+      <PageHero
+        category="About"
+        title="Get to know"
+        titleHighlight="the developer"
+        highlights={[
+          "Full-stack developer with a passion for clean code",
+          "Building innovative solutions across the tech stack",
+          "Always learning, always growing",
+        ]}
+        visual={<AboutVisual />}
+      />
+
       <div className="about-page__container">
+
+
         <motion.div className="about-page__hero" variants={itemVariants}>
           <div className="about-page__image-wrapper" ref={imageRef}>
             <img

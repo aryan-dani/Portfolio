@@ -3,7 +3,8 @@
 
 .skills-page {
   min-height: 100vh;
-  padding: 4rem 0;
+  padding: 0;
+
 
   &__container {
     max-width: 1200px;
@@ -248,11 +249,9 @@
 
   &__progress-bar {
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      $secondary-color,
-      rgba($secondary-color, 0.7)
-    );
+    background: linear-gradient(90deg,
+        $secondary-color,
+        rgba($secondary-color, 0.7));
     border-radius: 2px;
     transition: width 0.6s ease-out;
   }
@@ -457,6 +456,33 @@
 
     &__title {
       font-size: 1.5rem;
+    }
+  }
+}
+
+// Skills visual icon for hero
+.skills-visual {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($secondary-color, 0.05);
+  border: 1px solid rgba($secondary-color, 0.15);
+  border-radius: 50%;
+
+  @include media-md {
+    width: 200px;
+    height: 200px;
+  }
+
+  &__icon {
+    font-size: 4rem;
+    color: $secondary-color;
+    opacity: 0.8;
+
+    @include media-md {
+      font-size: 5rem;
     }
   }
 }

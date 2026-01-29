@@ -2,9 +2,10 @@ import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaTimes, FaEye, FaGithub, FaLinkedin, FaExternalLinkAlt } from "react-icons/fa";
+import { FaSearch, FaTimes, FaEye, FaGithub, FaLinkedin, FaExternalLinkAlt, FaCode } from "react-icons/fa";
 import { projects, projectCategories } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
+import PageHero from "../../components/PageHero/PageHero";
 import "./Projects.scss";
 
 const containerVariants = {
@@ -59,6 +60,13 @@ const modalContentVariants = {
     transition: { duration: 0.2 }
   },
 };
+
+const ProjectsVisual = () => (
+  <div className="projects-visual">
+    <FaCode className="projects-visual__icon" />
+  </div>
+);
+
 
 // Custom hook for masonry layout
 function useMasonry(containerRef, items, deps = []) {
@@ -231,7 +239,20 @@ function Projects() {
         animate="visible"
         variants={containerVariants}
       >
+        <PageHero
+          category="Projects"
+          title="Systems engineered to"
+          titleHighlight="resist and adapt"
+          highlights={[
+            "Some of the finest projects ready to take over",
+            "Full-stack applications with modern architectures",
+            "AI-powered solutions and creative experiments",
+          ]}
+          visual={<ProjectsVisual />}
+        />
+
         <div className="projects__container">
+
           <motion.div className="projects__controls" variants={cardVariants}>
             <div className={`projects__search ${isSearchFocused ? 'projects__search--focused' : ''}`}>
               <div className="projects__search-inner">

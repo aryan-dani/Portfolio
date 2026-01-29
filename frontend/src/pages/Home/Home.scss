@@ -2,14 +2,15 @@
 @use "sass:color";
 
 .home {
-  min-height: 100vh;
-  padding: 8vh 6vw;
+  min-height: calc(100vh - 60px);
+  padding: 8vh 6vw 3vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   background: transparent;
   position: relative;
+
 
   &__container {
     max-width: 1300px;
@@ -56,11 +57,9 @@
       position: absolute;
       width: 200px;
       height: 200px;
-      background: radial-gradient(
-        circle at center,
-        rgba($secondary-color, 0.15),
-        transparent 70%
-      );
+      background: radial-gradient(circle at center,
+          rgba($secondary-color, 0.15),
+          transparent 70%);
       filter: blur(60px);
       top: -80px;
       left: -80px;
@@ -201,12 +200,10 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-      );
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
       transition: left 0.5s ease;
     }
 
@@ -248,11 +245,9 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      background: radial-gradient(
-        circle at center,
-        rgba($secondary-color, 0.15),
-        transparent 60%
-      );
+      background: radial-gradient(circle at center,
+          rgba($secondary-color, 0.15),
+          transparent 60%);
       filter: blur(60px);
       z-index: -1;
       pointer-events: none;
@@ -283,12 +278,10 @@
       position: absolute;
       inset: -3px;
       border-radius: 50%;
-      background: linear-gradient(
-        135deg,
-        rgba($secondary-color, 0.5),
-        transparent 50%,
-        rgba($secondary-color, 0.3)
-      );
+      background: linear-gradient(135deg,
+          rgba($secondary-color, 0.5),
+          transparent 50%,
+          rgba($secondary-color, 0.3));
       animation: spin 12s linear infinite;
       z-index: -1;
     }
@@ -299,11 +292,8 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-    &:hover {
-      transform: scale(1.05);
-    }
   }
+
 
   &__image-glow {
     position: absolute;
@@ -320,6 +310,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -330,6 +321,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

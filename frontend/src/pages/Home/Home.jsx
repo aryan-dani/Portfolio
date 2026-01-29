@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+
 import { motion } from "framer-motion";
 import {
   FaLinkedin,
@@ -8,7 +8,6 @@ import {
   FaGithub,
   FaArrowRight,
 } from "react-icons/fa";
-import VanillaTilt from "vanilla-tilt";
 import { socialLinks, aboutInfo } from "../../data/experience";
 import { getAssetPath } from "../../utils/paths";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
@@ -66,26 +65,8 @@ const roles = [
 ];
 
 function Home() {
-  const imageRef = useRef(null);
-
-  useEffect(() => {
-    if (imageRef.current) {
-      VanillaTilt.init(imageRef.current, {
-        max: 15,
-        speed: 400,
-        glare: true,
-        "max-glare": 0.3,
-      });
-    }
-
-    return () => {
-      if (imageRef.current?.vanillaTilt) {
-        imageRef.current.vanillaTilt.destroy();
-      }
-    };
-  }, []);
-
   return (
+
     <motion.section
       className="home"
       initial="hidden"
@@ -156,7 +137,6 @@ function Home() {
         <motion.div
           className="home__image-wrapper"
           variants={imageVariants}
-          ref={imageRef}
         >
           <div className="home__image-container">
             <img

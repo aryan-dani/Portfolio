@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaChevronDown, FaExternalLinkAlt } from "react-icons/fa";
+import { FaChevronDown, FaExternalLinkAlt, FaBriefcase } from "react-icons/fa";
 import { experiences } from "../../data/experience";
 import { getAssetPath } from "../../utils/paths";
+import PageHero from "../../components/PageHero/PageHero";
 import "./Experience.scss";
 
 const containerVariants = {
@@ -30,6 +31,12 @@ const cardVariants = {
   },
 };
 
+const ExperienceVisual = () => (
+  <div className="experience-visual">
+    <FaBriefcase className="experience-visual__icon" />
+  </div>
+);
+
 function Experience() {
   const [expandedId, setExpandedId] = useState(null);
 
@@ -44,6 +51,18 @@ function Experience() {
       animate="visible"
       variants={containerVariants}
     >
+      <PageHero
+        category="Experience"
+        title="Professional journey"
+        titleHighlight="and growth"
+        highlights={[
+          "Building real-world solutions at innovative companies",
+          "From internships to full-stack development roles",
+          "Continuous learning and skill development",
+        ]}
+        visual={<ExperienceVisual />}
+      />
+
       <div className="experience__container">
 
 
