@@ -13,4 +13,6 @@
   position: relative;
   z-index: $z-content;
   background: transparent;
+  // Add padding for floating dock at top
+  padding-top: 100px;
 }

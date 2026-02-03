@@ -1,7 +1,13 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { FaSearch, FaTimes, FaExternalLinkAlt, FaLaptopCode } from "react-icons/fa";
+import {
+  FaSearch,
+  FaTimes,
+  FaExternalLinkAlt,
+  FaLaptopCode,
+} from "react-icons/fa";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -16,6 +22,8 @@ import {
   FaComments,
   FaBrain,
   FaCloud,
+  FaRobot,
+  FaEye,
 } from "react-icons/fa";
 import {
   SiTypescript,
@@ -24,6 +32,12 @@ import {
   SiTensorflow,
   SiPytorch,
   SiScikitlearn,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiFastapi,
+  SiFlask,
+  SiSupabase,
+  SiOpencv,
 } from "react-icons/si";
 import { skills, skillCategories } from "../../data/skills";
 import { projects } from "../../data/projects";
@@ -44,12 +58,20 @@ const iconMap = {
   FaComments,
   FaBrain,
   FaCloud,
+  FaRobot,
+  FaEye,
   SiTypescript,
   SiExpress,
   SiMongodb,
   SiTensorflow,
   SiPytorch,
   SiScikitlearn,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiFastapi,
+  SiFlask,
+  SiSupabase,
+  SiOpencv,
 };
 
 const containerVariants = {
@@ -87,7 +109,20 @@ function Skills() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedSkill, setSelectedSkill] = useState(null);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const navigate = useNavigate();
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedSkill) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedSkill]);
 
   const filteredSkills = useMemo(() => {
     const allSkills = [];
@@ -134,37 +169,42 @@ function Skills() {
       />
 
       <div className="skills-page__container">
-
-
         <motion.div className="skills-page__controls" variants={cardVariants}>
-          <div className="skills-page__search">
-            <FaSearch className="skills-page__search-icon" />
-            <input
-              type="search"
-              placeholder="Search skills..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="skills-page__search-input"
-            />
-            {searchTerm && (
-              <button
-                className="skills-page__search-clear"
-                onClick={() => setSearchTerm("")}
-                aria-label="Clear search"
-              >
-                <FaTimes />
-              </button>
-            )}
+          <div
+            className={`skills-page__search ${isSearchFocused ? "skills-page__search--focused" : ""}`}
+          >
+            <div className="skills-page__search-inner">
+              <FaSearch className="skills-page__search-icon" />
+              <input
+                type="search"
+                placeholder="Search skills, technologies..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setIsSearchFocused(false)}
+                className="skills-page__search-input"
+              />
+              {searchTerm && (
+                <button
+                  className="skills-page__search-clear"
+                  onClick={() => setSearchTerm("")}
+                  aria-label="Clear search"
+                >
+                  <FaTimes />
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="skills-page__tabs">
             {skillCategories.map((category) => (
               <button
                 key={category.id}
-                className={`skills-page__tab ${activeCategory === category.id
+                className={`skills-page__tab ${
+                  activeCategory === category.id
                     ? "skills-page__tab--active"
                     : ""
-                  }`}
+                }`}
                 onClick={() => setActiveCategory(category.id)}
               >
                 {category.label}
@@ -254,7 +294,7 @@ function SkillCard({ skill, icon, onClick }) {
 }
 
 function SkillModal({ skill, icon, onClose, onProjectClick }) {
-  return (
+  return createPortal(
     <motion.div
       className="skill-modal"
       initial={{ opacity: 0 }}
@@ -264,12 +304,17 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
     >
       <motion.div
         className="skill-modal__content"
-        initial={{ scale: 0.8, y: 50 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.8, y: 50 }}
+        initial={{ scale: 0.92, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="skill-modal__close" onClick={onClose}>
+        <button
+          className="skill-modal__close"
+          onClick={onClose}
+          aria-label="Close modal"
+        >
           <FaTimes />
         </button>
 
@@ -310,7 +355,8 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
           </div>
         )}
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }
 

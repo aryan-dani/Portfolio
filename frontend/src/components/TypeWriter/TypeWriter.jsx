@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, memo } from "react";
 import "./TypeWriter.scss";
 
-function TypeWriter({
+const TypeWriter = memo(function TypeWriter({
   texts = [],
   speed = 100,
   deleteSpeed = 50,
@@ -61,15 +60,9 @@ function TypeWriter({
   return (
     <span className={`typewriter ${className}`}>
       {displayText}
-      <motion.span
-        className="typewriter__cursor"
-        animate={{ opacity: [1, 0] }}
-        transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
-      >
-        |
-      </motion.span>
+      <span className="typewriter__cursor">|</span>
     </span>
   );
-}
+});
 
 export default TypeWriter;

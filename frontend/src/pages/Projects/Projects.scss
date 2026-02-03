@@ -4,7 +4,6 @@
   min-height: 100vh;
   padding: 0 1.5rem 4rem;
 
-
   &__container {
     max-width: 1400px;
     margin: 0 auto;
@@ -30,10 +29,15 @@
     position: relative;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: -2px;
-      background: linear-gradient(135deg, rgba($secondary-color, 0.3), rgba($secondary-color, 0.05), rgba($secondary-color, 0.3));
+      background: linear-gradient(
+        135deg,
+        rgba($secondary-color, 0.3),
+        rgba($secondary-color, 0.05),
+        rgba($secondary-color, 0.3)
+      );
       border-radius: 16px;
       opacity: 0;
       transition: opacity 0.4s ease;
@@ -48,7 +52,11 @@
       position: relative;
       display: flex;
       align-items: center;
-      background: linear-gradient(165deg, rgba(45, 45, 45, 0.95) 0%, rgba(30, 30, 30, 0.95) 100%);
+      background: linear-gradient(
+        165deg,
+        rgba(45, 45, 45, 0.95) 0%,
+        rgba(30, 30, 30, 0.95) 100%
+      );
       border: 1px solid rgba($secondary-color, 0.12);
       border-radius: 14px;
       overflow: hidden;
@@ -59,7 +67,11 @@
 
       .projects__search--focused & {
         border-color: rgba($secondary-color, 0.35);
-        background: linear-gradient(165deg, rgba(50, 50, 50, 0.98) 0%, rgba(35, 35, 35, 0.98) 100%);
+        background: linear-gradient(
+          165deg,
+          rgba(50, 50, 50, 0.98) 0%,
+          rgba(35, 35, 35, 0.98) 100%
+        );
         box-shadow:
           0 8px 30px rgba(0, 0, 0, 0.3),
           0 0 20px rgba($secondary-color, 0.1),
@@ -98,6 +110,23 @@
 
       &:focus {
         outline: none;
+      }
+
+      // Hide native search clear button
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-decoration,
+      &::-webkit-search-results-button,
+      &::-webkit-search-results-decoration {
+        -webkit-appearance: none;
+        appearance: none;
+        display: none;
+      }
+
+      &::-ms-clear,
+      &::-ms-reveal {
+        display: none;
+        width: 0;
+        height: 0;
       }
     }
 
@@ -194,7 +223,11 @@
 .project-card {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(165deg, rgba(32, 32, 32, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%);
+  background: linear-gradient(
+    165deg,
+    rgba(32, 32, 32, 0.95) 0%,
+    rgba(20, 20, 20, 0.95) 100%
+  );
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba($secondary-color, 0.1);
@@ -236,10 +269,12 @@
   &__image-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top,
-        rgba(0, 0, 0, 0.75) 0%,
-        rgba(0, 0, 0, 0.2) 50%,
-        transparent 100%);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.75) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      transparent 100%
+    );
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -380,7 +415,11 @@
     max-width: 900px;
     max-height: calc(100vh - 2rem);
     max-height: calc(100dvh - 2rem);
-    background: linear-gradient(165deg, rgba(35, 35, 35, 0.98) 0%, rgba(18, 18, 18, 0.98) 100%);
+    background: linear-gradient(
+      165deg,
+      rgba(35, 35, 35, 0.98) 0%,
+      rgba(18, 18, 18, 0.98) 100%
+    );
     border: 1px solid rgba($secondary-color, 0.18);
     border-radius: $border-radius-xl;
     overflow: hidden;

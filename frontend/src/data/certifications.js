@@ -35,7 +35,7 @@ export const certifications = [
     title: "Inspect Rich Documents with Gemini and Multimodal RAG",
     issuer: "Google Cloud",
     issuerLogo:
-      "https://www.gstatic.com/devrel-devsite/prod/v0e0f589edd85502a40d78d7d0825db8ea5ef3b99b39c53c3fec0d7b46a540a2d/cloud/images/favicons/onecloud/super_cloud.png",
+      "https://www.gstatic.com/images/branding/product/2x/google_cloud_64dp.png",
     date: "JAN 2025",
     category: "ai-ml",
     badge: "AI & ML",
@@ -97,7 +97,7 @@ export const certifications = [
     title: "Prompt Design in Vertex AI",
     issuer: "Google Cloud",
     issuerLogo:
-      "https://www.gstatic.com/devrel-devsite/prod/v0e0f589edd85502a40d78d7d0825db8ea5ef3b99b39c53c3fec0d7b46a540a2d/cloud/images/favicons/onecloud/super_cloud.png",
+      "https://www.gstatic.com/images/branding/product/2x/google_cloud_64dp.png",
     date: "DEC 2024",
     category: "ai-ml",
     badge: "AI & ML",

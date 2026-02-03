@@ -1,8 +1,16 @@
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback, memo } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaTimes, FaEye, FaGithub, FaLinkedin, FaExternalLinkAlt, FaCode } from "react-icons/fa";
+import {
+  FaSearch,
+  FaTimes,
+  FaEye,
+  FaGithub,
+  FaLinkedin,
+  FaExternalLinkAlt,
+  FaCode,
+} from "react-icons/fa";
 import { projects, projectCategories } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
 import PageHero from "../../components/PageHero/PageHero";
@@ -36,11 +44,11 @@ const modalVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.25 }
+    transition: { duration: 0.25 },
   },
   exit: {
     opacity: 0,
-    transition: { duration: 0.2 }
+    transition: { duration: 0.2 },
   },
 };
 
@@ -51,13 +59,13 @@ const modalContentVariants = {
     scale: 1,
     transition: {
       duration: 0.35,
-      ease: [0.25, 0.46, 0.45, 0.94]
-    }
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
   },
   exit: {
     opacity: 0,
     scale: 0.95,
-    transition: { duration: 0.2 }
+    transition: { duration: 0.2 },
   },
 };
 
@@ -67,6 +75,17 @@ const ProjectsVisual = () => (
   </div>
 );
 
+// Throttle function for resize handler
+function throttle(func, limit) {
+  let inThrottle;
+  return function (...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
 
 // Custom hook for masonry layout
 function useMasonry(containerRef, items, deps = []) {
@@ -82,14 +101,17 @@ function useMasonry(containerRef, items, deps = []) {
     const minColWidth = 340;
 
     // Calculate number of columns
-    const cols = Math.max(1, Math.floor((containerWidth + gap) / (minColWidth + gap)));
+    const cols = Math.max(
+      1,
+      Math.floor((containerWidth + gap) / (minColWidth + gap)),
+    );
     const colWidth = (containerWidth - gap * (cols - 1)) / cols;
 
     // Track column heights
     const colHeights = new Array(cols).fill(0);
 
     // Get all card elements
-    const cards = container.querySelectorAll('.project-card');
+    const cards = container.querySelectorAll(".project-card");
     const newPositions = [];
 
     cards.forEach((card, index) => {
@@ -114,16 +136,16 @@ function useMasonry(containerRef, items, deps = []) {
     // Initial calculation after render
     const timer = setTimeout(calculatePositions, 100);
 
-    // Recalculate on resize
-    const handleResize = () => {
+    // Throttled resize handler
+    const handleResize = throttle(() => {
       calculatePositions();
-    };
+    }, 150);
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [calculatePositions, ...deps]);
 
@@ -131,7 +153,7 @@ function useMasonry(containerRef, items, deps = []) {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const images = containerRef.current.querySelectorAll('img');
+    const images = containerRef.current.querySelectorAll("img");
     let loadedCount = 0;
 
     const handleImageLoad = () => {
@@ -141,11 +163,11 @@ function useMasonry(containerRef, items, deps = []) {
       }
     };
 
-    images.forEach(img => {
+    images.forEach((img) => {
       if (img.complete) {
         loadedCount++;
       } else {
-        img.addEventListener('load', handleImageLoad);
+        img.addEventListener("load", handleImageLoad);
       }
     });
 
@@ -154,8 +176,8 @@ function useMasonry(containerRef, items, deps = []) {
     }
 
     return () => {
-      images.forEach(img => {
-        img.removeEventListener('load', handleImageLoad);
+      images.forEach((img) => {
+        img.removeEventListener("load", handleImageLoad);
       });
     };
   }, [containerRef, items, calculatePositions]);
@@ -206,7 +228,7 @@ function Projects() {
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.tags.some((tag) =>
-          tag.toLowerCase().includes(searchTerm.toLowerCase())
+          tag.toLowerCase().includes(searchTerm.toLowerCase()),
         );
       return matchesCategory && matchesSearch;
     });
@@ -216,7 +238,7 @@ function Projects() {
   const { positions, containerHeight, recalculate } = useMasonry(
     gridRef,
     filteredProjects,
-    [activeFilter, searchTerm]
+    [activeFilter, searchTerm],
   );
 
   const clearSearch = () => {
@@ -252,9 +274,10 @@ function Projects() {
         />
 
         <div className="projects__container">
-
           <motion.div className="projects__controls" variants={cardVariants}>
-            <div className={`projects__search ${isSearchFocused ? 'projects__search--focused' : ''}`}>
+            <div
+              className={`projects__search ${isSearchFocused ? "projects__search--focused" : ""}`}
+            >
               <div className="projects__search-inner">
                 <FaSearch className="projects__search-icon" />
                 <input
@@ -282,10 +305,11 @@ function Projects() {
               {projectCategories.map((category) => (
                 <button
                   key={category.id}
-                  className={`projects__filter-btn ${activeFilter === category.id
-                    ? "projects__filter-btn--active"
-                    : ""
-                    }`}
+                  className={`projects__filter-btn ${
+                    activeFilter === category.id
+                      ? "projects__filter-btn--active"
+                      : ""
+                  }`}
                   onClick={() => setActiveFilter(category.id)}
                 >
                   {category.label}
@@ -300,7 +324,7 @@ function Projects() {
                 key={activeFilter + searchTerm}
                 ref={gridRef}
                 className="projects__grid"
-                style={{ height: containerHeight || 'auto' }}
+                style={{ height: containerHeight || "auto" }}
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
@@ -341,13 +365,20 @@ function Projects() {
   );
 }
 
-function ProjectCard({ project, onOpenModal, position, onLoad }) {
-  const style = position ? {
-    position: 'absolute',
-    left: position.x,
-    top: position.y,
-    width: position.width,
-  } : {};
+const ProjectCard = memo(function ProjectCard({
+  project,
+  onOpenModal,
+  position,
+  onLoad,
+}) {
+  const style = position
+    ? {
+        position: "absolute",
+        left: position.x,
+        top: position.y,
+        width: position.width,
+      }
+    : {};
 
   return (
     <motion.article
@@ -362,6 +393,7 @@ function ProjectCard({ project, onOpenModal, position, onLoad }) {
           src={getAssetPath(project.image)}
           alt={project.title}
           loading="lazy"
+          decoding="async"
           className="project-card__image"
           onLoad={onLoad}
         />
@@ -375,7 +407,10 @@ function ProjectCard({ project, onOpenModal, position, onLoad }) {
       <div className="project-card__content">
         <div className="project-card__header">
           <span className="project-card__year">{project.year}</span>
-          <div className="project-card__links" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="project-card__links"
+            onClick={(e) => e.stopPropagation()}
+          >
             {project.links.preview && (
               <a
                 href={project.links.preview}
@@ -429,9 +464,9 @@ function ProjectCard({ project, onOpenModal, position, onLoad }) {
       </div>
     </motion.article>
   );
-}
+});
 
-function ProjectModal({ project, onClose }) {
+const ProjectModal = memo(function ProjectModal({ project, onClose }) {
   // Use Portal to render modal at document.body level
   return createPortal(
     <motion.div
@@ -447,7 +482,11 @@ function ProjectModal({ project, onClose }) {
         variants={modalContentVariants}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="project-modal__close" onClick={onClose} aria-label="Close modal">
+        <button
+          className="project-modal__close"
+          onClick={onClose}
+          aria-label="Close modal"
+        >
           <FaTimes />
         </button>
 
@@ -510,8 +549,8 @@ function ProjectModal({ project, onClose }) {
         </div>
       </motion.div>
     </motion.div>,
-    document.body
+    document.body,
   );
-}
+});
 
 export default Projects;

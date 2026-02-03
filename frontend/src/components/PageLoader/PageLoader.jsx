@@ -8,30 +8,43 @@ const terminalLines = [
   { type: "success", text: "✔ Loading projects..." },
   { type: "success", text: "✔ Fetching certifications..." },
   { type: "success", text: "✔ Setting up experience timeline..." },
-  { type: "info", text: "ℹ Built with React + Vite" },
   { type: "final", text: "Success! Welcome to my portfolio." },
 ];
 
+const SESSION_KEY = "portfolio_visited";
+
 function PageLoader() {
-  const [isLoading, setIsLoading] = useState(true);
+  // Check if user has already visited this session
+  const hasVisited = sessionStorage.getItem(SESSION_KEY);
+  const [isLoading, setIsLoading] = useState(!hasVisited);
   const [displayedLines, setDisplayedLines] = useState([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
 
+  // Mark as visited when loader completes
   useEffect(() => {
+    if (!isLoading && !hasVisited) {
+      sessionStorage.setItem(SESSION_KEY, "true");
+    }
+  }, [isLoading, hasVisited]);
+
+  useEffect(() => {
+    // Skip if already visited
+    if (hasVisited) return;
+
     if (currentLineIndex >= terminalLines.length) {
       // All lines displayed, wait a moment then fade out
       const exitTimer = setTimeout(() => {
         setIsLoading(false);
-      }, 800);
+      }, 600);
       return () => clearTimeout(exitTimer);
     }
 
     const currentLine = terminalLines[currentLineIndex];
     const isCommand = currentLine.type === "command";
-    const typingSpeed = isCommand ? 40 : 20; // Slower for commands
-    const lineDelay = isCommand ? 100 : 150; // Delay before next line
+    const typingSpeed = isCommand ? 25 : 12; // Faster typing
+    const lineDelay = isCommand ? 80 : 100; // Shorter delays
 
     if (isTyping && currentCharIndex < currentLine.text.length) {
       // Type next character
@@ -62,7 +75,7 @@ function PageLoader() {
       }, lineDelay);
       return () => clearTimeout(nextLineTimer);
     }
-  }, [currentLineIndex, currentCharIndex, isTyping]);
+  }, [currentLineIndex, currentCharIndex, isTyping, hasVisited]);
 
   const getLineClass = (type) => {
     switch (type) {
@@ -86,13 +99,13 @@ function PageLoader() {
           className="page-loader"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <motion.div
             className="terminal"
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
           >
             {/* Terminal Header */}
             <div className="terminal__header">
@@ -117,8 +130,11 @@ function PageLoader() {
                 >
                   <span className="terminal__text">{line.displayText}</span>
                   {index === currentLineIndex - 1 ||
-                    (index === displayedLines.length - 1 &&
-                      currentCharIndex === terminalLines[currentLineIndex]?.text.length) ? null : null}
+                  (index === displayedLines.length - 1 &&
+                    currentCharIndex ===
+                      terminalLines[currentLineIndex]?.text.length)
+                    ? null
+                    : null}
                 </motion.div>
               ))}
 

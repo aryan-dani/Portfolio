@@ -1,9 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, memo } from "react";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import "./ParticlesBackground.scss";
 
-function ParticlesBackground() {
+const ParticlesBackground = memo(function ParticlesBackground() {
   const [init, setInit] = useState(false);
 
   const particlesInit = useCallback(async (engine) => {
@@ -19,7 +19,7 @@ function ParticlesBackground() {
           value: "transparent",
         },
       },
-      fpsLimit: 60,
+      fpsLimit: 30, // Reduced from 60 for better performance
       interactivity: {
         events: {
           onClick: {
@@ -67,29 +67,24 @@ function ParticlesBackground() {
             default: "out",
           },
           random: true,
-          speed: 1.5,
+          speed: 1, // Reduced from 1.5
           straight: false,
           attract: {
-            enable: true,
-            rotateX: 600,
-            rotateY: 1200,
+            enable: false, // Disabled for performance
           },
         },
         number: {
           density: {
             enable: true,
-            area: 900,
+            area: 1200, // Increased area = fewer particles per screen
           },
-          value: 60,
+          value: 35, // Reduced from 60
         },
         opacity: {
           value: { min: 0.2, max: 0.5 },
           random: true,
           animation: {
-            enable: true,
-            speed: 0.5,
-            minimumValue: 0.1,
-            sync: false,
+            enable: false, // Disabled for performance
           },
         },
         shape: {
@@ -99,16 +94,13 @@ function ParticlesBackground() {
           value: { min: 1, max: 3 },
           random: true,
           animation: {
-            enable: true,
-            speed: 2,
-            minimumValue: 0.5,
-            sync: false,
+            enable: false, // Disabled for performance
           },
         },
       },
       detectRetina: true,
     }),
-    []
+    [],
   );
 
   return (
@@ -119,6 +111,6 @@ function ParticlesBackground() {
       options={options}
     />
   );
-}
+});
 
 export default ParticlesBackground;

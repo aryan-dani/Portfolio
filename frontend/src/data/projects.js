@@ -1,6 +1,62 @@
 export const projects = [
   {
     id: 1,
+    title: "The Fourth Clover",
+    category: "web-dev",
+    year: "2025 - 2026",
+    description: `A modern, minimalist blogging platform built for writers and thinkers. Features include a rich writing experience with real-time auto-save, threaded comments with nested replies, social sharing, Google OAuth authentication, and seamless image upload with Supabase Storage. Built with Next.js 13+ App Router for optimal performance and SEO.`,
+    image: "/Images/Projects/The_Fourth_Clover.jpg",
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "Tailwind CSS",
+      "React Hook Form",
+    ],
+    links: {
+      github: "https://github.com/aryan-dani/The-Fourth-Clover",
+      preview: "https://thefourthclover.bio/",
+    },
+  },
+  {
+    id: 2,
+    title: "DebateBot",
+    category: "ai-ml",
+    year: "2026",
+    description: `An intelligent debating platform powered by LLaMA 3.3 70B and LangGraph. Features dual-AI debates with formal stages (Opening, Rebuttal, Closing), a Live Arena where users can challenge the AI directly, smart scoring with feedback on coherence, evidence usage, and logical fallacies, plus real-time streaming for fluid argument generation.`,
+    image: "/Images/Projects/DebateBot.jpg",
+    tags: ["Python", "FastAPI", "React", "LangGraph", "LLaMA 3.3"],
+    links: {
+      github: "https://github.com/aryan-dani/DebateBot",
+      preview: "https://debate-bot-psi.vercel.app",
+    },
+  },
+  {
+    id: 3,
+    title: "PosePro",
+    category: "ai-ml",
+    year: "2026",
+    description: `AI-powered real-time shoulder raise form analyzer. Features live camera tracking with MediaPipe pose detection, automatic rep counting, instant feedback with angle visualization, and comprehensive metrics including range of motion, bilateral symmetry, torso stability, and elbow position. Includes a performance dashboard, session history, leaderboards, achievements, and an AI form assistant chatbot for personalized technique advice.`,
+    image: "/Images/Projects/PosePro.jpg",
+    tags: ["Python", "Flask", "MediaPipe", "OpenCV", "Computer Vision"],
+    links: {
+      github: "https://github.com/aryan-dani/Pose_Pro",
+    },
+  },
+  {
+    id: 4,
+    title: "North-Star",
+    category: "ai-ml",
+    year: "2025",
+    description: `NASA Space Apps Challenge 2025 submission for exoplanet candidate classification. A full-stack ML web application achieving 76% accuracy with Random Forest on NASA Kepler data. Features 7 trained ML models, real-time WebSocket training studio, comprehensive analytics with confusion matrices and ROC curves, batch predictions, and a space-themed React + TypeScript frontend with FastAPI backend.`,
+    image: "/Images/Projects/North_Star.jpg",
+    tags: ["Python", "FastAPI", "React", "TypeScript", "scikit-learn"],
+    links: {
+      github: "https://github.com/aryan-dani/North-Star",
+    },
+  },
+  {
+    id: 5,
     title: "Real Time Threat Detection System",
     category: "ai-ml",
     year: "2024 - 2025",
@@ -13,7 +69,7 @@ export const projects = [
     },
   },
   {
-    id: 2,
+    id: 6,
     title: "Automated Dicom Slice Analyzer",
     category: "ai-ml",
     year: "2025",
@@ -25,7 +81,7 @@ export const projects = [
     },
   },
   {
-    id: 3,
+    id: 7,
     title: "API Demonstration Application",
     category: "web-dev",
     year: "2025",
@@ -38,7 +94,7 @@ export const projects = [
     },
   },
   {
-    id: 4,
+    id: 8,
     title: "Speech-to-Text Web Application",
     category: "web-dev",
     year: "2024",
@@ -56,7 +112,7 @@ export const projects = [
     },
   },
   {
-    id: 5,
+    id: 9,
     title: "Capstone Data Science",
     category: "ai-ml",
     year: "2025",

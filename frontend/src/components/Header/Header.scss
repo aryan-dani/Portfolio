@@ -12,6 +12,20 @@
   justify-content: center;
   z-index: $z-header;
   pointer-events: none;
+  // Initial state - hidden above viewport
+  transform: translateY(-100px);
+  opacity: 0;
+  // Mount animation via CSS
+  transition:
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+
+  // Mounted state - slide into view
+  &--mounted {
+    transform: translateY(0);
+    opacity: 1;
+  }
 
   @media (max-width: $breakpoint-md) {
     display: none;
@@ -32,13 +46,39 @@
       0 0 0 1px rgba(255, 255, 255, 0.02) inset;
     pointer-events: auto;
     overflow: hidden;
+    transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
-
-
 
   &--expanded {
     .floating-nav__container {
       border-color: rgba($secondary-color, 0.2);
+    }
+
+    // Expanded state for text elements - smooth reveal with transform
+    .floating-nav__brand-text {
+      max-width: 120px;
+      opacity: 1;
+      margin-right: 16px;
+      transform: translateX(0);
+    }
+
+    // Stagger each label for smooth cascade effect
+    @for $i from 1 through 5 {
+      .floating-nav__item:nth-child(#{$i}) .floating-nav__label {
+        max-width: 100px;
+        opacity: 1;
+        margin-left: 6px;
+        transform: translateX(0);
+        transition-delay: #{$i * 0.025}s;
+      }
+    }
+
+    .floating-nav__github-text {
+      max-width: 60px;
+      opacity: 1;
+      margin-left: 6px;
+      transform: translateX(0);
+      transition-delay: 0.15s;
     }
   }
 
@@ -72,9 +112,22 @@
       line-height: 1;
       display: block;
       padding-top: 2px;
+      // Collapsed state (default)
+      max-width: 0;
+      opacity: 0;
+      margin-right: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      transform: translateX(-8px);
+      // Smooth expand/collapse with GPU acceleration
+      transition:
+        max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        margin-right 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: max-width, opacity, margin-right, transform;
     }
   }
-
 
   &__list {
     position: relative;
@@ -97,7 +150,6 @@
     pointer-events: none;
     z-index: 0;
   }
-
 
   &__item {
     position: relative;
@@ -128,7 +180,9 @@
       z-index: -1;
       opacity: 0;
       transform: scale(0.92);
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
     }
 
     &:hover,
@@ -146,7 +200,6 @@
     }
   }
 
-
   &__icon {
     display: flex;
     align-items: center;
@@ -159,8 +212,22 @@
   &__label {
     display: inline-block;
     font-weight: 500;
+    // Collapsed state (default)
+    max-width: 0;
+    opacity: 0;
+    margin-left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transform: translateX(-8px);
+    // Smooth expand/collapse with GPU acceleration
+    transition:
+      max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0s;
+    will-change: max-width, opacity, margin-left, transform;
   }
-
 
   // GitHub button
   &__github {
@@ -197,9 +264,23 @@
 
     &-text {
       display: inline-block;
+      // Collapsed state (default)
+      max-width: 0;
+      opacity: 0;
+      margin-left: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      transform: translateX(-8px);
+      // Smooth expand/collapse with GPU acceleration
+      transition:
+        max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition-delay: 0s;
+      will-change: max-width, opacity, margin-left, transform;
     }
   }
-
 }
 
 // ================================================
@@ -279,7 +360,9 @@
   z-index: $z-menu - 1;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 
   &--visible {
     opacity: 1;
@@ -406,7 +489,9 @@
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
-    transition: transform 0.2s ease, color 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      color 0.2s ease;
     color: rgba($text-color, 0.5);
   }
 

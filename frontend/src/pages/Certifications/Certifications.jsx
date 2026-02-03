@@ -1,7 +1,13 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, memo } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaTimes, FaEye, FaExternalLinkAlt, FaCertificate } from "react-icons/fa";
+import {
+  FaSearch,
+  FaTimes,
+  FaEye,
+  FaExternalLinkAlt,
+  FaCertificate,
+} from "react-icons/fa";
 import {
   certifications,
   certificationCategories,
@@ -44,6 +50,7 @@ function Certifications() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   const [previewImage, setPreviewImage] = useState(null);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const filteredCerts = useMemo(() => {
     return certifications.filter((cert) => {
@@ -91,39 +98,45 @@ function Certifications() {
         />
 
         <div className="certifications__container">
-
           <motion.div
             className="certifications__controls"
             variants={cardVariants}
           >
-            <div className="certifications__search">
-              <FaSearch className="certifications__search-icon" />
-              <input
-                type="search"
-                placeholder="Search certificates..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="certifications__search-input"
-              />
-              {searchTerm && (
-                <button
-                  className="certifications__search-clear"
-                  onClick={() => setSearchTerm("")}
-                  aria-label="Clear search"
-                >
-                  <FaTimes />
-                </button>
-              )}
+            <div
+              className={`certifications__search ${isSearchFocused ? "certifications__search--focused" : ""}`}
+            >
+              <div className="certifications__search-inner">
+                <FaSearch className="certifications__search-icon" />
+                <input
+                  type="search"
+                  placeholder="Search certificates, issuers..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setIsSearchFocused(false)}
+                  className="certifications__search-input"
+                />
+                {searchTerm && (
+                  <button
+                    className="certifications__search-clear"
+                    onClick={() => setSearchTerm("")}
+                    aria-label="Clear search"
+                  >
+                    <FaTimes />
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="certifications__filters">
               {certificationCategories.map((category) => (
                 <button
                   key={category.id}
-                  className={`certifications__filter-btn ${activeFilter === category.id
-                    ? "certifications__filter-btn--active"
-                    : ""
-                    }`}
+                  className={`certifications__filter-btn ${
+                    activeFilter === category.id
+                      ? "certifications__filter-btn--active"
+                      : ""
+                  }`}
                   onClick={() => setActiveFilter(category.id)}
                 >
                   {category.label}
@@ -196,17 +209,25 @@ function Certifications() {
               </motion.div>
             </motion.div>
           </AnimatePresence>,
-          document.body
+          document.body,
         )}
     </>
   );
 }
 
-function CertificationCard({ cert, onImageClick }) {
+const CertificationCard = memo(function CertificationCard({
+  cert,
+  onImageClick,
+}) {
   return (
     <motion.article className="cert-card" variants={cardVariants} layout>
       <div className="cert-card__image" onClick={onImageClick}>
-        <img src={getAssetPath(cert.image)} alt={cert.title} loading="lazy" />
+        <img
+          src={getAssetPath(cert.image)}
+          alt={cert.title}
+          loading="lazy"
+          decoding="async"
+        />
         <span className="cert-card__badge">{cert.badge}</span>
         <div className="cert-card__overlay">
           <FaEye />
@@ -238,6 +259,6 @@ function CertificationCard({ cert, onImageClick }) {
       </div>
     </motion.article>
   );
-}
+});
 
 export default Certifications;

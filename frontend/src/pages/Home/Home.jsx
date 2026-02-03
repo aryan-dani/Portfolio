@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 
 import { motion } from "framer-motion";
@@ -64,9 +65,8 @@ const roles = [
   "Problem Solver",
 ];
 
-function Home() {
+const Home = memo(function Home() {
   return (
-
     <motion.section
       className="home"
       initial="hidden"
@@ -134,15 +134,15 @@ function Home() {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          className="home__image-wrapper"
-          variants={imageVariants}
-        >
+        <motion.div className="home__image-wrapper" variants={imageVariants}>
           <div className="home__image-container">
             <img
               src={getAssetPath("Images/Home_Page.jpg")}
               alt="Aryan Dani"
               className="home__image"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
             />
             <div className="home__image-glow" />
           </div>
@@ -150,6 +150,6 @@ function Home() {
       </div>
     </motion.section>
   );
-}
+});
 
 export default Home;

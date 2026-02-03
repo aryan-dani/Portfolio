@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback, useRef, memo } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import gsap from "gsap";
 import {
   FaHome,
   FaBriefcase,
@@ -13,11 +12,21 @@ import {
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import "./Header.scss";
 
-// Desktop nav items
+// Desktop nav items - defined outside component to avoid recreation
 const navItems = [
-  { path: "/experience", label: "Experience", icon: FaBriefcase, shortcut: "E" },
+  {
+    path: "/experience",
+    label: "Experience",
+    icon: FaBriefcase,
+    shortcut: "E",
+  },
   { path: "/projects", label: "Projects", icon: FaCode, shortcut: "P" },
-  { path: "/certifications", label: "Certs", icon: FaCertificate, shortcut: "C" },
+  {
+    path: "/certifications",
+    label: "Certs",
+    icon: FaCertificate,
+    shortcut: "C",
+  },
   { path: "/skills", label: "Skills", icon: FaLaptopCode, shortcut: "S" },
   { path: "/about", label: "About", icon: FaUser, shortcut: "A" },
 ];
@@ -30,70 +39,25 @@ const mobileNavItems = [
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Refs for GSAP animations
-  const headerRef = useRef(null);
-  const brandRef = useRef(null);
-  const labelsRef = useRef([]);
-  const githubTextRef = useRef(null);
-
-  // Initial animation on mount
+  // Initial mount animation trigger
   useEffect(() => {
-    if (headerRef.current) {
-      gsap.fromTo(
-        headerRef.current,
-        { y: -100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
-      );
-    }
+    // Small delay to ensure CSS transition runs
+    const timer = requestAnimationFrame(() => setIsMounted(true));
+    return () => cancelAnimationFrame(timer);
   }, []);
 
-  // Expand/Collapse animation
-  useEffect(() => {
-    const duration = 0.3;
-    const ease = "power2.inOut";
-
-    if (isExpanded) {
-      gsap.to(brandRef.current, {
-        width: "auto",
-        opacity: 1,
-        marginRight: 16,
-        duration,
-        ease,
-      });
-      gsap.to(labelsRef.current, {
-        width: "auto",
-        opacity: 1,
-        marginLeft: 6,
-        duration,
-        ease,
-      });
-      gsap.to(githubTextRef.current, {
-        width: "auto",
-        opacity: 1,
-        marginLeft: 6,
-        duration,
-        ease,
-      });
-    } else {
-      gsap.to([brandRef.current, ...labelsRef.current, githubTextRef.current], {
-        width: 0,
-        opacity: 0,
-        marginLeft: 0,
-        marginRight: 0,
-        duration: 0.2,
-        ease,
-      });
-    }
-  }, [isExpanded]);
-
+  // Close menu on location change
   useEffect(() => setIsMenuOpen(false), [location]);
 
+  // Keyboard navigation
   const handleKeyDown = useCallback(
     (e) => {
-      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
+        return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const key = e.key.toUpperCase();
       const item = mobileNavItems.find((item) => item.shortcut === key);
@@ -102,7 +66,7 @@ function Header() {
         navigate(item.path);
       } else if (e.key === "Escape") setIsMenuOpen(false);
     },
-    [navigate]
+    [navigate],
   );
 
   useEffect(() => {
@@ -110,6 +74,7 @@ function Header() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
+  // Body scroll lock when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
     return () => {
@@ -122,8 +87,7 @@ function Header() {
   return (
     <>
       <header
-        ref={headerRef}
-        className={`floating-nav ${isExpanded ? "floating-nav--expanded" : ""}`}
+        className={`floating-nav ${isMounted ? "floating-nav--mounted" : ""} ${isExpanded ? "floating-nav--expanded" : ""}`}
         onMouseEnter={() => setIsExpanded(true)}
         onMouseLeave={() => setIsExpanded(false)}
       >
@@ -131,19 +95,13 @@ function Header() {
           {/* Brand Name */}
           <div className="floating-nav__brand-wrapper">
             <NavLink to="/" className="floating-nav__brand-link">
-              <span
-                ref={brandRef}
-                className="floating-nav__brand-text"
-                style={{ width: 0, opacity: 0, overflow: "hidden", whiteSpace: "nowrap" }}
-              >
-                Aryan Dani
-              </span>
+              <span className="floating-nav__brand-text">Aryan Dani</span>
             </NavLink>
           </div>
 
           {/* Navigation Links */}
           <ul className="floating-nav__list">
-            {navItems.map((item, index) => {
+            {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
 
@@ -157,13 +115,7 @@ function Header() {
                     <span className="floating-nav__icon">
                       <Icon />
                     </span>
-                    <span
-                      ref={(el) => (labelsRef.current[index] = el)}
-                      className="floating-nav__label"
-                      style={{ width: 0, opacity: 0, overflow: "hidden", whiteSpace: "nowrap" }}
-                    >
-                      {item.label}
-                    </span>
+                    <span className="floating-nav__label">{item.label}</span>
                   </NavLink>
                 </li>
               );
@@ -178,13 +130,7 @@ function Header() {
             className="floating-nav__github"
           >
             <FaGithub className="floating-nav__github-icon" />
-            <span
-              ref={githubTextRef}
-              className="floating-nav__github-text"
-              style={{ width: 0, opacity: 0, overflow: "hidden", whiteSpace: "nowrap" }}
-            >
-              GitHub
-            </span>
+            <span className="floating-nav__github-text">GitHub</span>
           </a>
         </nav>
       </header>
