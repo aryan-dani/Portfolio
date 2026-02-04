@@ -14,6 +14,7 @@ import "./Header.scss";
 
 // Desktop nav items - defined outside component to avoid recreation
 const navItems = [
+  { path: "/", label: "Home", icon: FaHome, shortcut: "H" },
   {
     path: "/experience",
     label: "Experience",
@@ -23,7 +24,7 @@ const navItems = [
   { path: "/projects", label: "Projects", icon: FaCode, shortcut: "P" },
   {
     path: "/certifications",
-    label: "Certs",
+    label: "Certifications",
     icon: FaCertificate,
     shortcut: "C",
   },
@@ -31,21 +32,14 @@ const navItems = [
   { path: "/about", label: "About", icon: FaUser, shortcut: "A" },
 ];
 
-const mobileNavItems = [
-  { path: "/", label: "Home", icon: FaHome, shortcut: "H" },
-  ...navItems,
-];
-
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   // Initial mount animation trigger
   useEffect(() => {
-    // Small delay to ensure CSS transition runs
     const timer = requestAnimationFrame(() => setIsMounted(true));
     return () => cancelAnimationFrame(timer);
   }, []);
@@ -60,7 +54,7 @@ function Header() {
         return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const key = e.key.toUpperCase();
-      const item = mobileNavItems.find((item) => item.shortcut === key);
+      const item = navItems.find((item) => item.shortcut === key);
       if (item) {
         e.preventDefault();
         navigate(item.path);
@@ -87,18 +81,9 @@ function Header() {
   return (
     <>
       <header
-        className={`floating-nav ${isMounted ? "floating-nav--mounted" : ""} ${isExpanded ? "floating-nav--expanded" : ""}`}
-        onMouseEnter={() => setIsExpanded(true)}
-        onMouseLeave={() => setIsExpanded(false)}
+        className={`floating-nav ${isMounted ? "floating-nav--mounted" : ""}`}
       >
         <nav className="floating-nav__container">
-          {/* Brand Name */}
-          <div className="floating-nav__brand-wrapper">
-            <NavLink to="/" className="floating-nav__brand-link">
-              <span className="floating-nav__brand-text">Aryan Dani</span>
-            </NavLink>
-          </div>
-
           {/* Navigation Links */}
           <ul className="floating-nav__list">
             {navItems.map((item) => {
@@ -110,27 +95,33 @@ function Header() {
                   <NavLink
                     to={item.path}
                     className={`floating-nav__link ${isActive ? "floating-nav__link--active" : ""}`}
+                    title={item.label}
                   >
-                    <span className="floating-nav__link-bg" />
                     <span className="floating-nav__icon">
                       <Icon />
                     </span>
-                    <span className="floating-nav__label">{item.label}</span>
+                    <span className="floating-nav__tooltip">{item.label}</span>
                   </NavLink>
                 </li>
               );
             })}
           </ul>
 
+          {/* Divider */}
+          <span className="floating-nav__divider" />
+
           {/* GitHub Button */}
           <a
             href="https://github.com/Aryan-Dani"
             target="_blank"
             rel="noopener noreferrer"
-            className="floating-nav__github"
+            className="floating-nav__link floating-nav__github"
+            title="GitHub"
           >
-            <FaGithub className="floating-nav__github-icon" />
-            <span className="floating-nav__github-text">GitHub</span>
+            <span className="floating-nav__icon">
+              <FaGithub />
+            </span>
+            <span className="floating-nav__tooltip">GitHub</span>
           </a>
         </nav>
       </header>
@@ -155,7 +146,7 @@ function Header() {
 
       <nav className={`mobile-nav ${isMenuOpen ? "mobile-nav--visible" : ""}`}>
         <ul className="mobile-nav__list">
-          {mobileNavItems.map((item) => {
+          {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
             return (
@@ -174,6 +165,22 @@ function Header() {
               </li>
             );
           })}
+          {/* GitHub link in mobile menu */}
+          <li className="mobile-nav__item">
+            <a
+              href="https://github.com/Aryan-Dani"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-nav__link"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="mobile-nav__icon">
+                <FaGithub />
+              </span>
+              <span className="mobile-nav__label">GitHub</span>
+              <span className="mobile-nav__shortcut">G</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </>

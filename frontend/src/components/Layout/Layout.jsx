@@ -1,6 +1,6 @@
 import { lazy, Suspense, memo } from "react";
 import { Outlet } from "react-router-dom";
-import Navigation from "../Navigation/Navigation";
+import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import "./Layout.scss";
 
@@ -15,7 +15,7 @@ const Layout = memo(function Layout() {
       <Suspense fallback={null}>
         <ParticlesBackground />
       </Suspense>
-      <Navigation />
+      <Header />
       <main className="main-content">
         <Outlet />
       </main>
