@@ -42,7 +42,7 @@ export const skills = {
       level: 70,
       description:
         "Experience with React hooks, context API, and state management. Building modern SPAs with component-based architecture.",
-      projects: ["Portfolio Site", "DebateBot", "North-Star"],
+      projects: ["Portfolio Site", "DebateBot", "North-Star", "Arbiter: RIFT 2026"],
     },
     {
       name: "Next.js",
@@ -90,7 +90,7 @@ export const skills = {
       level: 70,
       description:
         "Building high-performance Python APIs with automatic OpenAPI documentation and async support.",
-      projects: ["DebateBot", "North-Star"],
+      projects: ["DebateBot", "North-Star", "The Shadow Instructor", "Arbiter: RIFT 2026"],
     },
     {
       name: "Flask",
@@ -186,12 +186,28 @@ export const skills = {
       projects: ["PosePro"],
     },
     {
-      name: "LLMs & LangChain",
+      name: "LLMs & Agentic AI",
       icon: "FaRobot",
-      level: 55,
+      level: 85,
       description:
-        "Working with large language models, prompt engineering, and LangGraph for AI workflows.",
-      projects: ["DebateBot"],
+        "Building sophisticated agentic workflows using Google Gemini 3.0/2.5 family, prompt engineering, and LangGraph for complex decision-making systems.",
+      projects: ["DebateBot", "The Shadow Instructor", "Arbiter: RIFT 2026"],
+    },
+    {
+      name: "Agentic Architectures",
+      icon: "FaBrain",
+      level: 80,
+      description:
+        "Designing and implementing Dual-Agent and Multi-Agent state machines for specialized tasks like interview simulation and autonomous code healing.",
+      projects: ["The Shadow Instructor", "Arbiter: RIFT 2026"],
+    },
+    {
+      name: "Docker Sandboxing",
+      icon: "SiDocker",
+      level: 70,
+      description:
+        "Leveraging Docker for secure, isolated execution of untrusted code and automated testing environments in CI/CD pipelines.",
+      projects: ["Arbiter: RIFT 2026"],
     },
     {
       name: "Deep Learning",

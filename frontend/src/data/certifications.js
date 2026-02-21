@@ -1,5 +1,51 @@
 export const certifications = [
   {
+    id: 9,
+    title: "Google Student Ambassador Program",
+    issuer: "Google Gemini",
+    issuerLogo:
+      "https://www.gstatic.com/images/branding/product/2x/google_cloud_64dp.png",
+    date: "DEC 2025",
+    category: "ai-ml",
+    badge: "AI & ML",
+    tag: "Ambassador Program",
+    description:
+      "Selected as a Google Student Ambassador, demonstrating enthusiasm, collaboration, and a strong willingness to learn and contribute. Participated in community outreach and technical advocacy for Google Gemini and AI technologies.",
+    image: "/Images/Certifications/Google_Student_Ambassador.png",
+    link: "#",
+  },
+  {
+    id: 3,
+    title: "Inspect Rich Documents with Gemini and Multimodal RAG",
+    issuer: "Google Cloud",
+    issuerLogo:
+      "https://www.gstatic.com/images/branding/product/2x/google_cloud_64dp.png",
+    date: "JAN 2025",
+    category: "ai-ml",
+    badge: "AI & ML",
+    tag: "Skill Badge",
+    description:
+      "Completed advanced AI techniques for analyzing complex documents using Google's Gemini models and Retrieval-Augmented Generation (RAG) to extract insights from text, images, and data.",
+    image:
+      "/Images/Certifications/inspect-rich-documents-with-gemini-multimodality-an.png",
+    link: "https://www.cloudskillsboost.google/public_profiles/c3637b7f-94b4-4e5b-b747-f5929ebcf8a2/badges/13714641",
+  },
+  {
+    id: 7,
+    title: "Prompt Design in Vertex AI",
+    issuer: "Google Cloud",
+    issuerLogo:
+      "https://www.gstatic.com/images/branding/product/2x/google_cloud_64dp.png",
+    date: "DEC 2024",
+    category: "ai-ml",
+    badge: "AI & ML",
+    tag: "Skill Badge",
+    description:
+      "Completed specialized course on prompt engineering for Vertex AI, learning advanced techniques for optimizing LLM interactions.",
+    image: "/Images/Certifications/prompt-design-in-vertex-ai-skill-badge.png",
+    link: "https://www.cloudskillsboost.google/public_profiles/c3637b7f-94b4-4e5b-b747-f5929ebcf8a2/badges/13378723",
+  },
+  {
     id: 1,
     title: "IBM Data Science Professional Certificate",
     issuer: "IBM",
@@ -31,22 +77,6 @@ export const certifications = [
     link: "https://www.freecodecamp.org/certification/twofaced/responsive-web-design",
   },
   {
-    id: 3,
-    title: "Inspect Rich Documents with Gemini and Multimodal RAG",
-    issuer: "Google Cloud",
-    issuerLogo:
-      "https://www.gstatic.com/images/branding/product/2x/google_cloud_64dp.png",
-    date: "JAN 2025",
-    category: "ai-ml",
-    badge: "AI & ML",
-    tag: "Skill Badge",
-    description:
-      "Completed advanced AI techniques for analyzing complex documents using Google's Gemini models and Retrieval-Augmented Generation (RAG) to extract insights from text, images, and data.",
-    image:
-      "/Images/Certifications/inspect-rich-documents-with-gemini-multimodality-an.png",
-    link: "https://www.cloudskillsboost.google/public_profiles/c3637b7f-94b4-4e5b-b747-f5929ebcf8a2/badges/13714641",
-  },
-  {
     id: 4,
     title: "Career Essentials in GitHub Professional Certificate",
     issuer: "LinkedIn",
@@ -60,22 +90,6 @@ export const certifications = [
       "Mastered the fundamentals of version control, repository management, and team collaboration. From creating branches and reviewing pull requests to merging changes.",
     image: "/Images/Certifications/Github_Professional.png",
     link: "https://www.linkedin.com/learning/certificates/39d8a9ca410b5e1276203de44d773b107973c17697b95770dbad4982f816b109",
-  },
-  {
-    id: 5,
-    title: "Career Essentials in Generative AI by Microsoft and LinkedIn",
-    issuer: "Microsoft",
-    issuerLogo:
-      "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-    date: "DEC 2024",
-    category: "ai-ml",
-    badge: "AI & ML",
-    tag: "Professional Certificate",
-    description:
-      "Explored advanced AI models that can create everything from text to images. Learned how to build and apply cutting-edge tools to solve modern challenges.",
-    image:
-      "/Images/Certifications/Career Essentials in Generative AI Professional Certificate.png",
-    link: "https://www.linkedin.com/learning/certificates/b53dace1e572fe2d7b48ee76145ae787c0ca62233f2cba513085689bd314dcc1",
   },
   {
     id: 6,
@@ -93,21 +107,6 @@ export const certifications = [
     link: "https://www.linkedin.com/learning/certificates/cf33a228a52496f801bdb32c68e5e71ce4430a13e66b66e13ba90ec8d4f26f56",
   },
   {
-    id: 7,
-    title: "Prompt Design in Vertex AI",
-    issuer: "Google Cloud",
-    issuerLogo:
-      "https://www.gstatic.com/images/branding/product/2x/google_cloud_64dp.png",
-    date: "DEC 2024",
-    category: "ai-ml",
-    badge: "AI & ML",
-    tag: "Skill Badge",
-    description:
-      "Completed specialized course on prompt engineering for Vertex AI, learning advanced techniques for optimizing LLM interactions.",
-    image: "/Images/Certifications/prompt-design-in-vertex-ai-skill-badge.png",
-    link: "https://www.cloudskillsboost.google/public_profiles/c3637b7f-94b4-4e5b-b747-f5929ebcf8a2/badges/13378723",
-  },
-  {
     id: 8,
     title: "SASS Essential Training",
     issuer: "LinkedIn Learning",
@@ -121,6 +120,22 @@ export const certifications = [
       "Mastered variables, nesting, mixins, functions, and modular architecture for writing maintainable and efficient CSS code.",
     image: "/Images/Certifications/SASS Certificate Linkedin.png",
     link: "https://www.linkedin.com/learning/certificates/8f8331c7c4b8654180a09a83b45e82d6ded0fb66efc0f9573f3a2b9dc6252cd4",
+  },
+  {
+    id: 5,
+    title: "Career Essentials in Generative AI by Microsoft and LinkedIn",
+    issuer: "Microsoft",
+    issuerLogo:
+      "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+    date: "DEC 2024",
+    category: "ai-ml",
+    badge: "AI & ML",
+    tag: "Professional Certificate",
+    description:
+      "Explored advanced AI models that can create everything from text to images. Learned how to build and apply cutting-edge tools to solve modern challenges.",
+    image:
+      "/Images/Certifications/Career Essentials in Generative AI Professional Certificate.png",
+    link: "https://www.linkedin.com/learning/certificates/b53dace1e572fe2d7b48ee76145ae787c0ca62233f2cba513085689bd314dcc1",
   },
 ];
 
