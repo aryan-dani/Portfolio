@@ -1,20 +1,10 @@
-import { useState, useMemo, useEffect, useRef, useCallback, memo } from "react";
+import { useState, useMemo, useEffect, memo } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FaSearch,
-  FaTimes,
-  FaEye,
-  FaGithub,
-  FaLinkedin,
-  FaExternalLinkAlt,
-  FaCode,
-} from "react-icons/fa";
+import { FaSearch, FaTimes, FaEye, FaGithub, FaLinkedin } from "react-icons/fa";
 import { projects, projectCategories } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
-import PageHero from "../../components/PageHero/PageHero";
-import "./Projects.scss";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -53,10 +43,11 @@ const modalVariants = {
 };
 
 const modalContentVariants = {
-  hidden: { opacity: 0, scale: 0.92 },
+  hidden: { opacity: 0, scale: 0.92, y: 20 },
   visible: {
     opacity: 1,
     scale: 1,
+    y: 0,
     transition: {
       duration: 0.35,
       ease: [0.25, 0.46, 0.45, 0.94],
@@ -65,133 +56,16 @@ const modalContentVariants = {
   exit: {
     opacity: 0,
     scale: 0.95,
+    y: 20,
     transition: { duration: 0.2 },
   },
 };
-
-const ProjectsVisual = () => (
-  <div className="projects-visual">
-    <FaCode className="projects-visual__icon" />
-  </div>
-);
-
-// Throttle function for resize handler
-function throttle(func, limit) {
-  let inThrottle;
-  return function (...args) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
-}
-
-// Custom hook for masonry layout
-function useMasonry(containerRef, items, deps = []) {
-  const [positions, setPositions] = useState([]);
-  const [containerHeight, setContainerHeight] = useState(0);
-
-  const calculatePositions = useCallback(() => {
-    if (!containerRef.current) return;
-
-    const container = containerRef.current;
-    const containerWidth = container.offsetWidth;
-    const gap = 24; // 1.5rem
-    const minColWidth = 340;
-
-    // Calculate number of columns
-    const cols = Math.max(
-      1,
-      Math.floor((containerWidth + gap) / (minColWidth + gap)),
-    );
-    const colWidth = (containerWidth - gap * (cols - 1)) / cols;
-
-    // Track column heights
-    const colHeights = new Array(cols).fill(0);
-
-    // Get all card elements
-    const cards = container.querySelectorAll(".project-card");
-    const newPositions = [];
-
-    cards.forEach((card, index) => {
-      // Find shortest column
-      const shortestCol = colHeights.indexOf(Math.min(...colHeights));
-
-      // Calculate position
-      const x = shortestCol * (colWidth + gap);
-      const y = colHeights[shortestCol];
-
-      newPositions.push({ x, y, width: colWidth });
-
-      // Update column height
-      colHeights[shortestCol] += card.offsetHeight + gap;
-    });
-
-    setPositions(newPositions);
-    setContainerHeight(Math.max(...colHeights) - gap);
-  }, [containerRef, items]);
-
-  useEffect(() => {
-    // Initial calculation after render
-    const timer = setTimeout(calculatePositions, 100);
-
-    // Throttled resize handler
-    const handleResize = throttle(() => {
-      calculatePositions();
-    }, 150);
-
-    window.addEventListener("resize", handleResize, { passive: true });
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [calculatePositions, ...deps]);
-
-  // Recalculate when images load
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const images = containerRef.current.querySelectorAll("img");
-    let loadedCount = 0;
-
-    const handleImageLoad = () => {
-      loadedCount++;
-      if (loadedCount === images.length) {
-        calculatePositions();
-      }
-    };
-
-    images.forEach((img) => {
-      if (img.complete) {
-        loadedCount++;
-      } else {
-        img.addEventListener("load", handleImageLoad);
-      }
-    });
-
-    if (loadedCount === images.length) {
-      calculatePositions();
-    }
-
-    return () => {
-      images.forEach((img) => {
-        img.removeEventListener("load", handleImageLoad);
-      });
-    };
-  }, [containerRef, items, calculatePositions]);
-
-  return { positions, containerHeight, recalculate: calculatePositions };
-}
 
 function Projects() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const gridRef = useRef(null);
 
   // Handle search query from URL
   useEffect(() => {
@@ -234,13 +108,6 @@ function Projects() {
     });
   }, [searchTerm, activeFilter]);
 
-  // Use masonry layout
-  const { positions, containerHeight, recalculate } = useMasonry(
-    gridRef,
-    filteredProjects,
-    [activeFilter, searchTerm],
-  );
-
   const clearSearch = () => {
     setSearchTerm("");
   };
@@ -256,106 +123,102 @@ function Projects() {
   return (
     <>
       <motion.section
-        className="projects"
+        className="flex flex-col gap-16 md:gap-section-gap w-full"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
-        <PageHero
-          category="Projects"
-          title="Systems engineered to"
-          titleHighlight="resist and adapt"
-          highlights={[
-            "Some of the finest projects ready to take over",
-            "Full-stack applications with modern architectures",
-            "AI-powered solutions and creative experiments",
-          ]}
-          visual={<ProjectsVisual />}
-        />
+        <header className="mb-8 border-b-8 border-black pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4">
+          <div>
+            <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-black uppercase tracking-tighter">
+              PROJECTS
+            </h1>
+            <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-black mt-4 max-w-2xl bg-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              Systems engineered to resist and adapt. Full-stack applications
+              with modern architectures. AI-powered solutions and creative
+              experiments.
+            </p>
+          </div>
 
-        <div className="projects__container">
-          <motion.div className="projects__controls" variants={cardVariants}>
-            <div
-              className={`projects__search ${isSearchFocused ? "projects__search--focused" : ""}`}
-            >
-              <div className="projects__search-inner">
-                <FaSearch className="projects__search-icon" />
-                <input
-                  type="search"
-                  placeholder="Search projects, tags, technologies..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onFocus={() => setIsSearchFocused(true)}
-                  onBlur={() => setIsSearchFocused(false)}
-                  className="projects__search-input"
-                />
-                {searchTerm && (
-                  <button
-                    className="projects__search-clear"
-                    onClick={clearSearch}
-                    aria-label="Clear search"
-                  >
-                    <FaTimes />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="projects__filters">
-              {projectCategories.map((category) => (
+          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+            <div className="flex items-center bg-white neo-border p-2 w-full sm:w-64 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <FaSearch className="text-xl ml-2 mr-3" />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-transparent border-none outline-none w-full font-body-md text-lg"
+              />
+              {searchTerm && (
                 <button
-                  key={category.id}
-                  className={`projects__filter-btn ${
-                    activeFilter === category.id
-                      ? "projects__filter-btn--active"
-                      : ""
-                  }`}
-                  onClick={() => setActiveFilter(category.id)}
+                  onClick={clearSearch}
+                  className="mr-2 p-1 hover:bg-primary-container transition-colors"
                 >
-                  {category.label}
+                  <FaTimes />
                 </button>
-              ))}
+              )}
             </div>
-          </motion.div>
 
-          <AnimatePresence mode="wait">
-            {filteredProjects.length > 0 ? (
-              <motion.div
-                key={activeFilter + searchTerm}
-                ref={gridRef}
-                className="projects__grid"
-                style={{ height: containerHeight || "auto" }}
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                {filteredProjects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    onOpenModal={openModal}
-                    position={positions[index]}
-                    onLoad={recalculate}
-                  />
-                ))}
-              </motion.div>
-            ) : (
-              <motion.div
-                className="projects__empty"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-              >
-                <FaSearch />
-                <h3>No projects found</h3>
-                <p>Try adjusting your search terms or filters.</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+            <div className="flex flex-wrap gap-3">
+              {projectCategories.map((category, index) => {
+                const isSelected = activeFilter === category.id;
+
+                return (
+                  <button
+                    key={category.id}
+                    className={`border-4 border-black px-4 py-2 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all transform hover:shadow-none hover:translate-y-1 hover:translate-x-1 ${
+                      isSelected
+                        ? `bg-primary-container`
+                        : "bg-white hover:bg-surface-variant"
+                    }`}
+                    onClick={() => setActiveFilter(category.id)}
+                  >
+                    {category.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </header>
+
+        <AnimatePresence mode="wait">
+          {filteredProjects.length > 0 ? (
+            <motion.div
+              key={activeFilter + searchTerm}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {filteredProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onOpenModal={openModal}
+                  index={index}
+                />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-12 text-center flex flex-col items-center gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              <FaSearch className="text-4xl" />
+              <h3 className="font-headline-md text-3xl uppercase">
+                No projects found
+              </h3>
+              <p className="font-body-md text-lg">
+                Try adjusting your search terms or filters.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.section>
 
-      {/* Project Modal - Rendered via Portal to document.body */}
       <AnimatePresence>
         {selectedProject && (
           <ProjectModal project={selectedProject} onClose={closeModal} />
@@ -365,190 +228,177 @@ function Projects() {
   );
 }
 
-const ProjectCard = memo(function ProjectCard({
-  project,
-  onOpenModal,
-  position,
-  onLoad,
-}) {
-  const style = position
-    ? {
-        position: "absolute",
-        left: position.x,
-        top: position.y,
-        width: position.width,
-      }
-    : {};
+const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index }) {
+  const isFeatured = project.featured || false;
 
   return (
     <motion.article
-      className="project-card"
+      className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 cursor-pointer"
       variants={cardVariants}
-      style={style}
-      whileHover={{ y: -6 }}
       onClick={() => onOpenModal(project)}
     >
-      <div className="project-card__image-wrapper">
+      <div className="h-48 md:h-64 border-b-4 border-black bg-surface-variant overflow-hidden relative">
         <img
           src={getAssetPath(project.image)}
           alt={project.title}
           loading="lazy"
           decoding="async"
-          className="project-card__image"
-          onLoad={onLoad}
+          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
         />
-        <div className="project-card__image-overlay">
-          <span className="project-card__view-hint">
-            <FaExternalLinkAlt /> View Details
-          </span>
-        </div>
+        {isFeatured && (
+          <div className="absolute top-4 right-4 bg-primary-container border-4 border-black px-3 py-1 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            Featured
+          </div>
+        )}
       </div>
 
-      <div className="project-card__content">
-        <div className="project-card__header">
-          <span className="project-card__year">{project.year}</span>
-          <div
-            className="project-card__links"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {project.links.preview && (
-              <a
-                href={project.links.preview}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-card__link"
-                title="Live Preview"
-              >
-                <FaEye />
-              </a>
-            )}
-            {project.links.github && (
-              <a
-                href={project.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-card__link"
-                title="GitHub"
-              >
-                <FaGithub />
-              </a>
-            )}
-            {project.links.linkedin && (
-              <a
-                href={project.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-card__link"
-                title="LinkedIn"
-              >
-                <FaLinkedin />
-              </a>
-            )}
-          </div>
-        </div>
+      <div className="p-6 md:p-8 flex flex-col grow">
+        <h2 className="font-headline-md text-2xl md:text-3xl text-black mb-4 uppercase">
+          {project.title}
+        </h2>
+        <p className="font-body-md text-base text-black mb-6 grow line-clamp-3">
+          {project.description}
+        </p>
 
-        <h3 className="project-card__title">{project.title}</h3>
-
-        <div className="project-card__tags">
-          {project.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="tag">
-              {tag}
-            </span>
-          ))}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {project.tags.slice(0, 3).map((tag, i) => {
+            return (
+              <span
+                key={tag}
+                className={`bg-black text-white border-2 border-black px-2 py-1 font-label-bold text-xs uppercase`}
+              >
+                {tag}
+              </span>
+            );
+          })}
           {project.tags.length > 3 && (
-            <span className="tag tag--more">+{project.tags.length - 3}</span>
+            <span className="bg-white text-black border-2 border-black px-2 py-1 font-label-bold text-xs uppercase">
+              +{project.tags.length - 3}
+            </span>
           )}
         </div>
 
-        <p className="project-card__description">{project.description}</p>
+        <div
+          className="flex gap-4 border-t-4 border-black pt-6"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {project.links?.preview && (
+            <a
+              href={project.links.preview}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-primary-container text-black border-4 border-black text-center py-2 md:py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2"
+              title="Live Preview"
+            >
+              <FaEye /> Live
+            </a>
+          )}
+          {project.links?.github && (
+            <a
+              href={project.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-white text-black border-4 border-black text-center py-2 md:py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2"
+              title="GitHub"
+            >
+              <FaGithub /> Source
+            </a>
+          )}
+        </div>
       </div>
     </motion.article>
   );
 });
 
 const ProjectModal = memo(function ProjectModal({ project, onClose }) {
-  // Use Portal to render modal at document.body level
   return createPortal(
-    <motion.div
-      className="project-modal"
-      variants={modalVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-8">
       <motion.div
-        className="project-modal__content"
+        className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+        variants={modalVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        onClick={onClose}
+      />
+      <motion.div
+        className="bg-white border-8 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative z-10 flex flex-col"
         variants={modalContentVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="project-modal__close"
+          className="absolute top-4 right-4 z-20 bg-primary-container border-4 border-black w-12 h-12 flex items-center justify-center text-black text-2xl hover:bg-black hover:text-primary-container transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
           onClick={onClose}
           aria-label="Close modal"
         >
           <FaTimes />
         </button>
 
-        <div className="project-modal__image-section">
+        <div className="h-48 md:h-80 border-b-8 border-black relative">
           <img
             src={getAssetPath(project.image)}
             alt={project.title}
-            className="project-modal__image"
+            className="w-full h-full object-cover"
           />
         </div>
 
-        <div className="project-modal__info">
-          <div className="project-modal__header">
-            <span className="project-modal__year">{project.year}</span>
-            <h2 className="project-modal__title">{project.title}</h2>
+        <div className="p-6 md:p-10 flex flex-col gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-black pb-6">
+            <div>
+              <span className="bg-black text-white font-label-bold px-3 py-1 border-2 border-black mb-2 inline-block shadow-[2px_2px_0px_0px_rgba(240,255,0,1)]">
+                {project.year}
+              </span>
+              <h2 className="font-headline-xl text-4xl md:text-5xl uppercase leading-tight">
+                {project.title}
+              </h2>
+            </div>
+
+            <div className="flex gap-4">
+              {project.links?.preview && (
+                <a
+                  href={project.links.preview}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-primary-container border-4 border-black p-3 text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                  title="Live Preview"
+                >
+                  <FaEye />
+                </a>
+              )}
+              {project.links?.github && (
+                <a
+                  href={project.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white border-4 border-black p-3 text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                  title="GitHub"
+                >
+                  <FaGithub />
+                </a>
+              )}
+            </div>
           </div>
 
-          <div className="project-modal__tags">
+          <div className="flex flex-wrap gap-3">
             {project.tags.map((tag) => (
-              <span key={tag} className="tag">
+              <span
+                key={tag}
+                className="bg-surface-variant text-black border-2 border-black px-3 py-1 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              >
                 {tag}
               </span>
             ))}
           </div>
 
-          <p className="project-modal__description">{project.description}</p>
-
-          <div className="project-modal__actions">
-            {project.links.preview && (
-              <a
-                href={project.links.preview}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-modal__btn project-modal__btn--primary"
-              >
-                <FaEye /> Live Preview
-              </a>
-            )}
-            {project.links.github && (
-              <a
-                href={project.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-modal__btn project-modal__btn--secondary"
-              >
-                <FaGithub /> View Code
-              </a>
-            )}
-            {project.links.linkedin && (
-              <a
-                href={project.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-modal__btn project-modal__btn--secondary"
-              >
-                <FaLinkedin /> LinkedIn
-              </a>
-            )}
-          </div>
+          <p className="font-body-lg text-lg border-4 border-black border-dashed p-6 bg-surface-variant">
+            {project.description}
+          </p>
         </div>
       </motion.div>
-    </motion.div>,
+    </div>,
     document.body,
   );
 });

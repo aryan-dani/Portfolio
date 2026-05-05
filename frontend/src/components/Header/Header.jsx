@@ -1,188 +1,108 @@
-import { useState, useEffect, useCallback, memo } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import {
-  FaHome,
-  FaBriefcase,
-  FaCode,
-  FaCertificate,
-  FaLaptopCode,
-  FaUser,
-  FaGithub,
-} from "react-icons/fa";
+import { useState, memo } from "react";
+import { NavLink } from "react-router-dom";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
-import "./Header.scss";
 
-// Desktop nav items - defined outside component to avoid recreation
 const navItems = [
-  { path: "/", label: "Home", icon: FaHome, shortcut: "H" },
-  {
-    path: "/experience",
-    label: "Experience",
-    icon: FaBriefcase,
-    shortcut: "E",
-  },
-  { path: "/projects", label: "Projects", icon: FaCode, shortcut: "P" },
-  {
-    path: "/certifications",
-    label: "Certifications",
-    icon: FaCertificate,
-    shortcut: "C",
-  },
-  { path: "/skills", label: "Skills", icon: FaLaptopCode, shortcut: "S" },
-  { path: "/about", label: "About", icon: FaUser, shortcut: "A" },
+  { path: "/projects", label: "Projects" },
+  { path: "/experience", label: "Experience" },
+  { path: "/skills", label: "Skills" },
+  { path: "/about", label: "About" },
+  { path: "/certifications", label: "Certifications" },
 ];
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  // Initial mount animation trigger
-  useEffect(() => {
-    const timer = requestAnimationFrame(() => setIsMounted(true));
-    return () => cancelAnimationFrame(timer);
-  }, []);
-
-  // Close menu on location change
-  useEffect(() => setIsMenuOpen(false), [location]);
-
-  // Keyboard navigation
-  const handleKeyDown = useCallback(
-    (e) => {
-      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
-        return;
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
-      const key = e.key.toUpperCase();
-      const item = navItems.find((item) => item.shortcut === key);
-      if (item) {
-        e.preventDefault();
-        navigate(item.path);
-      } else if (e.key === "Escape") setIsMenuOpen(false);
-    },
-    [navigate],
-  );
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
-
-  // Body scroll lock when mobile menu is open
-  useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isMenuOpen]);
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
     <>
-      <header
-        className={`floating-nav ${isMounted ? "floating-nav--mounted" : ""}`}
-      >
-        <nav className="floating-nav__container">
-          {/* Navigation Links */}
-          <ul className="floating-nav__list">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-
-              return (
-                <li key={item.path} className="floating-nav__item">
-                  <NavLink
-                    to={item.path}
-                    className={`floating-nav__link ${isActive ? "floating-nav__link--active" : ""}`}
-                    title={item.label}
-                  >
-                    <span className="floating-nav__icon">
-                      <Icon />
-                    </span>
-                    <span className="floating-nav__tooltip">{item.label}</span>
-                  </NavLink>
-                </li>
-              );
-            })}
-          </ul>
-
-          {/* Divider */}
-          <span className="floating-nav__divider" />
-
-          {/* GitHub Button */}
-          <a
-            href="https://github.com/Aryan-Dani"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="floating-nav__link floating-nav__github"
-            title="GitHub"
+      <nav className="sticky top-0 w-full border-b-4 border-black z-50 bg-white shadow-[0_8px_0_0_#000000]">
+        <div className="flex justify-between items-center px-4 md:px-8 h-24 w-full">
+          <NavLink
+            to="/"
+            className="text-2xl font-black tracking-tighter text-black border-4 border-black px-4 py-2 bg-[#F0FF00] shadow-[4px_4px_0_0_#000000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_#000000] transition-all"
           >
-            <span className="floating-nav__icon">
-              <FaGithub />
-            </span>
-            <span className="floating-nav__tooltip">GitHub</span>
-          </a>
-        </nav>
-      </header>
+            ARYAN DANI
+          </NavLink>
 
-      {/* Mobile Menu Button & Overlay */}
-      <button
-        className={`mobile-menu-btn ${isMenuOpen ? "mobile-menu-btn--open" : ""}`}
-        onClick={toggleMenu}
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        aria-expanded={isMenuOpen}
-      >
-        <span className="mobile-menu-btn__icon">
-          {isMenuOpen ? <HiX /> : <HiMenuAlt3 />}
-        </span>
-      </button>
+          <div className="hidden md:flex gap-6 lg:gap-8 items-center font-headline-md uppercase tracking-tighter font-bold text-sm lg:text-base">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `text-black font-bold opacity-90 hover:opacity-100 hover:bg-primary-container transition-all duration-100 px-3 py-1 border-4 ${
+                    isActive
+                      ? "bg-primary-container border-black shadow-[2px_2px_0_0_#000000]"
+                      : "border-transparent hover:border-black"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
 
-      <div
-        className={`mobile-overlay ${isMenuOpen ? "mobile-overlay--visible" : ""}`}
-        onClick={() => setIsMenuOpen(false)}
-        aria-hidden="true"
-      />
-
-      <nav className={`mobile-nav ${isMenuOpen ? "mobile-nav--visible" : ""}`}>
-        <ul className="mobile-nav__list">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-            return (
-              <li key={item.path} className="mobile-nav__item">
-                <NavLink
-                  to={item.path}
-                  className={`mobile-nav__link ${isActive ? "mobile-nav__link--active" : ""}`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <span className="mobile-nav__icon">
-                    <Icon />
-                  </span>
-                  <span className="mobile-nav__label">{item.label}</span>
-                  <span className="mobile-nav__shortcut">{item.shortcut}</span>
-                </NavLink>
-              </li>
-            );
-          })}
-          {/* GitHub link in mobile menu */}
-          <li className="mobile-nav__item">
-            <a
-              href="https://github.com/Aryan-Dani"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mobile-nav__link"
-              onClick={() => setIsMenuOpen(false)}
+          <div className="hidden md:block">
+            <NavLink
+              to="/about"
+              className="font-headline-md text-base uppercase tracking-widest font-black text-black bg-[#F0FF00] border-4 border-black px-6 py-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-100 flex items-center justify-center"
             >
-              <span className="mobile-nav__icon">
-                <FaGithub />
-              </span>
-              <span className="mobile-nav__label">GitHub</span>
-              <span className="mobile-nav__shortcut">G</span>
-            </a>
-          </li>
-        </ul>
+              Work with me
+            </NavLink>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="md:hidden text-black p-2"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <HiX size={28} /> : <HiMenuAlt3 size={28} />}
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-40 bg-white top-20 flex flex-col items-center pt-8 border-t-4 border-black font-headline-md uppercase font-bold text-xl gap-6">
+          <NavLink
+            to="/"
+            onClick={toggleMenu}
+            className={({ isActive }) =>
+              `w-full text-center py-4 border-4 ${isActive ? "bg-primary-container border-black shadow-[4px_4px_0_0_#000000]" : "border-transparent hover:border-black hover:bg-primary-container"}`
+            }
+          >
+            Home
+          </NavLink>
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={toggleMenu}
+              className={({ isActive }) =>
+                `w-full text-center py-4 border-4 transition-all ${
+                  isActive
+                    ? "bg-primary-container border-black shadow-[4px_4px_0_0_#000000]"
+                    : "border-transparent hover:border-black hover:bg-primary-container"
+                }`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+          <div className="w-full px-8 mt-4">
+            <NavLink
+              to="/about"
+              onClick={toggleMenu}
+              className="w-full flex justify-center items-center font-headline-md text-lg uppercase tracking-widest font-black text-black bg-[#F0FF00] border-4 border-black px-4 py-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+            >
+              Work with me
+            </NavLink>
+          </div>
+        </div>
+      )}
     </>
   );
 }

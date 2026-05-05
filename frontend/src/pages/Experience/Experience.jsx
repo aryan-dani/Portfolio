@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaChevronDown, FaExternalLinkAlt, FaBriefcase } from "react-icons/fa";
+import { FaChevronDown, FaExternalLinkAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
-import { getAssetPath } from "../../utils/paths";
-import PageHero from "../../components/PageHero/PageHero";
-import "./Experience.scss";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -19,23 +16,19 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 50, rotateX: 5 },
+  hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
     y: 0,
-    rotateX: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
+    transition: { duration: 0.5, ease: "easeOut" },
   },
 };
 
-const ExperienceVisual = () => (
-  <div className="experience-visual">
-    <FaBriefcase className="experience-visual__icon" />
-  </div>
-);
+const stylesList = [
+  { bg: "bg-black", text: "text-white", dotBg: "bg-primary-container" },
+  { bg: "bg-secondary", text: "text-white", dotBg: "bg-secondary" },
+  { bg: "bg-white", text: "text-black", dotBg: "bg-white" },
+];
 
 function Experience() {
   const [expandedId, setExpandedId] = useState(null);
@@ -45,103 +38,149 @@ function Experience() {
   };
 
   return (
-    <motion.section
-      className="experience"
+    <motion.div
+      className="flex flex-col gap-16 md:gap-section-gap relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <PageHero
-        category="Experience"
-        title="Professional journey"
-        titleHighlight="and growth"
-        highlights={[
-          "Building real-world solutions at innovative companies",
-          "From internships to full-stack development roles",
-          "Continuous learning and skill development",
-        ]}
-        visual={<ExperienceVisual />}
-      />
+      <header className="relative w-full mt-4">
+        <motion.div
+          variants={cardVariants}
+          className="inline-block bg-primary-container border-4 border-black px-6 md:px-8 py-4 md:py-6 mb-8 transition-transform"
+        >
+          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl uppercase text-black">
+            EXPERIENCE
+          </h1>
+        </motion.div>
+        <motion.p
+          variants={cardVariants}
+          className="font-body-lg text-base md:text-lg lg:text-body-lg max-w-3xl ml-2 md:ml-4 bg-white border-4 border-black p-4 md:p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+        >
+          A timeline of raw code, loud design, and shipped products. Building
+          stuff that matters.
+        </motion.p>
+      </header>
 
-      <div className="experience__container">
+      <section className="relative py-8 w-full">
+        {/* Timeline Center Line */}
+        <div className="absolute left-5 md:left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-2 bg-black z-0"></div>
 
+        {experiences.map((exp, index) => {
+          const isEven = index % 2 === 0;
+          const style = stylesList[index % stylesList.length];
+          const isExpanded = expandedId === exp.id;
 
-        <div className="experience__timeline">
-          {experiences.map((exp) => (
+          return (
             <motion.div
               key={exp.id}
-              className={`experience__card ${expandedId === exp.id ? "experience__card--expanded" : ""
-                }`}
+              className={`relative z-10 w-full mb-16 md:mb-24 flex flex-col md:flex-row md:justify-between items-start md:items-center ${isEven ? "" : "md:flex-row-reverse"}`}
               variants={cardVariants}
             >
-              <div className="experience__header">
-                <img
-                  src={getAssetPath(exp.logo)}
-                  alt={`${exp.company} logo`}
-                  className="experience__logo"
-                  loading="lazy"
-                />
-                <div className="experience__info">
-                  <div className="experience__meta">
-                    <span className="experience__period">{exp.period}</span>
-                    <span className="experience__position">{exp.position}</span>
-                  </div>
-                  <h3 className="experience__company">
-                    <a
-                      href={exp.companyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {exp.company}
-                      <FaExternalLinkAlt />
-                    </a>
-                  </h3>
-                </div>
-                <button
-                  className={`experience__toggle ${expandedId === exp.id ? "experience__toggle--active" : ""
-                    }`}
-                  onClick={() => toggleExpand(exp.id)}
-                  aria-label="Toggle details"
+              {/* Desktop Timeline Period */}
+              <div
+                className={`hidden md:block md:w-5/12 ${isEven ? "text-right pr-12" : "text-left pl-12"}`}
+              >
+                <div
+                  className={`inline-block ${style.bg} ${style.text} font-headline-md text-2xl border-4 border-black px-6 py-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all cursor-default uppercase`}
                 >
-                  <FaChevronDown />
-                </button>
+                  {exp.period}
+                </div>
               </div>
 
-              <AnimatePresence>
-                {expandedId === exp.id && (
-                  <motion.div
-                    className="experience__details"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+              {/* Center Dot */}
+              <div
+                className={`absolute left-5 md:left-1/2 transform -translate-x-1/2 w-9 h-9 ${style.dotBg} border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 top-4 md:top-auto md:translate-y-0`}
+              />
+
+              {/* Mobile Timeline Period & Card Content */}
+              <div
+                className={`w-full pl-16 md:pl-0 md:w-5/12 ${isEven ? "md:text-left md:pl-12" : "md:text-right md:pr-12"}`}
+              >
+                <div className="md:hidden mb-4">
+                  <div
+                    className={`inline-block ${style.bg} ${style.text} font-label-bold text-sm px-4 py-2 border-2 border-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
                   >
-                    <div className="experience__tags">
-                      {exp.technologies.map((tech) => (
-                        <span key={tech} className="tag">
-                          {tech}
-                        </span>
-                      ))}
+                    {exp.period}
+                  </div>
+                </div>
+
+                <div
+                  className={`bg-white border-4 border-black p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all ${isEven ? "text-left" : "text-left md:text-right"}`}
+                >
+                  <div className="border-b-4 border-black pb-4 mb-6 flex justify-between items-start">
+                    <div>
+                      <h3 className="font-headline-md text-2xl md:text-3xl mb-2 uppercase">
+                        {exp.position}
+                      </h3>
+                      <h4 className="font-label-bold text-sm md:text-base text-secondary uppercase tracking-widest">
+                        <a
+                          href={exp.companyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline flex items-center gap-2 w-fit"
+                        >
+                          {exp.company}
+                          <FaExternalLinkAlt className="text-xs" />
+                        </a>
+                      </h4>
                     </div>
-                    <ul className="experience__responsibilities">
-                      {exp.responsibilities.map((resp, index) => (
-                        <motion.li
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          dangerouslySetInnerHTML={{ __html: resp }}
-                        />
-                      ))}
-                    </ul>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    <button
+                      className={`text-2xl hover:text-secondary transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                      onClick={() => toggleExpand(exp.id)}
+                      aria-label="Toggle details"
+                    >
+                      <FaChevronDown />
+                    </button>
+                  </div>
+
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <ul className="list-none space-y-4 font-body-md text-base mt-4">
+                          {exp.responsibilities.map((resp, i) => (
+                            <li
+                              key={i}
+                              className={`flex items-start gap-3 ${isEven ? "" : "md:flex-row-reverse"}`}
+                            >
+                              <span className="text-primary-container bg-black border-2 border-black font-black px-2 py-0 mt-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                {isEven ? "→" : "←"}
+                              </span>
+                              <span
+                                dangerouslySetInnerHTML={{ __html: resp }}
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <div
+                    className={`mt-8 flex flex-wrap gap-2 ${isEven ? "" : "md:justify-end"}`}
+                  >
+                    {exp.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className="bg-surface-variant text-black font-label-bold text-xs md:text-sm px-3 py-1 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </motion.div>
-          ))}
-        </div>
-      </div>
-    </motion.section>
+          );
+        })}
+      </section>
+    </motion.div>
   );
 }
 

@@ -2,12 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import {
-  FaSearch,
-  FaTimes,
-  FaExternalLinkAlt,
-  FaLaptopCode,
-} from "react-icons/fa";
+import { FaSearch, FaTimes, FaExternalLinkAlt } from "react-icons/fa";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -19,9 +14,7 @@ import {
   FaPython,
   FaServer,
   FaChartLine,
-  FaComments,
   FaBrain,
-  FaCloud,
   FaRobot,
   FaEye,
 } from "react-icons/fa";
@@ -38,11 +31,9 @@ import {
   SiFlask,
   SiSupabase,
   SiOpencv,
+  SiDocker,
 } from "react-icons/si";
 import { skills, skillCategories } from "../../data/skills";
-import { projects } from "../../data/projects";
-import PageHero from "../../components/PageHero/PageHero";
-import "./Skills.scss";
 
 const iconMap = {
   FaHtml5,
@@ -55,9 +46,7 @@ const iconMap = {
   FaPython,
   FaServer,
   FaChartLine,
-  FaComments,
   FaBrain,
-  FaCloud,
   FaRobot,
   FaEye,
   SiTypescript,
@@ -72,181 +61,187 @@ const iconMap = {
   SiFlask,
   SiSupabase,
   SiOpencv,
+  SiDocker,
 };
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
-    },
+// Map categories to brutalist colors and rotations
+const categoryStyles = {
+  webdev: {
+    bg: "bg-white",
+    badgeBg: "bg-primary-container",
+    badgeText: "text-black",
+    badgeRotate: "",
+    pillColors: [
+      "bg-black text-white shadow-[4px_4px_0px_0px_rgba(240,255,0,1)]",
+      "bg-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+      "bg-secondary text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+      "bg-primary-container text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+    ],
+  },
+  machinelearning: {
+    bg: "bg-surface-variant",
+    badgeBg: "bg-black",
+    badgeText: "text-white",
+    badgeRotate: "",
+    pillColors: [
+      "bg-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+      "bg-primary-container text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+      "bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+      "bg-secondary text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+    ],
   },
 };
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.7,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-};
-
-const SkillsVisual = () => (
-  <div className="skills-visual">
-    <FaLaptopCode className="skills-visual__icon" />
-  </div>
-);
 
 function Skills() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedSkill, setSelectedSkill] = useState(null);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const navigate = useNavigate();
 
-  // Lock body scroll when modal is open
   useEffect(() => {
-    if (selectedSkill) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = selectedSkill ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [selectedSkill]);
 
-  const filteredSkills = useMemo(() => {
-    const allSkills = [];
-
+  const filteredCategories = useMemo(() => {
+    const result = {};
     Object.entries(skills).forEach(([category, categorySkills]) => {
-      categorySkills.forEach((skill) => {
-        if (activeCategory === "all" || activeCategory === category) {
-          if (
+      if (activeCategory === "all" || activeCategory === category) {
+        const filtered = categorySkills.filter(
+          (skill) =>
             searchTerm === "" ||
             skill.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            skill.description.toLowerCase().includes(searchTerm.toLowerCase())
-          ) {
-            allSkills.push({ ...skill, category });
-          }
+            skill.description.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+        if (filtered.length > 0) {
+          result[category] = filtered;
         }
-      });
+      }
     });
-
-    return allSkills;
+    return result;
   }, [searchTerm, activeCategory]);
 
   const getIcon = (iconName) => {
-    const IconComponent = iconMap[iconName];
-    return IconComponent ? <IconComponent /> : <FaServer />;
+    const IconComponent = iconMap[iconName] || FaServer;
+    return <IconComponent />;
   };
 
   return (
-    <motion.section
-      className="skills-page"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      <PageHero
-        category="Skills"
-        title="Technical expertise"
-        titleHighlight="and proficiency"
-        highlights={[
-          "Comprehensive toolkit for modern development",
-          "From frontend frameworks to AI/ML technologies",
-          "Continuous learning and skill refinement",
-        ]}
-        visual={<SkillsVisual />}
-      />
+    <div className="flex flex-col gap-16 md:gap-section-gap">
+      <section className="flex flex-col gap-6 w-full">
+        <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-[64px] text-black uppercase wrap-break-word border-b-8 border-black pb-4 inline-block self-start shadow-[8px_8px_0px_0px_rgba(240,255,0,1)]">
+          SKILLS & TOOLS
+        </h1>
+        <p className="font-body-lg text-base md:text-lg max-w-2xl border-l-4 border-black pl-4 py-2 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-4">
+          A chaotic sticker sheet of the technologies I use to build loud,
+          unapologetic digital experiences. Function over form, but make it look
+          cool.
+        </p>
 
-      <div className="skills-page__container">
-        <motion.div className="skills-page__controls" variants={cardVariants}>
-          <div
-            className={`skills-page__search ${isSearchFocused ? "skills-page__search--focused" : ""}`}
-          >
-            <div className="skills-page__search-inner">
-              <FaSearch className="skills-page__search-icon" />
-              <input
-                type="search"
-                placeholder="Search skills, technologies..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
-                className="skills-page__search-input"
-              />
-              {searchTerm && (
-                <button
-                  className="skills-page__search-clear"
-                  onClick={() => setSearchTerm("")}
-                  aria-label="Clear search"
-                >
-                  <FaTimes />
-                </button>
-              )}
-            </div>
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row gap-6 mt-8 items-start md:items-center justify-between">
+          <div className="flex items-center bg-white neo-border p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <FaSearch className="text-xl ml-2 mr-3" />
+            <input
+              type="text"
+              placeholder="Search skills..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="bg-transparent border-none outline-none w-full font-body-md text-lg"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="mr-2 p-1 hover:bg-primary-container border-2 border-transparent hover:border-black transition-all"
+              >
+                <FaTimes />
+              </button>
+            )}
           </div>
 
-          <div className="skills-page__tabs">
-            {skillCategories.map((category) => (
+          <div className="flex flex-wrap gap-4">
+            {skillCategories.map((cat) => (
               <button
-                key={category.id}
-                className={`skills-page__tab ${
-                  activeCategory === category.id
-                    ? "skills-page__tab--active"
-                    : ""
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-6 py-2 border-4 border-black font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none ${
+                  activeCategory === cat.id
+                    ? "bg-primary-container"
+                    : "bg-white"
                 }`}
-                onClick={() => setActiveCategory(category.id)}
               >
-                {category.label}
+                {cat.label}
               </button>
             ))}
           </div>
-        </motion.div>
+        </div>
+      </section>
 
-        <AnimatePresence mode="wait">
-          {filteredSkills.length > 0 ? (
-            <motion.div
-              className="skills-page__grid"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {filteredSkills.map((skill) => (
-                <SkillCard
-                  key={`${skill.category}-${skill.name}`}
-                  skill={skill}
-                  icon={getIcon(skill.icon)}
-                  onClick={() => setSelectedSkill(skill)}
-                />
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              className="skills-page__empty"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <FaSearch />
-              <h3>No skills match your search</h3>
-              <p>
-                Try adjusting your search or selecting a different category.
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      {/* Sticker Grid Layout */}
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-12 mt-4">
+        {Object.entries(filteredCategories).length > 0 ? (
+          Object.entries(filteredCategories).map(
+            ([category, categorySkills]) => {
+              const style = categoryStyles[category] || categoryStyles.webdev;
+              const categoryLabel =
+                skillCategories.find((c) => c.id === category)?.label ||
+                category;
 
-      {/* Skill Modal */}
+              return (
+                <div
+                  key={category}
+                  className={`${style.bg} border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 flex flex-col gap-6 relative group hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all mt-4`}
+                >
+                  <div
+                    className={`absolute -top-6 -left-4 ${style.badgeBg} border-4 border-black px-4 py-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${style.badgeRotate} z-10`}
+                  >
+                    <h2
+                      className={`font-headline-md text-2xl ${style.badgeText} uppercase`}
+                    >
+                      {categoryLabel}
+                    </h2>
+                  </div>
+                  <div className="flex flex-wrap gap-4 mt-4">
+                    {categorySkills.map((skill, index) => {
+                      const pillColor =
+                        style.pillColors[index % style.pillColors.length];
+
+                      return (
+                        <button
+                          key={skill.name}
+                          onClick={() =>
+                            setSelectedSkill({
+                              ...skill,
+                              category: categoryLabel,
+                            })
+                          }
+                          className={`${pillColor} font-label-bold text-sm md:text-base px-4 py-2 border-2 border-black flex items-center gap-2 hover:scale-105 transition-transform hover:z-20 active:scale-95`}
+                        >
+                          <span className="text-xl">{getIcon(skill.icon)}</span>
+                          {skill.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            },
+          )
+        ) : (
+          <div className="col-span-full bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
+            <h3 className="font-headline-md text-2xl uppercase">
+              No skills found
+            </h3>
+            <p className="font-body-md mt-4">
+              Try a different search term or category.
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* Brutalist Modal */}
       <AnimatePresence>
         {selectedSkill && (
           <SkillModal
@@ -260,102 +255,87 @@ function Skills() {
           />
         )}
       </AnimatePresence>
-    </motion.section>
-  );
-}
-
-function SkillCard({ skill, icon, onClick }) {
-  return (
-    <motion.div
-      className="skill-card"
-      variants={cardVariants}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && onClick()}
-    >
-      <div className="skill-card__front">
-        <span className="skill-card__icon">{icon}</span>
-        <h3 className="skill-card__name">{skill.name}</h3>
-      </div>
-      <div className="skill-card__back">
-        <div className="skill-card__progress">
-          <div
-            className="skill-card__progress-bar"
-            style={{ width: `${skill.level}%` }}
-          />
-        </div>
-        <p className="skill-card__level">{skill.level}%</p>
-      </div>
-    </motion.div>
+    </div>
   );
 }
 
 function SkillModal({ skill, icon, onClose, onProjectClick }) {
   return createPortal(
-    <motion.div
-      className="skill-modal"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       <motion.div
-        className="skill-modal__content"
-        initial={{ scale: 0.92, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-        onClick={(e) => e.stopPropagation()}
+        className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      />
+      <motion.div
+        className="bg-white border-8 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] max-w-2xl w-full p-8 relative z-10 flex flex-col gap-6"
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 20 }}
       >
         <button
-          className="skill-modal__close"
           onClick={onClose}
-          aria-label="Close modal"
+          className="absolute -top-6 -right-6 bg-primary-container border-4 border-black w-12 h-12 flex items-center justify-center text-black text-2xl hover:bg-black hover:text-primary-container transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <FaTimes />
         </button>
 
-        <div className="skill-modal__header">
-          <span className="skill-modal__icon">{icon}</span>
-          <h2 className="skill-modal__title">{skill.name}</h2>
+        <div className="flex items-center gap-4 border-b-4 border-black pb-4">
+          <div className="text-4xl bg-black text-white p-4 border-4 border-black shadow-[4px_4px_0px_0px_rgba(240,255,0,1)] -rotate-3">
+            {icon}
+          </div>
+          <div>
+            <h2 className="font-headline-xl text-4xl uppercase">
+              {skill.name}
+            </h2>
+            <span className="font-label-bold bg-secondary text-white px-3 py-1 border-2 border-black inline-block mt-2">
+              {skill.category}
+            </span>
+          </div>
         </div>
 
-        <div className="skill-modal__progress">
-          <div className="skill-modal__progress-bar">
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between font-label-bold uppercase text-lg">
+            <span>Proficiency</span>
+            <span>{skill.level}%</span>
+          </div>
+          <div className="h-8 w-full border-4 border-black bg-surface-variant flex shadow-[inset_0px_4px_0px_0px_rgba(0,0,0,0.1)]">
             <motion.div
-              className="skill-modal__progress-fill"
+              className="h-full bg-primary-container border-r-4 border-black"
               initial={{ width: 0 }}
               animate={{ width: `${skill.level}%` }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             />
           </div>
-          <span className="skill-modal__level">{skill.level}% Proficiency</span>
         </div>
 
-        <p className="skill-modal__description">{skill.description}</p>
+        <p className="font-body-lg text-lg bg-surface-variant p-4 border-4 border-black border-dashed">
+          {skill.description}
+        </p>
 
         {skill.projects && skill.projects.length > 0 && (
-          <div className="skill-modal__projects">
-            <h4>Used in:</h4>
-            <ul>
+          <div className="flex flex-col gap-4 mt-4">
+            <h4 className="font-headline-md text-2xl uppercase border-b-4 border-black inline-block w-fit">
+              Used in
+            </h4>
+            <div className="flex flex-wrap gap-3">
               {skill.projects.map((project) => (
-                <li
+                <button
                   key={project}
                   onClick={() => onProjectClick(project)}
-                  className="skill-modal__project-link"
+                  className="bg-white border-2 border-black px-4 py-2 font-label-bold uppercase flex items-center gap-2 hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
                 >
-                  <span>{project}</span>
-                  <FaExternalLinkAlt className="skill-modal__project-icon" />
-                </li>
+                  {project}
+                  <FaExternalLinkAlt className="text-sm" />
+                </button>
               ))}
-            </ul>
+            </div>
           </div>
         )}
       </motion.div>
-    </motion.div>,
+    </div>,
     document.body,
   );
 }

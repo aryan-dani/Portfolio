@@ -13,7 +13,7 @@ export const experiences = [
     ],
     responsibilities: [
       "Developing and deploying an automated system using Convolutional Neural networks and Vision Language Models to accurately classify and analyze anomalies in DICOM slices",
-      "Developed a real-time '<a href='https://github.com/aryan-dani/Speech_To_Text' target='_blank' rel='noopener noreferrer' style='color: aliceblue; text-decoration: underline;'>Speech to Text</a>' recognition system as a core project during the internship at Artem Health Tech, utilizing Angular.js and WebSockets to enable seamless voice-controlled interactions.",
+      "Developed a real-time '<a href='https://github.com/aryan-dani/Speech_To_Text' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-black hover:text-white transition-colors'>Speech to Text</a>' recognition system as a core project during the internship at Artem Health Tech, utilizing Angular.js and WebSockets to enable seamless voice-controlled interactions.",
       "Collaborating with cross-functional teams to reduce inference time of various large language models and enhance user experience and optimize overall platform performance.",
     ],
   },
