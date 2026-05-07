@@ -1,9 +1,11 @@
-import { memo } from "react";
+import { memo, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { aboutInfo } from "../../data/experience";
 import { getAssetPath } from "../../utils/paths";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
+
+// ─── Animation variants ────────────────────────────────────────────────────
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -22,15 +24,34 @@ const itemVariants = {
   },
 };
 
-const imageVariants = {
-  hidden: { opacity: 0, scale: 0.95, rotate: 0 },
+const carouselVariants = {
+  hidden: { opacity: 0, x: 60 },
   visible: {
     opacity: 1,
-    scale: 1,
-    rotate: 2,
-    transition: { duration: 0.5, ease: "backOut" },
+    x: 0,
+    transition: { duration: 0.55, ease: "backOut" },
   },
 };
+
+// slide directions: 1 = entering from right, -1 = entering from left
+const slideVariants = {
+  enter: (direction) => ({
+    x: direction > 0 ? "100%" : "-100%",
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+  exit: (direction) => ({
+    x: direction > 0 ? "-100%" : "100%",
+    opacity: 0,
+    transition: { duration: 0.35, ease: "easeIn" },
+  }),
+};
+
+// ─── Data ─────────────────────────────────────────────────────────────────
 
 const roles = [
   "Web Developer",
@@ -38,6 +59,125 @@ const roles = [
   "Tech Enthusiast",
   "Problem Solver",
 ];
+
+const photos = [
+  { src: "Images/Home/pic_1.jpg",  alt: `${aboutInfo.name} – photo 1`  },
+  { src: "Images/Home/pic_2.jpg",  alt: `${aboutInfo.name} – photo 2`  },
+];
+
+const INTERVAL_MS = 3500;
+
+// ─── Carousel sub-component ───────────────────────────────────────────────
+
+function PhotoCarousel() {
+  const [index, setIndex]       = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const go = useCallback(
+    (next) => {
+      const nextIdx = (next + photos.length) % photos.length;
+      setDirection(next > index ? 1 : -1);
+      setIndex(nextIdx);
+    },
+    [index]
+  );
+
+  // Auto-advance
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setDirection(1);
+      setIndex((prev) => (prev + 1) % photos.length);
+    }, INTERVAL_MS);
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
+  return (
+    <div
+      className="relative w-full max-w-sm md:max-w-md"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      {/* ── Main frame ── */}
+      <div
+        className="relative aspect-square border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
+        style={{ userSelect: "none" }}
+      >
+        {/* Slide area */}
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={index}
+            className="absolute inset-0"
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+          >
+            <img
+              src={getAssetPath(photos[index].src)}
+              alt={photos[index].alt}
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* ── Arrow buttons ── */}
+        <button
+          onClick={() => go(index - 1)}
+          aria-label="Previous photo"
+          className="nb-carousel-arrow absolute left-2 top-1/2 -translate-y-1/2 z-20"
+        >
+          ‹
+        </button>
+        <button
+          onClick={() => go(index + 1)}
+          aria-label="Next photo"
+          className="nb-carousel-arrow absolute right-2 top-1/2 -translate-y-1/2 z-20"
+        >
+          ›
+        </button>
+
+        {/* ── Index badge (top-right corner) ── */}
+        <div className="absolute top-2 right-2 z-20 bg-primary-container border-2 border-black px-2 py-0.5 text-xs font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          {index + 1} / {photos.length}
+        </div>
+      </div>
+
+      {/* ── Dot navigation ── */}
+      <div className="flex items-center justify-center gap-3 mt-4">
+        {photos.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => go(i)}
+            aria-label={`Go to photo ${i + 1}`}
+            className={`border-2 border-black transition-all duration-200 ${
+              i === index
+                ? "w-6 h-4 bg-primary-container shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                : "w-4 h-4 bg-white hover:bg-gray-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* ── Progress bar ── */}
+      <div className="mt-3 h-1.5 bg-white border-2 border-black overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+        <motion.div
+          className="h-full bg-primary-container"
+          key={`progress-${index}`}
+          initial={{ width: "0%" }}
+          animate={{ width: isPaused ? undefined : "100%" }}
+          transition={{ duration: INTERVAL_MS / 1000, ease: "linear" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────
 
 const Home = memo(function Home() {
   return (
@@ -47,6 +187,7 @@ const Home = memo(function Home() {
       animate="visible"
       variants={containerVariants}
     >
+      {/* ── Text content ── */}
       <div className="flex-1 flex flex-col gap-6 lg:gap-8 max-w-3xl w-full z-10">
         <motion.h1
           className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-on-background uppercase wrap-break-word leading-none bg-white neo-border p-3 md:p-4 neo-shadow inline-block w-fit"
@@ -71,9 +212,9 @@ const Home = memo(function Home() {
           className="font-body-lg text-base md:text-lg lg:text-body-lg text-on-background bg-white neo-border p-4 neo-shadow max-w-2xl"
           variants={itemVariants}
         >
-          I'm a passionate Web Developer and AI Engineer, dedicated to crafting
-          seamless, high-performance web solutions. Discover my projects,
-          skills, and certifications below.
+          I&apos;m a passionate Web Developer and AI Engineer, dedicated to
+          crafting seamless, high-performance web solutions. Discover my
+          projects, skills, and certifications below.
         </motion.p>
 
         <motion.div
@@ -95,20 +236,12 @@ const Home = memo(function Home() {
         </motion.div>
       </div>
 
+      {/* ── Carousel ── */}
       <motion.div
         className="flex-1 w-full flex justify-center lg:justify-end mt-12 lg:mt-0"
-        variants={imageVariants}
+        variants={carouselVariants}
       >
-        <div className="relative w-full max-w-sm md:max-w-md aspect-square border-4 border-black bg-white p-2 md:p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-transform duration-300">
-          <img
-            src={getAssetPath("Images/Home_Page.jpg")}
-            alt={aboutInfo.name}
-            className="w-full h-full object-cover neo-border grayscale hover:grayscale-0 transition-all duration-300"
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-          />
-        </div>
+        <PhotoCarousel />
       </motion.div>
     </motion.section>
   );

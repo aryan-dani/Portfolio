@@ -55,7 +55,7 @@ function Experience() {
         </motion.div>
         <motion.p
           variants={cardVariants}
-          className="font-body-lg text-base md:text-lg lg:text-body-lg max-w-3xl ml-2 md:ml-4 bg-white border-4 border-black p-4 md:p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          className="font-body-lg text-base md:text-lg lg:text-body-lg max-w-3xl bg-white border-4 border-black p-4 md:p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
         >
           A timeline of raw code, loud design, and shipped products. Building
           stuff that matters.
@@ -74,7 +74,7 @@ function Experience() {
           return (
             <motion.div
               key={exp.id}
-              className={`relative z-10 w-full mb-16 md:mb-24 flex flex-col md:flex-row md:justify-between items-start md:items-center ${isEven ? "" : "md:flex-row-reverse"}`}
+              className={`relative z-10 w-full mb-10 md:mb-16 flex flex-col md:flex-row md:justify-between items-start md:items-center ${isEven ? "" : "md:flex-row-reverse"}`}
               variants={cardVariants}
             >
               {/* Desktop Timeline Period */}

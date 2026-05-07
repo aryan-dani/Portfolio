@@ -61,7 +61,7 @@ function Copyright() {
         </div>
       </header>
 
-      <div className="max-w-4xl w-full">
+      <div className="w-full">
         <motion.div className="mb-12" variants={itemVariants}>
           <Link
             to="/"

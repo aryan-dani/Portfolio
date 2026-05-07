@@ -73,5 +73,11 @@ Future goals? Become the Mrwhosetheboss of my generation, but with more AI magic
       description:
         "Experienced in collaborating with cross-functional teams to deliver impactful projects.",
     },
+    {
+      icon: "🍵",
+      title: "Tea Addict",
+      description:
+        "Runs on chai, not coffee. Debugging is 40% logic, 60% the right cup of tea. Fight me.",
+    },
   ],
 };

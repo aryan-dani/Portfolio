@@ -1,43 +1,40 @@
-@use "../../styles/variables" as *;
-
 .back-to-top {
   position: fixed;
   bottom: 2rem;
   left: 2rem;
-  width: 50px;
-  height: 50px;
-  background: rgba($secondary-color, 0.15);
-  border: 1px solid rgba($secondary-color, 0.3);
-  border-radius: 12px;
-  color: $secondary-color;
+  width: 48px;
+  height: 48px;
+  background: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  color: #000000;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: $z-header - 1;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all $transition-speed ease-out;
+  z-index: 99;
+  transition: box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
+  will-change: box-shadow;
 
   svg {
-    font-size: 1.2rem;
-    transition: transform $transition-speed ease-out;
+    font-size: 1.1rem;
   }
 
   &:hover {
-    background: $secondary-color;
-    color: $primary-color;
-    box-shadow: 0 8px 25px rgba($secondary-color, 0.3);
-
-    svg {
-      transform: translateY(-2px);
-    }
+    background: #f0ff00;
+    box-shadow: none;
   }
 
-  @media (max-width: $breakpoint-sm) {
-    bottom: 1.5rem;
-    left: 1.5rem;
-    width: 44px;
-    height: 44px;
+  &:active {
+    background: #000000;
+    color: #f0ff00;
+    box-shadow: none;
+  }
+
+  @media (max-width: 576px) {
+    bottom: 1.25rem;
+    left: 1.25rem;
+    width: 42px;
+    height: 42px;
   }
 }

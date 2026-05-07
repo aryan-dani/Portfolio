@@ -116,19 +116,7 @@ export const skills = {
         "Open-source Firebase alternative with PostgreSQL database, authentication, and storage.",
       projects: ["The Fourth Clover"],
     },
-    {
-      name: "REST APIs",
-      icon: "FaServer",
-      level: 80,
-      description:
-        "Designing and implementing RESTful APIs with proper status codes and response formats.",
-      projects: [
-        "API Demonstration Application",
-        "DebateBot",
-        "North-Star",
-        "PosePro",
-      ],
-    },
+
   ],
   machinelearning: [
     {
@@ -201,14 +189,7 @@ export const skills = {
         "Designing and implementing Dual-Agent and Multi-Agent state machines for specialized tasks like interview simulation and autonomous code healing.",
       projects: ["The Shadow Instructor", "Arbiter: RIFT 2026"],
     },
-    {
-      name: "Docker Sandboxing",
-      icon: "SiDocker",
-      level: 70,
-      description:
-        "Leveraging Docker for secure, isolated execution of untrusted code and automated testing environments in CI/CD pipelines.",
-      projects: ["Arbiter: RIFT 2026"],
-    },
+
     {
       name: "Deep Learning",
       icon: "FaBrain",
@@ -241,10 +222,50 @@ export const skills = {
       ],
     },
   ],
+  devops: [
+    {
+      name: "Docker",
+      icon: "SiDocker",
+      level: 70,
+      description:
+        "Leveraging Docker for secure, isolated execution of untrusted code and automated testing environments in CI/CD pipelines.",
+      projects: ["Arbiter: RIFT 2026"],
+    },
+    {
+      name: "Git & GitHub",
+      icon: "FaServer",
+      level: 85,
+      description:
+        "Version control, branching strategies, pull requests, and collaborative development workflows.",
+      projects: ["Portfolio Site", "The Fourth Clover", "DebateBot", "Arbiter: RIFT 2026"],
+    },
+    {
+      name: "Vercel",
+      icon: "FaServer",
+      level: 75,
+      description:
+        "Deploying and managing serverless applications, preview deployments, and analytics integration.",
+      projects: ["Portfolio Site", "The Fourth Clover"],
+    },
+    {
+      name: "REST API Design",
+      icon: "FaServer",
+      level: 80,
+      description:
+        "Designing and implementing RESTful APIs with proper status codes, authentication, and response formats.",
+      projects: [
+        "API Demonstration Application",
+        "DebateBot",
+        "North-Star",
+        "PosePro",
+      ],
+    },
+  ],
 };
 
 export const skillCategories = [
   { id: "all", label: "All" },
   { id: "webdev", label: "Web Development" },
   { id: "machinelearning", label: "AI & ML" },
+  { id: "devops", label: "DevOps & Tools" },
 ];

@@ -10,7 +10,6 @@ import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout/Layout";
 import { ToastProvider } from "./context/ToastContext";
 
-// ScrollProgress removed per user request
 import BackToTop from "./components/BackToTop/BackToTop";
 import PageLoader from "./components/PageLoader/PageLoader";
 
@@ -34,13 +33,13 @@ function PageFallback() {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background: "#272727"
+      background: "#f9f9f9"
     }}>
       <div style={{
         width: "40px",
         height: "40px",
-        border: "3px solid rgba(240, 248, 255, 0.1)",
-        borderTopColor: "aliceblue",
+        border: "3px solid rgba(0, 0, 0, 0.1)",
+        borderTopColor: "#000000",
         borderRadius: "50%",
         animation: "spin 1s linear infinite"
       }} />
@@ -109,8 +108,6 @@ function App() {
         basename={basename}
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
-
-
         <BackToTop />
         <AnimatedRoutes />
         <Analytics />

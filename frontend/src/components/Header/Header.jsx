@@ -5,9 +5,9 @@ import { HiMenuAlt3, HiX } from "react-icons/hi";
 const navItems = [
   { path: "/projects", label: "Projects" },
   { path: "/experience", label: "Experience" },
+  { path: "/certifications", label: "Certifications" },
   { path: "/skills", label: "Skills" },
   { path: "/about", label: "About" },
-  { path: "/certifications", label: "Certifications" },
 ];
 
 function Header() {
@@ -18,7 +18,7 @@ function Header() {
   return (
     <>
       <nav className="sticky top-0 w-full border-b-4 border-black z-50 bg-white shadow-[0_8px_0_0_#000000]">
-        <div className="flex justify-between items-center px-4 md:px-8 h-24 w-full">
+        <div className="flex justify-between items-center px-4 md:px-8 h-20 w-full">
           <NavLink
             to="/"
             className="text-2xl font-black tracking-tighter text-black border-4 border-black px-4 py-2 bg-[#F0FF00] shadow-[4px_4px_0_0_#000000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_#000000] transition-all"

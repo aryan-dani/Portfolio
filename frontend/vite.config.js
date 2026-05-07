@@ -50,8 +50,6 @@ export default defineConfig({
           "vendor-motion": ["framer-motion"],
           // Icons library
           "vendor-icons": ["react-icons"],
-          // Particles in its own chunk (heavy)
-          "vendor-particles": ["react-tsparticles", "tsparticles-slim"],
         },
       },
     },

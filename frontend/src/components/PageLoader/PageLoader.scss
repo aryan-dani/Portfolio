@@ -1,122 +1,104 @@
-@use "../../styles/variables" as *;
+// Neo-brutalist Page Loader
+
+// ──────────────────────────────────────────────
+//  NEO-BRUTALIST PAGE LOADER
+// ──────────────────────────────────────────────
 
 .page-loader {
   position: fixed;
   inset: 0;
-  background: rgba(15, 15, 15, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: #f5f0e8; // warm off-white — matches the neobrutalist canvas
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 99999;
 }
 
-.terminal {
+// ── The "card" container ────────────────────────
+.nb-loader {
   width: 90%;
-  max-width: 600px;
-  background: rgba(30, 30, 30, 0.95);
-  border-radius: 12px;
-  box-shadow:
-    0 25px 80px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 0 60px rgba($secondary-color, 0.1);
-  overflow: hidden;
+  max-width: 560px;
+  background: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 8px 8px 0px #000000; // hard offset — classic neobrutalism
   font-family: "SF Mono", "Monaco", "Consolas", "Liberation Mono", monospace;
+  overflow: hidden;
 
+  // ── Header bar ──────────────────────────────
   &__header {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
-    background: rgba(45, 45, 45, 0.9);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  &__buttons {
-    display: flex;
-    gap: 8px;
-  }
-
-  &__button {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-
-    &--close {
-      background: #ff5f57;
-      box-shadow: 0 0 6px rgba(255, 95, 87, 0.4);
-    }
-
-    &--minimize {
-      background: #febc2e;
-      box-shadow: 0 0 6px rgba(254, 188, 46, 0.4);
-    }
-
-    &--maximize {
-      background: #28c840;
-      box-shadow: 0 0 6px rgba(40, 200, 64, 0.4);
-    }
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #000000;
+    border-bottom: 3px solid #000000;
   }
 
   &__title {
-    flex: 1;
-    text-align: center;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 500;
+    font-size: 0.78rem;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  &__spacer {
-    width: 52px; // Balance the buttons
+  &__badge {
+    font-size: 0.7rem;
+    color: #000000;
+    background: #f5c842; // neobrutalist yellow accent
+    font-weight: 800;
+    padding: 2px 8px;
+    border: 2px solid #000000;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
+  // ── Terminal body ───────────────────────────
   &__body {
     padding: 20px 24px;
     min-height: 200px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    position: relative;
+    gap: 6px;
+    background: #ffffff;
   }
 
+  // ── Individual lines ────────────────────────
   &__line {
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 0.875rem;
+    line-height: 1.65;
     display: flex;
     align-items: center;
+    font-weight: 500;
 
     &--command {
-      color: $secondary-color;
-      font-weight: 500;
+      color: #000000;
+      font-weight: 700;
 
-      .terminal__text {
-        &::before {
-          content: "";
-        }
+      .nb-loader__text::before {
+        content: "";
       }
     }
 
     &--success {
-      color: #28c840;
-
-      .terminal__text::first-letter {
-        color: #28c840;
-      }
+      color: #1a7a1a; // dark green — readable on white
+      font-weight: 600;
     }
 
     &--info {
-      color: #60a5fa;
-
-      .terminal__text::first-letter {
-        color: #60a5fa;
-      }
+      color: #1a4fa8;
+      font-weight: 500;
     }
 
     &--final {
-      color: $secondary-color;
-      font-weight: 600;
-      margin-top: 8px;
-      text-shadow: 0 0 20px rgba($secondary-color, 0.4);
+      color: #000000;
+      font-weight: 800;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #f5c842;
+      border: 2px solid #000000;
+      display: inline-block;
+      letter-spacing: 0.02em;
     }
   }
 
@@ -124,19 +106,34 @@
     white-space: pre-wrap;
   }
 
+  // ── Blinking cursor ─────────────────────────
   &__cursor {
     display: inline-block;
     width: 10px;
-    height: 20px;
-    background: $secondary-color;
-    margin-left: 2px;
-    animation: blink 1s step-end infinite;
-    box-shadow: 0 0 10px rgba($secondary-color, 0.5);
+    height: 1.1em;
+    background: #000000;
+    margin-left: 3px;
+    vertical-align: middle;
+    animation: nb-blink 0.9s step-end infinite;
   }
 }
 
-@keyframes blink {
+// ── Progress bar strip at the bottom ───────────
+.nb-loader__progress-track {
+  height: 6px;
+  background: #e0ddd5;
+  border-top: 2px solid #000000;
+  width: 100%;
 
+  .nb-loader__progress-fill {
+    height: 100%;
+    background: #f5c842;
+    border-right: 2px solid #000000;
+    transition: width 0.25s ease;
+  }
+}
+
+@keyframes nb-blink {
   0%,
   100% {
     opacity: 1;
@@ -147,23 +144,14 @@
   }
 }
 
-// Mobile responsive
-@media (max-width: $breakpoint-sm) {
-  .terminal {
+// ── Mobile responsive ────────────────────────────
+@media (max-width: 576px) {
+  .nb-loader {
     width: 95%;
-    border-radius: 10px;
+    box-shadow: 5px 5px 0px #000000;
 
     &__header {
-      padding: 10px 14px;
-    }
-
-    &__buttons {
-      gap: 6px;
-    }
-
-    &__button {
-      width: 10px;
-      height: 10px;
+      padding: 8px 12px;
     }
 
     &__title {
