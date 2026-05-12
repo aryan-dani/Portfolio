@@ -77,7 +77,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { type: "spring", stiffness: 300, damping: 24 },
   },
 };
 
@@ -357,7 +357,7 @@ function Skills() {
         ) : (
           <motion.div
             key="grid-view"
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -440,51 +440,50 @@ function Skills() {
 function SkillListItem({ skill, icon, onClick, levelColor, levelTextColor }) {
   return (
     <motion.button
-      className="w-full text-left bg-white border-4 border-black p-4 md:p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group"
+      className="w-full text-left bg-white border-2 border-black p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group"
       variants={cardVariants}
       onClick={onClick}
     >
-      <div className="flex flex-col md:flex-row md:items-center gap-4">
+      <div className="flex items-center gap-4">
         {/* Icon + Name */}
-        <div className="flex items-center gap-4 md:w-64 shrink-0">
-          <div className="text-2xl bg-black text-primary-container p-2 border-2 border-black group-hover:rotate-6 transition-transform">
+        <div className="flex items-center gap-3 w-48 md:w-56 shrink-0">
+          <div className="text-xl bg-black text-primary-container p-2 border-2 border-black group-hover:rotate-6 transition-transform">
             {icon}
           </div>
-          <div>
-            <h3 className="font-headline-md text-lg md:text-xl uppercase">
+          <div className="min-w-0">
+            <h3 className="font-headline-md text-base md:text-lg uppercase truncate">
               {skill.name}
             </h3>
-            <span className="font-label-bold text-xs uppercase text-secondary">
+            <span className="font-label-bold text-[10px] uppercase text-secondary">
               {skill.category}
             </span>
           </div>
         </div>
 
         {/* Progress bar */}
-        <div className="flex-1 flex items-center gap-4">
-          <div className="flex-1 h-5 md:h-6 border-3 border-black bg-surface-variant overflow-hidden">
+        <div className="hidden sm:flex flex-1 items-center gap-4">
+          <div className="flex-1 h-3 border-2 border-black bg-surface-variant overflow-hidden">
             <motion.div
               className={`h-full ${levelColor}`}
               initial={{ width: 0 }}
-              whileInView={{ width: `${skill.level}%` }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              animate={{ width: `${skill.level}%` }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             />
           </div>
-          <span className="font-headline-md text-lg md:text-xl w-14 text-right">
+          <span className="font-headline-md text-sm md:text-base w-10 text-right">
             {skill.level}%
           </span>
         </div>
 
         {/* Badge */}
         <div
-          className={`${levelColor} ${levelTextColor} border-2 border-black px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0`}
+          className={`${levelColor} ${levelTextColor} border-2 border-black px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0 ml-auto`}
         >
           {getProficiencyLabel(skill.level)}
         </div>
 
         {/* Click indicator */}
-        <span className="hidden md:block text-lg font-black group-hover:translate-x-1 transition-transform">
+        <span className="hidden md:block text-base font-black group-hover:translate-x-1 transition-transform">
           →
         </span>
       </div>
@@ -497,26 +496,26 @@ function SkillListItem({ skill, icon, onClick, levelColor, levelTextColor }) {
 function SkillGridCard({ skill, icon, onClick, levelColor, levelTextColor }) {
   return (
     <motion.button
-      className="w-full text-left bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group flex flex-col gap-4"
+      className="w-full text-left bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group flex flex-col gap-3"
       variants={cardVariants}
       onClick={onClick}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-2xl bg-black text-primary-container p-3 border-2 border-black group-hover:rotate-12 transition-transform">
+          <div className="text-xl bg-black text-primary-container p-2 border-2 border-black group-hover:rotate-6 transition-transform">
             {icon}
           </div>
           <div>
-            <h3 className="font-headline-md text-xl uppercase">
+            <h3 className="font-headline-md text-base md:text-lg uppercase">
               {skill.name}
             </h3>
-            <span className="font-label-bold text-xs uppercase text-secondary">
+            <span className="font-label-bold text-[10px] uppercase text-secondary">
               {skill.category}
             </span>
           </div>
         </div>
         <div
-          className={`${levelColor} ${levelTextColor} border-2 border-black px-2 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+          className={`${levelColor} ${levelTextColor} border-2 border-black px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
         >
           {getProficiencyLabel(skill.level)}
         </div>
@@ -524,29 +523,28 @@ function SkillGridCard({ skill, icon, onClick, levelColor, levelTextColor }) {
 
       {/* Progress */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-4 border-2 border-black bg-surface-variant overflow-hidden">
+        <div className="flex-1 h-3 border-2 border-black bg-surface-variant overflow-hidden">
           <motion.div
             className={`h-full ${levelColor}`}
             initial={{ width: 0 }}
-            whileInView={{ width: `${skill.level}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            animate={{ width: `${skill.level}%` }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           />
         </div>
-        <span className="font-headline-md text-base w-12 text-right">
+        <span className="font-headline-md text-sm w-8 text-right">
           {skill.level}%
         </span>
       </div>
 
       {/* Description preview */}
-      <p className="font-body-md text-sm text-on-surface-variant overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+      <p className="font-body-md text-xs text-on-surface-variant overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
         {skill.description}
       </p>
 
       {/* Click hint */}
-      <div className="flex items-center gap-2 font-label-bold text-xs uppercase text-secondary opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-black">
-        <FaExternalLinkAlt className="text-xs" />
-        Click to view details & projects
+      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-secondary opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-black">
+        <FaExternalLinkAlt className="text-[10px]" />
+        Click for details
       </div>
     </motion.button>
   );
@@ -556,10 +554,10 @@ function SkillGridCard({ skill, icon, onClick, levelColor, levelTextColor }) {
 
 function EmptyState() {
   return (
-    <div className="col-span-full bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
-      <FaSearch className="text-4xl mx-auto mb-4" />
-      <h3 className="font-headline-md text-2xl uppercase">No skills found</h3>
-      <p className="font-body-md mt-4">
+    <div className="col-span-full bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+      <FaSearch className="text-3xl mx-auto mb-3" />
+      <h3 className="font-headline-md text-xl uppercase">No skills found</h3>
+      <p className="font-body-md text-sm mt-2">
         Try a different search term or category.
       </p>
     </div>
@@ -579,65 +577,66 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         onClick={onClose}
       />
       <motion.div
-        className="bg-white border-8 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] max-w-2xl w-full p-8 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto"
-        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+        className="bg-white border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] max-w-lg w-full p-6 relative z-10 flex flex-col gap-5 max-h-[90vh] overflow-y-auto"
+        initial={{ scale: 0.95, opacity: 0, y: 20, rotate: -1 }}
+        animate={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20, rotate: 1 }}
+        transition={{ type: "spring", stiffness: 350, damping: 25 }}
       >
         <button
           onClick={onClose}
-          className="absolute -top-6 -right-6 bg-primary-container border-4 border-black w-12 h-12 flex items-center justify-center text-black text-2xl hover:bg-black hover:text-primary-container transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className="absolute top-2 right-2 bg-primary-container border-2 border-black w-10 h-10 flex items-center justify-center text-black text-xl hover:bg-black hover:text-primary-container transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
         >
           <FaTimes />
         </button>
 
-        <div className="flex items-center gap-4 border-b-4 border-black pb-4">
-          <div className="text-4xl bg-black text-white p-4 border-4 border-black shadow-[4px_4px_0px_0px_rgba(240,255,0,1)] -rotate-3">
+        <div className="flex items-center gap-4 border-b-2 border-black pb-4">
+          <div className="text-3xl bg-black text-white p-3 border-2 border-black shadow-[3px_3px_0px_0px_rgba(240,255,0,1)]">
             {icon}
           </div>
-          <div>
-            <h2 className="font-headline-xl text-3xl md:text-4xl uppercase">
+          <div className="min-w-0">
+            <h2 className="font-headline-xl text-2xl md:text-3xl uppercase truncate">
               {skill.name}
             </h2>
-            <span className="font-label-bold bg-secondary text-white px-3 py-1 border-2 border-black inline-block mt-2">
+            <span className="font-label-bold bg-secondary text-white px-2 py-0.5 text-xs border-2 border-black inline-block mt-1">
               {skill.category}
             </span>
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="flex justify-between font-label-bold uppercase text-lg">
+          <div className="flex justify-between font-label-bold uppercase text-sm">
             <span>Proficiency</span>
             <span>{skill.level}% — {getProficiencyLabel(skill.level)}</span>
           </div>
-          <div className="h-8 w-full border-4 border-black bg-surface-variant flex shadow-[inset_0px_4px_0px_0px_rgba(0,0,0,0.1)]">
+          <div className="h-6 w-full border-2 border-black bg-surface-variant flex">
             <motion.div
-              className="h-full bg-primary-container border-r-4 border-black"
+              className="h-full bg-primary-container border-r-2 border-black"
               initial={{ width: 0 }}
               animate={{ width: `${skill.level}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             />
           </div>
         </div>
 
-        <p className="font-body-lg text-lg bg-surface-variant p-4 border-4 border-black border-dashed">
+        <p className="font-body-md text-base bg-surface-variant p-4 border-2 border-black border-dashed">
           {skill.description}
         </p>
 
         {skill.projects && skill.projects.length > 0 && (
-          <div className="flex flex-col gap-4 mt-2">
-            <h4 className="font-headline-md text-2xl uppercase border-b-4 border-black inline-block w-fit">
+          <div className="flex flex-col gap-3 mt-1">
+            <h4 className="font-headline-md text-xl uppercase border-b-2 border-black inline-block w-fit">
               Used in
             </h4>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
               {skill.projects.map((project) => (
                 <button
                   key={project}
                   onClick={() => onProjectClick(project)}
-                  className="bg-white border-2 border-black px-4 py-2 font-label-bold uppercase flex items-center gap-2 hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+                  className="bg-white border-2 border-black px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 hover:bg-black hover:text-white transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
                 >
                   {project}
-                  <FaExternalLinkAlt className="text-sm" />
+                  <FaExternalLinkAlt className="text-[10px]" />
                 </button>
               ))}
             </div>

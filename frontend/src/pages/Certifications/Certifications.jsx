@@ -258,15 +258,25 @@ const CertificationCard = memo(function CertificationCard({
           </span>
         </div>
 
-        <a
-          href={cert.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-primary-container text-black border-4 border-black text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2"
-        >
-          <FaExternalLinkAlt className="text-sm" />
-          View Certificate
-        </a>
+        {cert.link && cert.link !== "#" ? (
+          <a
+            href={cert.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-primary-container text-black border-4 border-black text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2"
+          >
+            <FaExternalLinkAlt className="text-sm" />
+            View Certificate
+          </a>
+        ) : (
+          <button
+            onClick={onImageClick}
+            className="bg-primary-container text-black border-4 border-black text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-pointer"
+          >
+            <FaEye className="text-sm" />
+            View Certificate
+          </button>
+        )}
       </div>
     </motion.article>
   );

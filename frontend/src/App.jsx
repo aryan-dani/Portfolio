@@ -12,6 +12,8 @@ import { ToastProvider } from "./context/ToastContext";
 
 import BackToTop from "./components/BackToTop/BackToTop";
 import PageLoader from "./components/PageLoader/PageLoader";
+import CustomCursor from "./components/CustomCursor/CustomCursor";
+import NoiseOverlay from "./components/NoiseOverlay/NoiseOverlay";
 
 // Lazy load all page components for code splitting
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -58,43 +60,41 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Layout />}>
-          <Route index element={
-            <Suspense fallback={<PageFallback />}>
-              <Home />
-            </Suspense>
-          } />
-          <Route path="experience" element={
-            <Suspense fallback={<PageFallback />}>
-              <Experience />
-            </Suspense>
-          } />
-          <Route path="projects" element={
-            <Suspense fallback={<PageFallback />}>
-              <Projects />
-            </Suspense>
-          } />
-          <Route path="certifications" element={
-            <Suspense fallback={<PageFallback />}>
-              <Certifications />
-            </Suspense>
-          } />
-          <Route path="skills" element={
-            <Suspense fallback={<PageFallback />}>
-              <Skills />
-            </Suspense>
-          } />
-          <Route path="about" element={
-            <Suspense fallback={<PageFallback />}>
-              <About />
-            </Suspense>
-          } />
-          <Route path="copyright" element={
-            <Suspense fallback={<PageFallback />}>
-              <Copyright />
-            </Suspense>
-          } />
-        </Route>
+        <Route index element={
+          <Suspense fallback={<PageFallback />}>
+            <Home />
+          </Suspense>
+        } />
+        <Route path="experience" element={
+          <Suspense fallback={<PageFallback />}>
+            <Experience />
+          </Suspense>
+        } />
+        <Route path="projects" element={
+          <Suspense fallback={<PageFallback />}>
+            <Projects />
+          </Suspense>
+        } />
+        <Route path="certifications" element={
+          <Suspense fallback={<PageFallback />}>
+            <Certifications />
+          </Suspense>
+        } />
+        <Route path="skills" element={
+          <Suspense fallback={<PageFallback />}>
+            <Skills />
+          </Suspense>
+        } />
+        <Route path="about" element={
+          <Suspense fallback={<PageFallback />}>
+            <About />
+          </Suspense>
+        } />
+        <Route path="copyright" element={
+          <Suspense fallback={<PageFallback />}>
+            <Copyright />
+          </Suspense>
+        } />
       </Routes>
     </AnimatePresence>
   );
@@ -103,13 +103,17 @@ function AnimatedRoutes() {
 function App() {
   return (
     <ToastProvider>
+      <NoiseOverlay />
+      <CustomCursor />
       <PageLoader />
       <Router
         basename={basename}
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
         <BackToTop />
-        <AnimatedRoutes />
+        <Layout>
+          <AnimatedRoutes />
+        </Layout>
         <Analytics />
       </Router>
     </ToastProvider>

@@ -19,13 +19,14 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 25 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.45,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      type: "spring",
+      stiffness: 300,
+      damping: 24,
     },
   },
 };
@@ -43,20 +44,23 @@ const modalVariants = {
 };
 
 const modalContentVariants = {
-  hidden: { opacity: 0, scale: 0.92, y: 20 },
+  hidden: { opacity: 0, scale: 0.95, y: 30, rotate: -1 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
+    rotate: 0,
     transition: {
-      duration: 0.35,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      type: "spring",
+      stiffness: 350,
+      damping: 25,
     },
   },
   exit: {
     opacity: 0,
-    scale: 0.95,
+    scale: 0.98,
     y: 20,
+    rotate: 1,
     transition: { duration: 0.2 },
   },
 };

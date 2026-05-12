@@ -51,9 +51,9 @@ export const aboutInfo = {
   resumeUrl: "/Final Resume.pdf",
   bio: `Hey, I'm Aryan Dani, a code-wrangler who sometimes fancies himself a full-stack developer and an AI enthusiast. When I'm not battling CSS for that perfect layout or convincing JavaScript (and my deep learning models) to play nice, you'll find me knee-deep in AI experiments or unwinding with Anime like Haikyu!!, dreaming of a quick attack like Hinata (spoiler: I can't even spike).
 
-I'm all about tech and building projects that actually work (most of the time). My portfolio spans everything from an automated expense tracker to cutting-edge AI and deep learning projects—think real-time human detection and adaptive models that learn on the fly (I'm using my powers for good, don't worry).
+I'm all about tech and building projects that actually work (most of the time). My portfolio spans everything from an automated expense tracker to cutting-edge AI and deep learning projects. Think real-time human detection and adaptive models that learn on the fly (I'm using my powers for good, don't worry).
 
-Future goals? Become the Mrwhosetheboss of my generation, but with more AI magic and less coffee (I'm a tea person, fight me). Let's connect and build something epic—or just geek out over tech and anime together.`,
+Future goals? Become the Mrwhosetheboss of my generation, but with more AI magic and less coffee (I'm a tea person, fight me). Let's connect and build something epic or just geek out over tech and anime together.`,
   highlights: [
     {
       icon: "🚀",

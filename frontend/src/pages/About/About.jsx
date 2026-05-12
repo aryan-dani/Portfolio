@@ -32,7 +32,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { type: "spring", stiffness: 300, damping: 24 },
   },
 };
 
@@ -235,6 +235,7 @@ function About() {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   onSubmit={handleFormSubmit}
                 >
                   <div className="flex flex-col gap-2">

@@ -20,7 +20,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { type: "spring", stiffness: 200, damping: 20 },
   },
 };
 
@@ -140,7 +140,7 @@ function Experience() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
                         className="overflow-hidden"
                       >
                         <ul className="list-none space-y-4 font-body-md text-base mt-4">

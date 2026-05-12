@@ -1,7 +1,7 @@
 .back-to-top {
   position: fixed;
   bottom: 2rem;
-  left: 2rem;
+  right: 2rem;
   width: 48px;
   height: 48px;
   background: #ffffff;
@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 99;
+  z-index: 999;
   transition: box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
   will-change: box-shadow;
 
@@ -33,7 +33,7 @@
 
   @media (max-width: 576px) {
     bottom: 1.25rem;
-    left: 1.25rem;
+    right: 1.25rem;
     width: 42px;
     height: 42px;
   }

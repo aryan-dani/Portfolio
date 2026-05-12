@@ -16,20 +16,21 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: "easeOut" },
+    transition: { type: "spring", stiffness: 300, damping: 24 },
   },
 };
 
 const carouselVariants = {
-  hidden: { opacity: 0, x: 60 },
+  hidden: { opacity: 0, x: 60, rotate: 2 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.55, ease: "backOut" },
+    rotate: 0,
+    transition: { type: "spring", stiffness: 200, damping: 20 },
   },
 };
 
@@ -38,16 +39,19 @@ const slideVariants = {
   enter: (direction) => ({
     x: direction > 0 ? "100%" : "-100%",
     opacity: 0,
+    rotate: direction > 0 ? 5 : -5,
   }),
   center: {
     x: 0,
     opacity: 1,
-    transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+    rotate: 0,
+    transition: { type: "spring", stiffness: 300, damping: 30 },
   },
   exit: (direction) => ({
     x: direction > 0 ? "-100%" : "100%",
     opacity: 0,
-    transition: { duration: 0.35, ease: "easeIn" },
+    rotate: direction > 0 ? -5 : 5,
+    transition: { duration: 0.3 },
   }),
 };
 
