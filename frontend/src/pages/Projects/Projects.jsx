@@ -260,7 +260,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index }) {
         <h2 className="font-headline-md text-2xl md:text-3xl text-black mb-4 uppercase">
           {project.title}
         </h2>
-        <p className="font-body-md text-base text-black mb-6 grow overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', lineHeight: '1.6' }}>
+        <p className="font-body-md text-base text-black mb-6 whitespace-normal wrap-break-word">
           {project.description}
         </p>
 

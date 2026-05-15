@@ -9,7 +9,7 @@ const Footer = memo(function Footer() {
       <div className="flex flex-col md:flex-row justify-between items-center py-12 px-4 md:px-8 gap-6 w-full max-w-360 mx-auto">
         <Link
           to="/copyright"
-          className="text-xl md:text-2xl font-black text-black text-center md:text-left hover:underline decoration-4 underline-offset-4"
+          className="text-xl md:text-2xl font-black text-black text-center md:text-left wrap-break-word hover:underline decoration-4 underline-offset-4"
         >
           © {currentYear} ARYAN DANI — BUILT FOR CREATORS
         </Link>
