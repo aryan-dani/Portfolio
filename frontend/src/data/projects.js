@@ -57,6 +57,44 @@ export const projects = [
     },
   },
   {
+    id: 12,
+    title: "Democrazy",
+    category: "web-dev",
+    year: "2026",
+    description: `Interactive election-readiness learning app: scripted voter journeys, adaptive Gemini-powered simulation, quizzes with history and badges, timeline explorer, and an optional Firebase sign-in + Firestore progress mirror. Built as a React SPA (Vite) with lightweight serverless endpoints for Gemini on Vercel.`,
+    image: "/Images/Projects/Democrazy.jpg",
+    tags: ["React", "Vite", "Gemini", "Vercel", "Serverless", "Firebase"],
+    links: {
+      github: "https://github.com/aryan-dani/Democrazy",
+      preview: "https://democrazy-omega.vercel.app/",
+    },
+  },
+  {
+    id: 13,
+    title: "Utility",
+    category: "web-dev",
+    year: "2026",
+    description: `Academic OS: a minimalist academic workspace for students with Document Intelligence (RAG), a Parallel Indexing Engine, Supabase auth & storage, a Pomodoro focus timer, GPA calculator, and study tools. Built with Next.js, Tailwind, and deployed on Vercel.`,
+    image: "/Images/Projects/Utility.jpg",
+    tags: ["Next.js", "Supabase", "TypeScript", "Tailwind CSS", "Vercel", "AI"],
+    links: {
+      github: "https://github.com/aryan-dani/Utility",
+      preview: "https://planner-flax-six.vercel.app",
+    },
+  },
+  {
+    id: 14,
+    title: "Ishani",
+    category: "web-dev",
+    year: "2026",
+    description: `Ishani — a timetable and department portal with an AI assistant for MIT-WPU (Groq-backed), multi-semester grids, staff directory, and admin APIs. Built as a React (Vite) frontend with a FastAPI backend and optional RAG-powered chat.`,
+    image: "/Images/Projects/Ishani.jpg",
+    tags: ["React", "Vite", "FastAPI", "Groq", "AI"],
+    links: {
+      preview: "https://miniproject-aies.pages.dev/",
+    },
+  },
+  {
     id: 2,
     title: "DebateBot",
     category: "ai-ml",
@@ -163,6 +201,18 @@ export const projects = [
     ],
     links: {
       github: "https://github.com/aryan-dani/Capstone_ds",
+    },
+  },
+  {
+    id: 14,
+    title: "Ishani",
+    category: "web-dev",
+    year: "2026",
+    description: `Ishani — a timetable and department portal with an AI assistant for MIT-WPU (Groq-backed), multi-semester grids, staff directory, and admin APIs. Built as a React (Vite) frontend with a FastAPI backend and optional RAG-powered chat.`,
+    image: "/Images/Projects/Ishani.jpg",
+    tags: ["React", "Vite", "FastAPI", "Groq", "AI"],
+    links: {
+      preview: "https://miniproject-aies.pages.dev/",
     },
   },
 ];
