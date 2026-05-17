@@ -203,18 +203,6 @@ export const projects = [
       github: "https://github.com/aryan-dani/Capstone_ds",
     },
   },
-  {
-    id: 14,
-    title: "Ishani",
-    category: "web-dev",
-    year: "2026",
-    description: `Ishani — a timetable and department portal with an AI assistant for MIT-WPU (Groq-backed), multi-semester grids, staff directory, and admin APIs. Built as a React (Vite) frontend with a FastAPI backend and optional RAG-powered chat.`,
-    image: "/Images/Projects/Ishani.jpg",
-    tags: ["React", "Vite", "FastAPI", "Groq", "AI"],
-    links: {
-      preview: "https://miniproject-aies.pages.dev/",
-    },
-  },
 ];
 
 export const projectCategories = [
