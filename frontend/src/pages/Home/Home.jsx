@@ -2,6 +2,9 @@ import { memo, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { aboutInfo } from "../../data/experience";
+import { projects } from "../../data/projects";
+import { skills } from "../../data/skills";
+import { certifications } from "../../data/certifications";
 import { getAssetPath } from "../../utils/paths";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
 
@@ -25,32 +28,28 @@ const itemVariants = {
 };
 
 const carouselVariants = {
-  hidden: { opacity: 0, x: 60, rotate: 2 },
+  hidden: { opacity: 0, x: 60 },
   visible: {
     opacity: 1,
     x: 0,
-    rotate: 0,
     transition: { type: "spring", stiffness: 200, damping: 20 },
   },
 };
 
-// slide directions: 1 = entering from right, -1 = entering from left
+// slide directions (removed rotation)
 const slideVariants = {
   enter: (direction) => ({
     x: direction > 0 ? "100%" : "-100%",
     opacity: 0,
-    rotate: direction > 0 ? 5 : -5,
   }),
   center: {
     x: 0,
     opacity: 1,
-    rotate: 0,
     transition: { type: "spring", stiffness: 300, damping: 30 },
   },
   exit: (direction) => ({
     x: direction > 0 ? "-100%" : "100%",
     opacity: 0,
-    rotate: direction > 0 ? -5 : 5,
     transition: { duration: 0.3 },
   }),
 };
@@ -65,16 +64,45 @@ const roles = [
 ];
 
 const photos = [
-  { src: "Images/Home/pic_1.jpg",  alt: `${aboutInfo.name} – photo 1`  },
-  { src: "Images/Home/pic_2.jpg",  alt: `${aboutInfo.name} – photo 2`  },
+  { src: "Images/Home/pic_1.jpg", alt: `${aboutInfo.name} – photo 1` },
+  { src: "Images/Home/pic_2.jpg", alt: `${aboutInfo.name} – photo 2` },
 ];
 
 const INTERVAL_MS = 3500;
 
+// ─── Stats Ribbon ─────────────────────────────────────────────────────────
+
+function StatsRibbon() {
+  const totalProjects = projects.length;
+  const totalSkills = Object.values(skills).flat().length;
+  const totalCerts = certifications.length;
+
+  return (
+    <motion.div
+      className="grid grid-cols-3 gap-4 w-full"
+      variants={itemVariants}
+    >
+      {[
+        { value: totalProjects, label: "Projects", bg: "bg-primary-container" },
+        { value: `${totalSkills}+`, label: "Skills", bg: "bg-black text-white" },
+        { value: totalCerts, label: "Certifications", bg: "bg-white" },
+      ].map((stat) => (
+        <div
+          key={stat.label}
+          className={`${stat.bg} border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all`}
+        >
+          <div className="font-headline-xl text-3xl md:text-4xl">{stat.value}</div>
+          <div className="font-label-bold text-xs uppercase mt-1">{stat.label}</div>
+        </div>
+      ))}
+    </motion.div>
+  );
+}
+
 // ─── Carousel sub-component ───────────────────────────────────────────────
 
 function PhotoCarousel() {
-  const [index, setIndex]       = useState(0);
+  const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -186,66 +214,97 @@ function PhotoCarousel() {
 const Home = memo(function Home() {
   return (
     <motion.section
-      className="flex flex-col lg:flex-row gap-gutter items-center justify-between min-h-[calc(100vh-200px)] lg:min-h-[716px] w-full"
+      className="flex flex-col gap-12 lg:gap-16 min-h-[calc(100vh-200px)] w-full relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      {/* ── Text content ── */}
-      <div className="flex-1 flex flex-col gap-6 lg:gap-8 max-w-3xl w-full z-10">
-        <motion.h1
-          className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-on-background uppercase wrap-break-word leading-none bg-white neo-border p-3 md:p-4 neo-shadow inline-block w-fit"
-          variants={itemVariants}
-        >
-          {aboutInfo.name}
-        </motion.h1>
+      {/* Hero row */}
+      <div className="flex flex-col lg:flex-row gap-gutter items-center justify-between lg:min-h-[600px] relative z-10">
+        {/* ── Text content ── */}
+        <div className="flex-1 flex flex-col gap-6 lg:gap-8 max-w-3xl w-full z-10">
+          <motion.h1
+            className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-on-background uppercase wrap-break-word leading-none bg-white neo-border p-3 md:p-4 neo-shadow inline-block w-fit"
+            variants={itemVariants}
+          >
+            {aboutInfo.name}
+          </motion.h1>
 
-        <motion.h2
-          className="font-headline-md text-xl md:text-2xl lg:text-headline-md text-on-surface-variant bg-primary-container neo-border p-2 w-fit neo-shadow uppercase"
-          variants={itemVariants}
-        >
-          <TypeWriter
-            texts={roles}
-            speed={80}
-            deleteSpeed={40}
-            pauseTime={2500}
-          />
-        </motion.h2>
+          <motion.h2
+            className="font-headline-md text-xl md:text-2xl lg:text-headline-md text-on-surface-variant bg-primary-container neo-border p-2 w-fit neo-shadow uppercase"
+            variants={itemVariants}
+          >
+            <TypeWriter
+              texts={roles}
+              speed={80}
+              deleteSpeed={40}
+              pauseTime={2500}
+            />
+          </motion.h2>
 
-        <motion.p
-          className="font-body-lg text-base md:text-lg lg:text-body-lg text-on-background bg-white neo-border p-4 neo-shadow max-w-2xl"
-          variants={itemVariants}
-        >
-          I&apos;m a passionate Web Developer and AI Engineer, dedicated to
-          crafting seamless, high-performance web solutions. Discover my
-          projects, skills, and certifications below.
-        </motion.p>
+          <motion.p
+            className="font-body-lg text-base md:text-lg lg:text-body-lg text-on-background bg-white neo-border p-4 neo-shadow max-w-2xl"
+            variants={itemVariants}
+          >
+            I&apos;m a passionate Web Developer and AI Engineer, dedicated to
+            crafting seamless, high-performance web solutions. Discover my
+            projects, skills, and certifications below.
+          </motion.p>
 
+          <motion.div
+            className="flex flex-wrap gap-4 mt-4 lg:mt-8"
+            variants={itemVariants}
+          >
+            <Link
+              to="/projects"
+              className="bg-primary-container text-black neo-border px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase neo-shadow transition-all neo-shadow-hover neo-shadow-active inline-block"
+            >
+              View My Work
+            </Link>
+            <Link
+              to="/contact"
+              className="bg-black text-white neo-border px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_rgba(240,255,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(240,255,0,1)] inline-block"
+            >
+              Work With Me
+            </Link>
+            <Link
+              to="/about"
+              className="bg-white text-black neo-border px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase neo-shadow transition-all neo-shadow-hover neo-shadow-active inline-block"
+            >
+              About Me
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* ── Carousel ── */}
         <motion.div
-          className="flex flex-wrap gap-4 mt-4 lg:mt-8"
-          variants={itemVariants}
+          className="flex-1 w-full flex justify-center lg:justify-end mt-12 lg:mt-0"
+          variants={carouselVariants}
         >
-          <Link
-            to="/projects"
-            className="bg-primary-container text-black neo-border px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase neo-shadow transition-all neo-shadow-hover neo-shadow-active inline-block"
-          >
-            View My Work
-          </Link>
-          <Link
-            to="/about"
-            className="bg-white text-black neo-border px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase neo-shadow transition-all neo-shadow-hover neo-shadow-active inline-block"
-          >
-            More About Me
-          </Link>
+          <PhotoCarousel />
         </motion.div>
       </div>
 
-      {/* ── Carousel ── */}
+      {/* Stats Ribbon */}
+      <StatsRibbon />
+
+      {/* Marquee strip */}
       <motion.div
-        className="flex-1 w-full flex justify-center lg:justify-end mt-12 lg:mt-0"
-        variants={carouselVariants}
+        className="bg-black border-4 border-black overflow-hidden py-3 -mx-4 md:-mx-8"
+        variants={itemVariants}
       >
-        <PhotoCarousel />
+        <div className="marquee-strip flex gap-8 whitespace-nowrap">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <span key={i} className="flex gap-8 items-center text-primary-container font-label-bold text-sm uppercase tracking-widest shrink-0">
+              <span>✦ Web Developer</span>
+              <span>✦ AI Engineer</span>
+              <span>✦ React • Next.js • FastAPI</span>
+              <span>✦ Gemini • LangGraph</span>
+              <span>✦ Open to Opportunities</span>
+              <span>✦ Let's Build Something Epic</span>
+            </span>
+          ))}
+        </div>
       </motion.div>
     </motion.section>
   );

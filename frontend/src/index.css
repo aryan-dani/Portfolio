@@ -184,3 +184,29 @@ body {
   color: #f0ff00;
   box-shadow: none;
 }
+
+/* ── Marquee infinite scroll ── */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+.marquee-strip {
+  animation: marquee-scroll 20s linear infinite;
+}
+
+.marquee-strip:hover {
+  animation-play-state: paused;
+}
+
+/* ── Focus ring for keyboard navigation ── */
+*:focus-visible {
+  outline: 3px solid #f0ff00;
+  outline-offset: 2px;
+}
+
+/* ── Improved selection ── */
+::selection {
+  background: #f0ff00;
+  color: #000000;
+}

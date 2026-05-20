@@ -72,7 +72,6 @@ const CustomCursor = memo(function CustomCursor() {
         }}
         animate={{
           scale: isHovering ? 2 : 1,
-          rotate: isHovering ? 45 : 0,
         }}
         transition={{
           type: "spring",

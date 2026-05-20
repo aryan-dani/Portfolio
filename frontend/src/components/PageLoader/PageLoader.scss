@@ -1,69 +1,172 @@
-// Neo-brutalist Page Loader
-
 // ──────────────────────────────────────────────
-//  NEO-BRUTALIST PAGE LOADER
+//  CINEMATIC PREMIUM PAGE LOADER
 // ──────────────────────────────────────────────
 
 .page-loader {
   position: fixed;
   inset: 0;
-  background: #f5f0e8; // warm off-white — matches the neobrutalist canvas
+  background: #050505;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 99999;
-}
-
-// ── The "card" container ────────────────────────
-.nb-loader {
-  width: 90%;
-  max-width: 560px;
-  background: #ffffff;
-  border: 3px solid #000000;
-  box-shadow: 8px 8px 0px #000000; // hard offset — classic neobrutalism
-  font-family: "SF Mono", "Monaco", "Consolas", "Liberation Mono", monospace;
   overflow: hidden;
 
-  // ── Header bar ──────────────────────────────
+  &--exit {
+    background: transparent;
+  }
+}
+
+// ── Cyber scanline overlay ─────────────────────
+.page-loader__scanlines {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 4px, 3px 100%;
+  pointer-events: none;
+  z-index: 10;
+  
+  // Sweep line
+  &::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(240, 255, 0, 0) 0%, rgba(240, 255, 0, 0.03) 10%, rgba(240, 255, 0, 0.08) 50%, rgba(240, 255, 0, 0.03) 90%, rgba(240, 255, 0, 0) 100%);
+    opacity: 0.8;
+    z-index: 11;
+    pointer-events: none;
+    animation: scanline-sweep 4s linear infinite;
+  }
+}
+
+@keyframes scanline-sweep {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+// ── Glitch Phase ─────────────────────────────
+.page-loader__glitch-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 5;
+}
+
+.page-loader__glitch-text {
+  font-family: "Space Grotesk", monospace;
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1;
+  position: relative;
+}
+
+.page-loader__glitch-char {
+  display: inline-block;
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+
+  &--resolved {
+    color: #f0ff00;
+    text-shadow: 
+      0 0 15px rgba(240, 255, 0, 0.6),
+      0 0 30px rgba(240, 255, 0, 0.3);
+  }
+
+  &--scrambling {
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    animation: char-flicker 0.08s step-end infinite;
+  }
+}
+
+@keyframes char-flicker {
+  0%, 100% { opacity: 1; transform: skewX(0deg); }
+  50% { opacity: 0.6; transform: skewX(10deg); }
+}
+
+.page-loader__glitch-subtitle {
+  font-family: "Space Grotesk", monospace;
+  font-size: clamp(0.75rem, 2vw, 1.1rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+// ── Hacker Terminal Card ──────────────────────
+.nb-loader {
+  width: 90%;
+  max-width: 600px;
+  background: #0a0e14;
+  border: 3px solid #000000;
+  box-shadow: 8px 8px 0px #f0ff00; // Premium neon yellow shadow
+  font-family: "SF Mono", "Monaco", "Consolas", "Liberation Mono", monospace;
+  overflow: hidden;
+  z-index: 5;
+  transition: box-shadow 0.3s ease;
+
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 16px;
+    padding: 12px 18px;
     background: #000000;
     border-bottom: 3px solid #000000;
   }
 
   &__title {
     font-size: 0.78rem;
-    color: #ffffff;
+    color: #a2a9b0;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: " ";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 6px #ef4444;
+    }
   }
 
   &__badge {
     font-size: 0.7rem;
     color: #000000;
-    background: #f5c842; // neobrutalist yellow accent
+    background: #f0ff00;
     font-weight: 800;
     padding: 2px 8px;
     border: 2px solid #000000;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    animation: badge-pulse 1s ease-in-out infinite;
   }
 
-  // ── Terminal body ───────────────────────────
   &__body {
-    padding: 20px 24px;
-    min-height: 200px;
+    padding: 24px;
+    min-height: 220px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    background: #ffffff;
+    gap: 8px;
+    background: #0d1117;
   }
 
-  // ── Individual lines ────────────────────────
   &__line {
     font-size: 0.875rem;
     line-height: 1.65;
@@ -72,33 +175,31 @@
     font-weight: 500;
 
     &--command {
-      color: #000000;
+      color: #38bdf8;
       font-weight: 700;
-
-      .nb-loader__text::before {
-        content: "";
-      }
     }
 
     &--success {
-      color: #1a7a1a; // dark green — readable on white
+      color: #4ade80;
       font-weight: 600;
+      text-shadow: 0 0 6px rgba(74, 222, 128, 0.2);
     }
 
     &--info {
-      color: #1a4fa8;
+      color: #fbbf24;
       font-weight: 500;
     }
 
     &--final {
       color: #000000;
       font-weight: 800;
-      margin-top: 10px;
+      margin-top: 12px;
       padding: 8px 12px;
-      background: #f5c842;
+      background: #f0ff00;
       border: 2px solid #000000;
       display: inline-block;
       letter-spacing: 0.02em;
+      box-shadow: 4px 4px 0px #000000;
     }
   }
 
@@ -106,52 +207,90 @@
     white-space: pre-wrap;
   }
 
-  // ── Blinking cursor ─────────────────────────
   &__cursor {
     display: inline-block;
     width: 10px;
     height: 1.1em;
-    background: #000000;
-    margin-left: 3px;
+    background: #f0ff00;
+    margin-left: 5px;
     vertical-align: middle;
+    box-shadow: 0 0 6px #f0ff00;
     animation: nb-blink 0.9s step-end infinite;
   }
 }
 
-// ── Progress bar strip at the bottom ───────────
+// ── Progress bars ────────────────────────────
 .nb-loader__progress-track {
-  height: 6px;
-  background: #e0ddd5;
-  border-top: 2px solid #000000;
+  height: 8px;
+  background: #161b22;
+  border-top: 3px solid #000000;
   width: 100%;
 
   .nb-loader__progress-fill {
     height: 100%;
-    background: #f5c842;
+    background: #f0ff00;
     border-right: 2px solid #000000;
+    box-shadow: 0 0 8px #f0ff00;
     transition: width 0.25s ease;
   }
 }
 
-@keyframes nb-blink {
-  0%,
-  100% {
-    opacity: 1;
+.page-loader__global-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 20;
+}
+
+.page-loader__global-progress-fill {
+  height: 100%;
+  background: #f0ff00;
+  box-shadow: 0 0 10px #f0ff00;
+  transition: width 0.3s ease;
+}
+
+// ── Split exit wipe ──────────────────────────
+.page-loader__split {
+  position: fixed;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: #050505;
+  z-index: 4;
+
+  &--left {
+    left: 0;
+    border-right: 2px solid #f0ff00;
   }
 
-  50% {
-    opacity: 0;
+  &--right {
+    right: 0;
+    border-left: 2px solid #f0ff00;
   }
 }
 
-// ── Mobile responsive ────────────────────────────
+// ── Animations ───────────────────────────────
+@keyframes nb-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; filter: brightness(1.2); }
+  50% { opacity: 0.7; filter: brightness(0.9); }
+}
+
+// ── Mobile responsive ────────────────────────
 @media (max-width: 576px) {
   .nb-loader {
     width: 95%;
-    box-shadow: 5px 5px 0px #000000;
+    box-shadow: 5px 5px 0px #f0ff00;
 
     &__header {
-      padding: 8px 12px;
+      padding: 10px 14px;
     }
 
     &__title {
@@ -159,12 +298,16 @@
     }
 
     &__body {
-      padding: 16px 18px;
-      min-height: 180px;
+      padding: 18px 20px;
+      min-height: 190px;
     }
 
     &__line {
       font-size: 0.8rem;
     }
+  }
+
+  .page-loader__glitch-text {
+    font-size: clamp(2.5rem, 12vw, 5rem);
   }
 }

@@ -13,6 +13,7 @@ export const projects = [
       "Tailwind CSS",
       "React Hook Form",
     ],
+    skillIds: ["nextjs", "typescript", "supabase", "tailwind", "react", "javascript", "html5", "css3", "git", "vercel"],
     links: {
       github: "https://github.com/aryan-dani/The-Fourth-Clover",
       preview: "https://thefourthclover.bio/",
@@ -32,6 +33,7 @@ export const projects = [
       "WebSockets",
       "Dual-Agent Architecture",
     ],
+    skillIds: ["llms", "agentic", "nextjs", "fastapi", "websockets", "python", "prompt-engineering", "git", "vercel"],
     links: {
       github: "https://github.com/aryan-dani/The_Shadow_Instructor",
       preview: "https://the-shadow-instructor.vercel.app/",
@@ -51,6 +53,7 @@ export const projects = [
       "Docker",
       "Multi-Agent Systems",
     ],
+    skillIds: ["llms", "agentic", "langgraph", "fastapi", "docker", "python", "prompt-engineering", "git", "vercel", "github-actions"],
     links: {
       github: "https://github.com/aryan-dani/Arbiter",
       preview: "https://thearbiter.vercel.app/",
@@ -64,6 +67,7 @@ export const projects = [
     description: `Interactive election-readiness learning app: scripted voter journeys, adaptive Gemini-powered simulation, quizzes with history and badges, timeline explorer, and an optional Firebase sign-in + Firestore progress mirror. Built as a React SPA (Vite) with lightweight serverless endpoints for Gemini on Vercel.`,
     image: "/Images/Projects/Democrazy.jpg",
     tags: ["React", "Vite", "Gemini", "Vercel", "Serverless", "Firebase"],
+    skillIds: ["react", "vite", "llms", "firebase", "javascript", "html5", "css3", "prompt-engineering", "git", "vercel"],
     links: {
       github: "https://github.com/aryan-dani/Democrazy",
       preview: "https://democrazy-omega.vercel.app/",
@@ -77,6 +81,7 @@ export const projects = [
     description: `Academic OS: a minimalist academic workspace for students with Document Intelligence (RAG), a Parallel Indexing Engine, Supabase auth & storage, a Pomodoro focus timer, GPA calculator, and study tools. Built with Next.js, Tailwind, and deployed on Vercel.`,
     image: "/Images/Projects/Utility.jpg",
     tags: ["Next.js", "Supabase", "TypeScript", "Tailwind CSS", "Vercel", "AI"],
+    skillIds: ["nextjs", "supabase", "typescript", "tailwind", "rag", "javascript", "html5", "css3", "git", "vercel"],
     links: {
       github: "https://github.com/aryan-dani/Utility",
       preview: "https://planner-flax-six.vercel.app",
@@ -90,6 +95,7 @@ export const projects = [
     description: `Ishani — a timetable and department portal with an AI assistant for MIT-WPU (Groq-backed), multi-semester grids, staff directory, and admin APIs. Built as a React (Vite) frontend with a FastAPI backend and optional RAG-powered chat.`,
     image: "/Images/Projects/Ishani.jpg",
     tags: ["React", "Vite", "FastAPI", "Groq", "AI"],
+    skillIds: ["react", "vite", "fastapi", "groq", "rag", "python", "llms", "prompt-engineering", "javascript", "html5", "css3", "rest-api"],
     links: {
       preview: "https://miniproject-aies.pages.dev/",
     },
@@ -102,6 +108,7 @@ export const projects = [
     description: `An intelligent debating platform powered by LLaMA 3.3 70B and LangGraph. Features dual-AI debates with formal stages (Opening, Rebuttal, Closing), a Live Arena where users can challenge the AI directly, smart scoring with feedback on coherence, evidence usage, and logical fallacies, plus real-time streaming for fluid argument generation.`,
     image: "/Images/Projects/DebateBot.jpg",
     tags: ["Python", "FastAPI", "React", "LangGraph", "LLaMA 3.3"],
+    skillIds: ["python", "fastapi", "react", "langgraph", "llms", "prompt-engineering", "rest-api", "git"],
     links: {
       github: "https://github.com/aryan-dani/DebateBot",
       preview: "https://debate-bot-psi.vercel.app",
@@ -115,6 +122,7 @@ export const projects = [
     description: `AI-powered real-time shoulder raise form analyzer. Features live camera tracking with MediaPipe pose detection, automatic rep counting, instant feedback with angle visualization, and comprehensive metrics including range of motion, bilateral symmetry, torso stability, and elbow position. Includes a performance dashboard, session history, leaderboards, achievements, and an AI form assistant chatbot for personalized technique advice.`,
     image: "/Images/Projects/PosePro.jpg",
     tags: ["Python", "Flask", "MediaPipe", "OpenCV", "Computer Vision"],
+    skillIds: ["python", "flask", "mediapipe", "opencv", "computer-vision", "rest-api", "git"],
     links: {
       github: "https://github.com/aryan-dani/Pose_Pro",
     },
@@ -127,6 +135,7 @@ export const projects = [
     description: `NASA Space Apps Challenge 2025 submission for exoplanet candidate classification. A full-stack ML web application achieving 76% accuracy with Random Forest on NASA Kepler data. Features 7 trained ML models, real-time WebSocket training studio, comprehensive analytics with confusion matrices and ROC curves, batch predictions, and a space-themed React + TypeScript frontend with FastAPI backend.`,
     image: "/Images/Projects/North_Star.jpg",
     tags: ["Python", "FastAPI", "React", "TypeScript", "scikit-learn"],
+    skillIds: ["python", "fastapi", "react", "typescript", "scikit-learn", "data-analysis", "websockets", "git"],
     links: {
       github: "https://github.com/aryan-dani/North-Star",
     },
@@ -139,6 +148,7 @@ export const projects = [
     description: `The Capstone Project I'm developing in my College focuses on Real-Time threat detection using YOLO v11 and EfficientNetV2. This deep learning project aims to identify potential security risks through video analysis and identify threats in X-ray scans, with a specific focus on detecting weapons. Currently in development, this system will integrate with existing security infrastructure to provide automated alerts and monitoring capabilities.`,
     image: "/Images/Projects/Threat_Detection_System.jpg",
     tags: ["Python", "Yolo v11", "Deep Learning", "EfficientNetV2", "Angular"],
+    skillIds: ["python", "pytorch", "deep-learning", "opencv", "computer-vision", "angular", "git"],
     links: {
       preview: "https://aryan-dani.github.io/Threat_Detection_System/",
       github: "https://github.com/aryan-dani/Threat_Detection_System",
@@ -152,6 +162,7 @@ export const projects = [
     description: `Upon experimenting various CNN models like InceptionResnetV2 and Vision Transformers, optimizing them to identify anomalies in Dicom Slices and then deploying a Vision Language Model to describe what the anomaly is and in which slice it is presented. This project aims to assist radiologists in identifying and diagnosing anomalies more efficiently.`,
     image: "/Images/Projects/Dicom_Slice.jpg",
     tags: ["CNN's", "Vision Language Models", "Vision Transformers"],
+    skillIds: ["python", "tensorflow", "deep-learning", "computer-vision"],
     links: {
       github: "https://github.com/aryan-dani/Dicom-Classifier",
     },
@@ -164,6 +175,7 @@ export const projects = [
     description: `Sometimes projects aren't just about showing off skills—they're about satisfying pure curiosity! I used this project as a hands-on experiment to finally understand client-side APIs. I built simple projects that call three different API endpoints, which helped me see how requests, responses, and asynchronous flows all come together in real time.`,
     image: "/Images/Projects/API_Demonstration.jpg",
     tags: ["Axios", "Javascript", "API Development", "Github Copilot"],
+    skillIds: ["javascript", "nodejs", "mongodb", "rest-api", "html5", "css3", "git"],
     links: {
       preview: "https://aryan-dani.github.io/API_Demonstration/",
       github: "https://github.com/aryan-dani/API_Demonstration",
@@ -183,6 +195,7 @@ export const projects = [
       "CSS3",
       "Speech Recognition",
     ],
+    skillIds: ["javascript", "html5", "css3"],
     links: {
       github: "https://github.com/aryan-dani/Speech_To_Text",
     },
@@ -199,6 +212,7 @@ export const projects = [
       "Machine Learning",
       "Data Visualization",
     ],
+    skillIds: ["python", "scikit-learn", "tensorflow", "data-analysis"],
     links: {
       github: "https://github.com/aryan-dani/Capstone_ds",
     },
@@ -210,3 +224,13 @@ export const projectCategories = [
   { id: "web-dev", label: "Web Dev" },
   { id: "ai-ml", label: "AI & ML" },
 ];
+
+// Helper: Get a project by ID
+export function getProjectById(projectId) {
+  return projects.find((p) => p.id === projectId) || null;
+}
+
+// Helper: Get projects that use a specific skill
+export function getProjectsForSkill(skillId) {
+  return projects.filter((p) => p.skillIds && p.skillIds.includes(skillId));
+}

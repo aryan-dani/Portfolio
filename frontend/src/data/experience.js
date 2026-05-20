@@ -32,11 +32,6 @@ export const socialLinks = [
     icon: "FaInstagram",
   },
   {
-    name: "Twitter",
-    url: "https://x.com/Killfall15",
-    icon: "FaTwitter",
-  },
-  {
     name: "GitHub",
     url: "https://github.com/aryan-dani",
     icon: "FaGithub",

@@ -22,6 +22,7 @@ const Projects = lazy(() => import("./pages/Projects/Projects"));
 const Certifications = lazy(() => import("./pages/Certifications/Certifications"));
 const Skills = lazy(() => import("./pages/Skills/Skills"));
 const About = lazy(() => import("./pages/About/About"));
+const Contact = lazy(() => import("./pages/Contact/Contact"));
 const Copyright = lazy(() => import("./pages/Copyright/Copyright"));
 
 // Get base path from Vite config
@@ -88,6 +89,11 @@ function AnimatedRoutes() {
         <Route path="about" element={
           <Suspense fallback={<PageFallback />}>
             <About />
+          </Suspense>
+        } />
+        <Route path="contact" element={
+          <Suspense fallback={<PageFallback />}>
+            <Contact />
           </Suspense>
         } />
         <Route path="copyright" element={

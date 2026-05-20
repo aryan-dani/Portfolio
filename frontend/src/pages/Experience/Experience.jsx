@@ -31,7 +31,7 @@ const stylesList = [
 ];
 
 function Experience() {
-  const [expandedId, setExpandedId] = useState(null);
+  const [expandedId, setExpandedId] = useState(experiences[0]?.id || null);
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
@@ -91,7 +91,9 @@ function Experience() {
               {/* Center Dot */}
               <div
                 className={`absolute left-5 md:left-1/2 transform -translate-x-1/2 w-9 h-9 ${style.dotBg} border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 top-4 md:top-auto md:translate-y-0`}
-              />
+              >
+                <div className="absolute inset-0 border-4 border-black animate-ping opacity-20" />
+              </div>
 
               {/* Mobile Timeline Period & Card Content */}
               <div

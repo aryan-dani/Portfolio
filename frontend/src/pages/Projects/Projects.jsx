@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect, memo } from "react";
 import { createPortal } from "react-dom";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaTimes, FaEye, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaSearch, FaTimes, FaEye, FaGithub, FaArrowRight } from "react-icons/fa";
 import { projects, projectCategories } from "../../data/projects";
+import { getSkillsForProject } from "../../data/skills";
 import { getAssetPath } from "../../utils/paths";
 
 const containerVariants = {
@@ -44,12 +45,11 @@ const modalVariants = {
 };
 
 const modalContentVariants = {
-  hidden: { opacity: 0, scale: 0.95, y: 30, rotate: -1 },
+  hidden: { opacity: 0, scale: 0.95, y: 30 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    rotate: 0,
     transition: {
       type: "spring",
       stiffness: 350,
@@ -60,7 +60,6 @@ const modalContentVariants = {
     opacity: 0,
     scale: 0.98,
     y: 20,
-    rotate: 1,
     transition: { duration: 0.2 },
   },
 };
@@ -70,15 +69,37 @@ function Projects() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
+  const [highlightedId, setHighlightedId] = useState(null);
+  const navigate = useNavigate();
 
-  // Handle search query from URL
+  // Handle search query and highlight from URL
   useEffect(() => {
     const searchQuery = searchParams.get("search");
+    const highlightParam = searchParams.get("highlight");
+    
     if (searchQuery) {
       setSearchTerm(searchQuery);
-      setSearchParams({});
+      setSearchParams({}, { replace: true });
+    }
+    
+    if (highlightParam) {
+      const projectId = parseInt(highlightParam, 10);
+      const project = projects.find((p) => p.id === projectId);
+      if (project) {
+        setSelectedProject(project);
+        setHighlightedId(projectId);
+      }
+      setSearchParams({}, { replace: true });
     }
   }, [searchParams, setSearchParams]);
+
+  // Clear highlight after a delay
+  useEffect(() => {
+    if (highlightedId) {
+      const timer = setTimeout(() => setHighlightedId(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightedId]);
 
   // Close modal on Escape key and lock body scroll
   useEffect(() => {
@@ -124,6 +145,11 @@ function Projects() {
     setSelectedProject(null);
   };
 
+  const handleSkillClick = (skillId) => {
+    setSelectedProject(null);
+    navigate(`/skills?skill=${encodeURIComponent(skillId)}`);
+  };
+
   return (
     <>
       <motion.section
@@ -165,7 +191,7 @@ function Projects() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              {projectCategories.map((category, index) => {
+              {projectCategories.map((category) => {
                 const isSelected = activeFilter === category.id;
 
                 return (
@@ -201,6 +227,7 @@ function Projects() {
                   project={project}
                   onOpenModal={openModal}
                   index={index}
+                  isHighlighted={highlightedId === project.id}
                 />
               ))}
             </motion.div>
@@ -225,19 +252,25 @@ function Projects() {
 
       <AnimatePresence>
         {selectedProject && (
-          <ProjectModal project={selectedProject} onClose={closeModal} />
+          <ProjectModal
+            project={selectedProject}
+            onClose={closeModal}
+            onSkillClick={handleSkillClick}
+          />
         )}
       </AnimatePresence>
     </>
   );
 }
 
-const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index }) {
+const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isHighlighted }) {
   const isFeatured = project.featured || false;
 
   return (
     <motion.article
-      className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 cursor-pointer"
+      className={`bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 cursor-pointer ${
+        isHighlighted ? "ring-4 ring-primary-container ring-offset-2" : ""
+      }`}
       variants={cardVariants}
       onClick={() => onOpenModal(project)}
     >
@@ -260,16 +293,16 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index }) {
         <h2 className="font-headline-md text-2xl md:text-3xl text-black mb-4 uppercase">
           {project.title}
         </h2>
-        <p className="font-body-md text-base text-black mb-6 whitespace-normal wrap-break-word">
+        <p className="font-body-md text-base text-black mb-6 whitespace-normal wrap-break-word" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {project.description}
         </p>
 
         <div className="flex flex-wrap gap-2 mb-8">
-          {project.tags.slice(0, 3).map((tag, i) => {
+          {project.tags.slice(0, 3).map((tag) => {
             return (
               <span
                 key={tag}
-                className={`bg-black text-white border-2 border-black px-2 py-1 font-label-bold text-xs uppercase`}
+                className="bg-black text-white border-2 border-black px-2 py-1 font-label-bold text-xs uppercase"
               >
                 {tag}
               </span>
@@ -283,7 +316,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index }) {
         </div>
 
         <div
-          className="flex gap-4 border-t-4 border-black pt-6"
+          className="flex gap-4 border-t-4 border-black pt-6 mt-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {project.links?.preview && (
@@ -314,7 +347,9 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index }) {
   );
 });
 
-const ProjectModal = memo(function ProjectModal({ project, onClose }) {
+const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick }) {
+  const projectSkills = getSkillsForProject(project.id);
+
   return createPortal(
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-8">
       <motion.div
@@ -400,6 +435,28 @@ const ProjectModal = memo(function ProjectModal({ project, onClose }) {
           <p className="font-body-lg text-lg border-4 border-black border-dashed p-6 bg-surface-variant">
             {project.description}
           </p>
+
+          {/* Skills used in this project — clickable to open skill modals */}
+          {projectSkills.length > 0 && (
+            <div className="flex flex-col gap-4">
+              <h3 className="font-headline-md text-2xl uppercase border-b-2 border-black pb-2 w-fit">
+                Skills & Technologies
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {projectSkills.map((skill) => (
+                  <button
+                    key={skill.id}
+                    onClick={() => onSkillClick(skill.id)}
+                    className="bg-white border-2 border-black px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 hover:bg-primary-container transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] group"
+                  >
+                    <span className="font-headline-md">{skill.level}%</span>
+                    {skill.name}
+                    <FaArrowRight className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </motion.div>
     </div>,

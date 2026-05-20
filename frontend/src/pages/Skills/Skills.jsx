@@ -1,8 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { FaSearch, FaTimes, FaExternalLinkAlt } from "react-icons/fa";
+import { FaSearch, FaTimes, FaExternalLinkAlt, FaEye, FaGithub, FaArrowRight } from "react-icons/fa";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -16,7 +16,8 @@ import {
   FaChartLine,
   FaBrain,
   FaRobot,
-  FaEye,
+  FaEye as FaEyeIcon,
+  FaGitAlt,
 } from "react-icons/fa";
 import {
   SiTypescript,
@@ -32,8 +33,13 @@ import {
   SiSupabase,
   SiOpencv,
   SiDocker,
+  SiVite,
+  SiFirebase,
+  SiVercel,
 } from "react-icons/si";
-import { skills, skillCategories } from "../../data/skills";
+import { skills, skillCategories, getSkillById, getSkillCategory, getSkillCategoryId } from "../../data/skills";
+import { getProjectById, getProjectsForSkill } from "../../data/projects";
+import { getAssetPath } from "../../utils/paths";
 
 const iconMap = {
   FaHtml5,
@@ -48,7 +54,8 @@ const iconMap = {
   FaChartLine,
   FaBrain,
   FaRobot,
-  FaEye,
+  FaEye: FaEyeIcon,
+  FaGitAlt,
   SiTypescript,
   SiExpress,
   SiMongodb,
@@ -62,13 +69,16 @@ const iconMap = {
   SiSupabase,
   SiOpencv,
   SiDocker,
+  SiVite,
+  SiFirebase,
+  SiVercel,
 };
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.5, staggerChildren: 0.08, delayChildren: 0.1 },
+    transition: { duration: 0.5, staggerChildren: 0.06, delayChildren: 0.1 },
   },
 };
 
@@ -116,9 +126,11 @@ const SORT_OPTIONS = [
   { id: "level-desc", label: "Highest" },
   { id: "level-asc", label: "Lowest" },
   { id: "name-asc", label: "A → Z" },
+  { id: "projects-desc", label: "Most Used" },
 ];
 
 function Skills() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedSkill, setSelectedSkill] = useState(null);
@@ -126,11 +138,32 @@ function Skills() {
   const [sortBy, setSortBy] = useState("default");
   const navigate = useNavigate();
 
+  // Handle URL param to auto-open a skill modal
+  useEffect(() => {
+    const skillParam = searchParams.get("skill");
+    if (skillParam) {
+      const skill = getSkillById(skillParam);
+      if (skill) {
+        setSelectedSkill(skill);
+        setSearchParams({}, { replace: true });
+      }
+    }
+  }, [searchParams, setSearchParams]);
+
   useEffect(() => {
     document.body.style.overflow = selectedSkill ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
+  }, [selectedSkill]);
+
+  // Close on Escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") setSelectedSkill(null);
+    };
+    if (selectedSkill) document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [selectedSkill]);
 
   const filteredAndSorted = useMemo(() => {
@@ -153,6 +186,10 @@ function Skills() {
           filtered = [...filtered].sort((a, b) =>
             a.name.localeCompare(b.name),
           );
+        } else if (sortBy === "projects-desc") {
+          filtered = [...filtered].sort((a, b) =>
+            (b.projectIds?.length || 0) - (a.projectIds?.length || 0),
+          );
         }
 
         if (filtered.length > 0) {
@@ -163,7 +200,7 @@ function Skills() {
     return result;
   }, [searchTerm, activeCategory, sortBy]);
 
-  // Flat list for list view
+  // Flat list for views
   const flatSkills = useMemo(() => {
     const all = [];
     Object.entries(filteredAndSorted).forEach(
@@ -342,7 +379,7 @@ function Skills() {
             {flatSkills.length > 0 ? (
               flatSkills.map((skill) => (
                 <SkillListItem
-                  key={skill.name}
+                  key={skill.id}
                   skill={skill}
                   icon={getIcon(skill.icon)}
                   onClick={() => setSelectedSkill(skill)}
@@ -365,7 +402,7 @@ function Skills() {
             {flatSkills.length > 0 ? (
               flatSkills.map((skill) => (
                 <SkillGridCard
-                  key={skill.name}
+                  key={skill.id}
                   skill={skill}
                   icon={getIcon(skill.icon)}
                   onClick={() => setSelectedSkill(skill)}
@@ -390,11 +427,11 @@ function Skills() {
         </h2>
         <div className="flex flex-col gap-6">
           {[
-            { label: "Frontend Dev", level: 90, color: "bg-primary-container" },
-            { label: "Backend Dev", level: 75, color: "bg-secondary" },
-            { label: "AI & Machine Learning", level: 80, color: "bg-black" },
-            { label: "UI/UX Design", level: 65, color: "bg-surface-variant" },
-            { label: "DevOps & Cloud", level: 60, color: "bg-primary-container" },
+            { label: "Frontend Dev", level: 82, color: "bg-primary-container" },
+            { label: "Backend Dev", level: 72, color: "bg-secondary" },
+            { label: "AI & Machine Learning", level: 78, color: "bg-black" },
+            { label: "Agentic AI & LLMs", level: 86, color: "bg-primary-container" },
+            { label: "DevOps & Cloud", level: 68, color: "bg-surface-variant" },
           ].map((item) => (
             <div key={item.label} className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
@@ -424,10 +461,11 @@ function Skills() {
             skill={selectedSkill}
             icon={getIcon(selectedSkill.icon)}
             onClose={() => setSelectedSkill(null)}
-            onProjectClick={(projectName) => {
+            onProjectClick={(projectId) => {
               setSelectedSkill(null);
-              navigate(`/projects?search=${encodeURIComponent(projectName)}`);
+              navigate(`/projects?highlight=${projectId}`);
             }}
+            iconMap={iconMap}
           />
         )}
       </AnimatePresence>
@@ -438,6 +476,8 @@ function Skills() {
 // ── List Item ──────────────────────────────────────────────────────────────
 
 function SkillListItem({ skill, icon, onClick, levelColor, levelTextColor }) {
+  const projectCount = skill.projectIds?.length || 0;
+
   return (
     <motion.button
       className="w-full text-left bg-white border-2 border-black p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group"
@@ -447,16 +487,23 @@ function SkillListItem({ skill, icon, onClick, levelColor, levelTextColor }) {
       <div className="flex items-center gap-4">
         {/* Icon + Name */}
         <div className="flex items-center gap-3 w-48 md:w-56 shrink-0">
-          <div className="text-xl bg-black text-primary-container p-2 border-2 border-black group-hover:rotate-6 transition-transform">
+          <div className="text-xl bg-black text-primary-container p-2 border-2 border-black group-hover:scale-110 transition-transform duration-300">
             {icon}
           </div>
           <div className="min-w-0">
             <h3 className="font-headline-md text-base md:text-lg uppercase truncate">
               {skill.name}
             </h3>
-            <span className="font-label-bold text-[10px] uppercase text-secondary">
-              {skill.category}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-label-bold text-[10px] uppercase text-secondary">
+                {skill.category}
+              </span>
+              {projectCount > 0 && (
+                <span className="font-label-bold text-[10px] uppercase bg-surface-variant border border-black px-1">
+                  {projectCount} {projectCount === 1 ? "project" : "projects"}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -494,6 +541,8 @@ function SkillListItem({ skill, icon, onClick, levelColor, levelTextColor }) {
 // ── Grid Card ──────────────────────────────────────────────────────────────
 
 function SkillGridCard({ skill, icon, onClick, levelColor, levelTextColor }) {
+  const projectCount = skill.projectIds?.length || 0;
+
   return (
     <motion.button
       className="w-full text-left bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group flex flex-col gap-3"
@@ -502,16 +551,23 @@ function SkillGridCard({ skill, icon, onClick, levelColor, levelTextColor }) {
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-xl bg-black text-primary-container p-2 border-2 border-black group-hover:rotate-6 transition-transform">
+          <div className="text-xl bg-black text-primary-container p-2 border-2 border-black group-hover:scale-110 transition-transform duration-300">
             {icon}
           </div>
           <div>
             <h3 className="font-headline-md text-base md:text-lg uppercase">
               {skill.name}
             </h3>
-            <span className="font-label-bold text-[10px] uppercase text-secondary">
-              {skill.category}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-label-bold text-[10px] uppercase text-secondary">
+                {skill.category}
+              </span>
+              {projectCount > 0 && (
+                <span className="font-label-bold text-[10px] uppercase bg-surface-variant border border-black px-1">
+                  {projectCount}
+                </span>
+              )}
+            </div>
           </div>
         </div>
         <div
@@ -566,7 +622,10 @@ function EmptyState() {
 
 // ── Modal ──────────────────────────────────────────────────────────────────
 
-function SkillModal({ skill, icon, onClose, onProjectClick }) {
+function SkillModal({ skill, icon, onClose, onProjectClick, iconMap }) {
+  const category = getSkillCategory(skill.id);
+  const relatedProjects = getProjectsForSkill(skill.id);
+
   return createPortal(
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       <motion.div
@@ -577,10 +636,10 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         onClick={onClose}
       />
       <motion.div
-        className="bg-white border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] max-w-lg w-full p-6 relative z-10 flex flex-col gap-5 max-h-[90vh] overflow-y-auto"
-        initial={{ scale: 0.95, opacity: 0, y: 20, rotate: -1 }}
-        animate={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
-        exit={{ scale: 0.95, opacity: 0, y: 20, rotate: 1 }}
+        className="bg-white border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] max-w-2xl w-full p-6 md:p-8 relative z-10 flex flex-col gap-5 max-h-[90vh] overflow-y-auto"
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
         transition={{ type: "spring", stiffness: 350, damping: 25 }}
       >
         <button
@@ -590,6 +649,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
           <FaTimes />
         </button>
 
+        {/* Header */}
         <div className="flex items-center gap-4 border-b-2 border-black pb-4">
           <div className="text-3xl bg-black text-white p-3 border-2 border-black shadow-[3px_3px_0px_0px_rgba(240,255,0,1)]">
             {icon}
@@ -599,11 +659,12 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
               {skill.name}
             </h2>
             <span className="font-label-bold bg-secondary text-white px-2 py-0.5 text-xs border-2 border-black inline-block mt-1">
-              {skill.category}
+              {category}
             </span>
           </div>
         </div>
 
+        {/* Proficiency */}
         <div className="flex flex-col gap-2">
           <div className="flex justify-between font-label-bold uppercase text-sm">
             <span>Proficiency</span>
@@ -619,24 +680,46 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
           </div>
         </div>
 
+        {/* Description */}
         <p className="font-body-md text-base bg-surface-variant p-4 border-2 border-black border-dashed">
           {skill.description}
         </p>
 
-        {skill.projects && skill.projects.length > 0 && (
-          <div className="flex flex-col gap-3 mt-1">
-            <h4 className="font-headline-md text-xl uppercase border-b-2 border-black inline-block w-fit">
-              Used in
+        {/* Projects */}
+        {relatedProjects.length > 0 && (
+          <div className="flex flex-col gap-4 mt-1">
+            <h4 className="font-headline-md text-xl uppercase border-b-2 border-black inline-block w-fit pb-1">
+              Used in {relatedProjects.length} {relatedProjects.length === 1 ? "Project" : "Projects"}
             </h4>
-            <div className="flex flex-wrap gap-2">
-              {skill.projects.map((project) => (
+            <div className="flex flex-col gap-3">
+              {relatedProjects.map((project) => (
                 <button
-                  key={project}
-                  onClick={() => onProjectClick(project)}
-                  className="bg-white border-2 border-black px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 hover:bg-black hover:text-white transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
+                  key={project.id}
+                  onClick={() => onProjectClick(project.id)}
+                  className="bg-white border-2 border-black p-3 flex items-center gap-4 hover:bg-surface-variant transition-all shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] group text-left w-full"
                 >
-                  {project}
-                  <FaExternalLinkAlt className="text-[10px]" />
+                  <div className="w-14 h-14 border-2 border-black overflow-hidden shrink-0 bg-surface-variant">
+                    <img
+                      src={getAssetPath(project.image)}
+                      alt={project.title}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h5 className="font-headline-md text-sm uppercase truncate">
+                      {project.title}
+                    </h5>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="font-label-bold text-[10px] text-secondary uppercase">
+                        {project.year}
+                      </span>
+                      <span className="font-label-bold text-[10px] bg-black text-white px-1">
+                        {project.category === "web-dev" ? "Web Dev" : "AI & ML"}
+                      </span>
+                    </div>
+                  </div>
+                  <FaArrowRight className="text-sm shrink-0 group-hover:translate-x-1 transition-transform" />
                 </button>
               ))}
             </div>

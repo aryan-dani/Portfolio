@@ -74,9 +74,14 @@ function Certifications() {
       >
         <header className="mb-8 border-b-8 border-black pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4">
           <div>
-            <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-black uppercase tracking-tighter">
-              CERTIFICATIONS
-            </h1>
+            <div className="flex items-center gap-4 flex-wrap">
+              <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-black uppercase tracking-tighter">
+                CERTIFICATIONS
+              </h1>
+              <span className="bg-primary-container border-4 border-black px-4 py-2 font-headline-md text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                {certifications.length}
+              </span>
+            </div>
             <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-black mt-4 max-w-2xl bg-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               Proof of grind. Credentials that validate expertise and continuous
               learning.

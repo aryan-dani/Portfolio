@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   FaEnvelope,
   FaLinkedin,
@@ -7,13 +8,12 @@ import {
   FaInstagram,
   FaTwitter,
   FaFileDownload,
-  FaChevronDown,
-  FaChevronUp,
-  FaPaperPlane,
+  FaArrowRight,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
+import GitHubStats from "../../components/GitHubStats/GitHubStats";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -38,12 +38,6 @@ const itemVariants = {
 
 function About() {
   const [showEmail, setShowEmail] = useState(false);
-  const [showContactForm, setShowContactForm] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
   const { showToast } = useToast();
 
   const handleEmailClick = () => {
@@ -52,23 +46,6 @@ function About() {
       navigator.clipboard.writeText(aboutInfo.email);
       showToast("Email copied to clipboard!", "success");
     }
-  };
-
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const subject = encodeURIComponent(
-      `Portfolio Contact from ${formData.name}`,
-    );
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
-    );
-    window.location.href = `mailto:${aboutInfo.email}?subject=${subject}&body=${body}`;
-    showToast("Opening email client...", "info");
   };
 
   return (
@@ -126,7 +103,7 @@ function About() {
           </div>
         </motion.div>
 
-        {/* Right Column: Highlights, Socials & Contact */}
+        {/* Right Column: Highlights, Socials & CTA */}
         <motion.div
           className="flex flex-col gap-12"
           variants={containerVariants}
@@ -140,7 +117,7 @@ function About() {
             </p>
 
             <div className="flex flex-wrap gap-4 mb-2">
-              {socialLinks.map((link, idx) => {
+              {socialLinks.map((link) => {
                 const iconMap = {
                   LinkedIn: FaLinkedin,
                   GitHub: FaGithub,
@@ -155,7 +132,7 @@ function About() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`bg-white text-black border-4 border-black w-12 h-12 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-black hover:text-primary-container transition-all`}
+                    className="bg-white text-black border-4 border-black w-12 h-12 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-black hover:text-primary-container transition-all"
                     aria-label={link.name}
                     title={link.name}
                   >
@@ -191,24 +168,23 @@ function About() {
             </div>
           </div>
 
-          <div className="bg-surface-variant border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="font-headline-md text-3xl uppercase mb-4">
-              Get In Touch
+          {/* CTA to Contact Page */}
+          <div className="bg-black border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(240,255,0,1)]">
+            <h3 className="font-headline-md text-3xl uppercase mb-4 text-white">
+              Let's Connect
             </h3>
-            <p className="font-body-md text-lg mb-8">
+            <p className="font-body-md text-lg mb-6 text-white/80">
               I'm always open to discussing new projects, creative ideas, or
-              opportunities to be part of your visions. Let's connect!
+              opportunities to be part of your visions.
             </p>
-
             <div className="flex flex-col gap-4">
-              <motion.button
-                className="bg-black text-white border-4 border-black px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_rgba(240,255,0,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full"
-                onClick={handleEmailClick}
+              <Link
+                to="/contact"
+                className="bg-primary-container text-black border-4 border-black px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all w-full"
               >
-                <FaEnvelope />
-                <span>{showEmail ? aboutInfo.email : "Show Email"}</span>
-              </motion.button>
-
+                <FaArrowRight />
+                <span>Get In Touch</span>
+              </Link>
               <motion.a
                 href={getAssetPath(aboutInfo.resumeUrl)}
                 target="_blank"
@@ -218,96 +194,13 @@ function About() {
                 <FaFileDownload />
                 <span>Download Resume</span>
               </motion.a>
-
-              <motion.button
-                className="bg-secondary text-white border-4 border-black px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full"
-                onClick={() => setShowContactForm(!showContactForm)}
-              >
-                {showContactForm ? <FaChevronUp /> : <FaChevronDown />}
-                <span>{showContactForm ? "Hide Form" : "Contact Form"}</span>
-              </motion.button>
             </div>
-
-            <AnimatePresence>
-              {showContactForm && (
-                <motion.form
-                  className="mt-8 flex flex-col gap-6"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  onSubmit={handleFormSubmit}
-                >
-                  <div className="flex flex-col gap-2">
-                    <label
-                      htmlFor="name"
-                      className="font-label-bold uppercase text-sm"
-                    >
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleFormChange}
-                      placeholder="Enter your name"
-                      required
-                      className="border-4 border-black p-4 font-body-md text-lg focus:outline-none focus:bg-primary-container/10 transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label
-                      htmlFor="email"
-                      className="font-label-bold uppercase text-sm"
-                    >
-                      Your Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleFormChange}
-                      placeholder="your.email@example.com"
-                      required
-                      className="border-4 border-black p-4 font-body-md text-lg focus:outline-none focus:bg-primary-container/10 transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label
-                      htmlFor="message"
-                      className="font-label-bold uppercase text-sm"
-                    >
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleFormChange}
-                      placeholder="Tell me about your project or idea..."
-                      rows="5"
-                      required
-                      className="border-4 border-black p-4 font-body-md text-lg focus:outline-none focus:bg-primary-container/10 transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="bg-primary-container text-black border-4 border-black px-6 py-4 font-headline-md text-2xl uppercase flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all mt-2"
-                  >
-                    <FaPaperPlane className="text-xl" />
-                    <span>Send Message</span>
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
           </div>
         </motion.div>
       </div>
+
+      {/* GitHub Stats Section */}
+      <GitHubStats />
     </motion.section>
   );
 }

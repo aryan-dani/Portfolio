@@ -46,7 +46,7 @@ function Header() {
 
           <div className="hidden md:block">
             <NavLink
-              to="/about"
+              to="/contact"
               className="font-headline-md text-base uppercase tracking-widest font-black text-black bg-[#F0FF00] border-4 border-black px-6 py-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-100 flex items-center justify-center"
             >
               Work with me
@@ -94,7 +94,7 @@ function Header() {
           ))}
           <div className="w-full px-8 mt-4">
             <NavLink
-              to="/about"
+              to="/contact"
               onClick={toggleMenu}
               className="w-full flex justify-center items-center font-headline-md text-lg uppercase tracking-widest font-black text-black bg-[#F0FF00] border-4 border-black px-4 py-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
             >
