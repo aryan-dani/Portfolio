@@ -1,35 +1,21 @@
-import { useState, useMemo, useEffect, memo } from "react";
+import { useState, useMemo, useEffect, useRef, memo } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { FaSearch, FaTimes, FaEye, FaExternalLinkAlt } from "react-icons/fa";
-import {
-  certifications,
-  certificationCategories,
-} from "../../data/certifications";
+import { certifications, certificationCategories } from "../../data/certifications";
 import { getAssetPath } from "../../utils/paths";
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      staggerChildren: 0.12,
-      delayChildren: 0.1,
-    },
+  visible: { 
+    opacity: 1, 
+    transition: { duration: 0.35, staggerChildren: 0.08, delayChildren: 0.05 } 
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
+  hidden:  { opacity: 0, y: 35 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 280, damping: 22 } },
 };
 
 function Certifications() {
@@ -37,246 +23,246 @@ function Certifications() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [previewImage, setPreviewImage] = useState(null);
 
-  const filteredCerts = useMemo(() => {
-    return certifications.filter((cert) => {
-      const matchesCategory =
-        activeFilter === "all" || cert.category === activeFilter;
+  const filteredCerts = useMemo(() =>
+    certifications.filter((cert) => {
+      const matchesCategory = activeFilter === "all" || cert.category === activeFilter;
       const matchesSearch =
         searchTerm === "" ||
         cert.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         cert.issuer.toLowerCase().includes(searchTerm.toLowerCase()) ||
         cert.description.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesCategory && matchesSearch;
-    });
-  }, [searchTerm, activeFilter]);
+    }),
+    [searchTerm, activeFilter]
+  );
 
-  // Lock body scroll when modal is open
   useEffect(() => {
-    if (previewImage) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
+    if (previewImage) { document.body.style.overflow = "hidden"; }
+    else { document.body.style.overflow = ""; }
+    return () => { document.body.style.overflow = ""; };
   }, [previewImage]);
 
-  const clearSearch = () => setSearchTerm("");
+  useEffect(() => {
+    const handleEscape = (e) => { if (e.key === "Escape") setPreviewImage(null); };
+    if (previewImage) document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [previewImage]);
 
   return (
     <>
       <motion.section
-        className="flex flex-col gap-16 md:gap-section-gap w-full"
+        className="flex flex-col gap-12 w-full mt-4"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
-        <header className="mb-8 border-b-8 border-black pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4">
+        {/* Header */}
+        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col xl:flex-row justify-between items-start xl:items-end gap-8">
           <div>
             <div className="flex items-center gap-4 flex-wrap">
-              <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-black uppercase tracking-tighter">
+              <motion.h1
+                className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase tracking-tighter"
+                variants={cardVariants}
+              >
                 CERTIFICATIONS
-              </h1>
-              <span className="bg-primary-container border-4 border-black px-4 py-2 font-headline-md text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                {certifications.length}
-              </span>
+              </motion.h1>
+              <motion.span
+                className="font-headline-md text-3xl border-4 border-[var(--color-outline)] px-3 py-1 shadow-[4px_4px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+                variants={cardVariants}
+              >
+                {filteredCerts.length}
+              </motion.span>
             </div>
-            <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-black mt-4 max-w-2xl bg-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              Proof of grind. Credentials that validate expertise and continuous
-              learning.
-            </p>
+            <motion.p
+              className="font-body-lg text-base md:text-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+              variants={cardVariants}
+            >
+              Proof of work — industry-recognized credentials across AI, cloud, and web technologies.
+            </motion.p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-            <div className="flex items-center bg-white border-4 border-black p-2 w-full sm:w-64 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <FaSearch className="text-xl ml-2 mr-3" />
+          {/* Controls */}
+          <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto items-stretch sm:items-center">
+            {/* Search */}
+            <motion.div
+              className="flex items-center bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-3 w-full sm:w-64 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
+              variants={cardVariants}
+            >
+              <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search certifications..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent border-none outline-none w-full font-body-md text-lg"
+                className="bg-transparent border-none outline-none w-full font-body-md text-base text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
               />
               {searchTerm && (
-                <button
-                  onClick={clearSearch}
-                  className="mr-2 p-1 hover:bg-primary-container transition-colors"
-                >
-                  <FaTimes />
+                <button onClick={() => setSearchTerm("")} className="mr-1 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
+                  <FaTimes className="text-[var(--color-on-surface)]" />
                 </button>
               )}
-            </div>
+            </motion.div>
 
-            <div className="flex flex-wrap gap-3">
-              {certificationCategories.map((category, index) => {
-                const isSelected = activeFilter === category.id;
-
-                return (
-                  <button
-                    key={category.id}
-                    className={`border-4 border-black px-4 py-2 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all transform hover:shadow-none hover:translate-y-1 hover:translate-x-1 ${
-                      isSelected
-                        ? `bg-primary-container`
-                        : "bg-white hover:bg-surface-variant"
-                    }`}
-                    onClick={() => setActiveFilter(category.id)}
-                  >
-                    {category.label}
-                  </button>
-                );
-              })}
-            </div>
+            {/* Filters */}
+            <motion.div className="flex flex-wrap gap-2.5" variants={cardVariants}>
+              {certificationCategories.map((cat) => (
+                <motion.button
+                  key={cat.id}
+                  onClick={() => setActiveFilter(cat.id)}
+                  className={`border-4 border-[var(--color-outline)] px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                    activeFilter === cat.id
+                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                  }`}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  {cat.label}
+                </motion.button>
+              ))}
+            </motion.div>
           </div>
         </header>
 
-        <AnimatePresence mode="wait">
+        {/* Grid */}
+        <AnimatePresence mode="popLayout">
           {filteredCerts.length > 0 ? (
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
+              key={activeFilter + searchTerm}
+              layout
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
-              {filteredCerts.map((cert) => (
-                <CertificationCard
+              {filteredCerts.map((cert, index) => (
+                <CertCard
                   key={cert.id}
                   cert={cert}
-                  onImageClick={() => setPreviewImage(cert.image)}
+                  index={index}
+                  onPreview={() => setPreviewImage({ src: cert.image, title: cert.title })}
                 />
               ))}
             </motion.div>
           ) : (
             <motion.div
-              className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-12 text-center flex flex-col items-center gap-4"
+              className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-12 text-center shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col items-center gap-4 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
             >
-              <FaSearch className="text-4xl" />
-              <h3 className="font-headline-md text-3xl uppercase">
-                No certificates found
-              </h3>
-              <p className="font-body-md text-lg">
-                Try selecting a different category or view all certificates.
-              </p>
+              <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                <FaSearch className="text-5xl text-[var(--color-on-surface)]" />
+              </motion.div>
+              <h3 className="font-headline-md text-3xl uppercase text-[var(--color-on-surface)]">No certifications found</h3>
+              <p className="font-body-md text-lg text-[var(--color-text-muted)]">Try adjusting your search or filter.</p>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.section>
 
-      {/* Image Preview Modal - Rendered via Portal */}
-      {previewImage &&
-        createPortal(
-          <AnimatePresence>
-            <div className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-8">
-              <motion.div
-                className="absolute inset-0 bg-background/80 backdrop-blur-sm"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setPreviewImage(null)}
-              />
-              <motion.div
-                className="bg-white border-8 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] max-w-5xl max-h-[90vh] relative z-10 flex flex-col"
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  className="absolute -top-4 -right-4 md:-top-6 md:-right-6 z-20 bg-primary-container border-4 border-black w-12 h-12 flex items-center justify-center text-black text-2xl hover:bg-black hover:text-primary-container transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
-                  onClick={() => setPreviewImage(null)}
-                  aria-label="Close modal"
-                >
-                  <FaTimes />
-                </button>
-                <img
-                  src={getAssetPath(previewImage)}
-                  alt="Certificate Preview"
-                  className="max-w-full max-h-[85vh] object-contain border-4 border-black"
-                />
-              </motion.div>
-            </div>
-          </AnimatePresence>,
-          document.body,
+      {/* Image Preview Modal */}
+      <AnimatePresence>
+        {previewImage && (
+          <ImagePreviewModal
+            src={previewImage.src}
+            title={previewImage.title}
+            onClose={() => setPreviewImage(null)}
+          />
         )}
+      </AnimatePresence>
     </>
   );
 }
 
-const CertificationCard = memo(function CertificationCard({
-  cert,
-  onImageClick,
-}) {
+// ── Cert Card ─────────────────────────────────────────────────
+
+const CertCard = memo(function CertCard({ cert, index, onPreview }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
   return (
     <motion.article
-      className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] transition-all duration-200"
+      ref={ref}
+      layout
+      className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_var(--shadow-color)] transition-all duration-200"
       variants={cardVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      transition={{ type: "spring", stiffness: 260, damping: 22, delay: (index % 3) * 0.05 }}
     >
+      {/* Image Container */}
       <div
-        className="aspect-4/3 border-b-4 border-black overflow-hidden relative cursor-pointer bg-white"
-        onClick={onImageClick}
+        className="aspect-[4/3] border-b-4 border-[var(--color-outline)] overflow-hidden relative cursor-pointer bg-[var(--color-surface)] flex items-center justify-center p-3"
+        onClick={onPreview}
       >
         <img
           src={getAssetPath(cert.image)}
           alt={cert.title}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-contain p-2"
+          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
         />
-        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <FaEye className="text-white text-4xl" />
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <FaEye className="text-white text-3xl" />
         </div>
-        <div className="absolute top-4 right-4 bg-secondary text-white border-4 border-black px-3 py-1 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-          {cert.badge || "Cert"}
-        </div>
+        
+        {/* Category badge */}
+        {cert.badge && (
+          <div className="absolute top-4 right-4 bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)] border-4 border-[var(--color-outline)] px-3 py-1 font-label-bold text-xs md:text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] z-10">
+            {cert.badge}
+          </div>
+        )}
       </div>
 
+      {/* Content */}
       <div className="p-6 md:p-8 flex flex-col grow">
-        <span className="font-label-bold text-sm md:text-base text-secondary uppercase tracking-widest mb-2 border-2 border-black w-fit px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+        {/* Date badge */}
+        <span className="font-label-bold text-sm md:text-base text-[var(--color-secondary)] uppercase tracking-widest mb-2 border-2 border-[var(--color-outline)] w-fit px-2.5 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)]">
           {cert.date}
         </span>
-        <h3 className="font-headline-md text-2xl md:text-3xl text-black mb-4 uppercase mt-2">
+        
+        <h3 className="font-headline-md text-2xl md:text-3xl text-[var(--color-on-surface)] mb-4 uppercase mt-2 leading-tight">
           {cert.title}
         </h3>
-        <p className="font-body-md text-base text-black mb-6 grow">
+        
+        <p className="font-body-md text-base text-[var(--color-on-surface)] mb-6 grow leading-relaxed">
           {cert.description}
         </p>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t-4 border-black pt-4 mb-6 gap-4 sm:gap-0">
+        {/* Tech Stack / Issuer Row */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t-4 border-[var(--color-outline)] pt-4 mb-6 gap-4 sm:gap-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full border-2 border-black overflow-hidden bg-white shrink-0">
+            <div className="w-10 h-10 rounded-full border-2 border-[var(--color-outline)] overflow-hidden bg-white shrink-0">
               <img
                 src={cert.issuerLogo}
                 alt={cert.issuer}
                 className="w-full h-full object-contain p-1"
               />
             </div>
-            <span className="font-label-bold text-sm md:text-base uppercase">
+            <span className="font-label-bold text-sm md:text-base uppercase text-[var(--color-on-surface)]">
               {cert.issuer}
             </span>
           </div>
-          <span className="font-label-bold text-xs bg-surface-variant border-2 border-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-center">
+          <span className="font-label-bold text-xs bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] text-center">
             {cert.tag || "Credential"}
           </span>
         </div>
 
+        {/* Action Button */}
         {cert.link && cert.link !== "#" ? (
           <a
             href={cert.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary-container text-black border-4 border-black text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2"
+            className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
           >
             <FaExternalLinkAlt className="text-sm" />
             View Certificate
           </a>
         ) : (
           <button
-            onClick={onImageClick}
-            className="bg-primary-container text-black border-4 border-black text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-pointer"
+            onClick={onPreview}
+            className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-none"
           >
             <FaEye className="text-sm" />
             View Certificate
@@ -284,6 +270,56 @@ const CertificationCard = memo(function CertificationCard({
         )}
       </div>
     </motion.article>
+  );
+});
+
+// ── Image Preview Modal ───────────────────────────────────────
+
+const ImagePreviewModal = memo(function ImagePreviewModal({ src, title, onClose }) {
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+      <motion.div
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ background: "color-mix(in srgb, var(--color-background) 80%, transparent)" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      />
+      <motion.div
+        className="relative z-10 border-8 border-[var(--color-outline)] shadow-[16px_16px_0px_0px_var(--shadow-color)] max-w-5xl w-full"
+        style={{ background: "var(--color-surface)" }}
+        initial={{ scale: 0.88, opacity: 0, y: 40 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.92, opacity: 0, y: 20 }}
+        transition={{ type: "spring", stiffness: 360, damping: 28 }}
+      >
+        {/* Header bar */}
+        <div
+          className="flex justify-between items-center px-5 py-3 border-b-4 border-[var(--color-outline)]"
+          style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
+        >
+          <span className="font-headline-md text-base uppercase">{title}</span>
+          <button
+            className="border-4 border-[var(--color-outline)] w-9 h-9 flex items-center justify-center font-black hover:translate-x-0.5 hover:translate-y-0.5 transition-transform cursor-none"
+            style={{ background: "var(--color-on-primary-container)", color: "var(--color-primary-container)" }}
+            onClick={onClose}
+            aria-label="Close preview"
+          >
+            <FaTimes />
+          </button>
+        </div>
+
+        <div className="p-2 md:p-4 bg-white flex justify-center items-center">
+          <img
+            src={getAssetPath(src)}
+            alt={title}
+            className="w-full h-auto object-contain max-h-[75vh]"
+          />
+        </div>
+      </motion.div>
+    </div>,
+    document.body
   );
 });
 

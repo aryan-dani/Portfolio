@@ -1,24 +1,23 @@
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState, useRef, memo } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useTheme } from "../../context/ThemeContext";
 
 const CustomCursor = memo(function CustomCursor() {
-  const [isHovering, setIsHovering] = useState(false);
+  const [cursorType, setCursorType] = useState("default"); // 'default' | 'hover' | 'text' | 'image'
   const [isVisible, setIsVisible] = useState(false);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
-  // Use MotionValues for maximum performance (skips React renders)
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  // Outer cursor gets a spring effect for that trailing physical feel
-  const springConfig = { damping: 30, stiffness: 400, mass: 0.5 };
+  const springConfig = { damping: 28, stiffness: 380, mass: 0.5 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) {
-      return;
-    }
+    if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const updateMousePosition = (e) => {
       cursorX.set(e.clientX);
@@ -29,75 +28,97 @@ const CustomCursor = memo(function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    const handleHoverStart = (e) => {
+    const handleHoverChange = (e) => {
       const target = e.target;
-      if (
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.classList.contains("cursor-pointer")
-      ) {
-        setIsHovering(true);
+      const el = target.closest("a, button, [role='button'], .cursor-pointer, .nb-carousel-arrow");
+      const img = target.closest("img, .cursor-image");
+      const input = target.closest("input, textarea, select");
+      const isCliText = target.closest(".nb-cli-container") && !target.closest("input");
+
+      if (input || isCliText) {
+        setCursorType("text");
+      } else if (img) {
+        setCursorType("image");
+      } else if (el) {
+        setCursorType("hover");
       } else {
-        setIsHovering(false);
+        setCursorType("default");
       }
     };
 
     window.addEventListener("mousemove", updateMousePosition);
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
-    window.addEventListener("mouseover", handleHoverStart);
+    window.addEventListener("mouseover", handleHoverChange);
 
     return () => {
       window.removeEventListener("mousemove", updateMousePosition);
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
-      window.removeEventListener("mouseover", handleHoverStart);
+      window.removeEventListener("mouseover", handleHoverChange);
     };
   }, [isVisible, cursorX, cursorY]);
 
   if (!isVisible) return null;
 
+  const isHovering = cursorType === "hover" || cursorType === "image";
+  const isText = cursorType === "text";
+
   return createPortal(
     <div style={{ pointerEvents: "none", zIndex: 99999, position: "fixed", top: 0, left: 0, width: "100%", height: "100%" }}>
-      {/* Inner cursor: tracks instantly, no spring delay */}
+      {/* Inner dot — tracks instantly */}
       <motion.div
-        className="absolute w-4 h-4 bg-primary-container rounded-none border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] origin-center"
         style={{
           x: cursorX,
           y: cursorY,
           translateX: "-50%",
           translateY: "-50%",
+          position: "absolute",
         }}
         animate={{
-          scale: isHovering ? 2 : 1,
+          scale: isHovering ? 1.6 : isText ? 0.3 : 1,
+          opacity: isVisible ? 1 : 0,
         }}
-        transition={{
-          type: "spring",
-          stiffness: 1000,
-          damping: 40,
-        }}
-      />
-      
-      {/* Outer cursor: trails behind with spring physics */}
+        transition={{ type: "spring", stiffness: 900, damping: 40 }}
+      >
+        <div
+          style={{
+            width: isText ? "6px" : "16px",
+            height: isText ? "22px" : "16px",
+            background: "var(--color-primary-container)",
+            border: "2px solid var(--color-outline)",
+            boxShadow: "2px 2px 0 var(--shadow-color)",
+            borderRadius: "0",
+          }}
+        />
+      </motion.div>
+
+      {/* Outer ring — trails with spring */}
       <motion.div
-        className="absolute w-8 h-8 rounded-none border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-transparent origin-center"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
           translateX: "-50%",
           translateY: "-50%",
+          position: "absolute",
         }}
         animate={{
-          scale: isHovering ? 1.5 : 1,
+          scale: isHovering ? 1.4 : 1,
+          opacity: isVisible ? (isText ? 0.3 : 1) : 0,
         }}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 30,
-        }}
-      />
+        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+      >
+        <div
+          style={{
+            width: "32px",
+            height: "32px",
+            border: "2px solid var(--color-outline)",
+            background: "transparent",
+            boxShadow: "4px 4px 0 var(--shadow-color)",
+            borderRadius: "0",
+          }}
+        />
+      </motion.div>
     </div>,
     document.body
   );

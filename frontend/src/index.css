@@ -1,166 +1,279 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — LIGHT MODE (DEFAULT)
+   ═══════════════════════════════════════════════════════════════ */
 @theme {
-  --color-on-error: #ffffff;
-  --color-secondary: #0028c2;
-  --color-on-primary-fixed: #1b1d00;
-  --color-on-primary-fixed-variant: #464a00;
-  --color-secondary-fixed: #dee0ff;
-  --color-surface-bright: #f9f9f9;
-  --color-on-error-container: #93000a;
-  --color-secondary-fixed-dim: #bbc3ff;
-  --color-on-secondary-container: #c8ceff;
-  --color-surface-variant: #e2e2e2;
-  --color-outline: #78795f;
-  --color-surface-container-low: #f3f3f4;
-  --color-surface-container: #eeeeee;
-  --color-surface-container-high: #e8e8e8;
-  --color-on-tertiary-fixed: #1b1c1c;
-  --color-tertiary-fixed: #e4e2e1;
-  --color-primary: #5d6300;
-  --color-surface-container-highest: #e2e2e2;
-  --color-on-tertiary-container: #706f6e;
-  --color-on-surface-variant: #474832;
-  --color-inverse-primary: #c3d000;
-  --color-surface-dim: #dadada;
-  --color-on-secondary-fixed-variant: #002cce;
-  --color-tertiary: #5f5e5e;
-  --color-inverse-on-surface: #f0f1f1;
-  --color-on-tertiary: #ffffff;
-  --color-primary-container: #f0ff00;
-  --color-on-surface: #1a1c1c;
-  --color-on-primary: #ffffff;
-  --color-tertiary-container: #f6f3f2;
-  --color-outline-variant: #c8c8ab;
-  --color-surface-tint: #5d6300;
-  --color-background: #f9f9f9;
-  --color-primary-fixed: #dfed00;
-  --color-tertiary-fixed-dim: #c8c6c5;
-  --color-surface: #f9f9f9;
-  --color-inverse-surface: #2f3131;
-  --color-on-primary-container: #6d7400;
-  --color-surface-container-lowest: #ffffff;
-  --color-on-secondary-fixed: #000e5e;
-  --color-error: #ba1a1a;
-  --color-secondary-container: #0138ff;
-  --color-on-secondary: #ffffff;
-  --color-primary-fixed-dim: #c3d000;
-  --color-on-background: #1a1c1c;
-  --color-on-tertiary-fixed-variant: #474746;
-  --color-error-container: #ffdad6;
+  /* ── Core brand palette ── */
+  --color-accent:               #F0FF00;   /* neon yellow — primary brand accent */
+  --color-accent-warm:          #FFE566;   /* soft gold — hover states */
+  --color-accent-cool:          #FFE566;   /* warm gold fallback to avoid cyan */
+  --color-accent-dark:          #C8D600;   /* darker yellow — pressed/active */
 
-  --radius-DEFAULT: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
-  --radius-full: 0px;
+  /* ── Semantic surface colors (light) ── */
+  --color-background:           #FAFAF8;   /* warm off-white */
+  --color-surface:              #FFFFFF;   /* pure white for cards */
+  --color-surface-elevated:     #FFFFFF;
+  --color-surface-variant:      #EFEFED;   /* light gray */
+  --color-surface-container:    #F0F0EE;
+  --color-surface-container-low:#F5F5F3;
+  --color-surface-dim:          #E2E2E0;
+  --color-surface-bright:       #FAFAF8;
 
-  --spacing-base: 8px;
-  --spacing-card-padding: 32px;
-  --spacing-section-gap: 64px;
-  --spacing-shadow-offset: 8px;
-  --spacing-border-width: 4px;
-  --spacing-gutter: 24px;
+  /* ── On-surface text ── */
+  --color-on-background:        #0D0D0D;
+  --color-on-surface:           #0D0D0D;
+  --color-on-surface-variant:   #4A4A52;
+  --color-text-muted:           #6B7280;
 
-  --font-headline-md: "Space Grotesk", sans-serif;
+  /* ── Border ── */
+  --color-outline:              #0D0D0D;
+  --color-outline-variant:      #D4D4D0;
+
+  /* ── Primary (brand yellow) ── */
+  --color-primary:              #5D6300;
+  --color-on-primary:           #FFFFFF;
+  --color-primary-container:    #F0FF00;
+  --color-on-primary-container: #0D0D0D;
+  --color-primary-fixed:        #DFED00;
+  --color-inverse-primary:      #C3D000;
+
+  /* ── Secondary (brand blue) ── */
+  --color-secondary:            #0028C2;
+  --color-on-secondary:         #FFFFFF;
+  --color-secondary-container:  #0138FF;
+  --color-on-secondary-container: #C8CEFF;
+
+  /* ── Tertiary / Neutral ── */
+  --color-tertiary:             #5F5E5E;
+  --color-on-tertiary:          #FFFFFF;
+  --color-tertiary-container:   #F6F3F2;
+  --color-on-tertiary-container:#706F6E;
+
+  /* ── Error ── */
+  --color-error:                #BA1A1A;
+  --color-on-error:             #FFFFFF;
+  --color-error-container:      #FFDAD6;
+  --color-on-error-container:   #93000A;
+
+  /* ── Inverse ── */
+  --color-inverse-surface:      #2F3131;
+  --color-inverse-on-surface:   #F0F1F1;
+
+  /* ── Shadow colors ── */
+  --shadow-color:               transparent;
+  --shadow-accent:              transparent;
+  --glow-accent:                transparent;
+
+  /* ── Spacing & layout ── */
+  --radius-DEFAULT:             0px;
+  --radius-lg:                  0px;
+  --radius-xl:                  0px;
+  --radius-full:                0px;
+
+  --spacing-base:               8px;
+  --spacing-card-padding:       32px;
+  --spacing-section-gap:        80px;
+  --spacing-shadow-offset:      8px;
+  --spacing-border-width:       4px;
+  --spacing-gutter:             24px;
+
+  /* ── Typography ── */
   --font-headline-xl: "Space Grotesk", sans-serif;
-  --font-label-bold: "Space Grotesk", sans-serif;
-  --font-body-md: "Inter", sans-serif;
-  --font-body-lg: "Inter", sans-serif;
   --font-headline-lg: "Space Grotesk", sans-serif;
-  
-  --text-headline-md: 32px;
-  --text-headline-md--line-height: 110%;
-  --text-headline-md--font-weight: 700;
-  
-  --text-headline-xl: 96px;
-  --text-headline-xl--line-height: 90%;
-  --text-headline-xl--letter-spacing: -0.04em;
-  --text-headline-xl--font-weight: 700;
-  
-  --text-label-bold: 14px;
-  --text-label-bold--line-height: 100%;
-  --text-label-bold--font-weight: 700;
-  
-  --text-body-md: 16px;
-  --text-body-md--line-height: 150%;
-  --text-body-md--font-weight: 400;
-  
-  --text-body-lg: 20px;
-  --text-body-lg--line-height: 160%;
-  --text-body-lg--font-weight: 400;
-  
-  --text-headline-lg: 64px;
-  --text-headline-lg--line-height: 100%;
-  --text-headline-lg--letter-spacing: -0.02em;
-  --text-headline-lg--font-weight: 700;
+  --font-headline-md: "Space Grotesk", sans-serif;
+  --font-label-bold:  "Space Grotesk", sans-serif;
+  --font-body-lg:     "Inter", sans-serif;
+  --font-body-md:     "Inter", sans-serif;
+  --font-sans:        "Inter", sans-serif;
 
-/* Default app fonts */
-  --font-sans: "Inter", sans-serif;
+  --text-headline-xl:                  96px;
+  --text-headline-xl--line-height:     90%;
+  --text-headline-xl--letter-spacing:  -0.04em;
+  --text-headline-xl--font-weight:     700;
+
+  --text-headline-lg:                  64px;
+  --text-headline-lg--line-height:     100%;
+  --text-headline-lg--letter-spacing:  -0.02em;
+  --text-headline-lg--font-weight:     700;
+
+  --text-headline-md:                  32px;
+  --text-headline-md--line-height:     110%;
+  --text-headline-md--font-weight:     700;
+
+  --text-label-bold:                   14px;
+  --text-label-bold--line-height:      100%;
+  --text-label-bold--font-weight:      700;
+
+  --text-body-lg:                      20px;
+  --text-body-lg--line-height:         160%;
+  --text-body-lg--font-weight:         400;
+
+  --text-body-md:                      16px;
+  --text-body-md--line-height:         150%;
+  --text-body-md--font-weight:         400;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK MODE — CSS CUSTOM PROPERTY REBINDING (clean, no !important)
+   ═══════════════════════════════════════════════════════════════ */
+.dark {
+  --color-background:           #0A0A0F;
+  --color-surface:              #13131A;
+  --color-surface-elevated:     #1A1A24;
+  --color-surface-variant:      #1E1E2A;
+  --color-surface-container:    #16161F;
+  --color-surface-container-low:#111118;
+  --color-surface-dim:          #0D0D12;
+  --color-surface-bright:       #1E1E2A;
+
+  --color-on-background:        #F0F0F5;
+  --color-on-surface:           #F0F0F5;
+  --color-on-surface-variant:   #B0B0C0;
+  --color-text-muted:           #6B6B80;
+
+  --color-outline:              #F0F0F5;
+  --color-outline-variant:      #2A2A3A;
+
+  --color-primary:              #F0FF00;
+  --color-on-primary:           #0D0D0D;
+  --color-primary-container:    #F0FF00;
+  --color-on-primary-container: #0D0D0D;
+  --color-primary-fixed:        #DFED00;
+  --color-inverse-primary:      #C3D000;
+
+  --color-secondary:            #8B9AFF;
+  --color-on-secondary:         #0D0D0D;
+  --color-secondary-container:  #3B4FFF;
+  --color-on-secondary-container:#E0E4FF;
+
+  --color-tertiary:             #A0A0B0;
+  --color-on-tertiary:          #0D0D0D;
+  --color-tertiary-container:   #25252F;
+  --color-on-tertiary-container:#C0C0D0;
+
+  --color-inverse-surface:      #F0F0F5;
+  --color-inverse-on-surface:   #0D0D0D;
+
+  --shadow-color:               transparent;
+  --shadow-accent:              transparent;
+  --glow-accent:                transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+  /* Smooth color transitions when toggling theme */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-on-background);
+  overflow-x: hidden;
 }
 
+/* Hide system cursor on pointer devices — custom cursor takes over */
 @media (hover: hover) and (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
+  * { cursor: none !important; }
 }
 
-/* Base custom neo-brutalism utilities */
+/* ═══════════════════════════════════════════════════════════════
+   TEXT SELECTION
+   ═══════════════════════════════════════════════════════════════ */
+::selection {
+  background: #F0FF00;
+  color: #0D0D0D;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOCUS RING
+   ═══════════════════════════════════════════════════════════════ */
+*:focus-visible {
+  outline: 3px solid #F0FF00;
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 8px; }
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+  border-left: 3px solid var(--color-outline);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline);
+  border-left: 3px solid var(--color-outline);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-container);
+  border: 3px solid var(--color-outline);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MATERIAL SYMBOLS
+   ═══════════════════════════════════════════════════════════════ */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NEO-BRUTALIST UTILITIES
+   ═══════════════════════════════════════════════════════════════ */
+@utility neo-border {
+  border: 4px solid var(--color-outline);
+}
+
+@utility neo-border-thin {
+  border: 2px solid var(--color-outline);
+}
+
 @utility neo-shadow {
-  box-shadow: 8px 8px 0px 0px #000000;
+  box-shadow: 8px 8px 0px 0px var(--shadow-color);
+}
+
+@utility neo-shadow-sm {
+  box-shadow: 4px 4px 0px 0px var(--shadow-color);
+}
+
+@utility neo-shadow-lg {
+  box-shadow: 12px 12px 0px 0px var(--shadow-color);
 }
 
 @utility neo-shadow-hover {
   will-change: transform, box-shadow;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   &:hover {
-    box-shadow: 12px 12px 0px 0px #000000;
+    box-shadow: 12px 12px 0px 0px var(--shadow-color);
     transform: translate(-4px, -4px);
   }
 }
 
 @utility neo-shadow-active {
   &:active {
-    box-shadow: 0px 0px 0px 0px #000000;
-    transform: translate(8px, 8px);
+    box-shadow: 0px 0px 0px 0px var(--shadow-color) !important;
+    transform: translate(8px, 8px) !important;
   }
 }
 
-@utility neo-border {
-  border: 4px solid #000000;
+/* Glow shadow for dark mode CTAs */
+@utility glow-shadow {
+  box-shadow: 8px 8px 0px 0px var(--shadow-color);
 }
 
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
-/* Scrollbar styling for light theme */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: white;
-  border-left: 4px solid black;
-}
-
-::-webkit-scrollbar-thumb {
-  background: black;
-  border-left: 4px solid black;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #f0ff00;
-  border: 4px solid black;
-}
-
-/* ── Carousel arrow buttons (neobrutalist, no jitter) ── */
+/* ═══════════════════════════════════════════════════════════════
+   CAROUSEL ARROW BUTTONS
+   ═══════════════════════════════════════════════════════════════ */
 .nb-carousel-arrow {
-  background: #ffffff;
-  border: 2px solid #000000;
+  background: var(--color-surface);
+  border: 2px solid var(--color-outline);
+  color: var(--color-on-surface);
   width: 2rem;
   height: 2rem;
   display: flex;
@@ -170,43 +283,695 @@ body {
   font-weight: 900;
   line-height: 1;
   cursor: pointer;
-  /* Hard shadow as CSS box-shadow — only this transitions, no layout shift */
-  box-shadow: 3px 3px 0px 0px #000000;
+  box-shadow: 3px 3px 0px 0px var(--shadow-color);
   transition: box-shadow 0.12s ease, background 0.12s ease;
   will-change: box-shadow;
 }
+
 .nb-carousel-arrow:hover {
   box-shadow: none;
-  background: #f0ff00;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
 }
+
 .nb-carousel-arrow:active {
-  background: #000000;
-  color: #f0ff00;
+  background: var(--color-outline);
+  color: var(--color-primary-container);
   box-shadow: none;
 }
 
-/* ── Marquee infinite scroll ── */
+/* ═══════════════════════════════════════════════════════════════
+   MARQUEE
+   ═══════════════════════════════════════════════════════════════ */
 @keyframes marquee-scroll {
-  0% { transform: translateX(0); }
+  0%   { transform: translateX(0); }
   100% { transform: translateX(-33.333%); }
 }
 
 .marquee-strip {
-  animation: marquee-scroll 20s linear infinite;
+  animation: marquee-scroll 25s linear infinite;
 }
 
 .marquee-strip:hover {
   animation-play-state: paused;
 }
 
-/* ── Focus ring for keyboard navigation ── */
-*:focus-visible {
-  outline: 3px solid #f0ff00;
-  outline-offset: 2px;
+/* ═══════════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Float — gentle levitating for elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
 }
 
-/* ── Improved selection ── */
-::selection {
-  background: #f0ff00;
-  color: #000000;
+/* Shimmer sweep — gradient highlight across text/surfaces */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
+
+/* Pulse glow — neon aura pulsing */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px var(--glow-accent), 8px 8px 0 var(--shadow-color); }
+  50%       { box-shadow: 0 0 24px var(--glow-accent), 0 0 48px var(--glow-accent), 8px 8px 0 var(--shadow-color); }
+}
+
+/* Gradient shift — animated gradient background */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Reveal up — scroll-triggered upward reveal */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Slide in from left */
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Slide in from right */
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Char flash for page loader glitch */
+@keyframes char-flash {
+  0%, 100% { color: var(--color-surface); background: var(--color-outline); }
+  50%       { color: var(--color-outline); background: var(--color-primary-container); }
+}
+
+/* Scan line sweep for CRT effect */
+@keyframes scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Blink cursor */
+@keyframes nb-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Typewriter cursor blink */
+@keyframes tw-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Progress ring rotation */
+@keyframes spin-ring {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Bounce in */
+@keyframes bounce-in {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Grain animation — shifts noise texture position */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10%       { transform: translate(-2%, -3%); }
+  20%       { transform: translate(3%, 2%); }
+  30%       { transform: translate(-1%, 4%); }
+  40%       { transform: translate(4%, -1%); }
+  50%       { transform: translate(-3%, 3%); }
+  60%       { transform: translate(2%, -4%); }
+  70%       { transform: translate(-4%, 1%); }
+  80%       { transform: translate(1%, -2%); }
+  90%       { transform: translate(3%, 4%); }
+}
+
+/* Scale pulse for status badges */
+@keyframes status-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.5); opacity: 0.5; }
+}
+
+/* Gradient border rotation */
+@keyframes border-spin {
+  to { --gradient-angle: 360deg; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES (animation helpers)
+   ═══════════════════════════════════════════════════════════════ */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(240, 255, 0, 0.4) 40%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-grain {
+  animation: grain 0.5s steps(1) infinite;
+}
+
+/* Shimmer text effect — for hero headings */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-on-background) 0%,
+    var(--color-on-background) 30%,
+    var(--color-primary-container) 50%,
+    var(--color-on-background) 70%,
+    var(--color-on-background) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Gradient text */
+.text-gradient {
+  color: var(--color-on-background);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD HOVER LIFT — unified card interaction
+   ═══════════════════════════════════════════════════════════════ */
+@utility card-hover-lift {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  will-change: transform, box-shadow;
+  &:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 16px 16px 0px 0px var(--shadow-color);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TILT CARD — 3D perspective tilt container
+   ═══════════════════════════════════════════════════════════════ */
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 800px;
+  transition: transform 0.1s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GRADIENT BORDERS
+   ═══════════════════════════════════════════════════════════════ */
+.gradient-border {
+  border: 4px solid var(--color-outline);
+  background: var(--color-surface);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GLASSMORPHISM
+   ═══════════════════════════════════════════════════════════════ */
+.glass {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGE LOADER STYLES
+   ═══════════════════════════════════════════════════════════════ */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  background: var(--color-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  overflow: hidden;
+}
+
+.page-loader--exit {
+  background: transparent;
+}
+
+.page-loader__grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dark .page-loader__grid {
+  background-image: radial-gradient(rgba(240, 255, 0, 0.04) 1.5px, transparent 1.5px);
+}
+
+/* Scanline overlay for CRT effect */
+.page-loader__scanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.015) 2px,
+    rgba(0, 0, 0, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.page-loader__glitch-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 5;
+  text-align: center;
+}
+
+.page-loader__glitch-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: var(--color-on-background);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.page-loader__glitch-char {
+  display: inline-block;
+  transition: color 0.05s;
+}
+
+.page-loader__glitch-char--resolved {
+  color: var(--color-on-background);
+}
+
+.page-loader__glitch-char--scrambling {
+  color: var(--color-surface);
+  background: var(--color-outline);
+  padding: 0 4px;
+  margin: 0 2px;
+  animation: char-flash 0.08s step-end infinite;
+}
+
+.page-loader__glitch-subtitle {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  font-weight: 800;
+  color: var(--color-on-primary-container);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  background: var(--color-primary-container);
+  padding: 6px 16px;
+  border: 2px solid var(--color-outline);
+  box-shadow: 4px 4px 0px var(--shadow-color);
+  animation: bounce-in 0.5s ease forwards;
+}
+
+/* Neo-brutalist terminal modal */
+.nb-loader {
+  position: absolute;
+  width: 90%;
+  max-width: 620px;
+  background: var(--color-surface);
+  border: 4px solid var(--color-outline);
+  box-shadow: 10px 10px 0px var(--shadow-color);
+  font-family: "Space Grotesk", monospace;
+  overflow: hidden;
+  z-index: 5;
+}
+
+/* CRT screen edge glow */
+.nb-loader::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+.nb-loader__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--color-primary-container);
+  border-bottom: 4px solid var(--color-outline);
+}
+
+.nb-loader__header-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.nb-loader__header-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--color-outline);
+  background: var(--color-surface);
+}
+
+.nb-loader__header-dot:nth-child(1) { background: #FF5F56; }
+.nb-loader__header-dot:nth-child(2) { background: #FFBD2E; }
+.nb-loader__header-dot:nth-child(3) { background: #27C93F; }
+
+.nb-loader__title {
+  font-size: 0.8rem;
+  color: var(--color-on-primary-container);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.nb-loader__badge {
+  font-size: 0.7rem;
+  color: var(--color-surface);
+  background: var(--color-outline);
+  font-weight: 900;
+  padding: 2px 10px;
+  border: 2px solid var(--color-outline);
+  letter-spacing: 0.05em;
+}
+
+.nb-loader__body {
+  padding: 24px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--color-surface);
+  /* Subtle scanlines inside terminal */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 18px,
+    color-mix(in srgb, var(--color-outline) 3%, transparent) 18px,
+    color-mix(in srgb, var(--color-outline) 3%, transparent) 19px
+  );
+}
+
+.nb-loader__line {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--color-on-surface);
+  font-weight: 600;
+}
+
+.nb-loader__line--command { color: var(--color-secondary); }
+.nb-loader__line--success { color: var(--color-on-surface); }
+.nb-loader__line--final {
+  color: var(--color-on-primary-container);
+  background: var(--color-primary-container);
+  border: 3px solid var(--color-outline);
+  padding: 8px 14px;
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 10px;
+  box-shadow: 4px 4px 0px var(--shadow-color);
+}
+
+.nb-loader__text { white-space: pre-wrap; }
+
+.nb-loader__cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  background: var(--color-outline);
+  margin-left: 6px;
+  vertical-align: middle;
+  animation: nb-blink 0.8s step-end infinite;
+}
+
+.nb-loader__progress-track {
+  height: 12px;
+  background: var(--color-surface);
+  border-top: 4px solid var(--color-outline);
+  width: 100%;
+}
+
+.nb-loader__progress-fill {
+  height: 100%;
+  background: var(--color-primary-container);
+  border-right: 4px solid var(--color-outline);
+  transition: width 0.3s ease;
+}
+
+.page-loader__global-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--color-surface-variant);
+  border-top: 2px solid var(--color-outline);
+  z-index: 20;
+}
+
+.page-loader__global-progress-fill {
+  height: 100%;
+  background: var(--color-primary-container);
+  transition: width 0.3s ease;
+}
+
+/* Split exit doors */
+.page-loader__split {
+  position: fixed;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: var(--color-background);
+  z-index: 4;
+}
+
+.page-loader__split--left {
+  left: 0;
+  border-right: 3px solid var(--color-outline);
+}
+
+.page-loader__split--right {
+  right: 0;
+  border-left: 3px solid var(--color-outline);
+}
+
+/* Radial reveal mask for exit */
+.page-loader__radial-exit {
+  position: fixed;
+  inset: 0;
+  background: var(--color-background);
+  z-index: 3;
+  clip-path: circle(100% at 50% 50%);
+}
+
+@media (max-width: 576px) {
+  .nb-loader {
+    width: 94%;
+    box-shadow: 6px 6px 0px var(--shadow-color);
+  }
+  .nb-loader__header { padding: 10px 14px; }
+  .nb-loader__body { padding: 18px; min-height: 180px; }
+  .nb-loader__line { font-size: 0.8rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BACK TO TOP
+   ═══════════════════════════════════════════════════════════════ */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 52px;
+  height: 52px;
+  background: var(--color-surface);
+  border: 3px solid var(--color-outline);
+  box-shadow: 4px 4px 0px 0px var(--shadow-color);
+  color: var(--color-on-surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  will-change: box-shadow;
+
+  svg { font-size: 1.1rem; }
+
+  &:hover {
+    background: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+    box-shadow: none;
+    transform: translate(2px, 2px);
+  }
+
+  &:active {
+    background: var(--color-outline);
+    color: var(--color-primary-container);
+    box-shadow: none;
+  }
+
+  @media (max-width: 576px) {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TYPEWRITER CURSOR
+   ═══════════════════════════════════════════════════════════════ */
+.typewriter { display: inline; }
+
+.typewriter__cursor {
+  display: inline-block;
+  width: 2px;
+  color: var(--color-primary-container);
+  font-weight: 300;
+  animation: tw-blink 0.7s step-end infinite;
+  margin-left: 1px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PLAYGROUND CLI
+   ═══════════════════════════════════════════════════════════════ */
+.nb-cli-container {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  letter-spacing: 0.02em;
+
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-outline-variant);
+    border-radius: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NOISE OVERLAY
+   ═══════════════════════════════════════════════════════════════ */
+.noise-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  opacity: 0.025;
+  mix-blend-mode: overlay;
+  animation: grain 0.4s steps(1) infinite;
+}
+
+.dark .noise-overlay {
+  opacity: 0.015;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATED GRADIENT PROGRESS BARS
+   ═══════════════════════════════════════════════════════════════ */
+.progress-bar-fill {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 40%,
+      transparent 80%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   OPEN TO OPPORTUNITIES BADGE
+   ═══════════════════════════════════════════════════════════════ */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #22C55E;
+  border-radius: 50%;
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGE TRANSITION OVERLAY
+   ═══════════════════════════════════════════════════════════════ */
+.page-transition-enter {
+  animation: reveal-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER SHRINK on scroll
+   ═══════════════════════════════════════════════════════════════ */
+.header-scrolled {
+  height: 64px !important;
+  box-shadow: 0 4px 0 0 var(--shadow-color);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO SECTION DECORATIVE ELEMENTS
+   ═══════════════════════════════════════════════════════════════ */
+.hero-accent-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--color-primary-container);
+  border: 2px solid var(--color-outline);
+  display: inline-block;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FORM FOCUS GLOW
+   ═══════════════════════════════════════════════════════════════ */
+.form-input-glow:focus {
+  box-shadow: 4px 4px 0 0 var(--shadow-color);
+  outline: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONFETTI PARTICLES
+   ═══════════════════════════════════════════════════════════════ */
+.confetti-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TERMINAL BLINKING CURSOR
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: terminal-blink 0.9s step-end infinite;
+}
+

@@ -1,4 +1,5 @@
 import { useState, useEffect, memo } from "react";
+import { motion } from "framer-motion";
 import "./TypeWriter.scss";
 
 const TypeWriter = memo(function TypeWriter({
@@ -59,7 +60,15 @@ const TypeWriter = memo(function TypeWriter({
 
   return (
     <span className={`typewriter ${className}`}>
-      {displayText}
+      <motion.span
+        key={textIndex}
+        initial={{ scale: 0.95 }}
+        animate={{ scale: [1, 1.05, 1] }}
+        transition={{ type: "spring", stiffness: 450, damping: 15 }}
+        style={{ display: "inline-block" }}
+      >
+        {displayText}
+      </motion.span>
       <span className="typewriter__cursor">|</span>
     </span>
   );

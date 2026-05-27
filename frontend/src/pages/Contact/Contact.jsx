@@ -1,17 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FaEnvelope,
-  FaLinkedin,
-  FaGithub,
-  FaInstagram,
-  FaTwitter,
-  FaFileDownload,
-  FaPaperPlane,
-  FaChevronDown,
-  FaCheck,
-  FaCopy,
-  FaCalendarAlt,
+  FaEnvelope, FaLinkedin, FaGithub, FaInstagram, FaTwitter,
+  FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
@@ -19,35 +10,21 @@ import { getAssetPath } from "../../utils/paths";
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.5, staggerChildren: 0.12, delayChildren: 0.1 },
-  },
+  visible: { opacity: 1, transition: { duration: 0.4, staggerChildren: 0.1, delayChildren: 0.05 } },
 };
-
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 300, damping: 24 },
-  },
+  hidden:  { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 280, damping: 22 } },
 };
 
 const socialIconMap = {
-  LinkedIn: FaLinkedin,
-  GitHub: FaGithub,
-  Email: FaEnvelope,
-  Instagram: FaInstagram,
-  Twitter: FaTwitter,
+  LinkedIn: FaLinkedin, GitHub: FaGithub, Email: FaEnvelope,
+  Instagram: FaInstagram, Twitter: FaTwitter,
 };
 
 const SUBJECT_OPTIONS = [
-  "Freelance Project",
-  "Collaboration",
-  "Job Opportunity",
-  "Open Source",
-  "Just Saying Hi 👋",
+  "Freelance Project", "Collaboration", "Job Opportunity",
+  "Open Source", "Just Saying Hi 👋",
 ];
 
 const FAQ_ITEMS = [
@@ -69,17 +46,44 @@ const FAQ_ITEMS = [
   },
 ];
 
+// ── Confetti burst on submit ──────────────────────────────────
+
+function ConfettiBurst({ active }) {
+  const colors = ["#F0FF00", "#00E5FF", "#FF5F56", "#27C93F", "#FFBD2E"];
+  if (!active) return null;
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {Array.from({ length: 18 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 confetti-particle"
+          style={{
+            background: colors[i % colors.length],
+            left: `${50 + (Math.random() - 0.5) * 100}%`,
+            top: "50%",
+          }}
+          initial={{ y: 0, x: 0, opacity: 1, scale: 1 }}
+          animate={{
+            y: -(Math.random() * 120 + 40),
+            x: (Math.random() - 0.5) * 160,
+            opacity: 0,
+            scale: [1, 1.5, 0],
+            rotate: Math.random() * 360,
+          }}
+          transition={{ duration: 0.8 + Math.random() * 0.4, ease: "easeOut" }}
+        />
+      ))}
+    </div>
+  );
+}
+
 function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   const { showToast } = useToast();
 
   const handleChange = (e) => {
@@ -90,24 +94,15 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Fallback to mailto
-    const subject = encodeURIComponent(
-      `[Portfolio] ${formData.subject || "Contact"} from ${formData.name}`
-    );
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`
-    );
-    
-    // Small delay for UX feel
+    const subject = encodeURIComponent(`[Portfolio] ${formData.subject || "Contact"} from ${formData.name}`);
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`);
     await new Promise((r) => setTimeout(r, 500));
-    
     window.location.href = `mailto:${aboutInfo.email}?subject=${subject}&body=${body}`;
     setIsSubmitting(false);
     setSubmitted(true);
+    setShowConfetti(true);
     showToast("Opening email client...", "info");
-    
-    setTimeout(() => setSubmitted(false), 3000);
+    setTimeout(() => { setSubmitted(false); setShowConfetti(false); }, 3500);
   };
 
   const copyEmail = () => {
@@ -119,81 +114,73 @@ function Contact() {
 
   return (
     <motion.section
-      className="flex flex-col gap-16 md:gap-section-gap w-full"
+      className="flex flex-col gap-16 md:gap-20 w-full"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      {/* ── Hero ── */}
-      <header className="mb-4 border-b-8 border-black pb-8 mt-4">
+      {/* Hero */}
+      <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 mt-4">
         <motion.div variants={itemVariants} className="mb-6">
-          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-black uppercase tracking-tighter">
-            LET'S BUILD
+          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase tracking-tighter">
+            LET&apos;S BUILD
             <br />
-            <span className="bg-primary-container border-4 border-black px-4 inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <span
+              className="border-4 border-[var(--color-outline)] px-4 inline-block shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+              style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
+            >
               SOMETHING EPIC
             </span>
           </h1>
         </motion.div>
         <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
-          <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-black max-w-2xl bg-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
             Got a project idea? Want to collaborate? Or just want to geek out
-            about tech and anime? I'm all ears. Drop me a message.
+            about tech and anime? I&apos;m all ears. Drop me a message.
           </p>
-          <div className="bg-black text-primary-container border-4 border-black px-4 py-2 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_rgba(240,255,0,1)] flex items-center gap-2">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            Open to Opportunities
-          </div>
         </motion.div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
-        {/* ── Contact Form (takes 3 cols) ── */}
+        {/* Contact Form */}
         <motion.div className="lg:col-span-3 flex flex-col gap-8" variants={itemVariants}>
-          <div className="bg-white border-4 border-black p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="font-headline-md text-3xl uppercase mb-6 border-b-4 border-black pb-4 flex items-center gap-3">
+          <div
+            className="border-4 border-[var(--color-outline)] p-6 md:p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+            style={{ background: "var(--color-surface)" }}
+          >
+            <h2 className="font-headline-md text-3xl uppercase mb-6 border-b-4 border-[var(--color-outline)] pb-4 flex items-center gap-3 text-[var(--color-on-surface)]">
               <FaPaperPlane className="text-2xl" />
               Send a Message
             </h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="contact-name" className="font-label-bold uppercase text-sm">
-                    Your Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="contact-name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="John Doe"
-                    required
-                    className="border-4 border-black p-4 font-body-md text-lg focus:outline-none focus:shadow-[inset_0_0_0_2px_#f0ff00] transition-shadow shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="contact-email" className="font-label-bold uppercase text-sm">
-                    Your Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="contact-email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="john@example.com"
-                    required
-                    className="border-4 border-black p-4 font-body-md text-lg focus:outline-none focus:shadow-[inset_0_0_0_2px_#f0ff00] transition-shadow shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                  />
-                </div>
+                {[
+                  { id: "contact-name",  name: "name",  type: "text",  label: "Your Name *",  placeholder: "John Doe",         required: true },
+                  { id: "contact-email", name: "email", type: "email", label: "Your Email *", placeholder: "john@example.com", required: true },
+                ].map((field) => (
+                  <div key={field.id} className="flex flex-col gap-2">
+                    <label htmlFor={field.id} className="font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
+                      {field.label}
+                    </label>
+                    <input
+                      type={field.type}
+                      id={field.id}
+                      name={field.name}
+                      value={formData[field.name]}
+                      onChange={handleChange}
+                      placeholder={field.placeholder}
+                      required={field.required}
+                      className="border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none shadow-[2px_2px_0px_0px_var(--shadow-color)] form-input-glow transition-all cursor-none"
+                      style={{ background: "var(--color-surface-variant)", color: "var(--color-on-surface)" }}
+                    />
+                  </div>
+                ))}
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="contact-subject" className="font-label-bold uppercase text-sm">
-                  What's this about?
+                <label htmlFor="contact-subject" className="font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
+                  What&apos;s this about?
                 </label>
                 <div className="relative">
                   <select
@@ -201,19 +188,20 @@ function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full border-4 border-black p-4 font-body-md text-lg focus:outline-none focus:shadow-[inset_0_0_0_2px_#f0ff00] transition-shadow shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] appearance-none bg-white pr-12"
+                    className="w-full border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none shadow-[2px_2px_0px_0px_var(--shadow-color)] appearance-none pr-12 cursor-none"
+                    style={{ background: "var(--color-surface-variant)", color: "var(--color-on-surface)" }}
                   >
                     <option value="">Select a topic...</option>
                     {SUBJECT_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
                     ))}
                   </select>
-                  <FaChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-black pointer-events-none" />
+                  <FaChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--color-on-surface)]" />
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="contact-message" className="font-label-bold uppercase text-sm">
+                <label htmlFor="contact-message" className="font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
                   Message *
                 </label>
                 <textarea
@@ -224,129 +212,141 @@ function Contact() {
                   placeholder="Tell me about your project, idea, or just say hi..."
                   rows="6"
                   required
-                  className="border-4 border-black p-4 font-body-md text-lg focus:outline-none focus:shadow-[inset_0_0_0_2px_#f0ff00] transition-shadow shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] resize-none"
+                  className="border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none shadow-[2px_2px_0px_0px_var(--shadow-color)] resize-none form-input-glow transition-all cursor-none"
+                  style={{ background: "var(--color-surface-variant)", color: "var(--color-on-surface)" }}
                 />
               </div>
 
-              <motion.button
-                type="submit"
-                disabled={isSubmitting}
-                className={`${
-                  submitted
-                    ? "bg-green-400"
-                    : "bg-primary-container"
-                } text-black border-4 border-black px-6 py-4 font-headline-md text-2xl uppercase flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all disabled:opacity-70`}
-                whileTap={{ scale: 0.98 }}
-              >
-                {isSubmitting ? (
-                  <motion.div
-                    className="w-6 h-6 border-3 border-black border-t-transparent rounded-full"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  />
-                ) : submitted ? (
-                  <>
-                    <FaCheck className="text-xl" />
-                    <span>Sent!</span>
-                  </>
-                ) : (
-                  <>
-                    <FaPaperPlane className="text-xl" />
-                    <span>Send Message</span>
-                  </>
-                )}
-              </motion.button>
+              <div className="relative">
+                <ConfettiBurst active={showConfetti} />
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full border-4 border-[var(--color-outline)] px-6 py-4 font-headline-md text-2xl uppercase flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all disabled:opacity-70 cursor-none relative overflow-hidden"
+                  style={{
+                    background: submitted ? "#22C55E" : "var(--color-primary-container)",
+                    color: submitted ? "#fff" : "var(--color-on-primary-container)",
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {isSubmitting ? (
+                    <motion.div
+                      className="w-6 h-6 border-3 border-current border-t-transparent rounded-full"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    />
+                  ) : submitted ? (
+                    <><FaCheck className="text-xl" /><span>Sent!</span></>
+                  ) : (
+                    <><FaPaperPlane className="text-xl" /><span>Send Message</span></>
+                  )}
+                </motion.button>
+              </div>
             </form>
           </div>
         </motion.div>
 
-        {/* ── Sidebar (takes 2 cols) ── */}
+        {/* Sidebar */}
         <motion.div className="lg:col-span-2 flex flex-col gap-8" variants={containerVariants}>
           {/* Quick Connect */}
           <motion.div
-            className="bg-primary-container border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            className="border-4 border-[var(--color-outline)] p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+            style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
             variants={itemVariants}
           >
-            <h3 className="font-headline-md text-2xl uppercase mb-4 border-b-4 border-black pb-3">
+            <h3 className="font-headline-md text-2xl uppercase mb-4 border-b-4 border-[var(--color-outline)] pb-3">
               Quick Connect
             </h3>
-
-            {/* Email */}
             <button
               onClick={copyEmail}
-              className="w-full bg-white border-4 border-black p-4 mb-4 flex items-center gap-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all text-left"
+              className="w-full border-4 border-[var(--color-outline)] p-4 mb-4 flex items-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all text-left cursor-none"
+              style={{ background: "var(--color-surface)", color: "var(--color-on-surface)" }}
             >
               <FaEnvelope className="text-xl shrink-0" />
               <div className="min-w-0 flex-1">
-                <div className="font-label-bold text-xs uppercase text-secondary">Email</div>
+                <div className="font-label-bold text-xs uppercase text-[var(--color-secondary)]">Email</div>
                 <div className="font-body-md text-sm truncate">{aboutInfo.email}</div>
               </div>
-              {emailCopied ? (
-                <FaCheck className="text-green-600 shrink-0" />
-              ) : (
-                <FaCopy className="text-black/50 shrink-0" />
-              )}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={emailCopied ? "check" : "copy"}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  {emailCopied
+                    ? <FaCheck className="text-green-600 shrink-0" />
+                    : <FaCopy className="opacity-50 shrink-0" />}
+                </motion.div>
+              </AnimatePresence>
             </button>
 
-            {/* Social Links */}
             <div className="grid grid-cols-2 gap-3">
               {socialLinks.map((link) => {
                 const Icon = socialIconMap[link.name];
                 if (!Icon) return null;
                 return (
-                  <a
+                  <motion.a
                     key={link.name}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white text-black border-4 border-black p-3 flex items-center gap-2 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-black hover:text-primary-container transition-all"
+                    className="border-4 border-[var(--color-outline)] p-3 flex items-center gap-2 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                    style={{ background: "var(--color-surface)", color: "var(--color-on-surface)" }}
+                    whileHover={{ scale: 1.02 }}
                   >
-                    <Icon className="text-lg" />
-                    {link.name}
-                  </a>
+                    <Icon className="text-lg" />{link.name}
+                  </motion.a>
                 );
               })}
             </div>
           </motion.div>
 
-          {/* Resume Download */}
+          {/* Resume */}
           <motion.a
             href={getAssetPath(aboutInfo.resumeUrl)}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-black text-white border-4 border-black p-6 flex items-center gap-4 shadow-[4px_4px_0px_0px_rgba(240,255,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+            className="border-4 border-[var(--color-outline)] p-6 flex items-center gap-4 shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+            style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             variants={itemVariants}
+            whileHover={{ scale: 1.01 }}
           >
-            <FaFileDownload className="text-3xl text-primary-container" />
+            <FaFileDownload className="text-3xl" style={{ color: "var(--color-primary-container)" }} />
             <div>
               <div className="font-headline-md text-xl uppercase">Download Resume</div>
-              <div className="font-body-md text-sm text-white/60">PDF • Latest Version</div>
+              <div className="font-body-md text-sm opacity-60">PDF • Latest Version</div>
             </div>
           </motion.a>
 
           {/* FAQ */}
           <motion.div
-            className="bg-white border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            className="border-4 border-[var(--color-outline)] p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+            style={{ background: "var(--color-surface)" }}
             variants={itemVariants}
           >
-            <h3 className="font-headline-md text-2xl uppercase mb-4 border-b-4 border-black pb-3">
+            <h3 className="font-headline-md text-2xl uppercase mb-4 border-b-4 border-[var(--color-outline)] pb-3 text-[var(--color-on-surface)]">
               FAQ
             </h3>
             <div className="flex flex-col gap-3">
               {FAQ_ITEMS.map((faq, i) => (
-                <div key={i} className="border-2 border-black">
+                <div key={i} className="border-2 border-[var(--color-outline)]">
                   <button
                     onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
-                    className={`w-full text-left p-4 font-label-bold text-sm uppercase flex items-center justify-between transition-colors ${
-                      expandedFaq === i ? "bg-primary-container" : "bg-white hover:bg-surface-variant"
+                    className={`w-full text-left p-4 font-label-bold text-sm uppercase flex items-center justify-between transition-colors cursor-none ${
+                      expandedFaq === i
+                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+                        : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
                     }`}
                   >
                     {faq.q}
-                    <FaChevronDown
-                      className={`shrink-0 ml-2 transition-transform ${
-                        expandedFaq === i ? "rotate-180" : ""
-                      }`}
-                    />
+                    <motion.div
+                      animate={{ rotate: expandedFaq === i ? 180 : 0 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                    >
+                      <FaChevronDown className="shrink-0 ml-2" />
+                    </motion.div>
                   </button>
                   <AnimatePresence>
                     {expandedFaq === i && (
@@ -354,10 +354,13 @@ function Contact() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        transition={{ type: "spring", stiffness: 320, damping: 30 }}
                         className="overflow-hidden"
                       >
-                        <div className="p-4 font-body-md text-sm border-t-2 border-black bg-surface-variant">
+                        <div
+                          className="p-4 font-body-md text-sm border-t-2 border-[var(--color-outline)] text-[var(--color-on-surface-variant)]"
+                          style={{ background: "var(--color-surface-variant)" }}
+                        >
                           {faq.a}
                         </div>
                       </motion.div>
@@ -373,4 +376,4 @@ function Contact() {
   );
 }
 
-export default Contact;
+export default memo(Contact);

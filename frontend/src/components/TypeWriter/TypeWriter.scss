@@ -4,7 +4,7 @@
   &__cursor {
     display: inline-block;
     margin-left: 2px;
-    color: #000000;
+    color: var(--color-primary-container);
     font-weight: 700;
     animation: blink 1s step-end infinite;
   }

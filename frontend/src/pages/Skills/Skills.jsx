@@ -1,97 +1,40 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef, memo } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaTimes, FaExternalLinkAlt, FaEye, FaGithub, FaArrowRight } from "react-icons/fa";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { FaSearch, FaTimes, FaExternalLinkAlt, FaArrowRight, FaServer } from "react-icons/fa";
 import {
-  FaHtml5,
-  FaCss3Alt,
-  FaSass,
-  FaJs,
-  FaReact,
-  FaAngular,
-  FaNodeJs,
-  FaPython,
-  FaServer,
-  FaChartLine,
-  FaBrain,
-  FaRobot,
-  FaEye as FaEyeIcon,
-  FaGitAlt,
+  FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
+  FaNodeJs, FaPython, FaChartLine, FaBrain, FaRobot, FaGitAlt,
 } from "react-icons/fa";
 import {
-  SiTypescript,
-  SiExpress,
-  SiMongodb,
-  SiTensorflow,
-  SiPytorch,
-  SiScikitlearn,
-  SiNextdotjs,
-  SiTailwindcss,
-  SiFastapi,
-  SiFlask,
-  SiSupabase,
-  SiOpencv,
-  SiDocker,
-  SiVite,
-  SiFirebase,
-  SiVercel,
+  SiTypescript, SiExpress, SiMongodb, SiTensorflow, SiPytorch,
+  SiScikitlearn, SiNextdotjs, SiTailwindcss, SiFastapi, SiFlask,
+  SiSupabase, SiOpencv, SiDocker, SiVite, SiFirebase, SiVercel,
 } from "react-icons/si";
-import { skills, skillCategories, getSkillById, getSkillCategory, getSkillCategoryId } from "../../data/skills";
-import { getProjectById, getProjectsForSkill } from "../../data/projects";
+import { skills, skillCategories, getSkillById, getSkillCategory } from "../../data/skills";
+import { getProjectsForSkill } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
+import { useCountUp } from "../../hooks/useCountUp";
 
 const iconMap = {
-  FaHtml5,
-  FaCss3Alt,
-  FaSass,
-  FaJs,
-  FaReact,
-  FaAngular,
-  FaNodeJs,
-  FaPython,
-  FaServer,
-  FaChartLine,
-  FaBrain,
-  FaRobot,
-  FaEye: FaEyeIcon,
-  FaGitAlt,
-  SiTypescript,
-  SiExpress,
-  SiMongodb,
-  SiTensorflow,
-  SiPytorch,
-  SiScikitlearn,
-  SiNextdotjs,
-  SiTailwindcss,
-  SiFastapi,
-  SiFlask,
-  SiSupabase,
-  SiOpencv,
-  SiDocker,
-  SiVite,
-  SiFirebase,
-  SiVercel,
+  FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
+  FaNodeJs, FaPython, FaServer, FaChartLine, FaBrain, FaRobot,
+  FaEye: FaServer, FaGitAlt,
+  SiTypescript, SiExpress, SiMongodb, SiTensorflow, SiPytorch,
+  SiScikitlearn, SiNextdotjs, SiTailwindcss, SiFastapi, SiFlask,
+  SiSupabase, SiOpencv, SiDocker, SiVite, SiFirebase, SiVercel,
 };
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.5, staggerChildren: 0.06, delayChildren: 0.1 },
-  },
+  visible: { opacity: 1, transition: { duration: 0.4, staggerChildren: 0.06, delayChildren: 0.05 } },
 };
-
 const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 300, damping: 24 },
-  },
+  hidden:  { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
 };
 
-// Proficiency label helper
 function getProficiencyLabel(level) {
   if (level >= 85) return "Expert";
   if (level >= 70) return "Advanced";
@@ -99,69 +42,107 @@ function getProficiencyLabel(level) {
   return "Learning";
 }
 
-// Color for level
-function getLevelColor(level) {
-  if (level >= 85) return "bg-primary-container";
-  if (level >= 70) return "bg-black";
-  if (level >= 55) return "bg-secondary";
-  return "bg-surface-variant";
+function getLevelStyle(level) {
+  if (level >= 85) return {
+    bg: "var(--color-primary-container)", text: "var(--color-on-primary-container)",
+    bar: "var(--color-primary-container)",
+  };
+  if (level >= 70) return {
+    bg: "var(--color-on-background)", text: "var(--color-background)",
+    bar: "var(--color-on-background)",
+  };
+  if (level >= 55) return {
+    bg: "var(--color-secondary)", text: "#fff",
+    bar: "var(--color-secondary)",
+  };
+  return {
+    bg: "var(--color-surface-variant)", text: "var(--color-on-surface)",
+    bar: "var(--color-surface-variant)",
+  };
 }
 
-function getLevelTextColor(level) {
-  if (level >= 85) return "text-black";
-  if (level >= 70) return "text-white";
-  if (level >= 55) return "text-white";
-  return "text-black";
-}
-
-// View options
-const VIEW_MODES = {
-  GRID: "grid",
-  LIST: "list",
-};
-
-// Sort options
+const VIEW_MODES = { GRID: "grid", LIST: "list" };
 const SORT_OPTIONS = [
-  { id: "default", label: "Default" },
-  { id: "level-desc", label: "Highest" },
-  { id: "level-asc", label: "Lowest" },
-  { id: "name-asc", label: "A → Z" },
-  { id: "projects-desc", label: "Most Used" },
+  { id: "default",       label: "Default" },
+  { id: "level-desc",   label: "Highest" },
+  { id: "level-asc",    label: "Lowest" },
+  { id: "name-asc",     label: "A → Z" },
+  { id: "projects-desc",label: "Most Used" },
 ];
+
+const SKILL_LEVELS_OVERVIEW = [
+  { label: "Frontend Dev",        level: 82 },
+  { label: "Backend Dev",         level: 72 },
+  { label: "AI & Machine Learning", level: 78 },
+  { label: "Agentic AI & LLMs",   level: 86 },
+  { label: "DevOps & Cloud",       level: 68 },
+];
+
+// ── Animated progress bar ─────────────────────────────────────
+
+function AnimatedBar({ level, delay = 0, color }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+
+  return (
+    <div ref={ref} className="h-6 md:h-8 w-full border-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
+      <motion.div
+        className="h-full progress-bar-fill relative"
+        style={{ background: color }}
+        initial={{ width: 0 }}
+        animate={inView ? { width: `${level}%` } : {}}
+        transition={{ duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94], delay }}
+      />
+    </div>
+  );
+}
+
+// ── Stat card with count-up ───────────────────────────────────
+
+function StatCard({ value, label, bg, text, shadow }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const displayVal = useCountUp(value, { duration: 1600, trigger: inView });
+  return (
+    <motion.div
+      ref={ref}
+      className="border-4 border-[var(--color-outline)] p-4 text-center"
+      style={{ background: bg, color: text, boxShadow: `4px 4px 0px 0px ${shadow}` }}
+      variants={cardVariants}
+      whileHover={{ y: -3, x: -3, boxShadow: `8px 8px 0px 0px ${shadow}`, transition: { type: "spring", stiffness: 400, damping: 20 } }}
+    >
+      <div className="font-headline-xl text-4xl md:text-5xl font-black">{displayVal}</div>
+      <div className="font-label-bold text-xs uppercase mt-1 opacity-80">{label}</div>
+    </motion.div>
+  );
+}
+
+// ── Skills page ───────────────────────────────────────────────
 
 function Skills() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm,    setSearchTerm]    = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
-  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [selectedSkill,  setSelectedSkill]  = useState(null);
   const [viewMode, setViewMode] = useState(VIEW_MODES.LIST);
-  const [sortBy, setSortBy] = useState("default");
+  const [sortBy,   setSortBy]   = useState("default");
   const navigate = useNavigate();
 
-  // Handle URL param to auto-open a skill modal
   useEffect(() => {
     const skillParam = searchParams.get("skill");
     if (skillParam) {
       const skill = getSkillById(skillParam);
-      if (skill) {
-        setSelectedSkill(skill);
-        setSearchParams({}, { replace: true });
-      }
+      if (skill) { setSelectedSkill(skill); setSearchParams({}, { replace: true }); }
     }
   }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     document.body.style.overflow = selectedSkill ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [selectedSkill]);
 
-  // Close on Escape
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape") setSelectedSkill(null);
-    };
+    const handleEscape = (e) => { if (e.key === "Escape") setSelectedSkill(null); };
     if (selectedSkill) document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [selectedSkill]);
@@ -171,563 +152,455 @@ function Skills() {
     Object.entries(skills).forEach(([category, categorySkills]) => {
       if (activeCategory === "all" || activeCategory === category) {
         let filtered = categorySkills.filter(
-          (skill) =>
+          (s) =>
             searchTerm === "" ||
-            skill.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            skill.description.toLowerCase().includes(searchTerm.toLowerCase()),
+            s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            s.description.toLowerCase().includes(searchTerm.toLowerCase())
         );
-
-        // Sort
-        if (sortBy === "level-desc") {
-          filtered = [...filtered].sort((a, b) => b.level - a.level);
-        } else if (sortBy === "level-asc") {
-          filtered = [...filtered].sort((a, b) => a.level - b.level);
-        } else if (sortBy === "name-asc") {
-          filtered = [...filtered].sort((a, b) =>
-            a.name.localeCompare(b.name),
-          );
-        } else if (sortBy === "projects-desc") {
-          filtered = [...filtered].sort((a, b) =>
-            (b.projectIds?.length || 0) - (a.projectIds?.length || 0),
-          );
-        }
-
-        if (filtered.length > 0) {
-          result[category] = filtered;
-        }
+        if (sortBy === "level-desc")   filtered = [...filtered].sort((a, b) => b.level - a.level);
+        if (sortBy === "level-asc")    filtered = [...filtered].sort((a, b) => a.level - b.level);
+        if (sortBy === "name-asc")     filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+        if (sortBy === "projects-desc") filtered = [...filtered].sort((a, b) => (b.projectIds?.length || 0) - (a.projectIds?.length || 0));
+        if (filtered.length > 0) result[category] = filtered;
       }
     });
     return result;
   }, [searchTerm, activeCategory, sortBy]);
 
-  // Flat list for views
   const flatSkills = useMemo(() => {
     const all = [];
-    Object.entries(filteredAndSorted).forEach(
-      ([category, categorySkills]) => {
-        const categoryLabel =
-          skillCategories.find((c) => c.id === category)?.label || category;
-        categorySkills.forEach((skill) => {
-          all.push({ ...skill, category: categoryLabel, categoryId: category });
-        });
-      },
-    );
+    Object.entries(filteredAndSorted).forEach(([category, categorySkills]) => {
+      const label = skillCategories.find((c) => c.id === category)?.label || category;
+      categorySkills.forEach((s) => all.push({ ...s, category: label, categoryId: category }));
+    });
     return all;
   }, [filteredAndSorted]);
 
-  // Stats
-  const totalSkills = useMemo(() => {
-    return Object.values(skills).reduce((sum, cat) => sum + cat.length, 0);
-  }, []);
-
-  const avgLevel = useMemo(() => {
+  const totalSkills = useMemo(() => Object.values(skills).reduce((s, c) => s + c.length, 0), []);
+  const avgLevel    = useMemo(() => {
     const all = Object.values(skills).flat();
-    if (all.length === 0) return 0;
-    return Math.round(all.reduce((sum, s) => sum + s.level, 0) / all.length);
+    return all.length ? Math.round(all.reduce((s, x) => s + x.level, 0) / all.length) : 0;
   }, []);
+  const expertCount = useMemo(() => Object.values(skills).flat().filter((s) => s.level >= 80).length, []);
 
   const getIcon = (iconName) => {
-    const IconComponent = iconMap[iconName] || FaServer;
-    return <IconComponent />;
+    const Icon = iconMap[iconName] || FaServer;
+    return <Icon />;
   };
 
   return (
-    <motion.div
-      className="flex flex-col gap-12 md:gap-16"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      {/* ── Header ── */}
-      <header className="mb-4 border-b-8 border-black pb-8 mt-4">
-        <motion.h1
-          className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-black uppercase tracking-tighter"
-          variants={cardVariants}
-        >
-          SKILLS & TOOLS
-        </motion.h1>
-        <motion.p
-          className="font-body-lg text-base md:text-lg lg:text-body-lg text-black mt-6 max-w-2xl bg-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-          variants={cardVariants}
-        >
-          A chaotic sticker sheet of the technologies I use to build loud,
-          unapologetic digital experiences. Function over form, but make it look
-          cool.
-        </motion.p>
-      </header>
-
-      {/* ── Stats Bar ── */}
+    <>
       <motion.div
-        className="grid grid-cols-2 md:grid-cols-4 gap-4"
-        variants={cardVariants}
+        className="flex flex-col gap-12 md:gap-16"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
       >
-        <div className="bg-primary-container border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-          <div className="font-headline-xl text-4xl md:text-5xl">{totalSkills}</div>
-          <div className="font-label-bold text-sm uppercase mt-1">Total Skills</div>
-        </div>
-        <div className="bg-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-          <div className="font-headline-xl text-4xl md:text-5xl">{Object.keys(skills).length}</div>
-          <div className="font-label-bold text-sm uppercase mt-1">Categories</div>
-        </div>
-        <div className="bg-black text-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(240,255,0,1)] text-center">
-          <div className="font-headline-xl text-4xl md:text-5xl">{avgLevel}%</div>
-          <div className="font-label-bold text-sm uppercase mt-1">Avg Level</div>
-        </div>
-        <div className="bg-secondary text-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-          <div className="font-headline-xl text-4xl md:text-5xl">
-            {Object.values(skills).flat().filter((s) => s.level >= 80).length}
-          </div>
-          <div className="font-label-bold text-sm uppercase mt-1">Expert Level</div>
-        </div>
-      </motion.div>
+        {/* Header */}
+        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 mt-4">
+          <motion.h1
+            className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase tracking-tighter"
+            variants={cardVariants}
+          >
+            SKILLS &amp; TOOLS
+          </motion.h1>
+          <motion.p
+            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-6 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            variants={cardVariants}
+          >
+            A chaotic sticker sheet of the technologies I use to build loud,
+            unapologetic digital experiences. Function over form, but make it look cool.
+          </motion.p>
+        </header>
 
-      {/* ── Controls ── */}
-      <motion.div
-        className="flex flex-col gap-6"
-        variants={cardVariants}
-      >
-        {/* Search + View Mode */}
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-          <div className="flex items-center bg-white neo-border p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <FaSearch className="text-xl ml-2 mr-3" />
-            <input
-              type="text"
-              placeholder="Search skills..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-transparent border-none outline-none w-full font-body-md text-lg"
-            />
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm("")}
-                className="mr-2 p-1 hover:bg-primary-container border-2 border-transparent hover:border-black transition-all"
-              >
-                <FaTimes />
-              </button>
-            )}
-          </div>
+        {/* Stats Bar */}
+        <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={cardVariants}>
+          <StatCard value={totalSkills} label="Total Skills"  bg="var(--color-primary-container)" text="var(--color-on-primary-container)" shadow="var(--shadow-color)" />
+          <StatCard value={Object.keys(skills).length} label="Categories"  bg="var(--color-surface)" text="var(--color-on-surface)" shadow="var(--shadow-color)" />
+          <StatCard value={avgLevel}    label="Avg Level %"   bg="var(--color-on-background)" text="var(--color-background)" shadow="var(--shadow-accent)" />
+          <StatCard value={expertCount} label="Expert Level"  bg="var(--color-secondary)" text="#fff" shadow="var(--shadow-color)" />
+        </motion.div>
 
-          <div className="flex gap-3">
-            <button
-              onClick={() => setViewMode(VIEW_MODES.GRID)}
-              className={`px-4 py-2 border-4 border-black font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none ${
-                viewMode === VIEW_MODES.GRID ? "bg-primary-container" : "bg-white"
-              }`}
-              title="Grid View"
-            >
-              ▦ Grid
-            </button>
-            <button
-              onClick={() => setViewMode(VIEW_MODES.LIST)}
-              className={`px-4 py-2 border-4 border-black font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none ${
-                viewMode === VIEW_MODES.LIST ? "bg-primary-container" : "bg-white"
-              }`}
-              title="List View"
-            >
-              ☰ List
-            </button>
-          </div>
-        </div>
-
-        {/* Category Filters + Sort */}
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-          <div className="flex flex-wrap gap-3">
-            {skillCategories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`px-5 py-2 border-4 border-black font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none ${
-                  activeCategory === cat.id
-                    ? "bg-primary-container"
-                    : "bg-white hover:bg-surface-variant"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="font-label-bold text-sm uppercase">Sort:</span>
-            <div className="flex flex-wrap gap-2">
-              {SORT_OPTIONS.map((opt) => (
+        {/* Controls */}
+        <motion.div className="flex flex-col gap-6" variants={cardVariants}>
+          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+            <div className="flex items-center bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+              <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
+              <input
+                type="text"
+                placeholder="Search skills..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-transparent border-none outline-none w-full font-body-md text-lg text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
+              />
+              {searchTerm && (
+                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
+                  <FaTimes className="text-[var(--color-on-surface)]" />
+                </button>
+              )}
+            </div>
+            <div className="flex gap-3">
+              {[
+                { mode: VIEW_MODES.GRID, label: "▦ Grid" },
+                { mode: VIEW_MODES.LIST, label: "☰ List" },
+              ].map(({ mode, label }) => (
                 <button
-                  key={opt.id}
-                  onClick={() => setSortBy(opt.id)}
-                  className={`px-3 py-1 border-2 border-black font-label-bold text-xs uppercase transition-all hover:bg-surface-variant ${
-                    sortBy === opt.id ? "bg-black text-white" : "bg-white"
+                  key={mode}
+                  onClick={() => setViewMode(mode)}
+                  className={`px-4 py-2 border-4 border-[var(--color-outline)] font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                    viewMode === mode
+                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
                   }`}
                 >
-                  {opt.label}
+                  {label}
                 </button>
               ))}
             </div>
           </div>
-        </div>
-      </motion.div>
 
-      {/* ── Content ── */}
-      <AnimatePresence mode="wait">
-        {viewMode === VIEW_MODES.LIST ? (
-          <motion.div
-            key="list-view"
-            className="flex flex-col gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {flatSkills.length > 0 ? (
-              flatSkills.map((skill) => (
-                <SkillListItem
-                  key={skill.id}
-                  skill={skill}
-                  icon={getIcon(skill.icon)}
-                  onClick={() => setSelectedSkill(skill)}
-                  levelColor={getLevelColor(skill.level)}
-                  levelTextColor={getLevelTextColor(skill.level)}
-                />
-              ))
-            ) : (
-              <EmptyState />
-            )}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="grid-view"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {flatSkills.length > 0 ? (
-              flatSkills.map((skill) => (
-                <SkillGridCard
-                  key={skill.id}
-                  skill={skill}
-                  icon={getIcon(skill.icon)}
-                  onClick={() => setSelectedSkill(skill)}
-                  levelColor={getLevelColor(skill.level)}
-                  levelTextColor={getLevelTextColor(skill.level)}
-                />
-              ))
-            ) : (
-              <EmptyState />
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Skill Levels Overview ── */}
-      <motion.section
-        className="bg-white border-4 border-black p-8 md:p-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
-        variants={cardVariants}
-      >
-        <h2 className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-black pb-4 mb-8">
-          Skill Levels
-        </h2>
-        <div className="flex flex-col gap-6">
-          {[
-            { label: "Frontend Dev", level: 82, color: "bg-primary-container" },
-            { label: "Backend Dev", level: 72, color: "bg-secondary" },
-            { label: "AI & Machine Learning", level: 78, color: "bg-black" },
-            { label: "Agentic AI & LLMs", level: 86, color: "bg-primary-container" },
-            { label: "DevOps & Cloud", level: 68, color: "bg-surface-variant" },
-          ].map((item) => (
-            <div key={item.label} className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <span className="font-label-bold uppercase text-sm md:text-base">
-                  {item.label}
-                </span>
-                <span className="font-headline-md text-lg md:text-xl">{item.level}%</span>
-              </div>
-              <div className="h-6 md:h-8 w-full border-4 border-black bg-surface-variant overflow-hidden">
-                <motion.div
-                  className={`h-full ${item.color}`}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${item.level}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-                />
+          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+            <div className="flex flex-wrap gap-3">
+              {skillCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-5 py-2 border-4 border-[var(--color-outline)] font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                    activeCategory === cat.id
+                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-label-bold text-sm uppercase text-[var(--color-on-surface)]">Sort:</span>
+              <div className="flex flex-wrap gap-2">
+                {SORT_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.id}
+                    onClick={() => setSortBy(opt.id)}
+                    className={`px-3 py-1 border-2 border-[var(--color-outline)] font-label-bold text-xs uppercase transition-all cursor-none ${
+                      sortBy === opt.id
+                        ? "bg-[var(--color-on-background)] text-[var(--color-background)]"
+                        : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      </motion.section>
+          </div>
+        </motion.div>
 
-      {/* ── Modal ── */}
+        {/* Skill content */}
+        <AnimatePresence mode="wait">
+          {viewMode === VIEW_MODES.LIST ? (
+            <motion.div key="list" className="flex flex-col gap-4" variants={containerVariants} initial="hidden" animate="visible">
+              {flatSkills.length > 0
+                ? flatSkills.map((skill) => (
+                    <SkillListItem key={skill.id} skill={skill} icon={getIcon(skill.icon)} onClick={() => setSelectedSkill(skill)} />
+                  ))
+                : <EmptyState />}
+            </motion.div>
+          ) : (
+            <motion.div key="grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" variants={containerVariants} initial="hidden" animate="visible">
+              {flatSkills.length > 0
+                ? flatSkills.map((skill) => (
+                    <SkillGridCard key={skill.id} skill={skill} icon={getIcon(skill.icon)} onClick={() => setSelectedSkill(skill)} />
+                  ))
+                : <EmptyState />}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Skill Levels Overview */}
+        <motion.section
+          className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-8 md:p-10 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+          variants={cardVariants}
+        >
+          <h2 className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-[var(--color-outline)] pb-4 mb-8 text-[var(--color-on-surface)]">
+            Skill Levels
+          </h2>
+          <div className="flex flex-col gap-7">
+            {SKILL_LEVELS_OVERVIEW.map((item, i) => {
+              const levelStyle = getLevelStyle(item.level);
+              return (
+                <div key={item.label} className="flex flex-col gap-2">
+                  <div className="flex justify-between items-center">
+                    <span className="font-label-bold uppercase text-sm md:text-base text-[var(--color-on-surface)]">{item.label}</span>
+                    <span className="font-headline-md text-lg md:text-xl text-[var(--color-on-surface)]">{item.level}%</span>
+                  </div>
+                  <AnimatedBar level={item.level} delay={i * 0.08} color={levelStyle.bar} />
+                </div>
+              );
+            })}
+          </div>
+        </motion.section>
+      </motion.div>
+
+      {/* Skill modal */}
       <AnimatePresence>
         {selectedSkill && (
           <SkillModal
             skill={selectedSkill}
             icon={getIcon(selectedSkill.icon)}
             onClose={() => setSelectedSkill(null)}
-            onProjectClick={(projectId) => {
-              setSelectedSkill(null);
-              navigate(`/projects?highlight=${projectId}`);
-            }}
-            iconMap={iconMap}
+            onProjectClick={(id) => { setSelectedSkill(null); navigate(`/projects?highlight=${id}`); }}
           />
         )}
       </AnimatePresence>
-    </motion.div>
+    </>
   );
 }
 
-// ── List Item ──────────────────────────────────────────────────────────────
+// ── List Item ─────────────────────────────────────────────────
 
-function SkillListItem({ skill, icon, onClick, levelColor, levelTextColor }) {
-  const projectCount = skill.projectIds?.length || 0;
+function SkillListItem({ skill, icon, onClick }) {
+  const levelStyle = getLevelStyle(skill.level);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
     <motion.button
-      className="w-full text-left bg-white border-2 border-black p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group"
-      variants={cardVariants}
+      ref={ref}
+      className="w-full text-left bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-3 md:p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group"
+      initial={{ opacity: 0, x: -20 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ type: "spring", stiffness: 280, damping: 22 }}
+      whileHover={{ y: -3, x: -3, boxShadow: "8px 8px 0px 0px var(--shadow-color)", transition: { type: "spring", stiffness: 400, damping: 20 } }}
       onClick={onClick}
     >
       <div className="flex items-center gap-4">
-        {/* Icon + Name */}
         <div className="flex items-center gap-3 w-48 md:w-56 shrink-0">
-          <div className="text-xl bg-black text-primary-container p-2 border-2 border-black group-hover:scale-110 transition-transform duration-300">
+          <motion.div
+            className="text-xl p-2 border-2 border-[var(--color-outline)] shrink-0"
+            style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
+            whileHover={{ scale: 1.15, rotate: 5 }}
+            transition={{ type: "spring", stiffness: 500, damping: 20 }}
+          >
             {icon}
-          </div>
+          </motion.div>
           <div className="min-w-0">
-            <h3 className="font-headline-md text-base md:text-lg uppercase truncate">
-              {skill.name}
-            </h3>
-            <div className="flex items-center gap-2">
-              <span className="font-label-bold text-[10px] uppercase text-secondary">
-                {skill.category}
-              </span>
-              {projectCount > 0 && (
-                <span className="font-label-bold text-[10px] uppercase bg-surface-variant border border-black px-1">
-                  {projectCount} {projectCount === 1 ? "project" : "projects"}
-                </span>
-              )}
-            </div>
+            <h3 className="font-headline-md text-base md:text-lg uppercase truncate text-[var(--color-on-surface)]">{skill.name}</h3>
+            <span className="font-label-bold text-[10px] uppercase text-[var(--color-secondary)]">{skill.category}</span>
           </div>
         </div>
 
-        {/* Progress bar */}
         <div className="hidden sm:flex flex-1 items-center gap-4">
-          <div className="flex-1 h-3 border-2 border-black bg-surface-variant overflow-hidden">
+          <div className="flex-1 h-3 border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
             <motion.div
-              className={`h-full ${levelColor}`}
+              className="h-full progress-bar-fill"
+              style={{ background: levelStyle.bar }}
               initial={{ width: 0 }}
-              animate={{ width: `${skill.level}%` }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              animate={inView ? { width: `${skill.level}%` } : {}}
+              transition={{ duration: 0.7, ease: "easeOut" }}
             />
           </div>
-          <span className="font-headline-md text-sm md:text-base w-10 text-right">
-            {skill.level}%
-          </span>
+          <span className="font-headline-md text-sm md:text-base w-10 text-right text-[var(--color-on-surface)]">{skill.level}%</span>
         </div>
 
-        {/* Badge */}
         <div
-          className={`${levelColor} ${levelTextColor} border-2 border-black px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0 ml-auto`}
+          className="border-2 border-[var(--color-outline)] px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] shrink-0 ml-auto"
+          style={{ background: levelStyle.bg, color: levelStyle.text }}
         >
           {getProficiencyLabel(skill.level)}
         </div>
 
-        {/* Click indicator */}
-        <span className="hidden md:block text-base font-black group-hover:translate-x-1 transition-transform">
-          →
-        </span>
+        <span className="hidden md:block text-base font-black group-hover:translate-x-1 transition-transform text-[var(--color-on-surface)]">→</span>
       </div>
     </motion.button>
   );
 }
 
-// ── Grid Card ──────────────────────────────────────────────────────────────
+// ── Grid Card ─────────────────────────────────────────────────
 
-function SkillGridCard({ skill, icon, onClick, levelColor, levelTextColor }) {
-  const projectCount = skill.projectIds?.length || 0;
+function SkillGridCard({ skill, icon, onClick }) {
+  const levelStyle = getLevelStyle(skill.level);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
     <motion.button
-      className="w-full text-left bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group flex flex-col gap-3"
-      variants={cardVariants}
+      ref={ref}
+      className="w-full text-left bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group flex flex-col gap-3"
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ type: "spring", stiffness: 280, damping: 22 }}
+      whileHover={{ y: -4, x: -4, boxShadow: "10px 10px 0px 0px var(--shadow-color)", transition: { type: "spring", stiffness: 400, damping: 20 } }}
       onClick={onClick}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-xl bg-black text-primary-container p-2 border-2 border-black group-hover:scale-110 transition-transform duration-300">
+          <motion.div
+            className="text-xl p-2 border-2 border-[var(--color-outline)]"
+            style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
+            whileHover={{ scale: 1.15 }}
+            transition={{ type: "spring", stiffness: 500, damping: 20 }}
+          >
             {icon}
-          </div>
+          </motion.div>
           <div>
-            <h3 className="font-headline-md text-base md:text-lg uppercase">
-              {skill.name}
-            </h3>
-            <div className="flex items-center gap-2">
-              <span className="font-label-bold text-[10px] uppercase text-secondary">
-                {skill.category}
-              </span>
-              {projectCount > 0 && (
-                <span className="font-label-bold text-[10px] uppercase bg-surface-variant border border-black px-1">
-                  {projectCount}
-                </span>
-              )}
-            </div>
+            <h3 className="font-headline-md text-base md:text-lg uppercase text-[var(--color-on-surface)]">{skill.name}</h3>
+            <span className="font-label-bold text-[10px] uppercase text-[var(--color-secondary)]">{skill.category}</span>
           </div>
         </div>
         <div
-          className={`${levelColor} ${levelTextColor} border-2 border-black px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+          className="border-2 border-[var(--color-outline)] px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+          style={{ background: levelStyle.bg, color: levelStyle.text }}
         >
           {getProficiencyLabel(skill.level)}
         </div>
       </div>
 
-      {/* Progress */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-3 border-2 border-black bg-surface-variant overflow-hidden">
+        <div className="flex-1 h-3 border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
           <motion.div
-            className={`h-full ${levelColor}`}
+            className="h-full progress-bar-fill"
+            style={{ background: levelStyle.bar }}
             initial={{ width: 0 }}
-            animate={{ width: `${skill.level}%` }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            animate={inView ? { width: `${skill.level}%` } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           />
         </div>
-        <span className="font-headline-md text-sm w-8 text-right">
-          {skill.level}%
-        </span>
+        <span className="font-headline-md text-sm w-8 text-right text-[var(--color-on-surface)]">{skill.level}%</span>
       </div>
 
-      {/* Description preview */}
-      <p className="font-body-md text-xs text-on-surface-variant overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+      <p className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
         {skill.description}
       </p>
-
-      {/* Click hint */}
-      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-secondary opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-black">
-        <FaExternalLinkAlt className="text-[10px]" />
-        Click for details
+      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
+        <FaExternalLinkAlt className="text-[10px]" /> Click for details
       </div>
     </motion.button>
   );
 }
 
-// ── Empty State ────────────────────────────────────────────────────────────
+// ── Empty State ───────────────────────────────────────────────
 
 function EmptyState() {
   return (
-    <div className="col-span-full bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-      <FaSearch className="text-3xl mx-auto mb-3" />
-      <h3 className="font-headline-md text-xl uppercase">No skills found</h3>
-      <p className="font-body-md text-sm mt-2">
-        Try a different search term or category.
-      </p>
+    <div className="col-span-full bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] text-center">
+      <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+        <FaSearch className="text-3xl mx-auto mb-3 text-[var(--color-on-surface)]" />
+      </motion.div>
+      <h3 className="font-headline-md text-xl uppercase text-[var(--color-on-surface)]">No skills found</h3>
+      <p className="font-body-md text-sm mt-2 text-[var(--color-text-muted)]">Try a different search term or category.</p>
     </div>
   );
 }
 
-// ── Modal ──────────────────────────────────────────────────────────────────
+// ── Skill Modal ───────────────────────────────────────────────
 
-function SkillModal({ skill, icon, onClose, onProjectClick, iconMap }) {
+function SkillModal({ skill, icon, onClose, onProjectClick }) {
   const category = getSkillCategory(skill.id);
   const relatedProjects = getProjectsForSkill(skill.id);
+  const levelStyle = getLevelStyle(skill.level);
 
   return createPortal(
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <motion.div
-        className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ background: "color-mix(in srgb, var(--color-background) 75%, transparent)" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
       />
       <motion.div
-        className="bg-white border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] max-w-2xl w-full p-6 md:p-8 relative z-10 flex flex-col gap-5 max-h-[90vh] overflow-y-auto"
-        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[12px_12px_0px_0px_var(--shadow-color)] max-w-2xl w-full p-6 md:p-8 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto"
+        initial={{ scale: 0.93, opacity: 0, y: 28 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+        transition={{ type: "spring", stiffness: 380, damping: 28 }}
       >
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 bg-primary-container border-2 border-black w-10 h-10 flex items-center justify-center text-black text-xl hover:bg-black hover:text-primary-container transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
+          className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] w-10 h-10 flex items-center justify-center text-xl hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none cursor-none"
         >
           <FaTimes />
         </button>
 
-        {/* Header */}
-        <div className="flex items-center gap-4 border-b-2 border-black pb-4">
-          <div className="text-3xl bg-black text-white p-3 border-2 border-black shadow-[3px_3px_0px_0px_rgba(240,255,0,1)]">
+        {/* Icon + Name */}
+        <div className="flex items-center gap-5 border-b-2 border-[var(--color-outline)] pb-5">
+          <motion.div
+            className="text-3xl p-3 border-2 border-[var(--color-outline)] shadow-[3px_3px_0px_0px_var(--shadow-accent)]"
+            style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
+            initial={{ scale: 0.5, rotate: -10 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          >
             {icon}
-          </div>
-          <div className="min-w-0">
-            <h2 className="font-headline-xl text-2xl md:text-3xl uppercase truncate">
-              {skill.name}
-            </h2>
-            <span className="font-label-bold bg-secondary text-white px-2 py-0.5 text-xs border-2 border-black inline-block mt-1">
-              {category}
-            </span>
+          </motion.div>
+          <div>
+            <h2 className="font-headline-xl text-2xl md:text-3xl uppercase text-[var(--color-on-surface)]">{skill.name}</h2>
+            <span className="font-label-bold bg-[var(--color-secondary)] text-white px-2 py-0.5 text-xs border-2 border-[var(--color-outline)] inline-block mt-1">{category}</span>
           </div>
         </div>
 
-        {/* Proficiency */}
+        {/* Proficiency bar */}
         <div className="flex flex-col gap-2">
-          <div className="flex justify-between font-label-bold uppercase text-sm">
+          <div className="flex justify-between font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
             <span>Proficiency</span>
             <span>{skill.level}% — {getProficiencyLabel(skill.level)}</span>
           </div>
-          <div className="h-6 w-full border-2 border-black bg-surface-variant flex">
+          <div className="h-6 w-full border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
             <motion.div
-              className="h-full bg-primary-container border-r-2 border-black"
+              className="h-full progress-bar-fill"
+              style={{ background: levelStyle.bar }}
               initial={{ width: 0 }}
               animate={{ width: `${skill.level}%` }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
             />
           </div>
         </div>
 
         {/* Description */}
-        <p className="font-body-md text-base bg-surface-variant p-4 border-2 border-black border-dashed">
+        <p className="font-body-md text-base p-4 border-2 border-dashed border-[var(--color-outline-variant)] text-[var(--color-on-surface)]"
+           style={{ background: "var(--color-surface-variant)" }}>
           {skill.description}
         </p>
 
-        {/* Projects */}
+        {/* Related projects */}
         {relatedProjects.length > 0 && (
-          <div className="flex flex-col gap-4 mt-1">
-            <h4 className="font-headline-md text-xl uppercase border-b-2 border-black inline-block w-fit pb-1">
+          <div className="flex flex-col gap-4">
+            <h4 className="font-headline-md text-xl uppercase border-b-2 border-[var(--color-outline)] inline-block w-fit pb-1 text-[var(--color-on-surface)]">
               Used in {relatedProjects.length} {relatedProjects.length === 1 ? "Project" : "Projects"}
             </h4>
             <div className="flex flex-col gap-3">
               {relatedProjects.map((project) => (
-                <button
+                <motion.button
                   key={project.id}
                   onClick={() => onProjectClick(project.id)}
-                  className="bg-white border-2 border-black p-3 flex items-center gap-4 hover:bg-surface-variant transition-all shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] group text-left w-full"
+                  className="bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-3 flex items-center gap-4 shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_var(--shadow-color)] group text-left w-full cursor-none"
+                  whileHover={{ x: 2, y: 2, transition: { duration: 0.1 } }}
                 >
-                  <div className="w-14 h-14 border-2 border-black overflow-hidden shrink-0 bg-surface-variant">
+                  <div className="w-14 h-14 border-2 border-[var(--color-outline)] overflow-hidden shrink-0 bg-[var(--color-surface-variant)]">
                     <img
                       src={getAssetPath(project.image)}
                       alt={project.title}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                      className="w-full h-full object-cover transition-all duration-300"
                       loading="lazy"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h5 className="font-headline-md text-sm uppercase truncate">
-                      {project.title}
-                    </h5>
+                    <h5 className="font-headline-md text-sm uppercase truncate text-[var(--color-on-surface)]">{project.title}</h5>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="font-label-bold text-[10px] text-secondary uppercase">
-                        {project.year}
-                      </span>
-                      <span className="font-label-bold text-[10px] bg-black text-white px-1">
-                        {project.category === "web-dev" ? "Web Dev" : "AI & ML"}
-                      </span>
+                      <span className="font-label-bold text-[10px] text-[var(--color-secondary)] uppercase">{project.year}</span>
                     </div>
                   </div>
-                  <FaArrowRight className="text-sm shrink-0 group-hover:translate-x-1 transition-transform" />
-                </button>
+                  <FaArrowRight className="text-sm shrink-0 group-hover:translate-x-1 transition-transform text-[var(--color-on-surface)]" />
+                </motion.button>
               ))}
             </div>
           </div>
         )}
       </motion.div>
     </div>,
-    document.body,
+    document.body
   );
 }
 

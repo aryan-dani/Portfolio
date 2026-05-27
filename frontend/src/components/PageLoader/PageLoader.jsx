@@ -1,54 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import "./PageLoader.scss";
 
 const SESSION_KEY = "portfolio_visited";
-const GLITCH_CHARS = "!@#$%^&*()_+-=[]{}|;':\",./<>?`~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-const TARGET_TEXT = "ARYAN DANI";
-
-const terminalLines = [
-  { type: "command", text: "> initialize_portfolio_boot_sequence" },
-  { type: "success", text: "✔ Loading technical skills registry... OK" },
-  { type: "success", text: "✔ Fetching academic & credentials records... OK" },
-  { type: "success", text: "✔ Establishing database connection... OK" },
-  { type: "final", text: "[ SUCCESS ] Boot completed. Welcome." },
-];
-
 const PHASES = { GLITCH: 0, TERMINAL: 1, EXIT: 2, DONE: 3 };
+const TARGET_TEXT = "ARYANDANI";
+const GLITCH_CHARS = "01$#@%&*?!X█";
 
 function PageLoader() {
   const hasVisited = sessionStorage.getItem(SESSION_KEY);
   const [isLoading, setIsLoading] = useState(!hasVisited);
   const [phase, setPhase] = useState(PHASES.GLITCH);
-  
-  // Glitch state
   const [glitchText, setGlitchText] = useState(
-    Array.from({ length: TARGET_TEXT.length }, () =>
-      GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
-    ).join("")
+    Array(TARGET_TEXT.length).fill(GLITCH_CHARS[0]).join("")
   );
   const [resolvedCount, setResolvedCount] = useState(0);
+  const [terminalStep, setTerminalStep] = useState(0);
 
-  // Terminal state
-  const [displayedLines, setDisplayedLines] = useState([]);
-  const [currentLineIndex, setCurrentLineIndex] = useState(0);
-  const [currentCharIndex, setCurrentCharIndex] = useState(0);
-
-  // Mark as visited
   useEffect(() => {
     if (!isLoading && !hasVisited) {
       sessionStorage.setItem(SESSION_KEY, "true");
     }
   }, [isLoading, hasVisited]);
 
-  // Phase 1: Big Name Glitch
+  // Phase 1: Glitch Scramble Animation
   useEffect(() => {
-    if (hasVisited || phase !== PHASES.GLITCH) return;
+    if (hasVisited) {
+      setPhase(PHASES.DONE);
+      setIsLoading(false);
+      return;
+    }
+
+    if (phase !== PHASES.GLITCH) return;
 
     if (resolvedCount >= TARGET_TEXT.length) {
       const nextPhaseTimer = setTimeout(() => {
         setPhase(PHASES.TERMINAL);
-      }, 500);
+      }, 700); // Hold resolved name with subtitle tag before CLI transitions in
       return () => clearTimeout(nextPhaseTimer);
     }
 
@@ -56,7 +43,7 @@ function PageLoader() {
       setGlitchText((prev) => {
         const chars = prev.split("");
         for (let i = resolvedCount; i < TARGET_TEXT.length; i++) {
-          if (Math.random() > 0.3) {
+          if (Math.random() > 0.35) {
             chars[i] = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
           }
         }
@@ -71,7 +58,7 @@ function PageLoader() {
         chars[resolvedCount] = TARGET_TEXT[resolvedCount];
         return chars.join("");
       });
-    }, 85);
+    }, 80);
 
     return () => {
       clearInterval(scrambleInterval);
@@ -79,73 +66,33 @@ function PageLoader() {
     };
   }, [phase, resolvedCount, hasVisited]);
 
-  // Phase 2: Terminal Typing
+  // Phase 2: Terminal Booting Animation
   useEffect(() => {
-    if (hasVisited || phase !== PHASES.TERMINAL) return;
+    if (phase !== PHASES.TERMINAL) return;
 
-    if (currentLineIndex >= terminalLines.length) {
-      const exitTimer = setTimeout(() => {
-        setPhase(PHASES.EXIT);
-      }, 500);
-      return () => clearTimeout(exitTimer);
-    }
+    const timers = [
+      setTimeout(() => setTerminalStep(1), 150), // Command line
+      setTimeout(() => setTerminalStep(2), 400), // Loading skills
+      setTimeout(() => setTerminalStep(3), 650), // Academic & credentials
+      setTimeout(() => setTerminalStep(4), 900), // Database connection
+      setTimeout(() => setTerminalStep(5), 1150), // Success block
+      setTimeout(() => setPhase(PHASES.EXIT), 1800), // Begin door exit transition
+    ];
 
-    const currentLine = terminalLines[currentLineIndex];
-    const isCommand = currentLine.type === "command";
-    const typingSpeed = isCommand ? 12 : 5;
-    const lineDelay = isCommand ? 40 : 50;
-
-    if (currentCharIndex < currentLine.text.length) {
-      const charTimer = setTimeout(() => {
-        setDisplayedLines((prev) => {
-          const updated = [...prev];
-          if (updated[currentLineIndex]) {
-            updated[currentLineIndex] = {
-              ...currentLine,
-              displayText: currentLine.text.slice(0, currentCharIndex + 1),
-            };
-          } else {
-            updated.push({
-              ...currentLine,
-              displayText: currentLine.text.slice(0, currentCharIndex + 1),
-            });
-          }
-          return updated;
-        });
-        setCurrentCharIndex((prev) => prev + 1);
-      }, typingSpeed);
-      return () => clearTimeout(charTimer);
-    } else {
-      const nextLineTimer = setTimeout(() => {
-        setCurrentLineIndex((prev) => prev + 1);
-        setCurrentCharIndex(0);
-      }, lineDelay);
-      return () => clearTimeout(nextLineTimer);
-    }
-  }, [phase, currentLineIndex, currentCharIndex, hasVisited]);
-
-  // Phase 3: Exit Wipe
-  useEffect(() => {
-    if (phase !== PHASES.EXIT) return;
-    const exitTimer = setTimeout(() => {
-      setIsLoading(false);
-    }, 850);
-    return () => clearTimeout(exitTimer);
+    return () => timers.forEach(clearTimeout);
   }, [phase]);
 
-  const getLineClass = (type) => {
-    switch (type) {
-      case "command": return "nb-loader__line--command";
-      case "success": return "nb-loader__line--success";
-      case "final": return "nb-loader__line--final";
-      default: return "";
-    }
-  };
+  // Phase 3: Exit Split Door Animation
+  useEffect(() => {
+    if (phase !== PHASES.EXIT) return;
+    const exitTimer = setTimeout(() => setIsLoading(false), 700);
+    return () => clearTimeout(exitTimer);
+  }, [phase]);
 
   const progress = phase === PHASES.GLITCH
     ? Math.round((resolvedCount / TARGET_TEXT.length) * 35)
     : phase === PHASES.TERMINAL
-    ? 35 + Math.round((Math.min(currentLineIndex, terminalLines.length) / terminalLines.length) * 65)
+    ? 35 + Math.round((Math.min(terminalStep, 5) / 5) * 65)
     : 100;
 
   return (
@@ -154,117 +101,135 @@ function PageLoader() {
         <motion.div
           className={`page-loader ${phase === PHASES.EXIT ? "page-loader--exit" : ""}`}
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          exit={{ opacity: 0, transition: { duration: 0.3, ease: "easeInOut" } }}
         >
-          {/* Subtle grid pattern overlay */}
+          {/* Dot grid background */}
           <div className="page-loader__grid" />
-          
-          <AnimatePresence mode="wait">
-            {phase === PHASES.GLITCH ? (
-              <motion.div
-                key="glitch"
-                className="page-loader__glitch-container"
-                initial={{ opacity: 1, scale: 0.96 }}
-                exit={{ opacity: 0, scale: 0.94, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.h1
-                  className="page-loader__glitch-text"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {glitchText.split("").map((char, i) => (
-                    <span
-                      key={i}
-                      className={`page-loader__glitch-char ${
-                        i < resolvedCount ? "page-loader__glitch-char--resolved" : "page-loader__glitch-char--scrambling"
-                      }`}
-                    >
-                      {char}
-                    </span>
-                  ))}
-                </motion.h1>
+          {/* CRT scanlines */}
+          <div className="page-loader__scanline" />
+
+          {/* Central Container */}
+          <div className="w-full h-full flex items-center justify-center relative z-10 p-4">
+            <AnimatePresence mode="wait">
+              {phase === PHASES.GLITCH ? (
                 <motion.div
-                  className="page-loader__glitch-subtitle"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
+                  key="glitch"
+                  className="page-loader__glitch-container flex flex-col items-center gap-6"
+                  initial={{ opacity: 1, scale: 0.95 }}
+                  exit={{ opacity: 0, scale: 0.93, y: -20 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  WEB DEVELOPER • AI ENGINEER
-                </motion.div>
-              </motion.div>
-            ) : phase === PHASES.TERMINAL ? (
-              <motion.div
-                key="terminal"
-                className="nb-loader"
-                initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.97, opacity: 0, y: -15 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-              >
-                {/* Header */}
-                <div className="nb-loader__header">
-                  <div className="nb-loader__header-dots">
-                    <span className="nb-loader__header-dot" />
-                    <span className="nb-loader__header-dot" />
-                    <span className="nb-loader__header-dot" />
-                  </div>
-                  <span className="nb-loader__title">aryan_dani // cli</span>
-                  <span className="nb-loader__badge">BOOTING</span>
-                </div>
+                  <h1 className="page-loader__glitch-text font-headline-xl tracking-tighter uppercase leading-none font-bold text-center">
+                    {glitchText.split("").map((char, i) => (
+                      <span
+                        key={i}
+                        className={`page-loader__glitch-char ${
+                          i < resolvedCount
+                            ? "page-loader__glitch-char--resolved"
+                            : "page-loader__glitch-char--scrambling"
+                        }`}
+                      >
+                        {char}
+                      </span>
+                    ))}
+                  </h1>
 
-                {/* Body */}
-                <div className="nb-loader__body">
-                  {displayedLines.map((line, index) => (
+                  {resolvedCount >= TARGET_TEXT.length && (
                     <motion.div
-                      key={index}
-                      className={`nb-loader__line ${getLineClass(line.type)}`}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.12 }}
+                      className="page-loader__glitch-subtitle bg-[#f0ff00] text-black font-label-bold text-xs uppercase px-4 py-2 border-2 border-black shadow-[3px_3px_0px_#000000]"
+                      initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ type: "spring", stiffness: 350, damping: 20 }}
                     >
-                      <span className="nb-loader__text">{line.displayText}</span>
+                      WEB DEVELOPER • AI ENGINEER
                     </motion.div>
-                  ))}
-
-                  {/* Cursor */}
-                  {currentLineIndex < terminalLines.length && (
-                    <span className="nb-loader__cursor" />
                   )}
-                </div>
+                </motion.div>
+              ) : phase === PHASES.TERMINAL ? (
+                <motion.div
+                  key="terminal"
+                  className="nb-loader w-full max-w-[600px] border-4 border-black bg-white shadow-[10px_10px_0px_#f0ff00] overflow-hidden"
+                  initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.95, opacity: 0, y: -20, filter: "blur(2px)" }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                >
+                  {/* Title Bar */}
+                  <div className="nb-loader__header flex justify-between items-center bg-[#f0ff00] border-b-4 border-black px-5 py-3">
+                    <div className="nb-loader__header-dots flex gap-1.5">
+                      <span className="nb-loader__header-dot w-2.5 h-2.5 rounded-full border-2 border-black bg-[#ff5f56]" />
+                      <span className="nb-loader__header-dot w-2.5 h-2.5 rounded-full border-2 border-black bg-[#ffbd2e]" />
+                      <span className="nb-loader__header-dot w-2.5 h-2.5 rounded-full border-2 border-black bg-[#27c93f]" />
+                    </div>
+                    <span className="nb-loader__title font-headline-md text-xs uppercase tracking-wider font-bold">
+                      ARYAN_DANI // CLI
+                    </span>
+                    <span className="nb-loader__badge text-[10px] bg-black text-white px-2 py-0.5 border border-black font-bold uppercase">
+                      BOOTING
+                    </span>
+                  </div>
 
-                {/* Progress bar */}
-                <div className="nb-loader__progress-track">
-                  <div
-                    className="nb-loader__progress-fill"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+                  {/* Body Content */}
+                  <div className="nb-loader__body text-left p-6 flex flex-col gap-3 min-h-[220px]">
+                    {terminalStep >= 1 && (
+                      <div className="nb-loader__line nb-loader__line--command text-[#0028c2] font-bold text-[14px]">
+                        &gt; initialize_portfolio_boot_sequence
+                      </div>
+                    )}
+                    {terminalStep >= 2 && (
+                      <div className="nb-loader__line nb-loader__line--success text-black font-bold text-[14px]">
+                        ✔ Loading technical skills registry... OK
+                      </div>
+                    )}
+                    {terminalStep >= 3 && (
+                      <div className="nb-loader__line nb-loader__line--success text-black font-bold text-[14px]">
+                        ✔ Fetching academic & credentials records... OK
+                      </div>
+                    )}
+                    {terminalStep >= 4 && (
+                      <div className="nb-loader__line nb-loader__line--success text-black font-bold text-[14px]">
+                        ✔ Establishing database connection... OK
+                      </div>
+                    )}
+                    {terminalStep >= 5 && (
+                      <div className="nb-loader__line nb-loader__line--final text-black font-bold text-[14px] bg-[#f0ff00] border-2 border-black px-3.5 py-2 inline-block shadow-[4px_4px_0px_#000000] self-start mt-2">
+                        [ SUCCESS ] Boot completed. Welcome.
+                      </div>
+                    )}
+                    {terminalStep < 5 && <span className="nb-loader__cursor w-2 h-4.5 bg-black animate-blink ml-1.5 inline-block align-middle" />}
+                  </div>
 
-          {/* ── Exit Phase: split wipe doors ── */}
+                  {/* Progress fill */}
+                  <div className="nb-loader__progress-track h-3 bg-white border-t-4 border-black w-full">
+                    <div
+                      className="nb-loader__progress-fill h-full bg-[#f0ff00] border-r-4 border-black"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+          </div>
+
+          {/* Exit doors split animation */}
           {phase === PHASES.EXIT && (
             <>
               <motion.div
                 className="page-loader__split page-loader__split--left"
                 initial={{ x: 0 }}
                 animate={{ x: "-100%" }}
-                transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+                transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
               />
               <motion.div
                 className="page-loader__split page-loader__split--right"
                 initial={{ x: 0 }}
                 animate={{ x: "100%" }}
-                transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+                transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
               />
             </>
           )}
 
-          {/* Clean progress line at bottom */}
+          {/* Global progress tracker */}
           <div className="page-loader__global-progress">
             <motion.div
               className="page-loader__global-progress-fill"
@@ -278,4 +243,4 @@ function PageLoader() {
   );
 }
 
-export default PageLoader;
+export default memo(PageLoader);

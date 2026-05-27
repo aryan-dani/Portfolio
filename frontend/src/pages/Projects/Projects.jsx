@@ -1,7 +1,7 @@
-import { useState, useMemo, useEffect, memo } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef, memo } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { FaSearch, FaTimes, FaEye, FaGithub, FaArrowRight } from "react-icons/fa";
 import { projects, projectCategories } from "../../data/projects";
 import { getSkillsForProject } from "../../data/skills";
@@ -9,105 +9,62 @@ import { getAssetPath } from "../../utils/paths";
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.4,
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
-    },
-  },
+  visible: { opacity: 1, transition: { duration: 0.3, staggerChildren: 0.07, delayChildren: 0.03 } },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 24,
-    },
-  },
+  hidden:  { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 280, damping: 22 } },
 };
 
 const modalVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.25 },
-  },
-  exit: {
-    opacity: 0,
-    transition: { duration: 0.2 },
-  },
+  hidden:  { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.22 } },
+  exit:    { opacity: 0, transition: { duration: 0.18 } },
 };
 
 const modalContentVariants = {
-  hidden: { opacity: 0, scale: 0.95, y: 30 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 350,
-      damping: 25,
-    },
-  },
-  exit: {
-    opacity: 0,
-    scale: 0.98,
-    y: 20,
-    transition: { duration: 0.2 },
-  },
+  hidden:  { opacity: 0, scale: 0.93, y: 36 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 380, damping: 28 } },
+  exit:    { opacity: 0, scale: 0.97, y: 20, transition: { duration: 0.18 } },
 };
 
 function Projects() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm,   setSearchTerm]   = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedTags, setSelectedTags] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [highlightedId, setHighlightedId] = useState(null);
+  const [highlightedId, setHighlightedId]     = useState(null);
   const navigate = useNavigate();
 
-  // Handle search query and highlight from URL
+  const allTags = useMemo(() => {
+    const s = new Set();
+    projects.forEach((p) => p.tags.forEach((t) => s.add(t)));
+    return Array.from(s);
+  }, []);
+
   useEffect(() => {
     const searchQuery = searchParams.get("search");
     const highlightParam = searchParams.get("highlight");
-    
-    if (searchQuery) {
-      setSearchTerm(searchQuery);
-      setSearchParams({}, { replace: true });
-    }
-    
+    if (searchQuery) { setSearchTerm(searchQuery); setSearchParams({}, { replace: true }); }
     if (highlightParam) {
-      const projectId = parseInt(highlightParam, 10);
-      const project = projects.find((p) => p.id === projectId);
-      if (project) {
-        setSelectedProject(project);
-        setHighlightedId(projectId);
-      }
+      const id = parseInt(highlightParam, 10);
+      const project = projects.find((p) => p.id === id);
+      if (project) { setSelectedProject(project); setHighlightedId(id); }
       setSearchParams({}, { replace: true });
     }
   }, [searchParams, setSearchParams]);
 
-  // Clear highlight after a delay
   useEffect(() => {
     if (highlightedId) {
-      const timer = setTimeout(() => setHighlightedId(null), 3000);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => setHighlightedId(null), 3000);
+      return () => clearTimeout(t);
     }
   }, [highlightedId]);
 
-  // Close modal on Escape key and lock body scroll
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape") {
-        setSelectedProject(null);
-      }
-    };
+    const handleEscape = (e) => { if (e.key === "Escape") setSelectedProject(null); };
     if (selectedProject) {
       document.addEventListener("keydown", handleEscape);
       document.body.style.overflow = "hidden";
@@ -119,73 +76,73 @@ function Projects() {
   }, [selectedProject]);
 
   const filteredProjects = useMemo(() => {
-    return projects.filter((project) => {
-      const matchesCategory =
-        activeFilter === "all" || project.category === activeFilter;
-      const matchesSearch =
-        searchTerm === "" ||
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.tags.some((tag) =>
-          tag.toLowerCase().includes(searchTerm.toLowerCase()),
-        );
-      return matchesCategory && matchesSearch;
+    return projects.filter((p) => {
+      const matchesCat  = activeFilter === "all" || p.category === activeFilter;
+      const matchesTags = selectedTags.length === 0 || selectedTags.every((t) => p.tags.includes(t));
+      const matchesSrch = searchTerm === "" ||
+        p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.tags.some((t) => t.toLowerCase().includes(searchTerm.toLowerCase()));
+      return matchesCat && matchesTags && matchesSrch;
     });
-  }, [searchTerm, activeFilter]);
+  }, [searchTerm, activeFilter, selectedTags]);
 
-  const clearSearch = () => {
-    setSearchTerm("");
-  };
-
-  const openModal = (project) => {
-    setSelectedProject(project);
-  };
-
-  const closeModal = () => {
-    setSelectedProject(null);
-  };
-
-  const handleSkillClick = (skillId) => {
-    setSelectedProject(null);
-    navigate(`/skills?skill=${encodeURIComponent(skillId)}`);
+  const toggleTag = (tag) => {
+    setSelectedTags((prev) => prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]);
   };
 
   return (
     <>
       <motion.section
-        className="flex flex-col gap-16 md:gap-section-gap w-full"
+        className="flex flex-col gap-12 md:gap-16 w-full"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
-        <header className="mb-8 border-b-8 border-black pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4">
-          <div>
-            <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-black uppercase tracking-tighter">
-              PROJECTS
-            </h1>
-            <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-black mt-4 max-w-2xl bg-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              Systems engineered to resist and adapt. Full-stack applications
-              with modern architectures. AI-powered solutions and creative
-              experiments.
-            </p>
-          </div>
+        {/* Header */}
+        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative">
+          <motion.div
+            className="flex items-center gap-4 flex-wrap"
+            variants={cardVariants}
+          >
+            <div className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden">
+              <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter">
+                PROJECTS
+              </h1>
+            </div>
+            <span
+              className="font-headline-md text-3xl border-4 border-[var(--color-outline)] px-5 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+            >
+              {filteredProjects.length}
+            </span>
+          </motion.div>
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-            <div className="flex items-center bg-white neo-border p-2 w-full sm:w-64 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <FaSearch className="text-xl ml-2 mr-3" />
+          <motion.p
+            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            variants={cardVariants}
+          >
+            Systems engineered to resist and adapt. Full-stack applications
+            with modern architectures. AI-powered solutions and creative
+            experiments.
+          </motion.p>
+
+          {/* Search + Filters */}
+          <motion.div
+            className="flex flex-col xl:flex-row gap-6 w-full justify-between items-stretch xl:items-center mt-4"
+            variants={cardVariants}
+          >
+            <div className="flex items-center bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-2 w-full xl:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+              <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search projects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent border-none outline-none w-full font-body-md text-lg"
+                className="bg-transparent border-none outline-none w-full font-body-md text-lg text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
               />
               {searchTerm && (
-                <button
-                  onClick={clearSearch}
-                  className="mr-2 p-1 hover:bg-primary-container transition-colors"
-                >
-                  <FaTimes />
+                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
+                  <FaTimes className="text-[var(--color-on-surface)]" />
                 </button>
               )}
             </div>
@@ -193,30 +150,69 @@ function Projects() {
             <div className="flex flex-wrap gap-3">
               {projectCategories.map((category) => {
                 const isSelected = activeFilter === category.id;
-
                 return (
-                  <button
+                  <motion.button
                     key={category.id}
-                    className={`border-4 border-black px-4 py-2 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all transform hover:shadow-none hover:translate-y-1 hover:translate-x-1 ${
+                    className={`border-4 border-[var(--color-outline)] px-4 py-2 font-label-bold text-sm md:text-base uppercase transition-all cursor-none ${
                       isSelected
-                        ? `bg-primary-container`
-                        : "bg-white hover:bg-surface-variant"
+                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[2px] translate-y-[2px]"
+                        : "bg-[var(--color-surface)] text-[var(--color-on-surface)] shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 hover:bg-[var(--color-surface-variant)]"
                     }`}
                     onClick={() => setActiveFilter(category.id)}
+                    whileTap={{ scale: 0.97 }}
                   >
                     {category.label}
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
+
+          {/* Tech tag matrix */}
+          <motion.div
+            className="w-full bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col gap-3"
+            variants={cardVariants}
+          >
+            <div className="flex justify-between items-center border-b-2 border-[var(--color-outline)] pb-2">
+              <span className="font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">Filter by Tech Stack:</span>
+              {selectedTags.length > 0 && (
+                <button
+                  onClick={() => setSelectedTags([])}
+                  className="text-xs uppercase font-label-bold text-red-500 hover:underline cursor-none"
+                >
+                  Clear ({selectedTags.length})
+                </button>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {allTags.map((tag) => {
+                const isSelected = selectedTags.includes(tag);
+                return (
+                  <motion.button
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={`px-3 py-1 text-xs uppercase font-label-bold border-2 border-[var(--color-outline)] transition-all cursor-none ${
+                      isSelected
+                        ? "bg-[var(--color-on-background)] text-[var(--color-background)] shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[1px] translate-y-[1px]"
+                        : "bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-0.5 hover:translate-x-0.5 hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
+                    }`}
+                    whileTap={{ scale: 0.96 }}
+                  >
+                    {tag}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </motion.div>
         </header>
 
-        <AnimatePresence mode="wait">
+        {/* Grid */}
+        <AnimatePresence mode="popLayout">
           {filteredProjects.length > 0 ? (
             <motion.div
-              key={activeFilter + searchTerm}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
+              layout
+              key={activeFilter + searchTerm + selectedTags.join("-")}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -225,7 +221,7 @@ function Projects() {
                 <ProjectCard
                   key={project.id}
                   project={project}
-                  onOpenModal={openModal}
+                  onOpenModal={setSelectedProject}
                   index={index}
                   isHighlighted={highlightedId === project.id}
                 />
@@ -233,29 +229,31 @@ function Projects() {
             </motion.div>
           ) : (
             <motion.div
-              className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-12 text-center flex flex-col items-center gap-4"
+              className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] p-12 text-center flex flex-col items-center gap-4 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
             >
-              <FaSearch className="text-4xl" />
-              <h3 className="font-headline-md text-3xl uppercase">
-                No projects found
-              </h3>
-              <p className="font-body-md text-lg">
-                Try adjusting your search terms or filters.
-              </p>
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <FaSearch className="text-5xl text-[var(--color-on-surface)]" />
+              </motion.div>
+              <h3 className="font-headline-md text-3xl uppercase text-[var(--color-on-surface)]">No projects found</h3>
+              <p className="font-body-md text-lg text-[var(--color-text-muted)]">Try adjusting your search terms or filters.</p>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.section>
 
+      {/* Modal */}
       <AnimatePresence>
         {selectedProject && (
           <ProjectModal
             project={selectedProject}
-            onClose={closeModal}
-            onSkillClick={handleSkillClick}
+            onClose={() => setSelectedProject(null)}
+            onSkillClick={(skillId) => { setSelectedProject(null); navigate(`/skills?skill=${encodeURIComponent(skillId)}`); }}
           />
         )}
       </AnimatePresence>
@@ -263,60 +261,88 @@ function Projects() {
   );
 }
 
+// ── Project Card ───────────────────────────────────────────────
+
 const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isHighlighted }) {
   const isFeatured = project.featured || false;
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
 
   return (
     <motion.article
-      className={`bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 cursor-pointer ${
-        isHighlighted ? "ring-4 ring-primary-container ring-offset-2" : ""
+      ref={ref}
+      layout
+      className={`bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden ${
+        isHighlighted ? "ring-4 ring-[var(--color-primary-container)] ring-offset-2" : ""
       }`}
-      variants={cardVariants}
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ type: "spring", stiffness: 260, damping: 22, delay: (index % 3) * 0.06 }}
       onClick={() => onOpenModal(project)}
+      whileHover={{
+        y: -6,
+        x: -6,
+        boxShadow: "16px 16px 0px 0px var(--shadow-color)",
+        transition: { type: "spring", stiffness: 300, damping: 20 },
+      }}
+      whileTap={{ scale: 0.99 }}
     >
-      <div className="h-48 md:h-64 border-b-4 border-black bg-surface-variant overflow-hidden relative">
-        <img
+      {/* Image */}
+      <div className="h-48 md:h-56 border-b-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden relative">
+        <motion.img
           src={getAssetPath(project.image)}
           alt={project.title}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+          className="w-full h-full object-cover pointer-events-none"
+          initial={{ scale: 1 }}
+          whileHover={{ scale: 1.04 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
         />
         {isFeatured && (
-          <div className="absolute top-4 right-4 bg-primary-container border-4 border-black px-3 py-1 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <motion.div
+            className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+            initial={{ rotate: 3 }}
+            whileHover={{ rotate: 0 }}
+          >
             Featured
-          </div>
+          </motion.div>
         )}
+        {/* Diagonal clip reveal on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[var(--color-primary-container)] opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none" />
       </div>
 
-      <div className="p-6 md:p-8 flex flex-col grow">
-        <h2 className="font-headline-md text-2xl md:text-3xl text-black mb-4 uppercase">
+      {/* Content */}
+      <div className="p-6 md:p-7 flex flex-col grow">
+        <h2 className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] mb-3 uppercase">
           {project.title}
         </h2>
-        <p className="font-body-md text-base text-black mb-6 whitespace-normal wrap-break-word" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <p
+          className="font-body-md text-sm text-[var(--color-text-muted)] mb-5 whitespace-normal"
+          style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+        >
           {project.description}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-8">
-          {project.tags.slice(0, 3).map((tag) => {
-            return (
-              <span
-                key={tag}
-                className="bg-black text-white border-2 border-black px-2 py-1 font-label-bold text-xs uppercase"
-              >
-                {tag}
-              </span>
-            );
-          })}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-[var(--color-outline)] px-2 py-1 font-label-bold text-xs uppercase"
+            >
+              {tag}
+            </span>
+          ))}
           {project.tags.length > 3 && (
-            <span className="bg-white text-black border-2 border-black px-2 py-1 font-label-bold text-xs uppercase">
+            <span className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] px-2 py-1 font-label-bold text-xs uppercase">
               +{project.tags.length - 3}
             </span>
           )}
         </div>
 
         <div
-          className="flex gap-4 border-t-4 border-black pt-6 mt-auto"
+          className="flex gap-3 border-t-4 border-[var(--color-outline)] pt-5 mt-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {project.links?.preview && (
@@ -324,8 +350,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
               href={project.links.preview}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-primary-container text-black border-4 border-black text-center py-2 md:py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2"
-              title="Live Preview"
+              className="flex-1 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
             >
               <FaEye /> Live
             </a>
@@ -335,8 +360,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
               href={project.links.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-white text-black border-4 border-black text-center py-2 md:py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2"
-              title="GitHub"
+              className="flex-1 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all flex justify-center items-center gap-2 cursor-none"
             >
               <FaGithub /> Source
             </a>
@@ -347,13 +371,16 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
   );
 });
 
+// ── Project Modal ──────────────────────────────────────────────
+
 const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick }) {
   const projectSkills = getSkillsForProject(project.id);
 
   return createPortal(
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-8">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
       <motion.div
-        className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ background: "color-mix(in srgb, var(--color-background) 75%, transparent)" }}
         variants={modalVariants}
         initial="hidden"
         animate="visible"
@@ -361,7 +388,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         onClick={onClose}
       />
       <motion.div
-        className="bg-white border-8 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative z-10 flex flex-col"
+        className="bg-[var(--color-surface)] border-8 border-[var(--color-outline)] shadow-[16px_16px_0px_0px_var(--shadow-color)] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative z-10 flex flex-col"
         variants={modalContentVariants}
         initial="hidden"
         animate="visible"
@@ -369,40 +396,43 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute top-4 right-4 z-20 bg-primary-container border-4 border-black w-12 h-12 flex items-center justify-center text-black text-2xl hover:bg-black hover:text-primary-container transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className="absolute top-4 right-4 z-20 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] w-12 h-12 flex items-center justify-center text-xl hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none cursor-none"
           onClick={onClose}
           aria-label="Close modal"
         >
           <FaTimes />
         </button>
 
-        <div className="h-48 md:h-80 border-b-8 border-black relative">
+        <div className="h-48 md:h-80 border-b-8 border-[var(--color-outline)] relative overflow-hidden">
           <img
             src={getAssetPath(project.image)}
             alt={project.title}
             className="w-full h-full object-cover"
           />
+          {/* Overlay gradient */}
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to top, var(--color-surface) 0%, transparent 40%)" }}
+          />
         </div>
 
         <div className="p-6 md:p-10 flex flex-col gap-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-black pb-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-[var(--color-outline)] pb-6">
             <div>
-              <span className="bg-black text-white font-label-bold px-3 py-1 border-2 border-black mb-2 inline-block shadow-[2px_2px_0px_0px_rgba(240,255,0,1)]">
+              <span className="bg-[var(--color-on-background)] text-[var(--color-background)] font-label-bold px-3 py-1 border-2 border-[var(--color-outline)] mb-2 inline-block shadow-[2px_2px_0px_0px_var(--shadow-accent)]">
                 {project.year}
               </span>
-              <h2 className="font-headline-xl text-4xl md:text-5xl uppercase leading-tight">
+              <h2 className="font-headline-xl text-4xl md:text-5xl uppercase leading-tight text-[var(--color-on-surface)]">
                 {project.title}
               </h2>
             </div>
-
             <div className="flex gap-4">
               {project.links?.preview && (
                 <a
                   href={project.links.preview}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-primary-container border-4 border-black p-3 text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
-                  title="Live Preview"
+                  className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] p-3 text-xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                 >
                   <FaEye />
                 </a>
@@ -412,8 +442,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   href={project.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white border-4 border-black p-3 text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
-                  title="GitHub"
+                  className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] p-3 text-xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                 >
                   <FaGithub />
                 </a>
@@ -425,34 +454,38 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="bg-surface-variant text-black border-2 border-black px-3 py-1 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] px-3 py-1 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
               >
                 {tag}
               </span>
             ))}
           </div>
 
-          <p className="font-body-lg text-lg border-4 border-black border-dashed p-6 bg-surface-variant">
+          <p
+            className="font-body-lg text-lg border-4 border-[var(--color-outline)] border-dashed p-6 text-[var(--color-on-surface)]"
+            style={{ background: "var(--color-surface-variant)" }}
+          >
             {project.description}
           </p>
 
-          {/* Skills used in this project — clickable to open skill modals */}
           {projectSkills.length > 0 && (
             <div className="flex flex-col gap-4">
-              <h3 className="font-headline-md text-2xl uppercase border-b-2 border-black pb-2 w-fit">
+              <h3 className="font-headline-md text-2xl uppercase border-b-2 border-[var(--color-outline)] pb-2 w-fit text-[var(--color-on-surface)]">
                 Skills & Technologies
               </h3>
               <div className="flex flex-wrap gap-2">
                 {projectSkills.map((skill) => (
-                  <button
+                  <motion.button
                     key={skill.id}
                     onClick={() => onSkillClick(skill.id)}
-                    className="bg-white border-2 border-black px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 hover:bg-primary-container transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] group"
+                    className="bg-[var(--color-surface)] border-2 border-[var(--color-outline)] px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-colors shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_var(--shadow-color)] group cursor-none text-[var(--color-on-surface)]"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <span className="font-headline-md">{skill.level}%</span>
                     {skill.name}
                     <FaArrowRight className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>

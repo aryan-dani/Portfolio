@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowUp } from "react-icons/fa";
-import "./BackToTop.scss";
 
-// Throttle function to limit scroll event frequency
 function throttle(func, limit) {
   let inThrottle;
   return function (...args) {
@@ -20,36 +18,40 @@ const BackToTop = memo(function BackToTop() {
 
   useEffect(() => {
     const handleScroll = throttle(() => {
-      setIsVisible(window.scrollY > 400);
-    }, 100); // Throttle to 100ms
+      const scrollTop = window.scrollY;
+      setIsVisible(scrollTop > 400);
+    }, 60);
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = useCallback(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.button
-          className="back-to-top"
-          onClick={scrollToTop}
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+        <motion.div
+          className="fixed bottom-8 right-8 z-[999]"
+          initial={{ opacity: 0, scale: 0.6, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 20 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          aria-label="Back to top"
-          title="Back to top"
+          exit={{ opacity: 0, scale: 0.6, y: 20 }}
+          transition={{ type: "spring", stiffness: 400, damping: 28 }}
         >
-          <FaArrowUp />
-        </motion.button>
+          {/* Button */}
+          <motion.button
+            className="back-to-top"
+            onClick={scrollToTop}
+            aria-label="Back to top"
+            title="Back to top"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+          >
+            <FaArrowUp />
+          </motion.button>
+        </motion.div>
       )}
     </AnimatePresence>
   );

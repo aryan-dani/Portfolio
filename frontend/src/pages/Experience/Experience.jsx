@@ -1,189 +1,406 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaChevronDown, FaExternalLinkAlt } from "react-icons/fa";
+import { useState, useRef, memo } from "react";
+import { motion, AnimatePresence, useScroll, useSpring, useInView } from "framer-motion";
+import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      staggerChildren: 0.25,
-      delayChildren: 0.1,
-    },
-  },
+  visible: { opacity: 1, transition: { duration: 0.4, staggerChildren: 0.18, delayChildren: 0.05 } },
 };
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 200, damping: 20 },
+const CARD_STYLES = [
+  {
+    header: { background: "var(--color-on-background)", color: "var(--color-background)" },
+    body:   { background: "var(--color-surface)", color: "var(--color-on-surface)" },
+    dot:    { background: "var(--color-primary-container)", border: "4px solid var(--color-outline)" },
+    tagBg:  { background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" },
+    shadow: "var(--shadow-color)",
   },
-};
-
-const stylesList = [
-  { bg: "bg-black", text: "text-white", dotBg: "bg-primary-container" },
-  { bg: "bg-secondary", text: "text-white", dotBg: "bg-secondary" },
-  { bg: "bg-white", text: "text-black", dotBg: "bg-white" },
+  {
+    header: { background: "var(--color-secondary)", color: "#fff" },
+    body:   { background: "var(--color-surface)", color: "var(--color-on-surface)" },
+    dot:    { background: "var(--color-secondary)", border: "4px solid var(--color-outline)" },
+    tagBg:  { background: "var(--color-secondary)", color: "#fff" },
+    shadow: "var(--shadow-color)",
+  },
+  {
+    header: { background: "var(--color-surface-variant)", color: "var(--color-on-surface)" },
+    body:   { background: "var(--color-surface)", color: "var(--color-on-surface)" },
+    dot:    { background: "var(--color-surface)", border: "4px solid var(--color-outline)" },
+    tagBg:  { background: "var(--color-on-background)", color: "var(--color-background)" },
+    shadow: "var(--shadow-color)",
+  },
 ];
 
-function Experience() {
-  const [expandedId, setExpandedId] = useState(experiences[0]?.id || null);
-
-  const toggleExpand = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
+function ExperienceCard({ exp, index, isExpanded, onToggle }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const style = CARD_STYLES[index % CARD_STYLES.length];
+  const isEven = index % 2 === 0;
 
   return (
     <motion.div
-      className="flex flex-col gap-16 md:gap-section-gap relative"
+      ref={ref}
+      key={exp.id}
+      className="relative z-10 w-full mb-10 md:mb-16 grid grid-cols-1 md:grid-cols-[1fr_80px_1fr] items-center gap-4 md:gap-0"
+      initial={{ opacity: 0, x: isEven ? -60 : 60 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ type: "spring", stiffness: 240, damping: 24, delay: index * 0.05 }}
+    >
+      {/* Column 1 (Left): Card if Even, Period if Odd */}
+      {isEven ? (
+        <motion.div
+          className="w-full border-4 border-[var(--color-outline)] overflow-hidden"
+          style={{ boxShadow: `8px 8px 0px 0px ${style.shadow}` }}
+          whileHover={{
+            y: -4,
+            x: -4,
+            boxShadow: `14px 14px 0px 0px ${style.shadow}`,
+            transition: { type: "spring", stiffness: 300, damping: 20 },
+          }}
+        >
+          <button
+            className="w-full p-5 md:p-6 flex justify-between items-start gap-3 group cursor-none"
+            style={style.header}
+            onClick={() => onToggle(exp.id)}
+          >
+            <div className="text-left">
+              <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl uppercase">{exp.position}</h2>
+              <h3 className="font-label-bold text-sm uppercase mt-1 opacity-75">
+                {exp.company}
+                {exp.links?.company && (
+                  <a
+                    href={exp.links.company}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-2 inline-flex items-center gap-1 hover:underline cursor-none"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <FaExternalLinkAlt className="text-[10px]" />
+                  </a>
+                )}
+              </h3>
+              <div className="md:hidden mt-2 flex items-center gap-2 opacity-60 text-xs font-label-bold uppercase">
+                <FaCalendarAlt />
+                {exp.period}
+                {exp.location && <><FaMapMarkerAlt />{exp.location}</>}
+              </div>
+            </div>
+            <motion.div
+              className="shrink-0 w-8 h-8 border-4 border-current flex items-center justify-center mt-1"
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 28 }}
+            >
+              <FaChevronDown className="text-sm" />
+            </motion.div>
+          </button>
+
+          <AnimatePresence initial={false}>
+            {isExpanded && (
+              <motion.div
+                style={style.body}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 320, damping: 32 }}
+                className="overflow-hidden"
+              >
+                <div className="p-5 md:p-6 border-t-4 border-[var(--color-outline)] flex flex-col gap-5">
+                  <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
+                    {exp.description}
+                  </p>
+                  {exp.responsibilities && (
+                    <ul className="flex flex-col gap-3">
+                      {exp.responsibilities.map((r, i) => (
+                        <motion.li
+                          key={i}
+                          className="font-body-md text-sm md:text-base flex items-start gap-3 text-[var(--color-on-surface)]"
+                          initial={{ opacity: 0, x: -12 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                        >
+                          <span
+                            className="shrink-0 mt-1.5 w-5 h-5 border-2 border-[var(--color-outline)] flex items-center justify-center font-bold text-xs select-none"
+                            style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
+                          >
+                            →
+                          </span>
+                          <span className="grow leading-relaxed" dangerouslySetInnerHTML={{ __html: r }} />
+                        </motion.li>
+                      ))}
+                    </ul>
+                  )}
+                  {exp.technologies && (
+                    <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
+                      {exp.technologies.map((tech) => (
+                        <motion.span
+                          key={tech}
+                          className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                          style={style.tagBg}
+                          whileHover={{ y: -1, boxShadow: "4px 4px 0px 0px var(--shadow-color)", transition: { duration: 0.1 } }}
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
+                    </div>
+                  )}
+                  {exp.links?.project && (
+                    <a
+                      href={exp.links.project}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-[var(--color-outline)] px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                      style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
+                    >
+                      <FaExternalLinkAlt /> View Project
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      ) : (
+        <div className="hidden md:flex justify-end pr-12">
+          <motion.div
+            className="inline-block border-4 border-[var(--color-outline)] px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
+            whileHover={{
+              y: -3,
+              x: 3,
+              boxShadow: "8px 8px 0px 0px var(--shadow-color)",
+              transition: { type: "spring", stiffness: 400, damping: 20 },
+            }}
+          >
+            <p className="font-headline-md text-lg uppercase">{exp.period}</p>
+            {exp.location && (
+              <p className="font-body-md text-sm flex items-center gap-1.5 mt-1 opacity-70 justify-end">
+                <FaMapMarkerAlt className="text-xs" />
+                {exp.location}
+              </p>
+            )}
+          </motion.div>
+        </div>
+      )}
+
+      {/* Column 2 (Center): Timeline dot */}
+      <div className="hidden md:flex justify-center items-center relative z-10 w-full">
+        <div className="relative">
+          <motion.div
+            className="w-8 h-8 border-4 border-[var(--color-outline)] relative z-10 flex items-center justify-center"
+            style={style.dot}
+            initial={{ scale: 0 }}
+            animate={inView ? { scale: 1 } : {}}
+            transition={{ type: "spring", stiffness: 500, damping: 20, delay: index * 0.05 + 0.15 }}
+          />
+          {inView && (
+            <motion.div
+              className="absolute inset-0 border-4 border-[var(--color-primary-container)]"
+              initial={{ scale: 1, opacity: 0.7 }}
+              animate={{ scale: 2.5, opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut", delay: index * 0.05 + 0.3 }}
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Column 3 (Right): Period if Even, Card if Odd */}
+      {isEven ? (
+        <div className="hidden md:flex justify-start pl-12">
+          <motion.div
+            className="inline-block border-4 border-[var(--color-outline)] px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
+            whileHover={{
+              y: -3,
+              x: -3,
+              boxShadow: "8px 8px 0px 0px var(--shadow-color)",
+              transition: { type: "spring", stiffness: 400, damping: 20 },
+            }}
+          >
+            <p className="font-headline-md text-lg uppercase">{exp.period}</p>
+            {exp.location && (
+              <p className="font-body-md text-sm flex items-center gap-1.5 mt-1 opacity-70 justify-start">
+                <FaMapMarkerAlt className="text-xs" />
+                {exp.location}
+              </p>
+            )}
+          </motion.div>
+        </div>
+      ) : (
+        <motion.div
+          className="w-full border-4 border-[var(--color-outline)] overflow-hidden"
+          style={{ boxShadow: `8px 8px 0px 0px ${style.shadow}` }}
+          whileHover={{
+            y: -4,
+            x: 4,
+            boxShadow: `14px 14px 0px 0px ${style.shadow}`,
+            transition: { type: "spring", stiffness: 300, damping: 20 },
+          }}
+        >
+          <button
+            className="w-full p-5 md:p-6 flex justify-between items-start gap-3 group cursor-none"
+            style={style.header}
+            onClick={() => onToggle(exp.id)}
+          >
+            <div className="text-left">
+              <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl uppercase">{exp.position}</h2>
+              <h3 className="font-label-bold text-sm uppercase mt-1 opacity-75">
+                {exp.company}
+                {exp.links?.company && (
+                  <a
+                    href={exp.links.company}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-2 inline-flex items-center gap-1 hover:underline cursor-none"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <FaExternalLinkAlt className="text-[10px]" />
+                  </a>
+                )}
+              </h3>
+              <div className="md:hidden mt-2 flex items-center gap-2 opacity-60 text-xs font-label-bold uppercase">
+                <FaCalendarAlt />
+                {exp.period}
+                {exp.location && <><FaMapMarkerAlt />{exp.location}</>}
+              </div>
+            </div>
+            <motion.div
+              className="shrink-0 w-8 h-8 border-4 border-current flex items-center justify-center mt-1"
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 28 }}
+            >
+              <FaChevronDown className="text-sm" />
+            </motion.div>
+          </button>
+
+          <AnimatePresence initial={false}>
+            {isExpanded && (
+              <motion.div
+                style={style.body}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 320, damping: 32 }}
+                className="overflow-hidden"
+              >
+                <div className="p-5 md:p-6 border-t-4 border-[var(--color-outline)] flex flex-col gap-5">
+                  <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
+                    {exp.description}
+                  </p>
+                  {exp.responsibilities && (
+                    <ul className="flex flex-col gap-3">
+                      {exp.responsibilities.map((r, i) => (
+                        <motion.li
+                          key={i}
+                          className="font-body-md text-sm md:text-base flex items-start gap-3 text-[var(--color-on-surface)]"
+                          initial={{ opacity: 0, x: -12 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                        >
+                          <span
+                            className="shrink-0 mt-1.5 w-5 h-5 border-2 border-[var(--color-outline)] flex items-center justify-center font-bold text-xs select-none"
+                            style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
+                          >
+                            →
+                          </span>
+                          <span className="grow leading-relaxed" dangerouslySetInnerHTML={{ __html: r }} />
+                        </motion.li>
+                      ))}
+                    </ul>
+                  )}
+                  {exp.technologies && (
+                    <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
+                      {exp.technologies.map((tech) => (
+                        <motion.span
+                          key={tech}
+                          className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                          style={style.tagBg}
+                          whileHover={{ y: -1, boxShadow: "4px 4px 0px 0px var(--shadow-color)", transition: { duration: 0.1 } }}
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
+                    </div>
+                  )}
+                  {exp.links?.project && (
+                    <a
+                      href={exp.links.project}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-[var(--color-outline)] px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                      style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
+                    >
+                      <FaExternalLinkAlt /> View Project
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
+    </motion.div>
+  );
+}
+
+function Experience() {
+  const [expandedId, setExpandedId] = useState(experiences[0]?.id || null);
+  const containerRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end end"] });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 90, damping: 28, restDelta: 0.001 });
+
+  const toggleExpand = (id) => setExpandedId(expandedId === id ? null : id);
+
+  return (
+    <motion.div
+      className="flex flex-col gap-12 md:gap-16 relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       <header className="relative w-full mt-4">
         <motion.div
-          variants={cardVariants}
-          className="inline-block bg-primary-container border-4 border-black px-6 md:px-8 py-4 md:py-6 mb-8 transition-transform"
+          className="inline-block bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 md:px-8 py-4 md:py-6 mb-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 280, damping: 22 }}
+          whileHover={{ x: -3, y: -3, boxShadow: "14px 14px 0px 0px var(--shadow-color)" }}
         >
-          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl uppercase text-black">
+          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl uppercase text-[var(--color-on-primary-container)]">
             EXPERIENCE
           </h1>
         </motion.div>
         <motion.p
-          variants={cardVariants}
-          className="font-body-lg text-base md:text-lg lg:text-body-lg max-w-3xl bg-white border-4 border-black p-4 md:p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          className="font-body-lg text-base md:text-lg lg:text-body-lg max-w-3xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] text-[var(--color-on-surface)]"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 280, damping: 22, delay: 0.1 }}
         >
           A timeline of raw code, loud design, and shipped products. Building
           stuff that matters.
         </motion.p>
       </header>
 
-      <section className="relative py-8 w-full">
-        {/* Timeline Center Line */}
-        <div className="absolute left-5 md:left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-2 bg-black z-0"></div>
+      <section className="relative py-8 w-full" ref={containerRef}>
+        {/* Timeline track */}
+        <div
+          className="absolute left-5 md:left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-2 z-0"
+          style={{ background: "var(--color-outline)" }}
+        />
 
-        {experiences.map((exp, index) => {
-          const isEven = index % 2 === 0;
-          const style = stylesList[index % stylesList.length];
-          const isExpanded = expandedId === exp.id;
-
-          return (
-            <motion.div
-              key={exp.id}
-              className={`relative z-10 w-full mb-10 md:mb-16 flex flex-col md:flex-row md:justify-between items-start md:items-center ${isEven ? "" : "md:flex-row-reverse"}`}
-              variants={cardVariants}
-            >
-              {/* Desktop Timeline Period */}
-              <div
-                className={`hidden md:block md:w-5/12 ${isEven ? "text-right pr-12" : "text-left pl-12"}`}
-              >
-                <div
-                  className={`inline-block ${style.bg} ${style.text} font-headline-md text-2xl border-4 border-black px-6 py-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all cursor-default uppercase`}
-                >
-                  {exp.period}
-                </div>
-              </div>
-
-              {/* Center Dot */}
-              <div
-                className={`absolute left-5 md:left-1/2 transform -translate-x-1/2 w-9 h-9 ${style.dotBg} border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 top-4 md:top-auto md:translate-y-0`}
-              >
-                <div className="absolute inset-0 border-4 border-black animate-ping opacity-20" />
-              </div>
-
-              {/* Mobile Timeline Period & Card Content */}
-              <div
-                className={`w-full pl-16 md:pl-0 md:w-5/12 ${isEven ? "md:text-left md:pl-12" : "md:text-right md:pr-12"}`}
-              >
-                <div className="md:hidden mb-4">
-                  <div
-                    className={`inline-block ${style.bg} ${style.text} font-label-bold text-sm px-4 py-2 border-2 border-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
-                  >
-                    {exp.period}
-                  </div>
-                </div>
-
-                <div
-                  className={`bg-white border-4 border-black p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all ${isEven ? "text-left" : "text-left md:text-right"}`}
-                >
-                  <div className="border-b-4 border-black pb-4 mb-6 flex justify-between items-start">
-                    <div>
-                      <h3 className="font-headline-md text-2xl md:text-3xl mb-2 uppercase">
-                        {exp.position}
-                      </h3>
-                      <h4 className="font-label-bold text-sm md:text-base text-secondary uppercase tracking-widest">
-                        <a
-                          href={exp.companyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:underline flex items-center gap-2 w-fit"
-                        >
-                          {exp.company}
-                          <FaExternalLinkAlt className="text-xs" />
-                        </a>
-                      </h4>
-                    </div>
-                    <button
-                      className={`text-2xl hover:text-secondary transition-transform ${isExpanded ? "rotate-180" : ""}`}
-                      onClick={() => toggleExpand(exp.id)}
-                      aria-label="Toggle details"
-                    >
-                      <FaChevronDown />
-                    </button>
-                  </div>
-
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                        className="overflow-hidden"
-                      >
-                        <ul className="list-none space-y-4 font-body-md text-base mt-4">
-                          {exp.responsibilities.map((resp, i) => (
-                            <li
-                              key={i}
-                              className={`flex items-start gap-3 ${isEven ? "" : "md:flex-row-reverse"}`}
-                            >
-                              <span className="text-primary-container bg-black border-2 border-black font-black px-2 py-0 mt-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                                {isEven ? "→" : "←"}
-                              </span>
-                              <span
-                                dangerouslySetInnerHTML={{ __html: resp }}
-                              />
-                            </li>
-                          ))}
-                        </ul>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <div
-                    className={`mt-8 flex flex-wrap gap-2 ${isEven ? "" : "md:justify-end"}`}
-                  >
-                    {exp.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="bg-surface-variant text-black font-label-bold text-xs md:text-sm px-3 py-1 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
+        {experiences.map((exp, index) => (
+          <ExperienceCard
+            key={exp.id}
+            exp={exp}
+            index={index}
+            isExpanded={expandedId === exp.id}
+            onToggle={toggleExpand}
+          />
+        ))}
       </section>
     </motion.div>
   );
 }
 
-export default Experience;
+export default memo(Experience);
