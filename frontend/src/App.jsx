@@ -20,7 +20,9 @@ import NoiseOverlay from "./components/NoiseOverlay/NoiseOverlay";
 const Home = lazy(() => import("./pages/Home/Home"));
 const Experience = lazy(() => import("./pages/Experience/Experience"));
 const Projects = lazy(() => import("./pages/Projects/Projects"));
-const Certifications = lazy(() => import("./pages/Certifications/Certifications"));
+const Certifications = lazy(
+  () => import("./pages/Certifications/Certifications"),
+);
 const Skills = lazy(() => import("./pages/Skills/Skills"));
 const About = lazy(() => import("./pages/About/About"));
 const Contact = lazy(() => import("./pages/Contact/Contact"));
@@ -40,28 +42,32 @@ const routeOrder = [
   "/about",
   "/playground",
   "/contact",
-  "/copyright"
+  "/copyright",
 ];
 
 // Minimal loading fallback — theme-aware
 function PageFallback() {
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "var(--color-background)",
-    }}>
-      <div style={{
-        width: "48px",
-        height: "48px",
-        border: "4px solid var(--color-outline-variant)",
-        borderTopColor: "var(--color-primary-container)",
-        borderRadius: "0",
-        animation: "spin 0.9s linear infinite",
-        boxShadow: "4px 4px 0 var(--shadow-color)",
-      }} />
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "var(--color-background)",
+      }}
+    >
+      <div
+        style={{
+          width: "48px",
+          height: "48px",
+          border: "4px solid var(--color-outline-variant)",
+          borderTopColor: "var(--color-primary-container)",
+          borderRadius: "0",
+          animation: "spin 0.9s linear infinite",
+          boxShadow: "4px 4px 0 var(--shadow-color)",
+        }}
+      />
       <style>{`
         @keyframes spin {
           to { transform: rotate(360deg); }
@@ -120,7 +126,9 @@ function FlashOverlay({ locationKey, direction }) {
       <motion.div
         key={locationKey}
         initial={{ x: direction > 0 ? "100%" : "-100%" }}
-        animate={{ x: direction > 0 ? ["100%", "0%", "-100%"] : ["-100%", "0%", "100%"] }}
+        animate={{
+          x: direction > 0 ? ["100%", "0%", "-100%"] : ["-100%", "0%", "100%"],
+        }}
         transition={{
           duration: 0.45,
           times: [0, 0.45, 1],
@@ -159,72 +167,128 @@ function AnimatedRoutes() {
 
   return (
     <>
-      {!isFirstRender && <FlashOverlay locationKey={location.pathname} direction={direction} />}
+      {!isFirstRender && (
+        <FlashOverlay locationKey={location.pathname} direction={direction} />
+      )}
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route index element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <Home />
-              </PageTransition>
-            </Suspense>
-          } />
-          <Route path="experience" element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <Experience />
-              </PageTransition>
-            </Suspense>
-          } />
-          <Route path="projects" element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <Projects />
-              </PageTransition>
-            </Suspense>
-          } />
-          <Route path="certifications" element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <Certifications />
-              </PageTransition>
-            </Suspense>
-          } />
-          <Route path="skills" element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <Skills />
-              </PageTransition>
-            </Suspense>
-          } />
-          <Route path="about" element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <About />
-              </PageTransition>
-            </Suspense>
-          } />
-          <Route path="contact" element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <Contact />
-              </PageTransition>
-            </Suspense>
-          } />
-          <Route path="playground" element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <Playground />
-              </PageTransition>
-            </Suspense>
-          } />
-          <Route path="copyright" element={
-            <Suspense fallback={<PageFallback />}>
-              <PageTransition direction={direction} isFirstRender={isFirstRender}>
-                <Copyright />
-              </PageTransition>
-            </Suspense>
-          } />
+          <Route
+            index
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <Home />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+          <Route
+            path="experience"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <Experience />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+          <Route
+            path="projects"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <Projects />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+          <Route
+            path="certifications"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <Certifications />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+          <Route
+            path="skills"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <Skills />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+          <Route
+            path="about"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <About />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+          <Route
+            path="contact"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <Contact />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+          <Route
+            path="playground"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <Playground />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+          <Route
+            path="copyright"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition
+                  direction={direction}
+                  isFirstRender={isFirstRender}
+                >
+                  <Copyright />
+                </PageTransition>
+              </Suspense>
+            }
+          />
         </Routes>
       </AnimatePresence>
     </>
