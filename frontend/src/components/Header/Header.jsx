@@ -50,7 +50,10 @@ function Header() {
 
   // Detect scroll for header shrink effect
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 40;
+      setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

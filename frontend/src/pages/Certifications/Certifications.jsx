@@ -162,95 +162,99 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <motion.article
+    <motion.div
       ref={ref}
       layout
-      className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_var(--shadow-color)] transition-all duration-200"
       variants={cardVariants}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       transition={{ type: "spring", stiffness: 260, damping: 22, delay: (index % 3) * 0.05 }}
+      className="w-full h-full"
     >
-      {/* Image Container */}
-      <div
-        className="aspect-[4/3] border-b-4 border-[var(--color-outline)] overflow-hidden relative cursor-pointer bg-[var(--color-surface)] flex items-center justify-center p-3"
-        onClick={onPreview}
+      <motion.article
+        className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_var(--shadow-color)] transition-all duration-200 h-full"
       >
-        <img
-          src={getAssetPath(cert.image)}
-          alt={cert.title}
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
-        />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <FaEye className="text-white text-3xl" />
-        </div>
-        
-        {/* Category badge */}
-        {cert.badge && (
-          <div className="absolute top-4 right-4 bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)] border-4 border-[var(--color-outline)] px-3 py-1 font-label-bold text-xs md:text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] z-10">
-            {cert.badge}
+        {/* Image Container */}
+        <div
+          className="aspect-[4/3] border-b-4 border-[var(--color-outline)] overflow-hidden relative cursor-pointer bg-[var(--color-surface)] flex items-center justify-center p-3"
+          onClick={onPreview}
+        >
+          <img
+            src={getAssetPath(cert.image)}
+            alt={cert.title}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <FaEye className="text-white text-3xl" />
           </div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="p-6 md:p-8 flex flex-col grow">
-        {/* Date badge */}
-        <span className="font-label-bold text-sm md:text-base text-[var(--color-secondary)] uppercase tracking-widest mb-2 border-2 border-[var(--color-outline)] w-fit px-2.5 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)]">
-          {cert.date}
-        </span>
-        
-        <h3 className="font-headline-md text-2xl md:text-3xl text-[var(--color-on-surface)] mb-4 uppercase mt-2 leading-tight">
-          {cert.title}
-        </h3>
-        
-        <p className="font-body-md text-base text-[var(--color-on-surface)] mb-6 grow leading-relaxed">
-          {cert.description}
-        </p>
-
-        {/* Tech Stack / Issuer Row */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t-4 border-[var(--color-outline)] pt-4 mb-6 gap-4 sm:gap-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full border-2 border-[var(--color-outline)] overflow-hidden bg-white shrink-0">
-              <img
-                src={cert.issuerLogo}
-                alt={cert.issuer}
-                className="w-full h-full object-contain p-1"
-              />
+          
+          {/* Category badge */}
+          {cert.badge && (
+            <div className="absolute top-4 right-4 bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)] border-4 border-[var(--color-outline)] px-3 py-1 font-label-bold text-xs md:text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] z-10">
+              {cert.badge}
             </div>
-            <span className="font-label-bold text-sm md:text-base uppercase text-[var(--color-on-surface)]">
-              {cert.issuer}
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="p-6 md:p-8 flex flex-col grow">
+          {/* Date badge */}
+          <span className="font-label-bold text-sm md:text-base text-[var(--color-secondary)] uppercase tracking-widest mb-2 border-2 border-[var(--color-outline)] w-fit px-2.5 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)]">
+            {cert.date}
+          </span>
+          
+          <h3 className="font-headline-md text-2xl md:text-3xl text-[var(--color-on-surface)] mb-4 uppercase mt-2 leading-tight">
+            {cert.title}
+          </h3>
+          
+          <p className="font-body-md text-base text-[var(--color-on-surface)] mb-6 grow leading-relaxed">
+            {cert.description}
+          </p>
+
+          {/* Tech Stack / Issuer Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t-4 border-[var(--color-outline)] pt-4 mb-6 gap-4 sm:gap-0">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full border-2 border-[var(--color-outline)] overflow-hidden bg-white shrink-0">
+                <img
+                  src={cert.issuerLogo}
+                  alt={cert.issuer}
+                  className="w-full h-full object-contain p-1"
+                />
+              </div>
+              <span className="font-label-bold text-sm md:text-base uppercase text-[var(--color-on-surface)]">
+                {cert.issuer}
+              </span>
+            </div>
+            <span className="font-label-bold text-xs bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] text-center">
+              {cert.tag || "Credential"}
             </span>
           </div>
-          <span className="font-label-bold text-xs bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] text-center">
-            {cert.tag || "Credential"}
-          </span>
-        </div>
 
-        {/* Action Button */}
-        {cert.link && cert.link !== "#" ? (
-          <a
-            href={cert.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
-          >
-            <FaExternalLinkAlt className="text-sm" />
-            View Certificate
-          </a>
-        ) : (
-          <button
-            onClick={onPreview}
-            className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-none"
-          >
-            <FaEye className="text-sm" />
-            View Certificate
-          </button>
-        )}
-      </div>
-    </motion.article>
+          {/* Action Button */}
+          {cert.link && cert.link !== "#" ? (
+            <a
+              href={cert.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
+            >
+              <FaExternalLinkAlt className="text-sm" />
+              View Certificate
+            </a>
+          ) : (
+            <button
+              onClick={onPreview}
+              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-none"
+            >
+              <FaEye className="text-sm" />
+              View Certificate
+            </button>
+          )}
+        </div>
+      </motion.article>
+    </motion.div>
   );
 });
 

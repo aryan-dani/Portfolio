@@ -17,9 +17,17 @@ const CustomCursor = memo(function CustomCursor() {
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   const isVisibleRef = useRef(false);
+  const cursorTypeRef = useRef("default");
 
   useEffect(() => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    const updateCursorType = (type) => {
+      if (cursorTypeRef.current !== type) {
+        cursorTypeRef.current = type;
+        setCursorType(type);
+      }
+    };
 
     const updateMousePosition = (e) => {
       cursorX.set(e.clientX);
@@ -47,13 +55,13 @@ const CustomCursor = memo(function CustomCursor() {
       const isCliText = target.closest(".nb-cli-container") && !target.closest("input");
 
       if (input || isCliText) {
-        setCursorType("text");
+        updateCursorType("text");
       } else if (img) {
-        setCursorType("image");
+        updateCursorType("image");
       } else if (el) {
-        setCursorType("hover");
+        updateCursorType("hover");
       } else {
-        setCursorType("default");
+        updateCursorType("default");
       }
     };
 

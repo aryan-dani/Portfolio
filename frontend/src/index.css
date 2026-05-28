@@ -61,9 +61,9 @@
   --color-inverse-on-surface: #f0f1f1;
 
   /* ── Shadow colors ── */
-  --shadow-color: transparent;
-  --shadow-accent: transparent;
-  --glow-accent: transparent;
+  --shadow-color: #0d0d0d;
+  --shadow-accent: #0028c2;
+  --glow-accent: rgba(240, 255, 0, 0.4);
 
   /* ── Spacing & layout ── */
   --radius-DEFAULT: 0px;
@@ -118,22 +118,22 @@
    DARK MODE — CSS CUSTOM PROPERTY REBINDING (clean, no !important)
    ═══════════════════════════════════════════════════════════════ */
 .dark {
-  --color-background: #0a0a0f;
-  --color-surface: #13131a;
-  --color-surface-elevated: #1a1a24;
-  --color-surface-variant: #1e1e2a;
-  --color-surface-container: #16161f;
-  --color-surface-container-low: #111118;
-  --color-surface-dim: #0d0d12;
-  --color-surface-bright: #1e1e2a;
+  --color-background: #08080c;
+  --color-surface: #111116;
+  --color-surface-elevated: #161622;
+  --color-surface-variant: #1b1b26;
+  --color-surface-container: #13131c;
+  --color-surface-container-low: #0c0c12;
+  --color-surface-dim: #09090d;
+  --color-surface-bright: #1b1b26;
 
   --color-on-background: #f0f0f5;
   --color-on-surface: #f0f0f5;
-  --color-on-surface-variant: #b0b0c0;
-  --color-text-muted: #6b6b80;
+  --color-on-surface-variant: #b5b5c7;
+  --color-text-muted: #73738c;
 
   --color-outline: #f0f0f5;
-  --color-outline-variant: #2a2a3a;
+  --color-outline-variant: #242435;
 
   --color-primary: #f0ff00;
   --color-on-primary: #0d0d0d;
@@ -155,16 +155,15 @@
   --color-inverse-surface: #f0f0f5;
   --color-inverse-on-surface: #0d0d0d;
 
-  --shadow-color: transparent;
-  --shadow-accent: transparent;
-  --glow-accent: transparent;
+  --shadow-color: #f0ff00;
+  --shadow-accent: #00f0ff;
+  --glow-accent: rgba(240, 255, 0, 0.4);
 }
 
 /* ═══════════════════════════════════════════════════════════════
    BASE STYLES
    ═══════════════════════════════════════════════════════════════ */
 html {
-  scroll-behavior: smooth;
   /* Smooth color transitions when toggling theme */
   transition:
     background-color 0.3s ease,
@@ -329,7 +328,6 @@ body {
 .marquee-strip {
   animation: marquee-scroll 25s linear infinite;
   will-change: transform;
-  transform: translateZ(0);
 }
 
 .marquee-strip:hover {
@@ -1033,9 +1031,6 @@ body {
   z-index: 9999;
   opacity: 0.025;
   mix-blend-mode: overlay;
-  animation: grain 8s steps(4) infinite;
-  transform: translateZ(0);
-  will-change: transform;
 }
 
 .dark .noise-overlay {
