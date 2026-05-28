@@ -184,8 +184,7 @@
     height: 1.1em;
     background: #000000;
     margin-left: 6px;
-    vertical-align: middle;
-    animation: nb-blink 0.8s step-end infinite;
+    animation: blink-cursor 0.8s step-end infinite;
   }
 }
 
@@ -241,11 +240,6 @@
   }
 }
 
-// ── Animations ───────────────────────────────
-@keyframes nb-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
 
 // ── Mobile Responsive ────────────────────────
 @media (max-width: 576px) {

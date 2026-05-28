@@ -328,6 +328,8 @@ body {
 
 .marquee-strip {
   animation: marquee-scroll 25s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .marquee-strip:hover {
@@ -448,18 +450,7 @@ body {
 }
 
 /* Blink cursor */
-@keyframes nb-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Typewriter cursor blink */
-@keyframes tw-blink {
+@keyframes blink-cursor {
   0%,
   100% {
     opacity: 1;
@@ -562,6 +553,7 @@ body {
   );
   background-size: 200% 100%;
   animation: shimmer 2.5s ease-in-out infinite;
+  contain: layout style paint;
 }
 
 .animate-pulse-glow {
@@ -569,7 +561,7 @@ body {
 }
 
 .animate-grain {
-  animation: grain 0.5s steps(1) infinite;
+  animation: grain 8s steps(4) infinite;
 }
 
 /* Shimmer text effect — for hero headings */
@@ -587,6 +579,7 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shimmer 3s linear infinite;
+  contain: layout style paint;
 }
 
 /* Gradient text */
@@ -722,6 +715,7 @@ body {
   padding: 0 4px;
   margin: 0 2px;
   animation: char-flash 0.08s step-end infinite;
+  will-change: color, background;
 }
 
 .page-loader__glitch-subtitle {
@@ -863,7 +857,7 @@ body {
   background: var(--color-outline);
   margin-left: 6px;
   vertical-align: middle;
-  animation: nb-blink 0.8s step-end infinite;
+  animation: blink-cursor 0.8s step-end infinite;
 }
 
 .nb-loader__progress-track {
@@ -1005,7 +999,7 @@ body {
   width: 2px;
   color: var(--color-primary-container);
   font-weight: 300;
-  animation: tw-blink 0.7s step-end infinite;
+  animation: blink-cursor 0.7s step-end infinite;
   margin-left: 1px;
 }
 
@@ -1015,6 +1009,7 @@ body {
 .nb-cli-container {
   font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
   letter-spacing: 0.02em;
+  overscroll-behavior: contain;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -1038,7 +1033,9 @@ body {
   z-index: 9999;
   opacity: 0.025;
   mix-blend-mode: overlay;
-  animation: grain 0.4s steps(1) infinite;
+  animation: grain 8s steps(4) infinite;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .dark .noise-overlay {
@@ -1051,6 +1048,7 @@ body {
 .progress-bar-fill {
   position: relative;
   overflow: hidden;
+  contain: layout style paint;
 
   &::after {
     content: "";
@@ -1064,6 +1062,7 @@ body {
     );
     background-size: 200% 100%;
     animation: shimmer 2s ease-in-out infinite;
+    will-change: background-position;
   }
 }
 
@@ -1126,16 +1125,6 @@ body {
 /* ═══════════════════════════════════════════════════════════════
    TERMINAL BLINKING CURSOR
    ═══════════════════════════════════════════════════════════════ */
-@keyframes terminal-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
 .animate-blink {
-  animation: terminal-blink 0.9s step-end infinite;
+  animation: blink-cursor 0.9s step-end infinite;
 }

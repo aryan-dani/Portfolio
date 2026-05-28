@@ -6,7 +6,7 @@ const PHASES = { GLITCH: 0, TERMINAL: 1, EXIT: 2, DONE: 3 };
 const TARGET_TEXT = "ARYANDANI";
 const GLITCH_CHARS = "01$#@%&*?!X█";
 
-function PageLoader() {
+const PageLoader = memo(function PageLoader() {
   const hasVisited = sessionStorage.getItem(SESSION_KEY);
   const [isLoading, setIsLoading] = useState(!hasVisited);
   const [phase, setPhase] = useState(PHASES.GLITCH);
@@ -241,6 +241,6 @@ function PageLoader() {
       )}
     </AnimatePresence>
   );
-}
+});
 
-export default memo(PageLoader);
+export default PageLoader;

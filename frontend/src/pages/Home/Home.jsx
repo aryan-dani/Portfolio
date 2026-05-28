@@ -9,23 +9,7 @@ import { getAssetPath } from "../../utils/paths";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import { useCountUp } from "../../hooks/useCountUp";
 
-// ─── Animation variants ────────────────────────────────────────
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
-  },
-};
-
-const itemVariants = {
-  hidden:  { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1, y: 0,
-    transition: { type: "spring", stiffness: 280, damping: 22 },
-  },
-};
+import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 const carouselVariants = {
   hidden:  { opacity: 0, x: 80, scale: 0.95 },

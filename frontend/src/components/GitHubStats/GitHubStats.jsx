@@ -1,25 +1,11 @@
-﻿import { memo } from "react";
+import { memo } from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { useTheme } from "../../context/ThemeContext";
 
 const GITHUB_USERNAME = "aryan-dani";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
-  },
-};
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 280, damping: 22 },
-  },
-};
+import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 function GHCard({ header, children, className = "" }) {
   const ref = useRef(null);

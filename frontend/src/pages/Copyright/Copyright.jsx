@@ -8,28 +8,7 @@ import {
   FaBalanceScale,
 } from "react-icons/fa";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-};
+import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 function Copyright() {
   const currentYear = new Date().getFullYear();

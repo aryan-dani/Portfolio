@@ -1,6 +1,5 @@
 import { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
-import "./TypeWriter.scss";
 
 const TypeWriter = memo(function TypeWriter({
   texts = [],

@@ -2,27 +2,15 @@ import { useState, useRef, memo } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import {
-  FaEnvelope, FaLinkedin, FaGithub, FaInstagram, FaTwitter,
+  FaEnvelope,
   FaFileDownload, FaArrowRight,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
 import GitHubStats from "../../components/GitHubStats/GitHubStats";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.4, staggerChildren: 0.12, delayChildren: 0.05 } },
-};
-const itemVariants = {
-  hidden:  { opacity: 0, y: 36 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 280, damping: 22 } },
-};
-
-const iconMap = {
-  LinkedIn: FaLinkedin, GitHub: FaGithub, Email: FaEnvelope,
-  Instagram: FaInstagram, Twitter: FaTwitter,
-};
+import { containerVariants, itemVariants } from "../../utils/motionVariants";
+import { socialIconMap } from "../../utils/socialIcons";
 
 function About() {
   const { showToast } = useToast();
@@ -122,7 +110,7 @@ function About() {
             </p>
             <div className="flex flex-wrap gap-4">
               {socialLinks.map((link) => {
-                const Icon = iconMap[link.name];
+                const Icon = socialIconMap[link.name];
                 return Icon ? (
                   <motion.a
                     key={link.name}

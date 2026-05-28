@@ -16,6 +16,8 @@ import { skills, skillCategories, getSkillById, getSkillCategory } from "../../d
 import { getProjectsForSkill } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
 import { useCountUp } from "../../hooks/useCountUp";
+import { containerVariants, cardVariants } from "../../utils/motionVariants";
+import { useModalLock } from "../../hooks/useModalLock";
 
 const iconMap = {
   FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
@@ -24,15 +26,6 @@ const iconMap = {
   SiTypescript, SiExpress, SiMongodb, SiTensorflow, SiPytorch,
   SiScikitlearn, SiNextdotjs, SiTailwindcss, SiFastapi, SiFlask,
   SiSupabase, SiOpencv, SiDocker, SiVite, SiFirebase, SiVercel,
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.4, staggerChildren: 0.06, delayChildren: 0.05 } },
-};
-const cardVariants = {
-  hidden:  { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
 };
 
 function getProficiencyLabel(level) {
@@ -136,16 +129,8 @@ function Skills() {
     }
   }, [searchParams, setSearchParams]);
 
-  useEffect(() => {
-    document.body.style.overflow = selectedSkill ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [selectedSkill]);
-
-  useEffect(() => {
-    const handleEscape = (e) => { if (e.key === "Escape") setSelectedSkill(null); };
-    if (selectedSkill) document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [selectedSkill]);
+  // Modal scroll-lock + Escape key dismiss (shared hook)
+  useModalLock(!!selectedSkill, () => setSelectedSkill(null));
 
   const filteredAndSorted = useMemo(() => {
     const result = {};

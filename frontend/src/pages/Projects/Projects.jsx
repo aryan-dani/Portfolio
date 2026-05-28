@@ -6,28 +6,10 @@ import { FaSearch, FaTimes, FaEye, FaGithub, FaArrowRight } from "react-icons/fa
 import { projects, projectCategories } from "../../data/projects";
 import { getSkillsForProject } from "../../data/skills";
 import { getAssetPath } from "../../utils/paths";
+import { containerVariants, cardVariants, modalBackdropVariants, modalContentVariants } from "../../utils/motionVariants";
+import { useModalLock } from "../../hooks/useModalLock";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3, staggerChildren: 0.07, delayChildren: 0.03 } },
-};
-
-const cardVariants = {
-  hidden:  { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 280, damping: 22 } },
-};
-
-const modalVariants = {
-  hidden:  { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.22 } },
-  exit:    { opacity: 0, transition: { duration: 0.18 } },
-};
-
-const modalContentVariants = {
-  hidden:  { opacity: 0, scale: 0.93, y: 36 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 380, damping: 28 } },
-  exit:    { opacity: 0, scale: 0.97, y: 20, transition: { duration: 0.18 } },
-};
+const gridContainerVariants = containerVariants;
 
 function Projects() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -63,17 +45,8 @@ function Projects() {
     }
   }, [highlightedId]);
 
-  useEffect(() => {
-    const handleEscape = (e) => { if (e.key === "Escape") setSelectedProject(null); };
-    if (selectedProject) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "";
-    };
-  }, [selectedProject]);
+  // Modal scroll-lock + Escape key dismiss (shared hook)
+  useModalLock(!!selectedProject, () => setSelectedProject(null));
 
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {

@@ -2,11 +2,8 @@ import { useState, useRef, memo } from "react";
 import { motion, AnimatePresence, useScroll, useSpring, useInView } from "framer-motion";
 import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.4, staggerChildren: 0.18, delayChildren: 0.05 } },
-};
+import { containerVariants } from "../../utils/motionVariants";
+import { getAssetPath } from "../../utils/paths";
 
 const CARD_STYLES = [
   {
@@ -32,6 +29,152 @@ const CARD_STYLES = [
   },
 ];
 
+// ── Shared card content (header + expandable body) ─────────────────────────
+// Previously this was copy-pasted verbatim for the "even" and "odd" column branches.
+
+function CardContent({ exp, style, isExpanded, onToggle }) {
+  return (
+    <motion.div
+      className="w-full border-4 border-[var(--color-outline)] overflow-hidden"
+      style={{ boxShadow: `8px 8px 0px 0px ${style.shadow}` }}
+      whileHover={{
+        y: -4,
+        x: -4,
+        boxShadow: `14px 14px 0px 0px ${style.shadow}`,
+        transition: { type: "spring", stiffness: 300, damping: 20 },
+      }}
+    >
+      <button
+        className="w-full p-5 md:p-6 flex justify-between items-start gap-3 group cursor-none"
+        style={style.header}
+        onClick={() => onToggle(exp.id)}
+      >
+        <div className="text-left">
+          <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl uppercase">{exp.position}</h2>
+          <h3 className="font-label-bold text-sm uppercase mt-1 opacity-75">
+            {exp.company}
+            {exp.links?.company && (
+              <a
+                href={exp.links.company}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-2 inline-flex items-center gap-1 hover:underline cursor-none"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FaExternalLinkAlt className="text-[10px]" />
+              </a>
+            )}
+          </h3>
+          <div className="md:hidden mt-2 flex items-center gap-2 opacity-60 text-xs font-label-bold uppercase">
+            <FaCalendarAlt />
+            {exp.period}
+            {exp.location && <><FaMapMarkerAlt />{exp.location}</>}
+          </div>
+        </div>
+        <motion.div
+          className="shrink-0 w-8 h-8 border-4 border-current flex items-center justify-center mt-1"
+          animate={{ rotate: isExpanded ? 180 : 0 }}
+          transition={{ type: "spring", stiffness: 400, damping: 28 }}
+        >
+          <FaChevronDown className="text-sm" />
+        </motion.div>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isExpanded && (
+          <motion.div
+            style={style.body}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 320, damping: 32 }}
+            className="overflow-hidden"
+          >
+            <div className="p-5 md:p-6 border-t-4 border-[var(--color-outline)] flex flex-col gap-5">
+              <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
+                {exp.description}
+              </p>
+              {exp.responsibilities && (
+                <ul className="flex flex-col gap-3">
+                  {exp.responsibilities.map((r, i) => (
+                    <motion.li
+                      key={i}
+                      className="font-body-md text-sm md:text-base flex items-start gap-3 text-[var(--color-on-surface)]"
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                    >
+                      <span
+                        className="shrink-0 mt-1.5 w-5 h-5 border-2 border-[var(--color-outline)] flex items-center justify-center font-bold text-xs select-none"
+                        style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
+                      >
+                        →
+                      </span>
+                      <span className="grow leading-relaxed" dangerouslySetInnerHTML={{ __html: r }} />
+                    </motion.li>
+                  ))}
+                </ul>
+              )}
+              {exp.technologies && (
+                <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
+                  {exp.technologies.map((tech) => (
+                    <motion.span
+                      key={tech}
+                      className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                      style={style.tagBg}
+                      whileHover={{ y: -1, boxShadow: "4px 4px 0px 0px var(--shadow-color)", transition: { duration: 0.1 } }}
+                    >
+                      {tech}
+                    </motion.span>
+                  ))}
+                </div>
+              )}
+              {exp.links?.project && (
+                <a
+                  href={exp.links.project}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-[var(--color-outline)] px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                  style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
+                >
+                  <FaExternalLinkAlt /> View Project
+                </a>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// ── Period / Location badge ────────────────────────────────────────────────
+
+function PeriodBadge({ exp, alignRight = false }) {
+  return (
+    <motion.div
+      className="inline-block border-4 border-[var(--color-outline)] px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+      style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
+      whileHover={{
+        y: -3,
+        x: alignRight ? 3 : -3,
+        boxShadow: "8px 8px 0px 0px var(--shadow-color)",
+        transition: { type: "spring", stiffness: 400, damping: 20 },
+      }}
+    >
+      <p className="font-headline-md text-lg uppercase">{exp.period}</p>
+      {exp.location && (
+        <p className={`font-body-md text-sm flex items-center gap-1.5 mt-1 opacity-70 ${alignRight ? "justify-end" : "justify-start"}`}>
+          <FaMapMarkerAlt className="text-xs" />
+          {exp.location}
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
+// ── Experience Card (timeline row) ────────────────────────────────────────
+
 function ExperienceCard({ exp, index, isExpanded, onToggle }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -49,137 +192,10 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
     >
       {/* Column 1 (Left): Card if Even, Period if Odd */}
       {isEven ? (
-        <motion.div
-          className="w-full border-4 border-[var(--color-outline)] overflow-hidden"
-          style={{ boxShadow: `8px 8px 0px 0px ${style.shadow}` }}
-          whileHover={{
-            y: -4,
-            x: -4,
-            boxShadow: `14px 14px 0px 0px ${style.shadow}`,
-            transition: { type: "spring", stiffness: 300, damping: 20 },
-          }}
-        >
-          <button
-            className="w-full p-5 md:p-6 flex justify-between items-start gap-3 group cursor-none"
-            style={style.header}
-            onClick={() => onToggle(exp.id)}
-          >
-            <div className="text-left">
-              <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl uppercase">{exp.position}</h2>
-              <h3 className="font-label-bold text-sm uppercase mt-1 opacity-75">
-                {exp.company}
-                {exp.links?.company && (
-                  <a
-                    href={exp.links.company}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ml-2 inline-flex items-center gap-1 hover:underline cursor-none"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <FaExternalLinkAlt className="text-[10px]" />
-                  </a>
-                )}
-              </h3>
-              <div className="md:hidden mt-2 flex items-center gap-2 opacity-60 text-xs font-label-bold uppercase">
-                <FaCalendarAlt />
-                {exp.period}
-                {exp.location && <><FaMapMarkerAlt />{exp.location}</>}
-              </div>
-            </div>
-            <motion.div
-              className="shrink-0 w-8 h-8 border-4 border-current flex items-center justify-center mt-1"
-              animate={{ rotate: isExpanded ? 180 : 0 }}
-              transition={{ type: "spring", stiffness: 400, damping: 28 }}
-            >
-              <FaChevronDown className="text-sm" />
-            </motion.div>
-          </button>
-
-          <AnimatePresence initial={false}>
-            {isExpanded && (
-              <motion.div
-                style={style.body}
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 320, damping: 32 }}
-                className="overflow-hidden"
-              >
-                <div className="p-5 md:p-6 border-t-4 border-[var(--color-outline)] flex flex-col gap-5">
-                  <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
-                    {exp.description}
-                  </p>
-                  {exp.responsibilities && (
-                    <ul className="flex flex-col gap-3">
-                      {exp.responsibilities.map((r, i) => (
-                        <motion.li
-                          key={i}
-                          className="font-body-md text-sm md:text-base flex items-start gap-3 text-[var(--color-on-surface)]"
-                          initial={{ opacity: 0, x: -12 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.05 }}
-                        >
-                          <span
-                            className="shrink-0 mt-1.5 w-5 h-5 border-2 border-[var(--color-outline)] flex items-center justify-center font-bold text-xs select-none"
-                            style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
-                          >
-                            →
-                          </span>
-                          <span className="grow leading-relaxed" dangerouslySetInnerHTML={{ __html: r }} />
-                        </motion.li>
-                      ))}
-                    </ul>
-                  )}
-                  {exp.technologies && (
-                    <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
-                      {exp.technologies.map((tech) => (
-                        <motion.span
-                          key={tech}
-                          className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                          style={style.tagBg}
-                          whileHover={{ y: -1, boxShadow: "4px 4px 0px 0px var(--shadow-color)", transition: { duration: 0.1 } }}
-                        >
-                          {tech}
-                        </motion.span>
-                      ))}
-                    </div>
-                  )}
-                  {exp.links?.project && (
-                    <a
-                      href={exp.links.project}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-[var(--color-outline)] px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
-                      style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
-                    >
-                      <FaExternalLinkAlt /> View Project
-                    </a>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+        <CardContent exp={exp} style={style} isExpanded={isExpanded} onToggle={onToggle} />
       ) : (
         <div className="hidden md:flex justify-end pr-12">
-          <motion.div
-            className="inline-block border-4 border-[var(--color-outline)] px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-            style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
-            whileHover={{
-              y: -3,
-              x: 3,
-              boxShadow: "8px 8px 0px 0px var(--shadow-color)",
-              transition: { type: "spring", stiffness: 400, damping: 20 },
-            }}
-          >
-            <p className="font-headline-md text-lg uppercase">{exp.period}</p>
-            {exp.location && (
-              <p className="font-body-md text-sm flex items-center gap-1.5 mt-1 opacity-70 justify-end">
-                <FaMapMarkerAlt className="text-xs" />
-                {exp.location}
-              </p>
-            )}
-          </motion.div>
+          <PeriodBadge exp={exp} alignRight />
         </div>
       )}
 
@@ -207,137 +223,10 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
       {/* Column 3 (Right): Period if Even, Card if Odd */}
       {isEven ? (
         <div className="hidden md:flex justify-start pl-12">
-          <motion.div
-            className="inline-block border-4 border-[var(--color-outline)] px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-            style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
-            whileHover={{
-              y: -3,
-              x: -3,
-              boxShadow: "8px 8px 0px 0px var(--shadow-color)",
-              transition: { type: "spring", stiffness: 400, damping: 20 },
-            }}
-          >
-            <p className="font-headline-md text-lg uppercase">{exp.period}</p>
-            {exp.location && (
-              <p className="font-body-md text-sm flex items-center gap-1.5 mt-1 opacity-70 justify-start">
-                <FaMapMarkerAlt className="text-xs" />
-                {exp.location}
-              </p>
-            )}
-          </motion.div>
+          <PeriodBadge exp={exp} alignRight={false} />
         </div>
       ) : (
-        <motion.div
-          className="w-full border-4 border-[var(--color-outline)] overflow-hidden"
-          style={{ boxShadow: `8px 8px 0px 0px ${style.shadow}` }}
-          whileHover={{
-            y: -4,
-            x: 4,
-            boxShadow: `14px 14px 0px 0px ${style.shadow}`,
-            transition: { type: "spring", stiffness: 300, damping: 20 },
-          }}
-        >
-          <button
-            className="w-full p-5 md:p-6 flex justify-between items-start gap-3 group cursor-none"
-            style={style.header}
-            onClick={() => onToggle(exp.id)}
-          >
-            <div className="text-left">
-              <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl uppercase">{exp.position}</h2>
-              <h3 className="font-label-bold text-sm uppercase mt-1 opacity-75">
-                {exp.company}
-                {exp.links?.company && (
-                  <a
-                    href={exp.links.company}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ml-2 inline-flex items-center gap-1 hover:underline cursor-none"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <FaExternalLinkAlt className="text-[10px]" />
-                  </a>
-                )}
-              </h3>
-              <div className="md:hidden mt-2 flex items-center gap-2 opacity-60 text-xs font-label-bold uppercase">
-                <FaCalendarAlt />
-                {exp.period}
-                {exp.location && <><FaMapMarkerAlt />{exp.location}</>}
-              </div>
-            </div>
-            <motion.div
-              className="shrink-0 w-8 h-8 border-4 border-current flex items-center justify-center mt-1"
-              animate={{ rotate: isExpanded ? 180 : 0 }}
-              transition={{ type: "spring", stiffness: 400, damping: 28 }}
-            >
-              <FaChevronDown className="text-sm" />
-            </motion.div>
-          </button>
-
-          <AnimatePresence initial={false}>
-            {isExpanded && (
-              <motion.div
-                style={style.body}
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 320, damping: 32 }}
-                className="overflow-hidden"
-              >
-                <div className="p-5 md:p-6 border-t-4 border-[var(--color-outline)] flex flex-col gap-5">
-                  <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
-                    {exp.description}
-                  </p>
-                  {exp.responsibilities && (
-                    <ul className="flex flex-col gap-3">
-                      {exp.responsibilities.map((r, i) => (
-                        <motion.li
-                          key={i}
-                          className="font-body-md text-sm md:text-base flex items-start gap-3 text-[var(--color-on-surface)]"
-                          initial={{ opacity: 0, x: -12 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.05 }}
-                        >
-                          <span
-                            className="shrink-0 mt-1.5 w-5 h-5 border-2 border-[var(--color-outline)] flex items-center justify-center font-bold text-xs select-none"
-                            style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
-                          >
-                            →
-                          </span>
-                          <span className="grow leading-relaxed" dangerouslySetInnerHTML={{ __html: r }} />
-                        </motion.li>
-                      ))}
-                    </ul>
-                  )}
-                  {exp.technologies && (
-                    <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
-                      {exp.technologies.map((tech) => (
-                        <motion.span
-                          key={tech}
-                          className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                          style={style.tagBg}
-                          whileHover={{ y: -1, boxShadow: "4px 4px 0px 0px var(--shadow-color)", transition: { duration: 0.1 } }}
-                        >
-                          {tech}
-                        </motion.span>
-                      ))}
-                    </div>
-                  )}
-                  {exp.links?.project && (
-                    <a
-                      href={exp.links.project}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-[var(--color-outline)] px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
-                      style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
-                    >
-                      <FaExternalLinkAlt /> View Project
-                    </a>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+        <CardContent exp={exp} style={style} isExpanded={isExpanded} onToggle={onToggle} />
       )}
     </motion.div>
   );

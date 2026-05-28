@@ -1,22 +1,11 @@
-import { useState, useMemo, useEffect, useRef, memo } from "react";
+import { useState, useMemo, useRef, memo } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { FaSearch, FaTimes, FaEye, FaExternalLinkAlt } from "react-icons/fa";
 import { certifications, certificationCategories } from "../../data/certifications";
 import { getAssetPath } from "../../utils/paths";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { 
-    opacity: 1, 
-    transition: { duration: 0.35, staggerChildren: 0.08, delayChildren: 0.05 } 
-  },
-};
-
-const cardVariants = {
-  hidden:  { opacity: 0, y: 35 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 280, damping: 22 } },
-};
+import { containerVariants, cardVariants } from "../../utils/motionVariants";
+import { useModalLock } from "../../hooks/useModalLock";
 
 function Certifications() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,17 +25,9 @@ function Certifications() {
     [searchTerm, activeFilter]
   );
 
-  useEffect(() => {
-    if (previewImage) { document.body.style.overflow = "hidden"; }
-    else { document.body.style.overflow = ""; }
-    return () => { document.body.style.overflow = ""; };
-  }, [previewImage]);
+  // Modal scroll-lock + Escape key dismiss (shared hook)
+  useModalLock(!!previewImage, () => setPreviewImage(null));
 
-  useEffect(() => {
-    const handleEscape = (e) => { if (e.key === "Escape") setPreviewImage(null); };
-    if (previewImage) document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [previewImage]);
 
   return (
     <>

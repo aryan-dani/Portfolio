@@ -7,20 +7,8 @@ import {
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.4, staggerChildren: 0.1, delayChildren: 0.05 } },
-};
-const itemVariants = {
-  hidden:  { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 280, damping: 22 } },
-};
-
-const socialIconMap = {
-  LinkedIn: FaLinkedin, GitHub: FaGithub, Email: FaEnvelope,
-  Instagram: FaInstagram, Twitter: FaTwitter,
-};
+import { containerVariants, itemVariants } from "../../utils/motionVariants";
+import { socialIconMap } from "../../utils/socialIcons";
 
 const SUBJECT_OPTIONS = [
   "Freelance Project", "Collaboration", "Job Opportunity",

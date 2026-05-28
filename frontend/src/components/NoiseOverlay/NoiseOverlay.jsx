@@ -6,7 +6,7 @@ const NoiseOverlay = memo(function NoiseOverlay() {
   return (
     <div
       className="noise-overlay"
-      style={{ backgroundImage: noiseDataUrl }}
+      style={{ backgroundImage: noiseDataUrl, transform: "translateZ(0)", willChange: "transform" }}
       aria-hidden="true"
     />
   );

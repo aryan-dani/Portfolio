@@ -1,29 +1,11 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope } from "react-icons/fa";
+import { socialLinks } from "../../data/experience";
+import { socialIconMap } from "../../utils/socialIcons";
+import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 const currentYear = new Date().getFullYear();
-
-const socialLinks = [
-  { name: "Email",     icon: FaEnvelope,  url: "mailto:daniaryan212@gmail.com" },
-  { name: "LinkedIn",  icon: FaLinkedin,  url: "https://www.linkedin.com/in/aryandani/" },
-  { name: "GitHub",    icon: FaGithub,    url: "https://github.com/Aryan-Dani" },
-  { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/aryandani_06/" },
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.07, delayChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden:  { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
-};
 
 const Footer = memo(function Footer() {
   return (
@@ -53,8 +35,9 @@ const Footer = memo(function Footer() {
           className="flex flex-wrap gap-3 justify-center"
           variants={containerVariants}
         >
-          {socialLinks.map((link, i) => {
-            const Icon = link.icon;
+          {socialLinks.map((link) => {
+            const Icon = socialIconMap[link.name];
+            if (!Icon) return null;
             return (
               <motion.a
                 key={link.name}
