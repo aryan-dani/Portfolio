@@ -21,6 +21,7 @@ function Playground() {
   const [cmdHistory, setCmdHistory] = useState([]);
   const [historyIdx, setHistoryIdx] = useState(-1);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isFocused, setIsFocused] = useState(true);
   const terminalEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -45,6 +46,32 @@ function Playground() {
       terminalEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [history]);
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+      if (e.key === "Tab" || e.key === "Escape") return;
+
+      if (
+        document.activeElement.tagName === "INPUT" ||
+        document.activeElement.tagName === "TEXTAREA" ||
+        document.activeElement.tagName === "SELECT" ||
+        document.activeElement.contentEditable === "true"
+      ) {
+        return;
+      }
+
+      // If it's a single character, focus the terminal input
+      if (e.key.length === 1 && inputRef.current) {
+        inputRef.current.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, []);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -378,6 +405,8 @@ function Playground() {
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
             onKeyDown={handleKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             maxLength={60}
             autoFocus
             autoComplete="off"
@@ -387,7 +416,11 @@ function Playground() {
           {/* Display overlay with typing text and custom blinking block cursor */}
           <div className="absolute left-0 top-0 bottom-0 right-0 flex items-center font-mono text-sm md:text-base text-(--color-on-surface) pointer-events-none select-none whitespace-pre">
             <span>{inputVal}</span>
-            <span className="w-2.5 h-4.5 bg-(--color-primary-container) border border-(--color-outline) animate-blink ml-0.5 inline-block align-middle" />
+            <span
+              className={`w-2.5 h-4.5 bg-(--color-primary-container) border border-(--color-outline) ml-0.5 inline-block align-middle ${
+                isFocused ? "animate-blink" : "opacity-40"
+              }`}
+            />
           </div>
         </div>
       </div>
@@ -430,7 +463,7 @@ function Playground() {
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-190 cursor-none"
           />
           <div
-            className="nb-cli-container border-4 border-(--color-outline) bg-(--color-surface) p-6 font-mono flex flex-col fixed top-4 md:top-8 bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] md:w-[calc(100%-64px)] max-w-4xl z-200 h-[calc(100vh-32px)] md:h-[calc(100vh-64px)] shadow-[12px_12px_0px_0px_var(--shadow-color)] overflow-hidden"
+            className="nb-cli-container border-4 border-(--color-outline) bg-(--color-surface) p-6 font-mono flex flex-col fixed top-4 md:top-8 bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] md:w-[calc(100%-64px)] max-w-7xl z-200 h-[calc(100vh-32px)] md:h-[calc(100vh-64px)] shadow-[12px_12px_0px_0px_var(--shadow-color)] overflow-hidden"
             onClick={focusInput}
           >
             {renderTerminalContent()}
