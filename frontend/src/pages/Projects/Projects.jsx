@@ -357,7 +357,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
       <motion.div
         className="absolute inset-0 backdrop-blur-sm"
         style={{ background: "color-mix(in srgb, var(--color-background) 75%, transparent)" }}
-        variants={modalVariants}
+        variants={modalBackdropVariants}
         initial="hidden"
         animate="visible"
         exit="exit"
