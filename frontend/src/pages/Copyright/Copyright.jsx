@@ -20,7 +20,7 @@ function Copyright() {
       animate="visible"
       variants={containerVariants}
     >
-      <header className="mb-8 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4">
+      <header className="mb-8 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
         <div className="flex flex-col gap-6">
           <motion.div
             variants={itemVariants}
@@ -97,7 +97,7 @@ function Copyright() {
             className="bg-[#0d0d0d] text-white border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-accent)] flex flex-col items-start gap-4"
             variants={itemVariants}
           >
-            <h3 className="font-headline-md text-3xl uppercase border-b-4 border-white/20 pb-2 text-[var(--color-primary-container)] w-fit">
+            <h3 className="font-headline-md text-3xl uppercase border-b-4 border-white/20 pb-2 text-white w-fit">
               Attribution
             </h3>
             <p className="font-body-md text-lg">

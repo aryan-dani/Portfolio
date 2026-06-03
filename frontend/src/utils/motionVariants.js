@@ -54,17 +54,19 @@ export const modalBackdropVariants = {
 
 /** Modal content — refined spring scale-in from slightly below */
 export const modalContentVariants = {
-  hidden: { opacity: 0, scale: 0.96, y: 28 },
+  hidden: { opacity: 0, scale: 0.92, y: 35, filter: "blur(8px)" },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 280, damping: 30 },
+    filter: "blur(0px)",
+    transition: { type: "spring", stiffness: 280, damping: 28 },
   },
   exit: {
     opacity: 0,
-    scale: 0.97,
-    y: 16,
+    scale: 0.95,
+    y: 20,
+    filter: "blur(6px)",
     transition: { duration: 0.22, ease: "easeIn" },
   },
 };

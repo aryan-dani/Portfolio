@@ -1,11 +1,32 @@
-import { memo } from "react";
+import { memo, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { useTheme } from "../../context/ThemeContext";
 
 const GITHUB_USERNAME = "aryan-dani";
 
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
+
+function ImageWithSkeleton({ src, alt, className = "", imgClassName = "" }) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className={`relative w-full overflow-hidden ${className}`}>
+      {!loaded && (
+        <div className="w-full min-h-[160px] bg-[var(--color-surface-variant)] flex items-center justify-center border-4 border-dashed border-[var(--color-outline-variant)] relative overflow-hidden">
+          <div className="absolute inset-0 animate-shimmer opacity-20" />
+          <span className="font-mono text-xs uppercase tracking-widest opacity-60 animate-pulse">Loading github stats...</span>
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        onLoad={() => setLoaded(true)}
+        className={`${imgClassName} transition-all duration-300 ${loaded ? "opacity-100 scale-100" : "opacity-0 scale-95 absolute w-0 h-0"}`}
+        loading="lazy"
+      />
+    </div>
+  );
+}
 
 function GHCard({ header, children, className = "" }) {
   const ref = useRef(null);
@@ -65,7 +86,7 @@ const GitHubStats = memo(function GitHubStats() {
 
   return (
     <motion.section
-      className="flex flex-col gap-8"
+      className="flex flex-col gap-8 content-visibility-auto contain-layout-paint"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -89,11 +110,10 @@ const GitHubStats = memo(function GitHubStats() {
           }
         >
           <div className="p-4 flex justify-center items-center min-h-50">
-            <img
+            <ImageWithSkeleton
               src={statsUrl}
               alt="GitHub Stats"
-              className="w-full h-auto"
-              loading="lazy"
+              imgClassName="w-full h-auto"
             />
           </div>
         </GHCard>
@@ -107,11 +127,10 @@ const GitHubStats = memo(function GitHubStats() {
           }
         >
           <div className="p-4 flex justify-center items-center min-h-50">
-            <img
+            <ImageWithSkeleton
               src={langsUrl}
               alt="Top Languages"
-              className="w-full h-auto"
-              loading="lazy"
+              imgClassName="w-full h-auto"
             />
           </div>
         </GHCard>
@@ -127,11 +146,10 @@ const GitHubStats = memo(function GitHubStats() {
         }
       >
         <div className="p-6 flex justify-center overflow-x-auto">
-          <img
+          <ImageWithSkeleton
             src={contribUrl}
             alt="Contributions Calendar"
-            className="min-w-162.5 max-w-full h-auto"
-            loading="lazy"
+            imgClassName="min-w-162.5 max-w-full h-auto"
           />
         </div>
       </GHCard>
@@ -149,11 +167,10 @@ const GitHubStats = memo(function GitHubStats() {
           className="p-4 flex justify-center"
           style={{ background: "#0d1117" }}
         >
-          <img
+          <ImageWithSkeleton
             src={activityUrl}
             alt="Contribution Trend Graph"
-            className="w-full max-w-3xl h-auto"
-            loading="lazy"
+            imgClassName="w-full max-w-3xl h-auto"
           />
         </div>
       </GHCard>
@@ -168,11 +185,10 @@ const GitHubStats = memo(function GitHubStats() {
         }
       >
         <div className="p-4 flex justify-center">
-          <img
+          <ImageWithSkeleton
             src={streakUrl}
             alt="GitHub Streak"
-            className="w-full max-w-2xl h-auto"
-            loading="lazy"
+            imgClassName="w-full max-w-2xl h-auto"
           />
         </div>
       </GHCard>
@@ -187,11 +203,10 @@ const GitHubStats = memo(function GitHubStats() {
         }
       >
         <div className="p-4 flex justify-center">
-          <img
+          <ImageWithSkeleton
             src={trophiesUrl}
             alt="GitHub Trophies"
-            className="w-full max-w-3xl h-auto"
-            loading="lazy"
+            imgClassName="w-full max-w-3xl h-auto"
           />
         </div>
       </GHCard>

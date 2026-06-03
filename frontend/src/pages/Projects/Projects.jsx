@@ -73,7 +73,7 @@ function Projects() {
         variants={containerVariants}
       >
         {/* Header */}
-        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative">
+        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
           <motion.div
             className="flex items-center gap-4 flex-wrap"
             variants={cardVariants}
@@ -143,10 +143,10 @@ function Projects() {
 
           {/* Tech tag matrix */}
           <motion.div
-            className="w-full bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col gap-3"
+            className="w-full bg-hatch border-4 border-[var(--color-outline)] p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col gap-3 overflow-hidden"
             variants={cardVariants}
           >
-            <div className="flex justify-between items-center border-b-2 border-[var(--color-outline)] pb-2">
+            <div className="flex justify-between items-center bg-[var(--color-surface)] px-6 py-4 -mx-6 -mt-6 border-b-4 border-[var(--color-outline)] mb-2">
               <span className="font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">Filter by Tech Stack:</span>
               {selectedTags.length > 0 && (
                 <button
@@ -251,7 +251,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
       className="w-full h-full"
     >
       <motion.article
-        className={`bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full ${
+        className={`bg-[var(--color-surface)] border-4 border-[var(--color-outline)] hover:border-[var(--color-secondary)] transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full ${
           isHighlighted ? "ring-4 ring-[var(--color-primary-container)] ring-offset-2" : ""
         }`}
         onClick={() => onOpenModal(project)}
@@ -271,15 +271,15 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover pointer-events-none"
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.04 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            initial={{ scale: 1, filter: "grayscale(100%)" }}
+            whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
           />
           {isFeatured && (
             <motion.div
               className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-              initial={{ rotate: 3 }}
-              whileHover={{ rotate: 0 }}
+              animate={{ rotate: [3, -3, 3] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
               Featured
             </motion.div>

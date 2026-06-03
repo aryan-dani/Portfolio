@@ -108,7 +108,7 @@ function Contact() {
       variants={containerVariants}
     >
       {/* Hero */}
-      <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 mt-4">
+      <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4">
         <motion.div variants={itemVariants} className="mb-6">
           <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase tracking-tighter">
             LET&apos;S BUILD
@@ -159,7 +159,7 @@ function Contact() {
                       onChange={handleChange}
                       placeholder={field.placeholder}
                       required={field.required}
-                      className="border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none shadow-[2px_2px_0px_0px_var(--shadow-color)] form-input-glow transition-all cursor-none"
+                      className="border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none focus:border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)] focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] transition-all duration-200 cursor-none"
                       style={{ background: "var(--color-surface-variant)", color: "var(--color-on-surface)" }}
                     />
                   </div>
@@ -176,7 +176,7 @@ function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none shadow-[2px_2px_0px_0px_var(--shadow-color)] appearance-none pr-12 cursor-none"
+                    className="w-full border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none focus:border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)] focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] transition-all duration-200 appearance-none pr-12 cursor-none"
                     style={{ background: "var(--color-surface-variant)", color: "var(--color-on-surface)" }}
                   >
                     <option value="">Select a topic...</option>
@@ -200,7 +200,7 @@ function Contact() {
                   placeholder="Tell me about your project, idea, or just say hi..."
                   rows="6"
                   required
-                  className="border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none shadow-[2px_2px_0px_0px_var(--shadow-color)] resize-none form-input-glow transition-all cursor-none"
+                  className="border-4 border-[var(--color-outline)] p-4 font-body-md text-lg focus:outline-none focus:border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)] focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] resize-none transition-all duration-200 cursor-none"
                   style={{ background: "var(--color-surface-variant)", color: "var(--color-on-surface)" }}
                 />
               </div>
@@ -217,6 +217,9 @@ function Contact() {
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
+                  {isSubmitting && (
+                    <div className="absolute inset-0 animate-shimmer opacity-25 pointer-events-none" />
+                  )}
                   {isSubmitting ? (
                     <motion.div
                       className="w-6 h-6 border-3 border-current border-t-transparent rounded-full"
@@ -271,7 +274,7 @@ function Contact() {
             </button>
 
             <div className="grid grid-cols-2 gap-3">
-              {socialLinks.map((link) => {
+              {socialLinks.map((link, idx) => {
                 const Icon = socialIconMap[link.name];
                 if (!Icon) return null;
                 return (
@@ -280,9 +283,13 @@ function Contact() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.12 + idx * 0.04 }}
                     className="border-4 border-[var(--color-outline)] p-3 flex items-center gap-2 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                     style={{ background: "var(--color-surface)", color: "var(--color-on-surface)" }}
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.04, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <Icon className="text-lg" />{link.name}
                   </motion.a>

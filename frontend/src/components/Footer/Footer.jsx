@@ -7,6 +7,16 @@ import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 const currentYear = new Date().getFullYear();
 
+const socialItemVariants = {
+  hidden: { opacity: 0, y: 24, rotate: -25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotate: 0,
+    transition: { type: "spring", stiffness: 300, damping: 20 },
+  },
+};
+
 const Footer = memo(function Footer() {
   return (
     <motion.footer
@@ -17,16 +27,15 @@ const Footer = memo(function Footer() {
       whileInView="visible"
       viewport={{ once: true, margin: "-60px" }}
     >
-
-
       <div className="flex flex-col md:flex-row justify-between items-center py-8 px-4 md:px-8 gap-8 w-full max-w-[1440px] mx-auto">
         {/* Copyright */}
         <motion.div variants={itemVariants}>
           <Link
             to="/copyright"
-            className="font-headline-md font-black uppercase text-base md:text-lg text-[var(--color-on-surface)] px-4 py-2 border-4 border-transparent hover:border-[var(--color-outline)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:-translate-y-1 hover:-translate-x-1 active:translate-x-0 active:translate-y-0 active:shadow-none transition-all duration-200 cursor-none inline-block"
+            className="relative font-headline-md font-black uppercase text-base md:text-lg text-[var(--color-on-surface)] py-1 cursor-none inline-block group/copyright"
           >
             © {currentYear} ARYAN DANI
+            <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-[var(--color-outline)] group-hover/copyright:w-full transition-all duration-300" />
           </Link>
         </motion.div>
 
@@ -47,7 +56,7 @@ const Footer = memo(function Footer() {
                 rel={link.name === "Email" ? undefined : "noopener noreferrer"}
                 aria-label={link.name}
                 title={link.name}
-                variants={itemVariants}
+                variants={socialItemVariants}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

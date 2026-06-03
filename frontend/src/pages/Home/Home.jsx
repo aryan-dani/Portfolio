@@ -57,9 +57,9 @@ function StatCard({ value, isPlus, label, bg, delay }) {
       ref={ref}
       className="border-4 border-[var(--color-outline)] p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] text-center"
       style={bgStyle}
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      initial={{ opacity: 0, y: 40, scale: 0.88 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ type: "spring", stiffness: 300, damping: 24, delay }}
+      transition={{ type: "spring", stiffness: 350, damping: 18, delay }}
       whileHover={{
         y: -4,
         x: -4,
@@ -112,7 +112,7 @@ function PhotoCarousel() {
     >
         {/* Main frame */}
         <div
-          className="relative aspect-square border-4 border-[var(--color-outline)] bg-[var(--color-surface)] shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden"
+          className="relative aspect-square border-4 border-[var(--color-outline)] bg-[var(--color-surface)] shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden animate-pulse-glow"
           style={{ userSelect: "none" }}
         >
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -128,7 +128,7 @@ function PhotoCarousel() {
               <img
                 src={getAssetPath(photos[index].src)}
                 alt={photos[index].alt}
-                className="w-full h-full object-cover transition-all duration-700"
+                className="w-full h-full object-cover"
                 loading={index === 0 ? "eager" : "lazy"}
                 decoding="async"
               />
@@ -253,6 +253,7 @@ const Home = memo(function Home() {
                 transition: { type: "spring", stiffness: 400, damping: 20 },
               }}
             >
+              <div className="absolute inset-0 animate-shimmer opacity-20 pointer-events-none" />
               {aboutInfo.name}
             </motion.h1>
           </motion.div>
@@ -282,7 +283,7 @@ const Home = memo(function Home() {
           >
             <MagneticLink
               to="/projects"
-              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-150 inline-block"
+              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-150 inline-block animate-pulse-glow"
             >
               View My Work
             </MagneticLink>

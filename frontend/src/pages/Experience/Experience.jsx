@@ -117,12 +117,17 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
               )}
               {exp.technologies && (
                 <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
-                  {exp.technologies.map((tech) => (
+                  {exp.technologies.map((tech, techIdx) => (
                     <motion.span
                       key={tech}
                       className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
                       style={style.tagBg}
-                      whileHover={{ y: -1, boxShadow: "4px 4px 0px 0px var(--shadow-color)", transition: { duration: 0.1 } }}
+                      whileHover={{
+                        y: -4,
+                        rotate: techIdx % 2 === 0 ? 2 : -2,
+                        boxShadow: "4px 4px 0px 0px var(--shadow-color)",
+                      }}
+                      transition={{ type: "spring", stiffness: 450, damping: 14 }}
                     >
                       {tech}
                     </motion.span>
@@ -217,6 +222,13 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
               transition={{ duration: 1.2, ease: "easeOut", delay: index * 0.05 + 0.3 }}
             />
           )}
+          {isExpanded && (
+            <motion.div
+              className="absolute inset-0 border-4 border-[var(--color-outline)]"
+              animate={{ scale: [1, 2.2, 1], opacity: [0.8, 0, 0.8] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            />
+          )}
         </div>
       </div>
 
@@ -248,7 +260,7 @@ function Experience() {
       animate="visible"
       variants={containerVariants}
     >
-      <header className="relative w-full mt-4">
+      <header className="relative w-full mt-4 border-b-8 border-[var(--color-outline)] pb-8 mb-8 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
         <motion.div
           className="inline-block bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 md:px-8 py-4 md:py-6 mb-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
           initial={{ opacity: 0, y: 30 }}
@@ -272,10 +284,18 @@ function Experience() {
       </header>
 
       <section className="relative py-8 w-full" ref={containerRef}>
-        {/* Timeline track */}
+        {/* Timeline track - static outline background */}
         <div
           className="absolute left-5 md:left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-2 z-0"
-          style={{ background: "var(--color-outline)" }}
+          style={{ background: "var(--color-outline-variant)" }}
+        />
+        {/* Timeline track - scroll animated fill gradient */}
+        <motion.div
+          className="absolute left-5 md:left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-2 z-0 origin-top"
+          style={{
+            scaleY: scaleY,
+            background: "linear-gradient(to bottom, var(--color-outline), var(--color-secondary))"
+          }}
         />
 
         {experiences.map((exp, index) => (

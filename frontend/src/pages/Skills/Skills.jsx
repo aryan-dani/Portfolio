@@ -182,15 +182,17 @@ function Skills() {
         variants={containerVariants}
       >
         {/* Header */}
-        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 mt-4">
-          <motion.h1
-            className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase tracking-tighter"
+        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4">
+          <motion.div
+            className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
             variants={cardVariants}
           >
-            SKILLS &amp; TOOLS
-          </motion.h1>
+            <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter leading-none">
+              SKILLS &amp; TOOLS
+            </h1>
+          </motion.div>
           <motion.p
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-6 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-2 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
             variants={cardVariants}
           >
             A chaotic sticker sheet of the technologies I use to build loud,
@@ -364,7 +366,7 @@ function SkillListItem({ skill, icon, onClick }) {
           <motion.div
             className="text-xl p-2 border-2 border-[var(--color-outline)] shrink-0"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
-            whileHover={{ scale: 1.15, rotate: 5 }}
+            whileHover={{ scale: 1.15, rotate: 5, boxShadow: "0 0 12px var(--color-on-background)" }}
             transition={{ type: "spring", stiffness: 500, damping: 20 }}
           >
             {icon}
@@ -408,22 +410,45 @@ function SkillGridCard({ skill, icon, onClick }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const el = ref.current;
+    const rect = el.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    // Calculate rotation angles (max 7 degrees)
+    const rX = -(mouseY / (height / 2)) * 7;
+    const rY = (mouseX / (width / 2)) * 7;
+    setTilt({ x: rX, y: rY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
   return (
     <motion.button
       ref={ref}
       className="w-full text-left bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group flex flex-col gap-3"
       initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      animate={inView ? { opacity: 1, y: 0, rotateX: tilt.x, rotateY: tilt.y } : {}}
       transition={{ type: "spring", stiffness: 280, damping: 22 }}
-      whileHover={{ y: -4, x: -4, boxShadow: "10px 10px 0px 0px var(--shadow-color)", transition: { type: "spring", stiffness: 400, damping: 20 } }}
+      whileHover={{ y: -4, x: -4, boxShadow: "10px 10px 0px 0px var(--shadow-color)" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
       onClick={onClick}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between" style={{ transform: "translateZ(20px)" }}>
         <div className="flex items-center gap-3">
           <motion.div
             className="text-xl p-2 border-2 border-[var(--color-outline)]"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
-            whileHover={{ scale: 1.15 }}
+            whileHover={{ scale: 1.15, boxShadow: "0 0 12px var(--color-on-background)" }}
             transition={{ type: "spring", stiffness: 500, damping: 20 }}
           >
             {icon}
@@ -441,7 +466,7 @@ function SkillGridCard({ skill, icon, onClick }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3" style={{ transform: "translateZ(10px)" }}>
         <div className="flex-1 h-3 border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
           <motion.div
             className="h-full w-full progress-bar-fill origin-left"
@@ -454,10 +479,10 @@ function SkillGridCard({ skill, icon, onClick }) {
         <span className="font-headline-md text-sm w-8 text-right text-[var(--color-on-surface)]">{skill.level}%</span>
       </div>
 
-      <p className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+      <p className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", transform: "translateZ(5px)" }}>
         {skill.description}
       </p>
-      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
+      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]" style={{ transform: "translateZ(10px)" }}>
         <FaExternalLinkAlt className="text-[10px]" /> Click for details
       </div>
     </motion.button>
@@ -567,7 +592,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
                     <img
                       src={getAssetPath(project.image)}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-all duration-300"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   </div>

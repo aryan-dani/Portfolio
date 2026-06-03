@@ -49,7 +49,12 @@ const BackToTop = memo(function BackToTop() {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
           >
-            <FaArrowUp />
+            <motion.div
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <FaArrowUp />
+            </motion.div>
           </motion.button>
         </motion.div>
       )}

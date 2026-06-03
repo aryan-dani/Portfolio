@@ -194,7 +194,43 @@ function AnimatedRoutes() {
   );
 }
 
+const preloadAllPages = () => {
+  const pages = [
+    () => import("./pages/Home/Home"),
+    () => import("./pages/Experience/Experience"),
+    () => import("./pages/Projects/Projects"),
+    () => import("./pages/Certifications/Certifications"),
+    () => import("./pages/Skills/Skills"),
+    () => import("./pages/About/About"),
+    () => import("./pages/Contact/Contact"),
+    () => import("./pages/Copyright/Copyright"),
+    () => import("./pages/Playground/Playground"),
+  ];
+  
+  pages.forEach((p) => {
+    try {
+      p();
+    } catch (e) {
+      console.warn("Failed to preload page", e);
+    }
+  });
+};
+
 function App() {
+  useEffect(() => {
+    const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 2000));
+    const handle = idleCallback(() => {
+      preloadAllPages();
+    });
+    return () => {
+      if (window.cancelIdleCallback) {
+        window.cancelIdleCallback(handle);
+      } else {
+        clearTimeout(handle);
+      }
+    };
+  }, []);
+
   return (
     <ThemeProvider>
       <ToastProvider>

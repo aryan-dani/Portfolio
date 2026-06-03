@@ -1,6 +1,6 @@
 import { useState, useRef, memo } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import {
   FaEnvelope,
   FaFileDownload, FaArrowRight,
@@ -14,8 +14,8 @@ import { socialIconMap } from "../../utils/socialIcons";
 
 function About() {
   const { showToast } = useToast();
-  const photoRef = useRef(null);
-
+  const { scrollY } = useScroll();
+  const yParallax = useTransform(scrollY, [0, 1000], [0, -60]);
 
   const copyEmail = () => {
     navigator.clipboard.writeText(aboutInfo.email);
@@ -30,7 +30,7 @@ function About() {
       variants={containerVariants}
     >
       {/* Header */}
-      <header className="mb-8 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative">
+      <header className="mb-8 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
         <motion.div
           className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
           variants={itemVariants}
@@ -54,7 +54,7 @@ function About() {
         <motion.div className="flex flex-col gap-12" variants={itemVariants}>
           <div className="relative group">
             <motion.div
-              className="border-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+              className="border-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden shadow-[8px_8px_0px_0px_var(--shadow-color)] relative"
               whileHover={{
                 x: -6,
                 y: -6,
@@ -62,10 +62,11 @@ function About() {
               }}
               transition={{ type: "spring", stiffness: 200, damping: 18 }}
             >
-              <img
+              <motion.img
                 src={getAssetPath("Images/Home_Page.jpg")}
                 alt={aboutInfo.name}
-                className="w-full h-auto object-cover transition-all duration-700"
+                className="w-full h-auto object-cover origin-center"
+                style={{ y: yParallax, scale: 1.08 }}
               />
             </motion.div>
             {/* Name badge */}
@@ -200,6 +201,8 @@ function HighlightCard({ highlight, index }) {
     >
       <motion.span
         className="text-4xl mb-4 block border-2 border-[var(--color-outline)] w-fit p-2 bg-[var(--color-surface-variant)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+        animate={inView ? { rotate: [0, -12, 12, -6, 6, 0] } : {}}
+        transition={{ duration: 0.65, delay: index * 0.12 + 0.35 }}
         whileHover={{ rotate: [0, -10, 10, -5, 5, 0], transition: { duration: 0.5 } }}
       >
         {highlight.icon}

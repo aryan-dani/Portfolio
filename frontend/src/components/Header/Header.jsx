@@ -31,9 +31,9 @@ const menuVariants = {
 };
 
 const menuItemVariants = {
-  hidden:  { opacity: 0, x: -20 },
-  visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 400, damping: 30 } },
-  exit:    { opacity: 0, x: -16, transition: { duration: 0.15 } },
+  hidden:  { opacity: 0, x: -30, rotate: -4 },
+  visible: { opacity: 1, x: 0, rotate: 0, transition: { type: "spring", stiffness: 350, damping: 24 } },
+  exit:    { opacity: 0, x: -20, rotate: 2, transition: { duration: 0.15 } },
 };
 
 function Header() {
@@ -80,12 +80,18 @@ function Header() {
           }`}
         >
           {/* Logo */}
-          <NavLink
-            to="/"
-            className="text-2xl font-black tracking-tighter text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-4 py-2 bg-[var(--color-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-150 select-none"
+          <motion.div
+            whileHover={{ scale: 1.04, rotate: -1.5 }}
+            whileTap={{ scale: 0.96, rotate: 1.5 }}
+            transition={{ type: "spring", stiffness: 450, damping: 14 }}
           >
-            ARYAN DANI
-          </NavLink>
+            <NavLink
+              to="/"
+              className="block text-2xl font-black tracking-tighter text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-4 py-2 bg-[var(--color-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-150 select-none"
+            >
+              ARYAN DANI
+            </NavLink>
+          </motion.div>
 
           <div className="hidden md:flex gap-1 lg:gap-2 items-center font-headline-md uppercase tracking-tighter font-bold text-sm lg:text-base relative">
             {navItems.map((item) => {
@@ -103,9 +109,11 @@ function Header() {
                   {isActive && (
                     <motion.div
                       layoutId="activeNav"
-                      className="absolute -inset-[4px] bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] shadow-[2px_2px_0_0_var(--shadow-color)] -z-10"
+                      className="absolute -inset-[4px] bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] shadow-[2px_2px_0_0_var(--shadow-color)] -z-10 overflow-hidden"
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
+                    >
+                      <div className="absolute inset-0 animate-shimmer opacity-35" />
+                    </motion.div>
                   )}
                   {item.label}
                 </NavLink>

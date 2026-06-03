@@ -6,50 +6,50 @@
    ═══════════════════════════════════════════════════════════════ */
 @theme {
   /* ── Core brand palette (monochrome) ── */
-  --color-accent: #1a1a1a;         /* deep charcoal — primary brand accent */
-  --color-accent-warm: #2e2e2e;    /* slightly lifted charcoal — hover states */
-  --color-accent-cool: #3a3a3a;    /* medium charcoal */
-  --color-accent-dark: #0d0d0d;    /* near-black — pressed/active */
+  --color-accent: #131316;         /* deep warm charcoal — primary brand accent */
+  --color-accent-warm: #26262b;    /* slightly lifted charcoal — hover states */
+  --color-accent-cool: #3c3c43;    /* medium charcoal */
+  --color-accent-dark: #09090b;    /* near-black — pressed/active */
 
   /* ── Semantic surface colors (light) ── */
-  --color-background: #f5f5f5;     /* neutral off-white */
+  --color-background: #f8f7f4;     /* neutral warm off-white (paper style) */
   --color-surface: #ffffff;        /* pure white for cards */
   --color-surface-elevated: #ffffff;
-  --color-surface-variant: #eeeeee; /* light gray */
-  --color-surface-container: #f0f0f0;
-  --color-surface-container-low: #f7f7f7;
-  --color-surface-dim: #e0e0e0;
-  --color-surface-bright: #f5f5f5;
+  --color-surface-variant: #f2f1ed; /* warm gray surface */
+  --color-surface-container: #eceae5;
+  --color-surface-container-low: #f5f4f0;
+  --color-surface-dim: #e4e2dd;
+  --color-surface-bright: #f8f7f4;
 
   /* ── On-surface text ── */
-  --color-on-background: #0d0d0d;
-  --color-on-surface: #0d0d0d;
-  --color-on-surface-variant: #4a4a4a;
-  --color-text-muted: #6e6e6e;
+  --color-on-background: #131316;
+  --color-on-surface: #131316;
+  --color-on-surface-variant: #4e4d52;
+  --color-text-muted: #727178;
 
   /* ── Border ── */
-  --color-outline: #0d0d0d;
-  --color-outline-variant: #d4d4d4;
+  --color-outline: #131316;
+  --color-outline-variant: #dcdbd8;
 
   /* ── Primary (charcoal/near-black) ── */
-  --color-primary: #1a1a1a;
-  --color-on-primary: #f5f5f5;
-  --color-primary-container: #1a1a1a;   /* dark chip on white bg */
-  --color-on-primary-container: #f5f5f5;
-  --color-primary-fixed: #2e2e2e;
-  --color-inverse-primary: #d0d0d0;
+  --color-primary: #131316;
+  --color-on-primary: #f8f7f4;
+  --color-primary-container: #131316;   /* dark chip on white bg */
+  --color-on-primary-container: #f8f7f4;
+  --color-primary-fixed: #26262b;
+  --color-inverse-primary: #dcdbd8;
 
   /* ── Secondary (mid-gray) ── */
-  --color-secondary: #555555;
+  --color-secondary: #5a5960;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #404040;
-  --color-on-secondary-container: #e8e8e8;
+  --color-secondary-container: #45444a;
+  --color-on-secondary-container: #e8e7eb;
 
   /* ── Tertiary / Neutral ── */
-  --color-tertiary: #6e6e6e;
+  --color-tertiary: #727178;
   --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #f0f0f0;
-  --color-on-tertiary-container: #555555;
+  --color-tertiary-container: #f2f1ed;
+  --color-on-tertiary-container: #5a5960;
 
   /* ── Error ── */
   --color-error: #c0392b;
@@ -58,11 +58,11 @@
   --color-on-error-container: #7a1b14;
 
   /* ── Inverse ── */
-  --color-inverse-surface: #1a1a1a;
-  --color-inverse-on-surface: #f5f5f5;
+  --color-inverse-surface: #131316;
+  --color-inverse-on-surface: #f8f7f4;
 
   /* ── Shadow colors (monochrome) ── */
-  --shadow-color: #0d0d0d;
+  --shadow-color: #131316;
   --shadow-accent: #333333;
   --glow-accent: rgba(255, 255, 255, 0.12);
 
@@ -120,45 +120,45 @@
    Luminous white/platinum accent on near-black background
    ═══════════════════════════════════════════════════════════════ */
 .dark {
-  --color-background: #0a0a0a;
-  --color-surface: #141414;
-  --color-surface-elevated: #1a1a1a;
-  --color-surface-variant: #1e1e1e;
-  --color-surface-container: #141414;
-  --color-surface-container-low: #0e0e0e;
+  --color-background: #0d0c0c;     /* Obsidian warm black */
+  --color-surface: #141313;
+  --color-surface-elevated: #1a1919;
+  --color-surface-variant: #222020;
+  --color-surface-container: #141313;
+  --color-surface-container-low: #0e0d0d;
   --color-surface-dim: #080808;
-  --color-surface-bright: #1e1e1e;
+  --color-surface-bright: #222020;
 
-  --color-on-background: #f0f0f0;
-  --color-on-surface: #f0f0f0;
-  --color-on-surface-variant: #aaaaaa;
-  --color-text-muted: #707070;
+  --color-on-background: #f8f7f4;
+  --color-on-surface: #f8f7f4;
+  --color-on-surface-variant: #a5a3a0;
+  --color-text-muted: #6e6c69;
 
-  --color-outline: #f0f0f0;
-  --color-outline-variant: #2a2a2a;
+  --color-outline: #f8f7f4;
+  --color-outline-variant: #2a2929;
 
-  --color-primary: #e0e0e0;
-  --color-on-primary: #0a0a0a;
-  --color-primary-container: #e8e8e8;   /* luminous white accent in dark mode */
-  --color-on-primary-container: #0a0a0a;
-  --color-primary-fixed: #d0d0d0;
-  --color-inverse-primary: #2e2e2e;
+  --color-primary: #f8f7f4;
+  --color-on-primary: #0d0c0c;
+  --color-primary-container: #f8f7f4;   /* luminous warm white accent in dark mode */
+  --color-on-primary-container: #0d0c0c;
+  --color-primary-fixed: #dcdbd8;
+  --color-inverse-primary: #26262b;
 
-  --color-secondary: #909090;
-  --color-on-secondary: #0a0a0a;
-  --color-secondary-container: #3a3a3a;
-  --color-on-secondary-container: #d8d8d8;
+  --color-secondary: #a5a3a0;
+  --color-on-secondary: #0d0c0c;
+  --color-secondary-container: #3a3939;
+  --color-on-secondary-container: #e8e7eb;
 
-  --color-tertiary: #888888;
-  --color-on-tertiary: #0a0a0a;
-  --color-tertiary-container: #202020;
-  --color-on-tertiary-container: #b0b0b0;
+  --color-tertiary: #8c8a87;
+  --color-on-tertiary: #0d0c0c;
+  --color-tertiary-container: #222020;
+  --color-on-tertiary-container: #c4c2bf;
 
-  --color-inverse-surface: #f0f0f0;
-  --color-inverse-on-surface: #0a0a0a;
+  --color-inverse-surface: #f8f7f4;
+  --color-inverse-on-surface: #0d0c0c;
 
-  --shadow-color: #e0e0e0;       /* white shadow for dark mode — neo-brutalist contrast */
-  --shadow-accent: #808080;
+  --shadow-color: #f8f7f4;       /* match warm white for high contrast neo-brutalist shadow */
+  --shadow-accent: #a5a3a0;
   --glow-accent: rgba(255, 255, 255, 0.08);
 }
 
@@ -178,20 +178,17 @@ body {
   overflow-x: hidden;
 }
 
-/* Smooth all color-dependent transitions globally on theme switch */
-*,
-*::before,
-*::after {
-  transition-property: background-color, border-color, color, box-shadow, fill, stroke;
-  transition-duration: 0.4s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Override: layout/transform transitions should NOT be slowed by the above */
-.no-color-transition,
-.no-color-transition * {
-  transition-property: transform, opacity !important;
-  transition-duration: inherit !important;
+/* Smooth all color-dependent transitions globally ONLY when toggling theme */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              fill 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Hide system cursor on pointer devices — custom cursor takes over */
@@ -296,6 +293,18 @@ body {
 /* Glow shadow */
 @utility glow-shadow {
   box-shadow: 8px 8px 0px 0px var(--shadow-color);
+}
+
+/* Repeating diagonal hatching texture */
+@utility bg-hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 6px,
+    color-mix(in srgb, var(--color-outline) 10%, transparent) 6px,
+    color-mix(in srgb, var(--color-outline) 10%, transparent) 8px
+  );
+  background-size: 20px 20px;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -926,24 +935,15 @@ body {
   transition: transform 0.3s ease;
 }
 
-/* Split exit doors */
-.page-loader__split {
+/* Shutter exit transition */
+.page-loader__shutter {
   position: fixed;
   top: 0;
-  width: 50%;
   height: 100%;
   background: var(--color-background);
-  z-index: 4;
-}
-
-.page-loader__split--left {
-  left: 0;
-  border-right: 3px solid var(--color-outline);
-}
-
-.page-loader__split--right {
-  right: 0;
-  border-left: 3px solid var(--color-outline);
+  border-right: 2px solid var(--color-outline);
+  border-left: 2px solid var(--color-outline);
+  z-index: 99999;
 }
 
 /* Radial reveal mask for exit */
@@ -1277,3 +1277,25 @@ body {
     max-width: 100%;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PERFORMANCE & ADDITIONAL UTILITIES
+   ═══════════════════════════════════════════════════════════════ */
+@utility content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+@utility contain-layout-paint {
+  contain: layout paint;
+}
+
+@keyframes cursor-hue-cycle {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@utility animate-hue-cycle {
+  animation: cursor-hue-cycle 3s linear infinite;
+}
+

@@ -50,6 +50,8 @@ export default defineConfig({
           "vendor-motion": ["framer-motion"],
           // Icons library
           "vendor-icons": ["react-icons"],
+          // Analytics
+          "vendor-analytics": ["@vercel/analytics"],
         },
       },
     },
@@ -60,6 +62,8 @@ export default defineConfig({
     modulePreload: {
       polyfill: true,
     },
+    // Speed up builds by skipping compressed size reporting
+    reportCompressedSize: false,
   },
   // Optimize deps
   optimizeDeps: {
