@@ -10,7 +10,7 @@ function ImageWithSkeleton({ src, alt, className = "", imgClassName = "" }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className={`relative w-full overflow-hidden ${className}`}>
+    <div className={`relative w-full overflow-hidden flex justify-center items-center ${className}`}>
       {!loaded && (
         <div className="w-full min-h-[160px] bg-[var(--color-surface-variant)] flex items-center justify-center border-4 border-dashed border-[var(--color-outline-variant)] relative overflow-hidden">
           <div className="absolute inset-0 animate-shimmer opacity-20" />
@@ -35,7 +35,7 @@ function GHCard({ header, children, className = "" }) {
   return (
     <motion.div
       ref={ref}
-      className={`border-4 border-(--color-outline) shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden ${className}`}
+      className={`border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden ${className}`}
       style={{ background: "var(--color-surface)" }}
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -47,7 +47,7 @@ function GHCard({ header, children, className = "" }) {
         transition: { type: "spring", stiffness: 350, damping: 22 },
       }}
     >
-      <div className="px-4 py-2.5 font-label-bold text-sm uppercase flex items-center justify-between border-b-4 border-(--color-outline) bg-surface-variant text-(--color-on-surface)">
+      <div className="px-4 py-2.5 font-label-bold text-sm uppercase flex items-center justify-between border-b-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]">
         {header}
       </div>
       {children}
@@ -69,8 +69,8 @@ const GitHubStats = memo(function GitHubStats() {
     : `https://github-readme-stats.vercel.app/api/top-langs/?username=${GITHUB_USERNAME}&layout=compact&hide_border=true&bg_color=ffffff00&title_color=0d0d0d&text_color=4a4a52&langs_count=8`;
 
   const streakUrl = isDark
-    ? `https://github-readme-streak-stats.herokuapp.com/?user=${GITHUB_USERNAME}&hide_border=true&background=00000000&ring=f0ff00&fire=f0ff00&currStreakNum=f0ff00&sideNums=f0f0f5&currStreakLabel=b0b0c0&sideLabels=b0b0c0&dates=6b6b80`
-    : `https://github-readme-streak-stats.herokuapp.com/?user=${GITHUB_USERNAME}&hide_border=true&background=00000000&ring=f0ff00&fire=0d0d0d&currStreakNum=0d0d0d&sideNums=0d0d0d&currStreakLabel=5d6300&sideLabels=5d6300&dates=78795f`;
+    ? `https://streak-stats.demolab.com/?user=${GITHUB_USERNAME}&hide_border=true&background=00000000&ring=f0ff00&fire=f0ff00&currStreakNum=f0ff00&sideNums=f0f0f5&currStreakLabel=b0b0c0&sideLabels=b0b0c0&dates=6b6b80`
+    : `https://streak-stats.demolab.com/?user=${GITHUB_USERNAME}&hide_border=true&background=00000000&ring=f0ff00&fire=0d0d0d&currStreakNum=0d0d0d&sideNums=0d0d0d&currStreakLabel=5d6300&sideLabels=5d6300&dates=78795f`;
 
   const trophiesUrl = isDark
     ? `https://github-profile-trophy.vercel.app/?username=${GITHUB_USERNAME}&theme=darkhub&no-bg=true&no-frame=true&column=4&margin-w=8&margin-h=8`
@@ -93,7 +93,7 @@ const GitHubStats = memo(function GitHubStats() {
       viewport={{ once: true, margin: "-50px" }}
     >
       <motion.h2
-        className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-(--color-outline) pb-4 text-(--color-on-surface)"
+        className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-[var(--color-outline)] pb-4 text-[var(--color-on-surface)]"
         variants={itemVariants}
       >
         GitHub Activity
@@ -113,7 +113,7 @@ const GitHubStats = memo(function GitHubStats() {
             <ImageWithSkeleton
               src={statsUrl}
               alt="GitHub Stats"
-              imgClassName="w-full h-auto"
+              imgClassName="w-full max-w-[495px] h-auto"
             />
           </div>
         </GHCard>
@@ -130,7 +130,7 @@ const GitHubStats = memo(function GitHubStats() {
             <ImageWithSkeleton
               src={langsUrl}
               alt="Top Languages"
-              imgClassName="w-full h-auto"
+              imgClassName="w-full max-w-[495px] h-auto"
             />
           </div>
         </GHCard>
@@ -165,7 +165,7 @@ const GitHubStats = memo(function GitHubStats() {
       >
         <div
           className="p-4 flex justify-center"
-          style={{ background: "#0d1117" }}
+          style={{ background: isDark ? "#13131a" : "var(--color-surface)" }}
         >
           <ImageWithSkeleton
             src={activityUrl}
@@ -188,7 +188,7 @@ const GitHubStats = memo(function GitHubStats() {
           <ImageWithSkeleton
             src={streakUrl}
             alt="GitHub Streak"
-            imgClassName="w-full max-w-2xl h-auto"
+            imgClassName="w-full max-w-[495px] h-auto"
           />
         </div>
       </GHCard>
@@ -216,11 +216,7 @@ const GitHubStats = memo(function GitHubStats() {
         href={`https://github.com/${GITHUB_USERNAME}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="border-4 border-(--color-outline) px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all w-full md:w-fit cursor-none"
-        style={{
-          background: "var(--color-on-primary-container)",
-          color: "#ffffff",
-        }}
+        className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all w-full md:w-fit cursor-none"
         variants={itemVariants}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}

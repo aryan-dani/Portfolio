@@ -85,6 +85,11 @@ export const socialLinks = [
     url: "https://github.com/aryan-dani",
     icon: "FaGithub",
   },
+  {
+    name: "Email",
+    url: "mailto:daniaryan212@gmail.com",
+    icon: "FaEnvelope",
+  },
 ];
 
 export const aboutInfo = {

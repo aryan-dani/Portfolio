@@ -133,7 +133,7 @@ function FlashOverlay({ locationKey, direction }) {
           times: [0, 0.42, 1],
           ease: [0.76, 0, 0.24, 1],
         }}
-        className="fixed inset-0 z-99999 pointer-events-none border-x-4 border-(--color-outline)"
+        className="fixed inset-0 z-99999 pointer-events-none border-x-4 border-[var(--color-outline)]"
         style={{
           background: "var(--color-on-background)",
           opacity: 0.92,

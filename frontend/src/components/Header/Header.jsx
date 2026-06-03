@@ -75,23 +75,17 @@ function Header() {
         style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 78%, transparent)" }}
       >
         <div
-          className={`flex justify-between items-center px-4 md:px-8 w-full transition-all duration-300 ${
-            isScrolled ? "h-16" : "h-20"
-          }`}
+          className="flex justify-between items-center px-4 md:px-8 w-full h-16 md:h-20"
         >
           {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.04, rotate: -1.5 }}
-            whileTap={{ scale: 0.96, rotate: 1.5 }}
-            transition={{ type: "spring", stiffness: 450, damping: 14 }}
-          >
+          <div>
             <NavLink
               to="/"
               className="block text-2xl font-black tracking-tighter text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-4 py-2 bg-[var(--color-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-150 select-none"
             >
               ARYAN DANI
             </NavLink>
-          </motion.div>
+          </div>
 
           <div className="hidden md:flex gap-1 lg:gap-2 items-center font-headline-md uppercase tracking-tighter font-bold text-sm lg:text-base relative">
             {navItems.map((item) => {
@@ -146,7 +140,7 @@ function Header() {
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 >
                   {theme === "dark" ? (
-                    <FaSun className="text-yellow-400 text-xl" />
+                    <FaSun className="text-xl" />
                   ) : (
                     <FaMoon className="text-xl" />
                   )}
@@ -171,7 +165,7 @@ function Header() {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {theme === "dark" ? <FaSun className="text-yellow-400" /> : <FaMoon />}
+                  {theme === "dark" ? <FaSun /> : <FaMoon />}
                 </motion.span>
               </AnimatePresence>
             </motion.button>

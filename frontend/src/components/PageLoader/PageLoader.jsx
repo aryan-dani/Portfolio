@@ -31,29 +31,28 @@ const PageLoader = memo(function PageLoader() {
     }
  
     if (phase !== PHASES.GLITCH) return;
- 
     const duration = 1200; // 1.2 seconds sweep time (was 1.6)
     const startTime = performance.now();
     let animationFrameId;
- 
+
     const updateLoader = (now) => {
       const elapsed = now - startTime;
       const percent = Math.min(elapsed / duration, 1);
-      setGlitchProgress(Math.round(percent * 35));
- 
+      setGlitchProgress(Math.round(percent * 100));
+
       for (let i = 0; i < TARGET_TEXT.length; i++) {
         if (!charsRef.current[i]) continue;
- 
+
         // Skip scramble for spaces
         if (TARGET_TEXT[i] === " ") {
           charsRef.current[i].textContent = "\u00A0";
           charsRef.current[i].className = "page-loader__glitch-char opacity-100";
           continue;
         }
- 
+
         const charSweepTime = (i / TARGET_TEXT.length) * (duration * 0.7);
         const scrambleDuration = 180; // 180ms scramble window (was 220ms)
- 
+
         if (elapsed < charSweepTime) {
           charsRef.current[i].textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
           charsRef.current[i].className = "page-loader__glitch-char opacity-5";
@@ -65,23 +64,23 @@ const PageLoader = memo(function PageLoader() {
           charsRef.current[i].className = "page-loader__glitch-char page-loader__glitch-char--resolved opacity-100";
         }
       }
- 
+
       if (percent < 1) {
         animationFrameId = requestAnimationFrame(updateLoader);
       } else {
         setIsGlitchDone(true);
-        setTimeout(() => setPhase(PHASES.TERMINAL), 500); // was 850ms
+        setTimeout(() => setPhase(PHASES.TERMINAL), 800); // was 500ms
       }
     };
- 
+
     animationFrameId = requestAnimationFrame(updateLoader);
     return () => cancelAnimationFrame(animationFrameId);
   }, [phase, hasVisited]);
- 
+
   // Phase 2: Terminal BIOS Booting Animation with RAM Check
   useEffect(() => {
     if (phase !== PHASES.TERMINAL) return;
- 
+
     // Fast memory count up
     let memInterval;
     let currentMem = 0;
@@ -93,7 +92,7 @@ const PageLoader = memo(function PageLoader() {
       }
       setMemSize(currentMem);
     }, 15); // was 25ms
- 
+
     const timers = [
       setTimeout(() => setTerminalStep(1), 80),   // Command line (was 100)
       setTimeout(() => setTerminalStep(2), 350),  // Core framework (was 500)
@@ -102,13 +101,13 @@ const PageLoader = memo(function PageLoader() {
       setTimeout(() => setTerminalStep(5), 1250), // Success block (was 2000)
       setTimeout(() => setPhase(PHASES.EXIT), 1700), // Begin shutter transition (was 2700)
     ];
- 
+
     return () => {
       timers.forEach(clearTimeout);
       clearInterval(memInterval);
     };
   }, [phase]);
- 
+
   // Phase 3: Exit Shutter Panel Transition
   useEffect(() => {
     if (phase !== PHASES.EXIT) return;
@@ -116,11 +115,12 @@ const PageLoader = memo(function PageLoader() {
     const exitTimer = setTimeout(() => setIsLoading(false), 950); // was 1250ms
     return () => clearTimeout(exitTimer);
   }, [phase]);
- 
-  const progress = phase === PHASES.GLITCH
-    ? glitchProgress
+
+  const terminalProgress = Math.round((Math.min(terminalStep, 5) / 5) * 100);
+  const globalProgress = phase === PHASES.GLITCH
+    ? glitchProgress * 0.5
     : phase === PHASES.TERMINAL
-    ? 35 + Math.round((Math.min(terminalStep, 5) / 5) * 65)
+    ? 50 + (Math.min(terminalStep, 5) / 5) * 50
     : 100;
 
   return (
@@ -181,14 +181,14 @@ const PageLoader = memo(function PageLoader() {
                         strokeWidth="4"
                         strokeDasharray="100, 100"
                         initial={{ strokeDashoffset: 100 }}
-                        animate={{ strokeDashoffset: 100 - (progress / 100) * 100 }}
+                        animate={{ strokeDashoffset: 100 - glitchProgress }}
                         transition={{ duration: 0.1, ease: "linear" }}
                         fill="none"
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                       />
                     </svg>
                     <span className="font-mono text-sm font-bold tracking-widest text-[var(--color-on-background)] opacity-80">
-                      {Math.min(progress, 100)}%
+                      {glitchProgress}%
                     </span>
                   </div>
 
@@ -230,39 +230,74 @@ const PageLoader = memo(function PageLoader() {
                   {/* Body Content */}
                   <div className="nb-loader__body text-left">
                     {terminalStep >= 1 && (
-                      <div className="nb-loader__line nb-loader__line--command">
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--command"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      >
                         &gt; INITIALIZING SYSTEM BOOT SEQUENCE...
-                      </div>
+                      </motion.div>
                     )}
                     {terminalStep >= 1 && (
-                      <div className="nb-loader__line text-xs opacity-75 ml-4">
+                      <motion.div
+                        className="nb-loader__line text-xs opacity-75 ml-4"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: 0.05, ease: "easeOut" }}
+                      >
                         ↳ SYSTEM MEMORY CHECK: {memSize}MB / 1024MB OK
-                      </div>
+                      </motion.div>
                     )}
                     {terminalStep >= 2 && (
-                      <div className="nb-loader__line nb-loader__line--success">
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--success"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      >
                         ✔ HYDRATING CORE COMPONENT REGISTRY... DONE
-                      </div>
+                      </motion.div>
                     )}
                     {terminalStep >= 2 && (
-                      <div className="nb-loader__line text-xs opacity-70 ml-4">
+                      <motion.div
+                        className="nb-loader__line text-xs opacity-70 ml-4"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: 0.05, ease: "easeOut" }}
+                      >
                         ↳ [React v18.2.0, Framer Motion v11.0.0, Tailwind v4.0.0]
-                      </div>
+                      </motion.div>
                     )}
                     {terminalStep >= 3 && (
-                      <div className="nb-loader__line nb-loader__line--success">
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--success"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      >
                         ✔ SPINNING UP DATA LAYERS & PLAYGROUND SANDBOX... DONE
-                      </div>
+                      </motion.div>
                     )}
                     {terminalStep >= 4 && (
-                      <div className="nb-loader__line nb-loader__line--success">
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--success"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      >
                         ✔ SPARKING NEURAL HANDSHAKE ACCELERATORS... DONE
-                      </div>
+                      </motion.div>
                     )}
                     {terminalStep >= 5 && (
-                      <div className="nb-loader__line nb-loader__line--final w-full">
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--final w-full"
+                        initial={{ opacity: 0, scale: 0.95, y: 8 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                      >
                         [ SYSTEM ONLINE ] Boot sequence successful. Redirecting to portfolio...
-                      </div>
+                      </motion.div>
                     )}
                     {terminalStep < 5 && <span className="nb-loader__cursor" />}
                   </div>
@@ -271,7 +306,7 @@ const PageLoader = memo(function PageLoader() {
                   <div className="nb-loader__progress-track">
                     <div
                       className="nb-loader__progress-fill"
-                      style={{ transform: `translateX(${progress - 100}%)`, willChange: "transform" }}
+                      style={{ transform: `translateX(${terminalProgress - 100}%)`, willChange: "transform" }}
                     />
                   </div>
                 </motion.div>
@@ -310,7 +345,7 @@ const PageLoader = memo(function PageLoader() {
             <motion.div
               className="page-loader__global-progress-fill w-full origin-left"
               style={{ willChange: "transform" }}
-              animate={{ scaleX: progress / 100 }}
+              animate={{ scaleX: globalProgress / 100 }}
               transition={{ duration: 0.2 }}
             />
           </div>

@@ -1,19 +1,16 @@
-import { useEffect, useRef, memo } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 import { createPortal } from "react-dom";
-import { motion, useMotionValue, useSpring, animate } from "framer-motion";
 import { useTheme } from "../../context/ThemeContext";
 
 /* ────────────────────────────────────────────────────────────
-   Monochrome cursor with RUNTIME luminance detection.
-   Instead of hardcoded CSS selectors, the cursor reads the
-   actual computed background color of the element beneath it,
-   computes relative luminance, and swaps to the contrasting
-   color. This guarantees visibility on ANY surface.
+   High-Performance Custom Cursor
+   - Direct DOM updates via refs bypass React and Framer Motion loops for 0-lag position tracking.
+   - Snappy spring-like compositor-driven transitions for outer trail.
+   - Automatically sample luminance for dynamic background contrast.
    ──────────────────────────────────────────────────────────── */
 const LIGHT = "#f8f7f4";
 const DARK  = "#131316";
 
-/* ── Parse a CSS color string into {r,g,b,a} ── */
 const parseColor = (str) => {
   if (!str || str === "transparent" || str === "rgba(0, 0, 0, 0)") return null;
   const m = str.match(/rgba?\(\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/);
@@ -21,11 +18,9 @@ const parseColor = (str) => {
   return { r: +m[1], g: +m[2], b: +m[3], a: m[4] !== undefined ? +m[4] : 1 };
 };
 
-/* ── Walk up the DOM to find the first opaque background color ── */
 const getEffectiveBgLuminance = (el) => {
   let node = el;
   while (node && node !== document.documentElement) {
-    // Skip the cursor's own overlay container
     const style = window.getComputedStyle(node);
     if (style.pointerEvents === "none" && parseInt(style.zIndex) >= 9999) {
       node = node.parentElement;
@@ -33,7 +28,6 @@ const getEffectiveBgLuminance = (el) => {
     }
     const color = parseColor(style.backgroundColor);
     if (color && color.a > 0.4) {
-      // Relative luminance (sRGB)
       const toLinear = (c) => {
         const s = c / 255;
         return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
@@ -42,225 +36,206 @@ const getEffectiveBgLuminance = (el) => {
     }
     node = node.parentElement;
   }
-  return null; // couldn't determine — fall back to theme
+  return null;
 };
 
 const CustomCursor = memo(function CustomCursor() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const isDarkRef = useRef(isDark);
-  isDarkRef.current = isDark;
 
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const cursorScaleOuter = useMotionValue(0);
-  const cursorScaleInner = useMotionValue(0);
-  const cursorOpacity = useMotionValue(0);
-  const cursorInnerWidth = useMotionValue("16px");
-  const cursorInnerHeight = useMotionValue("16px");
-  const cursorRotateInner = useMotionValue(0);
-  const cursorRotateOuter = useMotionValue(0);
+  const [cursorState, setCursorState] = useState("default");
+  const [onDarkBg, setOnDarkBg] = useState(isDark);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const cursorBg = useMotionValue(isDark ? LIGHT : DARK);
-  const cursorBorderColor = useMotionValue(isDark ? LIGHT : DARK);
-  const cursorOuterBorderColor = useMotionValue(isDark ? LIGHT : DARK);
+  const innerRef = useRef(null);
+  const outerRef = useRef(null);
 
-  const springConfig = { damping: 28, stiffness: 450, mass: 0.35 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
-  const rotateSpringInner = useSpring(cursorRotateInner, springConfig);
-  const rotateSpringOuter = useSpring(cursorRotateOuter, springConfig);
+  // Position tracking refs
+  const mousePosRef = useRef({ x: -100, y: -100 });
+  const innerPosRef = useRef({ x: -100, y: -100 });
+  const outerPosRef = useRef({ x: -100, y: -100 });
+  const loopActiveRef = useRef(false);
 
-  const isVisibleRef = useRef(false);
-  const cursorTypeRef = useRef("default");
-  const onDarkBgRef = useRef(false); // true when cursor is on a dark background
+  const isHoverState = cursorState === "hover" || cursorState === "image";
+  const isHoverStateRef = useRef(isHoverState);
+  isHoverStateRef.current = isHoverState;
 
-  /* ── Compute cursor colors based on background darkness & cursor type ── */
-  const getColors = (type, onDarkBg) => {
-    // The cursor should contrast with whatever it's sitting on.
-    // onDarkBg=true  → cursor should be white (LIGHT)
-    // onDarkBg=false → cursor should be black (DARK)
-    const primary = onDarkBg ? LIGHT : DARK;
-    const inverted = onDarkBg ? DARK : LIGHT;
-
-    const border = primary;
-    const outerBorder = primary;
-
-    // Default/text: solid fill matches border
-    // Hover/image: fill inverts so you get a visible framed square
-    const isHover = type === "hover" || type === "image";
-    const bg = isHover ? inverted : primary;
-
-    return { bg, border, outerBorder };
-  };
-
-  /* ── Animate to new colors ── */
-  const applyColors = (type, onDarkBg, instant = false) => {
-    const { bg, border, outerBorder } = getColors(type, onDarkBg);
-    if (instant) {
-      cursorBg.set(bg);
-      cursorBorderColor.set(border);
-      cursorOuterBorderColor.set(outerBorder);
-    } else {
-      animate(cursorBg, bg, { duration: 0.12, ease: "easeInOut" });
-      animate(cursorBorderColor, border, { duration: 0.12, ease: "easeInOut" });
-      animate(cursorOuterBorderColor, outerBorder, { duration: 0.12, ease: "easeInOut" });
-    }
-  };
-
-  /* ── Sync when theme toggles ── */
   useEffect(() => {
-    applyColors(cursorTypeRef.current, onDarkBgRef.current, true);
+    setOnDarkBg(isDark);
   }, [theme, isDark]);
 
-  /* ── Main effect: mouse tracking + hover detection ── */
   useEffect(() => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const updateCursorType = (type, onDarkBg) => {
-      const typeChanged = cursorTypeRef.current !== type;
-      const bgChanged = onDarkBgRef.current !== onDarkBg;
+    const tick = () => {
+      const targetX = mousePosRef.current.x;
+      const targetY = mousePosRef.current.y;
 
-      if (typeChanged || bgChanged) {
-        cursorTypeRef.current = type;
-        onDarkBgRef.current = onDarkBg;
+      // Update inner dot position (instant)
+      innerPosRef.current = { x: targetX, y: targetY };
 
-        if (typeChanged) {
-          const isHover = type === "hover" || type === "image";
-          const isText = type === "text";
+      // Update outer trail position (lerp)
+      let ox = outerPosRef.current.x;
+      let oy = outerPosRef.current.y;
+      
+      const dx = targetX - ox;
+      const dy = targetY - oy;
 
-          cursorScaleInner.set(isHover ? 1.6 : isText ? 0.3 : 1);
-          cursorScaleOuter.set(isHover ? 1.4 : 1);
-          cursorInnerWidth.set(isText ? "6px" : "16px");
-          cursorInnerHeight.set(isText ? "22px" : "16px");
-          cursorOpacity.set(isVisibleRef.current ? (isText ? 0.3 : 1) : 0);
-          cursorRotateInner.set(isHover ? 45 : 0);
-          cursorRotateOuter.set(isHover ? -45 : 0);
-        }
+      // Physics interpolation step (0.26 factor for highly responsive snap trail)
+      ox += dx * 0.26;
+      oy += dy * 0.26;
 
-        applyColors(type, onDarkBg);
+      outerPosRef.current = { x: ox, y: oy };
+
+      // Direct DOM rendering (completely bypasses React render tree)
+      if (innerRef.current) {
+        innerRef.current.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
+      }
+      if (outerRef.current) {
+        const rotateStr = isHoverStateRef.current ? "rotate(45deg)" : "rotate(0deg)";
+        outerRef.current.style.transform = `translate3d(${ox}px, ${oy}px, 0) translate(-50%, -50%) ${rotateStr}`;
+      }
+
+      // Keep animation loop ticking if coordinates are still catching up
+      const dist = Math.hypot(dx, dy);
+      if (dist > 0.08) {
+        requestAnimationFrame(tick);
+      } else {
+        loopActiveRef.current = false;
       }
     };
 
-    const updateMousePosition = (e) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-      if (!isVisibleRef.current) {
-        isVisibleRef.current = true;
-        cursorOpacity.set(cursorTypeRef.current === "text" ? 0.3 : 1);
-        cursorScaleInner.set(1);
-        cursorScaleOuter.set(1);
+    const startLoop = () => {
+      if (!loopActiveRef.current) {
+        loopActiveRef.current = true;
+        requestAnimationFrame(tick);
       }
     };
 
-    const handleMouseLeave = () => {
-      isVisibleRef.current = false;
-      cursorOpacity.set(0);
+    const onMouseMove = (e) => {
+      mousePosRef.current = { x: e.clientX, y: e.clientY };
+
+      if (!isVisible) {
+        setIsVisible(true);
+      }
+      startLoop();
     };
-    const handleMouseEnter = () => {
-      isVisibleRef.current = true;
-      cursorOpacity.set(cursorTypeRef.current === "text" ? 0.3 : 1);
+
+    const onMouseLeave = () => {
+      setIsVisible(false);
+    };
+
+    const onMouseEnter = () => {
+      setIsVisible(true);
+      // Reset position to entry point so it doesn't animate from previous offscreen coordinates
+      const handleFirstMove = (e) => {
+        mousePosRef.current = { x: e.clientX, y: e.clientY };
+        outerPosRef.current = { x: e.clientX, y: e.clientY };
+        window.removeEventListener("mousemove", handleFirstMove);
+      };
+      window.addEventListener("mousemove", handleFirstMove);
     };
 
     const handleHoverChange = (e) => {
       const target = e.target;
       if (!target || !target.closest) return;
 
-      // Determine cursor type
       const el = target.closest("a, button, [role='button'], .cursor-pointer, .nb-carousel-arrow");
       const img = target.closest("img, .cursor-image");
       const input = target.closest("input, textarea, select");
       const isCliText = target.closest(".nb-cli-container") && !target.closest("input");
 
-      let type = "default";
-      if (input || isCliText) type = "text";
-      else if (img) type = "image";
-      else if (el) type = "hover";
+      let state = "default";
+      if (input || isCliText) state = "text";
+      else if (img) state = "image";
+      else if (el) state = "hover";
 
-      // Determine background darkness via luminance sampling
+      setCursorState(state);
+
       const lum = getEffectiveBgLuminance(target);
-      // If luminance is null, fall back to theme default:
-      //   light theme → light bg → cursor should be dark (onDarkBg=false)
-      //   dark theme  → dark bg  → cursor should be light (onDarkBg=true)
-      const onDarkBg = lum !== null ? lum < 0.4 : isDarkRef.current;
-
-      updateCursorType(type, onDarkBg);
+      const darkBg = lum !== null ? lum < 0.4 : isDark;
+      setOnDarkBg(darkBg);
+      startLoop(); // Trigger rotation update if mouse stationary
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
-    document.addEventListener("mouseleave", handleMouseLeave);
-    document.addEventListener("mouseenter", handleMouseEnter);
-    window.addEventListener("mouseover", handleHoverChange);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    document.addEventListener("mouseleave", onMouseLeave);
+    document.addEventListener("mouseenter", onMouseEnter);
+    window.addEventListener("mouseover", handleHoverChange, { passive: true });
+
+    // Initialize positions off-screen
+    if (innerRef.current) {
+      innerRef.current.style.transform = "translate3d(-100px, -100px, 0) translate(-50%, -50%)";
+    }
+    if (outerRef.current) {
+      outerRef.current.style.transform = "translate3d(-100px, -100px, 0) translate(-50%, -50%) rotate(0deg)";
+    }
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-      document.removeEventListener("mouseenter", handleMouseEnter);
+      window.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onMouseLeave);
+      document.removeEventListener("mouseenter", onMouseEnter);
       window.removeEventListener("mouseover", handleHoverChange);
     };
-  }, [cursorX, cursorY, cursorScaleInner, cursorScaleOuter, cursorOpacity, cursorInnerWidth, cursorInnerHeight, cursorRotateInner, cursorRotateOuter]);
+  }, [isVisible, isDark]);
 
-  const innerSpringScale = useSpring(cursorScaleInner, springConfig);
-  const outerSpringScale = useSpring(cursorScaleOuter, springConfig);
-  const springOpacity = useSpring(cursorOpacity, { stiffness: 400, damping: 30 });
+  const primaryColor = onDarkBg ? LIGHT : DARK;
+  const invertedColor = onDarkBg ? DARK : LIGHT;
+
+  const innerBg = isHoverState ? invertedColor : primaryColor;
+  const innerBorder = primaryColor;
+  const outerBorder = primaryColor;
 
   return createPortal(
-    <div style={{ pointerEvents: "none", zIndex: 99999, position: "fixed", top: 0, left: 0, width: "100%", height: "100%" }}>
-      {/* Inner dot */}
-      <motion.div
+    <div
+      style={{
+        pointerEvents: "none",
+        zIndex: 100000,
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        opacity: isVisible ? 1 : 0,
+        transition: "opacity 0.2s ease",
+      }}
+    >
+      {/* Inner dot (no hardcoded transform in React style object) */}
+      <div
+        ref={innerRef}
         style={{
-          x: cursorX,
-          y: cursorY,
-          translateX: "-50%",
-          translateY: "-50%",
-          translateZ: 0,
-          scale: innerSpringScale,
-          rotate: rotateSpringInner,
-          opacity: springOpacity,
-          willChange: "transform, opacity",
           position: "absolute",
+          top: 0,
+          left: 0,
+          width: cursorState === "text" ? "4px" : "16px",
+          height: cursorState === "text" ? "22px" : "16px",
+          background: innerBg,
+          border: `2px solid ${innerBorder}`,
+          borderRadius: "0",
+          transformOrigin: "center",
+          transition: "width 0.15s, height 0.15s, background 0.12s, border-color 0.12s",
+          willChange: "transform",
         }}
-      >
-        <motion.div
-          style={{
-            width: cursorInnerWidth,
-            height: cursorInnerHeight,
-            background: cursorBg,
-            borderWidth: "2px",
-            borderStyle: "solid",
-            borderColor: cursorBorderColor,
-            borderRadius: "0",
-          }}
-        />
-      </motion.div>
+      />
 
-      {/* Outer ring — trails with spring */}
-      <motion.div
+      {/* Outer ring (no transform transition to prevent trailing delay, no hardcoded transform in React style) */}
+      <div
+        ref={outerRef}
         style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-          translateX: "-50%",
-          translateY: "-50%",
-          translateZ: 0,
-          scale: outerSpringScale,
-          rotate: rotateSpringOuter,
-          opacity: springOpacity,
-          willChange: "transform, opacity",
           position: "absolute",
+          top: 0,
+          left: 0,
+          width: isHoverState ? "50px" : "36px",
+          height: isHoverState ? "50px" : "36px",
+          border: `2px solid ${outerBorder}`,
+          background: "transparent",
+          borderRadius: "0",
+          transformOrigin: "center",
+          transition: "width 0.18s, height 0.18s, border-color 0.12s",
+          willChange: "transform",
+          opacity: cursorState === "text" ? 0 : 1,
         }}
-      >
-        <motion.div
-          style={{
-            width: "36px",
-            height: "36px",
-            borderWidth: "2px",
-            borderStyle: "solid",
-            borderColor: cursorOuterBorderColor,
-            background: "transparent",
-            borderRadius: "0",
-          }}
-        />
-      </motion.div>
+      />
     </div>,
     document.body
   );

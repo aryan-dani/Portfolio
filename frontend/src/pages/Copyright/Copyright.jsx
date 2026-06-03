@@ -94,15 +94,15 @@ function Copyright() {
           </motion.div>
 
           <motion.div
-            className="bg-[#0d0d0d] text-white border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-accent)] flex flex-col items-start gap-4"
+            className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4"
             variants={itemVariants}
           >
-            <h3 className="font-headline-md text-3xl uppercase border-b-4 border-white/20 pb-2 text-white w-fit">
+            <h3 className="font-headline-md text-3xl uppercase border-b-4 border-[var(--color-outline)] pb-2 w-fit text-[var(--color-on-surface)]">
               Attribution
             </h3>
-            <p className="font-body-md text-lg">
+            <p className="font-body-md text-lg text-[var(--color-on-surface-variant)]">
               This portfolio is designed and developed by{" "}
-              <strong className="text-[var(--color-primary-container)] bg-[#1a1a1a] px-2 border-2 border-white/20 shadow-[2px_2px_0px_0px_rgba(255,255,255,0.15)] font-black">
+              <strong className="text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] px-2 border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)] font-black">
                 Aryan Dani
               </strong>
             </p>
@@ -138,7 +138,7 @@ function Copyright() {
                 href="mailto:daniaryan212@gmail.com"
                 className="flex items-center gap-3 bg-[var(--color-on-background)] text-[var(--color-background)] border-4 border-[var(--color-outline)] px-6 py-3 font-label-bold text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
               >
-                <FaEnvelope className="text-xl text-[var(--color-primary-container)]" />
+                <FaEnvelope className="text-xl" />
                 <span>Email</span>
               </a>
             </div>
