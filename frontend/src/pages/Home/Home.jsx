@@ -176,10 +176,11 @@ function PhotoCarousel() {
         {/* Progress bar */}
         <div className="mt-3 h-1.5 bg-[var(--color-surface)] border-2 border-[var(--color-outline)] overflow-hidden shadow-[2px_2px_0px_0px_var(--shadow-color)]">
           <motion.div
-            className="h-full bg-[var(--color-primary-container)] progress-bar-fill"
+            className="h-full w-full bg-[var(--color-primary-container)] progress-bar-fill origin-left"
+            style={{ willChange: "transform" }}
             key={`progress-${index}`}
-            initial={{ width: "0%" }}
-            animate={{ width: isPaused ? undefined : "100%" }}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: isPaused ? undefined : 1 }}
             transition={{ duration: INTERVAL_MS / 1000, ease: "linear" }}
           />
         </div>
@@ -322,24 +323,24 @@ const Home = memo(function Home() {
       {/* Marquee strip */}
       <motion.div
         className="border-4 border-[var(--color-outline)] overflow-hidden py-3 -mx-4 md:-mx-8 relative"
-        style={{ background: "#0D0D0D" }}
+        style={{ background: "var(--color-on-background)" }}
         variants={itemVariants}
       >
         {/* Fade edges */}
         <div
           className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(90deg, #0D0D0D, transparent)" }}
+          style={{ background: "linear-gradient(90deg, var(--color-on-background), transparent)" }}
         />
         <div
           className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(-90deg, #0D0D0D, transparent)" }}
+          style={{ background: "linear-gradient(-90deg, var(--color-on-background), transparent)" }}
         />
         <div className="marquee-strip flex gap-10 whitespace-nowrap">
           {Array.from({ length: 3 }).map((_, i) => (
             <span
               key={i}
               className="flex gap-10 items-center font-label-bold text-sm uppercase tracking-widest shrink-0"
-              style={{ color: "var(--color-primary-container)" }}
+              style={{ color: "var(--color-background)" }}
             >
               <span>✦ Web Developer</span>
               <span>✦ AI Engineer</span>

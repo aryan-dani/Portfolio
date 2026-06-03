@@ -45,8 +45,8 @@ function getLevelStyle(level) {
     bar: "var(--color-on-background)",
   };
   if (level >= 55) return {
-    bg: "var(--color-secondary)", text: "#fff",
-    bar: "var(--color-secondary)",
+    bg: "var(--color-secondary-container)", text: "var(--color-on-secondary-container)",
+    bar: "var(--color-secondary-container)",
   };
   return {
     bg: "var(--color-surface-variant)", text: "var(--color-on-surface)",
@@ -80,10 +80,10 @@ function AnimatedBar({ level, delay = 0, color }) {
   return (
     <div ref={ref} className="h-6 md:h-8 w-full border-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
       <motion.div
-        className="h-full progress-bar-fill relative"
-        style={{ background: color }}
-        initial={{ width: 0 }}
-        animate={inView ? { width: `${level}%` } : {}}
+        className="h-full w-full progress-bar-fill relative origin-left"
+        style={{ background: color, willChange: "transform" }}
+        initial={{ scaleX: 0 }}
+        animate={inView ? { scaleX: level / 100 } : {}}
         transition={{ duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94], delay }}
       />
     </div>
@@ -378,10 +378,10 @@ function SkillListItem({ skill, icon, onClick }) {
         <div className="hidden sm:flex flex-1 items-center gap-4">
           <div className="flex-1 h-3 border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
             <motion.div
-              className="h-full progress-bar-fill"
-              style={{ background: levelStyle.bar }}
-              initial={{ width: 0 }}
-              animate={inView ? { width: `${skill.level}%` } : {}}
+              className="h-full w-full progress-bar-fill origin-left"
+              style={{ background: levelStyle.bar, willChange: "transform" }}
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: skill.level / 100 } : {}}
               transition={{ duration: 0.7, ease: "easeOut" }}
             />
           </div>
@@ -444,10 +444,10 @@ function SkillGridCard({ skill, icon, onClick }) {
       <div className="flex items-center gap-3">
         <div className="flex-1 h-3 border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
           <motion.div
-            className="h-full progress-bar-fill"
-            style={{ background: levelStyle.bar }}
-            initial={{ width: 0 }}
-            animate={inView ? { width: `${skill.level}%` } : {}}
+            className="h-full w-full progress-bar-fill origin-left"
+            style={{ background: levelStyle.bar, willChange: "transform" }}
+            initial={{ scaleX: 0 }}
+            animate={inView ? { scaleX: skill.level / 100 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           />
         </div>
@@ -534,10 +534,10 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
           </div>
           <div className="h-6 w-full border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
             <motion.div
-              className="h-full progress-bar-fill"
-              style={{ background: levelStyle.bar }}
-              initial={{ width: 0 }}
-              animate={{ width: `${skill.level}%` }}
+              className="h-full w-full progress-bar-fill origin-left"
+              style={{ background: levelStyle.bar, willChange: "transform" }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: skill.level / 100 }}
               transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
             />
           </div>

@@ -14,17 +14,17 @@ const CARD_STYLES = [
     shadow: "var(--shadow-color)",
   },
   {
-    header: { background: "var(--color-secondary)", color: "#fff" },
+    header: { background: "var(--color-surface-variant)", color: "var(--color-on-surface)" },
     body:   { background: "var(--color-surface)", color: "var(--color-on-surface)" },
-    dot:    { background: "var(--color-secondary)", border: "4px solid var(--color-outline)" },
-    tagBg:  { background: "var(--color-secondary)", color: "#fff" },
+    dot:    { background: "var(--color-on-background)", border: "4px solid var(--color-outline)" },
+    tagBg:  { background: "var(--color-on-background)", color: "var(--color-background)" },
     shadow: "var(--shadow-color)",
   },
   {
-    header: { background: "var(--color-surface-variant)", color: "var(--color-on-surface)" },
+    header: { background: "var(--color-surface)", color: "var(--color-on-surface)", borderBottom: "4px solid var(--color-outline)" },
     body:   { background: "var(--color-surface)", color: "var(--color-on-surface)" },
     dot:    { background: "var(--color-surface)", border: "4px solid var(--color-outline)" },
-    tagBg:  { background: "var(--color-on-background)", color: "var(--color-background)" },
+    tagBg:  { background: "var(--color-surface-variant)", color: "var(--color-on-surface)" },
     shadow: "var(--shadow-color)",
   },
 ];

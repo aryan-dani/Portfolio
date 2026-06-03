@@ -37,7 +37,7 @@ const FAQ_ITEMS = [
 // ── Confetti burst on submit ──────────────────────────────────
 
 function ConfettiBurst({ active }) {
-  const colors = ["#F0FF00", "#00E5FF", "#FF5F56", "#27C93F", "#FFBD2E"];
+  const colors = ["#f0f0f0", "#a0a0a0", "#606060", "#2a2a2a", "#ffffff", "#777777", "#e0e0e0", "#333333"];
   if (!active) return null;
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -212,8 +212,8 @@ function Contact() {
                   disabled={isSubmitting}
                   className="w-full border-4 border-[var(--color-outline)] px-6 py-4 font-headline-md text-2xl uppercase flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all disabled:opacity-70 cursor-none relative overflow-hidden"
                   style={{
-                    background: submitted ? "#22C55E" : "var(--color-primary-container)",
-                    color: submitted ? "#fff" : "var(--color-on-primary-container)",
+                    background: submitted ? "var(--color-primary-container)" : "var(--color-primary-container)",
+                    color: submitted ? "var(--color-on-primary-container)" : "var(--color-on-primary-container)",
                   }}
                   whileTap={{ scale: 0.98 }}
                 >

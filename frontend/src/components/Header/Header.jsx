@@ -67,12 +67,12 @@ function Header() {
   return (
     <>
       <nav
-        className={`sticky top-0 w-full border-b-4 z-50 transition-all duration-300 ${
+        className={`sticky top-0 w-full border-b-4 z-50 transition-all duration-500 ${
           isScrolled
-            ? "border-[var(--color-outline)] shadow-[0_6px_0_0_var(--shadow-color)]"
+            ? "border-[var(--color-outline)] shadow-[0_5px_0_0_var(--shadow-color)]"
             : "border-[var(--color-outline)] shadow-[0_8px_0_0_var(--shadow-color)]"
         } glass`}
-        style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 85%, transparent)" }}
+        style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 78%, transparent)" }}
       >
         <div
           className={`flex justify-between items-center px-4 md:px-8 w-full transition-all duration-300 ${
@@ -104,7 +104,7 @@ function Header() {
                     <motion.div
                       layoutId="activeNav"
                       className="absolute -inset-[4px] bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] shadow-[2px_2px_0_0_var(--shadow-color)] -z-10"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                   )}
                   {item.label}

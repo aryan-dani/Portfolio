@@ -4,15 +4,18 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useTheme } from "../../context/ThemeContext";
 
 const CustomCursor = memo(function CustomCursor() {
-  const [cursorType, setCursorType] = useState("default"); // 'default' | 'hover' | 'text' | 'image'
-  const [isVisible, setIsVisible] = useState(false);
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
+  const cursorScaleOuter = useMotionValue(0);
+  const cursorScaleInner = useMotionValue(0);
+  const cursorOpacity = useMotionValue(0);
+  const cursorInnerWidth = useMotionValue("16px");
+  const cursorInnerHeight = useMotionValue("16px");
 
-  const springConfig = { damping: 28, stiffness: 380, mass: 0.5 };
+  const springConfig = { damping: 32, stiffness: 300, mass: 0.5 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
@@ -25,7 +28,14 @@ const CustomCursor = memo(function CustomCursor() {
     const updateCursorType = (type) => {
       if (cursorTypeRef.current !== type) {
         cursorTypeRef.current = type;
-        setCursorType(type);
+        const isHover = type === "hover" || type === "image";
+        const isText = type === "text";
+        
+        cursorScaleInner.set(isHover ? 1.6 : isText ? 0.3 : 1);
+        cursorScaleOuter.set(isHover ? 1.4 : 1);
+        cursorInnerWidth.set(isText ? "6px" : "16px");
+        cursorInnerHeight.set(isText ? "22px" : "16px");
+        cursorOpacity.set(isVisibleRef.current ? (isText ? 0.3 : 1) : 0);
       }
     };
 
@@ -34,21 +44,24 @@ const CustomCursor = memo(function CustomCursor() {
       cursorY.set(e.clientY);
       if (!isVisibleRef.current) {
         isVisibleRef.current = true;
-        setIsVisible(true);
+        cursorOpacity.set(cursorTypeRef.current === "text" ? 0.3 : 1);
+        cursorScaleInner.set(1);
+        cursorScaleOuter.set(1);
       }
     };
 
     const handleMouseLeave = () => {
       isVisibleRef.current = false;
-      setIsVisible(false);
+      cursorOpacity.set(0);
     };
     const handleMouseEnter = () => {
       isVisibleRef.current = true;
-      setIsVisible(true);
+      cursorOpacity.set(cursorTypeRef.current === "text" ? 0.3 : 1);
     };
 
     const handleHoverChange = (e) => {
       const target = e.target;
+      if (!target || !target.closest) return;
       const el = target.closest("a, button, [role='button'], .cursor-pointer, .nb-carousel-arrow");
       const img = target.closest("img, .cursor-image");
       const input = target.closest("input, textarea, select");
@@ -76,37 +89,33 @@ const CustomCursor = memo(function CustomCursor() {
       document.removeEventListener("mouseenter", handleMouseEnter);
       window.removeEventListener("mouseover", handleHoverChange);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, cursorScaleInner, cursorScaleOuter, cursorOpacity, cursorInnerWidth, cursorInnerHeight]);
 
-  if (!isVisible) return null;
-
-  const isHovering = cursorType === "hover" || cursorType === "image";
-  const isText = cursorType === "text";
+  const innerSpringScale = useSpring(cursorScaleInner, springConfig);
+  const outerSpringScale = useSpring(cursorScaleOuter, springConfig);
+  const springOpacity = useSpring(cursorOpacity, { stiffness: 400, damping: 30 });
 
   return createPortal(
     <div style={{ pointerEvents: "none", zIndex: 99999, position: "fixed", top: 0, left: 0, width: "100%", height: "100%" }}>
-      {/* Inner dot — tracks instantly */}
       <motion.div
         style={{
           x: cursorX,
           y: cursorY,
           translateX: "-50%",
           translateY: "-50%",
+          translateZ: 0,
+          scale: innerSpringScale,
+          opacity: springOpacity,
+          willChange: "transform, opacity",
           position: "absolute",
         }}
-        animate={{
-          scale: isHovering ? 1.6 : isText ? 0.3 : 1,
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{ type: "spring", stiffness: 900, damping: 40 }}
       >
-        <div
+        <motion.div
           style={{
-            width: isText ? "6px" : "16px",
-            height: isText ? "22px" : "16px",
+            width: cursorInnerWidth,
+            height: cursorInnerHeight,
             background: "var(--color-primary-container)",
-            border: "2px solid var(--color-outline)",
-            boxShadow: "2px 2px 0 var(--shadow-color)",
+            border: "1.5px solid var(--color-outline)",
             borderRadius: "0",
           }}
         />
@@ -119,21 +128,19 @@ const CustomCursor = memo(function CustomCursor() {
           y: cursorYSpring,
           translateX: "-50%",
           translateY: "-50%",
+          translateZ: 0,
+          scale: outerSpringScale,
+          opacity: springOpacity,
+          willChange: "transform, opacity",
           position: "absolute",
         }}
-        animate={{
-          scale: isHovering ? 1.4 : 1,
-          opacity: isVisible ? (isText ? 0.3 : 1) : 0,
-        }}
-        transition={{ type: "spring", stiffness: 320, damping: 28 }}
       >
         <div
           style={{
-            width: "32px",
-            height: "32px",
-            border: "2px solid var(--color-outline)",
+            width: "36px",
+            height: "36px",
+            border: "1.5px solid var(--color-outline)",
             background: "transparent",
-            boxShadow: "4px 4px 0 var(--shadow-color)",
             borderRadius: "0",
           }}
         />

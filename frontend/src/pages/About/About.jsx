@@ -71,10 +71,10 @@ function About() {
             {/* Name badge */}
             <motion.div
               className="absolute -bottom-6 -right-6 border-4 border-[var(--color-outline)] px-6 py-3 font-headline-md text-2xl uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-              style={{ background: "var(--color-secondary)", color: "#fff" }}
+              style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
               initial={{ opacity: 0, scale: 0.8, x: 10 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ delay: 0.5, type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ delay: 0.5, type: "spring", stiffness: 280, damping: 22 }}
             >
               {aboutInfo.name}
             </motion.div>

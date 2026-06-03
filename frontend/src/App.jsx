@@ -87,19 +87,19 @@ function PageFallback() {
 // Page transition component with directional slide & fade
 const pageVariants = {
   initial: (direction) => ({
-    x: direction > 0 ? "40px" : "-40px",
+    x: direction > 0 ? "20px" : "-20px",
     opacity: 0,
   }),
   animate: {
     x: 0,
     opacity: 1,
     transitionEnd: { transform: "none" },
-    transition: { type: "spring", stiffness: 300, damping: 28 },
+    transition: { type: "spring", stiffness: 260, damping: 30 },
   },
   exit: (direction) => ({
-    x: direction > 0 ? "-40px" : "40px",
+    x: direction > 0 ? "-20px" : "20px",
     opacity: 0,
-    transition: { duration: 0.2 },
+    transition: { duration: 0.22, ease: "easeIn" },
   }),
 };
 
@@ -118,7 +118,7 @@ function PageTransition({ children, direction, isFirstRender }) {
   );
 }
 
-// Flash overlay that sweeps across screen on route change
+// Monochrome wipe overlay that sweeps across screen on route change
 function FlashOverlay({ locationKey, direction }) {
   return (
     <AnimatePresence mode="wait">
@@ -129,12 +129,15 @@ function FlashOverlay({ locationKey, direction }) {
           x: direction > 0 ? ["100%", "0%", "-100%"] : ["-100%", "0%", "100%"],
         }}
         transition={{
-          duration: 0.45,
-          times: [0, 0.45, 1],
+          duration: 0.42,
+          times: [0, 0.42, 1],
           ease: [0.76, 0, 0.24, 1],
         }}
-        className="fixed inset-0 z-99999 pointer-events-none border-x-8 border-(--color-outline)"
-        style={{ background: "var(--color-primary-container)" }}
+        className="fixed inset-0 z-99999 pointer-events-none border-x-4 border-(--color-outline)"
+        style={{
+          background: "var(--color-on-background)",
+          opacity: 0.92,
+        }}
       />
     </AnimatePresence>
   );

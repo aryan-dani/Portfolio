@@ -344,9 +344,9 @@ function Playground() {
       {/* Terminal Header / Title bar */}
       <div className="flex justify-between items-center border-b-2 border-dashed border-outline-variant pb-3 mb-4 select-none shrink-0">
         <div className="flex gap-2">
-          <span className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e] hover:opacity-85 transition-opacity" />
-          <span className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#d89e24] hover:opacity-85 transition-opacity" />
-          <span className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1a9c2b] hover:opacity-85 transition-opacity" />
+          <span className="w-3 h-3 rounded-full border border-[var(--color-outline)] bg-[var(--color-on-background)] opacity-30 hover:opacity-60 transition-opacity" />
+          <span className="w-3 h-3 rounded-full border border-[var(--color-outline)] bg-[var(--color-on-background)] opacity-60 hover:opacity-80 transition-opacity" />
+          <span className="w-3 h-3 rounded-full border border-[var(--color-outline)] bg-[var(--color-on-background)] opacity-100 hover:opacity-70 transition-opacity" />
         </div>
         <div className="text-xs font-bold font-mono text-on-surface-variant uppercase tracking-wider">
           guest@aryan-dani.dev: ~ {isExpanded ? "[EXPANDED]" : "[NORMAL]"}
@@ -370,11 +370,11 @@ function Playground() {
             return <div key={index} className="h-2" />;
           const colorClass =
             line.type === "command"
-              ? "text-blue-600 dark:text-blue-400 font-bold"
+              ? "text-[#3a3a3a] dark:text-[#c8c8c8] font-bold"
               : line.type === "info"
-                ? "text-amber-600 dark:text-amber-400 font-bold"
+                ? "text-[#555555] dark:text-[#aaaaaa] font-bold"
                 : line.type === "success"
-                  ? "text-emerald-600 dark:text-emerald-400"
+                  ? "text-[#404040] dark:text-[#b8b8b8]"
                   : line.type === "error"
                     ? "text-[var(--color-error)]"
                     : "text-[var(--color-on-surface)]";
@@ -392,7 +392,7 @@ function Playground() {
 
       {/* Input prompt line */}
       <div className="flex items-center gap-2 border-t-2 border-dashed border-outline-variant pt-4 mt-4 relative shrink-0">
-        <span className="text-blue-600 dark:text-blue-400 font-bold text-sm md:text-base shrink-0">
+        <span className="text-[var(--color-on-surface-variant)] font-bold text-sm md:text-base shrink-0 opacity-60">
           guest@aryan-dani.dev:~$
         </span>
 
