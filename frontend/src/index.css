@@ -24,12 +24,12 @@
   /* ── On-surface text ── */
   --color-on-background: #131316;
   --color-on-surface: #131316;
-  --color-on-surface-variant: #4e4d52;
-  --color-text-muted: #727178;
+  --color-on-surface-variant: #454449;
+  --color-text-muted: #65646a;
 
   /* ── Border ── */
   --color-outline: #131316;
-  --color-outline-variant: #dcdbd8;
+  --color-outline-variant: #d4d3cf;
 
   /* ── Primary (charcoal/near-black) ── */
   --color-primary: #131316;
@@ -79,6 +79,15 @@
   --spacing-border-width: 4px;
   --spacing-gutter: 24px;
 
+  /* ── Motion tokens ── */
+  --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-smooth: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-in-smooth: cubic-bezier(0.4, 0, 1, 1);
+  --duration-fast: 220ms;
+  --duration-normal: 380ms;
+  --duration-slow: 560ms;
+  --duration-theme: 650ms;
+
   /* ── Typography ── */
   --font-headline-xl: "Space Grotesk", sans-serif;
   --font-headline-lg: "Space Grotesk", sans-serif;
@@ -120,56 +129,57 @@
    Luminous white/platinum accent on near-black background
    ═══════════════════════════════════════════════════════════════ */
 .dark {
-  --color-background: #0d0c0c;     /* Obsidian warm black */
-  --color-surface: #141313;
-  --color-surface-elevated: #1a1919;
-  --color-surface-variant: #222020;
-  --color-surface-container: #141313;
-  --color-surface-container-low: #0e0d0d;
-  --color-surface-dim: #080808;
-  --color-surface-bright: #222020;
+  --color-background: #09090b;
+  --color-surface: #111113;
+  --color-surface-elevated: #1a1a1e;
+  --color-surface-variant: #222226;
+  --color-surface-container: #141416;
+  --color-surface-container-low: #0c0c0e;
+  --color-surface-dim: #050506;
+  --color-surface-bright: #2a2a2f;
 
-  --color-on-background: #f8f7f4;
-  --color-on-surface: #f8f7f4;
-  --color-on-surface-variant: #a5a3a0;
-  --color-text-muted: #6e6c69;
+  --color-on-background: #f4f3ef;
+  --color-on-surface: #f4f3ef;
+  --color-on-surface-variant: #b8b6b1;
+  --color-text-muted: #8a8883;
 
-  --color-outline: #f8f7f4;
-  --color-outline-variant: #2a2929;
+  --color-outline: #f4f3ef;
+  --color-outline-variant: #2e2e32;
 
-  --color-primary: #f8f7f4;
-  --color-on-primary: #0d0c0c;
-  --color-primary-container: #f8f7f4;   /* luminous warm white accent in dark mode */
-  --color-on-primary-container: #0d0c0c;
-  --color-primary-fixed: #dcdbd8;
-  --color-inverse-primary: #26262b;
+  --color-primary: #f4f3ef;
+  --color-on-primary: #09090b;
+  --color-primary-container: #f4f3ef;
+  --color-on-primary-container: #09090b;
+  --color-primary-fixed: #dcdbd6;
+  --color-inverse-primary: #2a2a2f;
 
-  --color-secondary: #a5a3a0;
-  --color-on-secondary: #0d0c0c;
-  --color-secondary-container: #3a3939;
-  --color-on-secondary-container: #e8e7eb;
+  --color-secondary: #b8b6b1;
+  --color-on-secondary: #09090b;
+  --color-secondary-container: #333338;
+  --color-on-secondary-container: #e4e3df;
 
-  --color-tertiary: #8c8a87;
-  --color-on-tertiary: #0d0c0c;
-  --color-tertiary-container: #222020;
-  --color-on-tertiary-container: #c4c2bf;
+  --color-tertiary: #94928d;
+  --color-on-tertiary: #09090b;
+  --color-tertiary-container: #1a1a1e;
+  --color-on-tertiary-container: #c8c6c1;
 
-  --color-inverse-surface: #f8f7f4;
-  --color-inverse-on-surface: #0d0c0c;
+  --color-inverse-surface: #f4f3ef;
+  --color-inverse-on-surface: #09090b;
 
-  --shadow-color: #f8f7f4;       /* match warm white for high contrast neo-brutalist shadow */
-  --shadow-accent: #a5a3a0;
-  --glow-accent: rgba(255, 255, 255, 0.08);
+  --shadow-color: rgba(244, 243, 239, 0.88);
+  --shadow-accent: #94928d;
+  --glow-accent: rgba(255, 255, 255, 0.1);
 }
 
 /* ═══════════════════════════════════════════════════════════════
    BASE STYLES
    ═══════════════════════════════════════════════════════════════ */
 html {
-  /* Smooth color transitions when toggling theme */
-  transition:
-    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 body {
@@ -178,17 +188,25 @@ body {
   overflow-x: hidden;
 }
 
+/* Smooth color transitions when toggling theme */
+html.theme-transitioning {
+  transition:
+    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Smooth all color-dependent transitions globally ONLY when toggling theme */
 .theme-transitioning,
 .theme-transitioning *,
 .theme-transitioning *::before,
 .theme-transitioning *::after {
-  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              fill 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition:
+    background-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    fill 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Hide system cursor on pointer devices — custom cursor takes over */
@@ -667,6 +685,12 @@ body {
   background: color-mix(in srgb, var(--color-surface) 75%, transparent);
 }
 
+.dark .glass {
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  background: color-mix(in srgb, var(--color-surface) 82%, transparent);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    PAGE LOADER STYLES
    ═══════════════════════════════════════════════════════════════ */
@@ -1071,7 +1095,22 @@ body {
 }
 
 .dark .noise-overlay {
-  opacity: 0.012;
+  opacity: 0.018;
+  mix-blend-mode: soft-light;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION — disable decorative motion only
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-shimmer,
+  .animate-pulse-glow,
+  .animate-grain,
+  .text-shimmer,
+  .animate-hue-cycle {
+    animation: none !important;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════

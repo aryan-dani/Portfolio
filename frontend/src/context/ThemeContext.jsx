@@ -9,21 +9,29 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     const root = window.document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
+    const isDark = theme === "dark";
+
+    root.classList.toggle("dark", isDark);
+    root.classList.toggle("light", !isDark);
+    root.style.colorScheme = isDark ? "dark" : "light";
+
     localStorage.setItem("portfolio_theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
     const root = window.document.documentElement;
     root.classList.add("theme-transitioning");
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+
+    // Let the browser paint transition rules before colors change
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+      });
+    });
+
     setTimeout(() => {
       root.classList.remove("theme-transitioning");
-    }, 500);
+    }, 550);
   };
 
   return (

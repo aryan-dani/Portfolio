@@ -144,7 +144,7 @@ function Contact() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { id: "contact-name",  name: "name",  type: "text",  label: "Your Name *",  placeholder: "John Doe",         required: true },
+                  { id: "contact-name",  name: "name",  type: "text",  label: "Your Name *",  placeholder: "Aryan Dani",         required: true },
                   { id: "contact-email", name: "email", type: "email", label: "Your Email *", placeholder: "john@example.com", required: true },
                 ].map((field) => (
                   <div key={field.id} className="flex flex-col gap-2">

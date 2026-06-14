@@ -84,7 +84,7 @@ export const projects = [
     skillIds: ["nextjs", "supabase", "typescript", "tailwind", "rag", "javascript", "html5", "css3", "git", "vercel"],
     links: {
       github: "https://github.com/aryan-dani/Utility",
-      preview: "https://planner-flax-six.vercel.app",
+      preview: "https://utilityos.tech",
     },
   },
   {

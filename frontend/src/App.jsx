@@ -6,6 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { motionEase, pageVariants } from "./utils/motionVariants";
 import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout/Layout";
 import { ToastProvider } from "./context/ToastContext";
@@ -84,25 +85,6 @@ function PageFallback() {
   );
 }
 
-// Page transition component with directional slide & fade
-const pageVariants = {
-  initial: (direction) => ({
-    x: direction > 0 ? "20px" : "-20px",
-    opacity: 0,
-  }),
-  animate: {
-    x: 0,
-    opacity: 1,
-    transitionEnd: { transform: "none" },
-    transition: { type: "spring", stiffness: 260, damping: 30 },
-  },
-  exit: (direction) => ({
-    x: direction > 0 ? "-20px" : "20px",
-    opacity: 0,
-    transition: { duration: 0.22, ease: "easeIn" },
-  }),
-};
-
 function PageTransition({ children, direction, isFirstRender }) {
   return (
     <motion.div
@@ -129,9 +111,9 @@ function FlashOverlay({ locationKey, direction }) {
           x: direction > 0 ? ["100%", "0%", "-100%"] : ["-100%", "0%", "100%"],
         }}
         transition={{
-          duration: 0.42,
-          times: [0, 0.42, 1],
-          ease: [0.76, 0, 0.24, 1],
+          duration: 0.5,
+          times: [0, 0.45, 1],
+          ease: motionEase.inOut,
         }}
         className="fixed inset-0 z-99999 pointer-events-none border-x-4 border-[var(--color-outline)]"
         style={{
