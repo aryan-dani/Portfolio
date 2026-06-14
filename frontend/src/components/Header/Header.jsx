@@ -70,8 +70,8 @@ function Header() {
       <nav
         className={`sticky top-0 w-full border-b-4 z-50 transition-all duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isScrolled
-            ? "border-[var(--color-outline)] shadow-[0_5px_0_0_var(--shadow-color)]"
-            : "border-[var(--color-outline)] shadow-[0_8px_0_0_var(--shadow-color)]"
+            ? "border-outline shadow-[0_5px_0_0_var(--shadow-color)]"
+            : "border-outline shadow-[0_8px_0_0_var(--shadow-color)]"
         } glass`}
         style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 78%, transparent)" }}
       >
@@ -82,7 +82,7 @@ function Header() {
           <div>
             <NavLink
               to="/"
-              className="block text-2xl font-black tracking-tighter text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-4 py-2 bg-[var(--color-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none"
+              className="block text-2xl font-black tracking-tighter text-[var(--color-on-primary-container)] border-4 border-outline px-4 py-2 bg-[var(--color-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none"
             >
               ARYAN DANI
             </NavLink>
@@ -98,13 +98,13 @@ function Header() {
                   className={`relative font-bold px-3 py-2 border-4 border-transparent transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none ${
                     isActive
                       ? "text-[var(--color-on-primary-container)]"
-                      : "text-[var(--color-on-surface)] hover:border-[var(--color-outline)] hover:bg-[var(--color-surface-variant)]"
+                      : "text-[var(--color-on-surface)] hover:border-outline hover:bg-[var(--color-surface-variant)]"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeNav"
-                      className="absolute -inset-[4px] bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] shadow-[2px_2px_0_0_var(--shadow-color)] -z-10 overflow-hidden"
+                      className="absolute -inset-[4px] bg-[var(--color-primary-container)] border-4 border-outline shadow-[2px_2px_0_0_var(--shadow-color)] -z-10 overflow-hidden"
                       transition={defaultSpring}
                     >
                       <div className="absolute inset-0 animate-shimmer opacity-35" />
@@ -120,7 +120,7 @@ function Header() {
           <div className="hidden md:flex items-center gap-3">
             <NavLink
               to="/contact"
-              className="font-headline-md text-sm lg:text-base uppercase tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-5 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center whitespace-nowrap"
+              className="font-headline-md text-sm lg:text-base uppercase tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline px-5 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center whitespace-nowrap"
             >
               Work with me
             </NavLink>
@@ -128,7 +128,7 @@ function Header() {
             {/* Theme Toggle */}
             <motion.button
               onClick={handleToggleTheme}
-              className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] w-12 h-12 flex items-center justify-center text-lg shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] cursor-none overflow-hidden"
+              className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-12 h-12 flex items-center justify-center text-lg shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] cursor-none overflow-hidden"
               aria-label="Toggle theme"
               whileTap={{ scale: 0.9 }}
             >
@@ -154,7 +154,7 @@ function Header() {
           <div className="flex md:hidden items-center gap-2">
             <motion.button
               onClick={handleToggleTheme}
-              className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] w-10 h-10 flex items-center justify-center text-base shadow-[2px_2px_0_0_var(--shadow-color)] hover:shadow-none transition-all cursor-none overflow-hidden"
+              className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-10 h-10 flex items-center justify-center text-base shadow-[2px_2px_0_0_var(--shadow-color)] hover:shadow-none transition-all cursor-none overflow-hidden"
               aria-label="Toggle theme"
               whileTap={{ scale: 0.9 }}
             >
@@ -196,7 +196,7 @@ function Header() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="md:hidden fixed inset-0 z-40 top-[64px] flex flex-col items-center pt-8 pb-8 border-t-4 border-[var(--color-outline)] font-headline-md uppercase font-bold text-xl gap-4 overflow-y-auto"
+            className="md:hidden fixed inset-0 z-40 top-[64px] flex flex-col items-center pt-8 pb-8 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-4 overflow-y-auto"
             style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)", backdropFilter: "blur(16px)" }}
             variants={menuVariants}
             initial="hidden"
@@ -211,8 +211,8 @@ function Header() {
                 className={({ isActive }) =>
                   `block w-full text-center py-3 px-4 border-4 transition-all text-[var(--color-on-surface)] ${
                     isActive
-                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-[var(--color-outline)] shadow-[4px_4px_0_0_var(--shadow-color)]"
-                      : "border-transparent hover:border-[var(--color-outline)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
+                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-outline shadow-[4px_4px_0_0_var(--shadow-color)]"
+                      : "border-transparent hover:border-outline hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
                   }`
                 }
               >
@@ -228,8 +228,8 @@ function Header() {
                   className={({ isActive }) =>
                     `block w-full text-center py-3 px-4 border-4 transition-all text-[var(--color-on-surface)] ${
                       isActive
-                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-[var(--color-outline)] shadow-[4px_4px_0_0_var(--shadow-color)]"
-                        : "border-transparent hover:border-[var(--color-outline)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
+                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-outline shadow-[4px_4px_0_0_var(--shadow-color)]"
+                        : "border-transparent hover:border-outline hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
                     }`
                   }
                 >
@@ -242,7 +242,7 @@ function Header() {
               <NavLink
                 to="/contact"
                 onClick={() => setIsMenuOpen(false)}
-                className="w-full flex justify-center items-center font-headline-md text-lg uppercase tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-4 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                className="w-full flex justify-center items-center font-headline-md text-lg uppercase tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline px-4 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
               >
                 Work with me
               </NavLink>

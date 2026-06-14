@@ -38,9 +38,9 @@ export const experiences = [
       "Docker"
     ],
     responsibilities: [
-      "Architected and implemented a Real-Time Threat Detection pipeline (Capstone Project) integrating YOLO v11 and EfficientNetV2, achieving high-accuracy detection of weapon profiles in streaming surveillance feeds and security scanner screens.",
-      "Developed 'PosePro', a custom computer vision motion analyzer utilizing MediaPipe pose estimation to track joint angles, calculate symmetry, and provide instant visual feedback on shoulder raises under 25ms.",
-      "Designed and tested autonomous testing agents (Arbiter) utilizing Gemini models and LangGraph state machines to detect, isolate, and debug repository errors in containerized Docker sandboxes.",
+      "Architected and implemented a <a href='https://github.com/aryan-dani/Threat_Detection_System' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Real-Time Threat Detection pipeline</a> (Capstone Project) integrating YOLO v11 and EfficientNetV2, achieving high-accuracy detection of weapon profiles in streaming surveillance feeds and security scanner screens.",
+      "Developed '<a href='https://github.com/aryan-dani/Pose_Pro' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>PosePro</a>', a custom computer vision motion analyzer utilizing MediaPipe pose estimation to track joint angles, calculate symmetry, and provide instant visual feedback on shoulder raises under 25ms.",
+      "Designed and tested autonomous testing agents (<a href='https://github.com/aryan-dani/Arbiter' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Arbiter</a>) utilizing Gemini models and LangGraph state machines to detect, isolate, and debug repository errors in containerized Docker sandboxes.",
       "Authored custom FastAPI REST endpoints to stream real-time prediction metrics via Server-Sent Events (SSE), supporting multiple high-traffic client requests."
     ],
   },
@@ -50,7 +50,7 @@ export const experiences = [
     companyUrl: "https://github.com/aryan-dani",
     logo: "/Images/Jobs/Github_Contrib.png",
     position: "Lead Full-Stack Web Architect",
-    period: "July 2024 - Present",
+    period: "July 2026 - Present",
     technologies: [
       "Next.js 14+",
       "TypeScript",
@@ -61,7 +61,7 @@ export const experiences = [
       "Framer Motion"
     ],
     responsibilities: [
-      "Designed and launched 'The Fourth Clover' and 'Utility' Next.js web applications, leveraging modern App Router, Server Actions, and ISR paradigms to optimize page speed and SEO.",
+      "Designed and launched '<a href='https://github.com/aryan-dani/The-Fourth-Clover' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>The Fourth Clover</a>' and '<a href='https://github.com/aryan-dani/Utility' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Utility</a>' Next.js web applications, leveraging modern App Router, Server Actions, and ISR paradigms to optimize page speed and SEO.",
       "Formulated and implemented premium neobrutalist styling guides using dynamic CSS variables and Tailwind utilities, supporting high-contrast accessible themes and seamless dark mode transitions.",
       "Integrated real-time database state engines using Supabase and Firebase Firestore, managing data synchronization, multi-provider OAuth logins, and file storage for hundreds of mock users.",
       "Contributed to several open-source command line tools and frontend libraries, reviewing pull requests, managing release pipelines, and maintaining comprehensive technical documentation."

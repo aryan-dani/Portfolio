@@ -115,7 +115,7 @@ function FlashOverlay({ locationKey, direction }) {
           times: [0, 0.45, 1],
           ease: motionEase.inOut,
         }}
-        className="fixed inset-0 z-99999 pointer-events-none border-x-4 border-[var(--color-outline)]"
+        className="fixed inset-0 z-99999 pointer-events-none border-x-4 border-outline"
         style={{
           background: "var(--color-on-background)",
           opacity: 0.92,

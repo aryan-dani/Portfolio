@@ -35,7 +35,7 @@ const CARD_STYLES = [
 function CardContent({ exp, style, isExpanded, onToggle }) {
   return (
     <motion.div
-      className="w-full border-4 border-[var(--color-outline)] overflow-hidden"
+      className="w-full border-4 border-outline overflow-hidden"
       style={{ boxShadow: `8px 8px 0px 0px ${style.shadow}` }}
       whileHover={{
         y: -4,
@@ -90,7 +90,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
             className="overflow-hidden"
           >
-            <div className="p-5 md:p-6 border-t-4 border-[var(--color-outline)] flex flex-col gap-5">
+            <div className="p-5 md:p-6 border-t-4 border-outline flex flex-col gap-5">
               <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
                 {exp.description}
               </p>
@@ -105,7 +105,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                       transition={{ delay: i * 0.05 }}
                     >
                       <span
-                        className="shrink-0 mt-1.5 w-5 h-5 border-2 border-[var(--color-outline)] flex items-center justify-center font-bold text-xs select-none"
+                        className="shrink-0 mt-1.5 w-5 h-5 border-2 border-outline flex items-center justify-center font-bold text-xs select-none"
                         style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
                       >
                         →
@@ -116,11 +116,11 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                 </ul>
               )}
               {exp.technologies && (
-                <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]">
+                <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-outline-variant">
                   {exp.technologies.map((tech, techIdx) => (
                     <motion.span
                       key={tech}
-                      className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                      className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)]"
                       style={style.tagBg}
                       whileHover={{
                         y: -4,
@@ -139,7 +139,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                   href={exp.links.project}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-[var(--color-outline)] px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                  className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-outline px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                   style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
                 >
                   <FaExternalLinkAlt /> View Project
@@ -158,7 +158,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
 function PeriodBadge({ exp, alignRight = false }) {
   return (
     <motion.div
-      className="inline-block border-4 border-[var(--color-outline)] px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+      className="inline-block border-4 border-outline px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
       style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
       whileHover={{
         y: -3,
@@ -208,7 +208,7 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
       <div className="hidden md:flex justify-center items-center relative z-10 w-full">
         <div className="relative">
           <motion.div
-            className="w-8 h-8 border-4 border-[var(--color-outline)] relative z-10 flex items-center justify-center"
+            className="w-8 h-8 border-4 border-outline relative z-10 flex items-center justify-center"
             style={style.dot}
             initial={{ scale: 0 }}
             animate={inView ? { scale: 1 } : {}}
@@ -216,7 +216,7 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
           />
           {inView && (
             <motion.div
-              className="absolute inset-0 border-4 border-[var(--color-primary-container)]"
+              className="absolute inset-0 border-4 border-primary-container"
               initial={{ scale: 1, opacity: 0.7 }}
               animate={{ scale: 2.5, opacity: 0 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: index * 0.05 + 0.3 }}
@@ -224,7 +224,7 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
           )}
           {isExpanded && (
             <motion.div
-              className="absolute inset-0 border-4 border-[var(--color-outline)]"
+              className="absolute inset-0 border-4 border-outline"
               animate={{ scale: [1, 2.2, 1], opacity: [0.8, 0, 0.8] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -260,9 +260,9 @@ function Experience() {
       animate="visible"
       variants={containerVariants}
     >
-      <header className="relative w-full mt-4 border-b-8 border-[var(--color-outline)] pb-8 mb-8 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+      <header className="relative w-full mt-4 border-b-8 border-outline pb-8 mb-8 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
         <motion.div
-          className="inline-block bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 md:px-8 py-4 md:py-6 mb-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+          className="inline-block bg-[var(--color-primary-container)] border-4 border-outline px-6 md:px-8 py-4 md:py-6 mb-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 280, damping: 22 }}
@@ -273,7 +273,7 @@ function Experience() {
           </h1>
         </motion.div>
         <motion.p
-          className="font-body-lg text-base md:text-lg lg:text-body-lg max-w-3xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] text-[var(--color-on-surface)]"
+          className="font-body-lg text-base md:text-lg lg:text-body-lg max-w-3xl bg-[var(--color-surface)] border-4 border-outline p-4 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] text-[var(--color-on-surface)]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 280, damping: 22, delay: 0.1 }}

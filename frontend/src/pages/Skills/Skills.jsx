@@ -78,7 +78,7 @@ function AnimatedBar({ level, delay = 0, color }) {
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <div ref={ref} className="h-6 md:h-8 w-full border-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
+    <div ref={ref} className="h-6 md:h-8 w-full border-4 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
       <motion.div
         className="h-full w-full progress-bar-fill relative origin-left"
         style={{ background: color, willChange: "transform" }}
@@ -99,7 +99,7 @@ function StatCard({ value, label, bg, text, shadow }) {
   return (
     <motion.div
       ref={ref}
-      className="border-4 border-[var(--color-outline)] p-4 text-center"
+      className="border-4 border-outline p-4 text-center"
       style={{ background: bg, color: text, boxShadow: `4px 4px 0px 0px ${shadow}` }}
       variants={cardVariants}
       whileHover={{ y: -3, x: -3, boxShadow: `8px 8px 0px 0px ${shadow}`, transition: { type: "spring", stiffness: 400, damping: 20 } }}
@@ -117,7 +117,7 @@ function Skills() {
   const [searchTerm,    setSearchTerm]    = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedSkill,  setSelectedSkill]  = useState(null);
-  const [viewMode, setViewMode] = useState(VIEW_MODES.LIST);
+  const [viewMode, setViewMode] = useState(VIEW_MODES.GRID);
   const [sortBy,   setSortBy]   = useState("default");
   const navigate = useNavigate();
 
@@ -182,9 +182,9 @@ function Skills() {
         variants={containerVariants}
       >
         {/* Header */}
-        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4">
+        <header className="mb-4 border-b-8 border-outline pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4">
           <motion.div
-            className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
+            className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
             variants={cardVariants}
           >
             <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter leading-none">
@@ -192,7 +192,7 @@ function Skills() {
             </h1>
           </motion.div>
           <motion.p
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-2 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-2 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
             variants={cardVariants}
           >
             A chaotic sticker sheet of the technologies I use to build loud,
@@ -211,7 +211,7 @@ function Skills() {
         {/* Controls */}
         <motion.div className="flex flex-col gap-6" variants={cardVariants}>
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            <div className="flex items-center bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+            <div className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
               <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
               <input
                 type="text"
@@ -234,7 +234,7 @@ function Skills() {
                 <button
                   key={mode}
                   onClick={() => setViewMode(mode)}
-                  className={`px-4 py-2 border-4 border-[var(--color-outline)] font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                  className={`px-4 py-2 border-4 border-outline font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
                     viewMode === mode
                       ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
                       : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
@@ -252,7 +252,7 @@ function Skills() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`px-5 py-2 border-4 border-[var(--color-outline)] font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                  className={`px-5 py-2 border-4 border-outline font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
                     activeCategory === cat.id
                       ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
                       : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
@@ -269,7 +269,7 @@ function Skills() {
                   <button
                     key={opt.id}
                     onClick={() => setSortBy(opt.id)}
-                    className={`px-3 py-1 border-2 border-[var(--color-outline)] font-label-bold text-xs uppercase transition-all cursor-none ${
+                    className={`px-3 py-1 border-2 border-outline font-label-bold text-xs uppercase transition-all cursor-none ${
                       sortBy === opt.id
                         ? "bg-[var(--color-on-background)] text-[var(--color-background)]"
                         : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
@@ -306,10 +306,10 @@ function Skills() {
 
         {/* Skill Levels Overview */}
         <motion.section
-          className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-8 md:p-10 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+          className="bg-[var(--color-surface)] border-4 border-outline p-8 md:p-10 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
           variants={cardVariants}
         >
-          <h2 className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-[var(--color-outline)] pb-4 mb-8 text-[var(--color-on-surface)]">
+          <h2 className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-outline pb-4 mb-8 text-[var(--color-on-surface)]">
             Skill Levels
           </h2>
           <div className="flex flex-col gap-7">
@@ -354,7 +354,7 @@ function SkillListItem({ skill, icon, onClick }) {
   return (
     <motion.button
       ref={ref}
-      className="w-full text-left bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-3 md:p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group"
+      className="w-full text-left bg-[var(--color-surface)] border-2 border-outline p-3 md:p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group"
       initial={{ opacity: 0, x: -20 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ type: "spring", stiffness: 280, damping: 22 }}
@@ -364,7 +364,7 @@ function SkillListItem({ skill, icon, onClick }) {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3 w-48 md:w-56 shrink-0">
           <motion.div
-            className="text-xl p-2 border-2 border-[var(--color-outline)] shrink-0"
+            className="text-xl p-2 border-2 border-outline shrink-0"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             whileHover={{ scale: 1.15, rotate: 5, boxShadow: "0 0 12px var(--color-on-background)" }}
             transition={{ type: "spring", stiffness: 500, damping: 20 }}
@@ -378,7 +378,7 @@ function SkillListItem({ skill, icon, onClick }) {
         </div>
 
         <div className="hidden sm:flex flex-1 items-center gap-4">
-          <div className="flex-1 h-3 border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
+          <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
             <motion.div
               className="h-full w-full progress-bar-fill origin-left"
               style={{ background: levelStyle.bar, willChange: "transform" }}
@@ -391,7 +391,7 @@ function SkillListItem({ skill, icon, onClick }) {
         </div>
 
         <div
-          className="border-2 border-[var(--color-outline)] px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] shrink-0 ml-auto"
+          className="border-2 border-outline px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] shrink-0 ml-auto"
           style={{ background: levelStyle.bg, color: levelStyle.text }}
         >
           {getProficiencyLabel(skill.level)}
@@ -433,7 +433,7 @@ function SkillGridCard({ skill, icon, onClick }) {
   return (
     <motion.button
       ref={ref}
-      className="w-full text-left bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group flex flex-col gap-3"
+      className="w-full text-left bg-[var(--color-surface)] border-2 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group flex flex-col gap-3"
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0, rotateX: tilt.x, rotateY: tilt.y } : {}}
       transition={{ type: "spring", stiffness: 280, damping: 22 }}
@@ -446,7 +446,7 @@ function SkillGridCard({ skill, icon, onClick }) {
       <div className="flex items-center justify-between" style={{ transform: "translateZ(20px)" }}>
         <div className="flex items-center gap-3">
           <motion.div
-            className="text-xl p-2 border-2 border-[var(--color-outline)]"
+            className="text-xl p-2 border-2 border-outline"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             whileHover={{ scale: 1.15, boxShadow: "0 0 12px var(--color-on-background)" }}
             transition={{ type: "spring", stiffness: 500, damping: 20 }}
@@ -459,7 +459,7 @@ function SkillGridCard({ skill, icon, onClick }) {
           </div>
         </div>
         <div
-          className="border-2 border-[var(--color-outline)] px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+          className="border-2 border-outline px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
           style={{ background: levelStyle.bg, color: levelStyle.text }}
         >
           {getProficiencyLabel(skill.level)}
@@ -467,7 +467,7 @@ function SkillGridCard({ skill, icon, onClick }) {
       </div>
 
       <div className="flex items-center gap-3" style={{ transform: "translateZ(10px)" }}>
-        <div className="flex-1 h-3 border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
+        <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
           <motion.div
             className="h-full w-full progress-bar-fill origin-left"
             style={{ background: levelStyle.bar, willChange: "transform" }}
@@ -482,7 +482,7 @@ function SkillGridCard({ skill, icon, onClick }) {
       <p className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", transform: "translateZ(5px)" }}>
         {skill.description}
       </p>
-      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-[var(--color-outline-variant)]" style={{ transform: "translateZ(10px)" }}>
+      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-outline-variant" style={{ transform: "translateZ(10px)" }}>
         <FaExternalLinkAlt className="text-[10px]" /> Click for details
       </div>
     </motion.button>
@@ -493,7 +493,7 @@ function SkillGridCard({ skill, icon, onClick }) {
 
 function EmptyState() {
   return (
-    <div className="col-span-full bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] text-center">
+    <div className="col-span-full bg-[var(--color-surface)] border-2 border-outline p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] text-center">
       <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
         <FaSearch className="text-3xl mx-auto mb-3 text-[var(--color-on-surface)]" />
       </motion.div>
@@ -521,7 +521,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         onClick={onClose}
       />
       <motion.div
-        className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[12px_12px_0px_0px_var(--shadow-color)] max-w-2xl w-full p-6 md:p-8 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto"
+        className="bg-[var(--color-surface)] border-4 border-outline shadow-[12px_12px_0px_0px_var(--shadow-color)] max-w-2xl w-full p-6 md:p-8 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto"
         initial={{ scale: 0.93, opacity: 0, y: 28 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -529,15 +529,15 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] w-10 h-10 flex items-center justify-center text-xl hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none cursor-none"
+          className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline w-10 h-10 flex items-center justify-center text-xl hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none cursor-none"
         >
           <FaTimes />
         </button>
 
         {/* Icon + Name */}
-        <div className="flex items-center gap-5 border-b-2 border-[var(--color-outline)] pb-5">
+        <div className="flex items-center gap-5 border-b-2 border-outline pb-5">
           <motion.div
-            className="text-3xl p-3 border-2 border-[var(--color-outline)] shadow-[3px_3px_0px_0px_var(--shadow-accent)]"
+            className="text-3xl p-3 border-2 border-outline shadow-[3px_3px_0px_0px_var(--shadow-accent)]"
             style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
             initial={{ scale: 0.5, rotate: -10 }}
             animate={{ scale: 1, rotate: 0 }}
@@ -547,7 +547,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
           </motion.div>
           <div>
             <h2 className="font-headline-xl text-2xl md:text-3xl uppercase text-[var(--color-on-surface)]">{skill.name}</h2>
-            <span className="font-label-bold bg-[var(--color-secondary)] text-white px-2 py-0.5 text-xs border-2 border-[var(--color-outline)] inline-block mt-1">{category}</span>
+            <span className="font-label-bold bg-[var(--color-secondary)] text-white px-2 py-0.5 text-xs border-2 border-outline inline-block mt-1">{category}</span>
           </div>
         </div>
 
@@ -557,7 +557,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
             <span>Proficiency</span>
             <span>{skill.level}% — {getProficiencyLabel(skill.level)}</span>
           </div>
-          <div className="h-6 w-full border-2 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden">
+          <div className="h-6 w-full border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
             <motion.div
               className="h-full w-full progress-bar-fill origin-left"
               style={{ background: levelStyle.bar, willChange: "transform" }}
@@ -569,7 +569,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         </div>
 
         {/* Description */}
-        <p className="font-body-md text-base p-4 border-2 border-dashed border-[var(--color-outline-variant)] text-[var(--color-on-surface)]"
+        <p className="font-body-md text-base p-4 border-2 border-dashed border-outline-variant text-[var(--color-on-surface)]"
            style={{ background: "var(--color-surface-variant)" }}>
           {skill.description}
         </p>
@@ -577,7 +577,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         {/* Related projects */}
         {relatedProjects.length > 0 && (
           <div className="flex flex-col gap-4">
-            <h4 className="font-headline-md text-xl uppercase border-b-2 border-[var(--color-outline)] inline-block w-fit pb-1 text-[var(--color-on-surface)]">
+            <h4 className="font-headline-md text-xl uppercase border-b-2 border-outline inline-block w-fit pb-1 text-[var(--color-on-surface)]">
               Used in {relatedProjects.length} {relatedProjects.length === 1 ? "Project" : "Projects"}
             </h4>
             <div className="flex flex-col gap-3">
@@ -585,10 +585,10 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
                 <motion.button
                   key={project.id}
                   onClick={() => onProjectClick(project.id)}
-                  className="bg-[var(--color-surface)] border-2 border-[var(--color-outline)] p-3 flex items-center gap-4 shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_var(--shadow-color)] group text-left w-full cursor-none"
+                  className="bg-[var(--color-surface)] border-2 border-outline p-3 flex items-center gap-4 shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_var(--shadow-color)] group text-left w-full cursor-none"
                   whileHover={{ x: 2, y: 2, transition: { duration: 0.1 } }}
                 >
-                  <div className="w-14 h-14 border-2 border-[var(--color-outline)] overflow-hidden shrink-0 bg-[var(--color-surface-variant)]">
+                  <div className="w-14 h-14 border-2 border-outline overflow-hidden shrink-0 bg-[var(--color-surface-variant)]">
                     <img
                       src={getAssetPath(project.image)}
                       alt={project.title}

@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback, useRef, memo } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { FaSearch, FaTimes, FaEye, FaGithub, FaArrowRight } from "react-icons/fa";
+import { FaSearch, FaTimes, FaEye, FaGithub, FaArrowRight, FaChevronDown } from "react-icons/fa";
 import { projects, projectCategories } from "../../data/projects";
 import { getSkillsForProject } from "../../data/skills";
 import { getAssetPath } from "../../utils/paths";
@@ -18,6 +18,7 @@ function Projects() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [highlightedId, setHighlightedId]     = useState(null);
+  const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const navigate = useNavigate();
 
   const allTags = useMemo(() => {
@@ -73,25 +74,25 @@ function Projects() {
         variants={containerVariants}
       >
         {/* Header */}
-        <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+        <header className="mb-4 border-b-8 border-outline pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
           <motion.div
             className="flex items-center gap-4 flex-wrap"
             variants={cardVariants}
           >
-            <div className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden">
+            <div className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden">
               <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter">
                 PROJECTS
               </h1>
             </div>
             <span
-              className="font-headline-md text-3xl border-4 border-[var(--color-outline)] px-5 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+              className="font-headline-md text-3xl border-4 border-outline px-5 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
             >
               {filteredProjects.length}
             </span>
           </motion.div>
 
           <motion.p
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
             variants={cardVariants}
           >
             Systems engineered to resist and adapt. Full-stack applications
@@ -104,7 +105,7 @@ function Projects() {
             className="flex flex-col xl:flex-row gap-6 w-full justify-between items-stretch xl:items-center mt-4"
             variants={cardVariants}
           >
-            <div className="flex items-center bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-2 w-full xl:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+            <div className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-2 w-full xl:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
               <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
               <input
                 type="text"
@@ -126,7 +127,7 @@ function Projects() {
                 return (
                   <motion.button
                     key={category.id}
-                    className={`border-4 border-[var(--color-outline)] px-4 py-2 font-label-bold text-sm md:text-base uppercase transition-all cursor-none ${
+                    className={`border-4 border-outline px-4 py-2 font-label-bold text-sm md:text-base uppercase transition-all cursor-none ${
                       isSelected
                         ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[2px] translate-y-[2px]"
                         : "bg-[var(--color-surface)] text-[var(--color-on-surface)] shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 hover:bg-[var(--color-surface-variant)]"
@@ -143,39 +144,67 @@ function Projects() {
 
           {/* Tech tag matrix */}
           <motion.div
-            className="w-full bg-hatch border-4 border-[var(--color-outline)] p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col gap-3 overflow-hidden"
+            className="w-full bg-[var(--color-surface)] border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
             variants={cardVariants}
           >
-            <div className="flex justify-between items-center bg-[var(--color-surface)] px-6 py-4 -mx-6 -mt-6 border-b-4 border-[var(--color-outline)] mb-2">
-              <span className="font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">Filter by Tech Stack:</span>
+            <div 
+              className={`flex justify-between items-center bg-[var(--color-surface)] px-6 py-4 cursor-pointer ${isFilterExpanded ? 'border-b-4 border-outline' : ''}`}
+              onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+            >
+              <div className="flex items-center gap-3">
+                <span className="font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">
+                  Filter by Tech Stack {selectedTags.length > 0 && `(${selectedTags.length})`}
+                </span>
+                <motion.div animate={{ rotate: isFilterExpanded ? 180 : 0 }}>
+                  <FaChevronDown className="text-outline" />
+                </motion.div>
+              </div>
+              
               {selectedTags.length > 0 && (
                 <button
-                  onClick={() => setSelectedTags([])}
+                  onClick={(e) => { e.stopPropagation(); setSelectedTags([]); }}
                   className="text-xs uppercase font-label-bold text-red-500 hover:underline cursor-none"
                 >
-                  Clear ({selectedTags.length})
+                  Clear
                 </button>
               )}
             </div>
-            <div className="flex flex-wrap gap-2">
-              {allTags.map((tag) => {
-                const isSelected = selectedTags.includes(tag);
-                return (
-                  <motion.button
-                    key={tag}
-                    onClick={() => toggleTag(tag)}
-                    className={`px-3 py-1 text-xs uppercase font-label-bold border-2 border-[var(--color-outline)] transition-all cursor-none ${
-                      isSelected
-                        ? "bg-[var(--color-on-background)] text-[var(--color-background)] shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[1px] translate-y-[1px]"
-                        : "bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-0.5 hover:translate-x-0.5 hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
-                    }`}
-                    whileTap={{ scale: 0.96 }}
-                  >
-                    {tag}
-                  </motion.button>
-                );
-              })}
-            </div>
+            
+            <AnimatePresence initial={false}>
+              {isFilterExpanded && (
+                <motion.div
+                  key="content"
+                  initial="collapsed"
+                  animate="open"
+                  exit="collapsed"
+                  variants={{
+                    open: { opacity: 1, height: "auto" },
+                    collapsed: { opacity: 0, height: 0 }
+                  }}
+                  transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+                >
+                  <div className="flex flex-wrap gap-2 px-6 py-4">
+                    {allTags.map((tag) => {
+                      const isSelected = selectedTags.includes(tag);
+                      return (
+                        <motion.button
+                          key={tag}
+                          onClick={() => toggleTag(tag)}
+                          className={`px-3 py-1 text-xs uppercase font-label-bold border-2 border-outline transition-all cursor-none ${
+                            isSelected
+                              ? "bg-[var(--color-on-background)] text-[var(--color-background)] shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[1px] translate-y-[1px]"
+                              : "bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-0.5 hover:translate-x-0.5 hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
+                          }`}
+                          whileTap={{ scale: 0.96 }}
+                        >
+                          {tag}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </header>
 
@@ -202,7 +231,7 @@ function Projects() {
             </motion.div>
           ) : (
             <motion.div
-              className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] p-12 text-center flex flex-col items-center gap-4 w-full"
+              className="bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] p-12 text-center flex flex-col items-center gap-4 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -251,7 +280,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
       className="w-full h-full"
     >
       <motion.article
-        className={`bg-[var(--color-surface)] border-4 border-[var(--color-outline)] hover:border-[var(--color-secondary)] transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full ${
+        className={`bg-[var(--color-surface)] border-4 border-outline hover:border-secondary transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full ${
           isHighlighted ? "ring-4 ring-[var(--color-primary-container)] ring-offset-2" : ""
         }`}
         onClick={() => onOpenModal(project)}
@@ -264,7 +293,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
         whileTap={{ scale: 0.99 }}
       >
         {/* Image */}
-        <div className="h-48 md:h-56 border-b-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden relative">
+        <div className="h-48 md:h-56 border-b-4 border-outline bg-[var(--color-surface-variant)] overflow-hidden relative">
           <motion.img
             src={getAssetPath(project.image)}
             alt={project.title}
@@ -277,7 +306,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
           />
           {isFeatured && (
             <motion.div
-              className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+              className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
               animate={{ rotate: [3, -3, 3] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -304,20 +333,20 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
             {project.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-[var(--color-outline)] px-2 py-1 font-label-bold text-xs uppercase"
+                className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase"
               >
                 {tag}
               </span>
             ))}
             {project.tags.length > 3 && (
-              <span className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] px-2 py-1 font-label-bold text-xs uppercase">
+              <span className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase">
                 +{project.tags.length - 3}
               </span>
             )}
           </div>
 
           <div
-            className="flex gap-3 border-t-4 border-[var(--color-outline)] pt-5 mt-auto"
+            className="flex gap-3 border-t-4 border-outline pt-5 mt-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {project.links?.preview && (
@@ -325,7 +354,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
                 href={project.links.preview}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
+                className="flex-1 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
               >
                 <FaEye /> Live
               </a>
@@ -335,7 +364,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
                 href={project.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all flex justify-center items-center gap-2 cursor-none"
+                className="flex-1 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all flex justify-center items-center gap-2 cursor-none"
               >
                 <FaGithub /> Source
               </a>
@@ -364,7 +393,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         onClick={onClose}
       />
       <motion.div
-        className="bg-[var(--color-surface)] border-8 border-[var(--color-outline)] shadow-[16px_16px_0px_0px_var(--shadow-color)] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative z-10 flex flex-col"
+        className="bg-[var(--color-surface)] border-8 border-outline shadow-[16px_16px_0px_0px_var(--shadow-color)] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative z-10 flex flex-col"
         variants={modalContentVariants}
         initial="hidden"
         animate="visible"
@@ -372,14 +401,14 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute top-4 right-4 z-20 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] w-12 h-12 flex items-center justify-center text-xl hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none cursor-none"
+          className="absolute top-4 right-4 z-20 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline w-12 h-12 flex items-center justify-center text-xl hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none cursor-none"
           onClick={onClose}
           aria-label="Close modal"
         >
           <FaTimes />
         </button>
 
-        <div className="h-48 md:h-80 border-b-8 border-[var(--color-outline)] relative overflow-hidden">
+        <div className="h-48 md:h-80 border-b-8 border-outline relative overflow-hidden">
           <img
             src={getAssetPath(project.image)}
             alt={project.title}
@@ -393,9 +422,9 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         </div>
 
         <div className="p-6 md:p-10 flex flex-col gap-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-[var(--color-outline)] pb-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-outline pb-6">
             <div>
-              <span className="bg-[var(--color-on-background)] text-[var(--color-background)] font-label-bold px-3 py-1 border-2 border-[var(--color-outline)] mb-2 inline-block shadow-[2px_2px_0px_0px_var(--shadow-accent)]">
+              <span className="bg-[var(--color-on-background)] text-[var(--color-background)] font-label-bold px-3 py-1 border-2 border-outline mb-2 inline-block shadow-[2px_2px_0px_0px_var(--shadow-accent)]">
                 {project.year}
               </span>
               <h2 className="font-headline-xl text-4xl md:text-5xl uppercase leading-tight text-[var(--color-on-surface)]">
@@ -408,7 +437,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   href={project.links.preview}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] p-3 text-xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                  className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline p-3 text-xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                 >
                   <FaEye />
                 </a>
@@ -418,7 +447,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   href={project.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] p-3 text-xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                  className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-4 border-outline p-3 text-xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                 >
                   <FaGithub />
                 </a>
@@ -430,7 +459,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] px-3 py-1 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-3 py-1 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
               >
                 {tag}
               </span>
@@ -438,7 +467,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
           </div>
 
           <p
-            className="font-body-lg text-lg border-4 border-[var(--color-outline)] border-dashed p-6 text-[var(--color-on-surface)]"
+            className="font-body-lg text-lg border-4 border-outline border-dashed p-6 text-[var(--color-on-surface)]"
             style={{ background: "var(--color-surface-variant)" }}
           >
             {project.description}
@@ -446,7 +475,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
 
           {projectSkills.length > 0 && (
             <div className="flex flex-col gap-4">
-              <h3 className="font-headline-md text-2xl uppercase border-b-2 border-[var(--color-outline)] pb-2 w-fit text-[var(--color-on-surface)]">
+              <h3 className="font-headline-md text-2xl uppercase border-b-2 border-outline pb-2 w-fit text-[var(--color-on-surface)]">
                 Skills & Technologies
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -454,7 +483,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   <motion.button
                     key={skill.id}
                     onClick={() => onSkillClick(skill.id)}
-                    className="bg-[var(--color-surface)] border-2 border-[var(--color-outline)] px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-colors shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_var(--shadow-color)] group cursor-none text-[var(--color-on-surface)]"
+                    className="bg-[var(--color-surface)] border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-colors shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_var(--shadow-color)] group cursor-none text-[var(--color-on-surface)]"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >

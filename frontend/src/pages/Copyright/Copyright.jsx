@@ -20,11 +20,11 @@ function Copyright() {
       animate="visible"
       variants={containerVariants}
     >
-      <header className="mb-8 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+      <header className="mb-8 border-b-8 border-outline pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
         <div className="flex flex-col gap-6">
           <motion.div
             variants={itemVariants}
-            className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] transition-transform flex items-center gap-4 w-fit"
+            className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] transition-transform flex items-center gap-4 w-fit"
           >
             <FaBalanceScale className="text-4xl text-[var(--color-on-primary-container)]" />
             <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter">
@@ -33,7 +33,7 @@ function Copyright() {
           </motion.div>
           <motion.p
             variants={itemVariants}
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
           >
             MIT License. Open source portfolio template.
           </motion.p>
@@ -44,7 +44,7 @@ function Copyright() {
         <motion.div className="mb-12" variants={itemVariants}>
           <Link
             to="/"
-            className="inline-flex items-center gap-3 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] px-6 py-3 font-label-bold text-lg uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-all cursor-none"
+            className="inline-flex items-center gap-3 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 py-3 font-label-bold text-lg uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-all cursor-none"
           >
             <FaArrowLeft />
             <span>Back to Home</span>
@@ -53,13 +53,13 @@ function Copyright() {
 
         <motion.div className="flex flex-col gap-8" variants={itemVariants}>
           <motion.div
-            className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4"
+            className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4"
             variants={itemVariants}
           >
-            <h2 className="font-headline-md text-3xl uppercase border-b-4 border-[var(--color-outline)] pb-2 w-fit">
+            <h2 className="font-headline-md text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
               MIT License
             </h2>
-            <p className="font-label-bold text-xl bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] w-fit px-4 py-2 shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+            <p className="font-label-bold text-xl bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline w-fit px-4 py-2 shadow-[2px_2px_0px_0px_var(--shadow-color)]">
               Copyright © {currentYear} Aryan Hardik Dani
             </p>
 
@@ -80,7 +80,7 @@ function Copyright() {
                 included in all copies or substantial portions of the Software.
               </p>
 
-              <p className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] p-6 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] mt-8">
+              <p className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline p-6 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] mt-8">
                 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
                 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
                 OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -94,22 +94,22 @@ function Copyright() {
           </motion.div>
 
           <motion.div
-            className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4"
+            className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4"
             variants={itemVariants}
           >
-            <h3 className="font-headline-md text-3xl uppercase border-b-4 border-[var(--color-outline)] pb-2 w-fit text-[var(--color-on-surface)]">
+            <h3 className="font-headline-md text-3xl uppercase border-b-4 border-outline pb-2 w-fit text-[var(--color-on-surface)]">
               Attribution
             </h3>
             <p className="font-body-md text-lg text-[var(--color-on-surface-variant)]">
               This portfolio is designed and developed by{" "}
-              <strong className="text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] px-2 border-2 border-[var(--color-outline)] shadow-[2px_2px_0px_0px_var(--shadow-color)] font-black">
+              <strong className="text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] px-2 border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)] font-black">
                 Aryan Dani
               </strong>
             </p>
           </motion.div>
 
           <motion.div
-            className="bg-[var(--color-surface-variant)] border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+            className="bg-[var(--color-surface-variant)] border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
             variants={itemVariants}
           >
             <h3 className="font-headline-md text-3xl uppercase mb-6 text-[var(--color-on-surface)]">
@@ -120,7 +120,7 @@ function Copyright() {
                 href="https://github.com/aryan-dani"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] px-6 py-3 font-label-bold text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
+                className="flex items-center gap-3 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 py-3 font-label-bold text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
               >
                 <FaGithub className="text-xl" />
                 <span>GitHub</span>
@@ -129,14 +129,14 @@ function Copyright() {
                 href="https://linkedin.com/in/aryandani"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 bg-[var(--color-secondary)] text-[var(--color-on-secondary)] border-4 border-[var(--color-outline)] px-6 py-3 font-label-bold text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
+                className="flex items-center gap-3 bg-[var(--color-secondary)] text-[var(--color-on-secondary)] border-4 border-outline px-6 py-3 font-label-bold text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
               >
                 <FaLinkedin className="text-xl" />
                 <span>LinkedIn</span>
               </a>
               <a
                 href="mailto:daniaryan212@gmail.com"
-                className="flex items-center gap-3 bg-[var(--color-on-background)] text-[var(--color-background)] border-4 border-[var(--color-outline)] px-6 py-3 font-label-bold text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
+                className="flex items-center gap-3 bg-[var(--color-on-background)] text-[var(--color-background)] border-4 border-outline px-6 py-3 font-label-bold text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
               >
                 <FaEnvelope className="text-xl" />
                 <span>Email</span>

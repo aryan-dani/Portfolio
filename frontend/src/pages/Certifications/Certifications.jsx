@@ -38,10 +38,10 @@ function Certifications() {
         variants={containerVariants}
       >
         {/* Header */}
-        <header className="mb-8 border-b-8 border-[var(--color-outline)] pb-8 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] mt-4">
+        <header className="mb-8 border-b-8 border-outline pb-8 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] mt-4">
           <div className="flex items-center gap-4 flex-wrap">
             <motion.div
-              className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
+              className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
               variants={cardVariants}
             >
               <h1 className="font-headline-xl text-4xl md:text-6xl lg:text-7xl text-[var(--color-on-primary-container)] uppercase tracking-tighter leading-none">
@@ -49,14 +49,14 @@ function Certifications() {
               </h1>
             </motion.div>
             <motion.span
-              className="font-headline-md text-2xl md:text-3xl border-4 border-[var(--color-outline)] px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+              className="font-headline-md text-2xl md:text-3xl border-4 border-outline px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
               variants={cardVariants}
             >
               {filteredCerts.length}
             </motion.span>
           </div>
           <motion.p
-            className="font-body-lg text-base md:text-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            className="font-body-lg text-base md:text-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
             variants={cardVariants}
           >
             Proof of work — industry-recognized credentials across AI, cloud, and web technologies.
@@ -67,7 +67,7 @@ function Certifications() {
         <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between w-full mb-8">
           {/* Search */}
           <motion.div
-            className="flex items-center bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-3 w-full md:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
+            className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-3 w-full md:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
             variants={cardVariants}
           >
             <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
@@ -91,7 +91,7 @@ function Certifications() {
               <motion.button
                 key={cat.id}
                 onClick={() => setActiveFilter(cat.id)}
-                className={`border-4 border-[var(--color-outline)] px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                className={`border-4 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
                   activeFilter === cat.id
                     ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
                     : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
@@ -126,7 +126,7 @@ function Certifications() {
             </motion.div>
           ) : (
             <motion.div
-              className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-12 text-center shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col items-center gap-4 w-full"
+              className="bg-[var(--color-surface)] border-4 border-outline p-12 text-center shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col items-center gap-4 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -172,11 +172,11 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
       className="w-full h-full"
     >
       <motion.article
-        className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_var(--shadow-color)] transition-all duration-200 h-full"
+        className="bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_var(--shadow-color)] transition-all duration-200 h-full"
       >
         {/* Image Container */}
         <div
-          className="aspect-[4/3] border-b-4 border-[var(--color-outline)] overflow-hidden relative cursor-pointer bg-[var(--color-surface)] flex items-center justify-center p-3"
+          className="aspect-[4/3] border-b-4 border-outline overflow-hidden relative cursor-pointer bg-[var(--color-surface)] flex items-center justify-center p-3"
           onClick={onPreview}
         >
           <motion.img
@@ -194,7 +194,7 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
           
           {/* Category badge */}
           {cert.badge && (
-            <div className="absolute top-4 right-4 bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)] border-4 border-[var(--color-outline)] px-3 py-1 font-label-bold text-xs md:text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] z-10">
+            <div className="absolute top-4 right-4 bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)] border-4 border-outline px-3 py-1 font-label-bold text-xs md:text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] z-10">
               {cert.badge}
             </div>
           )}
@@ -203,7 +203,7 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
         {/* Content */}
         <div className="p-6 md:p-8 flex flex-col grow">
           {/* Date badge */}
-          <span className="font-label-bold text-sm md:text-base text-[var(--color-secondary)] uppercase tracking-widest mb-2 border-2 border-[var(--color-outline)] w-fit px-2.5 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)]">
+          <span className="font-label-bold text-sm md:text-base text-[var(--color-secondary)] uppercase tracking-widest mb-2 border-2 border-outline w-fit px-2.5 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)]">
             {cert.date}
           </span>
           
@@ -216,10 +216,10 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
           </p>
 
           {/* Tech Stack / Issuer Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t-4 border-[var(--color-outline)] pt-4 mb-6 gap-4 sm:gap-0">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t-4 border-outline pt-4 mb-6 gap-4 sm:gap-0">
             <div className="flex items-center gap-3">
               <motion.div
-                className="w-10 h-10 rounded-full border-2 border-[var(--color-outline)] overflow-hidden bg-white shrink-0"
+                className="w-10 h-10 rounded-full border-2 border-outline overflow-hidden bg-white shrink-0"
                 initial={{ scale: 0.4, y: 8 }}
                 animate={inView ? { scale: 1, y: 0 } : {}}
                 transition={{ type: "spring", stiffness: 350, damping: 15, delay: (index % 3) * 0.05 + 0.25 }}
@@ -234,7 +234,7 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
                 {cert.issuer}
               </span>
             </div>
-            <span className="font-label-bold text-xs bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-[var(--color-outline)] px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] text-center">
+            <span className="font-label-bold text-xs bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] text-center">
               {cert.tag || "Credential"}
             </span>
           </div>
@@ -245,7 +245,7 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
               href={cert.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
+              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
             >
               <FaExternalLinkAlt className="text-sm" />
               View Certificate
@@ -253,7 +253,7 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
           ) : (
             <button
               onClick={onPreview}
-              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-none"
+              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-none"
             >
               <FaEye className="text-sm" />
               View Certificate
@@ -279,7 +279,7 @@ const ImagePreviewModal = memo(function ImagePreviewModal({ src, title, onClose 
         onClick={onClose}
       />
       <motion.div
-        className="relative z-10 border-8 border-[var(--color-outline)] shadow-[16px_16px_0px_0px_var(--shadow-color)] max-w-5xl w-full"
+        className="relative z-10 border-8 border-outline shadow-[16px_16px_0px_0px_var(--shadow-color)] max-w-5xl w-full"
         style={{ background: "var(--color-surface)" }}
         initial={{ scale: 0.88, opacity: 0, y: 40 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -288,12 +288,12 @@ const ImagePreviewModal = memo(function ImagePreviewModal({ src, title, onClose 
       >
         {/* Header bar */}
         <div
-          className="flex justify-between items-center px-5 py-3 border-b-4 border-[var(--color-outline)]"
+          className="flex justify-between items-center px-5 py-3 border-b-4 border-outline"
           style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
         >
           <span className="font-headline-md text-base uppercase">{title}</span>
           <button
-            className="border-4 border-[var(--color-outline)] w-9 h-9 flex items-center justify-center font-black hover:translate-x-0.5 hover:translate-y-0.5 transition-transform cursor-none"
+            className="border-4 border-outline w-9 h-9 flex items-center justify-center font-black hover:translate-x-0.5 hover:translate-y-0.5 transition-transform cursor-none"
             style={{ background: "var(--color-on-primary-container)", color: "var(--color-primary-container)" }}
             onClick={onClose}
             aria-label="Close preview"

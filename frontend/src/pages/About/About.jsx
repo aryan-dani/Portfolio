@@ -1,6 +1,6 @@
-import { useState, useRef, memo } from "react";
+import { useState, useRef, memo, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
   FaEnvelope,
   FaFileDownload, FaArrowRight,
@@ -11,6 +11,127 @@ import { getAssetPath } from "../../utils/paths";
 import GitHubStats from "../../components/GitHubStats/GitHubStats";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
+
+const slideVariants = {
+  enter:  (dir) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+  center: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 320, damping: 32 } },
+  exit:   (dir) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0, transition: { duration: 0.28 } }),
+};
+
+const photos = [
+  { src: "Images/About/pic_1.jpg", alt: `${aboutInfo.name} – photo 1` },
+  { src: "Images/About/pic_2.jpg", alt: `${aboutInfo.name} – photo 2` },
+  { src: "Images/About/pic_3.jpg", alt: `${aboutInfo.name} – photo 3` },
+];
+
+const INTERVAL_MS = 3800;
+
+function PhotoCarousel() {
+  const [index, setIndex]     = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [isPaused, setIsPaused]   = useState(false);
+
+  const go = useCallback(
+    (next) => {
+      const nextIdx = (next + photos.length) % photos.length;
+      setDirection(next > index ? 1 : -1);
+      setIndex(nextIdx);
+    },
+    [index]
+  );
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setDirection(1);
+      setIndex((prev) => (prev + 1) % photos.length);
+    }, INTERVAL_MS);
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
+  return (
+    <div
+      className="relative w-full"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+        {/* Main frame */}
+        <div
+          className="relative aspect-square border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden animate-pulse-glow"
+          style={{ userSelect: "none" }}
+        >
+          <AnimatePresence initial={false} custom={direction} mode="popLayout">
+            <motion.div
+              key={index}
+              className="absolute inset-0"
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+            >
+              <img
+                src={getAssetPath(photos[index].src)}
+                alt={photos[index].alt}
+                className="w-full h-full object-cover"
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Arrow buttons */}
+          <button
+            onClick={() => go(index - 1)}
+            aria-label="Previous photo"
+            className="nb-carousel-arrow absolute left-2 top-1/2 -translate-y-1/2 z-20"
+          >
+            ‹
+          </button>
+          <button
+            onClick={() => go(index + 1)}
+            aria-label="Next photo"
+            className="nb-carousel-arrow absolute right-2 top-1/2 -translate-y-1/2 z-20"
+          >
+            ›
+          </button>
+
+          {/* Index badge */}
+          <div className="absolute top-2 right-2 z-20 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-outline px-2 py-0.5 text-xs font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+            {index + 1} / {photos.length}
+          </div>
+        </div>
+
+        {/* Dot navigation */}
+        <div className="flex items-center justify-center gap-3 mt-4">
+          {photos.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => go(i)}
+              aria-label={`Go to photo ${i + 1}`}
+              className={`border-2 border-outline transition-all duration-200 ${
+                i === index
+                  ? "w-6 h-4 bg-[var(--color-primary-container)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                  : "w-4 h-4 bg-[var(--color-surface)] hover:bg-[var(--color-surface-variant)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Progress bar */}
+        <div className="mt-3 h-1.5 bg-[var(--color-surface)] border-2 border-outline overflow-hidden shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+          <motion.div
+            className="h-full w-full bg-[var(--color-primary-container)] progress-bar-fill origin-left"
+            style={{ willChange: "transform" }}
+            key={`progress-${index}`}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: isPaused ? undefined : 1 }}
+            transition={{ duration: INTERVAL_MS / 1000, ease: "linear" }}
+          />
+        </div>
+    </div>
+  );
+}
 
 function About() {
   const { showToast } = useToast();
@@ -30,9 +151,9 @@ function About() {
       variants={containerVariants}
     >
       {/* Header */}
-      <header className="mb-8 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+      <header className="mb-8 border-b-8 border-outline pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
         <motion.div
-          className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
+          className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
           variants={itemVariants}
           whileHover={{ x: -3, y: -3, boxShadow: "14px 14px 0px 0px var(--shadow-color)" }}
         >
@@ -41,7 +162,7 @@ function About() {
           </h1>
         </motion.div>
         <motion.p
-          className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+          className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
           variants={itemVariants}
         >
           Full-stack developer with a passion for clean code. Building
@@ -53,27 +174,12 @@ function About() {
         {/* Left: Photo + Bio */}
         <motion.div className="flex flex-col gap-12" variants={itemVariants}>
           <div className="relative group">
-            <motion.div
-              className="border-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] overflow-hidden shadow-[8px_8px_0px_0px_var(--shadow-color)] relative"
-              whileHover={{
-                x: -6,
-                y: -6,
-                boxShadow: "16px 16px 0px 0px var(--shadow-color)",
-              }}
-              transition={{ type: "spring", stiffness: 200, damping: 18 }}
-            >
-              <motion.img
-                src={getAssetPath("Images/Home_Page.jpg")}
-                alt={aboutInfo.name}
-                className="w-full h-auto object-cover origin-center"
-                style={{ y: yParallax, scale: 1.08 }}
-              />
-            </motion.div>
+              <PhotoCarousel />
             {/* Name badge */}
             <motion.div
-              className="absolute -bottom-6 -right-6 border-4 border-[var(--color-outline)] px-6 py-3 font-headline-md text-2xl uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+              className="absolute -top-6 -left-6 z-30 border-4 border-outline px-6 py-3 font-headline-md text-2xl uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)]"
               style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
-              initial={{ opacity: 0, scale: 0.8, x: 10 }}
+              initial={{ opacity: 0, scale: 0.8, x: -10 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ delay: 0.5, type: "spring", stiffness: 280, damping: 22 }}
             >
@@ -83,10 +189,10 @@ function About() {
 
           {/* Bio */}
           <motion.div
-            className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] mt-8"
+            className="bg-[var(--color-surface)] border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] mt-8"
             variants={itemVariants}
           >
-            <h2 className="font-headline-md text-3xl uppercase mb-6 border-b-4 border-[var(--color-outline)] pb-4 text-[var(--color-on-surface)]">
+            <h2 className="font-headline-md text-3xl uppercase mb-6 border-b-4 border-outline pb-4 text-[var(--color-on-surface)]">
               The Story
             </h2>
             <div className="font-body-md text-lg space-y-4 text-[var(--color-on-surface-variant)]">
@@ -101,12 +207,12 @@ function About() {
         <motion.div className="flex flex-col gap-12" variants={containerVariants}>
           {/* Title + social icons */}
           <motion.div
-            className="border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+            className="border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
             style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
             variants={itemVariants}
           >
             <h2 className="font-headline-md text-3xl uppercase mb-2">{aboutInfo.title}</h2>
-            <p className="font-label-bold text-xl uppercase mb-8 border-b-4 border-[var(--color-outline)] pb-4 opacity-80">
+            <p className="font-label-bold text-xl uppercase mb-8 border-b-4 border-outline pb-4 opacity-80">
               {aboutInfo.tagline}
             </p>
             <div className="flex flex-wrap gap-4">
@@ -118,7 +224,7 @@ function About() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] w-12 h-12 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-all cursor-none"
+                    className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-12 h-12 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-all cursor-none"
                     aria-label={link.name}
                     title={link.name}
                     whileHover={{ scale: 1.05 }}
@@ -145,7 +251,7 @@ function About() {
 
           {/* CTA */}
           <motion.div
-            className="border-4 border-[var(--color-outline)] p-8 shadow-[8px_8px_0px_0px_var(--shadow-accent)] relative overflow-hidden"
+            className="border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-accent)] relative overflow-hidden"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             variants={itemVariants}
             whileHover={{ x: -2, y: -2, boxShadow: "14px 14px 0px 0px var(--shadow-accent)" }}
@@ -159,7 +265,7 @@ function About() {
             <div className="flex flex-col gap-4">
               <Link
                 to="/contact"
-                className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all w-full cursor-none"
+                className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all w-full cursor-none"
               >
                 <FaArrowRight />
                 <span>Get In Touch</span>
@@ -170,7 +276,7 @@ function About() {
                 rel="noopener noreferrer"
                 className="bg-transparent text-[var(--color-background)] border-4 border-current px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full cursor-none"
               >
-                <FaFileDownload />
+                <FaFileDownload className="text-3xl text-current" />
                 <span>Download Resume</span>
               </a>
             </div>
@@ -193,14 +299,14 @@ function HighlightCard({ highlight, index }) {
   return (
     <motion.div
       ref={ref}
-      className="bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-6 shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col h-full"
+      className="bg-[var(--color-surface)] border-4 border-outline p-6 shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col h-full"
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ type: "spring", stiffness: 280, damping: 22, delay: index * 0.08 }}
       whileHover={{ y: -4, x: -4, boxShadow: "12px 12px 0px 0px var(--shadow-color)", transition: { type: "spring", stiffness: 400, damping: 20 } }}
     >
       <motion.span
-        className="text-4xl mb-4 block border-2 border-[var(--color-outline)] w-fit p-2 bg-[var(--color-surface-variant)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+        className="text-4xl mb-4 block border-2 border-outline w-fit p-2 bg-[var(--color-surface-variant)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
         animate={inView ? { rotate: [0, -12, 12, -6, 6, 0] } : {}}
         transition={{ duration: 0.65, delay: index * 0.12 + 0.35 }}
         whileHover={{ rotate: [0, -10, 10, -5, 5, 0], transition: { duration: 0.5 } }}

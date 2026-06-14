@@ -344,9 +344,9 @@ function Playground() {
       {/* Terminal Header / Title bar */}
       <div className="flex justify-between items-center border-b-2 border-dashed border-outline-variant pb-3 mb-4 select-none shrink-0">
         <div className="flex gap-2">
-          <span className="w-3 h-3 rounded-full border border-[var(--color-outline)] bg-[var(--color-on-background)] opacity-30 hover:opacity-60 transition-opacity" />
-          <span className="w-3 h-3 rounded-full border border-[var(--color-outline)] bg-[var(--color-on-background)] opacity-60 hover:opacity-80 transition-opacity" />
-          <span className="w-3 h-3 rounded-full border border-[var(--color-outline)] bg-[var(--color-on-background)] opacity-100 hover:opacity-70 transition-opacity" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-30 hover:opacity-60 transition-opacity" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-60 hover:opacity-80 transition-opacity" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-100 hover:opacity-70 transition-opacity" />
         </div>
         <div className="text-xs font-bold font-mono text-on-surface-variant uppercase tracking-wider">
           guest@aryan-dani.dev: ~ {isExpanded ? "[EXPANDED]" : "[NORMAL]"}
@@ -357,7 +357,7 @@ function Playground() {
             e.stopPropagation();
             setIsExpanded(!isExpanded);
           }}
-          className="bg-[var(--color-primary-container)] border-2 border-[var(--color-outline)] text-[var(--color-on-primary-container)] px-3 py-1 text-xs font-bold uppercase cursor-none hover:bg-[var(--color-accent-warm)] transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+          className="bg-[var(--color-primary-container)] border-2 border-outline text-[var(--color-on-primary-container)] px-3 py-1 text-xs font-bold uppercase cursor-none hover:bg-[var(--color-accent-warm)] transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
         >
           {isExpanded ? "Collapse ↙" : "Expand ⛶"}
         </button>
@@ -417,7 +417,7 @@ function Playground() {
           <div className="absolute left-0 top-0 bottom-0 right-0 flex items-center font-mono text-sm md:text-base text-[var(--color-on-surface)] pointer-events-none select-none whitespace-pre">
             <span>{inputVal}</span>
             <span
-              className={`w-2.5 h-4.5 bg-[var(--color-primary-container)] border border-[var(--color-outline)] ml-0.5 inline-block align-middle ${
+              className={`w-2.5 h-4.5 bg-[var(--color-primary-container)] border border-outline ml-0.5 inline-block align-middle ${
                 isFocused ? "animate-blink" : "opacity-40"
               }`}
             />
@@ -429,13 +429,13 @@ function Playground() {
 
   return (
     <section className="flex flex-col gap-12 w-full mt-4">
-      <header className="mb-4 border-b-8 border-[var(--color-outline)] pb-8 flex flex-col justify-end items-start gap-6 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-        <div className="bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
+      <header className="mb-4 border-b-8 border-outline pb-8 flex flex-col justify-end items-start gap-6 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+        <div className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
           <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter">
             CLI PLAYGROUND
           </h1>
         </div>
-        <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-2 max-w-2xl bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+        <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-2 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
           Use the keyboard command line interface to query projects, list
           skills, toggle themes, or navigate the site directly.
         </p>
@@ -444,7 +444,7 @@ function Playground() {
       {/* Render collapsed inline terminal */}
       {!isExpanded && (
         <div
-          className="nb-cli-container border-4 border-[var(--color-outline)] bg-[var(--color-surface)] p-6 font-mono flex flex-col relative overflow-hidden transition-all duration-300 min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+          className="nb-cli-container border-4 border-outline bg-[var(--color-surface)] p-6 font-mono flex flex-col relative overflow-hidden transition-all duration-300 min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)]"
           onClick={focusInput}
         >
           {renderTerminalContent()}

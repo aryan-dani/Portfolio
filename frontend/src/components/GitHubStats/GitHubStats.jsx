@@ -12,7 +12,7 @@ function ImageWithSkeleton({ src, alt, className = "", imgClassName = "" }) {
   return (
     <div className={`relative w-full overflow-hidden flex justify-center items-center ${className}`}>
       {!loaded && (
-        <div className="w-full min-h-[160px] bg-[var(--color-surface-variant)] flex items-center justify-center border-4 border-dashed border-[var(--color-outline-variant)] relative overflow-hidden">
+        <div className="w-full min-h-[160px] bg-[var(--color-surface-variant)] flex items-center justify-center border-4 border-dashed border-outline-variant relative overflow-hidden">
           <div className="absolute inset-0 animate-shimmer opacity-20" />
           <span className="font-mono text-xs uppercase tracking-widest opacity-60 animate-pulse">Loading github stats...</span>
         </div>
@@ -35,19 +35,19 @@ function GHCard({ header, children, className = "" }) {
   return (
     <motion.div
       ref={ref}
-      className={`border-4 border-[var(--color-outline)] shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden ${className}`}
+      className={`border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden ${className}`}
       style={{ background: "var(--color-surface)" }}
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ type: "spring", stiffness: 260, damping: 22 }}
       whileHover={{
-        y: -4,
-        x: -4,
+        y: -6,
+        x: -6,
         boxShadow: "14px 14px 0px 0px var(--shadow-color)",
         transition: { type: "spring", stiffness: 350, damping: 22 },
       }}
     >
-      <div className="px-4 py-2.5 font-label-bold text-sm uppercase flex items-center justify-between border-b-4 border-[var(--color-outline)] bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]">
+      <div className="px-4 py-2.5 font-label-bold text-sm uppercase flex items-center justify-between border-b-4 border-outline bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]">
         {header}
       </div>
       {children}
@@ -86,14 +86,14 @@ const GitHubStats = memo(function GitHubStats() {
 
   return (
     <motion.section
-      className="flex flex-col gap-8 content-visibility-auto contain-layout-paint"
+      className="flex flex-col gap-8"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
     >
       <motion.h2
-        className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-[var(--color-outline)] pb-4 text-[var(--color-on-surface)]"
+        className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-outline pb-4 text-[var(--color-on-surface)]"
         variants={itemVariants}
       >
         GitHub Activity
@@ -216,7 +216,7 @@ const GitHubStats = memo(function GitHubStats() {
         href={`https://github.com/${GITHUB_USERNAME}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all w-full md:w-fit cursor-none"
+        className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all w-full md:w-fit cursor-none"
         variants={itemVariants}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}

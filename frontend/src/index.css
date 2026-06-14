@@ -166,7 +166,7 @@
   --color-inverse-surface: #f4f3ef;
   --color-inverse-on-surface: #09090b;
 
-  --shadow-color: rgba(244, 243, 239, 0.88);
+  --shadow-color: rgba(244, 243, 239, 0.25);
   --shadow-accent: #94928d;
   --glow-accent: rgba(255, 255, 255, 0.1);
 }
@@ -319,8 +319,8 @@ html.theme-transitioning {
     -45deg,
     transparent,
     transparent 6px,
-    color-mix(in srgb, var(--color-outline) 10%, transparent) 6px,
-    color-mix(in srgb, var(--color-outline) 10%, transparent) 8px
+    color-mix(in srgb, var(--color-outline) 18%, transparent) 6px,
+    color-mix(in srgb, var(--color-outline) 18%, transparent) 8px
   );
   background-size: 20px 20px;
 }

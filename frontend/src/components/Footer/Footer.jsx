@@ -20,7 +20,7 @@ const socialItemVariants = {
 const Footer = memo(function Footer() {
   return (
     <motion.footer
-      className="w-full border-t-4 border-[var(--color-outline)] mt-20 relative z-10"
+      className="w-full border-t-4 border-outline mt-20 relative z-10"
       style={{ backgroundColor: "var(--color-surface)" }}
       variants={containerVariants}
       initial="hidden"
@@ -50,7 +50,7 @@ const Footer = memo(function Footer() {
             return (
               <motion.a
                 key={link.name}
-                className="text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-[var(--color-outline)] w-11 h-11 flex items-center justify-center text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-all duration-150"
+                className="text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline w-11 h-11 flex items-center justify-center text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-all duration-150"
                 href={link.url}
                 target={link.name === "Email" ? undefined : "_blank"}
                 rel={link.name === "Email" ? undefined : "noopener noreferrer"}

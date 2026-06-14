@@ -19,22 +19,9 @@ const carouselVariants = {
   },
 };
 
-const slideVariants = {
-  enter:  (dir) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
-  center: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 320, damping: 32 } },
-  exit:   (dir) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0, transition: { duration: 0.28 } }),
-};
-
 // ─── Data ─────────────────────────────────────────────────────
 
 const roles = ["Web Developer", "AI Engineer", "Tech Enthusiast", "Problem Solver"];
-
-const photos = [
-  { src: "Images/Home/pic_1.jpg", alt: `${aboutInfo.name} – photo 1` },
-  { src: "Images/Home/pic_2.jpg", alt: `${aboutInfo.name} – photo 2` },
-];
-
-const INTERVAL_MS = 3800;
 
 // ─── Animated Stat Card ────────────────────────────────────────
 
@@ -55,7 +42,7 @@ function StatCard({ value, isPlus, label, bg, delay }) {
   return (
     <motion.div
       ref={ref}
-      className="border-4 border-[var(--color-outline)] p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] text-center"
+      className="border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] text-center"
       style={bgStyle}
       initial={{ opacity: 0, y: 40, scale: 0.88 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
@@ -77,116 +64,7 @@ function StatCard({ value, isPlus, label, bg, delay }) {
   );
 }
 
-// ─── Photo Carousel ───────────────────────────────────────────
 
-function PhotoCarousel() {
-  const [index, setIndex]     = useState(0);
-  const [direction, setDirection] = useState(1);
-  const [isPaused, setIsPaused]   = useState(false);
-
-  const go = useCallback(
-    (next) => {
-      const nextIdx = (next + photos.length) % photos.length;
-      setDirection(next > index ? 1 : -1);
-      setIndex(nextIdx);
-    },
-    [index]
-  );
-
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      setDirection(1);
-      setIndex((prev) => (prev + 1) % photos.length);
-    }, INTERVAL_MS);
-    return () => clearInterval(timer);
-  }, [isPaused]);
-
-
-
-  return (
-    <div
-      className="relative w-full max-w-sm md:max-w-md"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-        {/* Main frame */}
-        <div
-          className="relative aspect-square border-4 border-[var(--color-outline)] bg-[var(--color-surface)] shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden animate-pulse-glow"
-          style={{ userSelect: "none" }}
-        >
-          <AnimatePresence initial={false} custom={direction} mode="popLayout">
-            <motion.div
-              key={index}
-              className="absolute inset-0"
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-            >
-              <img
-                src={getAssetPath(photos[index].src)}
-                alt={photos[index].alt}
-                className="w-full h-full object-cover"
-                loading={index === 0 ? "eager" : "lazy"}
-                decoding="async"
-              />
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Arrow buttons */}
-          <button
-            onClick={() => go(index - 1)}
-            aria-label="Previous photo"
-            className="nb-carousel-arrow absolute left-2 top-1/2 -translate-y-1/2 z-20"
-          >
-            ‹
-          </button>
-          <button
-            onClick={() => go(index + 1)}
-            aria-label="Next photo"
-            className="nb-carousel-arrow absolute right-2 top-1/2 -translate-y-1/2 z-20"
-          >
-            ›
-          </button>
-
-          {/* Index badge */}
-          <div className="absolute top-2 right-2 z-20 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-[var(--color-outline)] px-2 py-0.5 text-xs font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_var(--shadow-color)]">
-            {index + 1} / {photos.length}
-          </div>
-        </div>
-
-        {/* Dot navigation */}
-        <div className="flex items-center justify-center gap-3 mt-4">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => go(i)}
-              aria-label={`Go to photo ${i + 1}`}
-              className={`border-2 border-[var(--color-outline)] transition-all duration-200 ${
-                i === index
-                  ? "w-6 h-4 bg-[var(--color-primary-container)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                  : "w-4 h-4 bg-[var(--color-surface)] hover:bg-[var(--color-surface-variant)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-3 h-1.5 bg-[var(--color-surface)] border-2 border-[var(--color-outline)] overflow-hidden shadow-[2px_2px_0px_0px_var(--shadow-color)]">
-          <motion.div
-            className="h-full w-full bg-[var(--color-primary-container)] progress-bar-fill origin-left"
-            style={{ willChange: "transform" }}
-            key={`progress-${index}`}
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: isPaused ? undefined : 1 }}
-            transition={{ duration: INTERVAL_MS / 1000, ease: "linear" }}
-          />
-        </div>
-    </div>
-  );
-}
 
 // ─── Magnetic Button ──────────────────────────────────────────
 
@@ -245,7 +123,7 @@ const Home = memo(function Home() {
           {/* Name heading with shimmer */}
           <motion.div variants={itemVariants}>
             <motion.h1
-              className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase leading-none bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-3 md:p-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] inline-block w-fit relative overflow-hidden"
+              className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase leading-none bg-[var(--color-surface)] border-4 border-outline p-3 md:p-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] inline-block w-fit relative overflow-hidden"
               whileHover={{
                 x: -2,
                 y: -2,
@@ -260,7 +138,7 @@ const Home = memo(function Home() {
 
           {/* Role typewriter */}
           <motion.h2
-            className="font-headline-md text-xl md:text-2xl lg:text-headline-md text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-[var(--color-outline)] p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase"
+            className="font-headline-md text-xl md:text-2xl lg:text-headline-md text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase"
             variants={itemVariants}
           >
             <TypeWriter texts={roles} speed={80} deleteSpeed={40} pauseTime={2500} />
@@ -268,7 +146,7 @@ const Home = memo(function Home() {
 
           {/* Bio */}
           <motion.p
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-[var(--color-outline)] p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] max-w-2xl"
+            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] max-w-2xl"
             variants={itemVariants}
           >
             I&apos;m a passionate Web Developer and AI Engineer, dedicated to
@@ -283,31 +161,31 @@ const Home = memo(function Home() {
           >
             <MagneticLink
               to="/projects"
-              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-[var(--color-outline)] px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-150 inline-block animate-pulse-glow"
+              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-150 inline-block animate-pulse-glow"
             >
               View My Work
             </MagneticLink>
             <MagneticLink
               to="/contact"
-              className="bg-[var(--color-on-background)] text-[var(--color-background)] border-4 border-[var(--color-outline)] px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-accent)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-150 inline-block"
+              className="bg-[var(--color-on-background)] text-[var(--color-background)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-accent)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-150 inline-block"
             >
               Work With Me
             </MagneticLink>
             <MagneticLink
               to="/about"
-              className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-[var(--color-outline)] px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all duration-150 inline-block"
+              className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all duration-150 inline-block"
             >
               About Me
             </MagneticLink>
           </motion.div>
         </div>
 
-        {/* Carousel */}
+        {/* Carousel Placeholder / Blank Space */}
         <motion.div
           className="flex-1 w-full flex justify-center lg:justify-end mt-8 lg:mt-0"
           variants={carouselVariants}
         >
-          <PhotoCarousel />
+          {/* Moved to About page */}
         </motion.div>
       </div>
 
@@ -323,7 +201,7 @@ const Home = memo(function Home() {
 
       {/* Marquee strip */}
       <motion.div
-        className="border-4 border-[var(--color-outline)] overflow-hidden py-3 -mx-4 md:-mx-8 relative"
+        className="border-4 border-outline overflow-hidden py-3 -mx-4 md:-mx-8 relative"
         style={{ background: "var(--color-on-background)" }}
         variants={itemVariants}
       >
