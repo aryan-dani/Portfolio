@@ -44,7 +44,7 @@ function Certifications() {
               className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
               variants={cardVariants}
             >
-              <h1 className="font-headline-xl text-4xl md:text-6xl lg:text-7xl text-[var(--color-on-primary-container)] uppercase tracking-tighter leading-none">
+              <h1 className="font-headline-xl font-black text-4xl md:text-6xl lg:text-7xl text-[var(--color-on-primary-container)] uppercase tracking-tighter leading-none">
                 CERTIFICATIONS
               </h1>
             </motion.div>
@@ -64,44 +64,46 @@ function Certifications() {
         </header>
 
         {/* Controls */}
-        <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between w-full mb-8">
-          {/* Search */}
-          <motion.div
-            className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-3 w-full md:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
-            variants={cardVariants}
-          >
-            <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
-            <input
-              type="text"
-              placeholder="Search certifications..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-transparent border-none outline-none w-full font-body-md text-base text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
-            />
-            {searchTerm && (
-              <button onClick={() => setSearchTerm("")} className="mr-1 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
-                <FaTimes className="text-[var(--color-on-surface)]" />
-              </button>
-            )}
-          </motion.div>
+        <div className="bg-hatch border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] mb-8">
+          <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between w-full">
+            {/* Search */}
+            <motion.div
+              className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-3 w-full md:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
+              variants={cardVariants}
+            >
+              <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
+              <input
+                type="text"
+                placeholder="Search certifications..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-transparent border-none outline-none w-full font-body-md text-base text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
+              />
+              {searchTerm && (
+                <button onClick={() => setSearchTerm("")} className="mr-1 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
+                  <FaTimes className="text-[var(--color-on-surface)]" />
+                </button>
+              )}
+            </motion.div>
 
-          {/* Filters */}
-          <motion.div className="flex flex-wrap gap-2.5" variants={cardVariants}>
-            {certificationCategories.map((cat) => (
-              <motion.button
-                key={cat.id}
-                onClick={() => setActiveFilter(cat.id)}
-                className={`border-4 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
-                  activeFilter === cat.id
-                    ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                    : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
-                }`}
-                whileTap={{ scale: 0.97 }}
-              >
-                {cat.label}
-              </motion.button>
-            ))}
-          </motion.div>
+            {/* Filters */}
+            <motion.div className="flex flex-wrap gap-2.5" variants={cardVariants}>
+              {certificationCategories.map((cat) => (
+                <motion.button
+                  key={cat.id}
+                  onClick={() => setActiveFilter(cat.id)}
+                  className={`border-4 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                    activeFilter === cat.id
+                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                  }`}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  {cat.label}
+                </motion.button>
+              ))}
+            </motion.div>
+          </div>
         </div>
 
         {/* Grid */}

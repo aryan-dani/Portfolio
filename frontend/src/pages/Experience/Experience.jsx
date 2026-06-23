@@ -1,4 +1,5 @@
 import { useState, useRef, memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useSpring, useInView } from "framer-motion";
 import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
@@ -33,6 +34,7 @@ const CARD_STYLES = [
 // Previously this was copy-pasted verbatim for the "even" and "odd" column branches.
 
 function CardContent({ exp, style, isExpanded, onToggle }) {
+  const navigate = useNavigate();
   return (
     <motion.div
       className="w-full border-4 border-outline overflow-hidden"
@@ -118,8 +120,12 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
               {exp.technologies && (
                 <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-outline-variant">
                   {exp.technologies.map((tech, techIdx) => (
-                    <motion.span
+                    <motion.button
                       key={tech}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/skills?skill=${encodeURIComponent(tech)}`);
+                      }}
                       className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)]"
                       style={style.tagBg}
                       whileHover={{
@@ -130,7 +136,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                       transition={{ type: "spring", stiffness: 450, damping: 14 }}
                     >
                       {tech}
-                    </motion.span>
+                    </motion.button>
                   ))}
                 </div>
               )}

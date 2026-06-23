@@ -7,7 +7,7 @@ export const skills = {
       id: "html5",
       name: "HTML5",
       icon: "FaHtml5",
-      level: 90,
+      level: 82,
       description:
         "Semantic HTML5 markup, accessibility standards, and modern web structure used across every web project — from SPAs to static pages.",
       projectIds: [1, 7, 8, 12, 13, 14],
@@ -16,7 +16,7 @@ export const skills = {
       id: "css3",
       name: "CSS3",
       icon: "FaCss3Alt",
-      level: 85,
+      level: 78,
       description:
         "Advanced CSS animations, Grid/Flexbox layouts, and responsive design. Styled the portfolio's neo-brutalist design system from scratch.",
       projectIds: [1, 7, 8, 12, 13, 14],
@@ -25,7 +25,7 @@ export const skills = {
       id: "sass",
       name: "SASS/SCSS",
       icon: "FaSass",
-      level: 72,
+      level: 62,
       description:
         "Modular, maintainable CSS with variables, mixins, nesting, and inheritance — primarily used for this portfolio's component styles.",
       projectIds: [],
@@ -34,7 +34,7 @@ export const skills = {
       id: "javascript",
       name: "JavaScript",
       icon: "FaJs",
-      level: 80,
+      level: 72,
       description:
         "Core language across all web projects. ES6+ features, async/await, DOM manipulation, and event-driven architecture.",
       projectIds: [1, 7, 8, 12, 13, 14],
@@ -43,7 +43,7 @@ export const skills = {
       id: "typescript",
       name: "TypeScript",
       icon: "SiTypescript",
-      level: 72,
+      level: 65,
       description:
         "Type-safe development with interfaces, generics, and strict typing. Used in production apps including The Fourth Clover and North-Star.",
       projectIds: [1, 4, 13],
@@ -52,7 +52,7 @@ export const skills = {
       id: "react",
       name: "React",
       icon: "FaReact",
-      level: 78,
+      level: 70,
       description:
         "Primary frontend framework — hooks, context API, component architecture, and state management used across 7+ production projects.",
       projectIds: [2, 4, 10, 11, 12, 14],
@@ -61,7 +61,7 @@ export const skills = {
       id: "nextjs",
       name: "Next.js",
       icon: "SiNextdotjs",
-      level: 72,
+      level: 64,
       description:
         "Full-stack React framework with App Router, server components, API routes, and SSR. Powers The Fourth Clover, Utility, and The Shadow Instructor.",
       projectIds: [1, 10, 13],
@@ -70,7 +70,7 @@ export const skills = {
       id: "angular",
       name: "Angular",
       icon: "FaAngular",
-      level: 45,
+      level: 38,
       description:
         "Component-based SPAs with Angular — services, routing, and reactive forms. Used for the Threat Detection System frontend.",
       projectIds: [5],
@@ -79,7 +79,7 @@ export const skills = {
       id: "vite",
       name: "Vite",
       icon: "SiVite",
-      level: 75,
+      level: 65,
       description:
         "Modern build tool for lightning-fast HMR and optimized production builds. Powers this portfolio, Democrazy, and Ishani.",
       projectIds: [12, 14],
@@ -88,7 +88,7 @@ export const skills = {
       id: "tailwind",
       name: "Tailwind CSS",
       icon: "SiTailwindcss",
-      level: 75,
+      level: 68,
       description:
         "Utility-first CSS framework for rapid UI development. Used across The Fourth Clover, Utility, and several AI project frontends.",
       projectIds: [1, 13],
@@ -97,7 +97,7 @@ export const skills = {
       id: "nodejs",
       name: "Node.js",
       icon: "FaNodeJs",
-      level: 68,
+      level: 58,
       description:
         "Server-side JavaScript runtime for building APIs, handling file I/O, and serverless functions.",
       projectIds: [7, 12],
@@ -106,7 +106,7 @@ export const skills = {
       id: "fastapi",
       name: "FastAPI",
       icon: "SiFastapi",
-      level: 75,
+      level: 68,
       description:
         "High-performance async Python APIs with auto-generated OpenAPI docs. Backend for DebateBot, North-Star, Shadow Instructor, Arbiter, and Ishani.",
       projectIds: [2, 4, 10, 11, 14],
@@ -115,7 +115,7 @@ export const skills = {
       id: "flask",
       name: "Flask",
       icon: "SiFlask",
-      level: 62,
+      level: 52,
       description:
         "Lightweight Python web framework for building REST APIs. Powers PosePro's real-time pose analysis backend.",
       projectIds: [3],
@@ -124,7 +124,7 @@ export const skills = {
       id: "supabase",
       name: "Supabase",
       icon: "SiSupabase",
-      level: 68,
+      level: 58,
       description:
         "Open-source Firebase alternative — PostgreSQL database, auth, row-level security, and storage. Used in The Fourth Clover and Utility.",
       projectIds: [1, 13],
@@ -133,7 +133,7 @@ export const skills = {
       id: "firebase",
       name: "Firebase",
       icon: "SiFirebase",
-      level: 58,
+      level: 48,
       description:
         "Google's app platform for auth (Google Sign-In) and Firestore real-time database. Powers Democrazy's progress tracking.",
       projectIds: [12],
@@ -142,7 +142,7 @@ export const skills = {
       id: "mongodb",
       name: "MongoDB",
       icon: "SiMongodb",
-      level: 65,
+      level: 55,
       description:
         "NoSQL document database for flexible data modeling. Used with MongoDB Atlas cloud hosting in the API Demonstration project.",
       projectIds: [7],
@@ -151,7 +151,7 @@ export const skills = {
       id: "websockets",
       name: "WebSockets",
       icon: "FaServer",
-      level: 68,
+      level: 58,
       description:
         "Real-time bidirectional communication for live streaming, chat, and training updates. Used in Shadow Instructor and North-Star.",
       projectIds: [4, 10],
@@ -160,7 +160,7 @@ export const skills = {
       id: "rest-api",
       name: "REST API Design",
       icon: "FaServer",
-      level: 80,
+      level: 72,
       description:
         "Designing RESTful APIs with proper status codes, authentication, pagination, and OpenAPI documentation across multiple backend projects.",
       projectIds: [2, 3, 4, 7, 14],
@@ -171,7 +171,7 @@ export const skills = {
       id: "python",
       name: "Python",
       icon: "FaPython",
-      level: 82,
+      level: 74,
       description:
         "Core language for AI/ML, backend development, and data science. Used across 8+ projects for everything from FastAPI backends to deep learning pipelines.",
       projectIds: [2, 3, 4, 5, 6, 9, 10, 11, 14],
@@ -180,7 +180,7 @@ export const skills = {
       id: "llms",
       name: "LLMs & Agentic AI",
       icon: "FaRobot",
-      level: 88,
+      level: 80,
       description:
         "Building sophisticated agentic workflows using Gemini 3.0/2.5, LLaMA 3.3 70B, and Groq. Prompt engineering, tool-calling, and multi-turn conversation design.",
       projectIds: [2, 10, 11, 12, 14],
@@ -189,7 +189,7 @@ export const skills = {
       id: "agentic",
       name: "Agentic Architectures",
       icon: "FaBrain",
-      level: 80,
+      level: 72,
       description:
         "Designing Dual-Agent and Multi-Agent state machines — interview simulation (Shadow Instructor) and autonomous CI/CD healing (Arbiter).",
       projectIds: [10, 11],
@@ -198,7 +198,7 @@ export const skills = {
       id: "langgraph",
       name: "LangGraph",
       icon: "FaBrain",
-      level: 72,
+      level: 62,
       description:
         "Building stateful, multi-step AI agent graphs with branching logic, tool nodes, and conditional edges for DebateBot and Arbiter.",
       projectIds: [2, 11],
@@ -207,7 +207,7 @@ export const skills = {
       id: "prompt-engineering",
       name: "Prompt Engineering",
       icon: "FaRobot",
-      level: 82,
+      level: 75,
       description:
         "Crafting system prompts, few-shot examples, chain-of-thought reasoning, and structured output schemas across all AI projects.",
       projectIds: [2, 10, 11, 12, 14],
@@ -216,7 +216,7 @@ export const skills = {
       id: "rag",
       name: "RAG",
       icon: "FaBrain",
-      level: 68,
+      level: 58,
       description:
         "Retrieval-Augmented Generation for grounding LLM responses in domain-specific documents. Parallel indexing engine in Utility and RAG chat in Ishani.",
       projectIds: [13, 14],
@@ -225,7 +225,7 @@ export const skills = {
       id: "scikit-learn",
       name: "Scikit-Learn",
       icon: "SiScikitlearn",
-      level: 70,
+      level: 60,
       description:
         "Traditional ML algorithms — Random Forest, SVM, model evaluation, and preprocessing pipelines. Achieved 76% accuracy on NASA Kepler data.",
       projectIds: [4, 9],
@@ -234,7 +234,7 @@ export const skills = {
       id: "tensorflow",
       name: "TensorFlow",
       icon: "SiTensorflow",
-      level: 58,
+      level: 48,
       description:
         "Building and deploying CNN and Vision Transformer models for medical image classification and anomaly detection.",
       projectIds: [6, 9],
@@ -243,7 +243,7 @@ export const skills = {
       id: "pytorch",
       name: "PyTorch",
       icon: "SiPytorch",
-      level: 55,
+      level: 45,
       description:
         "Neural network training for object detection models. Used for YOLO v11 fine-tuning in the Threat Detection System.",
       projectIds: [5],
@@ -252,7 +252,7 @@ export const skills = {
       id: "deep-learning",
       name: "Deep Learning",
       icon: "FaBrain",
-      level: 58,
+      level: 48,
       description:
         "CNNs, Vision Transformers, EfficientNetV2, and YOLO architectures for image classification, object detection, and medical imaging.",
       projectIds: [5, 6],
@@ -261,7 +261,7 @@ export const skills = {
       id: "opencv",
       name: "OpenCV",
       icon: "SiOpencv",
-      level: 65,
+      level: 55,
       description:
         "Computer vision library for image processing, video analysis, and real-time frame manipulation in PosePro and Threat Detection.",
       projectIds: [3, 5],
@@ -270,7 +270,7 @@ export const skills = {
       id: "mediapipe",
       name: "MediaPipe",
       icon: "FaBrain",
-      level: 62,
+      level: 52,
       description:
         "Google's perception framework for real-time pose detection, landmark tracking, and angle computation in PosePro.",
       projectIds: [3],
@@ -279,7 +279,7 @@ export const skills = {
       id: "computer-vision",
       name: "Computer Vision",
       icon: "FaEye",
-      level: 62,
+      level: 52,
       description:
         "Image classification, object detection (YOLO), pose estimation (MediaPipe), DICOM analysis, and real-time video processing.",
       projectIds: [3, 5, 6],
@@ -288,7 +288,7 @@ export const skills = {
       id: "data-analysis",
       name: "Data Analysis",
       icon: "FaChartLine",
-      level: 65,
+      level: 58,
       description:
         "Exploratory data analysis, statistical modeling, and visualization with Pandas, NumPy, Matplotlib, and Seaborn.",
       projectIds: [4, 9],
@@ -299,7 +299,7 @@ export const skills = {
       id: "docker",
       name: "Docker",
       icon: "SiDocker",
-      level: 65,
+      level: 55,
       description:
         "Containerized execution environments for secure, isolated testing of untrusted code in Arbiter's CI/CD healing pipeline.",
       projectIds: [11],
@@ -308,7 +308,7 @@ export const skills = {
       id: "git",
       name: "Git & GitHub",
       icon: "FaGitAlt",
-      level: 85,
+      level: 78,
       description:
         "Version control, branching strategies, pull requests, and collaborative workflows. Every project lives on GitHub with proper commit history.",
       projectIds: [1, 2, 3, 4, 5, 7, 10, 11, 12, 13],
@@ -317,7 +317,7 @@ export const skills = {
       id: "vercel",
       name: "Vercel",
       icon: "SiVercel",
-      level: 78,
+      level: 68,
       description:
         "Serverless deployment platform with preview deployments, edge functions, and analytics. Hosts 6+ live projects.",
       projectIds: [1, 10, 11, 12, 13],
@@ -326,7 +326,7 @@ export const skills = {
       id: "github-actions",
       name: "GitHub Actions",
       icon: "FaGitAlt",
-      level: 60,
+      level: 50,
       description:
         "CI/CD pipeline automation — automated testing, builds, and deployment triggers. Core infrastructure for Arbiter's healing workflows.",
       projectIds: [11],
@@ -335,7 +335,7 @@ export const skills = {
       id: "groq",
       name: "Groq",
       icon: "FaRobot",
-      level: 55,
+      level: 45,
       description:
         "Ultra-fast LLM inference platform for real-time AI responses. Powers Ishani's AI assistant with sub-100ms latency.",
       projectIds: [14],

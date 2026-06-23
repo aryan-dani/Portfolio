@@ -29,22 +29,22 @@ const iconMap = {
 };
 
 function getProficiencyLabel(level) {
-  if (level >= 85) return "Expert";
-  if (level >= 70) return "Advanced";
-  if (level >= 55) return "Intermediate";
+  if (level >= 78) return "Expert";
+  if (level >= 65) return "Advanced";
+  if (level >= 50) return "Intermediate";
   return "Learning";
 }
 
 function getLevelStyle(level) {
-  if (level >= 85) return {
+  if (level >= 78) return {
     bg: "var(--color-primary-container)", text: "var(--color-on-primary-container)",
     bar: "var(--color-primary-container)",
   };
-  if (level >= 70) return {
+  if (level >= 65) return {
     bg: "var(--color-on-background)", text: "var(--color-background)",
     bar: "var(--color-on-background)",
   };
-  if (level >= 55) return {
+  if (level >= 50) return {
     bg: "var(--color-secondary-container)", text: "var(--color-on-secondary-container)",
     bar: "var(--color-secondary-container)",
   };
@@ -64,11 +64,11 @@ const SORT_OPTIONS = [
 ];
 
 const SKILL_LEVELS_OVERVIEW = [
-  { label: "Frontend Dev",        level: 82 },
-  { label: "Backend Dev",         level: 72 },
-  { label: "AI & Machine Learning", level: 78 },
-  { label: "Agentic AI & LLMs",   level: 86 },
-  { label: "DevOps & Cloud",       level: 68 },
+  { label: "Frontend Dev",        level: 72 },
+  { label: "Backend Dev",         level: 62 },
+  { label: "AI & Machine Learning", level: 68 },
+  { label: "Agentic AI & LLMs",   level: 76 },
+  { label: "DevOps & Cloud",       level: 58 },
 ];
 
 // ── Animated progress bar ─────────────────────────────────────
@@ -78,10 +78,10 @@ function AnimatedBar({ level, delay = 0, color }) {
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <div ref={ref} className="h-6 md:h-8 w-full border-4 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
+    <div ref={ref} className="h-6 md:h-8 w-full border-4 border-outline bg-[var(--color-surface)] overflow-hidden">
       <motion.div
         className="h-full w-full progress-bar-fill relative origin-left"
-        style={{ background: color, willChange: "transform" }}
+        style={{ background: "var(--color-on-background)", willChange: "transform" }}
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: level / 100 } : {}}
         transition={{ duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94], delay }}
@@ -124,8 +124,18 @@ function Skills() {
   useEffect(() => {
     const skillParam = searchParams.get("skill");
     if (skillParam) {
-      const skill = getSkillById(skillParam);
-      if (skill) { setSelectedSkill(skill); setSearchParams({}, { replace: true }); }
+      let skill = getSkillById(skillParam);
+      if (!skill) {
+        // Try fuzzy matching by name
+        const allSkills = Object.values(skills).flat();
+        const paramLower = skillParam.toLowerCase();
+        skill = allSkills.find(s => s.name.toLowerCase() === paramLower) || 
+                allSkills.find(s => s.name.toLowerCase().includes(paramLower) || paramLower.includes(s.name.toLowerCase()));
+      }
+      if (skill) { 
+        setSelectedSkill(skill); 
+        setSearchParams({}, { replace: true }); 
+      }
     }
   }, [searchParams, setSearchParams]);
 
@@ -137,10 +147,15 @@ function Skills() {
     Object.entries(skills).forEach(([category, categorySkills]) => {
       if (activeCategory === "all" || activeCategory === category) {
         let filtered = categorySkills.filter(
-          (s) =>
-            searchTerm === "" ||
-            s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            s.description.toLowerCase().includes(searchTerm.toLowerCase())
+          (s) => {
+            if (searchTerm === "") return true;
+            const term = searchTerm.toLowerCase();
+            const termNoSpace = term.replace(/\s+/g, '');
+            const nameLower = s.name.toLowerCase();
+            const nameNoSpace = nameLower.replace(/\s+/g, '');
+            const descLower = s.description.toLowerCase();
+            return nameLower.includes(term) || nameNoSpace.includes(termNoSpace) || descLower.includes(term);
+          }
         );
         if (sortBy === "level-desc")   filtered = [...filtered].sort((a, b) => b.level - a.level);
         if (sortBy === "level-asc")    filtered = [...filtered].sort((a, b) => a.level - b.level);
@@ -166,7 +181,7 @@ function Skills() {
     const all = Object.values(skills).flat();
     return all.length ? Math.round(all.reduce((s, x) => s + x.level, 0) / all.length) : 0;
   }, []);
-  const expertCount = useMemo(() => Object.values(skills).flat().filter((s) => s.level >= 80).length, []);
+  const expertCount = useMemo(() => Object.values(skills).flat().filter((s) => s.level >= 78).length, []);
 
   const getIcon = (iconName) => {
     const Icon = iconMap[iconName] || FaServer;
@@ -205,11 +220,11 @@ function Skills() {
           <StatCard value={totalSkills} label="Total Skills"  bg="var(--color-primary-container)" text="var(--color-on-primary-container)" shadow="var(--shadow-color)" />
           <StatCard value={Object.keys(skills).length} label="Categories"  bg="var(--color-surface)" text="var(--color-on-surface)" shadow="var(--shadow-color)" />
           <StatCard value={avgLevel}    label="Avg Level %"   bg="var(--color-on-background)" text="var(--color-background)" shadow="var(--shadow-accent)" />
-          <StatCard value={expertCount} label="Expert Level"  bg="var(--color-secondary)" text="#fff" shadow="var(--shadow-color)" />
+          <StatCard value={expertCount} label="Expert Level"  bg="var(--color-secondary)" text="var(--color-on-secondary)" shadow="var(--shadow-color)" />
         </motion.div>
 
         {/* Controls */}
-        <motion.div className="flex flex-col gap-6" variants={cardVariants}>
+        <motion.div className="flex flex-col gap-6 bg-hatch border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]" variants={cardVariants}>
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
             <div className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
               <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
@@ -378,10 +393,10 @@ function SkillListItem({ skill, icon, onClick }) {
         </div>
 
         <div className="hidden sm:flex flex-1 items-center gap-4">
-          <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
+          <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface)] overflow-hidden">
             <motion.div
               className="h-full w-full progress-bar-fill origin-left"
-              style={{ background: levelStyle.bar, willChange: "transform" }}
+              style={{ background: "var(--color-on-background)", willChange: "transform" }}
               initial={{ scaleX: 0 }}
               animate={inView ? { scaleX: skill.level / 100 } : {}}
               transition={{ duration: 0.7, ease: "easeOut" }}
@@ -467,10 +482,10 @@ function SkillGridCard({ skill, icon, onClick }) {
       </div>
 
       <div className="flex items-center gap-3" style={{ transform: "translateZ(10px)" }}>
-        <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
+        <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface)] overflow-hidden">
           <motion.div
             className="h-full w-full progress-bar-fill origin-left"
-            style={{ background: levelStyle.bar, willChange: "transform" }}
+            style={{ background: "var(--color-on-background)", willChange: "transform" }}
             initial={{ scaleX: 0 }}
             animate={inView ? { scaleX: skill.level / 100 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -538,7 +553,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         <div className="flex items-center gap-5 border-b-2 border-outline pb-5">
           <motion.div
             className="text-3xl p-3 border-2 border-outline shadow-[3px_3px_0px_0px_var(--shadow-accent)]"
-            style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
+            style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             initial={{ scale: 0.5, rotate: -10 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -547,7 +562,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
           </motion.div>
           <div>
             <h2 className="font-headline-xl text-2xl md:text-3xl uppercase text-[var(--color-on-surface)]">{skill.name}</h2>
-            <span className="font-label-bold bg-[var(--color-secondary)] text-white px-2 py-0.5 text-xs border-2 border-outline inline-block mt-1">{category}</span>
+            <span className="font-label-bold bg-[var(--color-secondary)] text-[var(--color-on-secondary)] px-2 py-0.5 text-xs border-2 border-outline inline-block mt-1">{category}</span>
           </div>
         </div>
 
@@ -557,10 +572,10 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
             <span>Proficiency</span>
             <span>{skill.level}% — {getProficiencyLabel(skill.level)}</span>
           </div>
-          <div className="h-6 w-full border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
+          <div className="h-6 w-full border-2 border-outline bg-[var(--color-surface)] overflow-hidden">
             <motion.div
               className="h-full w-full progress-bar-fill origin-left"
-              style={{ background: levelStyle.bar, willChange: "transform" }}
+              style={{ background: "var(--color-on-background)", willChange: "transform" }}
               initial={{ scaleX: 0 }}
               animate={{ scaleX: skill.level / 100 }}
               transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}

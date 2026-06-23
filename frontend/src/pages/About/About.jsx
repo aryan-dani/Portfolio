@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
   FaEnvelope,
-  FaFileDownload, FaArrowRight,
+  FaFileDownload, FaArrowRight, FaEye,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
 import GitHubStats from "../../components/GitHubStats/GitHubStats";
+import ResumeModal from "../../components/ResumeModal/ResumeModal";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
 
@@ -137,6 +138,7 @@ function About() {
   const { showToast } = useToast();
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 1000], [0, -60]);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   const copyEmail = () => {
     navigator.clipboard.writeText(aboutInfo.email);
@@ -265,20 +267,28 @@ function About() {
             <div className="flex flex-col gap-4">
               <Link
                 to="/contact"
-                className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all w-full cursor-none"
+                className="btn-cta-get-in-touch px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--color-background)] transition-all w-full cursor-none"
               >
                 <FaArrowRight />
                 <span>Get In Touch</span>
               </Link>
-              <a
-                href={getAssetPath(aboutInfo.resumeUrl)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-transparent text-[var(--color-background)] border-4 border-current px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full cursor-none"
-              >
-                <FaFileDownload className="text-3xl text-current" />
-                <span>Download Resume</span>
-              </a>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setIsResumeOpen(true)}
+                  className="bg-transparent text-[var(--color-background)] border-4 border-current px-4 py-4 font-label-bold text-sm sm:text-base uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
+                >
+                  <FaEye className="text-xl text-current" />
+                  <span>View Resume</span>
+                </button>
+                <a
+                  href={getAssetPath(aboutInfo.resumeUrl)}
+                  download="Aryan_Dani_Resume.pdf"
+                  className="bg-transparent text-[var(--color-background)] border-4 border-current px-4 py-4 font-label-bold text-sm sm:text-base uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full cursor-none"
+                >
+                  <FaFileDownload className="text-xl text-current" />
+                  <span>Download PDF</span>
+                </a>
+              </div>
             </div>
           </motion.div>
         </motion.div>
@@ -286,6 +296,9 @@ function About() {
 
       {/* GitHub Stats */}
       <GitHubStats />
+
+      {/* Resume Modal */}
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </motion.section>
   );
 }

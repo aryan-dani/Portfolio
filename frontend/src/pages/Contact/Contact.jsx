@@ -2,13 +2,14 @@ import { useState, useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaEnvelope, FaLinkedin, FaGithub, FaInstagram, FaTwitter,
-  FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy,
+  FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy, FaEye,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
+import ResumeModal from "../../components/ResumeModal/ResumeModal";
 
 const SUBJECT_OPTIONS = [
   "Freelance Project", "Collaboration", "Job Opportunity",
@@ -72,6 +73,7 @@ function Contact() {
   const [emailCopied, setEmailCopied] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
   const { showToast } = useToast();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -332,21 +334,36 @@ function Contact() {
           </motion.div>
 
           {/* Resume */}
-          <motion.a
-            href={getAssetPath(aboutInfo.resumeUrl)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border-4 border-outline p-6 flex items-center gap-4 shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+          <motion.div
+            className="border-4 border-outline p-6 flex flex-col gap-4 shadow-[4px_4px_0px_0px_var(--shadow-accent)] relative overflow-hidden"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             variants={itemVariants}
-            whileHover={{ scale: 1.01 }}
           >
-            <FaFileDownload className="text-3xl text-current" />
-            <div>
-              <div className="font-headline-md text-xl uppercase">Download Resume</div>
-              <div className="font-body-md text-sm opacity-60">PDF • Latest Version</div>
+            <div className="flex items-center gap-3 border-b-4 border-current pb-3">
+              <FaFileDownload className="text-3xl text-current" />
+              <div>
+                <div className="font-headline-md text-xl uppercase">My Resume</div>
+                <div className="font-body-md text-sm opacity-60">PDF • Latest Version</div>
+              </div>
             </div>
-          </motion.a>
+            <div className="grid grid-cols-2 gap-3 mt-1">
+              <button
+                onClick={() => setIsResumeOpen(true)}
+                className="bg-transparent text-[var(--color-background)] border-4 border-current px-3 py-3.5 font-label-bold text-sm uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
+              >
+                <FaEye className="text-lg text-current" />
+                <span>View</span>
+              </button>
+              <a
+                href={getAssetPath(aboutInfo.resumeUrl)}
+                download="Aryan_Dani_Resume.pdf"
+                className="bg-transparent text-[var(--color-background)] border-4 border-current px-3 py-3.5 font-label-bold text-sm uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full cursor-none flex-1"
+              >
+                <FaFileDownload className="text-lg text-current" />
+                <span>Download</span>
+              </a>
+            </div>
+          </motion.div>
 
           {/* FAQ */}
           <motion.div
@@ -400,6 +417,9 @@ function Contact() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Resume Modal */}
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </motion.section>
   );
 }

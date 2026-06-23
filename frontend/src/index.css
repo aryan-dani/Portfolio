@@ -232,6 +232,10 @@ html.theme-transitioning {
   outline-offset: 2px;
 }
 
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: none !important;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    SCROLLBAR
    ═══════════════════════════════════════════════════════════════ */
@@ -323,6 +327,21 @@ html.theme-transitioning {
     color-mix(in srgb, var(--color-outline) 18%, transparent) 8px
   );
   background-size: 20px 20px;
+}
+
+/* Custom CTA button for inverted background card (Let's Connect) */
+@utility btn-cta-get-in-touch {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  border: 4px solid var(--color-outline);
+  box-shadow: 6px 6px 0px 0px var(--color-background);
+}
+
+.dark .btn-cta-get-in-touch {
+  background-color: var(--color-on-background);
+  color: var(--color-background);
+  border-color: var(--color-background);
+  box-shadow: 6px 6px 0px 0px var(--color-background);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1125,21 +1144,6 @@ html.theme-transitioning {
   position: relative;
   overflow: hidden;
   contain: layout style paint;
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.25) 40%,
-      transparent 80%
-    );
-    animation: shimmer-transform 2.5s ease-in-out infinite;
-    will-change: transform;
-    transform: translateZ(0);
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════════

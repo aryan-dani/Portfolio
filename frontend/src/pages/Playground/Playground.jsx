@@ -357,7 +357,7 @@ function Playground() {
             e.stopPropagation();
             setIsExpanded(!isExpanded);
           }}
-          className="bg-[var(--color-primary-container)] border-2 border-outline text-[var(--color-on-primary-container)] px-3 py-1 text-xs font-bold uppercase cursor-none hover:bg-[var(--color-accent-warm)] transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+          className="bg-[var(--color-primary-container)] border-2 border-outline text-[var(--color-on-primary-container)] px-3 py-1 text-xs font-bold uppercase cursor-none hover:bg-[var(--color-surface)] hover:text-[var(--color-on-surface)] transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
         >
           {isExpanded ? "Collapse ↙" : "Expand ⛶"}
         </button>
