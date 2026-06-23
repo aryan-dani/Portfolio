@@ -412,7 +412,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         </div>
 
         {/* Hero Image Without Gradient */}
-        <div className="h-56 md:h-80 border-b-8 border-outline relative overflow-hidden bg-[var(--color-surface-variant)]">
+        <div className="h-56 md:h-80 border-b-8 border-outline relative overflow-hidden bg-[var(--color-surface-variant)] shrink-0">
           <motion.img
             initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
@@ -423,7 +423,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
           />
         </div>
 
-        <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-6 md:gap-8 bg-hatch overflow-x-hidden">
+        <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-6 md:gap-8 bg-hatch">
           {/* Main Header Card */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 bg-[var(--color-surface)] border-4 border-outline p-5 sm:p-6 md:p-8 shadow-[4px_4px_0px_0px_var(--shadow-color)] md:shadow-[8px_8px_0px_0px_var(--shadow-color)] -mt-12 sm:-mt-16 md:-mt-24 z-10 relative">
             <div className="flex flex-col gap-3">

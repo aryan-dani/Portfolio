@@ -67,13 +67,15 @@ export default function ResumeModal({ isOpen, onClose }) {
               </div>
             </div>
 
-            {/* Native Iframe PDF Viewer */}
-            <div className="grow w-full bg-[var(--color-surface-variant)] relative">
-              <iframe
-                src={`${resumePath}#toolbar=0`}
-                title="Resume PDF Viewer"
-                className="w-full h-full border-0"
-              />
+            {/* Scrollable Wrapper with pointer-events-none on Iframe to preserve custom cursor */}
+            <div className="grow w-full overflow-y-auto bg-[var(--color-surface-variant)] p-4 md:p-6 no-scrollbar">
+              <div className="w-full max-w-3xl mx-auto border-4 border-outline shadow-[6px_6px_0px_0px_var(--shadow-color)] pointer-events-none select-none bg-white">
+                <iframe
+                  src={`${resumePath}#toolbar=0&navpanes=0`}
+                  title="Resume PDF Viewer"
+                  className="w-full h-[1150px] md:h-[1200px] border-0"
+                />
+              </div>
             </div>
           </motion.div>
         </div>
