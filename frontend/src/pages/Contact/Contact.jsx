@@ -97,15 +97,48 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const subject = encodeURIComponent(`[Portfolio] ${formData.subject || "Contact"} from ${formData.name}`);
-    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`);
-    await new Promise((r) => setTimeout(r, 500));
-    window.location.href = `mailto:${aboutInfo.email}?subject=${subject}&body=${body}`;
-    setIsSubmitting(false);
-    setSubmitted(true);
-    setShowConfetti(true);
-    showToast("Opening email client...", "info");
-    setTimeout(() => { setSubmitted(false); setShowConfetti(false); }, 3500);
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${aboutInfo.email}`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject || "Portfolio Contact",
+          message: formData.message,
+          _subject: `[Portfolio] ${formData.subject || "Contact"} from ${formData.name}`
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success === "true") {
+        setSubmitted(true);
+        setShowConfetti(true);
+        showToast("Message sent successfully!", "success");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        throw new Error(result.message || "Failed to send message");
+      }
+    } catch (error) {
+      console.error("FormSubmit Error:", error);
+      showToast("Direct send failed. Opening email client instead...", "warning");
+      
+      // Fallback to mailto link
+      const subject = encodeURIComponent(`[Portfolio] ${formData.subject || "Contact"} from ${formData.name}`);
+      const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`);
+      window.location.href = `mailto:${aboutInfo.email}?subject=${subject}&body=${body}`;
+      
+      setSubmitted(true);
+      setShowConfetti(true);
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => { setSubmitted(false); setShowConfetti(false); }, 3500);
+    }
   };
 
   const copyEmail = () => {
