@@ -27,6 +27,13 @@ export const snappySpring = {
   mass: 0.7,
 };
 
+/** Standard hover spring */
+export const hoverSpring = {
+  type: "spring",
+  stiffness: 400,
+  damping: 20,
+};
+
 /** Stagger container — fades in and staggers children */
 export const containerVariants = {
   hidden: { opacity: 0 },

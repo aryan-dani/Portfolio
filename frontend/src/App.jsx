@@ -100,30 +100,7 @@ function PageTransition({ children, direction, isFirstRender }) {
   );
 }
 
-// Monochrome wipe overlay that sweeps across screen on route change
-function FlashOverlay({ locationKey, direction }) {
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={locationKey}
-        initial={{ x: direction > 0 ? "100%" : "-100%" }}
-        animate={{
-          x: direction > 0 ? ["100%", "0%", "-100%"] : ["-100%", "0%", "100%"],
-        }}
-        transition={{
-          duration: 0.5,
-          times: [0, 0.45, 1],
-          ease: motionEase.inOut,
-        }}
-        className="fixed inset-0 z-99999 pointer-events-none border-x-4 border-outline"
-        style={{
-          background: "var(--color-on-background)",
-          opacity: 0.92,
-        }}
-      />
-    </AnimatePresence>
-  );
-}
+
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -151,9 +128,6 @@ function AnimatedRoutes() {
 
   return (
     <>
-      {!isFirstRender && (
-        <FlashOverlay locationKey={location.pathname} direction={direction} />
-      )}
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           {routeConfig.map(({ index, path, component: Component }) => (

@@ -16,8 +16,9 @@ import { skills, skillCategories, getSkillById, getSkillCategory } from "../../d
 import { getProjectsForSkill } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
 import { useCountUp } from "../../hooks/useCountUp";
-import { containerVariants, cardVariants } from "../../utils/motionVariants";
+import { containerVariants, cardVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
 import { useModalLock } from "../../hooks/useModalLock";
+import StatCard from "../../components/StatCard/StatCard";
 
 const iconMap = {
   FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
@@ -87,26 +88,6 @@ function AnimatedBar({ level, delay = 0, color }) {
         transition={{ duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94], delay }}
       />
     </div>
-  );
-}
-
-// ── Stat card with count-up ───────────────────────────────────
-
-function StatCard({ value, label, bg, text, shadow }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  const displayVal = useCountUp(value, { duration: 1600, trigger: inView });
-  return (
-    <motion.div
-      ref={ref}
-      className="border-4 border-outline p-4 text-center"
-      style={{ background: bg, color: text, boxShadow: `4px 4px 0px 0px ${shadow}` }}
-      variants={cardVariants}
-      whileHover={{ y: -3, x: -3, boxShadow: `8px 8px 0px 0px ${shadow}`, transition: { type: "spring", stiffness: 400, damping: 20 } }}
-    >
-      <div className="font-headline-xl text-4xl md:text-5xl font-black">{displayVal}</div>
-      <div className="font-label-bold text-xs uppercase mt-1 opacity-80">{label}</div>
-    </motion.div>
   );
 }
 
@@ -372,8 +353,8 @@ function SkillListItem({ skill, icon, onClick }) {
       className="w-full text-left bg-[var(--color-surface)] border-2 border-outline p-3 md:p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group"
       initial={{ opacity: 0, x: -20 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ type: "spring", stiffness: 280, damping: 22 }}
-      whileHover={{ y: -3, x: -3, boxShadow: "8px 8px 0px 0px var(--shadow-color)", transition: { type: "spring", stiffness: 400, damping: 20 } }}
+      transition={defaultSpring}
+      whileHover={{ y: -3, x: -3, boxShadow: "8px 8px 0px 0px var(--shadow-color)", transition: hoverSpring }}
       onClick={onClick}
     >
       <div className="flex items-center gap-4">
@@ -382,7 +363,7 @@ function SkillListItem({ skill, icon, onClick }) {
             className="text-xl p-2 border-2 border-outline shrink-0"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             whileHover={{ scale: 1.15, rotate: 5, boxShadow: "0 0 12px var(--color-on-background)" }}
-            transition={{ type: "spring", stiffness: 500, damping: 20 }}
+            transition={hoverSpring}
           >
             {icon}
           </motion.div>
@@ -451,8 +432,8 @@ function SkillGridCard({ skill, icon, onClick }) {
       className="w-full text-left bg-[var(--color-surface)] border-2 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group flex flex-col gap-3"
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0, rotateX: tilt.x, rotateY: tilt.y } : {}}
-      transition={{ type: "spring", stiffness: 280, damping: 22 }}
-      whileHover={{ y: -4, x: -4, boxShadow: "10px 10px 0px 0px var(--shadow-color)" }}
+      transition={defaultSpring}
+      whileHover={{ y: -4, x: -4, boxShadow: "10px 10px 0px 0px var(--shadow-color)", transition: hoverSpring }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
@@ -464,7 +445,7 @@ function SkillGridCard({ skill, icon, onClick }) {
             className="text-xl p-2 border-2 border-outline"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             whileHover={{ scale: 1.15, boxShadow: "0 0 12px var(--color-on-background)" }}
-            transition={{ type: "spring", stiffness: 500, damping: 20 }}
+            transition={hoverSpring}
           >
             {icon}
           </motion.div>
@@ -540,7 +521,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         initial={{ scale: 0.93, opacity: 0, y: 28 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        transition={{ type: "spring", stiffness: 380, damping: 28 }}
+        transition={{ ...defaultSpring, damping: 28 }}
       >
         <button
           onClick={onClose}
@@ -556,7 +537,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             initial={{ scale: 0.5, rotate: -10 }}
             animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            transition={hoverSpring}
           >
             {icon}
           </motion.div>

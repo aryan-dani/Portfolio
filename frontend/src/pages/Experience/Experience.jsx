@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useSpring, useInView } from "framer-motion";
 import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
-import { containerVariants } from "../../utils/motionVariants";
+import { containerVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
 import { getAssetPath } from "../../utils/paths";
 
 const CARD_STYLES = [
@@ -43,7 +43,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
         y: -4,
         x: -4,
         boxShadow: `14px 14px 0px 0px ${style.shadow}`,
-        transition: { type: "spring", stiffness: 300, damping: 20 },
+        transition: hoverSpring,
       }}
     >
       <button
@@ -76,7 +76,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
         <motion.div
           className="shrink-0 w-8 h-8 border-4 border-current flex items-center justify-center mt-1"
           animate={{ rotate: isExpanded ? 180 : 0 }}
-          transition={{ type: "spring", stiffness: 400, damping: 28 }}
+          transition={{ ...defaultSpring, damping: 28 }}
         >
           <FaChevronDown className="text-sm" />
         </motion.div>
@@ -89,7 +89,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 320, damping: 32 }}
+            transition={{ ...defaultSpring, damping: 32 }}
             className="overflow-hidden"
           >
             <div className="p-5 md:p-6 border-t-4 border-outline flex flex-col gap-5">
@@ -133,7 +133,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                         rotate: techIdx % 2 === 0 ? 2 : -2,
                         boxShadow: "4px 4px 0px 0px var(--shadow-color)",
                       }}
-                      transition={{ type: "spring", stiffness: 450, damping: 14 }}
+                      transition={defaultSpring}
                     >
                       {tech}
                     </motion.button>
@@ -170,7 +170,7 @@ function PeriodBadge({ exp, alignRight = false }) {
         y: -3,
         x: alignRight ? 3 : -3,
         boxShadow: "8px 8px 0px 0px var(--shadow-color)",
-        transition: { type: "spring", stiffness: 400, damping: 20 },
+        transition: hoverSpring,
       }}
     >
       <p className="font-headline-md text-lg uppercase">{exp.period}</p>
@@ -199,7 +199,7 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
       className="relative z-10 w-full mb-10 md:mb-16 grid grid-cols-1 md:grid-cols-[1fr_80px_1fr] items-center gap-4 md:gap-0"
       initial={{ opacity: 0, x: isEven ? -60 : 60 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ type: "spring", stiffness: 240, damping: 24, delay: index * 0.05 }}
+      transition={{ ...defaultSpring, delay: index * 0.05 }}
     >
       {/* Column 1 (Left): Card if Even, Period if Odd */}
       {isEven ? (
@@ -218,7 +218,7 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
             style={style.dot}
             initial={{ scale: 0 }}
             animate={inView ? { scale: 1 } : {}}
-            transition={{ type: "spring", stiffness: 500, damping: 20, delay: index * 0.05 + 0.15 }}
+            transition={{ ...defaultSpring, delay: index * 0.05 + 0.15 }}
           />
           {inView && (
             <motion.div
@@ -271,8 +271,8 @@ function Experience() {
           className="inline-block bg-[var(--color-primary-container)] border-4 border-outline px-6 md:px-8 py-4 md:py-6 mb-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 280, damping: 22 }}
-          whileHover={{ x: -3, y: -3, boxShadow: "14px 14px 0px 0px var(--shadow-color)" }}
+          transition={defaultSpring}
+          whileHover={{ x: -3, y: -3, boxShadow: "14px 14px 0px 0px var(--shadow-color)", transition: hoverSpring }}
         >
           <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl uppercase text-[var(--color-on-primary-container)]">
             EXPERIENCE
@@ -282,7 +282,7 @@ function Experience() {
           className="font-body-lg text-base md:text-lg lg:text-body-lg max-w-3xl bg-[var(--color-surface)] border-4 border-outline p-4 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] text-[var(--color-on-surface)]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 280, damping: 22, delay: 0.1 }}
+          transition={{ ...defaultSpring, delay: 0.1 }}
         >
           A timeline of raw code, loud design, and shipped products. Building
           stuff that matters.

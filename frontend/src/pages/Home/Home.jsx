@@ -8,6 +8,8 @@ import { certifications } from "../../data/certifications";
 import { getAssetPath } from "../../utils/paths";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import { useCountUp } from "../../hooks/useCountUp";
+import StatCard from "../../components/StatCard/StatCard";
+import MagneticLink from "../../components/MagneticLink/MagneticLink";
 
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
@@ -22,84 +24,6 @@ const carouselVariants = {
 // ─── Data ─────────────────────────────────────────────────────
 
 const roles = ["Web Developer", "AI Engineer", "Tech Enthusiast", "Problem Solver"];
-
-// ─── Animated Stat Card ────────────────────────────────────────
-
-function StatCard({ value, isPlus, label, bg, delay }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const displayNum = useCountUp(typeof value === "number" ? value : parseInt(value), {
-    duration: 1600,
-    trigger: inView,
-  });
-
-  const bgStyle = bg === "accent"
-    ? { background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }
-    : bg === "dark"
-    ? { background: "var(--color-on-background)", color: "var(--color-background)" }
-    : { background: "var(--color-surface)", color: "var(--color-on-surface)" };
-
-  return (
-    <motion.div
-      ref={ref}
-      className="border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] text-center"
-      style={bgStyle}
-      initial={{ opacity: 0, y: 40, scale: 0.88 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ type: "spring", stiffness: 350, damping: 18, delay }}
-      whileHover={{
-        y: -4,
-        x: -4,
-        boxShadow: "8px 8px 0px 0px var(--shadow-color)",
-        transition: { type: "spring", stiffness: 400, damping: 20 },
-      }}
-    >
-      <div className="font-headline-xl text-3xl md:text-4xl font-black">
-        {displayNum}{isPlus && "+"}
-      </div>
-      <div className="font-label-bold text-xs uppercase mt-1 tracking-wider opacity-80">
-        {label}
-      </div>
-    </motion.div>
-  );
-}
-
-
-
-// ─── Magnetic Button ──────────────────────────────────────────
-
-function MagneticLink({ to, className, children }) {
-  const ref = useRef(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = useCallback((e) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = (e.clientX - cx) * 0.25;
-    const dy = (e.clientY - cy) * 0.25;
-    setOffset({ x: dx, y: dy });
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setOffset({ x: 0, y: 0 });
-  }, []);
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      animate={{ x: offset.x, y: offset.y }}
-      transition={{ type: "spring", stiffness: 350, damping: 20 }}
-    >
-      <Link to={to} className={className}>
-        {children}
-      </Link>
-    </motion.div>
-  );
-}
 
 // ─── Page ─────────────────────────────────────────────────────
 
@@ -194,9 +118,9 @@ const Home = memo(function Home() {
         className="grid grid-cols-3 gap-4 w-full"
         variants={itemVariants}
       >
-        <StatCard value={totalProjects} label="Projects"      bg="accent" delay={0} />
-        <StatCard value={totalSkills}   isPlus label="Skills" bg="dark"   delay={0.08} />
-        <StatCard value={totalCerts}    label="Certifications" bg="light" delay={0.16} />
+        <StatCard value={totalProjects} label="Projects"      bg="var(--color-primary-container)" text="var(--color-on-primary-container)" delay={0} />
+        <StatCard value={totalSkills}   isPlus label="Skills" bg="var(--color-on-background)" text="var(--color-background)" delay={0.08} />
+        <StatCard value={totalCerts}    label="Certifications" bg="var(--color-surface)" text="var(--color-on-surface)" delay={0.16} />
       </motion.div>
 
       {/* Marquee strip */}
