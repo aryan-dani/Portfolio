@@ -14,24 +14,24 @@ export const motionEase = {
 /** Default spring — soft landing with minimal bounce */
 export const defaultSpring = {
   type: "spring",
-  stiffness: 180,
-  damping: 32,
-  mass: 0.85,
+  stiffness: 170,
+  damping: 30,
+  mass: 0.75,
 };
 
 /** Snappier spring for micro-interactions (buttons, toggles) */
 export const snappySpring = {
   type: "spring",
-  stiffness: 260,
-  damping: 28,
-  mass: 0.7,
+  stiffness: 300,
+  damping: 26,
+  mass: 0.65,
 };
 
 /** Standard hover spring */
 export const hoverSpring = {
   type: "spring",
-  stiffness: 400,
-  damping: 20,
+  stiffness: 260,
+  damping: 30,
 };
 
 /** Stagger container — fades in and staggers children */
@@ -41,8 +41,8 @@ export const containerVariants = {
     opacity: 1,
     transition: {
       duration: 0.5,
-      staggerChildren: 0.1,
-      delayChildren: 0.06,
+      staggerChildren: 0.045,
+      delayChildren: 0.035,
       ease: motionEase.out,
     },
   },
@@ -58,8 +58,8 @@ export const gridContainerVariants = {
     opacity: 1,
     transition: {
       duration: 0.45,
-      staggerChildren: 0.07,
-      delayChildren: 0.04,
+      staggerChildren: 0.035,
+      delayChildren: 0.025,
       ease: motionEase.out,
     },
   },
@@ -67,7 +67,7 @@ export const gridContainerVariants = {
 
 /** Slide-up item — smooth spring-based reveal */
 export const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
@@ -77,7 +77,7 @@ export const itemVariants = {
 
 /** Card variant — gentle spring for grids */
 export const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 14 },
   visible: {
     opacity: 1,
     y: 0,
@@ -87,21 +87,14 @@ export const cardVariants = {
 
 /** Route/page transition — directional slide with soft spring */
 export const pageVariants = {
-  initial: (direction) => ({
-    x: direction > 0 ? 24 : -24,
-    opacity: 0,
-  }),
+  initial: { opacity: 0, y: 8 },
   animate: {
-    x: 0,
     opacity: 1,
+    y: 0,
     transitionEnd: { transform: "none" },
-    transition: defaultSpring,
+    transition: { duration: 0.24, ease: motionEase.out },
   },
-  exit: (direction) => ({
-    x: direction > 0 ? -18 : 18,
-    opacity: 0,
-    transition: { duration: 0.28, ease: motionEase.in },
-  }),
+  exit: { opacity: 0, y: -6, transition: { duration: 0.14, ease: motionEase.in } },
 };
 
 /** Modal backdrop — smooth opacity fade */
@@ -113,20 +106,18 @@ export const modalBackdropVariants = {
 
 /** Modal content — refined spring scale-in from slightly below */
 export const modalContentVariants = {
-  hidden: { opacity: 0, scale: 0.94, y: 28, filter: "blur(6px)" },
+  hidden: { opacity: 0, scale: 0.98, y: 12 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { ...defaultSpring, stiffness: 200 },
   },
   exit: {
     opacity: 0,
-    scale: 0.96,
-    y: 16,
-    filter: "blur(4px)",
-    transition: { duration: 0.26, ease: motionEase.in },
+    scale: 0.98,
+    y: 8,
+    transition: { duration: 0.16, ease: motionEase.in },
   },
 };
 

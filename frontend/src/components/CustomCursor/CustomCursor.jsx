@@ -10,6 +10,7 @@ import { useTheme } from "../../context/ThemeContext";
    ──────────────────────────────────────────────────────────── */
 const LIGHT = "#f8f7f4";
 const DARK  = "#131316";
+const NATIVE_CURSOR_KEY = "portfolio_native_cursor";
 
 const parseColor = (str) => {
   if (!str || str === "transparent" || str === "rgba(0, 0, 0, 0)") return null;
@@ -46,6 +47,9 @@ const CustomCursor = memo(function CustomCursor() {
   const [cursorState, setCursorState] = useState("default");
   const [onDarkBg, setOnDarkBg] = useState(isDark);
   const [isVisible, setIsVisible] = useState(false);
+  const [nativeCursor, setNativeCursor] = useState(
+    () => localStorage.getItem(NATIVE_CURSOR_KEY) === "true",
+  );
 
   const innerRef = useRef(null);
   const outerRef = useRef(null);
@@ -65,7 +69,22 @@ const CustomCursor = memo(function CustomCursor() {
   }, [theme, isDark]);
 
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    document.documentElement.classList.toggle("native-cursor", nativeCursor);
+    localStorage.setItem(NATIVE_CURSOR_KEY, String(nativeCursor));
+  }, [nativeCursor]);
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.ctrlKey && event.altKey && event.key.toLowerCase() === "c") {
+        setNativeCursor((current) => !current);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (nativeCursor || window.matchMedia("(pointer: coarse)").matches) return;
 
     const tick = () => {
       const targetX = mousePosRef.current.x;
@@ -114,6 +133,8 @@ const CustomCursor = memo(function CustomCursor() {
 
     const onMouseMove = (e) => {
       mousePosRef.current = { x: e.clientX, y: e.clientY };
+      document.documentElement.style.setProperty("--cursor-x", `${e.clientX}px`);
+      document.documentElement.style.setProperty("--cursor-y", `${e.clientY}px`);
 
       if (!isVisible) {
         setIsVisible(true);
@@ -141,7 +162,7 @@ const CustomCursor = memo(function CustomCursor() {
       if (!target || !target.closest) return;
 
       const el = target.closest("a, button, [role='button'], .cursor-pointer, .nb-carousel-arrow");
-      const img = target.closest("img, .cursor-image");
+      const img = target.closest("img, canvas, .cursor-image");
       const input = target.closest("input, textarea, select");
       const isCliText = target.closest(".nb-cli-container") && !target.closest("input");
 
@@ -177,7 +198,9 @@ const CustomCursor = memo(function CustomCursor() {
       document.removeEventListener("mouseenter", onMouseEnter);
       window.removeEventListener("mouseover", handleHoverChange);
     };
-  }, [isVisible, isDark]);
+  }, [isVisible, isDark, nativeCursor]);
+
+  if (nativeCursor) return null;
 
   const primaryColor = onDarkBg ? LIGHT : DARK;
   const invertedColor = onDarkBg ? DARK : LIGHT;

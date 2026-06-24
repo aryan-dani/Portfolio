@@ -67,6 +67,6 @@ export default defineConfig({
   },
   // Optimize deps
   optimizeDeps: {
-    include: ["react", "react-dom", "react-router-dom", "framer-motion"],
+    include: ["react", "react-dom", "react-router-dom", "framer-motion", "lenis"],
   },
 });

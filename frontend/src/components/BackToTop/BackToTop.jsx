@@ -50,7 +50,7 @@ const BackToTop = memo(function BackToTop() {
     <AnimatePresence>
       {showButton && (
         <motion.div
-          className="fixed bottom-8 right-8 z-[999]"
+          className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-[999]"
           initial={{ opacity: 0, scale: 0.6, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
@@ -65,14 +65,7 @@ const BackToTop = memo(function BackToTop() {
             whileHover={isScrolling ? undefined : { scale: 1.06 }}
             whileTap={isScrolling ? undefined : { scale: 0.94 }}
           >
-            <motion.div
-              animate={isScrolling ? { y: 0 } : { y: [0, -4, 0] }}
-              transition={
-                isScrolling
-                  ? { duration: 0.2 }
-                  : { duration: 2.2, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }
-              }
-            >
+            <motion.div animate={{ y: 0 }} transition={{ duration: 0.2 }}>
               <FaArrowUp />
             </motion.div>
           </motion.button>

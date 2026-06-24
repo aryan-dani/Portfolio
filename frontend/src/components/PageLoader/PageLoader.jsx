@@ -31,7 +31,7 @@ const PageLoader = memo(function PageLoader() {
     }
  
     if (phase !== PHASES.GLITCH) return;
-    const duration = 2000; // Slower sweep time
+    const duration = 1250;
     const startTime = performance.now();
     let animationFrameId;
 
@@ -51,7 +51,7 @@ const PageLoader = memo(function PageLoader() {
         }
 
         const charSweepTime = (i / TARGET_TEXT.length) * (duration * 0.7);
-        const scrambleDuration = 300; // Slower scramble window
+        const scrambleDuration = 160;
 
         if (elapsed < charSweepTime) {
           charsRef.current[i].textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
@@ -69,7 +69,7 @@ const PageLoader = memo(function PageLoader() {
         animationFrameId = requestAnimationFrame(updateLoader);
       } else {
         setIsGlitchDone(true);
-        setTimeout(() => setPhase(PHASES.TERMINAL), 1200);
+        setTimeout(() => setPhase(PHASES.TERMINAL), 420);
       }
     };
 
@@ -94,12 +94,12 @@ const PageLoader = memo(function PageLoader() {
     }, 35);
 
     const timers = [
-      setTimeout(() => setTerminalStep(1), 200),
-      setTimeout(() => setTerminalStep(2), 700),
-      setTimeout(() => setTerminalStep(3), 1300),
-      setTimeout(() => setTerminalStep(4), 2000),
-      setTimeout(() => setTerminalStep(5), 2600),
-      setTimeout(() => setPhase(PHASES.EXIT), 3600),
+      setTimeout(() => setTerminalStep(1), 140),
+      setTimeout(() => setTerminalStep(2), 420),
+      setTimeout(() => setTerminalStep(3), 780),
+      setTimeout(() => setTerminalStep(4), 1120),
+      setTimeout(() => setTerminalStep(5), 1450),
+      setTimeout(() => setPhase(PHASES.EXIT), 1900),
     ];
 
     return () => {
@@ -111,7 +111,7 @@ const PageLoader = memo(function PageLoader() {
   // Phase 3: Exit Shutter Panel Transition
   useEffect(() => {
     if (phase !== PHASES.EXIT) return;
-    const exitTimer = setTimeout(() => setIsLoading(false), 1200);
+    const exitTimer = setTimeout(() => setIsLoading(false), 720);
     return () => clearTimeout(exitTimer);
   }, [phase]);
 
@@ -152,7 +152,7 @@ const PageLoader = memo(function PageLoader() {
                       className="absolute top-0 bottom-0 w-[4px] bg-[var(--color-outline)] z-20 pointer-events-none"
                       initial={{ left: "0%" }}
                       animate={{ left: "100%" }}
-                      transition={{ duration: 2.0, ease: "linear" }}
+                      transition={{ duration: 1.25, ease: "linear" }}
                       style={{ boxShadow: "0 0 12px var(--color-outline)" }}
                     />
                     {TARGET_TEXT.split("").map((_, i) => (

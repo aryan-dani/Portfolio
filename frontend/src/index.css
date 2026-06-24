@@ -10,6 +10,7 @@
   --color-accent-warm: #26262b;    /* slightly lifted charcoal — hover states */
   --color-accent-cool: #3c3c43;    /* medium charcoal */
   --color-accent-dark: #09090b;    /* near-black — pressed/active */
+  --color-accent-electric: #131316; /* monochrome highlight */
 
   /* ── Semantic surface colors (light) ── */
   --color-background: #f8f7f4;     /* neutral warm off-white (paper style) */
@@ -169,6 +170,7 @@
   --shadow-color: rgba(244, 243, 239, 0.25);
   --shadow-accent: #94928d;
   --glow-accent: rgba(255, 255, 255, 0.1);
+  --color-accent-electric: #f4f3ef;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -180,6 +182,23 @@ html {
 
 html.dark {
   color-scheme: dark;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
@@ -214,6 +233,11 @@ html.theme-transitioning {
 @media (hover: hover) and (pointer: fine) {
   * {
     cursor: none !important;
+  }
+
+  html.native-cursor,
+  html.native-cursor * {
+    cursor: auto !important;
   }
 }
 
@@ -619,7 +643,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
     transparent 80%
   );
   background-size: 200% 100%;
-  animation: shimmer 4s ease-in-out infinite;
+  animation: shimmer 7s ease-in-out infinite;
   contain: layout style paint;
 }
 
@@ -634,7 +658,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2.5s ease-in-out infinite;
+  animation: none;
+  box-shadow: 8px 8px 0 var(--shadow-color);
 }
 
 .animate-grain {
@@ -798,7 +823,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   background: var(--color-outline);
   padding: 0 4px;
   margin: 0 2px;
-  animation: char-flash 0.08s step-end infinite;
+  animation: none;
   will-change: color, background;
 }
 
@@ -1101,6 +1126,32 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .dark .noise-overlay {
   opacity: 0.018;
   mix-blend-mode: soft-light;
+}
+
+@utility scanline-overlay {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 3px,
+      color-mix(in srgb, var(--color-outline) 6%, transparent) 3px,
+      color-mix(in srgb, var(--color-outline) 6%, transparent) 4px
+    );
+    opacity: 0.28;
+    mix-blend-mode: soft-light;
+  }
+}
+
+@utility accent-glow {
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--color-accent-electric) 20%, transparent),
+    8px 8px 0 0 var(--shadow-color);
 }
 
 /* ═══════════════════════════════════════════════════════════════

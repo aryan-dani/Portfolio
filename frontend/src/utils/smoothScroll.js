@@ -4,6 +4,14 @@ function easeInOutCubic(t) {
 
 export function smoothScrollTo(top = 0) {
   return new Promise((resolve) => {
+    if (window.__portfolioLenis) {
+      window.__portfolioLenis.scrollTo(top, {
+        duration: 1.05,
+        onComplete: resolve,
+      });
+      return;
+    }
+
     const startY = window.scrollY || document.documentElement.scrollTop || 0;
     const distance = top - startY;
     const duration = 800; // Fixed 800ms for a consistent, smooth feel

@@ -1,15 +1,14 @@
-import { memo, useState, useEffect, useCallback, useRef } from "react";
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { memo } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { aboutInfo } from "../../data/experience";
 import { projects } from "../../data/projects";
 import { skills } from "../../data/skills";
 import { certifications } from "../../data/certifications";
 import { getAssetPath } from "../../utils/paths";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
-import { useCountUp } from "../../hooks/useCountUp";
 import StatCard from "../../components/StatCard/StatCard";
 import MagneticLink from "../../components/MagneticLink/MagneticLink";
+import HeroShowcase from "../../components/HeroShowcase/HeroShowcase";
 
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
@@ -28,6 +27,9 @@ const roles = ["Web Developer", "AI Engineer", "Tech Enthusiast", "Problem Solve
 // ─── Page ─────────────────────────────────────────────────────
 
 const Home = memo(function Home() {
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 0.35], [0, -80]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.94]);
   const totalProjects = projects.length;
   const totalSkills   = Object.values(skills).flat().length;
   const totalCerts    = certifications.length;
@@ -104,12 +106,13 @@ const Home = memo(function Home() {
           </motion.div>
         </div>
 
-        {/* Carousel Placeholder / Blank Space */}
+        {/* Signature 3D showcase */}
         <motion.div
           className="flex-1 w-full flex justify-center lg:justify-end mt-8 lg:mt-0"
           variants={carouselVariants}
+          style={{ y: heroY, scale: heroScale }}
         >
-          {/* Moved to About page */}
+          <HeroShowcase />
         </motion.div>
       </div>
 

@@ -18,10 +18,19 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
       className="w-full h-full"
     >
       <motion.article
-        className={`bg-[var(--color-surface)] border-4 border-outline hover:border-secondary transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full ${
+        className={`group bg-[var(--color-surface)] border-4 border-outline hover:border-secondary transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full ${
           isHighlighted ? "ring-4 ring-[var(--color-primary-container)] ring-offset-2" : ""
         }`}
         onClick={() => onOpenModal(project)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onOpenModal(project);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label={`Open details for ${project.title}`}
         whileHover={{
           y: -6,
           x: -6,

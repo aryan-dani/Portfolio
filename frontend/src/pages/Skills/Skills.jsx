@@ -13,12 +13,12 @@ import {
   SiSupabase, SiOpencv, SiDocker, SiVite, SiFirebase, SiVercel,
 } from "react-icons/si";
 import { skills, skillCategories, getSkillById, getSkillCategory } from "../../data/skills";
-import { getProjectsForSkill } from "../../data/projects";
+import { getProjectsForSkill, projects } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
-import { useCountUp } from "../../hooks/useCountUp";
 import { containerVariants, cardVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
 import { useModalLock } from "../../hooks/useModalLock";
 import StatCard from "../../components/StatCard/StatCard";
+import SkillsGraph from "../../components/SkillsGraph/SkillsGraph";
 
 const iconMap = {
   FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
@@ -55,7 +55,7 @@ function getLevelStyle(level) {
   };
 }
 
-const VIEW_MODES = { GRID: "grid", LIST: "list" };
+const VIEW_MODES = { GRID: "grid", LIST: "list", GRAPH: "graph" };
 const SORT_OPTIONS = [
   { id: "default",       label: "Default" },
   { id: "level-desc",   label: "Highest" },
@@ -226,6 +226,7 @@ function Skills() {
               {[
                 { mode: VIEW_MODES.GRID, label: "▦ Grid" },
                 { mode: VIEW_MODES.LIST, label: "☰ List" },
+                { mode: VIEW_MODES.GRAPH, label: "◇ Graph" },
               ].map(({ mode, label }) => (
                 <button
                   key={mode}
@@ -281,7 +282,20 @@ function Skills() {
 
         {/* Skill content */}
         <AnimatePresence mode="wait">
-          {viewMode === VIEW_MODES.LIST ? (
+          {viewMode === VIEW_MODES.GRAPH ? (
+            <motion.div key="graph" variants={containerVariants} initial="hidden" animate="visible">
+              {flatSkills.length > 0 ? (
+                <SkillsGraph
+                  skills={flatSkills}
+                  projects={projects}
+                  onSkillClick={(skill) => setSelectedSkill(skill)}
+                  onProjectClick={(id) => navigate(`/projects?highlight=${id}`)}
+                />
+              ) : (
+                <EmptyState />
+              )}
+            </motion.div>
+          ) : viewMode === VIEW_MODES.LIST ? (
             <motion.div key="list" className="flex flex-col gap-4" variants={containerVariants} initial="hidden" animate="visible">
               {flatSkills.length > 0
                 ? flatSkills.map((skill) => (

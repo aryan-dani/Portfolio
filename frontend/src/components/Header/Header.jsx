@@ -5,6 +5,7 @@ import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../../context/ThemeContext";
 import { snappySpring, defaultSpring } from "../../utils/motionVariants";
+import { useScrollVisibility } from "../../hooks/useScrollVisibility";
 
 const navItems = [
   { path: "/projects", label: "Projects" },
@@ -38,35 +39,17 @@ const menuItemVariants = {
 const motionEase = { out: [0.22, 1, 0.36, 1] };
 
 function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+  const { isVisible, isScrolled } = useScrollVisibility({
+    topThreshold: 84,
+    deltaThreshold: 16,
+  });
 
-  // Detect scroll for header shrink effect and auto-hide
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Shadow toggle logic
-      const scrolled = currentScrollY > 40;
-      setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
-
-      // Auto-hide logic
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        setIsVisible(false);
-        setIsMenuOpen(false); // Close menu on scroll down
-      } else {
-        setIsVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+    if (!isVisible) setIsMenuOpen(false);
+  }, [isVisible]);
 
   const handleToggleTheme = () => {
     toggleTheme();
@@ -74,20 +57,18 @@ function Header() {
 
   return (
     <>
-      <AnimatePresence>
-        {isVisible && (
-          <motion.nav
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 400, damping: 30, mass: 0.8 }}
-            className={`sticky top-0 w-full border-b-4 z-50 transition-[box-shadow,border-color] duration-300 ${
-              isScrolled
-                ? "border-outline shadow-[0_5px_0_0_var(--shadow-color)]"
-                : "border-outline shadow-[0_8px_0_0_var(--shadow-color)]"
-            } glass`}
-            style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 78%, transparent)" }}
-          >
+      <motion.nav
+        initial={{ y: 0, opacity: 1 }}
+        animate={{ y: isVisible ? 0 : "-100%", opacity: isVisible ? 1 : 0 }}
+        transition={{ type: "spring", stiffness: 280, damping: 34, mass: 0.9 }}
+        className={`sticky top-0 w-full border-b-4 z-50 transition-[box-shadow,border-color] duration-300 ${
+          isScrolled
+            ? "border-outline shadow-[0_5px_0_0_var(--shadow-color)]"
+            : "border-outline shadow-[0_8px_0_0_var(--shadow-color)]"
+        } glass ${isVisible ? "pointer-events-auto" : "pointer-events-none"}`}
+        style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 78%, transparent)" }}
+        aria-hidden={!isVisible}
+      >
             <div
               className="flex justify-between items-center px-4 md:px-8 w-full h-16 md:h-20"
             >
@@ -134,7 +115,7 @@ function Header() {
               </div>
 
               {/* Right side Actions */}
-              <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <div className="hidden lg:flex items-center gap-2 sm:gap-3 flex-shrink-0">
                 <NavLink
                   to="/contact"
                   className="hidden sm:flex font-headline-md text-sm lg:text-base uppercase tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline px-5 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center whitespace-nowrap"
@@ -168,7 +149,7 @@ function Header() {
               </div>
 
               {/* Mobile actions */}
-              <div className="flex md:hidden items-center gap-2">
+              <div className="flex lg:hidden items-center gap-2">
                 <motion.button
                   onClick={handleToggleTheme}
                   className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-10 h-10 flex items-center justify-center text-base shadow-[2px_2px_0_0_var(--shadow-color)] hover:shadow-none transition-all cursor-none overflow-hidden"
@@ -207,15 +188,13 @@ function Header() {
                 </button>
               </div>
             </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      </motion.nav>
 
       {/* Mobile menu */}
       <AnimatePresence>
         {isMenuOpen && isVisible && (
           <motion.div
-            className="md:hidden fixed inset-0 z-40 top-[64px] flex flex-col items-center pt-8 pb-8 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-4 overflow-y-auto"
+            className="lg:hidden fixed inset-0 z-40 top-[64px] md:top-[80px] flex flex-col items-center pt-8 pb-8 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-4 overflow-y-auto"
             style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)", backdropFilter: "blur(16px)" }}
             variants={menuVariants}
             initial="hidden"

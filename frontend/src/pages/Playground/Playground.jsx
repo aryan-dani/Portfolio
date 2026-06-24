@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "../../data/skills";
 import { projects } from "../../data/projects";
 import { certifications } from "../../data/certifications";
+import { experiences, aboutInfo } from "../../data/experience";
 import { useTheme } from "../../context/ThemeContext";
 import { useModalLock } from "../../hooks/useModalLock";
 import "./Playground.scss";
@@ -158,6 +159,14 @@ function Playground() {
             type: "text",
           },
           {
+            text: "  resume         - Open resume details from About",
+            type: "text",
+          },
+          {
+            text: "  wow            - Jump to the 3D skills/project graph",
+            type: "text",
+          },
+          {
             text: "  clear          - Clear terminal log history",
             type: "text",
           },
@@ -249,7 +258,7 @@ function Playground() {
         setHistory((prev) => [
           ...prev,
           {
-            text: "Aryan Dani — Full Stack Developer & AI Engineer",
+            text: `${aboutInfo.name} — ${aboutInfo.title}`,
             type: "info",
           },
           {
@@ -265,30 +274,16 @@ function Playground() {
         setHistory((prev) => [
           ...prev,
           { text: "Career Timeline Experiences:", type: "info" },
-          {
-            text: "  [1] Intern (AI Engineer) @ Artem HealthTech Pvt. Ltd. (Jan - May 2025)",
-            type: "text",
-          },
-          {
-            text: "      - Designed CNN/VLM diagnostic networks & WebSocket voice-to-text tools.",
-            type: "text",
-          },
-          {
-            text: "  [2] Autonomous Systems Lead @ MIT-WPU AI Capstone (June - Dec 2025)",
-            type: "text",
-          },
-          {
-            text: "      - Built Capstone YOLO v11 detector & LangGraph repository healer sandbox.",
-            type: "text",
-          },
-          {
-            text: "  [3] Lead Full-Stack Web Architect (July 2024 - Present)",
-            type: "text",
-          },
-          {
-            text: "      - Crafted Next.js applications (Fourth Clover) & high-contrast Neobrutalist layouts.",
-            type: "text",
-          },
+          ...experiences.flatMap((exp, idx) => [
+            {
+              text: `  [${idx + 1}] ${exp.position} @ ${exp.company} (${exp.period})`,
+              type: "text",
+            },
+            {
+              text: `      - ${exp.technologies.slice(0, 5).join(" / ")}`,
+              type: "text",
+            },
+          ]),
         ]);
         break;
 
@@ -326,6 +321,16 @@ function Playground() {
           { text: "Opening resume details in About...", type: "success" },
         ]);
         setTimeout(() => navigate("/about"), 1000);
+        break;
+
+      case "wow":
+      case "graph":
+        setHistory((prev) => [
+          ...prev,
+          { text: "Initializing 3D skill graph...", type: "info" },
+          { text: "Routing to /skills with Graph mode ready for launch.", type: "success" },
+        ]);
+        setTimeout(() => navigate("/skills"), 900);
         break;
 
       default:

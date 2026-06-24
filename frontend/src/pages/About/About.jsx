@@ -174,7 +174,7 @@ function About() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         {/* Left: Photo + Bio */}
-        <motion.div className="flex flex-col gap-12" variants={itemVariants}>
+        <motion.div className="flex flex-col gap-12" variants={itemVariants} style={{ y: yParallax }}>
           <div className="relative group">
               <PhotoCarousel />
             {/* Name badge */}
@@ -218,6 +218,16 @@ function About() {
               {aboutInfo.tagline}
             </p>
             <div className="flex flex-wrap gap-4">
+              <motion.button
+                type="button"
+                onClick={copyEmail}
+                className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline h-12 px-4 flex items-center justify-center gap-2 text-sm font-label-bold uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-all cursor-none"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaEnvelope />
+                Copy Email
+              </motion.button>
               {socialLinks.map((link) => {
                 const Icon = socialIconMap[link.name];
                 return Icon ? (

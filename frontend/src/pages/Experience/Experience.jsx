@@ -1,6 +1,6 @@
 import { useState, useRef, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useSpring, useInView } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring, useInView, useTransform } from "framer-motion";
 import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
 import { containerVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
@@ -256,6 +256,7 @@ function Experience() {
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end end"] });
   const scaleY = useSpring(scrollYProgress, { stiffness: 90, damping: 28, restDelta: 0.001 });
+  const headerSweep = useTransform(scrollYProgress, [0, 1], ["-20%", "120%"]);
 
   const toggleExpand = (id) => setExpandedId(expandedId === id ? null : id);
 
@@ -267,6 +268,11 @@ function Experience() {
       variants={containerVariants}
     >
       <header className="relative w-full mt-4 border-b-8 border-outline pb-8 mb-8 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+        <motion.div
+          aria-hidden="true"
+          className="absolute top-0 h-full w-24 bg-[var(--color-accent-electric)] opacity-60 mix-blend-multiply pointer-events-none"
+          style={{ x: headerSweep }}
+        />
         <motion.div
           className="inline-block bg-[var(--color-primary-container)] border-4 border-outline px-6 md:px-8 py-4 md:py-6 mb-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
           initial={{ opacity: 0, y: 30 }}

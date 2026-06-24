@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useEffect } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,11 +6,13 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { motionEase, pageVariants } from "./utils/motionVariants";
+import { pageVariants } from "./utils/motionVariants";
 import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout/Layout";
 import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { SmoothScrollProvider } from "./context/SmoothScrollContext";
+import { SoundProvider } from "./context/SoundContext";
 
 import BackToTop from "./components/BackToTop/BackToTop";
 import PageLoader from "./components/PageLoader/PageLoader";
@@ -30,19 +32,6 @@ const Playground = lazy(() => import("./pages/Playground/Playground"));
 
 // Get base path from Vite config
 const basename = import.meta.env.BASE_URL;
-
-// Route order for determining navigation direction
-const routeOrder = [
-  "/",
-  "/projects",
-  "/experience",
-  "/certifications",
-  "/skills",
-  "/about",
-  "/playground",
-  "/contact",
-  "/copyright",
-];
 
 // Route configuration — eliminates 9x repeated Suspense+PageTransition wrappers
 const routeConfig = [
@@ -85,10 +74,9 @@ function PageFallback() {
   );
 }
 
-function PageTransition({ children, direction, isFirstRender }) {
+function PageTransition({ children, isFirstRender }) {
   return (
     <motion.div
-      custom={direction}
       variants={pageVariants}
       initial={isFirstRender ? { opacity: 1, x: 0 } : "initial"}
       animate={isFirstRender ? { opacity: 1, x: 0 } : "animate"}
@@ -104,26 +92,22 @@ function PageTransition({ children, direction, isFirstRender }) {
 
 function AnimatedRoutes() {
   const location = useLocation();
-  const currentPath = location.pathname;
-
-  const prevPathRef = useRef(currentPath);
-  const directionRef = useRef(1);
   const isFirstRenderRef = useRef(true);
 
   useEffect(() => {
     isFirstRenderRef.current = false;
   }, []);
 
-  if (currentPath !== prevPathRef.current) {
-    const prevIdx = routeOrder.indexOf(prevPathRef.current);
-    const newIdx = routeOrder.indexOf(currentPath);
-    if (prevIdx !== -1 && newIdx !== -1 && prevIdx !== newIdx) {
-      directionRef.current = newIdx > prevIdx ? 1 : -1;
-    }
-    prevPathRef.current = currentPath;
-  }
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      if (window.__portfolioLenis) {
+        window.__portfolioLenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    });
+  }, [location.pathname]);
 
-  const direction = directionRef.current;
   const isFirstRender = isFirstRenderRef.current;
 
   return (
@@ -137,7 +121,7 @@ function AnimatedRoutes() {
               path={path}
               element={
                 <Suspense fallback={<PageFallback />}>
-                  <PageTransition direction={direction} isFirstRender={isFirstRender}>
+                  <PageTransition isFirstRender={isFirstRender}>
                     <Component />
                   </PageTransition>
                 </Suspense>
@@ -189,21 +173,25 @@ function App() {
 
   return (
     <ThemeProvider>
-      <ToastProvider>
-        <NoiseOverlay />
-        <CustomCursor />
-        <PageLoader />
-        <Router
-          basename={basename}
-          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-        >
-          <BackToTop />
-          <Layout>
-            <AnimatedRoutes />
-          </Layout>
-          <Analytics />
-        </Router>
-      </ToastProvider>
+      <SmoothScrollProvider>
+        <SoundProvider>
+          <ToastProvider>
+            <NoiseOverlay />
+            <CustomCursor />
+            <PageLoader />
+            <Router
+              basename={basename}
+              future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+            >
+              <BackToTop />
+              <Layout>
+                <AnimatedRoutes />
+              </Layout>
+              <Analytics />
+            </Router>
+          </ToastProvider>
+        </SoundProvider>
+      </SmoothScrollProvider>
     </ThemeProvider>
   );
 }
