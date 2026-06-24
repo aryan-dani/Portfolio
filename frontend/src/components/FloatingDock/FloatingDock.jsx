@@ -62,11 +62,13 @@ function FloatingDock() {
                   aria-label={item.label}
                 >
                   {isActive && (
-                    <motion.div
-                      layoutId="dockActiveNav"
-                      className="absolute inset-0 bg-[var(--color-primary-container)] border-2 sm:border-[3px] border-outline shadow-[2px_2px_0_0_var(--shadow-color)] -z-10"
-                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                    />
+                    <div className="absolute inset-0 -z-10">
+                      <motion.div
+                        layoutId="dockActiveNav"
+                        className="w-full h-full bg-[var(--color-primary-container)] border-2 sm:border-[3px] border-outline shadow-[2px_2px_0_0_var(--shadow-color)]"
+                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                      />
+                    </div>
                   )}
                   {!isActive && (
                     <div className="absolute inset-0 border-2 sm:border-[3px] border-transparent group-hover:border-outline group-hover:bg-[var(--color-surface-variant)] -z-10 transition-all duration-200" />

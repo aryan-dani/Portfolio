@@ -117,13 +117,15 @@ function Header() {
                       }`}
                     >
                       {isActive && (
-                        <motion.div
-                          layoutId="activeNav"
-                          className="absolute -inset-[4px] bg-[var(--color-primary-container)] border-4 border-outline shadow-[2px_2px_0_0_var(--shadow-color)] -z-10 overflow-hidden"
-                          transition={defaultSpring}
-                        >
-                          <div className="absolute inset-0 animate-shimmer opacity-35" />
-                        </motion.div>
+                        <div className="absolute -inset-[4px] -z-10">
+                          <motion.div
+                            layoutId="activeNav"
+                            className="w-full h-full bg-[var(--color-primary-container)] border-4 border-outline shadow-[2px_2px_0_0_var(--shadow-color)] overflow-hidden"
+                            transition={defaultSpring}
+                          >
+                            <div className="absolute inset-0 animate-shimmer opacity-35" />
+                          </motion.div>
+                        </div>
                       )}
                       {item.label}
                     </NavLink>
