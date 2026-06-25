@@ -8,14 +8,70 @@ import { certifications } from "../../data/certifications";
 import { experiences, aboutInfo } from "../../data/experience";
 import { useTheme } from "../../context/ThemeContext";
 import { useModalLock } from "../../hooks/useModalLock";
+import PageHeader from "../../components/PageHeader/PageHeader";
 import "./Playground.scss";
+
+const ROUTES = {
+  home: "/",
+  projects: "/projects",
+  experience: "/experience",
+  certifications: "/certifications",
+  skills: "/skills",
+  about: "/about",
+  contact: "/contact",
+  playground: "/playground",
+};
+
+const COMMAND_HELP = [
+  ["help", "Display this helper screen"],
+  ["whoami", "Print the developer profile"],
+  ["ls", "List portfolio pages"],
+  ["open [page]", "Navigate to a page, e.g. open projects"],
+  ["projects", "List all engineering projects"],
+  ["project [N]", "View details and route to project N"],
+  ["skills", "List core technical skills"],
+  ["stack", "Summarize the current platform stack"],
+  ["experience", "List career milestones"],
+  ["certifications", "List verified credentials"],
+  ["contact / hire", "Print contact info and route to contact"],
+  ["email", "Copy the email address"],
+  ["socials", "List direct social links"],
+  ["theme", "Toggle light/dark mode"],
+  ["resume", "Open resume details from About"],
+  ["wow / graph", "Jump to skills graph"],
+  ["date / now", "Print local time"],
+  ["echo [text]", "Print text back to the terminal"],
+  ["banner", "Print the portfolio wordmark"],
+  ["history", "Show command history"],
+  ["clear", "Clear terminal log history"],
+];
+
+const COMMANDS = Array.from(
+  new Set(COMMAND_HELP.flatMap(([command]) => command.split(" / ").map((part) => part.split(" ")[0]))),
+);
+const STARTER_COMMANDS = ["help", "whoami", "stack", "projects", "open skills", "email"];
+
+function getSuggestion(command) {
+  if (!command) return null;
+  const exactPrefix = COMMANDS.find((cmd) => cmd.startsWith(command));
+  if (exactPrefix) return exactPrefix;
+  return COMMANDS.find((cmd) => {
+    const longer = cmd.length > command.length ? cmd : command;
+    const shorter = cmd.length > command.length ? command : cmd;
+    let matches = 0;
+    for (let i = 0; i < shorter.length; i += 1) {
+      if (longer.includes(shorter[i])) matches += 1;
+    }
+    return matches / Math.max(shorter.length, 1) > 0.72;
+  }) || null;
+}
 
 function Playground() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const [history, setHistory] = useState([
-    { text: "ARYAN DANI [PORTFOLIO INTERACTIVE CLI v2.1]", type: "info" },
-    { text: "Type 'help' to view all available commands.", type: "success" },
+    { text: "ARYAN DANI [PORTFOLIO INTERACTIVE CLI v3.0]", type: "info" },
+    { text: "Type 'help', press Tab to autocomplete, or click a starter command below.", type: "success" },
     { text: "", type: "spacing" },
   ]);
   const [inputVal, setInputVal] = useState("");
@@ -24,6 +80,7 @@ function Playground() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
   const terminalEndRef = useRef(null);
+  const terminalLogRef = useRef(null);
   const inputRef = useRef(null);
 
   const focusInput = (e) => {
@@ -39,12 +96,17 @@ function Playground() {
   useModalLock(isExpanded, () => setIsExpanded(false));
 
   useEffect(() => {
-    focusInput();
+    if (isExpanded) {
+      focusInput();
+    }
   }, [isExpanded]);
 
   useEffect(() => {
-    if (terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (terminalLogRef.current) {
+      terminalLogRef.current.scrollTo({
+        top: terminalLogRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [history]);
 
@@ -101,17 +163,37 @@ function Playground() {
         setHistoryIdx(nextIdx);
         setInputVal(cmdHistory[nextIdx]);
       }
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const parts = inputVal.trim().split(/\s+/);
+      const suggestion = getSuggestion(parts[0]?.toLowerCase() || "");
+      if (suggestion) {
+        setInputVal(parts.length > 1 ? `${suggestion} ${parts.slice(1).join(" ")}` : suggestion);
+      }
     }
   };
 
+  const handleTerminalWheel = (event) => {
+    if (!terminalLogRef.current) return;
+    const log = terminalLogRef.current;
+    const canScroll = log.scrollHeight > log.clientHeight;
+    if (!canScroll) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    log.scrollTop += event.deltaY;
+  };
+
   const processCommand = (rawCommand) => {
-    const args = rawCommand.toLowerCase().split(" ");
+    const normalizedCommand = rawCommand.trim();
+    const args = normalizedCommand.toLowerCase().split(/\s+/);
     const command = args[0];
+    const originalArgs = normalizedCommand.split(/\s+/).slice(1);
 
     // Echo the command typed
     setHistory((prev) => [
       ...prev,
-      { text: `guest@aryan-dani.dev:~$ ${rawCommand}`, type: "command" },
+      { text: `guest@aryan-dani.dev:~$ ${normalizedCommand}`, type: "command" },
     ]);
 
     if (!command) return;
@@ -121,67 +203,54 @@ function Playground() {
         setHistory((prev) => [
           ...prev,
           { text: "Available commands:", type: "info" },
-          {
-            text: "  help           - Display this helper screen",
+          ...COMMAND_HELP.map(([cmd, desc]) => ({
+            text: `  ${cmd.padEnd(18)} - ${desc}`,
             type: "text",
-          },
-          {
-            text: "  about          - View biography summary and redirect",
-            type: "text",
-          },
-          {
-            text: "  experience     - List career history milestones & stack",
-            type: "text",
-          },
-          {
-            text: "  projects       - List all engineering projects with index",
-            type: "text",
-          },
-          {
-            text: "  project [N]    - View details & redirect to project N (e.g. 'project 1')",
-            type: "text",
-          },
-          {
-            text: "  skills         - List core technical skills registry",
-            type: "text",
-          },
-          {
-            text: "  certifications - List all verified credentials and dates",
-            type: "text",
-          },
-          {
-            text: "  contact        - Print developer contact info & redirect",
-            type: "text",
-          },
-          { text: "  socials        - List direct social links", type: "text" },
-          {
-            text: "  theme          - Toggle between light and dark modes",
-            type: "text",
-          },
-          {
-            text: "  resume         - Open resume details from About",
-            type: "text",
-          },
-          {
-            text: "  wow            - Jump to the 3D skills/project graph",
-            type: "text",
-          },
-          {
-            text: "  clear          - Clear terminal log history",
-            type: "text",
-          },
+          })),
         ]);
         break;
 
       case "clear":
         setHistory([
-          { text: "ARYAN DANI [PORTFOLIO INTERACTIVE CLI v2.1]", type: "info" },
+          { text: "ARYAN DANI [PORTFOLIO INTERACTIVE CLI v3.0]", type: "info" },
           {
-            text: "Type 'help' to view all available commands.",
+            text: "Type 'help', press Tab to autocomplete, or click a starter command below.",
             type: "success",
           },
           { text: "", type: "spacing" },
         ]);
+        break;
+
+      case "whoami":
+        setHistory((prev) => [
+          ...prev,
+          { text: `${aboutInfo.name} - ${aboutInfo.title}`, type: "info" },
+          { text: aboutInfo.tagline, type: "text" },
+          { text: `Email: ${aboutInfo.email}`, type: "text" },
+        ]);
+        break;
+
+      case "ls":
+        setHistory((prev) => [
+          ...prev,
+          { text: "Portfolio routes:", type: "info" },
+          ...Object.entries(ROUTES).map(([name, path]) => ({ text: `  ${name.padEnd(16)} ${path}`, type: "text" })),
+        ]);
+        break;
+
+      case "open":
+        if (!args[1] || !ROUTES[args[1]]) {
+          setHistory((prev) => [
+            ...prev,
+            { text: "Usage: open [home|projects|experience|certifications|skills|about|contact|playground]", type: "error" },
+          ]);
+        } else {
+          setHistory((prev) => [
+            ...prev,
+            { text: `Opening ${args[1]}...`, type: "success" },
+          ]);
+          setTimeout(() => navigate(ROUTES[args[1]]), 600);
+        }
         break;
 
       case "theme":
@@ -192,6 +261,17 @@ function Playground() {
             text: `Theme successfully toggled. Current mode: ${theme === "light" ? "dark" : "light"}`,
             type: "success",
           },
+        ]);
+        break;
+
+      case "stack":
+        setHistory((prev) => [
+          ...prev,
+          { text: "Platform Stack:", type: "info" },
+          { text: "  Frontend: React 18, Vite, React Router", type: "text" },
+          { text: "  Motion: Framer Motion, Lenis smooth scroll", type: "text" },
+          { text: "  Styling: Tailwind v4 CSS variables, SCSS, monochrome neo-brutalism", type: "text" },
+          { text: "  UX: custom cursor, command palette, CLI, canvas tech globe", type: "text" },
         ]);
         break;
 
@@ -288,10 +368,11 @@ function Playground() {
         break;
 
       case "contact":
+      case "hire":
         setHistory((prev) => [
           ...prev,
           { text: "Contact Details:", type: "info" },
-          { text: "  Email: daniaryan212@gmail.com", type: "text" },
+          { text: `  Email: ${aboutInfo.email}`, type: "text" },
           { text: "  LinkedIn: linkedin.com/in/aryandani/", type: "text" },
           { text: "  GitHub: github.com/aryan-dani", type: "text" },
           { text: "Redirecting to contact page...", type: "success" },
@@ -315,12 +396,60 @@ function Playground() {
         ]);
         break;
 
+      case "email":
+        navigator.clipboard?.writeText(aboutInfo.email);
+        setHistory((prev) => [
+          ...prev,
+          { text: `Copied email: ${aboutInfo.email}`, type: "success" },
+        ]);
+        break;
+
       case "resume":
         setHistory((prev) => [
           ...prev,
           { text: "Opening resume details in About...", type: "success" },
         ]);
         setTimeout(() => navigate("/about"), 1000);
+        break;
+
+      case "date":
+      case "now":
+        setHistory((prev) => [
+          ...prev,
+          { text: new Date().toLocaleString(), type: "info" },
+        ]);
+        break;
+
+      case "echo":
+        setHistory((prev) => [
+          ...prev,
+          { text: originalArgs.join(" ") || "", type: "text" },
+        ]);
+        break;
+
+      case "banner":
+        setHistory((prev) => [
+          ...prev,
+          { text: "  ARYAN DANI", type: "info" },
+          { text: "  WEB DEV / AI ENGINEER / BUILDER", type: "success" },
+        ]);
+        break;
+
+      case "history":
+        setHistory((prev) => [
+          ...prev,
+          { text: "Command history:", type: "info" },
+          ...(cmdHistory.length
+            ? cmdHistory.map((cmd, idx) => ({ text: `  ${idx + 1}. ${cmd}`, type: "text" }))
+            : [{ text: "  No commands yet.", type: "text" }]),
+        ]);
+        break;
+
+      case "sudo":
+        setHistory((prev) => [
+          ...prev,
+          { text: "Nice try. You already have root access to the portfolio.", type: "success" },
+        ]);
         break;
 
       case "wow":
@@ -334,10 +463,11 @@ function Playground() {
         break;
 
       default:
+        const suggestion = getSuggestion(command);
         setHistory((prev) => [
           ...prev,
           {
-            text: `Command not found: '${command}'. Type 'help' to see list of valid commands.`,
+            text: `Command not found: '${command}'. ${suggestion ? `Did you mean '${suggestion}'? ` : ""}Type 'help' to see valid commands.`,
             type: "error",
           },
         ]);
@@ -368,8 +498,25 @@ function Playground() {
         </button>
       </div>
 
+      {/* Starter command chips */}
+      <div className="flex flex-wrap gap-2 border-b-2 border-dashed border-outline-variant pb-4 mb-4 select-none">
+        {STARTER_COMMANDS.map((command) => (
+          <button
+            key={command}
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              processCommand(command);
+            }}
+            className="border-2 border-outline bg-[var(--color-surface-variant)] px-3 py-1 font-label-bold text-[10px] uppercase tracking-wider text-[var(--color-on-surface)] shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
+          >
+            {command}
+          </button>
+        ))}
+      </div>
+
       {/* Terminal logs list */}
-      <div className="grow overflow-y-auto space-y-2 pr-2">
+      <div ref={terminalLogRef} className="grow overflow-y-auto overscroll-contain space-y-2 pr-2" data-lenis-prevent>
         {history.map((line, index) => {
           if (line.type === "spacing")
             return <div key={index} className="h-2" />;
@@ -413,7 +560,6 @@ function Playground() {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             maxLength={60}
-            autoFocus
             autoComplete="off"
             spellCheck="false"
             style={{ color: "transparent", caretColor: "transparent" }}
@@ -434,46 +580,52 @@ function Playground() {
 
   return (
     <section className="flex flex-col gap-12 w-full mt-4">
-      <header className="mb-4 border-b-8 border-outline pb-8 flex flex-col justify-end items-start gap-6 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-        <div className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter">
-            CLI PLAYGROUND
-          </h1>
-        </div>
-        <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-2 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-          Use the keyboard command line interface to query projects, list
-          skills, toggle themes, or navigate the site directly.
-        </p>
-      </header>
+      <PageHeader
+        title="CLI Playground"
+        description="Use the keyboard command line interface to query projects, list skills, toggle themes, or navigate the site directly."
+      />
 
       {/* Render collapsed inline terminal */}
       {!isExpanded && (
-        <div
-          className="nb-cli-container border-4 border-outline bg-[var(--color-surface)] p-6 font-mono flex flex-col relative overflow-hidden transition-all duration-300 min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+        <motion.div
+          className="nb-cli-container border-4 border-outline bg-[var(--color-surface)] p-6 font-mono flex flex-col relative overflow-hidden min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)]"
           onClick={focusInput}
+          onWheel={handleTerminalWheel}
+          whileHover={{ y: -2, boxShadow: "10px 10px 0px 0px var(--shadow-color)" }}
+          transition={{ type: "spring", stiffness: 180, damping: 32 }}
         >
           {renderTerminalContent()}
-        </div>
+        </motion.div>
       )}
 
       {/* Render expanded terminal in a portal */}
-      {isExpanded && createPortal(
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setIsExpanded(false)}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-190 cursor-none"
-          />
-          <div
-            className="nb-cli-container bg-[var(--color-surface)] p-6 md:p-10 font-mono flex flex-col fixed inset-0 z-200 w-screen h-screen overflow-hidden"
-            onClick={focusInput}
-          >
-            {renderTerminalContent()}
-          </div>
-        </>,
+      {createPortal(
+        <AnimatePresence>
+          {isExpanded && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                  animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
+                  exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                  transition={{ duration: 0.24, ease: "easeOut" }}
+                  onClick={() => setIsExpanded(false)}
+                  className="fixed inset-0 bg-black/60 z-190 cursor-none"
+                />
+                <motion.div
+                  className="nb-cli-container bg-[var(--color-surface)] p-6 md:p-10 font-mono flex flex-col fixed inset-3 md:inset-6 z-200 overflow-hidden border-4 border-outline shadow-[12px_12px_0_var(--shadow-color)]"
+                  onClick={focusInput}
+                  onWheel={handleTerminalWheel}
+                  initial={{ opacity: 0, scale: 0.94, y: 32, clipPath: "inset(10% 6% 10% 6%)" }}
+                  animate={{ opacity: 1, scale: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
+                  exit={{ opacity: 0, scale: 0.96, y: 22, clipPath: "inset(8% 5% 8% 5%)" }}
+                  transition={{ type: "spring", stiffness: 170, damping: 30 }}
+                  style={{ transformOrigin: "center bottom" }}
+                >
+                  {renderTerminalContent()}
+                </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
         document.body
       )}
     </section>

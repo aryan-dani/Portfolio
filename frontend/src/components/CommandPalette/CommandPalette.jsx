@@ -16,8 +16,10 @@ const staticNavCommands = [
   { id: "nav-skills", label: "Skills", action: "/skills", type: "nav", icon: HiOutlineMap },
   { id: "nav-about", label: "About", action: "/about", type: "nav", icon: HiOutlineMap },
   { id: "nav-playground", label: "Playground", action: "/playground", type: "nav", icon: HiOutlineMap },
+  { id: "nav-copyright", label: "Copyright", action: "/copyright", type: "nav", icon: HiOutlineDocumentText },
   { id: "nav-contact", label: "Contact", action: "/contact", type: "nav", icon: HiOutlineMap },
   { id: "action-theme", label: "Toggle Theme", action: "TOGGLE_THEME", type: "action", icon: HiOutlineColorSwatch },
+  { id: "action-email", label: "Copy Email", action: "COPY_EMAIL", type: "action", icon: HiOutlineLink, keywords: "contact hire email" },
 ];
 
 function CommandPalette() {
@@ -100,19 +102,34 @@ function CommandPalette() {
     if (!query.trim()) return searchIndex;
     const q = query.toLowerCase();
     const qNoSpace = q.replace(/\s+/g, "");
-    return searchIndex.filter((cmd) => {
+    return searchIndex
+      .map((cmd) => {
       const labelLower = cmd.label.toLowerCase();
       const labelNoSpace = labelLower.replace(/\s+/g, "");
       const keywordsLower = (cmd.keywords || "").toLowerCase();
       const keywordsNoSpace = keywordsLower.replace(/\s+/g, "");
-      return (
-        labelLower.includes(q) ||
-        labelNoSpace.includes(qNoSpace) ||
-        keywordsLower.includes(q) ||
-        keywordsNoSpace.includes(qNoSpace)
-      );
-    });
+        let score = 0;
+        if (labelLower === q) score += 100;
+        if (labelLower.startsWith(q)) score += 60;
+        if (labelLower.includes(q)) score += 30;
+        if (labelNoSpace.includes(qNoSpace)) score += 20;
+        if (keywordsLower.includes(q)) score += 12;
+        if (keywordsNoSpace.includes(qNoSpace)) score += 8;
+        return { ...cmd, score };
+      })
+      .filter((cmd) => cmd.score > 0)
+      .sort((a, b) => b.score - a.score || a.label.localeCompare(b.label));
   }, [query, searchIndex]);
+
+  const groupedCommands = useMemo(() => {
+    const order = ["action", "nav", "project", "skill", "experience", "document", "link"];
+    return order
+      .map((type) => ({
+        type,
+        items: filteredCommands.filter((cmd) => cmd.type === type),
+      }))
+      .filter((group) => group.items.length > 0);
+  }, [filteredCommands]);
 
   // Reset selected index when query changes
   useEffect(() => {
@@ -165,6 +182,8 @@ function CommandPalette() {
   const executeCommand = (cmd) => {
     if (cmd.action === "TOGGLE_THEME") {
       toggleTheme();
+    } else if (cmd.action === "COPY_EMAIL") {
+      navigator.clipboard?.writeText(aboutInfo.email);
     } else if (cmd.isExternal) {
       window.open(cmd.action, "_blank");
     } else {
@@ -214,40 +233,48 @@ function CommandPalette() {
               {/* Results List */}
               <div className="max-h-[55vh] overflow-y-auto no-scrollbar py-2">
                 {filteredCommands.length > 0 ? (
-                  filteredCommands.map((cmd, index) => {
-                    const Icon = cmd.icon;
-                    return (
-                      <div
-                        key={cmd.id}
-                        className={`flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 cursor-pointer transition-colors border-l-4 ${
-                          index === selectedIndex
-                            ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-outline"
-                            : "border-transparent hover:bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
-                        }`}
-                        onClick={() => executeCommand(cmd)}
-                        onMouseEnter={() => setSelectedIndex(index)}
-                      >
-                        <div className="flex items-center gap-4 min-w-0">
-                          <Icon className={`text-xl sm:text-2xl shrink-0 ${index === selectedIndex ? "text-[var(--color-on-primary-container)]" : "text-[var(--color-text-muted)]"}`} />
-                          <span className="font-headline-md text-base sm:text-xl truncate text-ellipsis w-full max-w-[200px] sm:max-w-[350px]">
-                            {cmd.label}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3 shrink-0">
-                          <span className={`hidden sm:block px-2 py-1 border-2 text-[10px] sm:text-xs font-label-bold uppercase tracking-widest ${
-                            index === selectedIndex 
-                              ? "border-outline bg-[var(--color-on-primary-container)] text-[var(--color-primary-container)]"
-                              : "border-[var(--color-outline-variant)] text-[var(--color-text-muted)]"
-                          }`}>
-                            {cmd.type}
-                          </span>
-                          {index === selectedIndex && (
-                            <HiArrowRight className="text-xl opacity-80 shrink-0" />
-                          )}
-                        </div>
+                  groupedCommands.map((group) => (
+                    <div key={group.type}>
+                      <div className="px-4 sm:px-6 py-2 font-label-bold text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-muted)] bg-[var(--color-surface)]">
+                        {group.type}
                       </div>
-                    );
-                  })
+                      {group.items.map((cmd) => {
+                        const index = filteredCommands.findIndex((item) => item.id === cmd.id);
+                        const Icon = cmd.icon;
+                        return (
+                          <div
+                            key={cmd.id}
+                            className={`flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 cursor-pointer transition-colors border-l-4 ${
+                              index === selectedIndex
+                                ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-outline"
+                                : "border-transparent hover:bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
+                            }`}
+                            onClick={() => executeCommand(cmd)}
+                            onMouseEnter={() => setSelectedIndex(index)}
+                          >
+                            <div className="flex items-center gap-4 min-w-0">
+                              <Icon className={`text-xl sm:text-2xl shrink-0 ${index === selectedIndex ? "text-[var(--color-on-primary-container)]" : "text-[var(--color-text-muted)]"}`} />
+                              <span className="font-headline-md text-base sm:text-xl truncate text-ellipsis w-full max-w-[200px] sm:max-w-[350px]">
+                                {cmd.label}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-3 shrink-0">
+                              <span className={`hidden sm:block px-2 py-1 border-2 text-[10px] sm:text-xs font-label-bold uppercase tracking-widest ${
+                                index === selectedIndex
+                                  ? "border-outline bg-[var(--color-on-primary-container)] text-[var(--color-primary-container)]"
+                                  : "border-[var(--color-outline-variant)] text-[var(--color-text-muted)]"
+                              }`}>
+                                {cmd.type}
+                              </span>
+                              {index === selectedIndex && (
+                                <HiArrowRight className="text-xl opacity-80 shrink-0" />
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))
                 ) : (
                   <div className="px-6 py-12 flex flex-col items-center text-[var(--color-text-muted)]">
                      <HiOutlineSearch className="text-4xl mb-4 opacity-50" />
@@ -268,6 +295,11 @@ function CommandPalette() {
                   <span className="flex items-center gap-2">
                     <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">Enter</kbd>
                     Select
+                  </span>
+                  <span className="hidden md:flex items-center gap-2">
+                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">Alt</kbd>
+                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">1-8</kbd>
+                    Navigate
                   </span>
                 </div>
               </div>

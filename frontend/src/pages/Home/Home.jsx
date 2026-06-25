@@ -4,19 +4,18 @@ import { aboutInfo } from "../../data/experience";
 import { projects } from "../../data/projects";
 import { skills } from "../../data/skills";
 import { certifications } from "../../data/certifications";
-import { getAssetPath } from "../../utils/paths";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import StatCard from "../../components/StatCard/StatCard";
 import MagneticLink from "../../components/MagneticLink/MagneticLink";
-import HeroShowcase from "../../components/HeroShowcase/HeroShowcase";
+import TechGlobe from "../../components/TechGlobe/TechGlobe";
 
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 const carouselVariants = {
-  hidden:  { opacity: 0, x: 80, scale: 0.95 },
+  hidden:  { opacity: 0, x: 48, scale: 0.97 },
   visible: {
     opacity: 1, x: 0, scale: 1,
-    transition: { type: "spring", stiffness: 220, damping: 22, delay: 0.2 },
+    transition: { type: "spring", stiffness: 170, damping: 28, delay: 0.18 },
   },
 };
 
@@ -36,20 +35,20 @@ const Home = memo(function Home() {
 
   return (
     <motion.section
-      className="flex flex-col gap-12 lg:gap-16 min-h-[calc(100vh-200px)] w-full relative"
+      className="flex flex-col gap-10 lg:gap-14 min-h-[calc(100vh-200px)] w-full relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       {/* Hero row */}
-      <div className="flex flex-col lg:flex-row gap-8 items-center justify-between lg:min-h-[600px] relative z-10">
+      <div className="flex flex-col lg:flex-row gap-10 xl:gap-14 items-center justify-between lg:min-h-[560px] relative z-10">
         {/* Text content */}
-        <div className="flex-1 flex flex-col gap-5 lg:gap-7 max-w-3xl w-full z-10">
+        <div className="flex-1 flex flex-col gap-4 lg:gap-5 max-w-2xl w-full z-10">
 
           {/* Name heading with shimmer */}
           <motion.div variants={itemVariants}>
             <motion.h1
-              className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase leading-none bg-[var(--color-surface)] border-4 border-outline p-3 md:p-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] inline-block w-fit relative overflow-hidden"
+              className="font-headline-xl text-5xl md:text-6xl xl:text-8xl text-[var(--color-on-background)] uppercase leading-none bg-[var(--color-surface)] border-4 border-outline p-3 md:p-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] inline-block w-fit relative overflow-hidden"
               whileHover={{
                 x: -2,
                 y: -2,
@@ -64,7 +63,7 @@ const Home = memo(function Home() {
 
           {/* Role typewriter */}
           <motion.h2
-            className="font-headline-md text-xl md:text-2xl lg:text-headline-md text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase"
+            className="font-headline-md text-lg md:text-2xl text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase"
             variants={itemVariants}
           >
             <TypeWriter texts={roles} speed={80} deleteSpeed={40} pauseTime={2500} />
@@ -72,58 +71,50 @@ const Home = memo(function Home() {
 
           {/* Bio */}
           <motion.p
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] max-w-2xl"
+            className="font-body-lg text-base md:text-lg text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)] max-w-xl"
             variants={itemVariants}
           >
-            I&apos;m a passionate Web Developer and AI Engineer, dedicated to
-            crafting seamless, high-performance web solutions. Discover my
-            projects, skills, and certifications below.
+            I build fast, high-contrast web products and AI systems that feel
+            sharp, useful, and memorable. Start with the work, search the site,
+            or jump straight into the CLI.
           </motion.p>
 
           {/* CTA buttons */}
           <motion.div
-            className="flex flex-wrap gap-4 mt-2 lg:mt-4"
+            className="flex flex-wrap items-center gap-3 md:gap-4 mt-2"
             variants={itemVariants}
           >
             <MagneticLink
               to="/projects"
-              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-150 inline-block animate-pulse-glow"
+              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-200 inline-block animate-pulse-glow"
             >
               View My Work
             </MagneticLink>
-            <MagneticLink
-              to="/contact"
-              className="bg-[var(--color-on-background)] text-[var(--color-background)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-accent)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-150 inline-block"
-            >
-              Work With Me
-            </MagneticLink>
-            <MagneticLink
-              to="/about"
-              className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all duration-150 inline-block"
-            >
-              About Me
-            </MagneticLink>
+            <span className="font-label-bold text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+              or press Ctrl/Alt+K
+            </span>
           </motion.div>
+
         </div>
 
         {/* Signature 3D showcase */}
         <motion.div
-          className="flex-1 w-full flex justify-center lg:justify-end mt-8 lg:mt-0"
+          className="flex-1 w-full flex justify-center lg:justify-end mt-6 lg:mt-0"
           variants={carouselVariants}
           style={{ y: heroY, scale: heroScale }}
         >
-          <HeroShowcase />
+          <TechGlobe />
         </motion.div>
       </div>
 
       {/* Stats ribbon */}
       <motion.div
-        className="grid grid-cols-3 gap-4 w-full"
+        className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full"
         variants={itemVariants}
       >
-        <StatCard value={totalProjects} label="Projects"      bg="var(--color-primary-container)" text="var(--color-on-primary-container)" delay={0} />
-        <StatCard value={totalSkills}   isPlus label="Skills" bg="var(--color-on-background)" text="var(--color-background)" delay={0.08} />
-        <StatCard value={totalCerts}    label="Certifications" bg="var(--color-surface)" text="var(--color-on-surface)" delay={0.16} />
+        <StatCard to="/projects" value={totalProjects} label="Projects"      bg="var(--color-primary-container)" text="var(--color-on-primary-container)" delay={0} />
+        <StatCard to="/skills" value={totalSkills}   isPlus label="Skills" bg="var(--color-on-background)" text="var(--color-background)" delay={0.08} />
+        <StatCard to="/certifications" value={totalCerts}    label="Certifications" bg="var(--color-surface)" text="var(--color-on-surface)" delay={0.16} />
       </motion.div>
 
       {/* Marquee strip */}
@@ -148,12 +139,12 @@ const Home = memo(function Home() {
               className="flex gap-10 items-center font-label-bold text-sm uppercase tracking-widest shrink-0"
               style={{ color: "var(--color-background)" }}
             >
-              <span>✦ Web Developer</span>
-              <span>✦ AI Engineer</span>
-              <span>✦ React • Next.js • FastAPI</span>
-              <span>✦ Gemini • LangGraph</span>
-              <span>✦ Open to Opportunities</span>
-              <span>✦ Let&apos;s Build Something Epic</span>
+              <span>+ Web Developer</span>
+              <span>+ AI Engineer</span>
+              <span>+ React / Next.js / FastAPI</span>
+              <span>+ Gemini / LangGraph</span>
+              <span>+ Open to Opportunities</span>
+              <span>+ Click, Search, Navigate</span>
             </span>
           ))}
         </div>

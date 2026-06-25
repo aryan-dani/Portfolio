@@ -1,10 +1,21 @@
-import { useState, useEffect, useRef, memo } from "react";
+import { useState, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SESSION_KEY = "portfolio_visited";
 const PHASES = { GLITCH: 0, TERMINAL: 1, EXIT: 2, DONE: 3 };
 const TARGET_TEXT = "ARYAN DANI";
-const GLITCH_CHARS = "01$#@%&*?!X█";
+const GLITCH_CHARS = "█$#@%&*?!X10";
+
+function getGlitchChar(index) {
+  return GLITCH_CHARS[index % GLITCH_CHARS.length];
+}
+
+function getInitialChars() {
+  return TARGET_TEXT.split("").map((char, index) => ({
+    char: char === " " ? "\u00A0" : getGlitchChar(index * 3 + 1),
+    state: char === " " ? "resolved" : "waiting",
+  }));
+}
 
 const PageLoader = memo(function PageLoader() {
   const hasVisited = sessionStorage.getItem(SESSION_KEY);
@@ -14,7 +25,16 @@ const PageLoader = memo(function PageLoader() {
   const [glitchProgress, setGlitchProgress] = useState(0);
   const [terminalStep, setTerminalStep] = useState(0);
   const [memSize, setMemSize] = useState(0);
-  const charsRef = useRef([]);
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const [displayChars, setDisplayChars] = useState(getInitialChars);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
  
   useEffect(() => {
     if (!isLoading && !hasVisited) {
@@ -31,7 +51,16 @@ const PageLoader = memo(function PageLoader() {
     }
  
     if (phase !== PHASES.GLITCH) return;
-    const duration = 1250;
+    if (reduceMotion) {
+      setDisplayChars(TARGET_TEXT.split("").map((char) => ({
+        char: char === " " ? "\u00A0" : char,
+        state: "resolved",
+      })));
+      setTimeout(() => setIsLoading(false), 420);
+      return undefined;
+    }
+
+    const duration = 950;
     const startTime = performance.now();
     let animationFrameId;
 
@@ -40,42 +69,41 @@ const PageLoader = memo(function PageLoader() {
       const percent = Math.min(elapsed / duration, 1);
       setGlitchProgress(Math.round(percent * 100));
 
-      for (let i = 0; i < TARGET_TEXT.length; i++) {
-        if (!charsRef.current[i]) continue;
-
-        // Skip scramble for spaces
+      const nextChars = TARGET_TEXT.split("").map((targetChar, i) => {
         if (TARGET_TEXT[i] === " ") {
-          charsRef.current[i].textContent = "\u00A0";
-          charsRef.current[i].className = "page-loader__glitch-char opacity-100";
-          continue;
+          return { char: "\u00A0", state: "resolved" };
         }
 
         const charSweepTime = (i / TARGET_TEXT.length) * (duration * 0.7);
         const scrambleDuration = 160;
 
         if (elapsed < charSweepTime) {
-          charsRef.current[i].textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-          charsRef.current[i].className = "page-loader__glitch-char opacity-5";
-        } else if (elapsed < charSweepTime + scrambleDuration) {
-          charsRef.current[i].textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-          charsRef.current[i].className = "page-loader__glitch-char page-loader__glitch-char--scrambling opacity-100";
-        } else {
-          charsRef.current[i].textContent = TARGET_TEXT[i];
-          charsRef.current[i].className = "page-loader__glitch-char page-loader__glitch-char--resolved opacity-100";
+          return {
+            char: getGlitchChar(i + Math.floor(elapsed / 90)),
+            state: "waiting",
+          };
         }
-      }
+        if (elapsed < charSweepTime + scrambleDuration) {
+          return {
+            char: GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)],
+            state: "scrambling",
+          };
+        }
+        return { char: targetChar, state: "resolved" };
+      });
+      setDisplayChars(nextChars);
 
       if (percent < 1) {
         animationFrameId = requestAnimationFrame(updateLoader);
       } else {
         setIsGlitchDone(true);
-        setTimeout(() => setPhase(PHASES.TERMINAL), 420);
+        setTimeout(() => setPhase(PHASES.TERMINAL), 260);
       }
     };
 
     animationFrameId = requestAnimationFrame(updateLoader);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [phase, hasVisited]);
+  }, [phase, hasVisited, reduceMotion]);
 
   // Phase 2: Terminal BIOS Booting Animation with RAM Check
   useEffect(() => {
@@ -85,21 +113,21 @@ const PageLoader = memo(function PageLoader() {
     let memInterval;
     let currentMem = 0;
     memInterval = setInterval(() => {
-      currentMem += Math.floor(Math.random() * 96) + 48;
+      currentMem += Math.floor(Math.random() * 160) + 96;
       if (currentMem >= 1024) {
         currentMem = 1024;
         clearInterval(memInterval);
       }
       setMemSize(currentMem);
-    }, 35);
+    }, 24);
 
     const timers = [
-      setTimeout(() => setTerminalStep(1), 140),
-      setTimeout(() => setTerminalStep(2), 420),
-      setTimeout(() => setTerminalStep(3), 780),
-      setTimeout(() => setTerminalStep(4), 1120),
-      setTimeout(() => setTerminalStep(5), 1450),
-      setTimeout(() => setPhase(PHASES.EXIT), 1900),
+      setTimeout(() => setTerminalStep(1), 90),
+      setTimeout(() => setTerminalStep(2), 260),
+      setTimeout(() => setTerminalStep(3), 500),
+      setTimeout(() => setTerminalStep(4), 730),
+      setTimeout(() => setTerminalStep(5), 960),
+      setTimeout(() => setPhase(PHASES.EXIT), 1200),
     ];
 
     return () => {
@@ -111,9 +139,14 @@ const PageLoader = memo(function PageLoader() {
   // Phase 3: Exit Shutter Panel Transition
   useEffect(() => {
     if (phase !== PHASES.EXIT) return;
-    const exitTimer = setTimeout(() => setIsLoading(false), 720);
+    const exitTimer = setTimeout(() => setIsLoading(false), 520);
     return () => clearTimeout(exitTimer);
   }, [phase]);
+
+  const skipLoader = () => {
+    setPhase(PHASES.DONE);
+    setIsLoading(false);
+  };
 
   const terminalProgress = Math.round((Math.min(terminalStep, 5) / 5) * 100);
   const globalProgress = phase === PHASES.GLITCH
@@ -134,6 +167,7 @@ const PageLoader = memo(function PageLoader() {
           <div className="page-loader__grid" />
           {/* CRT scanlines */}
           <div className="page-loader__scanline" />
+          <div className="page-loader__orbital" aria-hidden="true" />
 
           {/* Central Container */}
           <div className="w-full h-full flex items-center justify-center relative z-10 p-4">
@@ -152,16 +186,21 @@ const PageLoader = memo(function PageLoader() {
                       className="absolute top-0 bottom-0 w-[4px] bg-[var(--color-outline)] z-20 pointer-events-none"
                       initial={{ left: "0%" }}
                       animate={{ left: "100%" }}
-                      transition={{ duration: 1.25, ease: "linear" }}
+                      transition={{ duration: 0.95, ease: "linear" }}
                       style={{ boxShadow: "0 0 12px var(--color-outline)" }}
                     />
-                    {TARGET_TEXT.split("").map((_, i) => (
+                    {displayChars.map((item, i) => (
                       <span
                         key={i}
-                        ref={(el) => (charsRef.current[i] = el)}
-                        className="page-loader__glitch-char page-loader__glitch-char--scrambling"
+                        className={`page-loader__glitch-char ${
+                          item.state === "resolved"
+                            ? "page-loader__glitch-char--resolved opacity-100"
+                            : item.state === "scrambling"
+                              ? "page-loader__glitch-char--scrambling opacity-100"
+                              : "page-loader__glitch-char--waiting opacity-50"
+                        }`}
                       >
-                        {GLITCH_CHARS[0]}
+                        {item.char}
                       </span>
                     ))}
                   </h1>
@@ -348,6 +387,14 @@ const PageLoader = memo(function PageLoader() {
               transition={{ duration: 0.2 }}
             />
           </div>
+
+          <button
+            type="button"
+            onClick={skipLoader}
+            className="absolute right-4 top-4 z-30 border-2 border-outline bg-[var(--color-surface)] px-3 py-2 font-label-bold text-xs uppercase tracking-widest text-[var(--color-on-surface)] shadow-[3px_3px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
+          >
+            Skip
+          </button>
         </motion.div>
       )}
     </AnimatePresence>

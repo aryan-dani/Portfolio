@@ -1,142 +1,81 @@
-<div align="center">
+# Aryan Dani Portfolio
 
-  <h1>Aryan Dani | Developer Portfolio</h1>
+A high-contrast, interactive developer portfolio for Aryan Dani, built with React, Vite, Framer Motion, Tailwind CSS v4 tokens, and a custom Canvas tech globe.
 
-**A Modern, Interactive, and Responsive Portfolio built with React & Framer Motion**
+Live site: [aryandani.com](https://www.aryandani.com/)
 
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
+## What It Does
 
-[View Live Demo](https://aryan-dani.github.io/Portfolio) • [Report Bug](https://github.com/aryan-dani/Portfolio/issues) • [Request Feature](https://github.com/aryan-dani/Portfolio/issues)
-
-</div>
-
-<br />
-
-## About The Project
-
-Welcome to my personal portfolio repository. This project serves as a comprehensive showcase of my skills, projects, and professional journey. Designed with a focus on **User Experience (UX)** and **Visual Aesthetics**, it features a deeply immersive dark mode, fluid animations, and a responsive layout that looks enhancing on any device.
-
-### Key Features
-
-- **Immersive UI/UX**: A clean, modern aesthetic with a focus on usability and accessibility.
-- **Blazing Fast Performance**: Powered by Vite and optimized React code for instant load times.
-- **Smooth Animations**: Leveraging **Framer Motion** for page transitions, scroll reveals, and interactive elements.
-- **Interactive Background**: A dynamic particle system that adds depth and movement without distracting content.
-- **Fully Responsive**: Flawless experience across Mobile, Tablet, and Desktop.
-- **Dynamic Filtering**: Instantly sort and filter projects and certifications.
-
----
+- Presents projects, skills, certifications, experience, contact options, and resume details in a cohesive neo-brutalist interface.
+- Uses a custom 3D Canvas globe to visualize the technology stack without adding heavy WebGL dependencies.
+- Provides fast navigation through a floating dock, command palette, CLI playground, and Alt-key shortcuts.
+- Supports light/dark themes, custom cursor mode, smooth Lenis scrolling, sound feedback, toasts, modals, and first-visit navigation hints.
+- Ships with SEO metadata, structured data, lazy-loaded routes, production code splitting, and Vercel Analytics.
 
 ## Tech Stack
 
-This project is built using the following technologies:
+- React 18, React Router, Vite
+- Framer Motion for page transitions, card reveals, modals, and micro-interactions
+- Tailwind CSS v4 design tokens with CSS custom properties
+- SCSS/CSS utilities for loader, terminal, cursor, noise, and neo-brutalist styling
+- Lenis for smooth scrolling
+- React Icons for UI and skill icons
+- Vercel Analytics
 
-| Category               | Technologies                                                                                                                                                |
-| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Frontend Framework** | ![React](https://img.shields.io/badge/-React-black?style=flat-square&logo=react)                                                                            |
-| **Build Tool**         | ![Vite](https://img.shields.io/badge/-Vite-black?style=flat-square&logo=vite)                                                                               |
-| **Styling**            | ![SCSS](https://img.shields.io/badge/-SCSS-black?style=flat-square&logo=sass) ![CSS3](https://img.shields.io/badge/-CSS3-black?style=flat-square&logo=css3) |
-| **Animation**          | ![Framer Motion](https://img.shields.io/badge/-Framer_Motion-black?style=flat-square&logo=framer)                                                           |
-| **Routing**            | ![React Router](https://img.shields.io/badge/-React_Router-black?style=flat-square&logo=react-router)                                                       |
-| **Icons**              | ![React Icons](https://img.shields.io/badge/-React_Icons-black?style=flat-square&logo=react)                                                                |
+## Project Structure
 
----
-
-## Screenshots
-
-<div align="center">
-  <img src="frontend/public/Images/Home_Page_Screenshot.png" alt="Home Page Screenshot" width="800" />
-</div>
-
----
-
-## Getting Started
-
-Follow these steps to set up the project locally on your machine.
-
-### Prerequisites
-
-Make sure you have **Node.js** installed.
-
-```sh
-node -v
-npm -v
+```text
+frontend/
+  src/
+    components/       Shared UI: dock, header, globe, command palette, loader
+    context/          Theme, toast, sound, and smooth-scroll providers
+    data/             Projects, skills, experience, certifications
+    hooks/            Modal lock, keyboard navigation, visibility helpers
+    pages/            Home, Projects, Experience, Skills, About, Contact, etc.
+    utils/            Motion presets, paths, icons
 ```
 
-### Installation
+## Keyboard Shortcuts
 
-1.  **Clone the repository**
+- `Ctrl+K`, `Meta+K`, or `Alt+K`: open command palette
+- `Alt+1` through `Alt+7`: jump between primary pages
+- `?`: open the shortcut guide
+- `Tab`: autocomplete commands inside the CLI playground
+- `Esc`: close overlays
 
-    ```sh
-    git clone https://github.com/aryan-dani/Portfolio.git
-    cd Portfolio
-    ```
+## Local Development
 
-2.  **Navigate to the frontend directory**
+```sh
+cd frontend
+npm install
+npm run dev
+```
 
-    ```sh
-    cd frontend
-    ```
+The dev server runs on `http://localhost:3000`.
 
-3.  **Install dependencies**
+## Scripts
 
-    ```sh
-    npm install
-    ```
+```sh
+npm run dev       # Start Vite dev server
+npm run build     # Build production assets
+npm run preview   # Preview production build
+npm run lint      # Run ESLint
+```
 
-4.  **Start the development server**
+## Accessibility & Performance
 
-    ```sh
-    npm run dev
-    ```
-
-    The app should now be running on `http://localhost:5173`.
-
----
-
-## Roadmap
-
-- [x] Initial Design & Development
-- [x] Responsive Layout Implementation
-- [x] Project & Skills Sections
-- [ ] **Blog Integration**: Add a section for technical writing.
-- [ ] **Theme Toggle**: Support for light/dark mode switching.
-- [ ] **Backend Integration**: For a dynamic contact form and CMS features.
-
-See the [open issues](https://github.com/aryan-dani/Portfolio/issues) for a full list of proposed features (and known issues).
-
----
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for more details.
-
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
-
----
+- Keyboard navigation is first-class: dock links, cards, palette commands, modals, and route shortcuts are operable without a mouse.
+- Decorative animation respects `prefers-reduced-motion` where practical.
+- Routes are lazy-loaded and major vendor libraries are split into chunks.
+- The globe uses Canvas with visibility-based pausing and no additional runtime dependency.
+- Theme colors are centralized in `frontend/src/index.css` to maintain contrast across light and dark modes.
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Contact
-
-**Aryan Dani**
 
 - Email: [daniaryan212@gmail.com](mailto:daniaryan212@gmail.com)
 - LinkedIn: [Aryan Dani](https://www.linkedin.com/in/aryandani/)
 - GitHub: [@aryan-dani](https://github.com/aryan-dani)
-
-Project Link: [https://github.com/aryan-dani/Portfolio](https://github.com/aryan-dani/Portfolio)

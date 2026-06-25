@@ -19,6 +19,7 @@ import { containerVariants, cardVariants, hoverSpring, defaultSpring } from "../
 import { useModalLock } from "../../hooks/useModalLock";
 import StatCard from "../../components/StatCard/StatCard";
 import SkillsGraph from "../../components/SkillsGraph/SkillsGraph";
+import PageHeader from "../../components/PageHeader/PageHeader";
 
 const iconMap = {
   FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
@@ -178,23 +179,10 @@ function Skills() {
         variants={containerVariants}
       >
         {/* Header */}
-        <header className="mb-4 border-b-8 border-outline pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4">
-          <motion.div
-            className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
-            variants={cardVariants}
-          >
-            <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter leading-none">
-              SKILLS &amp; TOOLS
-            </h1>
-          </motion.div>
-          <motion.p
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-2 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-            variants={cardVariants}
-          >
-            A chaotic sticker sheet of the technologies I use to build loud,
-            unapologetic digital experiences. Function over form, but make it look cool.
-          </motion.p>
-        </header>
+        <PageHeader
+          title="Skills & Tools"
+          description="A chaotic sticker sheet of the technologies I use to build loud, unapologetic digital experiences. Function over form, but make it look cool."
+        />
 
         {/* Stats Bar */}
         <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={cardVariants}>
@@ -407,7 +395,9 @@ function SkillListItem({ skill, icon, onClick }) {
           {getProficiencyLabel(skill.level)}
         </div>
 
-        <span className="hidden md:block text-base font-black group-hover:translate-x-1 transition-transform text-[var(--color-on-surface)]">→</span>
+        <span className="hidden md:block border-2 border-outline bg-[var(--color-surface-variant)] px-2 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-surface)] shadow-[2px_2px_0_var(--shadow-color)] group-hover:bg-[var(--color-primary-container)] group-hover:text-[var(--color-on-primary-container)] transition-all">
+          View
+        </span>
       </div>
     </motion.button>
   );
@@ -492,7 +482,7 @@ function SkillGridCard({ skill, icon, onClick }) {
       <p className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", transform: "translateZ(5px)" }}>
         {skill.description}
       </p>
-      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-outline-variant" style={{ transform: "translateZ(10px)" }}>
+      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-80 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-outline-variant" style={{ transform: "translateZ(10px)" }}>
         <FaExternalLinkAlt className="text-[10px]" /> Click for details
       </div>
     </motion.button>

@@ -76,15 +76,37 @@ function PageFallback() {
 
 function PageTransition({ children, isFirstRender }) {
   return (
-    <motion.div
-      variants={pageVariants}
-      initial={isFirstRender ? { opacity: 1, x: 0 } : "initial"}
-      animate={isFirstRender ? { opacity: 1, x: 0 } : "animate"}
-      exit="exit"
-      className="w-full flex flex-col grow"
-    >
-      {children}
-    </motion.div>
+    <>
+      {!isFirstRender && (
+        <>
+          <motion.div
+            aria-hidden="true"
+            className="fixed inset-0 z-[90] pointer-events-none bg-[var(--color-background)]"
+            initial={{ opacity: 0.96 }}
+            animate={{ opacity: 0 }}
+            exit={{ opacity: 0.86 }}
+            transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.div
+            aria-hidden="true"
+            className="fixed inset-y-0 left-0 z-[91] pointer-events-none w-full bg-[var(--color-on-background)]"
+            initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0.12 }}
+            animate={{ clipPath: "inset(0 0% 0 100%)", opacity: 0 }}
+            exit={{ clipPath: "inset(0 0% 0 0%)", opacity: 0.08 }}
+            transition={{ duration: 0.46, ease: [0.76, 0, 0.24, 1] }}
+          />
+        </>
+      )}
+      <motion.div
+        variants={pageVariants}
+        initial={isFirstRender ? { opacity: 1, x: 0 } : "initial"}
+        animate={isFirstRender ? { opacity: 1, x: 0 } : "animate"}
+        exit="exit"
+        className="w-full flex flex-col grow"
+      >
+        {children}
+      </motion.div>
+    </>
   );
 }
 
@@ -99,12 +121,25 @@ function AnimatedRoutes() {
   }, []);
 
   useEffect(() => {
-    requestAnimationFrame(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
+  useEffect(() => {
+    const scrollToTop = () => {
       if (window.__portfolioLenis) {
         window.__portfolioLenis.scrollTo(0, { immediate: true });
-      } else {
-        window.scrollTo(0, 0);
       }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    };
+
+    scrollToTop();
+    requestAnimationFrame(() => {
+      scrollToTop();
+      requestAnimationFrame(scrollToTop);
     });
   }, [location.pathname]);
 

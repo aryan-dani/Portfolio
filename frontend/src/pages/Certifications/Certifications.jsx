@@ -6,6 +6,7 @@ import { certifications, certificationCategories } from "../../data/certificatio
 import { getAssetPath } from "../../utils/paths";
 import { containerVariants, cardVariants } from "../../utils/motionVariants";
 import { useModalLock } from "../../hooks/useModalLock";
+import PageHeader from "../../components/PageHeader/PageHeader";
 
 function Certifications() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,30 +39,12 @@ function Certifications() {
         variants={containerVariants}
       >
         {/* Header */}
-        <header className="mb-8 border-b-8 border-outline pb-8 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] mt-4">
-          <div className="flex items-center gap-4 flex-wrap">
-            <motion.div
-              className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
-              variants={cardVariants}
-            >
-              <h1 className="font-headline-xl font-black text-4xl md:text-6xl lg:text-7xl text-[var(--color-on-primary-container)] uppercase tracking-tighter leading-none">
-                CERTIFICATIONS
-              </h1>
-            </motion.div>
-            <motion.span
-              className="font-headline-md text-2xl md:text-3xl border-4 border-outline px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-              variants={cardVariants}
-            >
-              {filteredCerts.length}
-            </motion.span>
-          </div>
-          <motion.p
-            className="font-body-lg text-base md:text-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-            variants={cardVariants}
-          >
-            Proof of work — industry-recognized credentials across AI, cloud, and web technologies.
-          </motion.p>
-        </header>
+        <PageHeader
+          title="Certifications"
+          count={filteredCerts.length}
+          description="Proof of work - industry-recognized credentials across AI, cloud, and web technologies."
+          className="mb-8"
+        />
 
         {/* Controls */}
         <div className="bg-hatch border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] mb-8">
@@ -192,6 +175,9 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
           />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
             <FaEye className="text-white text-3xl" />
+          </div>
+          <div className="absolute left-4 top-4 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0_var(--shadow-color)] z-10">
+            Click to preview
           </div>
           
           {/* Category badge */}

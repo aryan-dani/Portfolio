@@ -7,6 +7,7 @@ import { containerVariants, cardVariants } from "../../utils/motionVariants";
 import { useModalLock } from "../../hooks/useModalLock";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
+import PageHeader from "../../components/PageHeader/PageHeader";
 
 const gridContainerVariants = containerVariants;
 
@@ -73,32 +74,11 @@ function Projects() {
         variants={containerVariants}
       >
         {/* Header */}
-        <header className="mb-4 border-b-8 border-outline pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-          <motion.div
-            className="flex items-center gap-4 flex-wrap"
-            variants={cardVariants}
-          >
-            <div className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden">
-              <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter">
-                PROJECTS
-              </h1>
-            </div>
-            <span
-              className="font-headline-md text-3xl border-4 border-outline px-5 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-            >
-              {filteredProjects.length}
-            </span>
-          </motion.div>
-
-          <motion.p
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-            variants={cardVariants}
-          >
-            Systems engineered to resist and adapt. Full-stack applications
-            with modern architectures. AI-powered solutions and creative
-            experiments.
-          </motion.p>
-
+        <PageHeader
+          title="Projects"
+          count={filteredProjects.length}
+          description="Systems engineered to resist and adapt. Full-stack applications with modern architectures. AI-powered solutions and creative experiments."
+        >
           {/* Search + Filters */}
           <motion.div
             className="flex flex-col xl:flex-row gap-6 w-full justify-between items-stretch xl:items-center mt-4"
@@ -205,7 +185,7 @@ function Projects() {
               )}
             </AnimatePresence>
           </motion.div>
-        </header>
+        </PageHeader>
 
         {/* Grid */}
         <AnimatePresence mode="popLayout">

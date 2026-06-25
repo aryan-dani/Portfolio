@@ -1,11 +1,18 @@
-import { memo } from "react";
+import { memo, useCallback, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import FloatingDock from "../FloatingDock/FloatingDock";
 import CommandPalette from "../CommandPalette/CommandPalette";
+import ShortcutsOverlay from "../ShortcutsOverlay/ShortcutsOverlay";
+import OnboardingHint from "../OnboardingHint/OnboardingHint";
+import { useKeyboardNav } from "../../hooks/useKeyboardNav";
 
 const Layout = memo(function Layout({ children }) {
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const showShortcuts = useCallback(() => setShortcutsOpen(true), []);
+  useKeyboardNav({ onShowShortcuts: showShortcuts });
+
   return (
     <div className="bg-background text-on-background min-h-screen flex flex-col font-body-md selection:bg-primary-container selection:text-black">
       <Header />
@@ -16,6 +23,8 @@ const Layout = memo(function Layout({ children }) {
       <Footer />
       <FloatingDock />
       <CommandPalette />
+      <OnboardingHint />
+      <ShortcutsOverlay isOpen={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
     </div>
   );
 });

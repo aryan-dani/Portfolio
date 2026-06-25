@@ -10,6 +10,7 @@ import { getAssetPath } from "../../utils/paths";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
 import ResumeModal from "../../components/ResumeModal/ResumeModal";
+import PageHeader from "../../components/PageHeader/PageHeader";
 
 const SUBJECT_OPTIONS = [
   "Freelance Project", "Collaboration", "Job Opportunity",
@@ -34,6 +35,8 @@ const FAQ_ITEMS = [
     a: "Absolutely. I've collaborated with cross-functional teams at Artem HealthTech and in hackathons like NASA Space Apps and RIFT 2026.",
   },
 ];
+
+const CONTACT_ENDPOINT = import.meta.env.VITE_CONTACT_ENDPOINT || "/api/contact";
 
 // ── Confetti burst on submit ──────────────────────────────────
 
@@ -99,42 +102,40 @@ function Contact() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`https://formsubmit.co/ajax/${aboutInfo.email}`, {
+      const endpoint = CONTACT_ENDPOINT;
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject || "Portfolio Contact",
+        message: formData.message,
+        _subject: `[Portfolio] ${formData.subject || "Contact"} from ${formData.name}`,
+        _captcha: "false",
+        _template: "table",
+        _replyto: formData.email,
+      };
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject || "Portfolio Contact",
-          message: formData.message,
-          _subject: `[Portfolio] ${formData.subject || "Contact"} from ${formData.name}`
-        })
+        body: JSON.stringify(payload)
       });
 
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
 
-      if (response.ok && result.success === "true") {
+      if (response.ok && (result.success === "true" || result.success === true || CONTACT_ENDPOINT)) {
         setSubmitted(true);
         setShowConfetti(true);
         showToast("Message sent successfully!", "success");
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        throw new Error(result.message || "Failed to send message");
+        throw new Error(result.message || result.error || "Failed to send message");
       }
     } catch (error) {
-      console.error("FormSubmit Error:", error);
-      showToast("Direct send failed. Opening email client instead...", "warning");
-      
-      // Fallback to mailto link
-      const subject = encodeURIComponent(`[Portfolio] ${formData.subject || "Contact"} from ${formData.name}`);
-      const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`);
-      window.location.href = `mailto:${aboutInfo.email}?subject=${subject}&body=${body}`;
-      
-      setSubmitted(true);
-      setShowConfetti(true);
+      console.error("Contact form error:", error);
+      showToast(error.message || "Direct send failed. Please try again in a moment.", "error");
     } finally {
       setIsSubmitting(false);
       setTimeout(() => { setSubmitted(false); setShowConfetti(false); }, 3500);
@@ -156,26 +157,10 @@ function Contact() {
       variants={containerVariants}
     >
       {/* Hero */}
-      <header className="mb-4 border-b-8 border-outline pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-4">
-        <motion.div variants={itemVariants} className="mb-6">
-          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-background)] uppercase tracking-tighter">
-            LET&apos;S BUILD
-            <br />
-            <span
-              className="border-4 border-outline px-4 inline-block shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-              style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
-            >
-              SOMETHING EPIC
-            </span>
-          </h1>
-        </motion.div>
-        <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
-          <p className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-            Got a project idea? Want to collaborate? Or just want to geek out
-            about tech and anime? I&apos;m all ears. Drop me a message.
-          </p>
-        </motion.div>
-      </header>
+      <PageHeader
+        title="Let's Build"
+        description="Got a project idea? Want to collaborate? Or just want to geek out about tech and anime? I'm all ears. Drop me a message and let's build something epic."
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
         {/* Contact Form */}

@@ -66,9 +66,14 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
 
         {/* Content */}
         <div className="p-6 md:p-7 flex flex-col grow">
-          <h2 className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] mb-3 uppercase">
-            {project.title}
-          </h2>
+          <div className="mb-3 flex items-start justify-between gap-3">
+            <h2 className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] uppercase">
+              {project.title}
+            </h2>
+            <span className="shrink-0 border-2 border-outline bg-[var(--color-surface-variant)] px-2 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-surface)] opacity-80 shadow-[2px_2px_0_var(--shadow-color)] group-hover:bg-[var(--color-primary-container)] group-hover:text-[var(--color-on-primary-container)] transition-colors">
+              View
+            </span>
+          </div>
           <p
             className="font-body-md text-sm text-[var(--color-text-muted)] mb-5 whitespace-normal"
             style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}

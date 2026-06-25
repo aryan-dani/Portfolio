@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useLayoutEffect, useState } from "react";
 
 const ThemeContext = createContext();
 
@@ -7,7 +7,7 @@ export function ThemeProvider({ children }) {
     return localStorage.getItem("portfolio_theme") || "light";
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = window.document.documentElement;
     const isDark = theme === "dark";
 
@@ -31,7 +31,7 @@ export function ThemeProvider({ children }) {
 
     setTimeout(() => {
       root.classList.remove("theme-transitioning");
-    }, 550);
+    }, 760);
   };
 
   return (

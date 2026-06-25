@@ -14,6 +14,7 @@ const navItems = [
   { path: "/skills", label: "Skills" },
   { path: "/about", label: "About" },
   { path: "/playground", label: "Playground" },
+  { path: "/copyright", label: "Copyright" },
 ];
 
 const menuVariants = {
@@ -91,7 +92,7 @@ function Header() {
                     <NavLink
                       key={item.path}
                       to={item.path}
-                      className={`relative font-bold px-3 py-2 border-4 border-transparent transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none uppercase text-xs xl:text-sm tracking-widest ${
+                      className={`relative isolate font-bold px-3 py-2 border-4 border-transparent transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none uppercase text-xs xl:text-sm tracking-widest ${
                         isActive
                           ? "text-[var(--color-on-primary-container)]"
                           : "text-[var(--color-on-surface)] hover:border-outline hover:bg-[var(--color-surface-variant)]"

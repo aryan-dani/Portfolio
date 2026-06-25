@@ -5,10 +5,10 @@ import {
   FaLinkedin,
   FaEnvelope,
   FaArrowLeft,
-  FaBalanceScale,
 } from "react-icons/fa";
 
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
+import PageHeader from "../../components/PageHeader/PageHeader";
 
 function Copyright() {
   const currentYear = new Date().getFullYear();
@@ -20,25 +20,11 @@ function Copyright() {
       animate="visible"
       variants={containerVariants}
     >
-      <header className="mb-8 border-b-8 border-outline pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-        <div className="flex flex-col gap-6">
-          <motion.div
-            variants={itemVariants}
-            className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] transition-transform flex items-center gap-4 w-fit"
-          >
-            <FaBalanceScale className="text-4xl text-[var(--color-on-primary-container)]" />
-            <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter">
-              COPYRIGHT
-            </h1>
-          </motion.div>
-          <motion.p
-            variants={itemVariants}
-            className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-          >
-            MIT License. Open source portfolio template.
-          </motion.p>
-        </div>
-      </header>
+      <PageHeader
+        title="Copyright"
+        description="MIT License. Open source portfolio template."
+        className="mb-8"
+      />
 
       <div className="w-full">
         <motion.div className="mb-12" variants={itemVariants}>

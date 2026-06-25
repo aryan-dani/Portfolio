@@ -419,7 +419,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 }
 
 .marquee-strip {
-  animation: marquee-scroll 38s linear infinite;
+  animation: marquee-scroll 52s linear infinite;
   will-change: transform;
 }
 
@@ -788,6 +788,38 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   z-index: 2;
 }
 
+.page-loader__orbital {
+  position: absolute;
+  width: min(54vw, 520px);
+  height: min(54vw, 520px);
+  border: 2px solid color-mix(in srgb, var(--color-outline) 28%, transparent);
+  border-radius: 50%;
+  opacity: 0.28;
+  z-index: 2;
+  transform: rotateX(68deg) rotateZ(-18deg);
+  animation: orbital-spin 10s linear infinite;
+}
+
+.page-loader__orbital::before,
+.page-loader__orbital::after {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border: 2px solid color-mix(in srgb, var(--color-outline) 26%, transparent);
+  border-radius: 50%;
+}
+
+.page-loader__orbital::after {
+  inset: 26%;
+  transform: rotate(90deg);
+}
+
+@keyframes orbital-spin {
+  to {
+    transform: rotateX(68deg) rotateZ(342deg);
+  }
+}
+
 .page-loader__glitch-container {
   position: absolute;
   display: flex;
@@ -812,6 +844,13 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .page-loader__glitch-char {
   display: inline-block;
   transition: color 0.05s;
+}
+
+.page-loader__glitch-char--waiting {
+  color: var(--color-outline);
+  background: transparent;
+  padding: 0 4px;
+  margin: 0 2px;
 }
 
 .page-loader__glitch-char--resolved {
@@ -1164,6 +1203,10 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   .animate-grain,
   .text-shimmer,
   .animate-hue-cycle {
+    animation: none !important;
+  }
+
+  .page-loader__orbital {
     animation: none !important;
   }
 }

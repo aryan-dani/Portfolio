@@ -14,9 +14,9 @@ export const motionEase = {
 /** Default spring — soft landing with minimal bounce */
 export const defaultSpring = {
   type: "spring",
-  stiffness: 170,
-  damping: 30,
-  mass: 0.75,
+  stiffness: 135,
+  damping: 34,
+  mass: 0.85,
 };
 
 /** Snappier spring for micro-interactions (buttons, toggles) */
@@ -30,8 +30,8 @@ export const snappySpring = {
 /** Standard hover spring */
 export const hoverSpring = {
   type: "spring",
-  stiffness: 260,
-  damping: 30,
+  stiffness: 210,
+  damping: 32,
 };
 
 /** Stagger container — fades in and staggers children */
@@ -40,9 +40,9 @@ export const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      duration: 0.5,
-      staggerChildren: 0.045,
-      delayChildren: 0.035,
+      duration: 0.38,
+      staggerChildren: 0.018,
+      delayChildren: 0.015,
       ease: motionEase.out,
     },
   },
@@ -57,9 +57,9 @@ export const gridContainerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      duration: 0.45,
-      staggerChildren: 0.035,
-      delayChildren: 0.025,
+      duration: 0.34,
+      staggerChildren: 0.014,
+      delayChildren: 0.01,
       ease: motionEase.out,
     },
   },
@@ -67,7 +67,7 @@ export const gridContainerVariants = {
 
 /** Slide-up item — smooth spring-based reveal */
 export const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 8 },
   visible: {
     opacity: 1,
     y: 0,
@@ -77,7 +77,7 @@ export const itemVariants = {
 
 /** Card variant — gentle spring for grids */
 export const cardVariants = {
-  hidden: { opacity: 0, y: 14 },
+  hidden: { opacity: 0, y: 8 },
   visible: {
     opacity: 1,
     y: 0,
@@ -87,14 +87,20 @@ export const cardVariants = {
 
 /** Route/page transition — directional slide with soft spring */
 export const pageVariants = {
-  initial: { opacity: 0, y: 8 },
+  initial: { opacity: 0, y: 14, filter: "blur(8px)" },
   animate: {
     opacity: 1,
     y: 0,
-    transitionEnd: { transform: "none" },
-    transition: { duration: 0.24, ease: motionEase.out },
+    filter: "blur(0px)",
+    transitionEnd: { transform: "none", filter: "none" },
+    transition: { duration: 0.34, ease: motionEase.out },
   },
-  exit: { opacity: 0, y: -6, transition: { duration: 0.14, ease: motionEase.in } },
+  exit: {
+    opacity: 0,
+    y: -8,
+    filter: "blur(4px)",
+    transition: { duration: 0.18, ease: motionEase.in },
+  },
 };
 
 /** Modal backdrop — smooth opacity fade */

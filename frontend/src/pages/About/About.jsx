@@ -10,6 +10,7 @@ import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
 import GitHubStats from "../../components/GitHubStats/GitHubStats";
 import ResumeModal from "../../components/ResumeModal/ResumeModal";
+import PageHeader from "../../components/PageHeader/PageHeader";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
 
@@ -153,24 +154,11 @@ function About() {
       variants={containerVariants}
     >
       {/* Header */}
-      <header className="mb-8 border-b-8 border-outline pb-8 flex flex-col justify-end items-start gap-8 mt-4 relative bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-        <motion.div
-          className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden"
-          variants={itemVariants}
-          whileHover={{ x: -3, y: -3, boxShadow: "14px 14px 0px 0px var(--shadow-color)" }}
-        >
-          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter">
-            ABOUT ME
-          </h1>
-        </motion.div>
-        <motion.p
-          className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] mt-4 max-w-2xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-          variants={itemVariants}
-        >
-          Full-stack developer with a passion for clean code. Building
-          innovative solutions across the tech stack.
-        </motion.p>
-      </header>
+      <PageHeader
+        title="About Me"
+        description="Full-stack developer with a passion for clean code. Building innovative solutions across the tech stack."
+        className="mb-8"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         {/* Left: Photo + Bio */}
