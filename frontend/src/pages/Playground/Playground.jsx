@@ -11,16 +11,7 @@ import { useModalLock } from "../../hooks/useModalLock";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import "./Playground.scss";
 
-const ROUTES = {
-  home: "/",
-  projects: "/projects",
-  experience: "/experience",
-  certifications: "/certifications",
-  skills: "/skills",
-  about: "/about",
-  contact: "/contact",
-  playground: "/playground",
-};
+import { playgroundRouteMap as ROUTES } from "../../config/routes";
 
 const COMMAND_HELP = [
   ["help", "Display this helper screen"],
@@ -83,9 +74,7 @@ function Playground() {
   const terminalLogRef = useRef(null);
   const inputRef = useRef(null);
 
-  const focusInput = (e) => {
-    // Only focus if clicking directly in the terminal area, don't steal from scrollbars
-
+  const focusInput = () => {
     const selection = window.getSelection().toString();
     if (selection) return;
     if (inputRef.current) {
@@ -242,7 +231,7 @@ function Playground() {
         if (!args[1] || !ROUTES[args[1]]) {
           setHistory((prev) => [
             ...prev,
-            { text: "Usage: open [home|projects|experience|certifications|skills|about|contact|playground]", type: "error" },
+            { text: "Usage: open [home|projects|experience|certifications|skills|about|contact|playground|copyright]", type: "error" },
           ]);
         } else {
           setHistory((prev) => [
@@ -477,13 +466,13 @@ function Playground() {
   const renderTerminalContent = () => (
     <>
       {/* Terminal Header / Title bar */}
-      <div className="flex justify-between items-center border-b-2 border-dashed border-outline-variant pb-3 mb-4 select-none shrink-0">
+      <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b-2 border-dashed border-outline-variant pb-3 mb-4 select-none shrink-0">
         <div className="flex gap-2">
-          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-30 hover:opacity-60 transition-opacity" />
-          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-60 hover:opacity-80 transition-opacity" />
-          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-100 hover:opacity-70 transition-opacity" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-30" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-60" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-100" />
         </div>
-        <div className="text-xs font-bold font-mono text-on-surface-variant uppercase tracking-wider">
+        <div className="min-w-0 text-center text-[10px] sm:text-xs font-bold font-mono text-[var(--color-on-surface-variant)] uppercase tracking-wider truncate">
           guest@aryan-dani.dev: ~ {isExpanded ? "[EXPANDED]" : "[NORMAL]"}
         </div>
         <button
@@ -516,7 +505,7 @@ function Playground() {
       </div>
 
       {/* Terminal logs list */}
-      <div ref={terminalLogRef} className="grow overflow-y-auto overscroll-contain space-y-2 pr-2" data-lenis-prevent>
+      <div ref={terminalLogRef} className="grow min-h-0 overflow-y-auto overscroll-contain space-y-2 pr-2" data-lenis-prevent>
         {history.map((line, index) => {
           if (line.type === "spacing")
             return <div key={index} className="h-2" />;
@@ -553,7 +542,7 @@ function Playground() {
           <input
             ref={inputRef}
             type="text"
-            className="absolute inset-0 bg-transparent border-none outline-none font-mono text-sm md:text-base focus:ring-0 p-0 w-full z-10 cursor-none select-none"
+            className="absolute inset-0 bg-transparent border-none outline-none font-mono text-sm md:text-base focus:ring-0 p-0 w-full z-10 cursor-none"
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -588,7 +577,7 @@ function Playground() {
       {/* Render collapsed inline terminal */}
       {!isExpanded && (
         <motion.div
-          className="nb-cli-container border-4 border-outline bg-[var(--color-surface)] p-6 font-mono flex flex-col relative overflow-hidden min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+          className="nb-cli-container border-4 border-outline bg-[var(--color-surface)] p-6 font-mono flex flex-col relative overflow-hidden min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)] paint-isolate hover-gpu"
           onClick={focusInput}
           onWheel={handleTerminalWheel}
           whileHover={{ y: -2, boxShadow: "10px 10px 0px 0px var(--shadow-color)" }}
@@ -604,25 +593,27 @@ function Playground() {
           {isExpanded && (
               <>
                 <motion.div
-                  initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-                  animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
-                  exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.24, ease: "easeOut" }}
                   onClick={() => setIsExpanded(false)}
-                  className="fixed inset-0 bg-black/60 z-190 cursor-none"
+                  className="fixed inset-0 bg-black/60 z-190 cursor-none gpu-layer"
                 />
-                <motion.div
-                  className="nb-cli-container bg-[var(--color-surface)] p-6 md:p-10 font-mono flex flex-col fixed inset-3 md:inset-6 z-200 overflow-hidden border-4 border-outline shadow-[12px_12px_0_var(--shadow-color)]"
-                  onClick={focusInput}
-                  onWheel={handleTerminalWheel}
-                  initial={{ opacity: 0, scale: 0.94, y: 32, clipPath: "inset(10% 6% 10% 6%)" }}
-                  animate={{ opacity: 1, scale: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
-                  exit={{ opacity: 0, scale: 0.96, y: 22, clipPath: "inset(8% 5% 8% 5%)" }}
-                  transition={{ type: "spring", stiffness: 170, damping: 30 }}
-                  style={{ transformOrigin: "center bottom" }}
-                >
-                  {renderTerminalContent()}
-                </motion.div>
+                <div className="fixed inset-0 z-200 flex items-center justify-center p-3 sm:p-4 md:p-6 pointer-events-none">
+                  <motion.div
+                    className="nb-cli-container pointer-events-auto bg-[var(--color-surface)] p-4 sm:p-5 md:p-6 font-mono flex flex-col relative w-full h-full max-w-[1600px] overflow-hidden border-4 border-outline shadow-[6px_6px_0_var(--shadow-color)] gpu-layer paint-isolate"
+                    onClick={focusInput}
+                    onWheel={handleTerminalWheel}
+                    initial={{ opacity: 0, scale: 0.985, y: 14, clipPath: "inset(4% 2% 6% 2%)" }}
+                    animate={{ opacity: 1, scale: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
+                    exit={{ opacity: 0, scale: 0.99, y: 10, clipPath: "inset(5% 2% 6% 2%)" }}
+                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ transformOrigin: "center" }}
+                  >
+                    {renderTerminalContent()}
+                  </motion.div>
+                </div>
             </>
           )}
         </AnimatePresence>,

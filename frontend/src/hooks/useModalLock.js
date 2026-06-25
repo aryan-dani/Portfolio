@@ -7,15 +7,42 @@ import { useEffect } from "react";
  * @param {function} onClose - Callback to close the modal (called on Escape).
  */
 export function useModalLock(isOpen, onClose) {
-  // Body scroll lock
+  // Body + Lenis scroll lock (supports nested overlays)
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+    if (!isOpen) return undefined;
+
+    const html = document.documentElement;
+    const body = document.body;
+    const lenis = window.__portfolioLenis;
+    const lockAttr = "data-modal-lock-count";
+
+    const previousBodyOverflow = body.style.overflow;
+    const previousHtmlOverflow = html.style.overflow;
+    const currentCount = Number.parseInt(html.getAttribute(lockAttr) || "0", 10);
+    const nextCount = currentCount + 1;
+
+    html.setAttribute(lockAttr, String(nextCount));
+
+    if (nextCount === 1) {
+      body.style.overflow = "hidden";
+      html.style.overflow = "hidden";
+      html.classList.add("lenis-stopped");
+      lenis?.stop?.();
     }
+
     return () => {
-      document.body.style.overflow = "";
+      const countNow = Number.parseInt(html.getAttribute(lockAttr) || "1", 10);
+      const reducedCount = Math.max(0, countNow - 1);
+
+      if (reducedCount === 0) {
+        html.removeAttribute(lockAttr);
+        body.style.overflow = previousBodyOverflow;
+        html.style.overflow = previousHtmlOverflow;
+        html.classList.remove("lenis-stopped");
+        lenis?.start?.();
+      } else {
+        html.setAttribute(lockAttr, String(reducedCount));
+      }
     };
   }, [isOpen]);
 

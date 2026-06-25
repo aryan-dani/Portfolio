@@ -6,7 +6,7 @@ export function smoothScrollTo(top = 0) {
   return new Promise((resolve) => {
     if (window.__portfolioLenis) {
       window.__portfolioLenis.scrollTo(top, {
-        duration: 1.05,
+        duration: 0.68,
         onComplete: resolve,
       });
       return;
@@ -14,7 +14,7 @@ export function smoothScrollTo(top = 0) {
 
     const startY = window.scrollY || document.documentElement.scrollTop || 0;
     const distance = top - startY;
-    const duration = 800; // Fixed 800ms for a consistent, smooth feel
+    const duration = 520; // Faster native fallback for snappier feel
     let startTime = null;
 
     if (distance === 0) {
@@ -46,4 +46,13 @@ export function smoothScrollTo(top = 0) {
 
 export function smoothScrollToTop() {
   return smoothScrollTo(0);
+}
+
+export function scrollToTopImmediate() {
+  if (window.__portfolioLenis) {
+    window.__portfolioLenis.scrollTo(0, { immediate: true });
+  }
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 }

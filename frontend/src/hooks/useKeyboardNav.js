@@ -1,17 +1,8 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { keyboardRoutes } from "../config/routes";
 
-export const keyboardRoutes = [
-  { key: "1", label: "Home", path: "/" },
-  { key: "2", label: "Projects", path: "/projects" },
-  { key: "3", label: "Experience", path: "/experience" },
-  { key: "4", label: "Certifications", path: "/certifications" },
-  { key: "5", label: "Skills", path: "/skills" },
-  { key: "6", label: "About", path: "/about" },
-  { key: "7", label: "Playground", path: "/playground" },
-  { key: "8", label: "Copyright", path: "/copyright" },
-];
-
+export { keyboardRoutes };
 function isTypingTarget(target) {
   if (!target) return false;
   return (

@@ -1,15 +1,14 @@
-import { memo } from "react";
+import { lazy, memo, Suspense } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { aboutInfo } from "../../data/experience";
-import { projects } from "../../data/projects";
-import { skills } from "../../data/skills";
-import { certifications } from "../../data/certifications";
+import { portfolioStats } from "../../data/stats";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import StatCard from "../../components/StatCard/StatCard";
 import MagneticLink from "../../components/MagneticLink/MagneticLink";
-import TechGlobe from "../../components/TechGlobe/TechGlobe";
 
-import { containerVariants, itemVariants } from "../../utils/motionVariants";
+import { itemVariants } from "../../utils/motionVariants";
+
+const TechGlobe = lazy(() => import("../../components/TechGlobe/TechGlobe"));
 
 const carouselVariants = {
   hidden:  { opacity: 0, x: 48, scale: 0.97 },
@@ -27,18 +26,15 @@ const roles = ["Web Developer", "AI Engineer", "Tech Enthusiast", "Problem Solve
 
 const Home = memo(function Home() {
   const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress, [0, 0.35], [0, -80]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.94]);
-  const totalProjects = projects.length;
-  const totalSkills   = Object.values(skills).flat().length;
-  const totalCerts    = certifications.length;
+  const heroY = useTransform(scrollYProgress, [0, 0.35], [0, -52]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.97]);
+  const totalProjects = portfolioStats.projects;
+  const totalSkills   = portfolioStats.skills;
+  const totalCerts    = portfolioStats.certifications;
 
   return (
     <motion.section
       className="flex flex-col gap-10 lg:gap-14 min-h-[calc(100vh-200px)] w-full relative"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
     >
       {/* Hero row */}
       <div className="flex flex-col lg:flex-row gap-10 xl:gap-14 items-center justify-between lg:min-h-[560px] relative z-10">
@@ -103,7 +99,9 @@ const Home = memo(function Home() {
           variants={carouselVariants}
           style={{ y: heroY, scale: heroScale }}
         >
-          <TechGlobe />
+          <Suspense fallback={<div className="w-full max-w-[560px] aspect-square border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0_var(--shadow-color)]" />}>
+            <TechGlobe />
+          </Suspense>
         </motion.div>
       </div>
 
@@ -112,9 +110,9 @@ const Home = memo(function Home() {
         className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full"
         variants={itemVariants}
       >
-        <StatCard to="/projects" value={totalProjects} label="Projects"      bg="var(--color-primary-container)" text="var(--color-on-primary-container)" delay={0} />
-        <StatCard to="/skills" value={totalSkills}   isPlus label="Skills" bg="var(--color-on-background)" text="var(--color-background)" delay={0.08} />
-        <StatCard to="/certifications" value={totalCerts}    label="Certifications" bg="var(--color-surface)" text="var(--color-on-surface)" delay={0.16} />
+        <StatCard to="/projects" value={totalProjects} label="Projects"      bg="var(--color-primary-container)" text="var(--color-on-primary-container)" />
+        <StatCard to="/skills" value={totalSkills}   isPlus label="Skills" bg="var(--color-on-background)" text="var(--color-background)" />
+        <StatCard to="/certifications" value={totalCerts}    label="Certifications" bg="var(--color-surface)" text="var(--color-on-surface)" />
       </motion.div>
 
       {/* Marquee strip */}

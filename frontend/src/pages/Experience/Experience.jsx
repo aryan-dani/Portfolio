@@ -1,6 +1,6 @@
 import { useState, useRef, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useSpring, useInView } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useInView } from "framer-motion";
 import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
 import { containerVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
@@ -196,7 +196,7 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
     <motion.div
       ref={ref}
       key={exp.id}
-      className="relative z-10 w-full mb-10 md:mb-16 grid grid-cols-1 md:grid-cols-[1fr_80px_1fr] items-center gap-4 md:gap-0"
+      className="relative z-10 w-full mb-10 md:mb-16 grid grid-cols-1 md:grid-cols-[1fr_80px_1fr] items-center gap-4 md:gap-0 overflow-visible p-3 -m-3"
       initial={{ opacity: 0, x: isEven ? -60 : 60 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ ...defaultSpring, delay: index * 0.05 }}
@@ -255,7 +255,6 @@ function Experience() {
   const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end end"] });
-  const scaleY = useSpring(scrollYProgress, { stiffness: 90, damping: 28, restDelta: 0.001 });
 
   const toggleExpand = (id) => setExpandedId(expandedId === id ? null : id);
 
@@ -282,7 +281,7 @@ function Experience() {
         <motion.div
           className="absolute left-5 md:left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-2 z-0 origin-top"
           style={{
-            scaleY: scaleY,
+            scaleY: scrollYProgress,
             background: "linear-gradient(to bottom, var(--color-outline), var(--color-secondary))"
           }}
         />

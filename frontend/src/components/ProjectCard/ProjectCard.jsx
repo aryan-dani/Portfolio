@@ -1,24 +1,20 @@
-import { useRef, memo } from "react";
-import { motion, useInView } from "framer-motion";
+import { memo } from "react";
+import { motion } from "framer-motion";
 import { FaEye, FaGithub } from "react-icons/fa";
 import { getAssetPath } from "../../utils/paths";
+import { cardVariants } from "../../utils/motionVariants";
 
 const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isHighlighted }) {
   const isFeatured = project.featured || false;
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
     <motion.div
-      ref={ref}
-      layout
-      initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ type: "spring", stiffness: 260, damping: 22, delay: (index % 3) * 0.06 }}
+      variants={cardVariants}
+      transition={{ type: "spring", stiffness: 220, damping: 28, delay: (index % 3) * 0.04 }}
       className="w-full h-full"
     >
       <motion.article
-        className={`group bg-[var(--color-surface)] border-4 border-outline hover:border-secondary transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full ${
+        className={`group bg-[var(--color-surface)] border-4 border-outline hover:border-secondary transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full hover-gpu ${
           isHighlighted ? "ring-4 ring-[var(--color-primary-container)] ring-offset-2" : ""
         }`}
         onClick={() => onOpenModal(project)}
@@ -46,7 +42,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
             alt={project.title}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover pointer-events-none"
+            className="w-full h-full object-cover pointer-events-none gpu-layer"
             initial={{ scale: 1, filter: "grayscale(100%)" }}
             whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}
             transition={{ duration: 0.4, ease: "easeOut" }}

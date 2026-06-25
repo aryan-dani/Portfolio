@@ -7,15 +7,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { snappySpring, defaultSpring } from "../../utils/motionVariants";
 import { useScrollVisibility } from "../../hooks/useScrollVisibility";
 
-const navItems = [
-  { path: "/projects", label: "Projects" },
-  { path: "/experience", label: "Experience" },
-  { path: "/certifications", label: "Certifications" },
-  { path: "/skills", label: "Skills" },
-  { path: "/about", label: "About" },
-  { path: "/playground", label: "Playground" },
-  { path: "/copyright", label: "Copyright" },
-];
+import { headerNavItems } from "../../config/routes";
 
 const menuVariants = {
   hidden: { opacity: 0, y: -20 },
@@ -62,7 +54,7 @@ function Header() {
         initial={{ y: 0, opacity: 1 }}
         animate={{ y: isVisible ? 0 : "-100%", opacity: isVisible ? 1 : 0 }}
         transition={{ type: "spring", stiffness: 280, damping: 34, mass: 0.9 }}
-        className={`sticky top-0 w-full border-b-4 z-50 transition-[box-shadow,border-color] duration-300 ${
+        className={`sticky top-0 w-full border-b-4 z-50 transition-[box-shadow,border-color] duration-300 gpu-layer paint-isolate ${
           isScrolled
             ? "border-outline shadow-[0_5px_0_0_var(--shadow-color)]"
             : "border-outline shadow-[0_8px_0_0_var(--shadow-color)]"
@@ -78,7 +70,7 @@ function Header() {
                 <NavLink
                   to="/"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-xl md:text-2xl font-black tracking-tighter text-[var(--color-on-primary-container)] border-4 border-outline px-3 md:px-4 py-2 bg-[var(--color-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none whitespace-nowrap"
+                  className="block text-xl md:text-2xl font-black tracking-tighter text-[var(--color-on-primary-container)] border-4 border-outline px-3 md:px-4 py-2 bg-[var(--color-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none whitespace-nowrap hover-gpu"
                 >
                   ARYAN DANI
                 </NavLink>
@@ -86,13 +78,13 @@ function Header() {
 
               {/* Desktop Navigation */}
               <div className="hidden lg:flex items-center gap-2 mx-auto">
-                {navItems.map((item) => {
+                {headerNavItems.map((item) => {
                   const isActive = location.pathname === item.path;
                   return (
                     <NavLink
                       key={item.path}
                       to={item.path}
-                      className={`relative isolate font-bold px-3 py-2 border-4 border-transparent transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none uppercase text-xs xl:text-sm tracking-widest ${
+                      className={`relative isolate font-bold px-3 py-2 border-4 border-transparent transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none uppercase text-xs xl:text-sm tracking-widest hover-gpu ${
                         isActive
                           ? "text-[var(--color-on-primary-container)]"
                           : "text-[var(--color-on-surface)] hover:border-outline hover:bg-[var(--color-surface-variant)]"
@@ -196,7 +188,7 @@ function Header() {
         {isMenuOpen && isVisible && (
           <motion.div
             className="lg:hidden fixed inset-0 z-40 top-[64px] md:top-[80px] flex flex-col items-center pt-8 pb-8 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-4 overflow-y-auto"
-            style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)", backdropFilter: "blur(16px)" }}
+            style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 96%, transparent)" }}
             variants={menuVariants}
             initial="hidden"
             animate="visible"
@@ -219,7 +211,7 @@ function Header() {
               </NavLink>
             </motion.div>
 
-            {navItems.map((item) => (
+            {headerNavItems.map((item) => (
               <motion.div key={item.path} variants={menuItemVariants} className="w-[80%]">
                 <NavLink
                   to={item.path}

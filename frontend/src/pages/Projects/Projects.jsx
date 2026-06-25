@@ -9,8 +9,6 @@ import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
 import PageHeader from "../../components/PageHeader/PageHeader";
 
-const gridContainerVariants = containerVariants;
-
 function Projects() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm,   setSearchTerm]   = useState("");
@@ -191,9 +189,7 @@ function Projects() {
         <AnimatePresence mode="popLayout">
           {filteredProjects.length > 0 ? (
             <motion.div
-              layout
-              key={activeFilter + searchTerm + selectedTags.join("-")}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 overflow-visible p-3 -m-3"
               variants={containerVariants}
               initial="hidden"
               animate="visible"

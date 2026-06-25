@@ -284,7 +284,7 @@ function Skills() {
               )}
             </motion.div>
           ) : viewMode === VIEW_MODES.LIST ? (
-            <motion.div key="list" className="flex flex-col gap-4" variants={containerVariants} initial="hidden" animate="visible">
+            <motion.div key="list" className="flex flex-col gap-4 overflow-visible p-3 -m-3" variants={containerVariants} initial="hidden" animate="visible">
               {flatSkills.length > 0
                 ? flatSkills.map((skill) => (
                     <SkillListItem key={skill.id} skill={skill} icon={getIcon(skill.icon)} onClick={() => setSelectedSkill(skill)} />
@@ -292,7 +292,7 @@ function Skills() {
                 : <EmptyState />}
             </motion.div>
           ) : (
-            <motion.div key="grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" variants={containerVariants} initial="hidden" animate="visible">
+            <motion.div key="grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-visible p-3 -m-3" variants={containerVariants} initial="hidden" animate="visible">
               {flatSkills.length > 0
                 ? flatSkills.map((skill) => (
                     <SkillGridCard key={skill.id} skill={skill} icon={getIcon(skill.icon)} onClick={() => setSelectedSkill(skill)} />
@@ -521,7 +521,8 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         onClick={onClose}
       />
       <motion.div
-        className="bg-[var(--color-surface)] border-4 border-outline shadow-[12px_12px_0px_0px_var(--shadow-color)] max-w-2xl w-full p-6 md:p-8 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto"
+        className="bg-[var(--color-surface)] border-4 border-outline shadow-[12px_12px_0px_0px_var(--shadow-color)] max-w-2xl w-full p-6 md:p-8 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto overscroll-contain"
+        data-lenis-prevent
         initial={{ scale: 0.93, opacity: 0, y: 28 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}

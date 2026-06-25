@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef, useCallback, memo } from "react";
+import { useState, useEffect, useRef, useCallback, memo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FaEnvelope, FaLinkedin, FaGithub, FaInstagram, FaTwitter,
-  FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy, FaEye,
+  FaEnvelope, FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy, FaEye,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
-import ResumeModal from "../../components/ResumeModal/ResumeModal";
 import PageHeader from "../../components/PageHeader/PageHeader";
+
+const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 
 const SUBJECT_OPTIONS = [
   "Freelance Project", "Collaboration", "Job Opportunity",
@@ -436,8 +436,11 @@ function Contact() {
         </motion.div>
       </div>
 
-      {/* Resume Modal */}
-      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+      {isResumeOpen && (
+        <Suspense fallback={null}>
+          <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+        </Suspense>
+      )}
     </motion.section>
   );
 }

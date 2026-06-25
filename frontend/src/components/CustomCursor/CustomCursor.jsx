@@ -61,6 +61,7 @@ const CustomCursor = memo(function CustomCursor() {
   const loopActiveRef = useRef(false);
 
   const isHoverState = cursorState === "hover" || cursorState === "image";
+  const shouldRenderCursor = cursorState !== "hidden";
   const isHoverStateRef = useRef(isHoverState);
   isHoverStateRef.current = isHoverState;
 
@@ -164,12 +165,13 @@ const CustomCursor = memo(function CustomCursor() {
       const el = target.closest("a, button, [role='button'], .cursor-pointer, .nb-carousel-arrow");
       const img = target.closest("img, canvas, .cursor-image");
       const input = target.closest("input, textarea, select");
-      const isCliText = target.closest(".nb-cli-container") && !target.closest("input");
+      const isTerminalSurface = target.closest(".nb-cli-container");
 
       let state = "default";
-      if (input || isCliText) state = "text";
+      if (input) state = "text";
       else if (img) state = "image";
       else if (el) state = "hover";
+      else if (isTerminalSurface) state = "hidden";
 
       setCursorState(state);
 
@@ -219,7 +221,7 @@ const CustomCursor = memo(function CustomCursor() {
         left: 0,
         width: "100%",
         height: "100%",
-        opacity: isVisible ? 1 : 0,
+        opacity: isVisible && shouldRenderCursor ? 1 : 0,
         transition: "opacity 0.2s ease",
       }}
     >

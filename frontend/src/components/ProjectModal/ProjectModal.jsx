@@ -10,7 +10,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
   const projectSkills = getSkillsForProject(project.id);
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 gpu-layer">
       <motion.div
         className="absolute inset-0 backdrop-blur-md"
         style={{ background: "color-mix(in srgb, var(--color-background) 85%, transparent)" }}
@@ -21,7 +21,8 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         onClick={onClose}
       />
       <motion.div
-        className="bg-[var(--color-surface)] border-8 border-outline shadow-[24px_24px_0px_0px_var(--shadow-color)] w-full max-w-5xl max-h-[90vh] overflow-y-auto relative z-10 flex flex-col no-scrollbar"
+        className="bg-[var(--color-surface)] border-8 border-outline shadow-[24px_24px_0px_0px_var(--shadow-color)] w-full max-w-5xl max-h-[90vh] overflow-y-auto overscroll-contain relative z-10 flex flex-col no-scrollbar paint-isolate"
+        data-lenis-prevent
         variants={modalContentVariants}
         initial="hidden"
         animate="visible"

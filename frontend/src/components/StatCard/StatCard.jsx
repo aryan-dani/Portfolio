@@ -2,9 +2,9 @@ import { useRef, memo } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { useCountUp } from "../../hooks/useCountUp";
-import { hoverSpring, defaultSpring } from "../../utils/motionVariants";
+import { hoverSpring } from "../../utils/motionVariants";
 
-function StatCard({ value, isPlus, label, bg, text, shadow, delay = 0, to }) {
+function StatCard({ value, isPlus, label, bg, text, shadow, to }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const displayVal = useCountUp(typeof value === "number" ? value : parseInt(value), {
@@ -23,9 +23,7 @@ function StatCard({ value, isPlus, label, bg, text, shadow, delay = 0, to }) {
         color: text,
         boxShadow: `4px 4px 0px 0px ${shadow || 'var(--shadow-color)'}`
       }}
-      initial={{ opacity: 0, y: 30, scale: 0.9 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ ...defaultSpring, delay }}
+      initial={false}
       whileHover={{
         y: -4,
         x: -4,

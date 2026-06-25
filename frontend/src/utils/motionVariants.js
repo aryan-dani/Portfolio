@@ -48,23 +48,6 @@ export const containerVariants = {
   },
 };
 
-/**
- * Standard stagger container with tighter children spacing.
- * Use for grids of cards.
- */
-export const gridContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.34,
-      staggerChildren: 0.014,
-      delayChildren: 0.01,
-      ease: motionEase.out,
-    },
-  },
-};
-
 /** Slide-up item — smooth spring-based reveal */
 export const itemVariants = {
   hidden: { opacity: 0, y: 8 },
@@ -75,32 +58,29 @@ export const itemVariants = {
   },
 };
 
-/** Card variant — gentle spring for grids */
-export const cardVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: defaultSpring,
-  },
-};
+/** Card variant — alias of itemVariants for grid children */
+export const cardVariants = itemVariants;
 
 /** Route/page transition — directional slide with soft spring */
 export const pageVariants = {
-  initial: { opacity: 0, y: 14, filter: "blur(8px)" },
+  initial: (direction = 1) => ({
+    opacity: 0,
+    x: direction > 0 ? 18 : -18,
+    y: 8,
+  }),
   animate: {
     opacity: 1,
+    x: 0,
     y: 0,
-    filter: "blur(0px)",
-    transitionEnd: { transform: "none", filter: "none" },
-    transition: { duration: 0.34, ease: motionEase.out },
+    transitionEnd: { transform: "none" },
+    transition: { duration: 0.24, ease: motionEase.out },
   },
-  exit: {
+  exit: (direction = 1) => ({
     opacity: 0,
-    y: -8,
-    filter: "blur(4px)",
-    transition: { duration: 0.18, ease: motionEase.in },
-  },
+    x: direction > 0 ? -14 : 14,
+    y: -4,
+    transition: { duration: 0.16, ease: motionEase.in },
+  }),
 };
 
 /** Modal backdrop — smooth opacity fade */
@@ -124,20 +104,5 @@ export const modalContentVariants = {
     scale: 0.98,
     y: 8,
     transition: { duration: 0.16, ease: motionEase.in },
-  },
-};
-
-/** Fade-in scale — gentler modal variant */
-export const fadeInScaleVariants = {
-  hidden: { opacity: 0, scale: 0.97 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: defaultSpring,
-  },
-  exit: {
-    opacity: 0,
-    scale: 0.98,
-    transition: { duration: 0.24, ease: motionEase.in },
   },
 };

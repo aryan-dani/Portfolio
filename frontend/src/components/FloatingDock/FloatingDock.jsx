@@ -1,20 +1,11 @@
 import { memo } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { HiHome, HiCode, HiBriefcase, HiBadgeCheck, HiLightningBolt, HiUser, HiTerminal, HiVolumeUp, HiVolumeOff, HiDocumentText } from "react-icons/hi";
+import { HiVolumeUp, HiVolumeOff } from "react-icons/hi";
 import { useSound } from "../../context/SoundContext";
 import { useScrollVisibility } from "../../hooks/useScrollVisibility";
 
-const navItems = [
-  { path: "/", label: "Home", icon: HiHome, shortcut: "Alt+1" },
-  { path: "/projects", label: "Projects", icon: HiCode, shortcut: "Alt+2" },
-  { path: "/experience", label: "Experience", icon: HiBriefcase, shortcut: "Alt+3" },
-  { path: "/certifications", label: "Certifications", icon: HiBadgeCheck, shortcut: "Alt+4" },
-  { path: "/skills", label: "Skills", icon: HiLightningBolt, shortcut: "Alt+5" },
-  { path: "/about", label: "About", icon: HiUser, shortcut: "Alt+6" },
-  { path: "/playground", label: "Playground", icon: HiTerminal, shortcut: "Alt+7" },
-  { path: "/copyright", label: "Copyright", icon: HiDocumentText, shortcut: "Alt+8" },
-];
+import { dockNavItems } from "../../config/routes";
 
 function FloatingDock() {
   const location = useLocation();
@@ -31,13 +22,13 @@ function FloatingDock() {
       initial={{ y: 0, opacity: 1, x: "-50%" }}
       animate={{ y: isVisible ? 0 : 96, opacity: isVisible ? 1 : 0, x: "-50%" }}
       transition={{ type: "spring", stiffness: 280, damping: 34, mass: 0.9 }}
-      className="fixed bottom-4 sm:bottom-6 left-1/2 z-50 px-2 sm:px-4 w-full max-w-fit pointer-events-none flex justify-center"
+      className="fixed bottom-4 sm:bottom-6 left-1/2 z-50 px-2 sm:px-4 w-full max-w-fit pointer-events-none flex justify-center gpu-layer"
       aria-hidden={!isVisible}
     >
           <nav 
-            className="pointer-events-auto flex items-center gap-1 sm:gap-2 p-1 bg-[var(--color-surface)] border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] sm:shadow-[6px_6px_0px_0px_var(--shadow-color)] overflow-x-auto sm:overflow-visible no-scrollbar max-w-full glass"
+            className="pointer-events-auto flex items-center gap-1 sm:gap-2 p-1 bg-[var(--color-surface)] border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] sm:shadow-[6px_6px_0px_0px_var(--shadow-color)] overflow-x-auto sm:overflow-visible no-scrollbar max-w-full glass paint-isolate"
           >
-            {navItems.map((item, index) => {
+            {dockNavItems.map((item, index) => {
               const isActive = location.pathname === item.path;
               const Icon = item.icon;
 
@@ -45,7 +36,7 @@ function FloatingDock() {
                 <NavLink
                   key={item.path}
                   to={item.path}
-                  className={`relative isolate flex items-center justify-center p-2 sm:p-3 transition-all duration-200 select-none group shrink-0 ${
+                  className={`relative isolate flex items-center justify-center p-2 sm:p-3 transition-all duration-200 select-none group shrink-0 hover-gpu ${
                     isActive
                       ? "text-[var(--color-on-primary-container)]"
                       : "text-[var(--color-on-surface)] hover:text-[var(--color-primary)]"
@@ -67,7 +58,7 @@ function FloatingDock() {
                   <Icon className="text-lg sm:text-xl relative z-10" />
                   
                   {/* Tooltip on hover for desktop */}
-                  <span className={`absolute -top-12 scale-0 group-hover:scale-100 transition-transform bg-[var(--color-on-background)] text-[var(--color-background)] text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block ${index === navItems.length - 1 ? 'right-0 origin-bottom-right' : 'left-1/2 -translate-x-1/2 origin-bottom'}`}>
+                  <span className={`absolute -top-12 scale-0 group-hover:scale-100 transition-transform bg-[var(--color-on-background)] text-[var(--color-background)] text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block ${index === dockNavItems.length - 1 ? 'right-0 origin-bottom-right' : 'left-1/2 -translate-x-1/2 origin-bottom'}`}>
                     {item.label} <span className="opacity-60 ml-1">{item.shortcut}</span>
                   </span>
                 </NavLink>
@@ -79,7 +70,7 @@ function FloatingDock() {
                 toggleSound();
                 setTimeout(() => play("success"), 0);
               }}
-              className={`relative isolate flex items-center justify-center p-2 sm:p-3 transition-all duration-200 select-none group shrink-0 ${
+              className={`relative isolate flex items-center justify-center p-2 sm:p-3 transition-all duration-200 select-none group shrink-0 hover-gpu ${
                 soundEnabled
                   ? "text-[var(--color-on-primary-container)]"
                   : "text-[var(--color-on-surface)] hover:text-[var(--color-on-surface)]"

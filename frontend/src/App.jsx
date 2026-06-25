@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { pageVariants } from "./utils/motionVariants";
+import { scrollToTopImmediate } from "./utils/smoothScroll";
+import { SITE_ROUTES, routeOrder, PAGE_IMPORTS } from "./config/routes";
 import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout/Layout";
 import { ToastProvider } from "./context/ToastContext";
@@ -15,38 +17,23 @@ import { SmoothScrollProvider } from "./context/SmoothScrollContext";
 import { SoundProvider } from "./context/SoundContext";
 
 import BackToTop from "./components/BackToTop/BackToTop";
-import PageLoader from "./components/PageLoader/PageLoader";
-import CustomCursor from "./components/CustomCursor/CustomCursor";
 import NoiseOverlay from "./components/NoiseOverlay/NoiseOverlay";
+import PageLoader from "./components/PageLoader/PageLoader";
 
-// Lazy load all page components for code splitting
-const Home = lazy(() => import("./pages/Home/Home"));
-const Experience = lazy(() => import("./pages/Experience/Experience"));
-const Projects = lazy(() => import("./pages/Projects/Projects"));
-const Certifications = lazy(() => import("./pages/Certifications/Certifications"));
-const Skills = lazy(() => import("./pages/Skills/Skills"));
-const About = lazy(() => import("./pages/About/About"));
-const Contact = lazy(() => import("./pages/Contact/Contact"));
-const Copyright = lazy(() => import("./pages/Copyright/Copyright"));
-const Playground = lazy(() => import("./pages/Playground/Playground"));
+const lazyPages = Object.fromEntries(
+  SITE_ROUTES.map((route) => [route.id, lazy(PAGE_IMPORTS[route.id])]),
+);
 
-// Get base path from Vite config
+const routeConfig = SITE_ROUTES.map((route) => ({
+  index: route.segment === null,
+  path: route.segment ?? undefined,
+  component: lazyPages[route.id],
+}));
+
+const CustomCursor = lazy(() => import("./components/CustomCursor/CustomCursor"));
+
 const basename = import.meta.env.BASE_URL;
 
-// Route configuration — eliminates 9x repeated Suspense+PageTransition wrappers
-const routeConfig = [
-  { index: true,  path: undefined,        component: Home },
-  { path: "experience",                   component: Experience },
-  { path: "projects",                     component: Projects },
-  { path: "certifications",               component: Certifications },
-  { path: "skills",                       component: Skills },
-  { path: "about",                        component: About },
-  { path: "contact",                      component: Contact },
-  { path: "playground",                   component: Playground },
-  { path: "copyright",                    component: Copyright },
-];
-
-// Minimal loading fallback — theme-aware
 function PageFallback() {
   return (
     <div
@@ -74,14 +61,16 @@ function PageFallback() {
   );
 }
 
-function PageTransition({ children, isFirstRender }) {
+function PageTransition({ children, isFirstRender, direction }) {
+  const isBackward = direction < 0;
+
   return (
     <>
       {!isFirstRender && (
         <>
           <motion.div
             aria-hidden="true"
-            className="fixed inset-0 z-[90] pointer-events-none bg-[var(--color-background)]"
+            className="fixed inset-0 z-[90] pointer-events-none bg-[var(--color-background)] gpu-layer"
             initial={{ opacity: 0.96 }}
             animate={{ opacity: 0 }}
             exit={{ opacity: 0.86 }}
@@ -89,18 +78,19 @@ function PageTransition({ children, isFirstRender }) {
           />
           <motion.div
             aria-hidden="true"
-            className="fixed inset-y-0 left-0 z-[91] pointer-events-none w-full bg-[var(--color-on-background)]"
-            initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0.12 }}
-            animate={{ clipPath: "inset(0 0% 0 100%)", opacity: 0 }}
+            className="fixed inset-y-0 left-0 z-[91] pointer-events-none w-full bg-[var(--color-on-background)] gpu-layer"
+            initial={{ clipPath: isBackward ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)", opacity: 0.12 }}
+            animate={{ clipPath: isBackward ? "inset(0 100% 0 0)" : "inset(0 0% 0 100%)", opacity: 0 }}
             exit={{ clipPath: "inset(0 0% 0 0%)", opacity: 0.08 }}
-            transition={{ duration: 0.46, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 0.32, ease: [0.76, 0, 0.24, 1] }}
           />
         </>
       )}
       <motion.div
         variants={pageVariants}
-        initial={isFirstRender ? { opacity: 1, x: 0 } : "initial"}
-        animate={isFirstRender ? { opacity: 1, x: 0 } : "animate"}
+        custom={direction}
+        initial={isFirstRender ? false : "initial"}
+        animate="animate"
         exit="exit"
         className="w-full flex flex-col grow"
       >
@@ -110,11 +100,11 @@ function PageTransition({ children, isFirstRender }) {
   );
 }
 
-
-
 function AnimatedRoutes() {
   const location = useLocation();
   const isFirstRenderRef = useRef(true);
+  const [direction, setDirection] = useState(1);
+  const previousPathRef = useRef(location.pathname);
 
   useEffect(() => {
     isFirstRenderRef.current = false;
@@ -127,92 +117,85 @@ function AnimatedRoutes() {
   }, []);
 
   useEffect(() => {
-    const scrollToTop = () => {
-      if (window.__portfolioLenis) {
-        window.__portfolioLenis.scrollTo(0, { immediate: true });
-      }
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    };
+    scrollToTopImmediate();
+    requestAnimationFrame(scrollToTopImmediate);
+  }, [location.pathname]);
 
-    scrollToTop();
-    requestAnimationFrame(() => {
-      scrollToTop();
-      requestAnimationFrame(scrollToTop);
-    });
+  useEffect(() => {
+    const previousPath = previousPathRef.current;
+    if (previousPath === location.pathname) return;
+
+    const fromIndex = routeOrder.indexOf(previousPath);
+    const toIndex = routeOrder.indexOf(location.pathname);
+
+    if (fromIndex !== -1 && toIndex !== -1 && fromIndex !== toIndex) {
+      setDirection(toIndex > fromIndex ? 1 : -1);
+    } else {
+      setDirection(1);
+    }
+
+    previousPathRef.current = location.pathname;
   }, [location.pathname]);
 
   const isFirstRender = isFirstRenderRef.current;
 
   return (
-    <>
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          {routeConfig.map(({ index, path, component: Component }) => (
-            <Route
-              key={path ?? "/"}
-              index={index}
-              path={path}
-              element={
-                <Suspense fallback={<PageFallback />}>
-                  <PageTransition isFirstRender={isFirstRender}>
-                    <Component />
-                  </PageTransition>
-                </Suspense>
-              }
-            />
-          ))}
-        </Routes>
-      </AnimatePresence>
-    </>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {routeConfig.map(({ index, path, component: Component }) => (
+          <Route
+            key={path ?? "/"}
+            index={index}
+            path={path}
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition isFirstRender={isFirstRender} direction={direction}>
+                  <Component />
+                </PageTransition>
+              </Suspense>
+            }
+          />
+        ))}
+      </Routes>
+    </AnimatePresence>
   );
 }
 
-const preloadAllPages = () => {
-  const pages = [
-    () => import("./pages/Home/Home"),
-    () => import("./pages/Experience/Experience"),
-    () => import("./pages/Projects/Projects"),
-    () => import("./pages/Certifications/Certifications"),
-    () => import("./pages/Skills/Skills"),
-    () => import("./pages/About/About"),
-    () => import("./pages/Contact/Contact"),
-    () => import("./pages/Copyright/Copyright"),
-    () => import("./pages/Playground/Playground"),
-  ];
-  
-  pages.forEach((p) => {
-    try {
-      p();
-    } catch (e) {
-      console.warn("Failed to preload page", e);
-    }
-  });
-};
+function DeferredCustomCursor() {
+  const [enabled, setEnabled] = useState(false);
 
-function App() {
   useEffect(() => {
-    const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 2000));
-    const handle = idleCallback(() => {
-      preloadAllPages();
-    });
+    if (!window.matchMedia("(pointer: fine)").matches) return undefined;
+
+    const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 1200));
+    const handle = idle(() => setEnabled(true));
+
     return () => {
       if (window.cancelIdleCallback) {
         window.cancelIdleCallback(handle);
       } else {
-        clearTimeout(handle);
+        window.clearTimeout(handle);
       }
     };
   }, []);
 
+  if (!enabled) return null;
+
+  return (
+    <Suspense fallback={null}>
+      <CustomCursor />
+    </Suspense>
+  );
+}
+
+function App() {
   return (
     <ThemeProvider>
       <SmoothScrollProvider>
         <SoundProvider>
           <ToastProvider>
             <NoiseOverlay />
-            <CustomCursor />
+            <DeferredCustomCursor />
             <PageLoader />
             <Router
               basename={basename}

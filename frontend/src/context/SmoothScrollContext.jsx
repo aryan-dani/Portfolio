@@ -10,10 +10,10 @@ export function SmoothScrollProvider({ children }) {
 
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.075,
+      lerp: 0.11,
       smoothWheel: true,
-      wheelMultiplier: 0.8,
-      touchMultiplier: 1.08,
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
       infinite: false,
       autoResize: true,
     });
@@ -22,6 +22,10 @@ export function SmoothScrollProvider({ children }) {
     window.__portfolioLenis = lenis;
     document.documentElement.classList.add("lenis", "lenis-smooth");
     setReady(true);
+    const emitScrollEvent = () => {
+      window.dispatchEvent(new Event("scroll"));
+    };
+    lenis.on("scroll", emitScrollEvent);
 
     const raf = (time) => {
       lenis.raf(time);
@@ -33,6 +37,7 @@ export function SmoothScrollProvider({ children }) {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
+      lenis.off("scroll", emitScrollEvent);
       lenis.destroy();
       lenisRef.current = null;
       window.__portfolioLenis = null;
@@ -49,7 +54,7 @@ export function SmoothScrollProvider({ children }) {
         const top = typeof target === "number" ? target : 0;
         if (lenisRef.current) {
           lenisRef.current.scrollTo(top, {
-            duration: options?.immediate ? 0 : 1.05,
+            duration: options?.immediate ? 0 : 0.68,
             ...options,
           });
           return;

@@ -42,15 +42,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vendor chunk for React core
           "vendor-react": ["react", "react-dom"],
-          // Router in its own chunk
           "vendor-router": ["react-router-dom"],
-          // Framer Motion is large, separate chunk
           "vendor-motion": ["framer-motion"],
-          // Icons library
+          "vendor-lenis": ["lenis"],
           "vendor-icons": ["react-icons"],
-          // Analytics
           "vendor-analytics": ["@vercel/analytics"],
         },
       },

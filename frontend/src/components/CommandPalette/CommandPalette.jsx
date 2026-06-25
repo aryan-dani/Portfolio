@@ -1,26 +1,11 @@
 import { useState, useEffect, useRef, memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { HiOutlineSearch, HiArrowRight, HiOutlineFolderOpen, HiOutlineCode, HiOutlineBriefcase, HiOutlineLink, HiOutlineDocumentText, HiOutlineMap, HiOutlineColorSwatch } from "react-icons/hi";
+import { HiOutlineSearch, HiArrowRight } from "react-icons/hi";
 import { useTheme } from "../../context/ThemeContext";
-
-import { projects } from "../../data/projects";
-import { getAllSkills } from "../../data/skills";
-import { experiences, socialLinks, aboutInfo } from "../../data/experience";
-
-const staticNavCommands = [
-  { id: "nav-home", label: "Home", action: "/", type: "nav", icon: HiOutlineMap },
-  { id: "nav-projects", label: "Projects", action: "/projects", type: "nav", icon: HiOutlineMap },
-  { id: "nav-experience", label: "Experience", action: "/experience", type: "nav", icon: HiOutlineMap },
-  { id: "nav-certifications", label: "Certifications", action: "/certifications", type: "nav", icon: HiOutlineMap },
-  { id: "nav-skills", label: "Skills", action: "/skills", type: "nav", icon: HiOutlineMap },
-  { id: "nav-about", label: "About", action: "/about", type: "nav", icon: HiOutlineMap },
-  { id: "nav-playground", label: "Playground", action: "/playground", type: "nav", icon: HiOutlineMap },
-  { id: "nav-copyright", label: "Copyright", action: "/copyright", type: "nav", icon: HiOutlineDocumentText },
-  { id: "nav-contact", label: "Contact", action: "/contact", type: "nav", icon: HiOutlineMap },
-  { id: "action-theme", label: "Toggle Theme", action: "TOGGLE_THEME", type: "action", icon: HiOutlineColorSwatch },
-  { id: "action-email", label: "Copy Email", action: "COPY_EMAIL", type: "action", icon: HiOutlineLink, keywords: "contact hire email" },
-];
+import { useModalLock } from "../../hooks/useModalLock";
+import { staticNavCommands } from "../../utils/commandPaletteStatic";
+import { aboutInfo } from "../../data/experience";
 
 function CommandPalette() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,73 +14,10 @@ function CommandPalette() {
   const { toggleTheme } = useTheme();
   const navigate = useNavigate();
   const inputRef = useRef(null);
+  useModalLock(isOpen, () => setIsOpen(false));
 
-  // Build the unified search index once
-  const searchIndex = useMemo(() => {
-    const index = [...staticNavCommands];
-
-    // Projects
-    projects.forEach(p => {
-      index.push({
-        id: `project-${p.id}`,
-        label: p.title,
-        action: `/projects?highlight=${p.id}`,
-        type: "project",
-        icon: HiOutlineFolderOpen,
-        keywords: (p.tags || []).join(" ") + " " + (p.description || "")
-      });
-    });
-
-    // Skills
-    getAllSkills().forEach(s => {
-      index.push({
-        id: `skill-${s.id}`,
-        label: s.name,
-        action: `/skills?skill=${s.id}`,
-        type: "skill",
-        icon: HiOutlineCode,
-        keywords: s.description || ""
-      });
-    });
-
-    // Experience
-    experiences.forEach(e => {
-      index.push({
-        id: `exp-${e.id}`,
-        label: `${e.position} at ${e.company}`,
-        action: `/experience`,
-        type: "experience",
-        icon: HiOutlineBriefcase,
-        keywords: (e.technologies || []).join(" ") + " " + (e.responsibilities || []).join(" ")
-      });
-    });
-
-    // Socials
-    socialLinks.forEach(s => {
-      index.push({
-        id: `social-${s.name}`,
-        label: s.name,
-        action: s.url,
-        type: "link",
-        icon: HiOutlineLink,
-        isExternal: true
-      });
-    });
-
-    // Resume
-    if (aboutInfo.resumeUrl) {
-      index.push({
-        id: `doc-resume`,
-        label: "Resume",
-        action: aboutInfo.resumeUrl,
-        type: "document",
-        icon: HiOutlineDocumentText,
-        isExternal: true
-      });
-    }
-
-    return index;
-  }, []);
+  const [searchIndex, setSearchIndex] = useState(staticNavCommands);
+  const indexBuiltRef = useRef(false);
 
   // Filter commands
   const filteredCommands = useMemo(() => {
@@ -131,7 +53,20 @@ function CommandPalette() {
       .filter((group) => group.items.length > 0);
   }, [filteredCommands]);
 
-  // Reset selected index when query changes
+  useEffect(() => {
+    if (!isOpen || indexBuiltRef.current) return undefined;
+
+    let cancelled = false;
+    import("../../utils/buildCommandSearchIndex").then(({ buildCommandSearchIndex }) => {
+      if (cancelled) return;
+      setSearchIndex(buildCommandSearchIndex());
+      indexBuiltRef.current = true;
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen]);
   useEffect(() => {
     setSelectedIndex(0);
   }, [query]);
@@ -201,17 +136,17 @@ function CommandPalette() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+            transition={{ duration: 0.14, ease: "easeOut" }}
+            className="fixed inset-0 z-[100] bg-black/55 gpu-layer"
             onClick={() => setIsOpen(false)}
           />
-          <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] sm:pt-[15vh] pointer-events-none px-4">
+          <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[8vh] sm:pt-[12vh] pointer-events-none px-4 gpu-layer">
             <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: -20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: -20 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="w-full max-w-2xl bg-[var(--color-surface)] border-4 border-outline shadow-[16px_16px_0px_0px_var(--shadow-color)] pointer-events-auto flex flex-col overflow-hidden"
+              initial={{ opacity: 0, y: -10, clipPath: "inset(0 0 100% 0)" }}
+              animate={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
+              exit={{ opacity: 0, y: -8, clipPath: "inset(0 0 100% 0)" }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-2xl bg-[var(--color-surface)] border-4 border-outline shadow-[16px_16px_0px_0px_var(--shadow-color)] pointer-events-auto flex flex-col overflow-hidden paint-isolate"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Search Input */}
@@ -231,7 +166,7 @@ function CommandPalette() {
               </div>
 
               {/* Results List */}
-              <div className="max-h-[55vh] overflow-y-auto no-scrollbar py-2">
+              <div className="max-h-[55vh] overflow-y-auto overscroll-contain no-scrollbar py-2 content-visibility-auto" data-lenis-prevent>
                 {filteredCommands.length > 0 ? (
                   groupedCommands.map((group) => (
                     <div key={group.type}>

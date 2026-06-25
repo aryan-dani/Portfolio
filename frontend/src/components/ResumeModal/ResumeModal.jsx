@@ -1,44 +1,36 @@
-import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useModalLock } from "../../hooks/useModalLock";
+import { modalBackdropVariants, modalContentVariants } from "../../utils/motionVariants";
 import { FaFileDownload, FaTimes } from "react-icons/fa";
 import { aboutInfo } from "../../data/experience";
 import { getAssetPath } from "../../utils/paths";
 
 export default function ResumeModal({ isOpen, onClose }) {
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
+  useModalLock(isOpen, onClose);
 
   const resumePath = getAssetPath(aboutInfo.resumeUrl);
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 gpu-layer">
           {/* Backdrop */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            variants={modalBackdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             onClick={onClose}
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
 
-          {/* Window Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative w-full max-w-4xl h-[85vh] bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col z-10 overflow-hidden"
+            variants={modalContentVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="relative w-full max-w-4xl h-[85vh] bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col z-10 overflow-hidden paint-isolate"
+            data-lenis-prevent
           >
             {/* Header */}
             <div className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-b-4 border-outline px-4 py-3 flex items-center justify-between">
@@ -68,7 +60,7 @@ export default function ResumeModal({ isOpen, onClose }) {
             </div>
 
             {/* Scrollable Wrapper with pointer-events-none on Iframe to preserve custom cursor */}
-            <div className="grow w-full overflow-y-auto bg-[var(--color-surface-variant)] p-4 md:p-6 no-scrollbar">
+            <div className="grow w-full overflow-y-auto overscroll-contain bg-[var(--color-surface-variant)] p-4 md:p-6 no-scrollbar content-visibility-auto" data-lenis-prevent>
               <div className="w-full max-w-3xl mx-auto border-4 border-outline shadow-[6px_6px_0px_0px_var(--shadow-color)] pointer-events-none select-none bg-white">
                 <iframe
                   src={`${resumePath}#toolbar=0&navpanes=0`}

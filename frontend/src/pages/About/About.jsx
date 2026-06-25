@@ -1,4 +1,4 @@
-import { useState, useRef, memo, useEffect, useCallback } from "react";
+import { useState, useRef, memo, useEffect, useCallback, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
@@ -8,11 +8,12 @@ import {
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
-import GitHubStats from "../../components/GitHubStats/GitHubStats";
-import ResumeModal from "../../components/ResumeModal/ResumeModal";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
+
+const GitHubStats = lazy(() => import("../../components/GitHubStats/GitHubStats"));
+const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 
 const slideVariants = {
   enter:  (dir) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
@@ -242,7 +243,7 @@ function About() {
             <motion.h2 className="font-headline-md text-3xl uppercase text-[var(--color-on-surface)]" variants={itemVariants}>
               Why work with me
             </motion.h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch overflow-visible p-3 -m-3">
               {aboutInfo.highlights.map((highlight, index) => (
                 <HighlightCard key={index} highlight={highlight} index={index} />
               ))}
@@ -251,7 +252,7 @@ function About() {
 
           {/* CTA */}
           <motion.div
-            className="border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-accent)] relative overflow-hidden"
+            className="border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-accent)] relative overflow-hidden m-3"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             variants={itemVariants}
             whileHover={{ x: -2, y: -2, boxShadow: "14px 14px 0px 0px var(--shadow-accent)" }}
@@ -292,11 +293,15 @@ function About() {
         </motion.div>
       </div>
 
-      {/* GitHub Stats */}
-      <GitHubStats />
+      <Suspense fallback={null}>
+        <GitHubStats />
+      </Suspense>
 
-      {/* Resume Modal */}
-      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+      {isResumeOpen && (
+        <Suspense fallback={null}>
+          <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+        </Suspense>
+      )}
     </motion.section>
   );
 }
