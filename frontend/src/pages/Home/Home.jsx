@@ -1,10 +1,11 @@
-import { lazy, memo, Suspense } from "react";
+import { lazy, memo, Suspense, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { aboutInfo } from "../../data/experience";
 import { portfolioStats } from "../../data/stats";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import StatCard from "../../components/StatCard/StatCard";
 import MagneticLink from "../../components/MagneticLink/MagneticLink";
+import { usePageSEO } from "../../utils/seo";
 
 import { itemVariants } from "../../utils/motionVariants";
 
@@ -25,6 +26,7 @@ const roles = ["Web Developer", "AI Engineer", "Tech Enthusiast", "Problem Solve
 // ─── Page ─────────────────────────────────────────────────────
 
 const Home = memo(function Home() {
+  usePageSEO();
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 0.35], [0, -52]);
   const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.97]);

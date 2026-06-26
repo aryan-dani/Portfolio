@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, memo, lazy, Suspense } from "react";
+import { useState, useEffect, useRef, useCallback, memo, lazy, Suspense, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaEnvelope, FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy, FaEye,
@@ -9,6 +9,7 @@ import { getAssetPath } from "../../utils/paths";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import { usePageSEO } from "../../utils/seo";
 
 const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 
@@ -70,6 +71,9 @@ function ConfettiBurst({ active }) {
 }
 
 function Contact() {
+  const faqData = useMemo(() => ({ faqItems: FAQ_ITEMS }), []);
+  usePageSEO(faqData);
+
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -200,12 +204,24 @@ function Contact() {
               </div>
 
               <div className="flex flex-col gap-2" ref={dropdownRef}>
-                <label className="font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
+                <label id="subject-label" className="font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
                   What&apos;s this about?
                 </label>
                 <div className="relative">
                   <div
+                    role="button"
+                    tabIndex={0}
+                    aria-haspopup="listbox"
+                    aria-expanded={isDropdownOpen}
+                    aria-labelledby="subject-label"
+                    aria-controls="contact-subject-options"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setIsDropdownOpen(!isDropdownOpen);
+                      }
+                    }}
                     className="w-full border-4 border-outline p-4 font-body-md text-lg shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-[6px_6px_0px_0px_var(--shadow-color)] transition-all duration-200 cursor-none flex justify-between items-center bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
                   >
                     <span className={formData.subject ? "opacity-100" : "opacity-60"}>
@@ -218,6 +234,9 @@ function Contact() {
                   <AnimatePresence>
                     {isDropdownOpen && (
                       <motion.div
+                        role="listbox"
+                        id="contact-subject-options"
+                        aria-labelledby="subject-label"
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
@@ -226,11 +245,21 @@ function Contact() {
                         {SUBJECT_OPTIONS.map((opt) => (
                           <div
                             key={opt}
+                            role="option"
+                            aria-selected={formData.subject === opt}
+                            tabIndex={0}
                             onClick={() => {
                               setFormData((prev) => ({ ...prev, subject: opt }));
                               setIsDropdownOpen(false);
                             }}
-                            className="p-4 font-body-md text-lg hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] text-[var(--color-on-surface)] transition-colors cursor-none border-b-2 border-transparent hover:border-outline last:border-b-0"
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                setFormData((prev) => ({ ...prev, subject: opt }));
+                                setIsDropdownOpen(false);
+                              }
+                            }}
+                            className="p-4 font-body-md text-lg hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] text-[var(--color-on-surface)] transition-colors cursor-none border-b-2 border-transparent hover:border-outline last:border-b-0 focus:outline-none focus:bg-[var(--color-primary-container)] focus:text-[var(--color-on-primary-container)]"
                           >
                             {opt}
                           </div>
@@ -303,6 +332,7 @@ function Contact() {
             </h3>
             <button
               onClick={copyEmail}
+              aria-label={`Copy Aryan Dani email address ${aboutInfo.email}`}
               className="w-full border-4 border-outline p-4 mb-4 flex items-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all text-left cursor-none"
               style={{ background: "var(--color-surface)", color: "var(--color-on-surface)" }}
             >
@@ -336,6 +366,7 @@ function Contact() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Open Aryan Dani ${link.name} profile`}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.12 + idx * 0.04 }}
@@ -396,7 +427,10 @@ function Contact() {
               {FAQ_ITEMS.map((faq, i) => (
                 <div key={i} className="border-2 border-outline">
                   <button
+                    id={`faq-button-${i}`}
                     onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
+                    aria-expanded={expandedFaq === i}
+                    aria-controls={`faq-panel-${i}`}
                     className={`w-full text-left p-4 font-label-bold text-sm uppercase flex items-center justify-between transition-colors cursor-none ${
                       expandedFaq === i
                         ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
@@ -414,6 +448,9 @@ function Contact() {
                   <AnimatePresence>
                     {expandedFaq === i && (
                       <motion.div
+                        id={`faq-panel-${i}`}
+                        role="region"
+                        aria-labelledby={`faq-button-${i}`}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}

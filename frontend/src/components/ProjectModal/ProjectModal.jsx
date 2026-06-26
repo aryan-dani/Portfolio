@@ -8,6 +8,24 @@ import { modalBackdropVariants, modalContentVariants } from "../../utils/motionV
 
 const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick }) {
   const projectSkills = getSkillsForProject(project.id);
+  const seoSections = [
+    {
+      title: "Problem",
+      body: project.problem || `${project.title} addresses a focused ${project.category === "ai-ml" ? "AI and machine learning" : "web development"} use case with practical user-facing constraints.`,
+    },
+    {
+      title: "Solution",
+      body: project.solution || project.description,
+    },
+    {
+      title: "Architecture",
+      body: project.architecture || `Built with ${project.tags.slice(0, 5).join(", ")} and structured as a maintainable, production-style application.`,
+    },
+    {
+      title: "Results",
+      body: project.results || `The project demonstrates Aryan Dani's experience with ${project.tags.slice(0, 4).join(", ")} through a concrete portfolio implementation.`,
+    },
+  ];
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 gpu-layer">
@@ -23,6 +41,10 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
       <motion.div
         className="bg-[var(--color-surface)] border-8 border-outline shadow-[24px_24px_0px_0px_var(--shadow-color)] w-full max-w-5xl max-h-[90vh] overflow-y-auto overscroll-contain relative z-10 flex flex-col no-scrollbar paint-isolate"
         data-lenis-prevent
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="project-modal-title"
+        aria-describedby="project-modal-description"
         variants={modalContentVariants}
         initial="hidden"
         animate="visible"
@@ -47,7 +69,10 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
             animate={{ scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             src={getAssetPath(project.image)}
-            alt={project.title}
+            alt={project.imageAlt || `${project.title} project screenshot by Aryan Dani`}
+            width="1200"
+            height="675"
+            sizes="(min-width: 1024px) 960px, 100vw"
             className="w-full h-full object-cover"
           />
         </div>
@@ -66,7 +91,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   </span>
                 )}
               </div>
-              <h2 className="font-headline-xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-none tracking-tighter text-[var(--color-on-surface)] break-words w-full" style={{ wordBreak: 'break-word' }}>
+              <h2 id="project-modal-title" className="font-headline-xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-none tracking-tighter text-[var(--color-on-surface)] break-words w-full" style={{ wordBreak: 'break-word' }}>
                 {project.title}
               </h2>
             </div>
@@ -113,9 +138,25 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
               <h3 className="font-headline-md text-2xl uppercase border-b-4 border-outline pb-3 mb-6 text-[var(--color-on-surface)] inline-block">
                 Overview
               </h3>
-              <p className="font-body-lg text-lg md:text-xl leading-relaxed text-[var(--color-on-surface)] whitespace-pre-wrap">
+              <p id="project-modal-description" className="font-body-lg text-lg md:text-xl leading-relaxed text-[var(--color-on-surface)] whitespace-pre-wrap">
                 {project.description}
               </p>
+            </div>
+
+            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5">
+              {seoSections.map((section) => (
+                <article
+                  key={section.title}
+                  className="bg-[var(--color-surface)] border-4 border-outline p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+                >
+                  <h3 className="font-headline-md text-xl uppercase border-b-2 border-outline pb-2 mb-3 text-[var(--color-on-surface)]">
+                    {section.title}
+                  </h3>
+                  <p className="font-body-md text-sm leading-relaxed text-[var(--color-on-surface)]">
+                    {section.body}
+                  </p>
+                </article>
+              ))}
             </div>
 
             {/* Skills */}

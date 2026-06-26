@@ -17,6 +17,13 @@ const socialItemVariants = {
   },
 };
 
+const footerNavLinks = [
+  { to: "/projects", label: "Projects" },
+  { to: "/about", label: "About" },
+  { to: "/experience", label: "Experience" },
+  { to: "/contact", label: "Contact" },
+];
+
 const Footer = memo(function Footer() {
   return (
     <motion.footer
@@ -28,8 +35,8 @@ const Footer = memo(function Footer() {
       viewport={{ once: true, margin: "-60px" }}
     >
       <div className="flex flex-col md:flex-row justify-between items-center py-8 px-4 md:px-8 gap-8 w-full max-w-[1440px] mx-auto">
-        {/* Copyright */}
-        <motion.div variants={itemVariants}>
+        {/* Copyright + Internal nav */}
+        <motion.div className="flex flex-col items-center md:items-start gap-3" variants={itemVariants}>
           <Link
             to="/copyright"
             className="relative font-headline-md font-black uppercase text-base md:text-lg text-[var(--color-on-surface)] py-1 cursor-none inline-block group/copyright"
@@ -37,11 +44,24 @@ const Footer = memo(function Footer() {
             © {currentYear} ARYAN DANI
             <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-[var(--color-outline)] group-hover/copyright:w-full transition-all duration-300" />
           </Link>
+          <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-4 gap-y-1">
+            {footerNavLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="font-label-bold text-xs uppercase text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors cursor-none"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </motion.div>
 
         {/* Social icons */}
         <motion.div
           className="flex flex-wrap gap-3 justify-center"
+          role="list"
+          aria-label="Social media links"
           variants={containerVariants}
         >
           {socialLinks.map((link) => {
@@ -50,6 +70,7 @@ const Footer = memo(function Footer() {
             return (
               <motion.a
                 key={link.name}
+                role="listitem"
                 className="text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline w-11 h-11 flex items-center justify-center text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-all duration-150"
                 href={link.url}
                 target={link.name === "Email" ? undefined : "_blank"}

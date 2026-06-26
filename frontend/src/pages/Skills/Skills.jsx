@@ -13,6 +13,7 @@ import {
   SiSupabase, SiOpencv, SiDocker, SiVite, SiFirebase, SiVercel,
 } from "react-icons/si";
 import { skills, skillCategories, getSkillById, getSkillCategory } from "../../data/skills";
+import { usePageSEO } from "../../utils/seo";
 import { getProjectsForSkill, projects } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
 import { containerVariants, cardVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
@@ -95,6 +96,7 @@ function AnimatedBar({ level, delay = 0, color }) {
 // ── Skills page ───────────────────────────────────────────────
 
 function Skills() {
+  usePageSEO();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm,    setSearchTerm]    = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
@@ -199,13 +201,14 @@ function Skills() {
               <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
               <input
                 type="text"
+                aria-label="Search skills"
                 placeholder="Search skills..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="bg-transparent border-none outline-none w-full font-body-md text-lg text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
               />
               {searchTerm && (
-                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
+                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors" aria-label="Clear skill search">
                   <FaTimes className="text-[var(--color-on-surface)]" />
                 </button>
               )}
@@ -219,6 +222,7 @@ function Skills() {
                 <button
                   key={mode}
                   onClick={() => setViewMode(mode)}
+                  aria-pressed={viewMode === mode}
                   className={`px-4 py-2 border-4 border-outline font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
                     viewMode === mode
                       ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
@@ -237,6 +241,7 @@ function Skills() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
+                  aria-pressed={activeCategory === cat.id}
                   className={`px-5 py-2 border-4 border-outline font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
                     activeCategory === cat.id
                       ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
@@ -254,6 +259,7 @@ function Skills() {
                   <button
                     key={opt.id}
                     onClick={() => setSortBy(opt.id)}
+                    aria-pressed={sortBy === opt.id}
                     className={`px-3 py-1 border-2 border-outline font-label-bold text-xs uppercase transition-all cursor-none ${
                       sortBy === opt.id
                         ? "bg-[var(--color-on-background)] text-[var(--color-background)]"
@@ -523,6 +529,9 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
       <motion.div
         className="bg-[var(--color-surface)] border-4 border-outline shadow-[12px_12px_0px_0px_var(--shadow-color)] max-w-2xl w-full p-6 md:p-8 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto overscroll-contain"
         data-lenis-prevent
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="skill-modal-title"
         initial={{ scale: 0.93, opacity: 0, y: 28 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -530,6 +539,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
       >
         <button
           onClick={onClose}
+          aria-label={`Close ${skill.name} skill details`}
           className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline w-10 h-10 flex items-center justify-center text-xl hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none cursor-none"
         >
           <FaTimes />
@@ -547,7 +557,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
             {icon}
           </motion.div>
           <div>
-            <h2 className="font-headline-xl text-2xl md:text-3xl uppercase text-[var(--color-on-surface)]">{skill.name}</h2>
+            <h2 id="skill-modal-title" className="font-headline-xl text-2xl md:text-3xl uppercase text-[var(--color-on-surface)]">{skill.name}</h2>
             <span className="font-label-bold bg-[var(--color-secondary)] text-[var(--color-on-secondary)] px-2 py-0.5 text-xs border-2 border-outline inline-block mt-1">{category}</span>
           </div>
         </div>
@@ -592,9 +602,12 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
                   <div className="w-14 h-14 border-2 border-outline overflow-hidden shrink-0 bg-[var(--color-surface-variant)]">
                     <img
                       src={getAssetPath(project.image)}
-                      alt={project.title}
+                      alt={project.imageAlt || `${project.title} project thumbnail`}
+                      width="56"
+                      height="56"
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className="flex-1 min-w-0">

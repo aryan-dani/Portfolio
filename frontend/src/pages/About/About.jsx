@@ -8,6 +8,7 @@ import {
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
 import { getAssetPath } from "../../utils/paths";
+import { usePageSEO } from "../../utils/seo";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
@@ -76,6 +77,9 @@ function PhotoCarousel() {
               <img
                 src={getAssetPath(photos[index].src)}
                 alt={photos[index].alt}
+                width="720"
+                height="720"
+                sizes="(min-width: 1024px) 40vw, 100vw"
                 className="w-full h-full object-cover"
                 loading={index === 0 ? "eager" : "lazy"}
                 decoding="async"
@@ -137,6 +141,7 @@ function PhotoCarousel() {
 }
 
 function About() {
+  usePageSEO();
   const { showToast } = useToast();
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 1000], [0, -60]);

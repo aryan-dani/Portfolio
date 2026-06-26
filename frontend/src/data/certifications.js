@@ -1,4 +1,4 @@
-export const certifications = [
+const certificationEntries = [
   {
     id: 9,
     title: "Google Student Ambassador Program",
@@ -138,6 +138,13 @@ export const certifications = [
     link: "https://www.linkedin.com/learning/certificates/b53dace1e572fe2d7b48ee76145ae787c0ca62233f2cba513085689bd314dcc1",
   },
 ];
+
+export const certifications = certificationEntries.map((certification) => ({
+  ...certification,
+  imageAlt:
+    certification.imageAlt ||
+    `${certification.title} certificate earned by Aryan Dani from ${certification.issuer}`,
+}));
 
 export const certificationCategories = [
   { id: "all", label: "All" },

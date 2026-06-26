@@ -1,0 +1,11 @@
+/* TEAM */
+Developer: Aryan Dani
+Role: AI Engineer & Full Stack Developer
+Site: https://www.aryandani.com/
+LinkedIn: https://www.linkedin.com/in/aryandani/
+GitHub: https://github.com/aryan-dani
+
+/* SITE */
+Stack: React, Vite, Framer Motion, Lenis, Tailwind CSS
+Language: English
+Last updated: 2026-06-26

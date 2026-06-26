@@ -54,6 +54,7 @@ function Header() {
         initial={{ y: 0, opacity: 1 }}
         animate={{ y: isVisible ? 0 : "-100%", opacity: isVisible ? 1 : 0 }}
         transition={{ type: "spring", stiffness: 280, damping: 34, mass: 0.9 }}
+        aria-label="Main navigation"
         className={`sticky top-0 w-full border-b-4 z-50 transition-[box-shadow,border-color] duration-300 gpu-layer paint-isolate ${
           isScrolled
             ? "border-outline shadow-[0_5px_0_0_var(--shadow-color)]"
@@ -165,7 +166,8 @@ function Header() {
                 <button
                   className="text-[var(--color-on-surface)] p-2 hover:bg-[var(--color-surface-variant)] transition-colors rounded-sm"
                   onClick={() => setIsMenuOpen((p) => !p)}
-                  aria-label="Toggle menu"
+                  aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                  aria-expanded={isMenuOpen}
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.span

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -9,8 +10,10 @@ import {
 
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import { usePageSEO } from "../../utils/seo";
 
 function Copyright() {
+  usePageSEO();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -135,4 +138,4 @@ function Copyright() {
   );
 }
 
-export default Copyright;
+export default memo(Copyright);

@@ -6,7 +6,7 @@ const GITHUB_USERNAME = "aryan-dani";
 
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
-function ImageWithSkeleton({ src, alt, className = "", imgClassName = "" }) {
+function ImageWithSkeleton({ src, alt, className = "", imgClassName = "", width = 495, height = 195 }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -20,9 +20,12 @@ function ImageWithSkeleton({ src, alt, className = "", imgClassName = "" }) {
       <img
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         onLoad={() => setLoaded(true)}
         className={`${imgClassName} transition-all duration-300 ${loaded ? "opacity-100 scale-100" : "opacity-0 scale-95 absolute w-0 h-0"}`}
         loading="lazy"
+        decoding="async"
       />
     </div>
   );
@@ -150,6 +153,8 @@ const GitHubStats = memo(function GitHubStats() {
             src={contribUrl}
             alt="Contributions Calendar"
             imgClassName="min-w-162.5 max-w-full h-auto"
+            width={1040}
+            height={160}
           />
         </div>
       </GHCard>
@@ -171,6 +176,8 @@ const GitHubStats = memo(function GitHubStats() {
             src={activityUrl}
             alt="Contribution Trend Graph"
             imgClassName="w-full max-w-3xl h-auto"
+            width={900}
+            height={300}
           />
         </div>
       </GHCard>
@@ -207,6 +214,8 @@ const GitHubStats = memo(function GitHubStats() {
             src={trophiesUrl}
             alt="GitHub Trophies"
             imgClassName="w-full max-w-3xl h-auto"
+            width={900}
+            height={220}
           />
         </div>
       </GHCard>

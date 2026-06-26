@@ -6,9 +6,12 @@ import { certifications, certificationCategories } from "../../data/certificatio
 import { getAssetPath } from "../../utils/paths";
 import { containerVariants, cardVariants } from "../../utils/motionVariants";
 import { useModalLock } from "../../hooks/useModalLock";
+import { usePageSEO } from "../../utils/seo";
 import PageHeader from "../../components/PageHeader/PageHeader";
 
 function Certifications() {
+  const seoData = useMemo(() => ({ certifications }), []);
+  usePageSEO(seoData);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   const [previewImage, setPreviewImage] = useState(null);
@@ -57,6 +60,7 @@ function Certifications() {
               <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
               <input
                 type="text"
+                aria-label="Search certifications"
                 placeholder="Search certifications..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -160,13 +164,18 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
         className="bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_var(--shadow-color)] transition-all duration-200 h-full"
       >
         {/* Image Container */}
-        <div
-          className="aspect-[4/3] border-b-4 border-outline overflow-hidden relative cursor-pointer bg-[var(--color-surface)] flex items-center justify-center p-3"
+        <button
+          type="button"
+          className="aspect-[4/3] w-full border-b-4 border-outline overflow-hidden relative cursor-pointer bg-[var(--color-surface)] flex items-center justify-center p-3 text-left"
           onClick={onPreview}
+          aria-label={`Preview certificate image for ${cert.title}`}
         >
           <motion.img
             src={getAssetPath(cert.image)}
-            alt={cert.title}
+            alt={cert.imageAlt || `${cert.title} certificate issued by ${cert.issuer}`}
+            width="640"
+            height="480"
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             loading="lazy"
             decoding="async"
             className="w-full h-full object-contain pointer-events-none"
@@ -186,7 +195,7 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
               {cert.badge}
             </div>
           )}
-        </div>
+        </button>
 
         {/* Content */}
         <div className="p-6 md:p-8 flex flex-col grow">
@@ -214,7 +223,11 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
               >
                 <img
                   src={cert.issuerLogo}
-                  alt={cert.issuer}
+                  alt={`${cert.issuer} logo`}
+                  width="40"
+                  height="40"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain p-1"
                 />
               </motion.div>
@@ -269,6 +282,9 @@ const ImagePreviewModal = memo(function ImagePreviewModal({ src, title, onClose 
       <motion.div
         className="relative z-10 border-8 border-outline shadow-[16px_16px_0px_0px_var(--shadow-color)] max-w-5xl w-full"
         style={{ background: "var(--color-surface)" }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="certificate-preview-title"
         initial={{ scale: 0.88, opacity: 0, y: 40 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.92, opacity: 0, y: 20 }}
@@ -279,7 +295,7 @@ const ImagePreviewModal = memo(function ImagePreviewModal({ src, title, onClose 
           className="flex justify-between items-center px-5 py-3 border-b-4 border-outline"
           style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
         >
-          <span className="font-headline-md text-base uppercase">{title}</span>
+          <span id="certificate-preview-title" className="font-headline-md text-base uppercase">{title}</span>
           <button
             className="border-4 border-outline w-9 h-9 flex items-center justify-center font-black hover:translate-x-0.5 hover:translate-y-0.5 transition-transform cursor-none"
             style={{ background: "var(--color-on-primary-container)", color: "var(--color-primary-container)" }}
@@ -293,7 +309,9 @@ const ImagePreviewModal = memo(function ImagePreviewModal({ src, title, onClose 
         <div className="p-2 md:p-4 bg-white flex justify-center items-center">
           <img
             src={getAssetPath(src)}
-            alt={title}
+            alt={`${title} certificate full preview`}
+            width="1200"
+            height="900"
             className="w-full h-auto object-contain max-h-[75vh]"
           />
         </div>

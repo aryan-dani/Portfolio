@@ -1,4 +1,4 @@
-export const projects = [
+const projectEntries = [
   {
     id: 1,
     title: "The Fourth Clover",
@@ -218,6 +218,23 @@ export const projects = [
     },
   },
 ];
+
+export const projects = projectEntries.map((project) => ({
+  ...project,
+  imageAlt:
+    project.imageAlt ||
+    `${project.title} project screenshot from Aryan Dani's ${project.category === "ai-ml" ? "AI and machine learning" : "full-stack web development"} portfolio`,
+  problem:
+    project.problem ||
+    `${project.title} explores a practical ${project.category === "ai-ml" ? "AI or machine learning" : "web application"} problem with production-minded constraints.`,
+  solution: project.solution || project.description,
+  architecture:
+    project.architecture ||
+    `Implemented with ${project.tags.slice(0, 5).join(", ")} and organized around a maintainable, user-facing portfolio project architecture.`,
+  results:
+    project.results ||
+    `Demonstrates Aryan Dani's hands-on experience with ${project.tags.slice(0, 4).join(", ")} through a concrete, reviewable project.`,
+}));
 
 export const projectCategories = [
   { id: "all", label: "All" },

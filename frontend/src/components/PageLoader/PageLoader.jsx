@@ -180,7 +180,7 @@ const PageLoader = memo(function PageLoader() {
                   exit={{ opacity: 0, scale: 0.93, y: -20 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <h1 className="page-headline-xl tracking-tighter uppercase leading-none font-bold text-center relative px-2" style={{ fontFamily: "var(--font-headline-xl)", fontSize: "clamp(3rem, 10vw, 8rem)" }}>
+                  <div className="page-headline-xl tracking-tighter uppercase leading-none font-bold text-center relative px-2" style={{ fontFamily: "var(--font-headline-xl)", fontSize: "clamp(3rem, 10vw, 8rem)" }} aria-label="Aryan Dani">
                     {/* Sweep scanner line */}
                     <motion.div
                       className="absolute top-0 bottom-0 w-[4px] bg-[var(--color-outline)] z-20 pointer-events-none"
@@ -203,7 +203,7 @@ const PageLoader = memo(function PageLoader() {
                         {item.char}
                       </span>
                     ))}
-                  </h1>
+                  </div>
 
                   {/* Circular progress ring overlay */}
                   <div className="flex items-center gap-3 mt-2">

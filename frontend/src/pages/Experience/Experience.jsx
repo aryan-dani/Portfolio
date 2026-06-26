@@ -1,9 +1,10 @@
-import { useState, useRef, memo } from "react";
+import { useState, useRef, memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useInView } from "framer-motion";
 import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
 import { containerVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
+import { usePageSEO } from "../../utils/seo";
 import PageHeader from "../../components/PageHeader/PageHeader";
 
 const CARD_STYLES = [
@@ -251,6 +252,8 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
 }
 
 function Experience() {
+  const seoData = useMemo(() => ({ experiences }), []);
+  usePageSEO(seoData);
   const [expandedId, setExpandedId] = useState(experiences[0]?.id || null);
   const containerRef = useRef(null);
 

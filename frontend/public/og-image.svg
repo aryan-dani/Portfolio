@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Aryan Dani — AI Engineer &amp; Full Stack Developer</title>
+  <desc id="desc">Social preview image for Aryan Dani portfolio.</desc>
+  <rect width="1200" height="630" fill="#f8f7f4"/>
+  <rect x="44" y="44" width="1112" height="542" fill="#ffffff" stroke="#131316" stroke-width="10"/>
+  <rect x="82" y="82" width="270" height="72" fill="#131316"/>
+  <text x="106" y="130" fill="#f8f7f4" font-family="Arial, sans-serif" font-size="38" font-weight="800">ARYAN DANI</text>
+  <text x="82" y="262" fill="#131316" font-family="Arial, sans-serif" font-size="72" font-weight="900">AI Engineer</text>
+  <text x="82" y="344" fill="#131316" font-family="Arial, sans-serif" font-size="72" font-weight="900">&amp; Full Stack Developer</text>
+  <text x="86" y="430" fill="#454449" font-family="Arial, sans-serif" font-size="34" font-weight="700">Machine Learning • Computer Vision • Generative AI • RAG</text>
+  <text x="86" y="492" fill="#454449" font-family="Arial, sans-serif" font-size="28" font-weight="700">React • Angular • Python • FastAPI • MIT-WPU • Pune</text>
+  <rect x="928" y="98" width="142" height="142" fill="#131316"/>
+  <rect x="962" y="132" width="142" height="142" fill="#f8f7f4" stroke="#131316" stroke-width="8"/>
+</svg>

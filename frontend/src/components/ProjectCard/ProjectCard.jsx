@@ -18,15 +18,6 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
           isHighlighted ? "ring-4 ring-[var(--color-primary-container)] ring-offset-2" : ""
         }`}
         onClick={() => onOpenModal(project)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            onOpenModal(project);
-          }
-        }}
-        role="button"
-        tabIndex={0}
-        aria-label={`Open details for ${project.title}`}
         whileHover={{
           y: -6,
           x: -6,
@@ -39,7 +30,10 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
         <div className="h-48 md:h-56 border-b-4 border-outline bg-[var(--color-surface-variant)] overflow-hidden relative">
           <motion.img
             src={getAssetPath(project.image)}
-            alt={project.title}
+            alt={project.imageAlt || `${project.title} project preview by Aryan Dani`}
+            width="640"
+            height="420"
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover pointer-events-none gpu-layer"
@@ -63,12 +57,20 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
         {/* Content */}
         <div className="p-6 md:p-7 flex flex-col grow">
           <div className="mb-3 flex items-start justify-between gap-3">
-            <h2 className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] uppercase">
+            <h3 className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] uppercase">
               {project.title}
-            </h2>
-            <span className="shrink-0 border-2 border-outline bg-[var(--color-surface-variant)] px-2 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-surface)] opacity-80 shadow-[2px_2px_0_var(--shadow-color)] group-hover:bg-[var(--color-primary-container)] group-hover:text-[var(--color-on-primary-container)] transition-colors">
+            </h3>
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                onOpenModal(project);
+              }}
+              className="shrink-0 border-2 border-outline bg-[var(--color-surface-variant)] px-2 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-surface)] opacity-80 shadow-[2px_2px_0_var(--shadow-color)] transition-colors hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] focus-visible:bg-[var(--color-primary-container)] focus-visible:text-[var(--color-on-primary-container)]"
+              aria-label={`Open details for ${project.title}`}
+            >
               View
-            </span>
+            </button>
           </div>
           <p
             className="font-body-md text-sm text-[var(--color-text-muted)] mb-5 whitespace-normal"

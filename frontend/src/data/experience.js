@@ -6,6 +6,10 @@ export const experiences = [
     logo: "/Images/Jobs/Artem_Health.png",
     position: "Intern (AI Engineer)",
     period: "Jan - May 2025",
+    location: "Pune, India",
+    links: [
+      { name: "Speech to Text Voice Translation", url: "https://github.com/aryan-dani/Speech_To_Text" }
+    ],
     technologies: [
       "Convolutional Neural Networks",
       "Vision Language Models",
@@ -28,6 +32,12 @@ export const experiences = [
     logo: "/Images/Jobs/MIT_WPU.png",
     position: "Autonomous Systems Lead / ML Developer",
     period: "June - Dec 2025",
+    location: "Pune, India",
+    links: [
+      { name: "Real-Time Threat Detection pipeline", url: "https://github.com/aryan-dani/Threat_Detection_System" },
+      { name: "PosePro CV Motion Analyzer", url: "https://github.com/aryan-dani/Pose_Pro" },
+      { name: "Arbiter Autonomous Testing Agents", url: "https://github.com/aryan-dani/Arbiter" }
+    ],
     technologies: [
       "Python / PyTorch",
       "YOLO v11",
@@ -51,6 +61,11 @@ export const experiences = [
     logo: "/Images/Jobs/Github_Contrib.png",
     position: "Lead Full-Stack Web Architect",
     period: "July 2026 - Present",
+    location: "Remote",
+    links: [
+      { name: "The Fourth Clover Web App", url: "https://github.com/aryan-dani/The-Fourth-Clover" },
+      { name: "Utility Web App", url: "https://github.com/aryan-dani/Utility" }
+    ],
     technologies: [
       "Next.js 14+",
       "TypeScript",

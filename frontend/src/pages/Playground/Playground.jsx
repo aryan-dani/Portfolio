@@ -9,6 +9,7 @@ import { experiences, aboutInfo } from "../../data/experience";
 import { useTheme } from "../../context/ThemeContext";
 import { useModalLock } from "../../hooks/useModalLock";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import { usePageSEO } from "../../utils/seo";
 import "./Playground.scss";
 
 import { playgroundRouteMap as ROUTES } from "../../config/routes";
@@ -58,6 +59,7 @@ function getSuggestion(command) {
 }
 
 function Playground() {
+  usePageSEO();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const [history, setHistory] = useState([
@@ -481,6 +483,8 @@ function Playground() {
             e.stopPropagation();
             setIsExpanded(!isExpanded);
           }}
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? "Collapse CLI playground terminal" : "Expand CLI playground terminal"}
           className="bg-[var(--color-primary-container)] border-2 border-outline text-[var(--color-on-primary-container)] px-3 py-1 text-xs font-bold uppercase cursor-none hover:bg-[var(--color-surface)] hover:text-[var(--color-on-surface)] transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
         >
           {isExpanded ? "Collapse ↙" : "Expand ⛶"}
@@ -497,6 +501,7 @@ function Playground() {
               event.stopPropagation();
               processCommand(command);
             }}
+            aria-label={`Run ${command} starter command`}
             className="border-2 border-outline bg-[var(--color-surface-variant)] px-3 py-1 font-label-bold text-[10px] uppercase tracking-wider text-[var(--color-on-surface)] shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
           >
             {command}
@@ -505,7 +510,14 @@ function Playground() {
       </div>
 
       {/* Terminal logs list */}
-      <div ref={terminalLogRef} className="grow min-h-0 overflow-y-auto overscroll-contain space-y-2 pr-2" data-lenis-prevent>
+      <div
+        ref={terminalLogRef}
+        className="grow min-h-0 overflow-y-auto overscroll-contain space-y-2 pr-2"
+        data-lenis-prevent
+        role="log"
+        aria-live="polite"
+        aria-label="CLI terminal output"
+      >
         {history.map((line, index) => {
           if (line.type === "spacing")
             return <div key={index} className="h-2" />;
@@ -542,6 +554,7 @@ function Playground() {
           <input
             ref={inputRef}
             type="text"
+            aria-label="CLI command input"
             className="absolute inset-0 bg-transparent border-none outline-none font-mono text-sm md:text-base focus:ring-0 p-0 w-full z-10 cursor-none"
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
@@ -580,6 +593,8 @@ function Playground() {
           className="nb-cli-container border-4 border-outline bg-[var(--color-surface)] p-6 font-mono flex flex-col relative overflow-hidden min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)] paint-isolate hover-gpu"
           onClick={focusInput}
           onWheel={handleTerminalWheel}
+          role="application"
+          aria-label="Interactive CLI playground terminal"
           whileHover={{ y: -2, boxShadow: "10px 10px 0px 0px var(--shadow-color)" }}
           transition={{ type: "spring", stiffness: 180, damping: 32 }}
         >
@@ -605,6 +620,9 @@ function Playground() {
                     className="nb-cli-container pointer-events-auto bg-[var(--color-surface)] p-4 sm:p-5 md:p-6 font-mono flex flex-col relative w-full h-full max-w-[1600px] overflow-hidden border-4 border-outline shadow-[6px_6px_0_var(--shadow-color)] gpu-layer paint-isolate"
                     onClick={focusInput}
                     onWheel={handleTerminalWheel}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Expanded CLI playground terminal"
                     initial={{ opacity: 0, scale: 0.985, y: 14, clipPath: "inset(4% 2% 6% 2%)" }}
                     animate={{ opacity: 1, scale: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
                     exit={{ opacity: 0, scale: 0.99, y: 10, clipPath: "inset(5% 2% 6% 2%)" }}

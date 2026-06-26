@@ -31,6 +31,7 @@ const routeConfig = SITE_ROUTES.map((route) => ({
 }));
 
 const CustomCursor = lazy(() => import("./components/CustomCursor/CustomCursor"));
+const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 
 const basename = import.meta.env.BASE_URL;
 
@@ -156,6 +157,16 @@ function AnimatedRoutes() {
             }
           />
         ))}
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<PageFallback />}>
+              <PageTransition isFirstRender={isFirstRender} direction={direction}>
+                <NotFound />
+              </PageTransition>
+            </Suspense>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );

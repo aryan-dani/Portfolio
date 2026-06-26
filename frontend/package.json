@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite preview",
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/generate-seo-assets.mjs && vite build && node scripts/prerender-seo.mjs",
     "preview": "vite preview",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },

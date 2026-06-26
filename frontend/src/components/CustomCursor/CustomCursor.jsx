@@ -165,13 +165,11 @@ const CustomCursor = memo(function CustomCursor() {
       const el = target.closest("a, button, [role='button'], .cursor-pointer, .nb-carousel-arrow");
       const img = target.closest("img, canvas, .cursor-image");
       const input = target.closest("input, textarea, select");
-      const isTerminalSurface = target.closest(".nb-cli-container");
 
       let state = "default";
       if (input) state = "text";
       else if (img) state = "image";
       else if (el) state = "hover";
-      else if (isTerminalSurface) state = "hidden";
 
       setCursorState(state);
 

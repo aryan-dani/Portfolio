@@ -5,11 +5,13 @@ import { FaSearch, FaTimes, FaChevronDown } from "react-icons/fa";
 import { projects, projectCategories } from "../../data/projects";
 import { containerVariants, cardVariants } from "../../utils/motionVariants";
 import { useModalLock } from "../../hooks/useModalLock";
+import { usePageSEO } from "../../utils/seo";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
 import PageHeader from "../../components/PageHeader/PageHeader";
 
 function Projects() {
+  usePageSEO(useMemo(() => ({ projects }), []));
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm,   setSearchTerm]   = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
@@ -86,13 +88,14 @@ function Projects() {
               <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
               <input
                 type="text"
+                aria-label="Search projects"
                 placeholder="Search projects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="bg-transparent border-none outline-none w-full font-body-md text-lg text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
               />
               {searchTerm && (
-                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
+                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors" aria-label="Clear project search">
                   <FaTimes className="text-[var(--color-on-surface)]" />
                 </button>
               )}
@@ -110,6 +113,7 @@ function Projects() {
                         : "bg-[var(--color-surface)] text-[var(--color-on-surface)] shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 hover:bg-[var(--color-surface-variant)]"
                     }`}
                     onClick={() => setActiveFilter(category.id)}
+                    aria-pressed={isSelected}
                     whileTap={{ scale: 0.97 }}
                   >
                     {category.label}
@@ -124,23 +128,27 @@ function Projects() {
             className="w-full bg-[var(--color-surface)] border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
             variants={cardVariants}
           >
-            <div 
-              className={`flex justify-between items-center bg-[var(--color-surface)] px-6 py-4 cursor-pointer ${isFilterExpanded ? 'border-b-4 border-outline' : ''}`}
-              onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-            >
-              <div className="flex items-center gap-3">
+            <div className={`flex items-center justify-between bg-[var(--color-surface)] ${isFilterExpanded ? 'border-b-4 border-outline' : ''}`}>
+              <button
+                type="button"
+                className="flex flex-1 items-center gap-3 px-6 py-4 text-left cursor-pointer"
+                onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                aria-expanded={isFilterExpanded}
+                aria-controls="project-tech-filters"
+              >
                 <span className="font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">
                   Filter by Tech Stack {selectedTags.length > 0 && `(${selectedTags.length})`}
                 </span>
                 <motion.div animate={{ rotate: isFilterExpanded ? 180 : 0 }}>
                   <FaChevronDown className="text-outline" />
                 </motion.div>
-              </div>
-              
+              </button>
               {selectedTags.length > 0 && (
                 <button
-                  onClick={(e) => { e.stopPropagation(); setSelectedTags([]); }}
-                  className="text-xs uppercase font-label-bold text-red-500 hover:underline cursor-none"
+                  type="button"
+                  onClick={() => setSelectedTags([])}
+                  className="mr-6 text-xs uppercase font-label-bold text-red-500 hover:underline cursor-none"
+                  aria-label="Clear selected project technology filters"
                 >
                   Clear
                 </button>
@@ -160,13 +168,14 @@ function Projects() {
                   }}
                   transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
                 >
-                  <div className="flex flex-wrap gap-2 px-6 py-4">
+                  <div id="project-tech-filters" className="flex flex-wrap gap-2 px-6 py-4">
                     {allTags.map((tag) => {
                       const isSelected = selectedTags.includes(tag);
                       return (
                         <motion.button
                           key={tag}
                           onClick={() => toggleTag(tag)}
+                          aria-pressed={isSelected}
                           className={`px-3 py-1 text-xs uppercase font-label-bold border-2 border-outline transition-all cursor-none ${
                             isSelected
                               ? "bg-[var(--color-on-background)] text-[var(--color-background)] shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[1px] translate-y-[1px]"

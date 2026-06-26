@@ -31,10 +31,13 @@ export default function ResumeModal({ isOpen, onClose }) {
             exit="exit"
             className="relative w-full max-w-4xl h-[85vh] bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col z-10 overflow-hidden paint-isolate"
             data-lenis-prevent
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="resume-viewer-title"
           >
             {/* Header */}
             <div className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-b-4 border-outline px-4 py-3 flex items-center justify-between">
-              <span className="font-headline-md text-sm md:text-base uppercase tracking-wider">
+              <span id="resume-viewer-title" className="font-headline-md text-sm md:text-base uppercase tracking-wider">
                 DOCUMENT_VIEWER.EXE // RESUME.PDF
               </span>
               <div className="flex items-center gap-3">
@@ -42,6 +45,7 @@ export default function ResumeModal({ isOpen, onClose }) {
                 <a
                   href={resumePath}
                   download="Aryan_Dani_Resume.pdf"
+                  aria-label="Download Aryan Dani resume PDF"
                   className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-3 py-1 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
                 >
                   <FaFileDownload />

@@ -147,14 +147,23 @@ function CommandPalette() {
               exit={{ opacity: 0, y: -8, clipPath: "inset(0 0 100% 0)" }}
               transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="w-full max-w-2xl bg-[var(--color-surface)] border-4 border-outline shadow-[16px_16px_0px_0px_var(--shadow-color)] pointer-events-auto flex flex-col overflow-hidden paint-isolate"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="command-palette-title"
               onClick={(e) => e.stopPropagation()}
             >
+              <h2 id="command-palette-title" className="sr-only">
+                Command palette
+              </h2>
               {/* Search Input */}
               <div className="flex items-center border-b-4 border-outline px-4 py-3 sm:py-5 bg-[var(--color-surface-variant)]">
                 <HiOutlineSearch className="text-2xl text-[var(--color-on-surface-variant)] mr-4 shrink-0" />
                 <input
                   ref={inputRef}
                   type="text"
+                  aria-label="Search commands, projects, skills, and pages"
+                  aria-controls="command-palette-results"
+                  aria-activedescendant={filteredCommands[selectedIndex]?.id ? `command-${filteredCommands[selectedIndex].id}` : undefined}
                   placeholder="Search projects, skills, or navigate..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -166,7 +175,13 @@ function CommandPalette() {
               </div>
 
               {/* Results List */}
-              <div className="max-h-[55vh] overflow-y-auto overscroll-contain no-scrollbar py-2 content-visibility-auto" data-lenis-prevent>
+              <div
+                id="command-palette-results"
+                role="listbox"
+                aria-label="Command palette results"
+                className="max-h-[55vh] overflow-y-auto overscroll-contain no-scrollbar py-2 content-visibility-auto"
+                data-lenis-prevent
+              >
                 {filteredCommands.length > 0 ? (
                   groupedCommands.map((group) => (
                     <div key={group.type}>
@@ -179,6 +194,9 @@ function CommandPalette() {
                         return (
                           <div
                             key={cmd.id}
+                            id={`command-${cmd.id}`}
+                            role="option"
+                            aria-selected={index === selectedIndex}
                             className={`flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 cursor-pointer transition-colors border-l-4 ${
                               index === selectedIndex
                                 ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-outline"
