@@ -53,6 +53,9 @@ const CustomCursor = memo(function CustomCursor() {
 
   const innerRef = useRef(null);
   const outerRef = useRef(null);
+  const visibleRef = useRef(false);
+  const cursorStateRef = useRef(cursorState);
+  const onDarkBgRef = useRef(onDarkBg);
 
   // Position tracking refs
   const mousePosRef = useRef({ x: -100, y: -100 });
@@ -66,6 +69,7 @@ const CustomCursor = memo(function CustomCursor() {
   isHoverStateRef.current = isHoverState;
 
   useEffect(() => {
+    onDarkBgRef.current = isDark;
     setOnDarkBg(isDark);
   }, [theme, isDark]);
 
@@ -134,21 +138,26 @@ const CustomCursor = memo(function CustomCursor() {
 
     const onMouseMove = (e) => {
       mousePosRef.current = { x: e.clientX, y: e.clientY };
-      document.documentElement.style.setProperty("--cursor-x", `${e.clientX}px`);
-      document.documentElement.style.setProperty("--cursor-y", `${e.clientY}px`);
 
-      if (!isVisible) {
+      if (!visibleRef.current) {
+        visibleRef.current = true;
         setIsVisible(true);
       }
       startLoop();
     };
 
     const onMouseLeave = () => {
-      setIsVisible(false);
+      if (visibleRef.current) {
+        visibleRef.current = false;
+        setIsVisible(false);
+      }
     };
 
     const onMouseEnter = () => {
-      setIsVisible(true);
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setIsVisible(true);
+      }
       // Reset position to entry point so it doesn't animate from previous offscreen coordinates
       const handleFirstMove = (e) => {
         mousePosRef.current = { x: e.clientX, y: e.clientY };
@@ -171,11 +180,17 @@ const CustomCursor = memo(function CustomCursor() {
       else if (img) state = "image";
       else if (el) state = "hover";
 
-      setCursorState(state);
+      if (cursorStateRef.current !== state) {
+        cursorStateRef.current = state;
+        setCursorState(state);
+      }
 
       const lum = getEffectiveBgLuminance(target);
       const darkBg = lum !== null ? lum < 0.4 : isDark;
-      setOnDarkBg(darkBg);
+      if (onDarkBgRef.current !== darkBg) {
+        onDarkBgRef.current = darkBg;
+        setOnDarkBg(darkBg);
+      }
       startLoop(); // Trigger rotation update if mouse stationary
     };
 
@@ -198,7 +213,7 @@ const CustomCursor = memo(function CustomCursor() {
       document.removeEventListener("mouseenter", onMouseEnter);
       window.removeEventListener("mouseover", handleHoverChange);
     };
-  }, [isVisible, isDark, nativeCursor]);
+  }, [isDark, nativeCursor]);
 
   if (nativeCursor) return null;
 

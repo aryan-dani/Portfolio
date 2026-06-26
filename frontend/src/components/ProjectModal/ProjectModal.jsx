@@ -8,24 +8,9 @@ import { modalBackdropVariants, modalContentVariants } from "../../utils/motionV
 
 const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick }) {
   const projectSkills = getSkillsForProject(project.id);
-  const seoSections = [
-    {
-      title: "Problem",
-      body: project.problem || `${project.title} addresses a focused ${project.category === "ai-ml" ? "AI and machine learning" : "web development"} use case with practical user-facing constraints.`,
-    },
-    {
-      title: "Solution",
-      body: project.solution || project.description,
-    },
-    {
-      title: "Architecture",
-      body: project.architecture || `Built with ${project.tags.slice(0, 5).join(", ")} and structured as a maintainable, production-style application.`,
-    },
-    {
-      title: "Results",
-      body: project.results || `The project demonstrates Aryan Dani's experience with ${project.tags.slice(0, 4).join(", ")} through a concrete portfolio implementation.`,
-    },
-  ];
+  const detailSections = (project.detailSections || []).filter(
+    (section) => section?.title && section?.body,
+  );
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 gpu-layer">
@@ -120,72 +105,90 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
             </div>
           </div>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-3">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-4 py-1.5 font-label-bold text-sm uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:-translate-y-1 hover:shadow-[2px_4px_0px_0px_var(--shadow-color)] transition-transform"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            {/* Description */}
-            <div className="lg:col-span-2 bg-[var(--color-surface)] border-4 border-outline p-6 md:p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-              <h3 className="font-headline-md text-2xl uppercase border-b-4 border-outline pb-3 mb-6 text-[var(--color-on-surface)] inline-block">
-                Overview
-              </h3>
-              <p id="project-modal-description" className="font-body-lg text-lg md:text-xl leading-relaxed text-[var(--color-on-surface)] whitespace-pre-wrap">
-                {project.description}
-              </p>
-            </div>
-
-            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5">
-              {seoSections.map((section) => (
-                <article
-                  key={section.title}
-                  className="bg-[var(--color-surface)] border-4 border-outline p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-                >
-                  <h3 className="font-headline-md text-xl uppercase border-b-2 border-outline pb-2 mb-3 text-[var(--color-on-surface)]">
-                    {section.title}
-                  </h3>
-                  <p className="font-body-md text-sm leading-relaxed text-[var(--color-on-surface)]">
-                    {section.body}
-                  </p>
-                </article>
-              ))}
-            </div>
-
-            {/* Skills */}
-            {projectSkills.length > 0 && (
-              <div className="bg-[var(--color-surface)] border-4 border-outline p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] sticky top-6">
-                <h3 className="font-headline-md text-xl uppercase border-b-4 border-outline pb-3 mb-6 text-[var(--color-on-surface)]">
-                  Tech Stack
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)] gap-6 md:gap-8 items-start">
+            <div className="flex flex-col gap-5 md:gap-6">
+              {/* Description */}
+              <div className="bg-[var(--color-surface)] border-4 border-outline p-6 md:p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
+                <h3 className="font-headline-md text-2xl uppercase border-b-4 border-outline pb-3 mb-6 text-[var(--color-on-surface)] inline-block">
+                  Overview
                 </h3>
-                <div className="flex flex-col gap-3">
-                  {projectSkills.map((skill) => (
-                    <motion.button
-                      key={skill.id}
-                      onClick={() => onSkillClick(skill.id)}
-                      className="bg-[var(--color-surface-variant)] border-2 border-outline px-4 py-2 font-label-bold text-sm uppercase flex items-center justify-between hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none group cursor-none w-full"
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
+                <p id="project-modal-description" className="font-body-lg text-lg md:text-xl leading-relaxed text-[var(--color-on-surface)] whitespace-pre-wrap">
+                  {project.description}
+                </p>
+              </div>
+
+              {detailSections.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {detailSections.map((section) => (
+                    <article
+                      key={section.title}
+                      className="bg-[var(--color-surface)] border-4 border-outline p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="font-headline-md opacity-70 group-hover:opacity-100 transition-opacity">
-                          {skill.level}%
-                        </span>
-                        <span>{skill.name}</span>
-                      </div>
-                      <FaArrowRight className="text-[12px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </motion.button>
+                      <h3 className="font-headline-md text-xl uppercase border-b-2 border-outline pb-2 mb-3 text-[var(--color-on-surface)]">
+                        {section.title}
+                      </h3>
+                      <p className="font-body-md text-sm leading-relaxed text-[var(--color-on-surface)]">
+                        {section.body}
+                      </p>
+                    </article>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            <aside className="flex flex-col gap-5 lg:sticky lg:top-6">
+              {/* Skills */}
+              {projectSkills.length > 0 && (
+                <div className="bg-[var(--color-surface)] border-4 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
+                  <div className="flex items-center justify-between gap-3 border-b-4 border-outline pb-3 mb-5">
+                    <h3 className="font-headline-md text-xl uppercase text-[var(--color-on-surface)]">
+                      Tech Stack
+                    </h3>
+                    <span className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase">
+                      {projectSkills.length}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {projectSkills.map((skill) => (
+                      <motion.button
+                        key={skill.id}
+                        onClick={() => onSkillClick(skill.id)}
+                        className="bg-[var(--color-surface-variant)] border-2 border-outline px-4 py-2 font-label-bold text-sm uppercase flex items-center justify-between hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none group cursor-none w-full"
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="font-headline-md opacity-70 group-hover:opacity-100 transition-opacity">
+                            {skill.level}%
+                          </span>
+                          <span>{skill.name}</span>
+                        </div>
+                        <FaArrowRight className="text-[12px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tags */}
+              {project.tags?.length > 0 && (
+                <div className="bg-[var(--color-surface)] border-4 border-outline p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+                  <h3 className="font-headline-md text-lg uppercase border-b-2 border-outline pb-2 mb-4 text-[var(--color-on-surface)]">
+                    Project Tags
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-3 py-1 font-label-bold text-xs uppercase"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </aside>
           </div>
         </div>
       </motion.div>

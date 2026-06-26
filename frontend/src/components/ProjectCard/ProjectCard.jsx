@@ -37,10 +37,20 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover pointer-events-none gpu-layer"
-            initial={{ scale: 1, filter: "grayscale(100%)" }}
-            whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}
+            initial={{ scale: 1 }}
+            whileHover={{ scale: 1.04 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           />
+          <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+            <span className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+              {project.year}
+            </span>
+            {project.category && (
+              <span className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+                {project.category}
+              </span>
+            )}
+          </div>
           {isFeatured && (
             <motion.div
               className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
@@ -66,11 +76,21 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
                 event.stopPropagation();
                 onOpenModal(project);
               }}
-              className="shrink-0 border-2 border-outline bg-[var(--color-surface-variant)] px-2 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-surface)] opacity-80 shadow-[2px_2px_0_var(--shadow-color)] transition-colors hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] focus-visible:bg-[var(--color-primary-container)] focus-visible:text-[var(--color-on-primary-container)]"
+              className="shrink-0 border-2 border-outline bg-[var(--color-primary-container)] px-3 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-primary-container)] shadow-[2px_2px_0_var(--shadow-color)] transition-colors hover:bg-[var(--color-surface-variant)] hover:text-[var(--color-on-surface)] focus-visible:bg-[var(--color-surface-variant)] focus-visible:text-[var(--color-on-surface)]"
               aria-label={`Open details for ${project.title}`}
             >
-              View
+              Details
             </button>
+          </div>
+          <div className="mb-4 flex flex-wrap gap-2">
+            {project.tags.slice(0, 2).map((tag) => (
+              <span
+                key={`lead-${tag}`}
+                className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
           <p
             className="font-body-md text-sm text-[var(--color-text-muted)] mb-5 whitespace-normal"
@@ -80,7 +100,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
           </p>
 
           <div className="flex flex-wrap gap-2 mb-6">
-            {project.tags.slice(0, 3).map((tag) => (
+            {project.tags.slice(2, 5).map((tag) => (
               <span
                 key={tag}
                 className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase"
@@ -88,9 +108,9 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
                 {tag}
               </span>
             ))}
-            {project.tags.length > 3 && (
+            {project.tags.length > 5 && (
               <span className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase">
-                +{project.tags.length - 3}
+                +{project.tags.length - 5}
               </span>
             )}
           </div>

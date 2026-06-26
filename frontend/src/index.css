@@ -211,22 +211,28 @@ body {
 /* Smooth color transitions when toggling theme */
 html.theme-transitioning {
   transition:
-    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Smooth all color-dependent transitions globally ONLY when toggling theme */
+/* Smooth color changes globally ONLY when toggling theme. Avoid shadows/filters here: they repaint too much of the page. */
 .theme-transitioning,
 .theme-transitioning *,
 .theme-transitioning *::before,
 .theme-transitioning *::after {
   transition:
-    background-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    fill 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    stroke 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    fill 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.32s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.theme-transitioning .backdrop-blur-sm,
+.theme-transitioning .backdrop-blur-md,
+.theme-transitioning .glass {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Hide system cursor on pointer devices — custom cursor takes over */
@@ -379,7 +385,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
     box-shadow 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     background 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: box-shadow;
 }
 
 .nb-carousel-arrow:hover {
@@ -1149,6 +1154,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   z-index: 9999;
   opacity: 0.02;
   mix-blend-mode: overlay;
+  contain: strict;
 }
 
 .dark .noise-overlay {

@@ -1,8 +1,9 @@
-import { createContext, useContext, useLayoutEffect, useState } from "react";
+import { createContext, useContext, useLayoutEffect, useRef, useState } from "react";
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
+  const transitionTimeoutRef = useRef(null);
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("portfolio_theme") || "light";
   });
@@ -20,6 +21,10 @@ export function ThemeProvider({ children }) {
 
   const toggleTheme = () => {
     const root = window.document.documentElement;
+    if (transitionTimeoutRef.current) {
+      window.clearTimeout(transitionTimeoutRef.current);
+    }
+
     root.classList.add("theme-transitioning");
 
     // Let the browser paint transition rules before colors change
@@ -29,9 +34,10 @@ export function ThemeProvider({ children }) {
       });
     });
 
-    setTimeout(() => {
+    transitionTimeoutRef.current = window.setTimeout(() => {
       root.classList.remove("theme-transitioning");
-    }, 760);
+      transitionTimeoutRef.current = null;
+    }, 420);
   };
 
   return (

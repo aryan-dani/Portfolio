@@ -16,6 +16,7 @@ export function SmoothScrollProvider({ children }) {
       touchMultiplier: 1,
       infinite: false,
       autoResize: true,
+      virtualScroll: ({ event }) => !event.ctrlKey,
     });
 
     lenisRef.current = lenis;

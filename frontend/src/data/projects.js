@@ -219,21 +219,56 @@ const projectEntries = [
   },
 ];
 
+const splitDescriptionSentences = (description = "") =>
+  description
+    .match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g)
+    ?.map((sentence) => sentence.trim())
+    .filter(Boolean) || [];
+
+const buildProjectDetailSections = (project) => {
+  if (project.detailSections?.length) {
+    return project.detailSections;
+  }
+
+  const explicitSections = [
+    project.problem && { title: "Problem", body: project.problem },
+    project.solution && { title: "Solution", body: project.solution },
+    project.architecture && { title: "Architecture", body: project.architecture },
+    project.results && { title: "Results", body: project.results },
+  ].filter(Boolean);
+
+  if (explicitSections.length) {
+    return explicitSections;
+  }
+
+  const [focus, ...supportingDetails] = splitDescriptionSentences(project.description);
+  const sections = [];
+
+  if (focus) {
+    sections.push({ title: "Focus", body: focus });
+  }
+
+  const featureDetails = supportingDetails.slice(0, 2).join(" ");
+  if (featureDetails && featureDetails !== focus) {
+    sections.push({ title: "Key Details", body: featureDetails });
+  }
+
+  if (project.tags?.length) {
+    sections.push({
+      title: "Stack Signal",
+      body: project.tags.slice(0, 5).join(" / "),
+    });
+  }
+
+  return sections;
+};
+
 export const projects = projectEntries.map((project) => ({
   ...project,
   imageAlt:
     project.imageAlt ||
     `${project.title} project screenshot from Aryan Dani's ${project.category === "ai-ml" ? "AI and machine learning" : "full-stack web development"} portfolio`,
-  problem:
-    project.problem ||
-    `${project.title} explores a practical ${project.category === "ai-ml" ? "AI or machine learning" : "web application"} problem with production-minded constraints.`,
-  solution: project.solution || project.description,
-  architecture:
-    project.architecture ||
-    `Implemented with ${project.tags.slice(0, 5).join(", ")} and organized around a maintainable, user-facing portfolio project architecture.`,
-  results:
-    project.results ||
-    `Demonstrates Aryan Dani's hands-on experience with ${project.tags.slice(0, 4).join(", ")} through a concrete, reviewable project.`,
+  detailSections: buildProjectDetailSections(project),
 }));
 
 export const projectCategories = [
