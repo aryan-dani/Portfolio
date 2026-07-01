@@ -10,14 +10,23 @@ import { dockNavItems } from "../../config/routes";
 function FloatingDock() {
   const location = useLocation();
   const { enabled: soundEnabled, toggleSound, play } = useSound();
-  const { isVisible } = useScrollVisibility({
+  const { isVisible, reveal } = useScrollVisibility({
     topThreshold: 80,
     deltaThreshold: 18,
     revealOnBottomProximity: true,
-    bottomProximity: 140,
+    bottomProximity: 160,
   });
 
   return (
+    <>
+      {!isVisible && (
+        <div
+          className="fixed inset-x-0 bottom-0 z-40 h-32 pointer-events-auto"
+          onPointerEnter={reveal}
+          onMouseEnter={reveal}
+          aria-hidden="true"
+        />
+      )}
     <motion.div
       initial={{ y: 0, opacity: 1, x: "-50%" }}
       animate={{ y: isVisible ? 0 : 96, opacity: isVisible ? 1 : 0, x: "-50%" }}
@@ -26,7 +35,8 @@ function FloatingDock() {
       aria-hidden={!isVisible}
     >
           <nav 
-            className="pointer-events-auto flex items-center gap-1 sm:gap-2 p-1 bg-[var(--color-surface)] border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] sm:shadow-[6px_6px_0px_0px_var(--shadow-color)] overflow-x-auto sm:overflow-visible no-scrollbar max-w-full glass paint-isolate"
+            className={`flex items-center gap-1 sm:gap-2 p-1 border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] sm:shadow-[6px_6px_0px_0px_var(--shadow-color)] overflow-x-auto sm:overflow-visible no-scrollbar max-w-full paint-isolate ${isVisible ? "pointer-events-auto" : "pointer-events-none"}`}
+            style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 96%, transparent)" }}
           >
             {dockNavItems.map((item, index) => {
               const isActive = location.pathname === item.path;
@@ -99,6 +109,7 @@ function FloatingDock() {
             </button>
           </nav>
     </motion.div>
+    </>
   );
 }
 

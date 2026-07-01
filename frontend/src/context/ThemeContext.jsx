@@ -1,6 +1,6 @@
-import { createContext, useContext, useLayoutEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-const ThemeContext = createContext();
+const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
   const transitionTimeoutRef = useRef(null);
@@ -19,7 +19,7 @@ export function ThemeProvider({ children }) {
     localStorage.setItem("portfolio_theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     const root = window.document.documentElement;
     if (transitionTimeoutRef.current) {
       window.clearTimeout(transitionTimeoutRef.current);
@@ -27,7 +27,6 @@ export function ThemeProvider({ children }) {
 
     root.classList.add("theme-transitioning");
 
-    // Let the browser paint transition rules before colors change
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setTheme((prev) => (prev === "dark" ? "light" : "dark"));
@@ -37,16 +36,18 @@ export function ThemeProvider({ children }) {
     transitionTimeoutRef.current = window.setTimeout(() => {
       root.classList.remove("theme-transitioning");
       transitionTimeoutRef.current = null;
-    }, 420);
-  };
+    }, 280);
+  }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {
-  return useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider");
+  }
+  return context;
 }

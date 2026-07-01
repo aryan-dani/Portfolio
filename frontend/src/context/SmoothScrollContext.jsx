@@ -9,11 +9,17 @@ export function SmoothScrollProvider({ children }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      setReady(true);
+      return undefined;
+    }
+
     const lenis = new Lenis({
-      lerp: 0.11,
+      lerp: 0.16,
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1,
+      wheelMultiplier: 0.92,
+      touchMultiplier: 0.95,
       infinite: false,
       autoResize: true,
       virtualScroll: ({ event }) => !event.ctrlKey,
@@ -50,7 +56,7 @@ export function SmoothScrollProvider({ children }) {
         const top = typeof target === "number" ? target : 0;
         if (lenisRef.current) {
           lenisRef.current.scrollTo(top, {
-            duration: options?.immediate ? 0 : 0.68,
+            duration: options?.immediate ? 0 : 0.55,
             ...options,
           });
           return;

@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllSkills } from "../../data/skills";
 import { useTheme } from "../../context/ThemeContext";
@@ -36,26 +36,49 @@ function buildSphereNodes(skills) {
   });
 }
 
+function buildEdgePairs(nodes) {
+  const pairs = [];
+  for (let i = 0; i < nodes.length; i += 1) {
+    let neighbors = 0;
+    for (let j = 0; j < nodes.length; j += 1) {
+      if (i === j) continue;
+      const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y, nodes[i].z - nodes[j].z);
+      if (d < 0.52) {
+        pairs.push([i, j]);
+        neighbors += 1;
+        if (neighbors >= 5) break;
+      }
+    }
+  }
+  return pairs;
+}
+
 const TechGlobe = memo(function TechGlobe() {
   const canvasRef = useRef(null);
   const frameRef = useRef(null);
   const wrapperRef = useRef(null);
+  const labelRef = useRef(null);
   const pointerRef = useRef({ active: false, x: 0, y: 0, velocityX: 0, velocityY: 0 });
   const rotationRef = useRef({ x: -0.24, y: 0, vx: BASE_ROTATION_SPEED, vy: 0 });
   const projectedRef = useRef([]);
   const hoveredNodeRef = useRef(null);
   const colorsRef = useRef(null);
-  const [hoveredNode, setHoveredNode] = useState(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const [isReducedMotion, setIsReducedMotion] = useState(false);
+  const refreshColorsRef = useRef(() => {});
+  const ensureLoopRef = useRef(() => {});
+  const inViewRef = useRef(true);
+  const isReducedMotionRef = useRef(false);
   const { theme } = useTheme();
   const navigate = useNavigate();
 
   const nodes = useMemo(() => buildSphereNodes(getAllSkills()), []);
+  const edgePairs = useMemo(() => buildEdgePairs(nodes), [nodes]);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setIsReducedMotion(media.matches);
+    const update = () => {
+      isReducedMotionRef.current = media.matches;
+      ensureLoopRef.current();
+    };
     update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
@@ -63,18 +86,25 @@ const TechGlobe = memo(function TechGlobe() {
 
   useEffect(() => {
     if (!wrapperRef.current) return undefined;
-    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), {
-      threshold: 0.15,
-    });
+    const observer = new IntersectionObserver(([entry]) => {
+      inViewRef.current = entry.isIntersecting;
+      if (entry.isIntersecting) ensureLoopRef.current();
+    }, { threshold: 0.12 });
     observer.observe(wrapperRef.current);
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    const handleVisibility = () => setIsVisible(!document.hidden);
+    const handleVisibility = () => {
+      if (!document.hidden && inViewRef.current) ensureLoopRef.current();
+    };
     document.addEventListener("visibilitychange", handleVisibility);
     return () => document.removeEventListener("visibilitychange", handleVisibility);
   }, []);
+
+  useEffect(() => {
+    refreshColorsRef.current?.();
+  }, [theme]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -90,14 +120,13 @@ const TechGlobe = memo(function TechGlobe() {
       outline: getCssColor("--color-outline", "#131316"),
       primary: getCssColor("--color-primary-container", "#131316"),
       onPrimary: getCssColor("--color-on-primary-container", "#f8f7f4"),
-      fixedLight: "#f8f7f4",
-      fixedDark: "#131316",
     });
     colorsRef.current = readColors();
 
     const refreshColors = () => {
       colorsRef.current = readColors();
     };
+    refreshColorsRef.current = refreshColors;
 
     let width = 0;
     let height = 0;
@@ -158,9 +187,13 @@ const TechGlobe = memo(function TechGlobe() {
       ctx.fillText(label, x, y + 1);
     };
 
+    const shouldAnimate = () =>
+      inViewRef.current && !document.hidden && (!isReducedMotionRef.current || pointerRef.current.active);
+
     const draw = () => {
-      frameRef.current = requestAnimationFrame(draw);
-      if (!isVisible) return;
+      frameRef.current = null;
+      if (!shouldAnimate()) return;
+
       const colors = colorsRef.current || readColors();
 
       ctx.clearRect(0, 0, width, height);
@@ -169,7 +202,7 @@ const TechGlobe = memo(function TechGlobe() {
 
       const rotation = rotationRef.current;
       const pointer = pointerRef.current;
-      if (!isReducedMotion && !pointer.active) {
+      if (!isReducedMotionRef.current && !pointer.active) {
         rotation.y += rotation.vx;
         rotation.x += rotation.vy;
         rotation.vx += (BASE_ROTATION_SPEED - rotation.vx) * 0.025;
@@ -197,21 +230,20 @@ const TechGlobe = memo(function TechGlobe() {
       projectedRef.current = projected;
 
       ctx.lineWidth = 1;
-      for (let i = 0; i < projected.length; i += 1) {
-        for (let j = i + 1; j < projected.length; j += 1) {
-          const a = projected[i];
-          const b = projected[j];
-          const dx = a.sx - b.sx;
-          const dy = a.sy - b.sy;
-          const distance = Math.hypot(dx, dy);
-          if (distance > globeRadius * 0.42 || (a.depth + b.depth) / 2 < 0.38) continue;
-          ctx.globalAlpha = Math.max(0, 0.28 - distance / (globeRadius * 1.55));
-          ctx.strokeStyle = colors.outline;
-          ctx.beginPath();
-          ctx.moveTo(a.sx, a.sy);
-          ctx.lineTo(b.sx, b.sy);
-          ctx.stroke();
-        }
+      for (const [i, j] of edgePairs) {
+        const a = projected[i];
+        const b = projected[j];
+        if (!a || !b) continue;
+        const dx = a.sx - b.sx;
+        const dy = a.sy - b.sy;
+        const distance = Math.hypot(dx, dy);
+        if (distance > globeRadius * 0.42 || (a.depth + b.depth) / 2 < 0.38) continue;
+        ctx.globalAlpha = Math.max(0, 0.28 - distance / (globeRadius * 1.55));
+        ctx.strokeStyle = colors.outline;
+        ctx.beginPath();
+        ctx.moveTo(a.sx, a.sy);
+        ctx.lineTo(b.sx, b.sy);
+        ctx.stroke();
       }
 
       projected.forEach((node) => {
@@ -261,21 +293,36 @@ const TechGlobe = memo(function TechGlobe() {
       ctx.strokeRect(width - hintWidth - 28, height - 62, hintWidth, 34);
       ctx.fillStyle = colors.muted;
       ctx.fillText(hint, width - hintWidth - 14, height - 40);
+
+      frameRef.current = requestAnimationFrame(draw);
     };
+
+    const ensureLoop = () => {
+      if (frameRef.current || !shouldAnimate()) return;
+      frameRef.current = requestAnimationFrame(draw);
+    };
+    ensureLoopRef.current = ensureLoop;
 
     resize();
     refreshColors();
-    const colorRefreshFrame = requestAnimationFrame(refreshColors);
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(wrapper);
-    frameRef.current = requestAnimationFrame(draw);
+    ensureLoop();
 
     return () => {
-      cancelAnimationFrame(colorRefreshFrame);
       resizeObserver.disconnect();
-      cancelAnimationFrame(frameRef.current);
+      refreshColorsRef.current = () => {};
+      ensureLoopRef.current = () => {};
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+      frameRef.current = null;
     };
-  }, [isReducedMotion, isVisible, nodes, theme]);
+  }, [edgePairs, nodes]);
+
+  const setHoverLabel = (node) => {
+    if (labelRef.current) {
+      labelRef.current.textContent = node ? node.label : "Skills x Projects";
+    }
+  };
 
   const updateHover = (event) => {
     const rect = canvasRef.current.getBoundingClientRect();
@@ -287,12 +334,13 @@ const TechGlobe = memo(function TechGlobe() {
     const nextHover = hit || null;
     if (hoveredNodeRef.current?.id !== nextHover?.id) {
       hoveredNodeRef.current = nextHover;
-      setHoveredNode(nextHover);
+      setHoverLabel(nextHover);
     }
   };
 
   const handlePointerDown = (event) => {
     pointerRef.current = { active: true, x: event.clientX, y: event.clientY, velocityX: 0, velocityY: 0 };
+    ensureLoopRef.current();
     canvasRef.current.setPointerCapture?.(event.pointerId);
   };
 
@@ -339,7 +387,7 @@ const TechGlobe = memo(function TechGlobe() {
         onPointerMove={handlePointerMove}
         onPointerLeave={() => {
           hoveredNodeRef.current = null;
-          setHoveredNode(null);
+          setHoverLabel(null);
           handlePointerUp();
         }}
         onPointerUp={handlePointerUp}
@@ -348,8 +396,11 @@ const TechGlobe = memo(function TechGlobe() {
       <div className="absolute left-7 top-7 border-4 border-outline bg-[var(--color-surface)] px-4 py-2 font-label-bold text-[10px] uppercase tracking-[0.24em] text-[var(--color-on-surface)] shadow-[4px_4px_0_var(--shadow-color)] pointer-events-none">
         Tech Globe
       </div>
-      <div className="absolute right-7 top-7 max-w-[42%] truncate border-4 border-outline bg-[#f8f7f4] px-4 py-3 font-label-bold text-[10px] uppercase tracking-[0.18em] text-[#131316] shadow-[4px_4px_0_var(--shadow-color)] pointer-events-none">
-        {hoveredNode ? hoveredNode.label : "Skills x Projects"}
+      <div
+        ref={labelRef}
+        className="absolute right-7 top-7 max-w-[42%] truncate border-4 border-outline bg-[var(--color-surface)] px-4 py-3 font-label-bold text-[10px] uppercase tracking-[0.18em] text-[var(--color-on-surface)] shadow-[4px_4px_0_var(--shadow-color)] pointer-events-none"
+      >
+        Skills x Projects
       </div>
     </div>
   );

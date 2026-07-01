@@ -1,10 +1,11 @@
-import { useState, useRef, memo, useMemo } from "react";
+import { useState, useRef, memo, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
 import { containerVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
 import { usePageSEO } from "../../utils/seo";
+import { subscribePortfolioScroll } from "../../utils/smoothScroll";
 import PageHeader from "../../components/PageHeader/PageHeader";
 
 const CARD_STYLES = [
@@ -256,8 +257,26 @@ function Experience() {
   usePageSEO(seoData);
   const [expandedId, setExpandedId] = useState(experiences[0]?.id || null);
   const containerRef = useRef(null);
+  const timelineFillRef = useRef(null);
 
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end end"] });
+  useEffect(() => {
+    const updateProgress = () => {
+      const section = containerRef.current;
+      const fill = timelineFillRef.current;
+      if (!section || !fill) return;
+
+      const rect = section.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      const total = rect.height + viewport;
+      const scrolled = viewport - rect.top;
+      const progress = Math.min(1, Math.max(0, scrolled / total));
+      fill.style.transform = `scaleY(${progress})`;
+    };
+
+    const unsubscribe = subscribePortfolioScroll(updateProgress);
+    updateProgress();
+    return unsubscribe;
+  }, []);
 
   const toggleExpand = (id) => setExpandedId(expandedId === id ? null : id);
 
@@ -281,13 +300,17 @@ function Experience() {
           style={{ background: "var(--color-outline-variant)" }}
         />
         {/* Timeline track - scroll animated fill gradient */}
-        <motion.div
-          className="absolute left-5 md:left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-2 z-0 origin-top"
-          style={{
-            scaleY: scrollYProgress,
-            background: "linear-gradient(to bottom, var(--color-outline), var(--color-secondary))"
-          }}
-        />
+        <div className="absolute left-5 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-2 z-0 overflow-hidden">
+          <div
+            ref={timelineFillRef}
+            className="h-full w-full origin-top"
+            style={{
+              transform: "scaleY(0)",
+              background: "linear-gradient(to bottom, var(--color-outline), var(--color-secondary))",
+              willChange: "transform",
+            }}
+          />
+        </div>
 
         {experiences.map((exp, index) => (
           <ExperienceCard

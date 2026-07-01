@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getPortfolioScrollY, subscribePortfolioScroll } from "../utils/smoothScroll";
 
 export function useScrollVisibility({
@@ -12,6 +12,13 @@ export function useScrollVisibility({
   const lastYRef = useRef(typeof window === "undefined" ? 0 : getPortfolioScrollY());
   const tickingRef = useRef(false);
   const visibleRef = useRef(true);
+  const scrolledRef = useRef(false);
+
+  const reveal = useCallback(() => {
+    if (visibleRef.current) return;
+    visibleRef.current = true;
+    setIsVisible(true);
+  }, []);
 
   useEffect(() => {
     const setVisible = (next) => {
@@ -20,12 +27,18 @@ export function useScrollVisibility({
       setIsVisible(next);
     };
 
+    const setScrolled = (next) => {
+      if (scrolledRef.current === next) return;
+      scrolledRef.current = next;
+      setIsScrolled(next);
+    };
+
     const update = () => {
       const currentY = getPortfolioScrollY();
       const previousY = lastYRef.current;
       const delta = currentY - previousY;
 
-      setIsScrolled(currentY > topThreshold * 0.6);
+      setScrolled(currentY > topThreshold * 0.6);
 
       if (currentY <= topThreshold) {
         setVisible(true);
@@ -43,21 +56,34 @@ export function useScrollVisibility({
       requestAnimationFrame(update);
     };
 
+    let mouseMoveRaf = 0;
     const onMouseMove = (event) => {
-      if (revealOnBottomProximity && window.innerHeight - event.clientY < bottomProximity) {
-        setVisible(true);
-      }
+      if (!revealOnBottomProximity) return;
+      if (mouseMoveRaf) return;
+      mouseMoveRaf = requestAnimationFrame(() => {
+        mouseMoveRaf = 0;
+        if (window.innerHeight - event.clientY <= bottomProximity) {
+          setVisible(true);
+        }
+      });
     };
 
     const unsubscribeScroll = subscribePortfolioScroll(onScroll);
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    if (revealOnBottomProximity) {
+      window.addEventListener("mousemove", onMouseMove, { passive: true });
+      window.addEventListener("pointermove", onMouseMove, { passive: true });
+    }
     update();
 
     return () => {
       unsubscribeScroll();
-      window.removeEventListener("mousemove", onMouseMove);
+      if (revealOnBottomProximity) {
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("pointermove", onMouseMove);
+      }
+      if (mouseMoveRaf) cancelAnimationFrame(mouseMoveRaf);
     };
   }, [bottomProximity, deltaThreshold, revealOnBottomProximity, topThreshold]);
 
-  return { isVisible, isScrolled };
+  return { isVisible, isScrolled, reveal };
 }

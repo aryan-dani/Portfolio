@@ -215,24 +215,11 @@ html.theme-transitioning {
     color 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Smooth color changes globally ONLY when toggling theme. Avoid shadows/filters here: they repaint too much of the page. */
-.theme-transitioning,
-.theme-transitioning *,
-.theme-transitioning *::before,
-.theme-transitioning *::after {
+/* Theme toggle: limit transitions to root surfaces — avoid forcing every node to repaint. */
+html.theme-transitioning body {
   transition:
-    background-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-    fill 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-    stroke 0.32s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-.theme-transitioning .backdrop-blur-sm,
-.theme-transitioning .backdrop-blur-md,
-.theme-transitioning .glass {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+    background-color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Hide system cursor on pointer devices — custom cursor takes over */

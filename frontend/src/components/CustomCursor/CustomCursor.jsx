@@ -56,6 +56,8 @@ const CustomCursor = memo(function CustomCursor() {
   const visibleRef = useRef(false);
   const cursorStateRef = useRef(cursorState);
   const onDarkBgRef = useRef(onDarkBg);
+  const hoverTargetRef = useRef(null);
+  const hoverRafRef = useRef(0);
 
   // Position tracking refs
   const mousePosRef = useRef({ x: -100, y: -100 });
@@ -167,8 +169,28 @@ const CustomCursor = memo(function CustomCursor() {
       window.addEventListener("mousemove", handleFirstMove);
     };
 
-    const handleHoverChange = (e) => {
-      const target = e.target;
+    const applyCursorColors = (darkBg, state) => {
+      const primaryColor = darkBg ? LIGHT : DARK;
+      const invertedColor = darkBg ? DARK : LIGHT;
+      const isHover = state === "hover" || state === "image";
+
+      if (innerRef.current) {
+        innerRef.current.style.background = isHover ? invertedColor : primaryColor;
+        innerRef.current.style.borderColor = primaryColor;
+        innerRef.current.style.width = state === "text" ? "4px" : "16px";
+        innerRef.current.style.height = state === "text" ? "22px" : "16px";
+      }
+      if (outerRef.current) {
+        outerRef.current.style.borderColor = primaryColor;
+        outerRef.current.style.width = isHover ? "50px" : "36px";
+        outerRef.current.style.height = isHover ? "50px" : "36px";
+        outerRef.current.style.opacity = state === "text" ? "0" : "1";
+      }
+    };
+
+    const processHoverTarget = () => {
+      hoverRafRef.current = 0;
+      const target = hoverTargetRef.current;
       if (!target || !target.closest) return;
 
       const el = target.closest("a, button, [role='button'], .cursor-pointer, .nb-carousel-arrow");
@@ -185,13 +207,26 @@ const CustomCursor = memo(function CustomCursor() {
         setCursorState(state);
       }
 
-      const lum = getEffectiveBgLuminance(target);
-      const darkBg = lum !== null ? lum < 0.4 : isDark;
-      if (onDarkBgRef.current !== darkBg) {
-        onDarkBgRef.current = darkBg;
-        setOnDarkBg(darkBg);
+      let resolvedDark = isDark;
+      if (!el && !img && !input) {
+        const lum = getEffectiveBgLuminance(target);
+        resolvedDark = lum !== null ? lum < 0.4 : isDark;
       }
-      startLoop(); // Trigger rotation update if mouse stationary
+
+      if (onDarkBgRef.current !== resolvedDark) {
+        onDarkBgRef.current = resolvedDark;
+        setOnDarkBg(resolvedDark);
+      }
+
+      applyCursorColors(resolvedDark, state);
+      startLoop();
+    };
+
+    const handleHoverChange = (e) => {
+      hoverTargetRef.current = e.target;
+      if (!hoverRafRef.current) {
+        hoverRafRef.current = requestAnimationFrame(processHoverTarget);
+      }
     };
 
     window.addEventListener("mousemove", onMouseMove, { passive: true });
@@ -212,6 +247,7 @@ const CustomCursor = memo(function CustomCursor() {
       document.removeEventListener("mouseleave", onMouseLeave);
       document.removeEventListener("mouseenter", onMouseEnter);
       window.removeEventListener("mouseover", handleHoverChange);
+      if (hoverRafRef.current) cancelAnimationFrame(hoverRafRef.current);
     };
   }, [isDark, nativeCursor]);
 

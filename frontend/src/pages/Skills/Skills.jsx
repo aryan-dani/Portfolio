@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef, memo } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView, useMotionValue } from "framer-motion";
 import { FaSearch, FaTimes, FaExternalLinkAlt, FaArrowRight, FaServer } from "react-icons/fa";
 import {
   FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
@@ -415,25 +415,21 @@ function SkillGridCard({ skill, icon, onClick }) {
   const levelStyle = getLevelStyle(skill.level);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
 
   const handleMouseMove = (e) => {
     if (!ref.current) return;
-    const el = ref.current;
-    const rect = el.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left - width / 2;
-    const mouseY = e.clientY - rect.top - height / 2;
-    // Calculate rotation angles (max 7 degrees)
-    const rX = -(mouseY / (height / 2)) * 7;
-    const rY = (mouseX / (width / 2)) * 7;
-    setTilt({ x: rX, y: rY });
+    const rect = ref.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left - rect.width / 2;
+    const mouseY = e.clientY - rect.top - rect.height / 2;
+    rotateX.set(-(mouseY / (rect.height / 2)) * 5);
+    rotateY.set((mouseX / (rect.width / 2)) * 5);
   };
 
   const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
+    rotateX.set(0);
+    rotateY.set(0);
   };
 
   return (
@@ -441,15 +437,15 @@ function SkillGridCard({ skill, icon, onClick }) {
       ref={ref}
       className="w-full text-left bg-[var(--color-surface)] border-2 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group flex flex-col gap-3"
       initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0, rotateX: tilt.x, rotateY: tilt.y } : {}}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={defaultSpring}
       whileHover={{ y: -4, x: -4, boxShadow: "10px 10px 0px 0px var(--shadow-color)", transition: hoverSpring }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
+      style={{ rotateX, rotateY, transformPerspective: 900 }}
       onClick={onClick}
     >
-      <div className="flex items-center justify-between" style={{ transform: "translateZ(20px)" }}>
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <motion.div
             className="text-xl p-2 border-2 border-outline"
@@ -472,7 +468,7 @@ function SkillGridCard({ skill, icon, onClick }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3" style={{ transform: "translateZ(10px)" }}>
+      <div className="flex items-center gap-3">
         <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface)] overflow-hidden">
           <motion.div
             className="h-full w-full progress-bar-fill origin-left"
@@ -485,10 +481,10 @@ function SkillGridCard({ skill, icon, onClick }) {
         <span className="font-headline-md text-sm w-8 text-right text-[var(--color-on-surface)]">{skill.level}%</span>
       </div>
 
-      <p className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", transform: "translateZ(5px)" }}>
+      <p className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
         {skill.description}
       </p>
-      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-80 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-outline-variant" style={{ transform: "translateZ(10px)" }}>
+      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-80 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-outline-variant">
         <FaExternalLinkAlt className="text-[10px]" /> Click for details
       </div>
     </motion.button>

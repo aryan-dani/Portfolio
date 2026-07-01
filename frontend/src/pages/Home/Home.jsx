@@ -1,5 +1,5 @@
-import { lazy, memo, Suspense, useMemo } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { lazy, memo, Suspense } from "react";
+import { motion } from "framer-motion";
 import { aboutInfo } from "../../data/experience";
 import { portfolioStats } from "../../data/stats";
 import TypeWriter from "../../components/TypeWriter/TypeWriter";
@@ -27,9 +27,6 @@ const roles = ["Web Developer", "AI Engineer", "Tech Enthusiast", "Problem Solve
 
 const Home = memo(function Home() {
   usePageSEO();
-  const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress, [0, 0.35], [0, -52]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.97]);
   const totalProjects = portfolioStats.projects;
   const totalSkills   = portfolioStats.skills;
   const totalCerts    = portfolioStats.certifications;
@@ -99,7 +96,6 @@ const Home = memo(function Home() {
         <motion.div
           className="flex-1 w-full flex justify-center lg:justify-end mt-6 lg:mt-0"
           variants={carouselVariants}
-          style={{ y: heroY, scale: heroScale }}
         >
           <Suspense fallback={<div className="w-full max-w-[560px] aspect-square border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0_var(--shadow-color)]" />}>
             <TechGlobe />

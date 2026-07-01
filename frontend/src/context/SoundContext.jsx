@@ -1,28 +1,16 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { playUiSound } from "../utils/uiSounds";
 
 const SoundContext = createContext(null);
 const STORAGE_KEY = "portfolio_sound_enabled";
-
-function makeBeep(audioContext, { frequency = 440, duration = 0.045, gain = 0.018, type = "square" }) {
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
-  const now = audioContext.currentTime;
-
-  oscillator.type = type;
-  oscillator.frequency.setValueAtTime(frequency, now);
-  gainNode.gain.setValueAtTime(0, now);
-  gainNode.gain.linearRampToValueAtTime(gain, now + 0.008);
-  gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-  oscillator.start(now);
-  oscillator.stop(now + duration + 0.01);
-}
+const HOVER_COOLDOWN_MS = 72;
 
 export function SoundProvider({ children }) {
   const [enabled, setEnabled] = useState(() => localStorage.getItem(STORAGE_KEY) === "true");
   const audioRef = useRef(null);
+  const masterRef = useRef(null);
+  const lastHoverAtRef = useRef(0);
+  const lastHoverTargetRef = useRef(null);
 
   const getAudioContext = useCallback(() => {
     if (!audioRef.current) {
@@ -41,15 +29,7 @@ export function SoundProvider({ children }) {
       if (!enabled) return;
       const audioContext = getAudioContext();
       if (!audioContext) return;
-
-      if (kind === "hover") {
-        makeBeep(audioContext, { frequency: 620, duration: 0.028, gain: 0.009, type: "triangle" });
-      } else if (kind === "success") {
-        makeBeep(audioContext, { frequency: 740, duration: 0.07, gain: 0.016, type: "sine" });
-        setTimeout(() => makeBeep(audioContext, { frequency: 980, duration: 0.08, gain: 0.012, type: "sine" }), 45);
-      } else {
-        makeBeep(audioContext, { frequency: 360, duration: 0.045, gain: 0.014, type: "square" });
-      }
+      playUiSound(audioContext, masterRef, kind);
     },
     [enabled, getAudioContext],
   );
@@ -68,15 +48,34 @@ export function SoundProvider({ children }) {
     const onClick = (event) => {
       if (event.target.closest?.("button, a, [role='button']")) play("click");
     };
+
     const onPointerOver = (event) => {
-      if (event.target.closest?.("button, a, [role='button'], .cursor-image")) play("hover");
+      const target = event.target.closest?.("button, a, [role='button'], .cursor-image");
+      if (!target) return;
+      if (target === lastHoverTargetRef.current) return;
+
+      const now = performance.now();
+      if (now - lastHoverAtRef.current < HOVER_COOLDOWN_MS) return;
+
+      lastHoverAtRef.current = now;
+      lastHoverTargetRef.current = target;
+      play("hover");
+    };
+
+    const onPointerOut = (event) => {
+      const target = event.target.closest?.("button, a, [role='button'], .cursor-image");
+      if (target && target === lastHoverTargetRef.current) {
+        lastHoverTargetRef.current = null;
+      }
     };
 
     document.addEventListener("click", onClick);
     document.addEventListener("pointerover", onPointerOver);
+    document.addEventListener("pointerout", onPointerOut);
     return () => {
       document.removeEventListener("click", onClick);
       document.removeEventListener("pointerover", onPointerOver);
+      document.removeEventListener("pointerout", onPointerOut);
     };
   }, [enabled, play]);
 

@@ -63,29 +63,17 @@ function PageFallback() {
 }
 
 function PageTransition({ children, isFirstRender, direction }) {
-  const isBackward = direction < 0;
-
   return (
     <>
       {!isFirstRender && (
-        <>
-          <motion.div
-            aria-hidden="true"
-            className="fixed inset-0 z-[90] pointer-events-none bg-[var(--color-background)] gpu-layer"
-            initial={{ opacity: 0.96 }}
-            animate={{ opacity: 0 }}
-            exit={{ opacity: 0.86 }}
-            transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
-          />
-          <motion.div
-            aria-hidden="true"
-            className="fixed inset-y-0 left-0 z-[91] pointer-events-none w-full bg-[var(--color-on-background)] gpu-layer"
-            initial={{ clipPath: isBackward ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)", opacity: 0.12 }}
-            animate={{ clipPath: isBackward ? "inset(0 100% 0 0)" : "inset(0 0% 0 100%)", opacity: 0 }}
-            exit={{ clipPath: "inset(0 0% 0 0%)", opacity: 0.08 }}
-            transition={{ duration: 0.32, ease: [0.76, 0, 0.24, 1] }}
-          />
-        </>
+        <motion.div
+          aria-hidden="true"
+          className="fixed inset-0 z-[90] pointer-events-none bg-[var(--color-background)] gpu-layer"
+          initial={{ opacity: 0.92 }}
+          animate={{ opacity: 0 }}
+          exit={{ opacity: 0.82 }}
+          transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+        />
       )}
       <motion.div
         variants={pageVariants}

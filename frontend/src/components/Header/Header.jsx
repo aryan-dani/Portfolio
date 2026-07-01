@@ -59,8 +59,8 @@ function Header() {
           isScrolled
             ? "border-outline shadow-[0_5px_0_0_var(--shadow-color)]"
             : "border-outline shadow-[0_8px_0_0_var(--shadow-color)]"
-        } glass ${isVisible ? "pointer-events-auto" : "pointer-events-none"}`}
-        style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 78%, transparent)" }}
+        } ${isVisible ? "pointer-events-auto" : "pointer-events-none"}`}
+        style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 96%, transparent)" }}
         aria-hidden={!isVisible}
       >
             <div

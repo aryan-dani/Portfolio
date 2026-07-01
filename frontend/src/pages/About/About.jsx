@@ -1,6 +1,6 @@
 import { useState, useRef, memo, useEffect, useCallback, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   FaEnvelope,
   FaFileDownload, FaArrowRight, FaEye,
@@ -143,8 +143,6 @@ function PhotoCarousel() {
 function About() {
   usePageSEO();
   const { showToast } = useToast();
-  const { scrollY } = useScroll();
-  const yParallax = useTransform(scrollY, [0, 1000], [0, -60]);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   const copyEmail = () => {
@@ -168,7 +166,7 @@ function About() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         {/* Left: Photo + Bio */}
-        <motion.div className="flex flex-col gap-12" variants={itemVariants} style={{ y: yParallax }}>
+        <motion.div className="flex flex-col gap-12" variants={itemVariants}>
           <div className="relative group">
               <PhotoCarousel />
             {/* Name badge */}
