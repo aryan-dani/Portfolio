@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { getPortfolioScrollY, subscribePortfolioScroll } from "../utils/smoothScroll";
 
 export function useScrollVisibility({
   topThreshold = 72,
@@ -8,7 +9,7 @@ export function useScrollVisibility({
 } = {}) {
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
-  const lastYRef = useRef(typeof window === "undefined" ? 0 : window.scrollY);
+  const lastYRef = useRef(typeof window === "undefined" ? 0 : getPortfolioScrollY());
   const tickingRef = useRef(false);
   const visibleRef = useRef(true);
 
@@ -20,7 +21,7 @@ export function useScrollVisibility({
     };
 
     const update = () => {
-      const currentY = Math.max(0, window.scrollY || window.pageYOffset || 0);
+      const currentY = getPortfolioScrollY();
       const previousY = lastYRef.current;
       const delta = currentY - previousY;
 
@@ -48,12 +49,12 @@ export function useScrollVisibility({
       }
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    const unsubscribeScroll = subscribePortfolioScroll(onScroll);
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     update();
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      unsubscribeScroll();
       window.removeEventListener("mousemove", onMouseMove);
     };
   }, [bottomProximity, deltaThreshold, revealOnBottomProximity, topThreshold]);

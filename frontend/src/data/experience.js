@@ -112,7 +112,7 @@ export const aboutInfo = {
   title: "Tech Enthusiast, Web Developer and AI Engineer",
   tagline: "Building the future, one line of code at a time.",
   email: "daniaryan212@gmail.com",
-  resumeUrl: "/Final Resume.pdf",
+  resumeUrl: "/resume.pdf",
   bio: `Hey, I'm Aryan Dani, a code-wrangler who sometimes fancies himself a full-stack developer and an AI enthusiast. When I'm not battling CSS for that perfect layout or convincing JavaScript (and my deep learning models) to play nice, you'll find me knee-deep in AI experiments or unwinding with Anime like Haikyu!!, dreaming of a quick attack like Hinata (spoiler: I can't even spike).
 
 I'm all about tech and building projects that actually work (most of the time). My portfolio spans everything from an automated expense tracker to cutting-edge AI and deep learning projects. Think real-time human detection and adaptive models that learn on the fly (I'm using my powers for good, don't worry).

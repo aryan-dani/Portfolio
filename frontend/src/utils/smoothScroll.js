@@ -2,6 +2,25 @@ function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+/** Current scroll offset, accounting for Lenis virtual scroll. */
+export function getPortfolioScrollY() {
+  const lenisScroll = window.__portfolioLenis?.scroll;
+  if (typeof lenisScroll === "number") return Math.max(0, lenisScroll);
+  return Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+}
+
+/** Subscribe to scroll updates without dispatching native scroll events (avoids Lenis loops). */
+export function subscribePortfolioScroll(handler) {
+  const lenis = window.__portfolioLenis;
+  if (lenis) {
+    lenis.on("scroll", handler);
+    return () => lenis.off("scroll", handler);
+  }
+
+  window.addEventListener("scroll", handler, { passive: true });
+  return () => window.removeEventListener("scroll", handler);
+}
+
 export function smoothScrollTo(top = 0) {
   return new Promise((resolve) => {
     if (window.__portfolioLenis) {

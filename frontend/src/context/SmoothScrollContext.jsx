@@ -23,10 +23,6 @@ export function SmoothScrollProvider({ children }) {
     window.__portfolioLenis = lenis;
     document.documentElement.classList.add("lenis", "lenis-smooth");
     setReady(true);
-    const emitScrollEvent = () => {
-      window.dispatchEvent(new Event("scroll"));
-    };
-    lenis.on("scroll", emitScrollEvent);
 
     const raf = (time) => {
       lenis.raf(time);
@@ -38,7 +34,6 @@ export function SmoothScrollProvider({ children }) {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
-      lenis.off("scroll", emitScrollEvent);
       lenis.destroy();
       lenisRef.current = null;
       window.__portfolioLenis = null;

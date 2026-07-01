@@ -11,6 +11,14 @@
       ]
     },
     {
+      "source": "/resume.pdf",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
       "source": "/favicons/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
@@ -31,7 +39,7 @@
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!api/|assets/|Images/|favicons/|resume\\.pdf|sitemap\\.xml|robots\\.txt|manifest\\.json|llms\\.txt|humans\\.txt|og-image\\.svg|.*\\.(?:pdf|xml|txt|json|svg|ico|png|jpg|jpeg|webp|css|js|woff2?)).*)",
       "destination": "/index.html"
     }
   ]

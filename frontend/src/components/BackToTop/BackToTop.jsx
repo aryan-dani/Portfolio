@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowUp } from "react-icons/fa";
-import { smoothScrollToTop } from "../../utils/smoothScroll";
+import { getPortfolioScrollY, smoothScrollToTop, subscribePortfolioScroll } from "../../utils/smoothScroll";
 import { snappySpring } from "../../utils/motionVariants";
 
 function throttle(func, limit) {
@@ -23,12 +23,12 @@ const BackToTop = memo(function BackToTop() {
   useEffect(() => {
     const handleScroll = throttle(() => {
       if (isScrollingRef.current) return;
-      setIsVisible(window.scrollY > 400);
+      setIsVisible(getPortfolioScrollY() > 400);
     }, 60);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    const unsubscribe = subscribePortfolioScroll(handleScroll);
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return unsubscribe;
   }, []);
 
   const scrollToTop = useCallback(() => {
@@ -40,7 +40,7 @@ const BackToTop = memo(function BackToTop() {
     smoothScrollToTop().finally(() => {
       isScrollingRef.current = false;
       setIsScrolling(false);
-      setIsVisible(window.scrollY > 400);
+      setIsVisible(getPortfolioScrollY() > 400);
     });
   }, []);
 

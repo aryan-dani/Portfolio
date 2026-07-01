@@ -8,6 +8,17 @@ import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 function ImageWithSkeleton({ src, alt, className = "", imgClassName = "", width = 495, height = 195 }) {
   const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return (
+      <div className={`flex min-h-[160px] items-center justify-center border-4 border-dashed border-outline-variant bg-[var(--color-surface-variant)] p-4 text-center ${className}`}>
+        <span className="font-body-md text-sm text-[var(--color-text-muted)]">
+          GitHub stats are temporarily unavailable.
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className={`relative w-full overflow-hidden flex justify-center items-center ${className}`}>
@@ -23,6 +34,7 @@ function ImageWithSkeleton({ src, alt, className = "", imgClassName = "", width 
         width={width}
         height={height}
         onLoad={() => setLoaded(true)}
+        onError={() => setFailed(true)}
         className={`${imgClassName} transition-all duration-300 ${loaded ? "opacity-100 scale-100" : "opacity-0 scale-95 absolute w-0 h-0"}`}
         loading="lazy"
         decoding="async"
