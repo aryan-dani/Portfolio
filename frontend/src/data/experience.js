@@ -60,26 +60,31 @@ export const experiences = [
     companyUrl: "https://github.com/aryan-dani",
     logo: "/Images/Jobs/Github_Contrib.png",
     position: "Lead Full-Stack Web Architect",
-    period: "July 2026 - Present",
+    period: "Jan 2026 - Present",
     location: "Remote",
     links: [
       { name: "The Fourth Clover Web App", url: "https://github.com/aryan-dani/The-Fourth-Clover" },
-      { name: "Utility Web App", url: "https://github.com/aryan-dani/Utility" }
+      { name: "Utility Academic OS", url: "https://github.com/aryan-dani/Utility" },
+      { name: "Shadow Instructor (Gemini 3.0)", url: "https://github.com/aryan-dani/The_Shadow_Instructor" },
+      { name: "Arbiter — RIFT 2026", url: "https://github.com/aryan-dani/Arbiter" },
+      { name: "Democrazy", url: "https://github.com/aryan-dani/Democrazy" },
+      { name: "Portfolio v2.0", url: "https://github.com/aryan-dani/Portfolio" },
     ],
     technologies: [
-      "Next.js 14+",
+      "Next.js 15",
       "TypeScript",
       "React.js",
       "Supabase",
       "Tailwind CSS",
       "Firebase",
-      "Framer Motion"
+      "Gemini / LangGraph",
+      "Vercel"
     ],
     responsibilities: [
-      "Designed and launched '<a href='https://github.com/aryan-dani/The-Fourth-Clover' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>The Fourth Clover</a>' and '<a href='https://github.com/aryan-dani/Utility' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Utility</a>' Next.js web applications, leveraging modern App Router, Server Actions, and ISR paradigms to optimize page speed and SEO.",
-      "Formulated and implemented premium neobrutalist styling guides using dynamic CSS variables and Tailwind utilities, supporting high-contrast accessible themes and seamless dark mode transitions.",
-      "Integrated real-time database state engines using Supabase and Firebase Firestore, managing data synchronization, multi-provider OAuth logins, and file storage for hundreds of mock users.",
-      "Contributed to several open-source command line tools and frontend libraries, reviewing pull requests, managing release pipelines, and maintaining comprehensive technical documentation."
+      "Designed and launched '<a href='https://github.com/aryan-dani/The-Fourth-Clover' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>The Fourth Clover</a>', '<a href='https://github.com/aryan-dani/Utility' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Utility</a>', and '<a href='https://github.com/aryan-dani/The_Shadow_Instructor' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Shadow Instructor</a>' — production Next.js apps with App Router, RAG pipelines, OAuth, and serverless AI endpoints.",
+      "Built agentic systems including '<a href='https://github.com/aryan-dani/Arbiter' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Arbiter</a>' (RIFT 2026) and '<a href='https://github.com/aryan-dani/DebateBot' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>DebateBot</a>' using LangGraph, Gemini, and Docker sandboxes for autonomous debugging and structured debate flows.",
+      "Shipped '<a href='https://github.com/aryan-dani/Democrazy' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Democrazy</a>' and '<a href='https://github.com/aryan-dani/Portfolio' target='_blank' rel='noopener noreferrer' class='underline decoration-4 underline-offset-2 hover:bg-[var(--color-outline)] hover:text-[var(--color-surface)] transition-colors'>Portfolio v2.0</a>' with Vite/React, static SEO prerendering, and mobile-first performance tuning.",
+      "Selected as a Google Student Ambassador (Dec 2025), contributing to community outreach and technical advocacy for Gemini and modern AI tooling.",
     ],
   }
 ];
@@ -113,11 +118,11 @@ export const aboutInfo = {
   tagline: "Building the future, one line of code at a time.",
   email: "daniaryan212@gmail.com",
   resumeUrl: "/resume.pdf",
-  bio: `Hey, I'm Aryan Dani, a code-wrangler who sometimes fancies himself a full-stack developer and an AI enthusiast. When I'm not battling CSS for that perfect layout or convincing JavaScript (and my deep learning models) to play nice, you'll find me knee-deep in AI experiments or unwinding with Anime like Haikyu!!, dreaming of a quick attack like Hinata (spoiler: I can't even spike).
+  bio: `Hey, I'm Aryan Dani — a full-stack developer and AI engineer who builds sharp web products and agentic systems that actually ship. Recent work spans dual-agent interview simulators (Gemini 3.0), autonomous CI/CD healing agents for RIFT 2026, academic OS tools with RAG, and this portfolio rebuilt for speed on mobile.
 
-I'm all about tech and building projects that actually work (most of the time). My portfolio spans everything from an automated expense tracker to cutting-edge AI and deep learning projects. Think real-time human detection and adaptive models that learn on the fly (I'm using my powers for good, don't worry).
+When I'm not wrangling CSS or LangGraph state machines, you'll find me deep in anime like Haikyu!! or experimenting with the next Gemini release. I'm also a Google Student Ambassador and a proud tea person (chai > coffee, always).
 
-Future goals? Become the Mrwhosetheboss of my generation, but with more AI magic and less coffee (I'm a tea person, fight me). Let's connect and build something epic or just geek out over tech and anime together.`,
+Future goals? Build products that feel as polished as the best creator-tech channels — but with more AI magic and fewer buzzwords. Let's connect and build something epic.`,
   highlights: [
     {
       icon: "🚀",
@@ -126,10 +131,10 @@ Future goals? Become the Mrwhosetheboss of my generation, but with more AI magic
         "Constantly exploring new technologies and frameworks to stay ahead in the tech world.",
     },
     {
-      icon: "💡",
-      title: "Problem Solver",
+      icon: "🤖",
+      title: "Agentic AI",
       description:
-        "Love tackling complex challenges and finding elegant solutions through code.",
+        "Building multi-agent systems with Gemini, LangGraph, and RAG — from interview coaches to CI/CD healers.",
     },
     {
       icon: "🤝",
@@ -138,10 +143,10 @@ Future goals? Become the Mrwhosetheboss of my generation, but with more AI magic
         "Experienced in collaborating with cross-functional teams to deliver impactful projects.",
     },
     {
-      icon: "🍵",
-      title: "Tea Addict",
+      icon: "🎓",
+      title: "Google Ambassador",
       description:
-        "I run on chai, not coffee. Debugging is 40% logic, 60% the right cup of tea. Fight me.",
+        "Google Student Ambassador (Dec 2025) — community outreach and technical advocacy for Gemini and AI.",
     },
   ],
 };

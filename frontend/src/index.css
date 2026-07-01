@@ -1184,12 +1184,20 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   .animate-pulse-glow,
   .animate-grain,
   .text-shimmer,
-  .animate-hue-cycle {
+  .animate-hue-cycle,
+  .marquee-strip,
+  .status-dot {
     animation: none !important;
   }
 
   .page-loader__orbital {
     animation: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .marquee-strip {
+    animation-duration: 72s;
   }
 }
 

@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef, memo } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useInView, useMotionValue } from "framer-motion";
+import { isFinePointerDevice } from "../../utils/device";
 import { FaSearch, FaTimes, FaExternalLinkAlt, FaArrowRight, FaServer } from "react-icons/fa";
 import {
   FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
@@ -298,7 +299,7 @@ function Skills() {
                 : <EmptyState />}
             </motion.div>
           ) : (
-            <motion.div key="grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-visible p-3 -m-3" variants={containerVariants} initial="hidden" animate="visible">
+            <motion.div key="grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-visible p-3 -m-3 content-visibility-auto" variants={containerVariants} initial="hidden" animate="visible">
               {flatSkills.length > 0
                 ? flatSkills.map((skill) => (
                     <SkillGridCard key={skill.id} skill={skill} icon={getIcon(skill.icon)} onClick={() => setSelectedSkill(skill)} />
@@ -419,7 +420,7 @@ function SkillGridCard({ skill, icon, onClick }) {
   const rotateY = useMotionValue(0);
 
   const handleMouseMove = (e) => {
-    if (!ref.current) return;
+    if (!isFinePointerDevice() || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left - rect.width / 2;
     const mouseY = e.clientY - rect.top - rect.height / 2;

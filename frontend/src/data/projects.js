@@ -4,7 +4,7 @@ const projectEntries = [
     title: "The Fourth Clover",
     category: "web-dev",
     year: "2025 - 2026",
-    description: `A modern, minimalist blogging platform built for writers and thinkers. Features include a rich writing experience with real-time auto-save, threaded comments with nested replies, social sharing, Google OAuth authentication, and seamless image upload with Supabase Storage. Built with Next.js 13+ App Router for optimal performance and SEO.`,
+    description: `A modern, minimalist blogging platform built for writers and thinkers. Features include a rich writing experience with real-time auto-save, threaded comments with nested replies, social sharing, Google OAuth authentication, and seamless image upload with Supabase Storage. Built with Next.js 15 App Router for optimal performance and SEO.`,
     image: "/Images/Projects/The_Fourth_Clover.jpg",
     tags: [
       "Next.js",
@@ -101,6 +101,20 @@ const projectEntries = [
     },
   },
   {
+    id: 15,
+    title: "Portfolio v2.0",
+    category: "web-dev",
+    year: "2026",
+    description: `This site — a performance-tuned React portfolio with neo-brutalist UI, route-level SEO prerendering, command palette navigation, interactive skills graph, CLI playground, Lenis smooth scroll on desktop, and mobile-first fallbacks for heavy visual features.`,
+    image: "/og-image.svg",
+    tags: ["React", "Vite", "Framer Motion", "SEO", "Vercel"],
+    skillIds: ["react", "vite", "javascript", "typescript", "css3", "html5", "sass", "git", "vercel", "llms"],
+    links: {
+      github: "https://github.com/aryan-dani/Portfolio",
+      preview: "https://www.aryandani.com/",
+    },
+  },
+  {
     id: 2,
     title: "DebateBot",
     category: "ai-ml",
@@ -145,7 +159,7 @@ const projectEntries = [
     title: "Real Time Threat Detection System",
     category: "ai-ml",
     year: "2024 - 2025",
-    description: `The Capstone Project I'm developing in my College focuses on Real-Time threat detection using YOLO v11 and EfficientNetV2. This deep learning project aims to identify potential security risks through video analysis and identify threats in X-ray scans, with a specific focus on detecting weapons. Currently in development, this system will integrate with existing security infrastructure to provide automated alerts and monitoring capabilities.`,
+    description: `MIT-WPU capstone system for real-time threat detection using YOLO v11 and EfficientNetV2. Identifies potential security risks through live video analysis and X-ray scan classification with a focus on weapon detection. Integrates with security workflows for automated alerts, monitoring dashboards, and model evaluation pipelines.`,
     image: "/Images/Projects/Threat_Detection_System.jpg",
     tags: ["Python", "Yolo v11", "Deep Learning", "EfficientNetV2", "Angular"],
     skillIds: ["python", "pytorch", "deep-learning", "opencv", "computer-vision", "angular", "git"],

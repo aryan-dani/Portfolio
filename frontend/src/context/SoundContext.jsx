@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { playUiSound } from "../utils/uiSounds";
+import { isFinePointerDevice } from "../utils/device";
 
 const SoundContext = createContext(null);
 const STORAGE_KEY = "portfolio_sound_enabled";
@@ -43,7 +44,7 @@ export function SoundProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    if (!enabled) return undefined;
+    if (!enabled || !isFinePointerDevice()) return undefined;
 
     const onClick = (event) => {
       if (event.target.closest?.("button, a, [role='button']")) play("click");

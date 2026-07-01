@@ -1,5 +1,6 @@
 import Lenis from "lenis";
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { shouldUseSmoothScroll } from "../utils/device";
 
 const SmoothScrollContext = createContext(null);
 
@@ -9,8 +10,7 @@ export function SmoothScrollProvider({ children }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) {
+    if (!shouldUseSmoothScroll()) {
       setReady(true);
       return undefined;
     }

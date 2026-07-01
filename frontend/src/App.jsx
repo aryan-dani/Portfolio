@@ -15,6 +15,8 @@ import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { SmoothScrollProvider } from "./context/SmoothScrollContext";
 import { SoundProvider } from "./context/SoundContext";
+import { useMediaQuery } from "./hooks/useMediaQuery";
+import { MOBILE_LITE_QUERY } from "./utils/device";
 
 import BackToTop from "./components/BackToTop/BackToTop";
 import NoiseOverlay from "./components/NoiseOverlay/NoiseOverlay";
@@ -62,10 +64,10 @@ function PageFallback() {
   );
 }
 
-function PageTransition({ children, isFirstRender, direction }) {
+function PageTransition({ children, isFirstRender, direction, liteMode }) {
   return (
     <>
-      {!isFirstRender && (
+      {!isFirstRender && !liteMode && (
         <motion.div
           aria-hidden="true"
           className="fixed inset-0 z-[90] pointer-events-none bg-[var(--color-background)] gpu-layer"
@@ -76,11 +78,12 @@ function PageTransition({ children, isFirstRender, direction }) {
         />
       )}
       <motion.div
-        variants={pageVariants}
+        variants={liteMode ? undefined : pageVariants}
         custom={direction}
-        initial={isFirstRender ? false : "initial"}
-        animate="animate"
-        exit="exit"
+        initial={isFirstRender || liteMode ? false : "initial"}
+        animate={liteMode ? undefined : "animate"}
+        exit={liteMode ? undefined : "exit"}
+        transition={liteMode ? { duration: 0 } : undefined}
         className="w-full flex flex-col grow"
       >
         {children}
@@ -91,6 +94,7 @@ function PageTransition({ children, isFirstRender, direction }) {
 
 function AnimatedRoutes() {
   const location = useLocation();
+  const liteMode = useMediaQuery(MOBILE_LITE_QUERY);
   const isFirstRenderRef = useRef(true);
   const [direction, setDirection] = useState(1);
   const previousPathRef = useRef(location.pathname);
@@ -138,7 +142,7 @@ function AnimatedRoutes() {
             path={path}
             element={
               <Suspense fallback={<PageFallback />}>
-                <PageTransition isFirstRender={isFirstRender} direction={direction}>
+                <PageTransition isFirstRender={isFirstRender} direction={direction} liteMode={liteMode}>
                   <Component />
                 </PageTransition>
               </Suspense>

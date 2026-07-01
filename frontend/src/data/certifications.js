@@ -12,7 +12,7 @@ const certificationEntries = [
     description:
       "Selected as a Google Student Ambassador, demonstrating enthusiasm, collaboration, and a strong willingness to learn and contribute. Participated in community outreach and technical advocacy for Google Gemini and AI technologies.",
     image: "/Images/Certifications/Google_Student_Ambassador.png",
-    link: "#",
+    link: "https://www.linkedin.com/in/aryandani/",
   },
   {
     id: 3,

@@ -6,6 +6,9 @@ import TypeWriter from "../../components/TypeWriter/TypeWriter";
 import StatCard from "../../components/StatCard/StatCard";
 import MagneticLink from "../../components/MagneticLink/MagneticLink";
 import { usePageSEO } from "../../utils/seo";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { MOBILE_LITE_QUERY, FINE_POINTER_QUERY } from "../../utils/device";
+import TechGlobeFallback from "../../components/TechGlobe/TechGlobeFallback";
 
 import { itemVariants } from "../../utils/motionVariants";
 
@@ -21,12 +24,14 @@ const carouselVariants = {
 
 // ─── Data ─────────────────────────────────────────────────────
 
-const roles = ["Web Developer", "AI Engineer", "Tech Enthusiast", "Problem Solver"];
+const roles = ["Web Developer", "AI Engineer", "Agentic AI Builder", "Problem Solver"];
 
 // ─── Page ─────────────────────────────────────────────────────
 
 const Home = memo(function Home() {
   usePageSEO();
+  const preferLiteHero = useMediaQuery(MOBILE_LITE_QUERY);
+  const showCommandHint = useMediaQuery(FINE_POINTER_QUERY);
   const totalProjects = portfolioStats.projects;
   const totalSkills   = portfolioStats.skills;
   const totalCerts    = portfolioStats.certifications;
@@ -85,8 +90,8 @@ const Home = memo(function Home() {
             >
               View My Work
             </MagneticLink>
-            <span className="font-label-bold text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
-              or press Ctrl/Alt+K
+            <span className="hidden sm:inline font-label-bold text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+              {showCommandHint ? "or press Ctrl/Alt+K" : "or open the menu"}
             </span>
           </motion.div>
 
@@ -97,8 +102,8 @@ const Home = memo(function Home() {
           className="flex-1 w-full flex justify-center lg:justify-end mt-6 lg:mt-0"
           variants={carouselVariants}
         >
-          <Suspense fallback={<div className="w-full max-w-[560px] aspect-square border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0_var(--shadow-color)]" />}>
-            <TechGlobe />
+          <Suspense fallback={<div className="w-full max-w-[560px] min-h-[280px] border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0_var(--shadow-color)]" />}>
+            {preferLiteHero ? <TechGlobeFallback /> : <TechGlobe />}
           </Suspense>
         </motion.div>
       </div>
@@ -137,10 +142,10 @@ const Home = memo(function Home() {
             >
               <span>+ Web Developer</span>
               <span>+ AI Engineer</span>
-              <span>+ React / Next.js / FastAPI</span>
-              <span>+ Gemini / LangGraph</span>
+              <span>+ Gemini 3.0 / LangGraph</span>
+              <span>+ RIFT 2026 — Arbiter</span>
+              <span>+ Google Student Ambassador</span>
               <span>+ Open to Opportunities</span>
-              <span>+ Click, Search, Navigate</span>
             </span>
           ))}
         </div>
