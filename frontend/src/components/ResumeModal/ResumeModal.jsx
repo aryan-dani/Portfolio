@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useModalLock } from "../../hooks/useModalLock";
@@ -10,9 +11,52 @@ export default function ResumeModal({ isOpen, onClose }) {
   useModalLock(isOpen, onClose);
 
   const resumePath = getAssetPath(aboutInfo.resumeUrl);
-  // Fit width; toolbar off. Interaction is on the outer scroller so the custom cursor stays active
-  // (native PDF iframe chrome always forces the OS cursor).
-  const embedSrc = `${resumePath}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`;
+  const [embedSrc, setEmbedSrc] = useState("");
+  const [loadState, setLoadState] = useState("idle"); // idle | loading | ready | error
+
+  // Fetch the PDF as a blob so the iframe is never a navigation the PWA SW can
+  // rewrite to index.html (which is X-Frame-Options: DENY and blanked the viewer).
+  useEffect(() => {
+    if (!isOpen) {
+      setEmbedSrc("");
+      setLoadState("idle");
+      return undefined;
+    }
+
+    let cancelled = false;
+    let objectUrl = "";
+    setLoadState("loading");
+
+    (async () => {
+      try {
+        const response = await fetch(resumePath, { cache: "no-cache" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const blob = await response.blob();
+        if (!blob.type.includes("pdf") && blob.size < 1024) {
+          throw new Error("Response was not a PDF");
+        }
+        objectUrl = URL.createObjectURL(
+          blob.type.includes("pdf") ? blob : new Blob([blob], { type: "application/pdf" }),
+        );
+        if (cancelled) {
+          URL.revokeObjectURL(objectUrl);
+          return;
+        }
+        setEmbedSrc(`${objectUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`);
+        setLoadState("ready");
+      } catch {
+        if (!cancelled) {
+          setEmbedSrc("");
+          setLoadState("error");
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [isOpen, resumePath]);
 
   const handleClose = (event) => {
     event?.preventDefault?.();
@@ -89,16 +133,36 @@ export default function ResumeModal({ isOpen, onClose }) {
               className="relative z-0 grow w-full min-h-0 overflow-y-auto overscroll-contain bg-[var(--color-surface-variant)] cursor-none no-scrollbar"
               data-lenis-prevent
             >
-              {/*
-                PDF plugins always show the OS cursor inside the iframe.
-                pointer-events-none keeps hover on this scroller so the site cursor stays.
-              */}
-              <iframe
-                src={embedSrc}
-                title="Aryan Dani resume PDF"
-                tabIndex={-1}
-                className="block w-full border-0 bg-white pointer-events-none min-h-[min(1600px,220vh)] h-[1600px] md:h-[1700px]"
-              />
+              {loadState === "loading" && (
+                <div className="flex items-center justify-center min-h-[min(70vh,640px)] font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">
+                  Loading resume…
+                </div>
+              )}
+
+              {loadState === "error" && (
+                <div className="flex flex-col items-center justify-center gap-4 min-h-[min(70vh,640px)] px-6 text-center">
+                  <p className="font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">
+                    Could not embed the PDF in this browser.
+                  </p>
+                  <a
+                    href={resumePath}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[3px_3px_0px_0px_var(--shadow-color)] cursor-none"
+                  >
+                    Open resume.pdf
+                  </a>
+                </div>
+              )}
+
+              {loadState === "ready" && embedSrc && (
+                <iframe
+                  src={embedSrc}
+                  title="Aryan Dani resume PDF"
+                  tabIndex={-1}
+                  className="block w-full border-0 bg-white pointer-events-none min-h-[min(1600px,220vh)] h-[1600px] md:h-[1700px]"
+                />
+              )}
             </div>
           </motion.div>
         </div>

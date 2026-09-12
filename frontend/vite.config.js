@@ -15,8 +15,25 @@ export default defineConfig({
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,svg,woff2}"],
         navigateFallback: "/index.html",
-        navigateFallbackDenylist: [/^\/api\//],
+        // Never SPA-fallback static docs/assets — an iframe of /resume.pdf was
+        // getting index.html (X-Frame-Options: DENY) and showing a blank viewer.
+        navigateFallbackDenylist: [
+          /^\/api\//,
+          /^\/resume\.pdf(?:$|\?)/i,
+          /^\/Images\//i,
+          /^\/favicons\//i,
+          /^\/assets\//i,
+          /\.(?:pdf|xml|txt|json|png|jpe?g|webp|svg|ico|woff2?)$/i,
+        ],
         runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname === "/resume.pdf",
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "resume-pdf",
+              expiration: { maxEntries: 1, maxAgeSeconds: 60 * 60 * 24 },
+            },
+          },
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: "CacheFirst",
