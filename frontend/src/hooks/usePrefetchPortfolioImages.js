@@ -18,6 +18,7 @@ function shouldPrefetch() {
 /**
  * Warm project + about image cache while the user is on Home,
  * so Projects/About feel faster on first navigation.
+ * Deferred to idle so it does not compete with first paint.
  */
 export function usePrefetchPortfolioImages({ enabled = true } = {}) {
   useEffect(() => {
@@ -28,14 +29,33 @@ export function usePrefetchPortfolioImages({ enabled = true } = {}) {
       getAssetPath(ABOUT_FIRST),
     ];
 
-    const loaders = urls.map((url) => {
-      const img = new Image();
-      img.decoding = "async";
-      img.src = url;
-      return img;
-    });
+    let cancelled = false;
+    let idleId = 0;
+    let timeoutId = 0;
+    const loaders = [];
+
+    const run = () => {
+      if (cancelled) return;
+      urls.forEach((url) => {
+        const img = new Image();
+        img.decoding = "async";
+        img.src = url;
+        loaders.push(img);
+      });
+    };
+
+    if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(run, { timeout: 2500 });
+    } else {
+      timeoutId = window.setTimeout(run, 1200);
+    }
 
     return () => {
+      cancelled = true;
+      if (idleId && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId) window.clearTimeout(timeoutId);
       loaders.forEach((img) => {
         img.onload = null;
         img.onerror = null;

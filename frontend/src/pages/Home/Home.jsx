@@ -1,4 +1,4 @@
-import { lazy, memo, Suspense } from "react";
+import { lazy, memo, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { aboutInfo } from "../../data/experience";
 import { portfolioStats } from "../../data/stats";
@@ -15,10 +15,10 @@ import TechGlobeFallback from "../../components/TechGlobe/TechGlobeFallback";
 const TechGlobe = lazy(() => import("../../components/TechGlobe/TechGlobe"));
 
 const carouselVariants = {
-  hidden:  { opacity: 0, x: 48, scale: 0.97 },
+  hidden:  { opacity: 0.2, x: 24, scale: 0.99 },
   visible: {
     opacity: 1, x: 0, scale: 1,
-    transition: { type: "spring", stiffness: 170, damping: 28, delay: 0.18 },
+    transition: { type: "spring", stiffness: 170, damping: 28, delay: 0.08 },
   },
 };
 
@@ -26,22 +26,48 @@ const carouselVariants = {
 
 const roles = ["Web Developer", "AI Engineer", "Agentic AI Builder", "Problem Solver"];
 
+const GlobePlaceholder = () => (
+  <div
+    className="w-full max-w-[560px] min-h-[280px] border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0_var(--shadow-color)]"
+    aria-hidden="true"
+  />
+);
+
 // ─── Page ─────────────────────────────────────────────────────
 
 const Home = memo(function Home() {
   usePageSEO();
   const preferLiteHero = useMediaQuery(MOBILE_LITE_QUERY);
   const showCommandHint = useMediaQuery(FINE_POINTER_QUERY);
-  usePrefetchPortfolioImages({ enabled: !preferLiteHero });
+  const [mountGlobe, setMountGlobe] = useState(false);
+  usePrefetchPortfolioImages({ enabled: !preferLiteHero && mountGlobe });
   const totalProjects = portfolioStats.projects;
   const totalSkills   = portfolioStats.skills;
   const totalCerts    = portfolioStats.certifications;
+
+  // Mount the canvas globe after first paint so it never blocks FCP.
+  useEffect(() => {
+    let idleId = 0;
+    let timeoutId = 0;
+    const enable = () => setMountGlobe(true);
+    if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(enable, { timeout: 900 });
+    } else {
+      timeoutId = window.setTimeout(enable, 350);
+    }
+    return () => {
+      if (idleId && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, []);
 
   return (
     <motion.section
       className="flex flex-col gap-8 lg:gap-10 w-full relative pb-4"
       variants={containerVariants}
-      initial="hidden"
+      initial={false}
       animate="visible"
     >
       {/* Hero row */}
@@ -106,8 +132,14 @@ const Home = memo(function Home() {
           className="flex-1 w-full flex justify-center lg:justify-end mt-2 lg:mt-0 max-w-[560px] lg:max-w-none mx-auto lg:mx-0"
           variants={carouselVariants}
         >
-          <Suspense fallback={<div className="w-full max-w-[560px] min-h-[280px] border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0_var(--shadow-color)]" />}>
-            {preferLiteHero ? <TechGlobeFallback /> : <TechGlobe />}
+          <Suspense fallback={<GlobePlaceholder />}>
+            {!mountGlobe ? (
+              <GlobePlaceholder />
+            ) : preferLiteHero ? (
+              <TechGlobeFallback />
+            ) : (
+              <TechGlobe />
+            )}
           </Suspense>
         </motion.div>
       </div>

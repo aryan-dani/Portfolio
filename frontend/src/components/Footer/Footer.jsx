@@ -58,9 +58,8 @@ const Footer = memo(function Footer() {
         </motion.div>
 
         {/* Social icons */}
-        <motion.div
-          className="flex flex-wrap gap-3 justify-center"
-          role="list"
+        <motion.ul
+          className="flex flex-wrap gap-3 justify-center list-none m-0 p-0"
           aria-label="Social media links"
           variants={containerVariants}
         >
@@ -68,24 +67,21 @@ const Footer = memo(function Footer() {
             const Icon = socialIconMap[link.name];
             if (!Icon) return null;
             return (
-              <motion.a
-                key={link.name}
-                role="listitem"
-                className="text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline w-11 h-11 flex items-center justify-center text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-all duration-150"
-                href={link.url}
-                target={link.name === "Email" ? undefined : "_blank"}
-                rel={link.name === "Email" ? undefined : "noopener noreferrer"}
-                aria-label={link.name}
-                title={link.name}
-                variants={socialItemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Icon />
-              </motion.a>
+              <motion.li key={link.name} variants={socialItemVariants} className="list-none">
+                <a
+                  className="text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline w-11 h-11 flex items-center justify-center text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-all duration-150"
+                  href={link.url}
+                  target={link.name === "Email" ? undefined : "_blank"}
+                  rel={link.name === "Email" ? undefined : "noopener noreferrer"}
+                  aria-label={link.name}
+                  title={link.name}
+                >
+                  <Icon aria-hidden="true" />
+                </a>
+              </motion.li>
             );
           })}
-        </motion.div>
+        </motion.ul>
       </div>
     </motion.footer>
   );

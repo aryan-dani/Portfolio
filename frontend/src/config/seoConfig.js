@@ -127,7 +127,7 @@ export function buildBaseSchemas() {
       image: `${SITE_URL}/Images/About/pic_1.jpg`,
       jobTitle: "AI Engineer & Full Stack Developer",
       description:
-        "AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG systems, React, Angular, Python, and Next.js. MIT-WPU student based in Pune, India.",
+        "AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG systems, React, Vite, Python, and FastAPI. MIT-WPU student based in Pune, India.",
       address: {
         "@type": "PostalAddress",
         addressLocality: "Pune",
@@ -159,9 +159,13 @@ export function buildBaseSchemas() {
         "Vector Databases",
         "Full Stack Development",
         "React",
-        "Angular",
+        "Vite",
+        "React Router",
+        "Tailwind CSS",
+        "Framer Motion",
         "Python",
         "FastAPI",
+        "LangGraph",
       ],
       sameAs: [
         "https://www.linkedin.com/in/aryandani/",
@@ -208,9 +212,9 @@ export const SEO_CONFIG = {
   "/": {
     title: "Aryan Dani - AI Engineer & Full Stack Developer Portfolio",
     description:
-      "Portfolio of Aryan Dani - AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Angular, Python, and Next.js. Explore projects, skills, and experience.",
+      "Portfolio of Aryan Dani - AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Vite, Python, and FastAPI. Explore projects, skills, and experience.",
     keywords:
-      "Aryan Dani, AI Engineer, Full Stack Developer, Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Python, Portfolio",
+      "Aryan Dani, AI Engineer, Full Stack Developer, Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Vite, Python, Portfolio",
     canonical: `${SITE_URL}/`,
     robots: DEFAULT_ROBOTS,
     imageAlt: DEFAULT_IMAGE_ALT,
@@ -222,7 +226,7 @@ export const SEO_CONFIG = {
         buildBreadcrumbs("Home", "/"),
         buildWebPage(
           "Aryan Dani - AI Engineer & Full Stack Developer Portfolio",
-          "Portfolio of Aryan Dani - AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Angular, Python, and Next.js.",
+          "Portfolio of Aryan Dani - AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Vite, Python, and FastAPI.",
           "/"
         ),
       ];
@@ -251,7 +255,7 @@ export const SEO_CONFIG = {
   "/projects": {
     title: "Projects - Aryan Dani | AI & Web Development Portfolio",
     description:
-      "Explore Aryan Dani's portfolio of AI and web development projects including Computer Vision systems, LLM-powered applications, full-stack web apps with React, Next.js, FastAPI, and more.",
+      "Explore Aryan Dani's portfolio of AI and web development projects including Computer Vision systems, LLM-powered applications, and full-stack apps with React, Vite, FastAPI, and more.",
     keywords:
       "AI portfolio, Machine Learning portfolio, Computer Vision projects, web development projects, React projects, Python projects, Generative AI portfolio",
     canonical: `${SITE_URL}/projects`,
@@ -408,9 +412,9 @@ export const SEO_CONFIG = {
   "/skills": {
     title: "Skills & Tools - Aryan Dani | Tech Stack & Expertise",
     description:
-      "Complete technical skill set of Aryan Dani including Python, React, Angular, Next.js, TensorFlow, PyTorch, Computer Vision, Generative AI, LLMs, RAG, Docker, and 30+ technologies.",
+      "Complete technical skill set of Aryan Dani including Python, React, Vite, FastAPI, LangGraph, TensorFlow, PyTorch, Computer Vision, Generative AI, LLMs, RAG, Docker, and 30+ technologies.",
     keywords:
-      "Python developer, Angular developer, React developer, Generative AI, LLMs, RAG, Vector Database, Computer Vision, Full Stack Developer",
+      "Python developer, React developer, Vite, FastAPI, Generative AI, LLMs, RAG, Vector Database, Computer Vision, Full Stack Developer",
     canonical: `${SITE_URL}/skills`,
     robots: DEFAULT_ROBOTS,
     imageAlt: "Aryan Dani technical skills in AI machine learning web development and Python",
@@ -421,7 +425,7 @@ export const SEO_CONFIG = {
       buildBreadcrumbs("Skills & Tools", "/skills"),
       buildWebPage(
         "Skills & Tools - Aryan Dani | Tech Stack & Expertise",
-        "Complete technical skill set of Aryan Dani including Python, React, Angular, Next.js, and 30+ technologies.",
+        "Complete technical skill set of Aryan Dani including Python, React, Vite, FastAPI, LangGraph, and 30+ technologies.",
         "/skills"
       ),
     ],

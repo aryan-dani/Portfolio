@@ -56,13 +56,13 @@ Sitemap: ${SITE_URL}/sitemap.xml
 function buildLlmsTxt() {
   return `# Aryan Dani
 
-> AI Engineer and Full Stack Developer in Pune, India (MIT-WPU). Builds agentic AI, computer vision, RAG, and production web apps with React, Next.js, Python, and FastAPI.
+> AI Engineer and Full Stack Developer in Pune, India (MIT-WPU). Builds agentic AI, computer vision, RAG, and production web apps. This portfolio site runs on React, Vite, React Router, Tailwind CSS, and Framer Motion.
 
 ## Site
 - [Portfolio home](${SITE_URL}/): Overview, stats, and entry points to projects and contact
 - [Projects](${SITE_URL}/projects): Shipped AI and full-stack work (Utility, Arbiter, Shadow Instructor, Democrazy, and more)
 - [Experience](${SITE_URL}/experience): ProvaanTech AI/ML intern, Artem HealthTech, MIT-WPU capstone
-- [Skills](${SITE_URL}/skills): Stack across Python, LLMs, LangGraph, React/Next.js, CV, and cloud
+- [Skills](${SITE_URL}/skills): Stack across Python, LLMs, LangGraph, React, Vite, FastAPI, CV, and cloud
 - [About](${SITE_URL}/about): Bio, Google Student Ambassador, resume PDF
 - [Contact](${SITE_URL}/contact): Email and hire/collaboration form
 - [Resume PDF](${SITE_URL}/resume.pdf): Downloadable CV
@@ -112,7 +112,7 @@ function buildOgSvg() {
   <text x="82" y="262" fill="#131316" font-family="Arial, sans-serif" font-size="72" font-weight="900">AI Engineer</text>
   <text x="82" y="344" fill="#131316" font-family="Arial, sans-serif" font-size="72" font-weight="900">&amp; Full Stack Developer</text>
   <text x="86" y="430" fill="#454449" font-family="Arial, sans-serif" font-size="34" font-weight="700">Machine Learning • Computer Vision • Generative AI • RAG</text>
-  <text x="86" y="492" fill="#454449" font-family="Arial, sans-serif" font-size="28" font-weight="700">React • Angular • Python • FastAPI • MIT-WPU • Pune</text>
+  <text x="86" y="492" fill="#454449" font-family="Arial, sans-serif" font-size="28" font-weight="700">React • Vite • Python • FastAPI • MIT-WPU • Pune</text>
   <rect x="928" y="98" width="142" height="142" fill="#131316"/>
   <rect x="962" y="132" width="142" height="142" fill="#f8f7f4" stroke="#131316" stroke-width="8"/>
 </svg>

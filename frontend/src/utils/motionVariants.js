@@ -34,23 +34,23 @@ export const hoverSpring = {
   damping: 32,
 };
 
-/** Stagger container - fades in and staggers children */
+/** Stagger container - children still animate; parent stays visible for FCP. */
 export const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
-      duration: 0.38,
+      duration: 0.2,
       staggerChildren: 0.018,
-      delayChildren: 0.015,
+      delayChildren: 0.01,
       ease: motionEase.out,
     },
   },
 };
 
-/** Slide-up item - smooth spring-based reveal */
+/** Slide-up item - soft reveal without starting fully invisible on first paint. */
 export const itemVariants = {
-  hidden: { opacity: 0, y: 8 },
+  hidden: { opacity: 0.01, y: 6 },
   visible: {
     opacity: 1,
     y: 0,

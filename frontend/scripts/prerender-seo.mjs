@@ -17,7 +17,7 @@ const EXTRA_DATA = {
   "/contact": {
     faqItems: [
       { q: "Is Aryan Dani available for freelance projects?", a: "Yes. Aryan Dani is open to freelance web development, AI engineering, and full-stack collaboration opportunities." },
-      { q: "What does Aryan Dani specialize in?", a: "Aryan Dani specializes in AI engineering, machine learning, computer vision, Generative AI, LLMs, RAG systems, Python, Angular, React, and full-stack development." },
+      { q: "What does Aryan Dani specialize in?", a: "Aryan Dani specializes in AI engineering, machine learning, computer vision, Generative AI, LLMs, RAG systems, Python, React, Vite, and full-stack development." },
     ],
   },
 };

@@ -1,12 +1,12 @@
 # Aryan Dani
 
-> AI Engineer and Full Stack Developer in Pune, India (MIT-WPU). Builds agentic AI, computer vision, RAG, and production web apps with React, Next.js, Python, and FastAPI.
+> AI Engineer and Full Stack Developer in Pune, India (MIT-WPU). Builds agentic AI, computer vision, RAG, and production web apps. This portfolio site runs on React, Vite, React Router, Tailwind CSS, and Framer Motion.
 
 ## Site
 - [Portfolio home](https://www.aryandani.com/): Overview, stats, and entry points to projects and contact
 - [Projects](https://www.aryandani.com/projects): Shipped AI and full-stack work (Utility, Arbiter, Shadow Instructor, Democrazy, and more)
 - [Experience](https://www.aryandani.com/experience): ProvaanTech AI/ML intern, Artem HealthTech, MIT-WPU capstone
-- [Skills](https://www.aryandani.com/skills): Stack across Python, LLMs, LangGraph, React/Next.js, CV, and cloud
+- [Skills](https://www.aryandani.com/skills): Stack across Python, LLMs, LangGraph, React, Vite, FastAPI, CV, and cloud
 - [About](https://www.aryandani.com/about): Bio, Google Student Ambassador, resume PDF
 - [Contact](https://www.aryandani.com/contact): Email and hire/collaboration form
 - [Resume PDF](https://www.aryandani.com/resume.pdf): Downloadable CV

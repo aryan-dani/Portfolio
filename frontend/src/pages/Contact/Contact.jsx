@@ -21,7 +21,7 @@ const SUBJECT_OPTIONS = [
 const FAQ_ITEMS = [
   {
     q: "What's your primary tech stack?",
-    a: "React / Next.js for frontend, FastAPI / Node.js for backend, and Google Gemini / LangGraph for AI agents. I'm comfortable with TypeScript, Python, Supabase, Docker, and Vercel.",
+    a: "React and Vite for frontend (this portfolio uses React Router, Tailwind, and Framer Motion), FastAPI / Node.js for backend APIs, and Google Gemini / LangGraph for AI agents. I'm also comfortable with TypeScript, Python, Supabase, Docker, and Vercel.",
   },
   {
     q: "Do you freelance?",

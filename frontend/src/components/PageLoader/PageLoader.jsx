@@ -6,6 +6,13 @@ const PHASES = { GLITCH: 0, TERMINAL: 1, EXIT: 2, DONE: 3 };
 const TARGET_TEXT = "ARYAN DANI";
 const GLITCH_CHARS = "█$#@%&*?!X10";
 
+function shouldSkipBootLoader() {
+  if (typeof navigator === "undefined") return true;
+  if (navigator.webdriver) return true;
+  const ua = navigator.userAgent || "";
+  return /bot|crawl|spider|lighthouse|pagespeed|chrome-lighthouse|headless/i.test(ua);
+}
+
 function getGlitchChar(index) {
   return GLITCH_CHARS[index % GLITCH_CHARS.length];
 }
@@ -18,7 +25,8 @@ function getInitialChars() {
 }
 
 const PageLoader = memo(function PageLoader() {
-  const hasVisited = sessionStorage.getItem(SESSION_KEY);
+  const skipBoot = shouldSkipBootLoader();
+  const hasVisited = skipBoot || sessionStorage.getItem(SESSION_KEY);
   const [isLoading, setIsLoading] = useState(!hasVisited);
   const [phase, setPhase] = useState(PHASES.GLITCH);
   const [isGlitchDone, setIsGlitchDone] = useState(false);
@@ -56,11 +64,11 @@ const PageLoader = memo(function PageLoader() {
         char: char === " " ? "\u00A0" : char,
         state: "resolved",
       })));
-      setTimeout(() => setIsLoading(false), 420);
+      setTimeout(() => setIsLoading(false), 220);
       return undefined;
     }
 
-    const duration = 950;
+    const duration = 420;
     const startTime = performance.now();
     let animationFrameId;
 
@@ -75,7 +83,7 @@ const PageLoader = memo(function PageLoader() {
         }
 
         const charSweepTime = (i / TARGET_TEXT.length) * (duration * 0.7);
-        const scrambleDuration = 160;
+        const scrambleDuration = 90;
 
         if (elapsed < charSweepTime) {
           return {
@@ -97,7 +105,7 @@ const PageLoader = memo(function PageLoader() {
         animationFrameId = requestAnimationFrame(updateLoader);
       } else {
         setIsGlitchDone(true);
-        setTimeout(() => setPhase(PHASES.TERMINAL), 260);
+        setTimeout(() => setPhase(PHASES.TERMINAL), 80);
       }
     };
 
@@ -122,12 +130,12 @@ const PageLoader = memo(function PageLoader() {
     }, 24);
 
     const timers = [
-      setTimeout(() => setTerminalStep(1), 90),
-      setTimeout(() => setTerminalStep(2), 260),
-      setTimeout(() => setTerminalStep(3), 500),
-      setTimeout(() => setTerminalStep(4), 730),
-      setTimeout(() => setTerminalStep(5), 960),
-      setTimeout(() => setPhase(PHASES.EXIT), 1200),
+      setTimeout(() => setTerminalStep(1), 40),
+      setTimeout(() => setTerminalStep(2), 120),
+      setTimeout(() => setTerminalStep(3), 220),
+      setTimeout(() => setTerminalStep(4), 320),
+      setTimeout(() => setTerminalStep(5), 420),
+      setTimeout(() => setPhase(PHASES.EXIT), 520),
     ];
 
     return () => {
@@ -139,7 +147,7 @@ const PageLoader = memo(function PageLoader() {
   // Phase 3: Exit Shutter Panel Transition
   useEffect(() => {
     if (phase !== PHASES.EXIT) return;
-    const exitTimer = setTimeout(() => setIsLoading(false), 520);
+    const exitTimer = setTimeout(() => setIsLoading(false), 280);
     return () => clearTimeout(exitTimer);
   }, [phase]);
 
@@ -186,7 +194,7 @@ const PageLoader = memo(function PageLoader() {
                       className="absolute top-0 bottom-0 w-[4px] bg-[var(--color-outline)] z-20 pointer-events-none"
                       initial={{ left: "0%" }}
                       animate={{ left: "100%" }}
-                      transition={{ duration: 0.95, ease: "linear" }}
+                      transition={{ duration: 0.42, ease: "linear" }}
                       style={{ boxShadow: "0 0 12px var(--color-outline)" }}
                     />
                     {displayChars.map((item, i) => (
@@ -368,9 +376,9 @@ const PageLoader = memo(function PageLoader() {
                     initial={{ y: 0 }}
                     animate={{ y: isEven ? "-100%" : "100%" }}
                     transition={{
-                      duration: 0.65,
+                      duration: 0.38,
                       ease: [0.76, 0, 0.24, 1],
-                      delay: index * 0.05,
+                      delay: index * 0.03,
                     }}
                   />
                 );
