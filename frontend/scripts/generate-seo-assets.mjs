@@ -1,8 +1,9 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { SEO_CONFIG, SEO_ROUTE_ORDER, SEO_ROUTE_META, SITE_URL } from "../src/config/seoConfig.js";
+import { mkdir, writeFile } from "node:fs/promises";
+import { SEO_ROUTE_ORDER, SEO_ROUTE_META, SITE_URL } from "../src/config/seoConfig.js";
+import { writeSitemap } from "./generate-sitemap.mjs";
 
 const publicDir = new URL("../public/", import.meta.url);
-const today = new Date().toISOString().slice(0, 10);
+const contentDate = new Date().toISOString().slice(0, 10);
 
 function xmlEscape(value) {
   return String(value)
@@ -16,46 +17,6 @@ async function writePublicFile(path, contents) {
   await writeFile(new URL(path, publicDir), contents, "utf8");
 }
 
-/** Keep lastmod stable across rebuilds unless the URL set changed. */
-async function resolveContentDate() {
-  try {
-    const existing = await readFile(new URL("sitemap.xml", publicDir), "utf8");
-    const locs = [...existing.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-    const expected = SEO_ROUTE_ORDER.map((path) => SEO_CONFIG[path].canonical);
-    if (
-      locs.length === expected.length &&
-      locs.every((loc, index) => loc === expected[index])
-    ) {
-      const match = existing.match(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/);
-      if (match) return match[1];
-    }
-  } catch {
-    /* first generate or unreadable */
-  }
-  return today;
-}
-
-const contentDate = await resolveContentDate();
-
-function buildSitemap() {
-  const urls = SEO_ROUTE_ORDER.map((path) => {
-    const config = SEO_CONFIG[path];
-    const meta = SEO_ROUTE_META[path];
-    return `  <url>
-    <loc>${xmlEscape(config.canonical)}</loc>
-    <lastmod>${contentDate}</lastmod>
-    <changefreq>${meta.changefreq}</changefreq>
-    <priority>${meta.priority}</priority>
-  </url>`;
-  }).join("\n");
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-</urlset>
-`;
-}
-
 function buildRobots() {
   return `# robots.txt for ${SITE_URL}/
 
@@ -63,7 +24,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-# AI and search crawlers
+# AI / LLM crawlers
 User-agent: Google-Extended
 Allow: /
 
@@ -93,24 +54,23 @@ Sitemap: ${SITE_URL}/sitemap.xml
 }
 
 function buildLlmsTxt() {
-  return `# Aryan Dani Portfolio
+  return `# Aryan Dani
 
-Aryan Dani is an AI Engineer, Machine Learning Engineer, Computer Vision developer, and Full Stack Developer based in Pune, India. He studies at MIT-WPU and builds production-style projects across Generative AI, LLMs, RAG, vector databases, Python, FastAPI, React, Angular, Next.js, and modern web development.
+> AI Engineer and Full Stack Developer in Pune, India (MIT-WPU). Builds agentic AI, computer vision, RAG, and production web apps with React, Next.js, Python, and FastAPI.
 
-## Canonical Website
-${SITE_URL}/
+## Site
+- [Portfolio home](${SITE_URL}/): Overview, stats, and entry points to projects and contact
+- [Projects](${SITE_URL}/projects): Shipped AI and full-stack work (Utility, Arbiter, Shadow Instructor, Democrazy, and more)
+- [Experience](${SITE_URL}/experience): ProvaanTech AI/ML intern, Artem HealthTech, MIT-WPU capstone
+- [Skills](${SITE_URL}/skills): Stack across Python, LLMs, LangGraph, React/Next.js, CV, and cloud
+- [About](${SITE_URL}/about): Bio, Google Student Ambassador, resume PDF
+- [Contact](${SITE_URL}/contact): Email and hire/collaboration form
+- [Resume PDF](${SITE_URL}/resume.pdf): Downloadable CV
 
-## Important Pages
-${SEO_ROUTE_ORDER.map((path) => {
-  const config = SEO_CONFIG[path];
-  return `- ${config.title}: ${config.canonical} - ${config.description}`;
-}).join("\n")}
-
-## Entity Keywords
-Aryan Dani, AI Engineer, Machine Learning Engineer, Computer Vision, Full Stack Developer, Angular Developer, Python Developer, Generative AI, LLMs, RAG, Vector Database, MIT WPU, Pune, portfolio, projects.
-
-## Preferred Summary
-Aryan Dani is an AI Engineer and Full Stack Developer from Pune, India, focused on Machine Learning, Computer Vision, Generative AI, LLM applications, RAG systems, and modern full-stack web development.
+## Also useful
+- [Certifications](${SITE_URL}/certifications): Google, IBM, and related credentials
+- [GitHub](https://github.com/aryan-dani): Source repositories
+- [LinkedIn](https://www.linkedin.com/in/aryandani/): Professional profile
 `;
 }
 
@@ -169,7 +129,7 @@ function buildFaviconSvg() {
 }
 
 await mkdir(new URL("favicons/", publicDir), { recursive: true });
-await writePublicFile("sitemap.xml", buildSitemap());
+const sitemap = await writeSitemap();
 await writePublicFile("robots.txt", buildRobots());
 await writePublicFile("llms.txt", buildLlmsTxt());
 await writePublicFile("humans.txt", buildHumansTxt());
@@ -182,4 +142,4 @@ for (const path of SEO_ROUTE_ORDER) {
 await writePublicFile("favicons/favicon.svg", buildFaviconSvg());
 await writePublicFile("favicons/apple-touch-icon.svg", buildFaviconSvg());
 
-console.log("Generated SEO public assets.");
+console.log(`Generated SEO public assets (sitemap: ${sitemap.count} URLs).`);

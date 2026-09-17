@@ -4,7 +4,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-# AI and search crawlers
+# AI / LLM crawlers
 User-agent: Google-Extended
 Allow: /
 

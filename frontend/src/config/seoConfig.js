@@ -32,16 +32,16 @@ export const SEO_ROUTE_ORDER = [
 
 export const SEO_ROUTE_META = {
   "/": { label: "Home", priority: "1.0", changefreq: "weekly" },
-  "/projects": { label: "Projects", priority: "0.95", changefreq: "weekly" },
-  "/experience": { label: "Experience", priority: "0.85", changefreq: "monthly" },
-  "/certifications": { label: "Certifications", priority: "0.75", changefreq: "monthly" },
-  "/skills": { label: "Skills", priority: "0.85", changefreq: "monthly" },
-  "/about": { label: "About", priority: "0.9", changefreq: "monthly" },
-  "/contact": { label: "Contact", priority: "0.7", changefreq: "yearly" },
-  "/playground": { label: "CLI Playground", priority: "0.55", changefreq: "yearly" },
-  "/achievements": { label: "Achievements", priority: "0.45", changefreq: "monthly" },
+  "/projects": { label: "Projects", priority: "0.8", changefreq: "weekly" },
+  "/experience": { label: "Experience", priority: "0.8", changefreq: "monthly" },
+  "/certifications": { label: "Certifications", priority: "0.8", changefreq: "monthly" },
+  "/skills": { label: "Skills", priority: "0.8", changefreq: "monthly" },
+  "/about": { label: "About", priority: "0.8", changefreq: "monthly" },
+  "/contact": { label: "Contact", priority: "0.8", changefreq: "yearly" },
+  "/playground": { label: "CLI Playground", priority: "0.5", changefreq: "yearly" },
+  "/achievements": { label: "Achievements", priority: "0.5", changefreq: "monthly" },
   "/guestbook": { label: "Guestbook", priority: "0.5", changefreq: "weekly" },
-  "/copyright": { label: "Copyright", priority: "0.25", changefreq: "yearly" },
+  "/copyright": { label: "Copyright", priority: "0.5", changefreq: "yearly" },
 };
 
 /** Shared Person schema reference (defined once in index.html) */
@@ -139,6 +139,15 @@ export function buildBaseSchemas() {
         name: "MIT World Peace University",
         alternateName: "MIT-WPU",
         url: "https://mitwpu.edu.in/",
+      },
+      worksFor: {
+        "@type": "Organization",
+        name: "ProvaanTech",
+        url: "https://provaantech.com/",
+      },
+      affiliation: {
+        "@type": "Organization",
+        name: "Google Student Ambassador Program",
       },
       knowsAbout: [
         "Artificial Intelligence",
