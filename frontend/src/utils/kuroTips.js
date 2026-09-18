@@ -24,6 +24,12 @@ const TIP_POOL = {
   "/experience": [
     { label: "Latest role", send: "Summarize his experience" },
     { label: "Resume", send: "Where is the resume?" },
+    { label: "Research", send: "go to research" },
+    { label: "Projects", send: "go to projects" },
+  ],
+  "/research": [
+    { label: "Paper PDF", send: "Where is the research paper?" },
+    { label: "Threat system", send: "Tell me about the threat detection project" },
     { label: "Projects", send: "go to projects" },
   ],
   "/about": [

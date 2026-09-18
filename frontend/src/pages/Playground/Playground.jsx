@@ -264,7 +264,7 @@ function Playground() {
         if (!args[1] || !ROUTES[args[1]]) {
           setHistory((prev) => [
             ...prev,
-            { text: "Usage: open [home|projects|experience|certifications|skills|about|contact|playground|copyright]", type: "error" },
+            { text: "Usage: open [home|projects|experience|research|certifications|skills|about|contact|playground|copyright]", type: "error" },
           ]);
         } else {
           setHistory((prev) => [

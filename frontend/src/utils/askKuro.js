@@ -15,12 +15,19 @@ export function kuroVoiceError(error) {
   if (status === 429 || msg.includes("too many")) {
     return "Too many pets to the keyboard. Wait a bit, then try again.";
   }
+  if (msg.includes("busy") || msg.includes("model is busy")) {
+    return "The kennel hiccuped. Give me another try in a moment.";
+  }
   if (
     status === 503 ||
     msg.includes("not configured") ||
     msg.includes("groq_api_key")
   ) {
-    return "My brain key is missing. Add GROQ_API_KEY in .env.local and restart the server.";
+    // 503 from chat API can mean missing key OR upstream busy — prefer key hint only for config copy.
+    if (msg.includes("not configured") || msg.includes("groq_api_key")) {
+      return "My brain key is missing. Add GROQ_API_KEY in .env.local and restart the server.";
+    }
+    return "The kennel hiccuped. Give me another try in a moment.";
   }
   if (status === 400 || msg.includes("invalid message")) {
     return "That message was a bit odd. Try a shorter one?";
@@ -39,7 +46,7 @@ export function kuroVoiceError(error) {
   ) {
     return "Can't reach the kennel API. Is the server running?";
   }
-  if (status === 502 || status === 500 || msg.includes("snag") || msg.includes("busy")) {
+  if (status === 502 || status === 500 || msg.includes("snag")) {
     return "The kennel hiccuped. Give me another try in a moment.";
   }
 

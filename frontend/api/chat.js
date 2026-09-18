@@ -1,9 +1,14 @@
 import { generateKuroReply } from "./kuroChat.js";
 import { createGuestbookRedis } from "./guestbookStore.js";
 
-const CHAT_RATE_LIMIT = 30;
-const CHAT_RATE_WINDOW_MS = 60 * 60 * 1000;
-const memoryRateLimits = new Map();
+// Portfolio demos + tip chips burn through messages fast; keep a burst
+// cap so scrapers can't flood Groq, but don't throttle normal chatting.
+const CHAT_RATE_LIMIT_HOUR = 120;
+const CHAT_RATE_LIMIT_MINUTE = 25;
+const CHAT_RATE_HOUR_MS = 60 * 60 * 1000;
+const CHAT_RATE_MINUTE_MS = 60 * 1000;
+const memoryHourLimits = new Map();
+const memoryMinuteLimits = new Map();
 
 export function getClientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
@@ -13,16 +18,31 @@ export function getClientIp(req) {
   return req.headers["x-real-ip"] || "unknown";
 }
 
-function checkMemoryRateLimit(ip) {
+function bumpMemoryWindow(store, ip, windowMs, limit) {
   const now = Date.now();
   const key = ip || "unknown";
-  let entry = memoryRateLimits.get(key);
+  let entry = store.get(key);
   if (!entry || now > entry.resetAt) {
-    entry = { count: 0, resetAt: now + CHAT_RATE_WINDOW_MS };
-    memoryRateLimits.set(key, entry);
+    entry = { count: 0, resetAt: now + windowMs };
+    store.set(key, entry);
   }
   entry.count += 1;
-  if (entry.count > CHAT_RATE_LIMIT) {
+  if (entry.count > limit) {
+    const error = new Error("Too many messages. Try again in a bit.");
+    error.status = 429;
+    throw error;
+  }
+}
+
+function checkMemoryRateLimit(ip) {
+  bumpMemoryWindow(memoryMinuteLimits, ip, CHAT_RATE_MINUTE_MS, CHAT_RATE_LIMIT_MINUTE);
+  bumpMemoryWindow(memoryHourLimits, ip, CHAT_RATE_HOUR_MS, CHAT_RATE_LIMIT_HOUR);
+}
+
+async function bumpRedisWindow(redis, key, ttlSeconds, limit) {
+  const count = await redis.incr(key);
+  if (count === 1) await redis.expire(key, ttlSeconds);
+  if (count > limit) {
     const error = new Error("Too many messages. Try again in a bit.");
     error.status = 429;
     throw error;
@@ -32,14 +52,10 @@ function checkMemoryRateLimit(ip) {
 export async function checkChatRateLimit(ip) {
   const redis = createGuestbookRedis();
   if (redis) {
-    const key = `chat:rate:${ip || "unknown"}`;
-    const count = await redis.incr(key);
-    if (count === 1) await redis.expire(key, 3600);
-    if (count > CHAT_RATE_LIMIT) {
-      const error = new Error("Too many messages. Try again in a bit.");
-      error.status = 429;
-      throw error;
-    }
+    const id = ip || "unknown";
+    // Minute first so abusers get a short cooldown instead of burning the hour budget.
+    await bumpRedisWindow(redis, `chat:rate:m:${id}`, 60, CHAT_RATE_LIMIT_MINUTE);
+    await bumpRedisWindow(redis, `chat:rate:h:${id}`, 3600, CHAT_RATE_LIMIT_HOUR);
     return;
   }
 

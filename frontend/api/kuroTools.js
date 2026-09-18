@@ -3,6 +3,7 @@ export const KURO_PAGES = [
   { id: "home", path: "/", label: "Home" },
   { id: "projects", path: "/projects", label: "Projects" },
   { id: "experience", path: "/experience", label: "Experience" },
+  { id: "research", path: "/research", label: "Research" },
   { id: "certifications", path: "/certifications", label: "Certifications" },
   { id: "skills", path: "/skills", label: "Skills" },
   { id: "about", path: "/about", label: "About" },
@@ -31,6 +32,7 @@ export const LOOKUP_TOPICS = [
   "contact",
   "achievements",
   "certifications",
+  "research",
 ];
 
 /** Client-side site actions returned to the browser. */

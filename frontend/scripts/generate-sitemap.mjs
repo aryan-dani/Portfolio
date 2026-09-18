@@ -66,6 +66,13 @@ export function collectSitemapEntries(lastmod = resolveLastmod()) {
     });
   }
 
+  entries.push({
+    loc: `${SITE_URL}/research-paper.pdf`,
+    lastmod,
+    changefreq: "yearly",
+    priority: "0.7",
+  });
+
   return entries;
 }
 

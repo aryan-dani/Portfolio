@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "/((?!resume\\.pdf).*)",
+      "source": "/((?!resume\\.pdf|research-paper\\.pdf).*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "DENY" },
@@ -17,6 +17,16 @@
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
         { "key": "Content-Type", "value": "application/pdf" },
         { "key": "Content-Disposition", "value": "inline; filename=\"resume.pdf\"" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/research-paper.pdf",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"research-paper.pdf\"" },
         { "key": "Cache-Control", "value": "public, max-age=86400" }
       ]
     },
@@ -62,7 +72,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!api/|assets/|Images/|favicons/|resume\\.pdf|sitemap\\.xml|robots\\.txt|manifest\\.json|llms\\.txt|humans\\.txt|og-image\\.svg|.*\\.(?:pdf|xml|txt|json|svg|ico|png|jpg|jpeg|webp|css|js|woff2?)).*)",
+      "source": "/((?!api/|assets/|Images/|favicons/|resume\\.pdf|research-paper\\.pdf|sitemap\\.xml|robots\\.txt|manifest\\.json|llms\\.txt|humans\\.txt|og-image\\.svg|.*\\.(?:pdf|xml|txt|json|svg|ico|png|jpg|jpeg|webp|css|js|woff2?)).*)",
       "destination": "/index.html"
     }
   ]

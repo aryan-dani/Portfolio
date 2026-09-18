@@ -112,7 +112,7 @@ function FloatingDock() {
                   
                   {/* Tooltip on hover for desktop */}
                   <span className={`absolute -top-12 scale-0 group-hover:scale-100 transition-transform bg-[var(--color-on-background)] text-[var(--color-background)] text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block ${index === dockNavItems.length - 1 ? 'right-0 origin-bottom-right' : 'left-1/2 -translate-x-1/2 origin-bottom'}`}>
-                    {item.label} <span className="opacity-60 ml-1">{item.shortcut}</span>
+                    {item.label}{item.shortcut ? <span className="opacity-60 ml-1">{item.shortcut}</span> : null}
                   </span>
                 </NavLink>
               );

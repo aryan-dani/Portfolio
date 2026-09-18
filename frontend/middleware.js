@@ -7,6 +7,7 @@ const KNOWN_PATHS = new Set([
   "/",
   "/projects",
   "/experience",
+  "/research",
   "/certifications",
   "/skills",
   "/about",
@@ -17,6 +18,7 @@ const KNOWN_PATHS = new Set([
   "/copyright",
   "/404",
   "/resume.pdf",
+  "/research-paper.pdf",
 ]);
 
 export const config = {

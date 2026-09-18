@@ -21,6 +21,7 @@ export const ALL_PAGE_PATHS = [
   "/",
   "/projects",
   "/experience",
+  "/research",
   "/certifications",
   "/skills",
   "/about",

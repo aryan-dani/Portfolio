@@ -20,6 +20,7 @@ export const SEO_ROUTE_ORDER = [
   "/",
   "/projects",
   "/experience",
+  "/research",
   "/certifications",
   "/skills",
   "/about",
@@ -34,6 +35,7 @@ export const SEO_ROUTE_META = {
   "/": { label: "Home", priority: "1.0", changefreq: "weekly" },
   "/projects": { label: "Projects", priority: "0.8", changefreq: "weekly" },
   "/experience": { label: "Experience", priority: "0.8", changefreq: "monthly" },
+  "/research": { label: "Research", priority: "0.8", changefreq: "monthly" },
   "/certifications": { label: "Certifications", priority: "0.8", changefreq: "monthly" },
   "/skills": { label: "Skills", priority: "0.8", changefreq: "monthly" },
   "/about": { label: "About", priority: "0.8", changefreq: "monthly" },
@@ -166,6 +168,8 @@ export function buildBaseSchemas() {
         "Python",
         "FastAPI",
         "LangGraph",
+        "YOLOv11",
+        "Threat Detection",
       ],
       sameAs: [
         "https://www.linkedin.com/in/aryandani/",
@@ -356,6 +360,62 @@ export const SEO_CONFIG = {
 
       return schemas;
     },
+  },
+
+  "/research": {
+    title: "Research - Real-Time Multi-Modal Threat Detection | Aryan Dani",
+    description:
+      "MIT-WPU capstone research by Aryan Dani: Real-Time Multi-Modal Threat Detection integrating YOLOv11 and EfficientNetV2 with an adaptive Angular frontend. mAP 0.960 weapon detection and 99.44% X-ray classification accuracy.",
+    keywords:
+      "Aryan Dani research, YOLOv11 threat detection, EfficientNetV2 X-ray, MIT WPU capstone, weapon detection paper, computer vision research Pune",
+    canonical: `${SITE_URL}/research`,
+    robots: DEFAULT_ROBOTS,
+    imageAlt: "Aryan Dani research paper on real-time multi-modal threat detection",
+    priority: SEO_ROUTE_META["/research"].priority,
+    changefreq: SEO_ROUTE_META["/research"].changefreq,
+    ogType: "article",
+    schemas: () => [
+      buildBreadcrumbs("Research", "/research"),
+      buildWebPage(
+        "Research - Real-Time Multi-Modal Threat Detection | Aryan Dani",
+        "MIT-WPU capstone research integrating YOLOv11 and EfficientNetV2 for real-time multi-modal threat detection.",
+        "/research"
+      ),
+      {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "@id": `${SITE_URL}/research#paper`,
+        headline:
+          "Real-Time Multi-Modal Threat Detection: Integrating YOLOv11 and EfficientNetV2 using an Adaptive Frontend Framework",
+        name: "Real-Time Multi-Modal Threat Detection",
+        description:
+          "Adaptive multi-modal threat detection framework combining YOLOv11 for real-time weapon detection and EfficientNetV2 for X-ray classification, with an Angular operator console.",
+        author: [
+          { "@type": "Person", name: "Aryan Dani", email: "daniaryan212@gmail.com" },
+          { "@type": "Person", name: "Prakhar Jaiswal" },
+          { "@type": "Person", name: "M. Sobaan Jagirdar" },
+          { "@type": "Person", name: "Swayamprakash Patro" },
+          { "@type": "Person", name: "Jyoti Mante" },
+        ],
+        creator: PERSON_REF,
+        url: `${SITE_URL}/research`,
+        encoding: {
+          "@type": "MediaObject",
+          contentUrl: `${SITE_URL}/research-paper.pdf`,
+          encodingFormat: "application/pdf",
+        },
+        keywords:
+          "threat detection, YOLOv11, EfficientNetV2, computer vision, public safety, X-ray classification",
+        about: ["Threat Detection", "Computer Vision", "YOLOv11", "EfficientNetV2"],
+        inLanguage: "en",
+        datePublished: "2025",
+        publisher: {
+          "@type": "CollegeOrUniversity",
+          name: "MIT World Peace University",
+          alternateName: "MIT-WPU",
+        },
+      },
+    ],
   },
 
   "/certifications": {

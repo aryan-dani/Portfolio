@@ -62,10 +62,12 @@ function buildLlmsTxt() {
 - [Portfolio home](${SITE_URL}/): Overview, stats, and entry points to projects and contact
 - [Projects](${SITE_URL}/projects): Shipped AI and full-stack work (Utility, Arbiter, Shadow Instructor, Democrazy, and more)
 - [Experience](${SITE_URL}/experience): ProvaanTech AI/ML intern, Artem HealthTech, MIT-WPU capstone
+- [Research](${SITE_URL}/research): Capstone paper — Real-Time Multi-Modal Threat Detection (YOLOv11 + EfficientNetV2)
 - [Skills](${SITE_URL}/skills): Stack across Python, LLMs, LangGraph, React, Vite, FastAPI, CV, and cloud
 - [About](${SITE_URL}/about): Bio, Google Student Ambassador, resume PDF
 - [Contact](${SITE_URL}/contact): Email and hire/collaboration form
 - [Resume PDF](${SITE_URL}/resume.pdf): Downloadable CV
+- [Research PDF](${SITE_URL}/research-paper.pdf): Full threat-detection research paper
 
 ## Also useful
 - [Certifications](${SITE_URL}/certifications): Google, IBM, and related credentials

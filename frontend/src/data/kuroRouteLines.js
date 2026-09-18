@@ -22,6 +22,10 @@ export const KURO_PAGE_LINES = {
     "Career timeline unlocked! Expand any role for the full story.",
     "New to the resume rail? Click a dot for details.",
   ],
+  "/research": [
+    "Research desk! The threat-detection paper and PDF live here.",
+    "Capstone time — YOLOv11 + EfficientNetV2. Download the PDF or skim the highlights.",
+  ],
   "/skills": [
     "Skills vault! Search or filter by category.",
     "First visit? Ask me what he uses for AI or full-stack work.",

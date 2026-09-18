@@ -19,6 +19,7 @@ const socialItemVariants = {
 
 const footerNavLinks = [
   { to: "/projects", label: "Projects" },
+  { to: "/research", label: "Research" },
   { to: "/about", label: "About" },
   { to: "/experience", label: "Experience" },
   { to: "/contact", label: "Contact" },

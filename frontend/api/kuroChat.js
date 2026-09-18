@@ -46,14 +46,14 @@ const SITE_CONTROL_PATTERNS = [
   /^(toggle|switch)\s+(the\s+)?(theme|dark|light)|dark mode|light mode|flip the lights/i,
   /^scroll (to )?top|back to top/i,
   /^(open|show)\s+(the\s+)?(command\s+)?palette/i,
-  /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|home|copyright)\s*[!.]?$/i,
+  /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|research|home|copyright)\s*[!.]?$/i,
   /\b(copy|give me|what'?s)\s+(the\s+)?(email|e-mail)\b/i,
   /\b(open|show|download|send)\s+(the\s+)?(resume|cv)\b/i,
 ];
 
 const PORTFOLIO_QA_PATTERNS = [
   /\b(what|which|tell me about|how (do|did|can)|where (is|can)|who (is|built|made))\b/i,
-  /\b(email|resume|github|stack|tech|skills?|projects?|experience|certifications?|aegis|samiksha|swiggy|nexus|utility|ishani)\b/i,
+  /\b(email|resume|github|stack|tech|skills?|projects?|experience|certifications?|research|paper|threat|aegis|samiksha|swiggy|nexus|utility|ishani)\b/i,
   /\b(aryan|dani|developer|built this|portfolio)\b/i,
 ];
 
@@ -149,6 +149,13 @@ export function lookupPortfolio(topic, query = "") {
         .map((c) => `${c.title || c.name}${c.issuer ? ` (${c.issuer})` : ""}`);
       return lines.length ? lines.join("\n") : "No matching certifications.";
     }
+    case "research":
+      return [
+        "Real-Time Multi-Modal Threat Detection: Integrating YOLOv11 and EfficientNetV2 using an Adaptive Frontend Framework",
+        "MIT-WPU Polytechnic capstone. Authors: Aryan Dani (1st), Prakhar Jaiswal, M. Sobaan Jagirdar, Swayamprakash Patro; mentor Jyoti Mante.",
+        "YOLOv11 weapon detection mAP@0.5 0.960; EfficientNetV2 X-ray accuracy 99.44%. Angular operator console.",
+        "Page: /research · PDF: /research-paper.pdf · Demo: https://aryan-dani.github.io/Threat_Detection_System/",
+      ].join("\n");
     default:
       return "Unknown lookup topic.";
   }
@@ -293,7 +300,7 @@ function messageAllowsAction(type, message) {
     case "navigate":
       return (
         /go to|take me|navigate|open|show me|visit|bring me|head to|jump to/i.test(q) ||
-        /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|home|copyright)\s*[!.]?$/i.test(
+        /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|research|home|copyright)\s*[!.]?$/i.test(
           q.trim(),
         )
       );
@@ -341,6 +348,7 @@ function inferActions(message, currentPath) {
     [/projects?/, "projects"],
     [/experience|work|jobs?/, "experience"],
     [/skills?/, "skills"],
+    [/research|paper|threat detection/, "research"],
     [/about/, "about"],
     [/contact/, "contact"],
     [/cert/, "certifications"],
@@ -353,7 +361,7 @@ function inferActions(message, currentPath) {
 
   const wantsNav =
     /go to|take me|navigate|open|show me|visit|bring me|head to|jump to/i.test(q) ||
-    /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|home)\s*[!.]?$/i.test(
+    /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|research|home)\s*[!.]?$/i.test(
       q.trim(),
     );
 
@@ -501,7 +509,8 @@ export async function generateKuroReply({ message, history, currentPath, siteSta
         ? "The model is busy. Try again in a moment."
         : "Kuro hit a snag talking to the model. Try again shortly.",
     );
-    err.status = response.status === 429 ? 429 : 502;
+    // Upstream capacity ≠ visitor rate limit; keep 429 for our own caps only.
+    err.status = response.status === 429 ? 503 : 502;
     throw err;
   }
 
