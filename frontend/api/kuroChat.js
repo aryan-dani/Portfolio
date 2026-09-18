@@ -3,6 +3,7 @@ import { experiences, aboutInfo } from "../src/data/experience.js";
 import { getAllSkills } from "../src/data/skills.js";
 import { ACHIEVEMENTS } from "../src/data/achievements.js";
 import { certifications } from "../src/data/certifications.js";
+import { researchPapers } from "../src/data/research.js";
 import {
   KURO_PAGES,
   KURO_TOOLS,
@@ -151,10 +152,11 @@ export function lookupPortfolio(topic, query = "") {
     }
     case "research":
       return [
-        "Real-Time Multi-Modal Threat Detection: Integrating YOLOv11 and EfficientNetV2 using an Adaptive Frontend Framework",
-        "MIT-WPU Polytechnic capstone. Authors: Aryan Dani (1st), Prakhar Jaiswal, M. Sobaan Jagirdar, Swayamprakash Patro; mentor Jyoti Mante.",
-        "YOLOv11 weapon detection mAP@0.5 0.960; EfficientNetV2 X-ray accuracy 99.44%. Angular operator console.",
-        "Page: /research · PDF: /research-paper.pdf · Demo: https://aryan-dani.github.io/Threat_Detection_System/",
+        "Research page: /research (card catalog — open a paper for full details).",
+        ...researchPapers.slice(0, 5).map(
+          (p) =>
+            `${p.title} (${p.year}): ${p.summary.slice(0, 160)} PDF: ${p.pdfUrl || "n/a"}`,
+        ),
       ].join("\n");
     default:
       return "Unknown lookup topic.";

@@ -23,8 +23,8 @@ export const KURO_PAGE_LINES = {
     "New to the resume rail? Click a dot for details.",
   ],
   "/research": [
-    "Research desk! The threat-detection paper and PDF live here.",
-    "Capstone time — YOLOv11 + EfficientNetV2. Download the PDF or skim the highlights.",
+    "Research desk! Pick a paper card — details and the PDF expand underneath.",
+    "Capstone and more live here as cards. Tap one to expand metrics and abstract.",
   ],
   "/skills": [
     "Skills vault! Search or filter by category.",

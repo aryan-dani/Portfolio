@@ -363,59 +363,71 @@ export const SEO_CONFIG = {
   },
 
   "/research": {
-    title: "Research - Real-Time Multi-Modal Threat Detection | Aryan Dani",
+    title: "Research - Aryan Dani | Papers & Technical Write-ups",
     description:
-      "MIT-WPU capstone research by Aryan Dani: Real-Time Multi-Modal Threat Detection integrating YOLOv11 and EfficientNetV2 with an adaptive Angular frontend. mAP 0.960 weapon detection and 99.44% X-ray classification accuracy.",
+      "Research by Aryan Dani — computer vision and AI papers including Real-Time Multi-Modal Threat Detection with YOLOv11 and EfficientNetV2. Browse abstracts, metrics, and full PDFs.",
     keywords:
-      "Aryan Dani research, YOLOv11 threat detection, EfficientNetV2 X-ray, MIT WPU capstone, weapon detection paper, computer vision research Pune",
+      "Aryan Dani research, YOLOv11 threat detection, EfficientNetV2 X-ray, MIT WPU capstone, computer vision papers, AI research Pune",
     canonical: `${SITE_URL}/research`,
     robots: DEFAULT_ROBOTS,
-    imageAlt: "Aryan Dani research paper on real-time multi-modal threat detection",
+    imageAlt: "Aryan Dani research papers and technical write-ups",
     priority: SEO_ROUTE_META["/research"].priority,
     changefreq: SEO_ROUTE_META["/research"].changefreq,
-    ogType: "article",
-    schemas: () => [
-      buildBreadcrumbs("Research", "/research"),
-      buildWebPage(
-        "Research - Real-Time Multi-Modal Threat Detection | Aryan Dani",
-        "MIT-WPU capstone research integrating YOLOv11 and EfficientNetV2 for real-time multi-modal threat detection.",
-        "/research"
-      ),
-      {
-        "@context": "https://schema.org",
-        "@type": "ScholarlyArticle",
-        "@id": `${SITE_URL}/research#paper`,
-        headline:
-          "Real-Time Multi-Modal Threat Detection: Integrating YOLOv11 and EfficientNetV2 using an Adaptive Frontend Framework",
-        name: "Real-Time Multi-Modal Threat Detection",
-        description:
-          "Adaptive multi-modal threat detection framework combining YOLOv11 for real-time weapon detection and EfficientNetV2 for X-ray classification, with an Angular operator console.",
-        author: [
-          { "@type": "Person", name: "Aryan Dani", email: "daniaryan212@gmail.com" },
-          { "@type": "Person", name: "Prakhar Jaiswal" },
-          { "@type": "Person", name: "M. Sobaan Jagirdar" },
-          { "@type": "Person", name: "Swayamprakash Patro" },
-          { "@type": "Person", name: "Jyoti Mante" },
-        ],
-        creator: PERSON_REF,
-        url: `${SITE_URL}/research`,
-        encoding: {
-          "@type": "MediaObject",
-          contentUrl: `${SITE_URL}/research-paper.pdf`,
-          encodingFormat: "application/pdf",
-        },
-        keywords:
-          "threat detection, YOLOv11, EfficientNetV2, computer vision, public safety, X-ray classification",
-        about: ["Threat Detection", "Computer Vision", "YOLOv11", "EfficientNetV2"],
-        inLanguage: "en",
-        datePublished: "2025",
-        publisher: {
-          "@type": "CollegeOrUniversity",
-          name: "MIT World Peace University",
-          alternateName: "MIT-WPU",
-        },
-      },
-    ],
+    ogType: "website",
+    schemas: (extraData) => {
+      const papers = extraData?.papers || [];
+      const schemas = [
+        buildBreadcrumbs("Research", "/research"),
+        buildWebPage(
+          "Research - Aryan Dani | Papers & Technical Write-ups",
+          "Browse research papers and technical write-ups by Aryan Dani, including computer vision and threat detection work.",
+          "/research"
+        ),
+      ];
+
+      if (papers.length) {
+        schemas.push({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Research papers by Aryan Dani",
+          numberOfItems: papers.length,
+          itemListElement: papers.map((paper, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+              "@type": "ScholarlyArticle",
+              "@id": `${SITE_URL}/research?highlight=${encodeURIComponent(paper.id)}`,
+              headline: paper.subtitle ? `${paper.title}: ${paper.subtitle}` : paper.title,
+              name: paper.title,
+              description: paper.summary || paper.abstract,
+              author: (paper.authors || []).map((a) => ({
+                "@type": "Person",
+                name: a.name,
+                email: a.email,
+              })),
+              creator: PERSON_REF,
+              url: `${SITE_URL}/research?highlight=${encodeURIComponent(paper.id)}`,
+              encoding: paper.pdfUrl
+                ? {
+                    "@type": "MediaObject",
+                    contentUrl: `${SITE_URL}${paper.pdfUrl}`,
+                    encodingFormat: "application/pdf",
+                  }
+                : undefined,
+              keywords: Array.isArray(paper.keywords) ? paper.keywords.join(", ") : paper.keywords,
+              datePublished: paper.year,
+              publisher: {
+                "@type": "CollegeOrUniversity",
+                name: "MIT World Peace University",
+                alternateName: "MIT-WPU",
+              },
+            },
+          })),
+        });
+      }
+
+      return schemas;
+    },
   },
 
   "/certifications": {

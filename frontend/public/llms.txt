@@ -6,7 +6,7 @@
 - [Portfolio home](https://www.aryandani.com/): Overview, stats, and entry points to projects and contact
 - [Projects](https://www.aryandani.com/projects): Shipped AI and full-stack work (Utility, Arbiter, Shadow Instructor, Democrazy, and more)
 - [Experience](https://www.aryandani.com/experience): ProvaanTech AI/ML intern, Artem HealthTech, MIT-WPU capstone
-- [Research](https://www.aryandani.com/research): Capstone paper — Real-Time Multi-Modal Threat Detection (YOLOv11 + EfficientNetV2)
+- [Research](https://www.aryandani.com/research): Research papers and technical write-ups (card catalog + PDFs)
 - [Skills](https://www.aryandani.com/skills): Stack across Python, LLMs, LangGraph, React, Vite, FastAPI, CV, and cloud
 - [About](https://www.aryandani.com/about): Bio, Google Student Ambassador, resume PDF
 - [Contact](https://www.aryandani.com/contact): Email and hire/collaboration form

@@ -9,6 +9,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { SEO_ROUTE_META, SEO_ROUTE_ORDER, SITE_URL } from "../src/config/seoConfig.js";
 import { projects } from "../src/data/projects.js";
+import { researchPapers } from "../src/data/research.js";
 
 const SITEMAP_PATH = new URL("../public/sitemap.xml", import.meta.url);
 const CHANGEFREQ = new Set([
@@ -66,12 +67,22 @@ export function collectSitemapEntries(lastmod = resolveLastmod()) {
     });
   }
 
-  entries.push({
-    loc: `${SITE_URL}/research-paper.pdf`,
-    lastmod,
-    changefreq: "yearly",
-    priority: "0.7",
-  });
+  for (const paper of researchPapers) {
+    entries.push({
+      loc: `${SITE_URL}/research?highlight=${encodeURIComponent(paper.id)}`,
+      lastmod,
+      changefreq: "monthly",
+      priority: "0.6",
+    });
+    if (paper.pdfUrl) {
+      entries.push({
+        loc: `${SITE_URL}${paper.pdfUrl}`,
+        lastmod,
+        changefreq: "yearly",
+        priority: "0.7",
+      });
+    }
+  }
 
   return entries;
 }

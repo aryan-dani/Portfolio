@@ -37,10 +37,10 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         exit="exit"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Sticky Close Button exactly at top right */}
+        {/* Sticky close — inset so it isn't glued to the modal corner */}
         <div className="sticky top-0 z-50 w-full flex justify-end h-0 pointer-events-none">
           <button
-            className="pointer-events-auto bg-[var(--color-surface)] text-[var(--color-on-surface)] border-l-4 border-b-4 border-outline w-12 md:w-14 h-12 md:h-14 flex items-center justify-center text-xl hover:bg-[var(--color-primary)] hover:text-[var(--color-on-primary)] transition-colors cursor-none"
+            className="pointer-events-auto m-3 md:m-4 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-11 md:w-12 h-11 md:h-12 flex items-center justify-center text-lg md:text-xl shadow-[4px_4px_0_0_var(--shadow-color)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-none"
             onClick={onClose}
             aria-label="Close modal"
           >
