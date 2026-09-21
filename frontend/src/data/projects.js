@@ -75,6 +75,44 @@ const projectEntries = [
     },
   },
   {
+    id: 19,
+    title: "Prism",
+    category: "ai-ml",
+    year: "2026",
+    description: `Unified enterprise AI agent for MIT-WPU Track 3 — one local conversational agent across HR, Finance, Support, Privacy, and Legal/Compliance, plus mid-chat document upload as a sixth domain. Runs fully offline on Ollama with role-gated RAG (Chroma), clarification-seeking routing, cited sources, voice dictation, and dynamic output formats (prose / JSON / XML / Excel / email). Individual submission.`,
+    image: "/Images/Projects/Prism.png",
+    tags: ["Ollama", "RAG", "RBAC", "FastAPI", "React", "Chroma"],
+    skillIds: [
+      "python",
+      "fastapi",
+      "llms",
+      "rag",
+      "ollama",
+      "chroma",
+      "agentic",
+      "prompt-engineering",
+      "react",
+      "vite",
+      "typescript",
+      "javascript",
+      "html5",
+      "css3",
+      "rest-api",
+      "git",
+    ],
+    problem:
+      "Enterprise Q&A is usually split across brittle domain bots or cloud RAG that leaks documents and ignores role boundaries at retrieval time.",
+    solution:
+      "Prism routes one query across five curated domains (plus session uploads), filters Chroma chunks by role metadata before the LLM sees them, and refuses to invent when retrieval confidence is low.",
+    architecture:
+      "React/Vite UI with FastAPI backend, embedded Chroma, Ollama embeddings + generation (qwen2.5), session memory, RBAC login demos, and a CanonicalAnswer object that fans out to multiple export formats without re-retrieval.",
+    results:
+      "Offline laptop demo (RTX-class VRAM) with jury deck, system handbook, and prompt/workflow documentation shipped in-repo.",
+    links: {
+      github: "https://github.com/aryan-dani/Prism",
+    },
+  },
+  {
     id: 16,
     title: "Samiksha",
     category: "web-dev",

@@ -10,7 +10,7 @@ export const skills = {
       level: 82,
       description:
         "Semantic HTML5 markup, accessibility standards, and modern web structure used across every web project - from SPAs to static pages.",
-      projectIds: [1, 7, 8, 12, 13, 14, 16, 18],
+      projectIds: [1, 7, 8, 12, 13, 14, 16, 18, 19],
     },
     {
       id: "css3",
@@ -19,7 +19,7 @@ export const skills = {
       level: 78,
       description:
         "Advanced CSS animations, Grid/Flexbox layouts, and responsive design. Styled the portfolio's neo-brutalist design system from scratch.",
-      projectIds: [1, 7, 8, 12, 13, 14, 16, 18],
+      projectIds: [1, 7, 8, 12, 13, 14, 16, 18, 19],
     },
     {
       id: "sass",
@@ -37,7 +37,7 @@ export const skills = {
       level: 72,
       description:
         "Core language across all web projects. ES6+ features, async/await, DOM manipulation, and event-driven architecture.",
-      projectIds: [1, 7, 8, 12, 13, 14, 16, 17, 18],
+      projectIds: [1, 7, 8, 12, 13, 14, 16, 17, 18, 19],
     },
     {
       id: "typescript",
@@ -45,8 +45,8 @@ export const skills = {
       icon: "SiTypescript",
       level: 65,
       description:
-        "Type-safe development with interfaces, generics, and strict typing. Used in production apps including The Fourth Clover, North-Star, Samiksha, and Swiggy Nexus.",
-      projectIds: [1, 4, 13, 16, 17, 18],
+        "Type-safe development with interfaces, generics, and strict typing. Used in production apps including The Fourth Clover, North-Star, Samiksha, Swiggy Nexus, and Prism.",
+      projectIds: [1, 4, 13, 16, 17, 18, 19],
     },
     {
       id: "react",
@@ -55,9 +55,8 @@ export const skills = {
       level: 70,
       description:
         "Primary frontend framework - hooks, context API, component architecture, and state management used across 7+ production projects.",
-      projectIds: [1, 2, 4, 10, 11, 12, 13, 14, 16, 17, 18],
-    },
-    {
+      projectIds: [1, 2, 4, 10, 11, 12, 13, 14, 16, 17, 18, 19],
+    },    {
       id: "nextjs",
       name: "Next.js",
       icon: "SiNextdotjs",
@@ -81,8 +80,8 @@ export const skills = {
       icon: "SiVite",
       level: 65,
       description:
-        "Modern build tool for lightning-fast HMR and optimized production builds. Powers this portfolio, Democrazy, Ishani, and Samiksha.",
-      projectIds: [12, 14, 16, 17],
+        "Modern build tool for lightning-fast HMR and optimized production builds. Powers this portfolio, Democrazy, Ishani, Samiksha, and Prism.",
+      projectIds: [12, 14, 16, 17, 19],
     },
     {
       id: "tailwind",
@@ -108,8 +107,8 @@ export const skills = {
       icon: "SiFastapi",
       level: 68,
       description:
-        "High-performance async Python APIs with auto-generated OpenAPI docs. Backend for DebateBot, North-Star, Shadow Instructor, Arbiter, Ishani, and Swiggy Nexus.",
-      projectIds: [2, 4, 10, 11, 14, 18],
+        "High-performance async Python APIs with auto-generated OpenAPI docs. Backend for DebateBot, North-Star, Shadow Instructor, Arbiter, Ishani, Swiggy Nexus, and Prism.",
+      projectIds: [2, 4, 10, 11, 14, 18, 19],
     },
     {
       id: "flask",
@@ -163,7 +162,7 @@ export const skills = {
       level: 72,
       description:
         "Designing RESTful APIs with proper status codes, authentication, pagination, and OpenAPI documentation across multiple backend projects.",
-      projectIds: [2, 3, 4, 7, 14, 18],
+      projectIds: [2, 3, 4, 7, 14, 18, 19],
     },
   ],
   machinelearning: [
@@ -174,7 +173,7 @@ export const skills = {
       level: 74,
       description:
         "Core language for AI/ML, backend development, and data science. Used across 8+ projects for everything from FastAPI backends to deep learning pipelines.",
-      projectIds: [2, 3, 4, 5, 6, 9, 10, 11, 14, 18],
+      projectIds: [2, 3, 4, 5, 6, 9, 10, 11, 14, 18, 19],
     },
     {
       id: "llms",
@@ -182,8 +181,8 @@ export const skills = {
       icon: "FaRobot",
       level: 80,
       description:
-        "Building sophisticated agentic workflows using Gemini 3.0/2.5, LLaMA 3.3 70B, and Groq. Prompt engineering, tool-calling, and multi-turn conversation design.",
-      projectIds: [2, 10, 11, 12, 14, 18],
+        "Building sophisticated agentic workflows using Gemini 3.0/2.5, LLaMA 3.3 70B, Groq, and local Ollama models. Prompt engineering, tool-calling, and multi-turn conversation design.",
+      projectIds: [2, 10, 11, 12, 14, 18, 19],
     },
     {
       id: "agentic",
@@ -191,8 +190,8 @@ export const skills = {
       icon: "FaBrain",
       level: 72,
       description:
-        "Designing Dual-Agent and Multi-Agent state machines - interview simulation (Shadow Instructor), autonomous CI/CD healing (Arbiter), and HITL commerce orchestration (Swiggy Nexus).",
-      projectIds: [10, 11, 18],
+        "Designing Dual-Agent and Multi-Agent state machines - interview simulation (Shadow Instructor), autonomous CI/CD healing (Arbiter), HITL commerce (Swiggy Nexus), and local enterprise routing (Prism).",
+      projectIds: [10, 11, 18, 19],
     },
     {
       id: "langgraph",
@@ -219,16 +218,34 @@ export const skills = {
       level: 75,
       description:
         "Crafting system prompts, few-shot examples, chain-of-thought reasoning, and structured output schemas across all AI projects.",
-      projectIds: [2, 10, 11, 12, 14, 18],
+      projectIds: [2, 10, 11, 12, 14, 18, 19],
     },
     {
       id: "rag",
       name: "RAG",
       icon: "FaBrain",
+      level: 62,
+      description:
+        "Retrieval-Augmented Generation for grounding LLM responses in domain documents — Utility indexing, Ishani chat, and Prism role-filtered hybrid retrieval.",
+      projectIds: [13, 14, 19],
+    },
+    {
+      id: "ollama",
+      name: "Ollama",
+      icon: "FaServer",
+      level: 60,
+      description:
+        "Local LLM runtime for offline inference. Prism runs embeddings (nomic-embed-text) and generation (qwen2.5) entirely on-device with no cloud LLM calls.",
+      projectIds: [19],
+    },
+    {
+      id: "chroma",
+      name: "Chroma",
+      icon: "FaBrain",
       level: 58,
       description:
-        "Retrieval-Augmented Generation for grounding LLM responses in domain-specific documents. Parallel indexing engine in Utility and RAG chat in Ishani.",
-      projectIds: [13, 14],
+        "Embedded vector store for RAG. Prism indexes five enterprise domains plus session uploads and filters chunks by RBAC role metadata before generation.",
+      projectIds: [19],
     },
     {
       id: "scikit-learn",
@@ -320,7 +337,7 @@ export const skills = {
       level: 78,
       description:
         "Version control, branching strategies, pull requests, and collaborative workflows. Every project lives on GitHub with proper commit history.",
-      projectIds: [1, 2, 3, 4, 5, 7, 10, 11, 12, 13, 16, 17, 18],
+      projectIds: [1, 2, 3, 4, 5, 7, 10, 11, 12, 13, 16, 17, 18, 19],
     },
     {
       id: "vercel",

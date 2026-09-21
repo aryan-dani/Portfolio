@@ -54,7 +54,7 @@ const SITE_CONTROL_PATTERNS = [
 
 const PORTFOLIO_QA_PATTERNS = [
   /\b(what|which|tell me about|how (do|did|can)|where (is|can)|who (is|built|made))\b/i,
-  /\b(email|resume|github|stack|tech|skills?|projects?|experience|certifications?|research|paper|threat|aegis|samiksha|swiggy|nexus|utility|ishani)\b/i,
+  /\b(email|resume|github|stack|tech|skills?|projects?|experience|certifications?|research|paper|threat|aegis|samiksha|swiggy|nexus|utility|ishani|prism)\b/i,
   /\b(aryan|dani|developer|built this|portfolio)\b/i,
 ];
 
@@ -83,7 +83,8 @@ export function lookupPortfolio(topic, query = "") {
     case "swiggy":
     case "utility":
     case "ishani":
-    case "clover": {
+    case "clover":
+    case "prism": {
       const keyMap = {
         aegis: "aegis",
         samiksha: "samiksha",
@@ -91,6 +92,7 @@ export function lookupPortfolio(topic, query = "") {
         utility: "utility",
         ishani: "ishani",
         clover: "clover",
+        prism: "prism",
       };
       const key = keyMap[topic];
       const p = projects.find((proj) => proj.title.toLowerCase().includes(key));

@@ -4,6 +4,7 @@ const TIP_POOL = {
     { label: "Hack mode", send: "hack mode" },
     { label: "Who built this?", send: "Who built this?" },
     { label: "Swiggy Nexus", send: "Tell me about Swiggy Nexus" },
+    { label: "Prism", send: "Tell me about Prism" },
     { label: "Aegis vault", send: "Tell me about Aegis" },
     { label: "Pet tip", send: "What can you do?" },
   ],

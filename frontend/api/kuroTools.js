@@ -29,6 +29,7 @@ export const LOOKUP_TOPICS = [
   "utility",
   "ishani",
   "clover",
+  "prism",
   "contact",
   "achievements",
   "certifications",
