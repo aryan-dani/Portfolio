@@ -1,74 +1,93 @@
-import { useState, useEffect, memo } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState, memo } from "react";
 
+/**
+ * Role typewriter — plain timers (no Framer Motion).
+ * Survives Edge "Animation effects" off / prefers-reduced-motion.
+ */
 const TypeWriter = memo(function TypeWriter({
   texts = [],
-  speed = 100,
-  deleteSpeed = 50,
-  pauseTime = 2000,
+  speed = 120,
+  deleteSpeed = 60,
+  pauseTime = 3200,
   className = "",
 }) {
   const [displayText, setDisplayText] = useState("");
-  const [textIndex, setTextIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isWaiting, setIsWaiting] = useState(false);
+  const indexRef = useRef(0);
+  const phaseRef = useRef("typing"); // typing | pausing | deleting
+  const textRef = useRef("");
+  const textsRef = useRef(texts);
+  textsRef.current = texts;
 
   useEffect(() => {
-    if (texts.length === 0) return;
+    const roles = textsRef.current;
+    if (!Array.isArray(roles) || roles.length === 0) return undefined;
 
-    const currentText = texts[textIndex];
+    let timer = 0;
+    textRef.current = "";
+    indexRef.current = 0;
+    phaseRef.current = "typing";
+    setDisplayText("");
 
-    if (isWaiting) {
-      const waitTimer = setTimeout(() => {
-        setIsWaiting(false);
-        setIsDeleting(true);
-      }, pauseTime);
-      return () => clearTimeout(waitTimer);
-    }
+    const schedule = (ms) => {
+      clearTimeout(timer);
+      timer = window.setTimeout(step, ms);
+    };
 
-    if (isDeleting) {
-      if (displayText === "") {
-        setIsDeleting(false);
-        setTextIndex((prev) => (prev + 1) % texts.length);
-      } else {
-        const deleteTimer = setTimeout(() => {
-          setDisplayText((prev) => prev.slice(0, -1));
-        }, deleteSpeed);
-        return () => clearTimeout(deleteTimer);
+    const step = () => {
+      const list = textsRef.current;
+      if (!list.length) return;
+
+      const i = indexRef.current % list.length;
+      const full = list[i] || "";
+      const phase = phaseRef.current;
+      const current = textRef.current;
+
+      if (phase === "pausing") {
+        phaseRef.current = "deleting";
+        schedule(deleteSpeed);
+        return;
       }
-    } else {
-      if (displayText === currentText) {
-        setIsWaiting(true);
-      } else {
-        const typeTimer = setTimeout(() => {
-          setDisplayText(currentText.slice(0, displayText.length + 1));
-        }, speed);
-        return () => clearTimeout(typeTimer);
+
+      if (phase === "deleting") {
+        if (current.length <= 1) {
+          textRef.current = "";
+          setDisplayText("");
+          phaseRef.current = "typing";
+          indexRef.current = (indexRef.current + 1) % list.length;
+          schedule(speed);
+          return;
+        }
+        const next = current.slice(0, -1);
+        textRef.current = next;
+        setDisplayText(next);
+        schedule(deleteSpeed);
+        return;
       }
-    }
-  }, [
-    displayText,
-    textIndex,
-    isDeleting,
-    isWaiting,
-    texts,
-    speed,
-    deleteSpeed,
-    pauseTime,
-  ]);
+
+      // typing
+      if (current.length >= full.length) {
+        textRef.current = full;
+        setDisplayText(full);
+        phaseRef.current = "pausing";
+        schedule(pauseTime);
+        return;
+      }
+      const next = full.slice(0, current.length + 1);
+      textRef.current = next;
+      setDisplayText(next);
+      schedule(speed);
+    };
+
+    schedule(320);
+    return () => clearTimeout(timer);
+  }, [speed, deleteSpeed, pauseTime]);
 
   return (
-    <span className={`typewriter ${className}`}>
-      <motion.span
-        key={textIndex}
-        initial={{ scale: 0.95 }}
-        animate={{ scale: [1, 1.05, 1] }}
-        transition={{ type: "spring", stiffness: 450, damping: 15 }}
-        style={{ display: "inline-block" }}
-      >
-        {displayText}
-      </motion.span>
-      <span className="typewriter__cursor">|</span>
+    <span className={`typewriter ${className}`} aria-live="polite">
+      <span className="typewriter__text">{displayText || "\u00A0"}</span>
+      <span className="typewriter__cursor" aria-hidden="true">
+        |
+      </span>
     </span>
   );
 });

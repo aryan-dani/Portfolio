@@ -1109,14 +1109,19 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   display: inline;
 }
 
+.typewriter__text {
+  display: inline;
+}
+
 .typewriter__cursor {
   display: inline-block;
-  width: 2px;
-  color: var(--color-primary-container);
-  font-weight: 300;
+  width: 0.55ch;
+  color: currentColor;
+  font-weight: 700;
   animation: blink-cursor 0.7s step-end infinite;
-  margin-left: 1px;
+  margin-left: 2px;
 }
+
 
 /* ═══════════════════════════════════════════════════════════════
    PLAYGROUND CLI
@@ -1199,6 +1204,11 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 
   .page-loader__orbital {
     animation: none !important;
+  }
+
+  /* Keep the role typewriter caret living — typing itself is JS, not CSS. */
+  .typewriter__cursor {
+    animation: blink-cursor 0.7s step-end infinite !important;
   }
 }
 

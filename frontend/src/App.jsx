@@ -197,8 +197,7 @@ const OuterProviders = composeProviders(ThemeProvider, SmoothScrollProvider, Sou
 
 function App() {
   return (
-    // MotionConfig with reducedMotion="user" instructs Framer Motion to
-    // automatically disable animations for users with prefers-reduced-motion set.
+    // MotionConfig with reducedMotion="user" respects OS prefers-reduced-motion.
     <MotionConfig reducedMotion="user">
       <OuterProviders>
         <NoiseOverlay />

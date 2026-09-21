@@ -91,13 +91,10 @@ const Home = memo(function Home() {
             </motion.h1>
           </motion.div>
 
-          {/* Role typewriter */}
-          <motion.h2
-            className="font-headline-md text-lg md:text-2xl text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase"
-            variants={itemVariants}
-          >
-            <TypeWriter texts={roles} speed={80} deleteSpeed={40} pauseTime={2500} />
-          </motion.h2>
+          {/* Role typewriter — plain h2 so Edge reduced-motion can't leave it at opacity ~0 */}
+          <h2 className="font-headline-md text-lg md:text-2xl text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase opacity-100">
+            <TypeWriter texts={roles} speed={120} deleteSpeed={60} pauseTime={3200} />
+          </h2>
 
           {/* Bio */}
           <motion.p
