@@ -51,7 +51,8 @@ export default async function handler(request, response) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     return response.status(503).json({
-      error: "Contact endpoint is not configured. Add RESEND_API_KEY in production.",
+      error: "The form inbox is briefly offline. Use the email button or your mail app.",
+      code: "EMAIL_NOT_CONFIGURED",
     });
   }
 

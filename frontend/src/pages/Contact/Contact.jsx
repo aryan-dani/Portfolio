@@ -39,6 +39,19 @@ const FAQ_ITEMS = [
 
 const CONTACT_ENDPOINT = import.meta.env.VITE_CONTACT_ENDPOINT || "/api/contact";
 
+function openMailtoFallback({ name, email, subject, message }) {
+  const topic = subject || "Portfolio Contact";
+  const body = [
+    `Name: ${name}`,
+    `Email: ${email}`,
+    `Subject: ${topic}`,
+    "",
+    message,
+  ].join("\n");
+  const href = `mailto:${aboutInfo.email}?subject=${encodeURIComponent(`[Portfolio] ${topic} from ${name}`)}&body=${encodeURIComponent(body.slice(0, 1800))}`;
+  window.location.href = href;
+}
+
 // ── Confetti burst on submit ──────────────────────────────────
 
 function ConfettiBurst({ active }) {
@@ -130,12 +143,15 @@ function Contact() {
         setShowConfetti(true);
         showToast("Message sent successfully!", "success");
         setFormData({ name: "", email: "", subject: "", message: "" });
+      } else if (response.status === 503 || result.code === "EMAIL_NOT_CONFIGURED") {
+        openMailtoFallback(payload);
+        showToast("Opening your email app so the message still goes through.", "success");
       } else {
-        throw new Error(result.message || result.error || "Failed to send message");
+        throw new Error("Could not send just now. Copy the email on the right and try that.");
       }
     } catch (error) {
       console.error("Contact form error:", error);
-      showToast(error.message || "Direct send failed. Please try again in a moment.", "error");
+      showToast(error.message || "Could not send just now. Use the email button instead.", "error");
     } finally {
       setIsSubmitting(false);
       setTimeout(() => { setSubmitted(false); setShowConfetti(false); }, 3500);
