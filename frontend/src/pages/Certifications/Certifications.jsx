@@ -222,7 +222,7 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
                 transition={{ type: "spring", stiffness: 350, damping: 15, delay: (index % 3) * 0.05 + 0.25 }}
               >
                 <img
-                  src={cert.issuerLogo}
+                  src={getAssetPath(cert.issuerLogo)}
                   alt={`${cert.issuer} logo`}
                   width="40"
                   height="40"

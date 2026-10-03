@@ -1,5 +1,19 @@
 const certificationEntries = [
   {
+    id: 10,
+    title: "Introduction to Operating Systems",
+    issuer: "NPTEL",
+    issuerLogo: "/Images/Certifications/nptel_logo.jpg",
+    date: "SEP 2026",
+    category: "none",
+    badge: "Systems",
+    tag: "Elite · Top 2%",
+    description:
+      "NPTEL Elite certificate for the 8-week Introduction to Operating Systems course (JUL-SEP 2026), ranked in the top 2% of 4,513 certified candidates with a consolidated score of 72% (assignments 23.75/25, exam 48/75). Covered process management, scheduling, memory, and core OS concepts; 3 credits recommended.",
+    image: "/Images/Certifications/NPTEL_Introduction_to_Operating_Systems.png",
+    link: "https://nptel.ac.in/noc/E_Certificate/NPTEL26CS123S366200414",
+  },
+  {
     id: 9,
     title: "Google Student Ambassador Program",
     issuer: "Google Gemini",

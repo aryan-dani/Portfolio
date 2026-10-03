@@ -2,5 +2,5 @@
 export const portfolioStats = {
   projects: 18,
   skills: 42,
-  certifications: 9,
+  certifications: 10,
 };
