@@ -1,5 +1,19 @@
 const certificationEntries = [
   {
+    id: 11,
+    title: "Certificate Program in AI & ML",
+    issuer: "FutureSkills Prime",
+    issuerLogo: "/Images/Certifications/futureskills_prime_logo.png",
+    date: "OCT 2026",
+    category: "ai-ml",
+    badge: "AI & ML",
+    tag: "Gold",
+    description:
+      "FutureSkills Prime Gold certificate (70% and above) for the Certificate Program in AI & ML, issued 7 October 2026. Aligned to IT-ITeS Sector Skills Council Nasscom competency standards developed with industry and approved by the Government of India. Assessment score 77/100. Certification ID FSP/2026/10/10469698.",
+    image: "/Images/Certifications/FutureSkills_Prime_AI_ML.png",
+    link: "https://inspiration-fun-7467.my.salesforce-sites.com/CDACcertificatePage2?id=a02Vy00001UymJJIAZ",
+  },
+  {
     id: 10,
     title: "Introduction to Operating Systems",
     issuer: "NPTEL",
@@ -11,7 +25,7 @@ const certificationEntries = [
     description:
       "NPTEL Elite certificate for the 8-week Introduction to Operating Systems course (JUL-SEP 2026), ranked in the top 2% of 4,513 certified candidates with a consolidated score of 72% (assignments 23.75/25, exam 48/75). Covered process management, scheduling, memory, and core OS concepts; 3 credits recommended.",
     image: "/Images/Certifications/NPTEL_Introduction_to_Operating_Systems.png",
-    link: "https://nptel.ac.in/noc/E_Certificate/NPTEL26CS123S366200414",
+    link: "https://nptel.ac.in/verify/NOC-T7XK-3W26-HGCHG",
   },
   {
     id: 9,
