@@ -433,7 +433,7 @@ export const SEO_CONFIG = {
   "/certifications": {
     title: "Certifications - Aryan Dani | AI & Cloud Credentials",
     description:
-      "Industry-recognized certifications earned by Aryan Dani across AI, cloud computing, web development, and data science from Google, IBM, Meta, and more.",
+      "Industry certifications earned by Aryan Dani across AI, cloud, and web, including NPTEL Elite, FutureSkills Prime Gold, Google Cloud, and IBM. On this site.",
     keywords:
       "Aryan Dani certifications, AI certifications, cloud certifications, Google certifications, developer credentials",
     canonical: `${SITE_URL}/certifications`,
@@ -591,7 +591,8 @@ export const SEO_CONFIG = {
 
   "/achievements": {
     title: "Achievements - Aryan Dani Portfolio | Trophy Wall",
-    description: "Unlock achievements by exploring Aryan Dani's portfolio - CLI commands, easter eggs, and hidden modes.",
+    description:
+      "Aryan Dani portfolio trophy wall. Unlock achievements by running CLI commands, finding easter eggs, and discovering hidden modes throughout this site.",
     keywords: "portfolio achievements, gamified portfolio, Aryan Dani",
     canonical: `${SITE_URL}/achievements`,
     robots: DEFAULT_ROBOTS,
@@ -607,7 +608,8 @@ export const SEO_CONFIG = {
 
   "/guestbook": {
     title: "Guestbook - Aryan Dani Portfolio | Sign The Wall",
-    description: "Leave a message on Aryan Dani's portfolio guestbook wall.",
+    description:
+      "Leave a public note on Aryan Dani's portfolio guestbook wall. Share a hello, project feedback, or a short reaction with other visitors who stop by today.",
     keywords: "portfolio guestbook, Aryan Dani",
     canonical: `${SITE_URL}/guestbook`,
     robots: DEFAULT_ROBOTS,
@@ -624,10 +626,10 @@ export const SEO_CONFIG = {
   "/copyright": {
     title: "Copyright & License - Aryan Dani Portfolio",
     description:
-      "MIT License and copyright information for Aryan Dani's portfolio website. Open source portfolio template.",
+      "MIT License and copyright terms for Aryan Dani's portfolio website source code. See what you can reuse, share, and modify in this open-source project.",
     keywords: "Aryan Dani copyright, MIT License, portfolio license",
     canonical: `${SITE_URL}/copyright`,
-    robots: "noindex, follow",
+    robots: DEFAULT_ROBOTS,
     imageAlt: "Copyright and license information for Aryan Dani portfolio",
     priority: SEO_ROUTE_META["/copyright"].priority,
     changefreq: SEO_ROUTE_META["/copyright"].changefreq,

@@ -5,6 +5,12 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+    inputs:
+      ping_indexnow:
+        description: Ping IndexNow for www.aryandani.com after production is live
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -55,3 +61,25 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  ping-indexnow:
+    if: github.event_name == 'workflow_dispatch' && inputs.ping_indexnow == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Ping IndexNow
+        working-directory: ./frontend
+        run: npm run indexnow

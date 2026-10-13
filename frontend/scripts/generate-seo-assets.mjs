@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { SEO_ROUTE_ORDER, SEO_ROUTE_META, SITE_URL } from "../src/config/seoConfig.js";
+import { INDEXNOW_KEY } from "./indexnow-key.mjs";
 import { writeSitemap } from "./generate-sitemap.mjs";
 
 const publicDir = new URL("../public/", import.meta.url);
@@ -132,6 +133,7 @@ function buildFaviconSvg() {
 
 await mkdir(new URL("favicons/", publicDir), { recursive: true });
 const sitemap = await writeSitemap();
+await writePublicFile(`${INDEXNOW_KEY}.txt`, INDEXNOW_KEY);
 await writePublicFile("robots.txt", buildRobots());
 await writePublicFile("llms.txt", buildLlmsTxt());
 await writePublicFile("humans.txt", buildHumansTxt());

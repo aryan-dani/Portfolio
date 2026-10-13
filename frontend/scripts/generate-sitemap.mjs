@@ -7,7 +7,7 @@ import { execSync } from "node:child_process";
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { SEO_ROUTE_META, SEO_ROUTE_ORDER, SITE_URL } from "../src/config/seoConfig.js";
+import { SEO_CONFIG, SEO_ROUTE_META, SEO_ROUTE_ORDER, SITE_URL } from "../src/config/seoConfig.js";
 import { projects } from "../src/data/projects.js";
 import { researchPapers } from "../src/data/research.js";
 
@@ -43,9 +43,14 @@ function resolveLastmod() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function isIndexableRoute(path) {
+  const robots = SEO_CONFIG[path]?.robots || "";
+  return !/noindex/i.test(robots);
+}
+
 /** Top-level pages + deep-linkable project cards (query highlights). */
 export function collectSitemapEntries(lastmod = resolveLastmod()) {
-  const entries = SEO_ROUTE_ORDER.map((path) => {
+  const entries = SEO_ROUTE_ORDER.filter(isIndexableRoute).map((path) => {
     const meta = SEO_ROUTE_META[path] || {
       priority: path === "/" ? "1.0" : "0.8",
       changefreq: "monthly",

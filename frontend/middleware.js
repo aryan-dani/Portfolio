@@ -42,6 +42,7 @@ export default async function middleware(request) {
   const shell = await fetch(new URL("/index.html", url.origin));
   const headers = new Headers(shell.headers);
   headers.set("x-portfolio-not-found", "1");
+  headers.set("x-robots-tag", "noindex, follow");
   headers.set("cache-control", "no-store");
 
   return new Response(shell.body, {

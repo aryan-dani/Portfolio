@@ -10,6 +10,7 @@
     "build": "node scripts/generate-seo-assets.mjs && vite build && node scripts/prerender-seo.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "generate:seo": "node scripts/generate-seo-assets.mjs",
+    "indexnow": "node scripts/ping-indexnow.mjs",
     "preview": "vite preview",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
