@@ -71,7 +71,7 @@ const projectEntries = [
     skillIds: ["nextjs", "typescript", "supabase", "tailwind", "react", "javascript", "html5", "css3", "git", "vercel"],
     links: {
       github: "https://github.com/aryan-dani/The-Fourth-Clover",
-      preview: "https://thefourthclover.bio/",
+      preview: "https://thefourthclover.netlify.app/",
     },
   },
   {

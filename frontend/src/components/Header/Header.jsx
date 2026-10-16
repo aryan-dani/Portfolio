@@ -35,10 +35,10 @@ const menuItemVariants = {
 
 // Fix #7: Shared mobile nav class function — eliminates verbatim duplication across Home + nav items
 const mobileNavClass = ({ isActive }) =>
-  `block w-full text-center py-3 px-4 border-4 transition-all text-[var(--color-on-surface)] ${
+  `block w-full text-center py-3 px-4 border-4 transition-all ${
     isActive
       ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-outline shadow-[4px_4px_0_0_var(--shadow-color)]"
-      : "border-transparent hover:border-outline hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
+      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] border-outline shadow-[3px_3px_0_0_var(--shadow-color)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
   }`;
 
 // Fix #6: Extract shared ThemeToggleButton to eliminate 40-line duplication between desktop and mobile
@@ -91,6 +91,24 @@ function Header() {
   useEffect(() => {
     if (!showChrome) setIsMenuOpen(false);
   }, [showChrome]);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setIsMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     if (!showChrome || !navRef.current) return undefined;
@@ -229,33 +247,34 @@ function Header() {
             </div>
       </motion.nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu: opaque sheet above the dock so page content cannot bleed through */}
       <AnimatePresence>
         {isMenuOpen && showChrome && (
           <motion.div
-            className="lg:hidden fixed inset-0 z-40 top-[64px] md:top-[80px] flex flex-col items-center pt-8 pb-8 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-4 overflow-y-auto"
-            style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 96%, transparent)" }}
+            className="lg:hidden fixed inset-x-0 bottom-0 top-16 md:top-[4.25rem] z-[60] flex flex-col items-center px-4 pt-6 pb-28 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-3 overflow-y-auto overscroll-contain bg-[var(--color-background)]"
             variants={menuVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
           >
-            {/* Home item */}
-            <motion.div variants={menuItemVariants} className="w-[80%]">
+            <motion.div variants={menuItemVariants} className="w-full max-w-sm">
               <NavLink to="/" onClick={closeMenu} className={mobileNavClass}>
                 Home
               </NavLink>
             </motion.div>
 
             {headerNavItems.map((item) => (
-              <motion.div key={item.path} variants={menuItemVariants} className="w-[80%]">
+              <motion.div key={item.path} variants={menuItemVariants} className="w-full max-w-sm">
                 <NavLink to={item.path} onClick={closeMenu} className={mobileNavClass}>
                   {item.label}
                 </NavLink>
               </motion.div>
             ))}
 
-            <motion.div variants={menuItemVariants} className="w-[80%] mt-2">
+            <motion.div variants={menuItemVariants} className="w-full max-w-sm mt-2">
               <NavLink
                 to="/contact"
                 onClick={closeMenu}
