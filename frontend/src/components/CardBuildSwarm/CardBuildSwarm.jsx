@@ -17,7 +17,7 @@ const FAST_SWEEP_KEYS = new Set(["skills", "achievements"]);
 const ROW_TOLERANCE = 56;
 const PEN_MS = 52;
 const CHAOS_PEN_MS = 48;
-const CHAOS_FLY_MS = 70;
+const CHAOS_FLY_MS = 160;
 const CHAOS_EDGE_STEPS = 6;
 const CHAOS_MEDIA_STEPS = 8;
 const TYPE_CHUNK = 2;
@@ -273,10 +273,11 @@ function headingBetween(from, to) {
   return (Math.atan2(to.y - from.y, to.x - from.x) * 180) / Math.PI;
 }
 
-const BOT_EASE = [0.22, 1, 0.36, 1];
+const BOT_EASE = [0.16, 1, 0.3, 1];
 const KURO_SWARM_EVENT = "portfolio:kuro-swarm";
-const KURO_HOP_MS = 240;
-const KURO_STAGGER_MS = 160;
+const KURO_LAUNCH_MS = 720;
+const KURO_DOCK_MS = 820;
+const KURO_STAGGER_MS = 110;
 
 function emitKuroSwarm(phase) {
   window.dispatchEvent(
@@ -320,9 +321,11 @@ function AgentCursorSprite({
   rotate,
   pulse,
   flight = "work",
+  moveMs = 140,
 }) {
   const flying = flight === "launch" || flight === "dock";
-  const planeAngle = flying ? rotate : rotate * 0.18;
+  const planeAngle = flying ? rotate : rotate * 0.12;
+  const duration = Math.max(0.08, (moveMs || 140) / 1000);
 
   return (
     <motion.div
@@ -333,29 +336,19 @@ function AgentCursorSprite({
         x,
         y,
         opacity,
-        scale: pulse ? scale * 1.12 : scale,
+        scale: pulse ? scale * 1.08 : scale,
         rotate: planeAngle,
       }}
-      transition={{ duration: flying ? 0.55 : 0.14, ease: BOT_EASE }}
+      transition={{ duration, ease: BOT_EASE }}
     >
       <div className="relative -translate-x-1/2 -translate-y-1/2">
         {flying ? (
           <motion.div
             className="flex flex-col items-center"
-            animate={pulse ? { scale: [1, 1.12, 1] } : { scale: 1 }}
-            transition={{ duration: 0.4, ease: BOT_EASE }}
+            animate={pulse ? { scale: [1, 1.08, 1] } : { scale: 1 }}
+            transition={{ duration: 0.35, ease: BOT_EASE }}
           >
-            <PaperPlaneMark accent={accent} size={32} />
-            <div
-              className="mt-1 whitespace-nowrap border-2 px-1.5 py-0.5 font-label-bold text-[10px] uppercase tracking-[0.14em] shadow-[2px_2px_0_0_rgba(0,0,0,0.35)]"
-              style={{
-                background: CURSOR_LIGHT,
-                color: CURSOR_DARK,
-                borderColor: accent || CURSOR_DARK,
-              }}
-            >
-              {flight === "dock" ? `${label} in` : label}
-            </div>
+            <PaperPlaneMark accent={accent} size={30} />
           </motion.div>
         ) : (
           <>
@@ -837,7 +830,7 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
 
       const moveCursor = async (agentIndex, point, ms = CHAOS_PEN_MS, opts = {}) => {
         const from = cursorPosRef.current[agentIndex] || point;
-        const rotate = headingBetween(from, point);
+        const rotate = opts.rotate ?? headingBetween(from, point);
         cursorPosRef.current[agentIndex] = { x: point.x, y: point.y, rotate };
         setCursors((prev) =>
           prev.map((c, idx) => {
@@ -847,10 +840,11 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
               x: point.x,
               y: point.y,
               opacity: opts.opacity ?? 1,
-              scale: opts.scale ?? 1,
+              scale: opts.scale ?? c.scale ?? 1,
               rotate,
               pulse: Boolean(opts.pulse),
               flight: opts.flight ?? c.flight ?? "work",
+              moveMs: ms,
             };
           }),
         );
@@ -865,21 +859,19 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
       const flyDiagonal = async (agentIndex, to, flight = "work") => {
         const from = cursorPosRef.current[agentIndex] || to;
         const bias = agentIndex % 2 === 0 ? 1 : -1;
-        const midA = diagonalVia(from, to, bias, flight === "work" ? 0.42 : 0.55);
-        const midB = diagonalVia(from, to, -bias * 0.55, flight === "work" ? 0.22 : 0.32);
-        if (flight === "launch") {
-          midA.y -= 36 + agentIndex * 8;
-          midB.y -= 18;
-        } else if (flight === "dock") {
-          midA.y -= 24;
-          midB.y += 10;
-        }
-        const hop = flight === "work" ? CHAOS_FLY_MS : KURO_HOP_MS;
-        await moveCursor(agentIndex, midA, hop, { flight });
+        const via = diagonalVia(from, to, bias, flight === "work" ? 0.45 : 0.5);
+        if (flight === "launch") via.y -= 42 + agentIndex * 6;
+        if (flight === "dock") via.y -= 30;
+        const total = flight === "work" ? CHAOS_FLY_MS : flight === "launch" ? KURO_LAUNCH_MS : KURO_DOCK_MS;
+        const midMs = Math.round(total * 0.45);
+        const endMs = total - midMs;
+        await moveCursor(agentIndex, via, midMs, { flight });
         if (!stillActive()) return;
-        await moveCursor(agentIndex, midB, Math.round(hop * 0.85), { flight });
-        if (!stillActive()) return;
-        await moveCursor(agentIndex, to, flight === "work" ? CHAOS_PEN_MS : hop, { flight });
+        await moveCursor(agentIndex, to, endMs, {
+          flight,
+          scale: flight === "dock" ? 0.12 : 1,
+          opacity: flight === "dock" ? 0 : 1,
+        });
       };
 
       const docked = AGENTS.map(() => false);
@@ -891,32 +883,26 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         if (!stillActive()) return;
         const kuro = getKuroDockPoint(agentIndex);
         const from = cursorPosRef.current[agentIndex] || kuro;
-        // Fold into a plane and hold so the dock is readable.
         setCursors((prev) =>
           prev.map((c, idx) =>
             idx === agentIndex
-              ? { ...c, flight: "dock", scale: 1.35, pulse: true, opacity: 1 }
+              ? { ...c, flight: "dock", scale: 1.05, pulse: false, opacity: 1, moveMs: 180 }
               : c,
           ),
         );
-        await delay(320);
+        await delay(120);
         if (!stillActive()) return;
-        const scales = [1.15, 0.85, 0.55, 0.28];
-        for (let i = 1; i <= 4; i += 1) {
-          const t = i / 4;
-          const arc = Math.sin(t * Math.PI) * -28;
-          await moveCursor(
-            agentIndex,
-            {
-              x: from.x + (kuro.x - from.x) * t,
-              y: from.y + (kuro.y - from.y) * t + arc,
-            },
-            KURO_HOP_MS,
-            { scale: scales[i - 1], flight: "dock" },
-          );
-          if (!stillActive()) return;
-        }
-        await moveCursor(agentIndex, kuro, 280, {
+        // One smooth arc into Kuro — no stepped hops.
+        const peak = {
+          x: from.x + (kuro.x - from.x) * 0.45,
+          y: Math.min(from.y, kuro.y) - 48,
+        };
+        await moveCursor(agentIndex, peak, Math.round(KURO_DOCK_MS * 0.4), {
+          flight: "dock",
+          scale: 0.85,
+        });
+        if (!stillActive()) return;
+        await moveCursor(agentIndex, kuro, Math.round(KURO_DOCK_MS * 0.6), {
           scale: 0.08,
           flight: "dock",
           opacity: 0,
@@ -930,7 +916,11 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         await delay(agentIndex * KURO_STAGGER_MS);
         if (!stillActive()) return;
         const kuro = getKuroDockPoint(agentIndex);
-        cursorPosRef.current[agentIndex] = { ...kuro, rotate: -50 };
+        const lift = {
+          x: kuro.x + 28 + agentIndex * 12,
+          y: kuro.y - (78 + agentIndex * 10),
+        };
+        cursorPosRef.current[agentIndex] = { ...kuro, rotate: headingBetween(kuro, lift) };
         setCursors((prev) =>
           prev.map((c, idx) =>
             idx === agentIndex
@@ -939,34 +929,28 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
                   x: kuro.x,
                   y: kuro.y,
                   opacity: 1,
-                  scale: 0.12,
-                  rotate: -50,
-                  pulse: true,
+                  scale: 0.15,
+                  rotate: headingBetween(kuro, lift),
+                  pulse: false,
                   flight: "launch",
+                  moveMs: 80,
                 }
               : c,
           ),
         );
-        await delay(220);
+        await delay(40);
         if (!stillActive()) return;
-        const scales = [0.35, 0.6, 0.9, 1.15];
-        for (let i = 1; i <= 4; i += 1) {
-          const t = i / 4;
-          await moveCursor(
-            agentIndex,
-            {
-              x: kuro.x + (36 + agentIndex * 14) * t,
-              y: kuro.y - (70 + agentIndex * 8) * t,
-            },
-            KURO_HOP_MS,
-            { scale: scales[i - 1], flight: "launch", pulse: i === 1 },
-          );
-          if (!stillActive()) return;
-        }
-        await delay(160);
+        // One smooth climb out of Kuro.
+        await moveCursor(agentIndex, lift, KURO_LAUNCH_MS, {
+          scale: 1,
+          flight: "launch",
+        });
+        if (!stillActive()) return;
         setCursors((prev) =>
           prev.map((c, idx) =>
-            idx === agentIndex ? { ...c, flight: "work", scale: 1, pulse: false } : c,
+            idx === agentIndex
+              ? { ...c, flight: "work", scale: 1, pulse: false, moveMs: 160 }
+              : c,
           ),
         );
         docked[agentIndex] = false;
@@ -1490,6 +1474,7 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
             rotate={c.rotate || 0}
             pulse={c.pulse}
             flight={c.flight || "work"}
+            moveMs={c.moveMs || 140}
           />
         ))}
     </>,
