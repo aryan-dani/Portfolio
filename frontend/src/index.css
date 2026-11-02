@@ -241,6 +241,252 @@ html.theme-transitioning body {
   }
 }
 
+/* Catalog cards: pen-led construction — nothing appears until the cursor draws it */
+[data-build-card][data-build-phase] {
+  --draw-top: 0%;
+  --draw-right: 0%;
+  --draw-bottom: 0%;
+  --draw-left: 0%;
+}
+
+[data-build-card][data-build-phase="blueprint"],
+[data-build-card][data-build-phase="frame"] {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  background-color: var(--color-surface);
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 6px,
+      color-mix(in srgb, var(--color-outline) 14%, transparent) 6px,
+      color-mix(in srgb, var(--color-outline) 14%, transparent) 7px
+    ),
+    linear-gradient(to right, var(--color-outline), var(--color-outline)),
+    linear-gradient(to bottom, var(--color-outline), var(--color-outline)),
+    linear-gradient(to left, var(--color-outline), var(--color-outline)),
+    linear-gradient(to top, var(--color-outline), var(--color-outline));
+  background-size:
+    auto,
+    var(--draw-top) 4px,
+    4px var(--draw-right),
+    var(--draw-bottom) 4px,
+    4px var(--draw-left);
+  background-position:
+    0 0,
+    left top,
+    right top,
+    right bottom,
+    left bottom;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
+[data-build-card][data-build-phase="blueprint"] > *,
+[data-build-card][data-build-phase="frame"] > * {
+  opacity: 0 !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* After the pen closes the loop, keep the drawn edge while media opens */
+[data-build-card][data-build-phase="media"],
+[data-build-card][data-build-phase="type"],
+[data-build-card][data-build-phase="meta"] {
+  border-color: transparent !important;
+  background-image:
+    linear-gradient(to right, var(--color-outline), var(--color-outline)),
+    linear-gradient(to bottom, var(--color-outline), var(--color-outline)),
+    linear-gradient(to left, var(--color-outline), var(--color-outline)),
+    linear-gradient(to top, var(--color-outline), var(--color-outline));
+  background-size:
+    var(--draw-top, 100%) 4px,
+    4px var(--draw-right, 100%),
+    var(--draw-bottom, 100%) 4px,
+    4px var(--draw-left, 100%);
+  background-position: left top, right top, right bottom, left bottom;
+  background-repeat: no-repeat;
+}
+
+[data-build-card][data-build-phase="media"] > *:not([data-build-part="media"]) {
+  opacity: 0 !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+[data-build-card][data-build-phase="media"] > [data-build-part="media"] {
+  opacity: 1 !important;
+  visibility: visible;
+}
+
+[data-build-card][data-build-phase="type"] > [data-build-part="media"] {
+  opacity: 1 !important;
+  visibility: visible;
+}
+
+/* Content shell may show; title/blurb/meta still wait for the pen */
+[data-build-card][data-build-phase="type"] > *:not([data-build-part="media"]) {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-build-card][data-build-phase="type"] [data-build-part="title"]:not([data-writing]):not([data-written]),
+[data-build-card][data-build-phase="type"] [data-build-part="blurb"]:not([data-writing]):not([data-written]) {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
+[data-build-card][data-build-phase="type"] [data-build-part="title"][data-writing],
+[data-build-card][data-build-phase="type"] [data-build-part="title"][data-written],
+[data-build-card][data-build-phase="type"] [data-build-part="blurb"][data-writing],
+[data-build-card][data-build-phase="type"] [data-build-part="blurb"][data-written] {
+  opacity: 1 !important;
+  visibility: visible;
+}
+
+[data-build-card][data-build-phase="type"] [data-build-part="meta"] {
+  opacity: 0 !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+[data-build-card][data-build-phase="meta"] > *,
+[data-build-card][data-build-phase="meta"] [data-build-part="media"],
+[data-build-card][data-build-phase="meta"] [data-build-part="title"],
+[data-build-card][data-build-phase="meta"] [data-build-part="blurb"],
+[data-build-card][data-build-phase="done"] > *,
+[data-build-card][data-build-phase="done"] [data-build-part] {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-build-card][data-build-phase="meta"] [data-build-part="meta"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-build-card][data-build-phase="meta"] [data-build-part="meta"] > *:not([data-built]) {
+  opacity: 0 !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+[data-build-card][data-build-phase="meta"] [data-build-part="meta"] > [data-built] {
+  opacity: 1 !important;
+  visibility: visible;
+}
+
+/* Chaos mode: concurrent pens — reveal by attrs, never hide finished work */
+[data-build-card][data-build-phase="chaos"]:not([data-framed]) {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  background-color: var(--color-surface);
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 6px,
+      color-mix(in srgb, var(--color-outline) 14%, transparent) 6px,
+      color-mix(in srgb, var(--color-outline) 14%, transparent) 7px
+    ),
+    linear-gradient(to right, var(--color-outline), var(--color-outline)),
+    linear-gradient(to bottom, var(--color-outline), var(--color-outline)),
+    linear-gradient(to left, var(--color-outline), var(--color-outline)),
+    linear-gradient(to top, var(--color-outline), var(--color-outline));
+  background-size:
+    auto,
+    var(--draw-top) 4px,
+    4px var(--draw-right),
+    var(--draw-bottom) 4px,
+    4px var(--draw-left);
+  background-position:
+    0 0,
+    left top,
+    right top,
+    right bottom,
+    left bottom;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
+[data-build-card][data-build-phase="chaos"][data-framed] {
+  border-color: transparent !important;
+  background-image:
+    linear-gradient(to right, var(--color-outline), var(--color-outline)),
+    linear-gradient(to bottom, var(--color-outline), var(--color-outline)),
+    linear-gradient(to left, var(--color-outline), var(--color-outline)),
+    linear-gradient(to top, var(--color-outline), var(--color-outline));
+  background-size:
+    var(--draw-top, 100%) 4px,
+    4px var(--draw-right, 100%),
+    var(--draw-bottom, 100%) 4px,
+    4px var(--draw-left, 100%);
+  background-position: left top, right top, right bottom, left bottom;
+  background-repeat: no-repeat;
+  transition: box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-build-card][data-build-phase="chaos"] > * {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-build-card][data-build-phase="chaos"] [data-build-part="media"]:not([data-media-open]) {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-build-card][data-build-phase="chaos"] [data-build-part="title"]:not([data-writing]):not([data-written]),
+[data-build-card][data-build-phase="chaos"] [data-build-part="blurb"]:not([data-writing]):not([data-written]) {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
+[data-build-card][data-build-phase="chaos"] [data-build-part="title"][data-writing],
+[data-build-card][data-build-phase="chaos"] [data-build-part="title"][data-written],
+[data-build-card][data-build-phase="chaos"] [data-build-part="blurb"][data-writing],
+[data-build-card][data-build-phase="chaos"] [data-build-part="blurb"][data-written] {
+  opacity: 1 !important;
+  visibility: visible;
+}
+
+[data-build-card][data-build-phase="chaos"] [data-build-part="meta"] > *:not([data-built]) {
+  opacity: 0 !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+[data-build-card][data-build-phase="chaos"] [data-build-part="meta"] > [data-built] {
+  opacity: 1 !important;
+  visibility: visible;
+  animation: build-bot-pop 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+[data-build-card][data-build-phase="chaos"] [data-build-part="title"][data-writing],
+[data-build-card][data-build-phase="chaos"] [data-build-part="blurb"][data-writing] {
+  animation: build-bot-ink 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes build-bot-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes build-bot-ink {
+  from {
+    filter: blur(2px);
+    opacity: 0.35;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════
    TEXT SELECTION
    ═══════════════════════════════════════════════════════════════ */

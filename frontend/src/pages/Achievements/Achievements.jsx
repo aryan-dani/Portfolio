@@ -1,40 +1,45 @@
-import { memo } from "react";
+import { memo, useRef } from "react";
 import { motion } from "framer-motion";
 import { useAchievements } from "../../context/AchievementContext";
 import { usePageSEO } from "../../utils/seo";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
 import { containerVariants, cardVariants } from "../../utils/motionVariants";
 
 const Achievements = memo(function Achievements() {
   usePageSEO();
   const { achievements, unlocked, progress } = useAchievements();
   const unlockedSet = new Set(unlocked);
+  const scopeRef = useRef(null);
 
   return (
     <motion.section
+      ref={scopeRef}
+      data-build-grid="achievements"
       className="flex flex-col gap-10"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       <PageHeader
+        build
         title="Achievements"
         description={`${unlocked.length} / ${achievements.length} unlocked - explore the site like a game.`}
-      />
-
-      <div className="border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[6px_6px_0_var(--shadow-color)]">
-        <div className="h-4 border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
-          <motion.div
-            className="h-full bg-[var(--color-primary-container)] origin-left"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: progress }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          />
+      >
+        <div className="border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[6px_6px_0_var(--shadow-color)]">
+          <div className="h-4 border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
+            <motion.div
+              className="h-full bg-[var(--color-primary-container)] origin-left"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: progress }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </div>
+          <p className="mt-2 font-label-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)]">
+            Trophy progress {Math.round(progress * 100)}%
+          </p>
         </div>
-        <p className="mt-2 font-label-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)]">
-          Trophy progress {Math.round(progress * 100)}%
-        </p>
-      </div>
+      </PageHeader>
 
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 content-visibility-auto"
@@ -45,6 +50,7 @@ const Achievements = memo(function Achievements() {
           return (
             <motion.article
               key={achievement.id}
+              data-build-card
               variants={cardVariants}
               className={`border-4 border-outline p-5 shadow-[6px_6px_0_var(--shadow-color)] ${
                 isUnlocked
@@ -53,7 +59,7 @@ const Achievements = memo(function Achievements() {
               }`}
               style={{ transform: isUnlocked ? `rotate(${achievement.id.length % 3 - 1}deg)` : undefined }}
             >
-              <div className="flex items-start justify-between gap-3">
+              <div data-build-part="media" className="flex items-start justify-between gap-3">
                 <span className="text-3xl" aria-hidden="true">{achievement.icon}</span>
                 {achievement.secret && (
                   <span className="font-label-bold text-[10px] uppercase border-2 border-current px-2 py-0.5">
@@ -61,15 +67,33 @@ const Achievements = memo(function Achievements() {
                   </span>
                 )}
               </div>
-              <h2 className="font-headline-md text-xl uppercase mt-3">{achievement.title}</h2>
-              <p className="font-body-md text-sm mt-2 opacity-90">{achievement.description}</p>
-              <p className="font-label-bold text-[10px] uppercase tracking-widest mt-4 opacity-70">
-                {isUnlocked ? "Unlocked" : "Locked"}
+              <h2
+                data-build-part="title"
+                className="font-headline-md text-xl uppercase mt-3"
+              >
+                {achievement.title}
+              </h2>
+              <p
+                data-build-part="blurb"
+                className="font-body-md text-sm mt-2 opacity-90"
+              >
+                {achievement.description}
               </p>
+              <div data-build-part="meta" className="mt-4">
+                <p className="font-label-bold text-[10px] uppercase tracking-widest opacity-70">
+                  {isUnlocked ? "Unlocked" : "Locked"}
+                </p>
+              </div>
             </motion.article>
           );
         })}
       </motion.div>
+
+      <CardBuildSwarm
+        storageKey="achievements"
+        scopeRef={scopeRef}
+        enabled={achievements.length > 0}
+      />
     </motion.section>
   );
 });

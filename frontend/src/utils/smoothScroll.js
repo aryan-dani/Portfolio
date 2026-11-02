@@ -23,10 +23,23 @@ export function subscribePortfolioScroll(handler) {
 
 export function smoothScrollTo(top = 0) {
   return new Promise((resolve) => {
+    let settled = false;
+    const done = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
+
+    // Lenis sometimes skips onComplete when already near the target.
+    const failSafe = window.setTimeout(done, 1200);
+
     if (window.__portfolioLenis) {
       window.__portfolioLenis.scrollTo(top, {
         duration: 0.68,
-        onComplete: resolve,
+        onComplete: () => {
+          window.clearTimeout(failSafe);
+          done();
+        },
       });
       return;
     }
@@ -37,7 +50,8 @@ export function smoothScrollTo(top = 0) {
     let startTime = null;
 
     if (distance === 0) {
-      resolve();
+      window.clearTimeout(failSafe);
+      done();
       return;
     }
 
@@ -45,7 +59,7 @@ export function smoothScrollTo(top = 0) {
       if (!startTime) startTime = currentTime;
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       const easedProgress = easeInOutCubic(progress);
       const nextY = startY + distance * easedProgress;
 
@@ -55,7 +69,8 @@ export function smoothScrollTo(top = 0) {
         requestAnimationFrame(step);
       } else {
         window.scrollTo(0, top);
-        resolve();
+        window.clearTimeout(failSafe);
+        done();
       }
     }
 

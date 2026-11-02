@@ -9,6 +9,7 @@ import { useSiteIdle } from "../../hooks/useSiteIdle";
 import { useModalLock } from "../../hooks/useModalLock";
 import { askKuro, kuroVoiceError } from "../../utils/askKuro";
 import { executeKuroActions, describeKuroActions } from "../../utils/kuroActions";
+import { resolveKuroRules } from "../../utils/kuroRules";
 import { getDynamicPlaceholder, getDynamicSuggestionChips } from "../../utils/kuroTips";
 import {
   getKuroWelcomeLine,
@@ -180,9 +181,19 @@ function SleepSnores({ active, onPop, robot = false }) {
   );
 }
 
-const KuroFace = memo(function KuroFace({ pupilsRef, mood, bliss, sleeping, size = 68, robot = false }) {
+const KuroFace = memo(function KuroFace({
+  pupilsRef,
+  mood,
+  bliss,
+  sleeping,
+  size = 68,
+  robot = false,
+  swarmPhase = null,
+}) {
   const thinking = mood === "thinking";
   const asleep = sleeping && !bliss && !thinking;
+  const launching = swarmPhase === "launch";
+  const absorbing = swarmPhase === "absorb";
   const body = robot ? ROBOT_BODY : FUR;
   const ear = robot ? ROBOT_EAR : FUR_EAR;
   const snout = robot ? ROBOT_SNOUT : SNOUT;
@@ -200,18 +211,24 @@ const KuroFace = memo(function KuroFace({ pupilsRef, mood, bliss, sleeping, size
       animate={
         asleep
           ? { y: [0, 1.5, 0], rotate: [0, 1.2, 0, -1.2, 0] }
-          : bliss
-            ? { y: -1.5, rotate: -2, scale: 1.04 }
-            : robot
-              ? { y: [0, -1, 0] }
-              : { y: 0, scale: 1, rotate: 0 }
+          : launching
+            ? { y: -3, rotate: -3, scale: 1.08 }
+            : absorbing
+              ? { y: 2, rotate: 2, scale: 0.92 }
+              : bliss
+                ? { y: -1.5, rotate: -2, scale: 1.04 }
+                : robot
+                  ? { y: [0, -1, 0] }
+                  : { y: 0, scale: 1, rotate: 0 }
       }
       transition={
         asleep
           ? { duration: 3.2, repeat: Infinity, ease: "easeInOut" }
-          : robot && !bliss && !thinking
-            ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" }
-            : { type: "spring", stiffness: 420, damping: 24 }
+          : launching || absorbing
+            ? { type: "spring", stiffness: 520, damping: 18 }
+            : robot && !bliss && !thinking
+              ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" }
+              : { type: "spring", stiffness: 420, damping: 24 }
       }
     >
       {robot && (
@@ -222,7 +239,15 @@ const KuroFace = memo(function KuroFace({ pupilsRef, mood, bliss, sleeping, size
       )}
 
       <motion.g
-        animate={bliss ? { rotate: -28 } : { rotate: -22 }}
+        animate={
+          launching
+            ? { rotate: -36 }
+            : absorbing
+              ? { rotate: -14 }
+              : bliss
+                ? { rotate: -28 }
+                : { rotate: -22 }
+        }
         transition={{ type: "spring", stiffness: 420, damping: 24 }}
         style={{ transformOrigin: "26px 24px", transformBox: "fill-box" }}
       >
@@ -230,7 +255,15 @@ const KuroFace = memo(function KuroFace({ pupilsRef, mood, bliss, sleeping, size
         {robot && <rect x="24" y="18" width="5" height="8" fill={ROBOT_LED} opacity="0.85" />}
       </motion.g>
       <motion.g
-        animate={bliss ? { rotate: 28 } : { rotate: 22 }}
+        animate={
+          launching
+            ? { rotate: 36 }
+            : absorbing
+              ? { rotate: 14 }
+              : bliss
+                ? { rotate: 28 }
+                : { rotate: 22 }
+        }
         transition={{ type: "spring", stiffness: 420, damping: 24 }}
         style={{ transformOrigin: "70px 24px", transformBox: "fill-box" }}
       >
@@ -280,13 +313,64 @@ const KuroFace = memo(function KuroFace({ pupilsRef, mood, bliss, sleeping, size
         >
           <rect x="31" y="27" width="12" height="12" fill={eyeFill} stroke={OUTLINE} strokeWidth="2" />
           <rect x="53" y="27" width="12" height="12" fill={eyeFill} stroke={OUTLINE} strokeWidth="2" />
-          <g ref={pupilsRef}>
-            <rect x="35" y="31" width="5" height="5" fill={pupil} />
-            <rect x="57" y="31" width="5" height="5" fill={pupil} />
-            <rect x="36" y="32" width="2" height="2" fill={highlight} />
-            <rect x="58" y="32" width="2" height="2" fill={highlight} />
-          </g>
+          <motion.g
+            animate={
+              launching
+                ? { x: 3, y: -2 }
+                : absorbing
+                  ? { x: -2, y: 2 }
+                  : { x: 0, y: 0 }
+            }
+            transition={{ type: "spring", stiffness: 500, damping: 16 }}
+          >
+            <g ref={pupilsRef}>
+              <rect x="35" y="31" width="5" height="5" fill={pupil} />
+              <rect x="57" y="31" width="5" height="5" fill={pupil} />
+              <rect x="36" y="32" width="2" height="2" fill={highlight} />
+              <rect x="58" y="32" width="2" height="2" fill={highlight} />
+            </g>
+          </motion.g>
         </motion.g>
+      )}
+
+      {/* Tiny planes shooting from the eyes on launch / sucking in on absorb */}
+      {(launching || absorbing) && (
+        <>
+          <motion.path
+            d="M34 30 L44 26 L38 36 Z"
+            fill="#f8f7f4"
+            stroke={OUTLINE}
+            strokeWidth="1.5"
+            initial={
+              launching
+                ? { x: 0, y: 0, opacity: 1, scale: 0.4 }
+                : { x: 18, y: -14, opacity: 0.9, scale: 0.9 }
+            }
+            animate={
+              launching
+                ? { x: 22, y: -18, opacity: 0, scale: 1.1 }
+                : { x: 0, y: 0, opacity: 0, scale: 0.3 }
+            }
+            transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.path
+            d="M56 30 L66 26 L60 36 Z"
+            fill="#f8f7f4"
+            stroke={OUTLINE}
+            strokeWidth="1.5"
+            initial={
+              launching
+                ? { x: 0, y: 0, opacity: 1, scale: 0.4 }
+                : { x: 20, y: -12, opacity: 0.9, scale: 0.9 }
+            }
+            animate={
+              launching
+                ? { x: 26, y: -16, opacity: 0, scale: 1.1 }
+                : { x: 0, y: 0, opacity: 0, scale: 0.3 }
+            }
+            transition={{ duration: 0.95, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </>
       )}
 
       <rect x="44" y="44" width="8" height="6" fill={robot ? ROBOT_LED : OUTLINE} />
@@ -358,6 +442,8 @@ const ChatWidget = memo(function ChatWidget() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [panelSize, setPanelSize] = useState(() => initialPrefs.size);
   const [resizing, setResizing] = useState(false);
+  const [swarmPhase, setSwarmPhase] = useState(null);
+  const swarmTimerRef = useRef(null);
 
   const { track } = useAchievements();
   const { toggleTheme, setCrtMode, setAccent, theme, crtMode, accent } = useTheme();
@@ -636,6 +722,22 @@ const ChatWidget = memo(function ChatWidget() {
       clearTimeout(closeTimerRef.current);
       clearTimeout(bubbleTimerRef.current);
       clearTimeout(petTimerRef.current);
+      clearTimeout(swarmTimerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onSwarm = (event) => {
+      const phase = event?.detail?.phase;
+      if (phase !== "launch" && phase !== "absorb") return;
+      setSwarmPhase(phase);
+      clearTimeout(swarmTimerRef.current);
+      swarmTimerRef.current = window.setTimeout(() => setSwarmPhase(null), 1600);
+    };
+    window.addEventListener("portfolio:kuro-swarm", onSwarm);
+    return () => {
+      window.removeEventListener("portfolio:kuro-swarm", onSwarm);
+      clearTimeout(swarmTimerRef.current);
     };
   }, []);
 
@@ -666,6 +768,24 @@ const ChatWidget = memo(function ChatWidget() {
     };
 
     try {
+      // Rules first: site control, project facts, follow-up card nav — no Groq.
+      const local = resolveKuroRules(clean, {
+        history: nextMessages.slice(-12),
+        currentPath: location.pathname,
+      });
+      if (local) {
+        const actionLabel = local.actions?.length ? runActions(local.actions) : "";
+        setMessages((m) => [
+          ...m,
+          {
+            role: "assistant",
+            text: local.reply,
+            actionLabel: actionLabel || undefined,
+          },
+        ]);
+        return;
+      }
+
       const { reply, actions } = await askKuro(clean, {
         history: nextMessages.slice(-12),
         currentPath: location.pathname,
@@ -944,6 +1064,7 @@ const ChatWidget = memo(function ChatWidget() {
               <button
                 ref={dogRef}
                 type="button"
+                data-kuro-dock
                 onClick={petDog}
                 onMouseEnter={() => setDogHovered(true)}
                 onMouseLeave={() => setDogHovered(false)}
@@ -969,6 +1090,7 @@ const ChatWidget = memo(function ChatWidget() {
                   sleeping={sleeping}
                   robot={crtMode}
                   size={68}
+                  swarmPhase={swarmPhase}
                 />
               </button>
             </div>

@@ -1,11 +1,13 @@
 import { useState, useRef, useMemo, useEffect, memo } from "react";
-import { useNavigate, useLocation } from "react-router-dom";import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useNavigate, useLocation } from "react-router-dom";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { FaChevronDown, FaExternalLinkAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { experiences } from "../../data/experience";
 import { containerVariants, hoverSpring, defaultSpring } from "../../utils/motionVariants";
 import { usePageSEO } from "../../utils/seo";
 import { subscribePortfolioScroll } from "../../utils/smoothScroll";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
 
 const CARD_STYLES = [
   {
@@ -38,6 +40,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
   const navigate = useNavigate();
   return (
     <motion.div
+      data-build-card
       className="w-full border-4 border-outline overflow-hidden"
       style={{ boxShadow: `8px 8px 0px 0px ${style.shadow}` }}
       whileHover={{
@@ -48,12 +51,15 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
       }}
     >
       <button
+        data-build-part="media"
         className="w-full p-5 md:p-6 flex justify-between items-start gap-3 group cursor-none"
         style={style.header}
         onClick={() => onToggle(exp.id)}
       >
         <div className="text-left">
-          <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl uppercase">{exp.position}</h2>
+          <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl uppercase">
+            <span data-build-part="title">{exp.position}</span>
+          </h2>
           <h3 className="font-label-bold text-sm uppercase mt-1 flex items-center gap-2 flex-wrap">
             {exp.companyUrl ? (
               <a
@@ -63,11 +69,11 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                 className="opacity-75 inline-flex items-center gap-1.5 hover:underline cursor-none"
                 onClick={(e) => e.stopPropagation()}
               >
-                {exp.company}
+                <span data-build-part="blurb">{exp.company}</span>
                 <FaExternalLinkAlt className="text-[10px]" />
               </a>
             ) : (
-              <span className="opacity-75">{exp.company}</span>
+              <span data-build-part="blurb" className="opacity-75">{exp.company}</span>
             )}
             {exp.current && (
               <span className="inline-block border-2 border-current px-1.5 py-0.5 text-[9px] tracking-[0.14em]">
@@ -90,79 +96,94 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
         </motion.div>
       </button>
 
-      <AnimatePresence initial={false}>
-        {isExpanded && (
-          <motion.div
-            style={style.body}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ ...defaultSpring, damping: 32 }}
-            className="overflow-hidden"
-          >
-            <div className="p-5 md:p-6 border-t-4 border-outline flex flex-col gap-5">
-              <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
-                {exp.description}
-              </p>
-              {exp.responsibilities && (
-                <ul className="flex flex-col gap-3">
-                  {exp.responsibilities.map((r, i) => (
-                    <motion.li
-                      key={i}
-                      className="font-body-md text-sm md:text-base flex items-start gap-3 text-[var(--color-on-surface)]"
-                      initial={{ opacity: 0, x: -12 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                    >
-                      <span
-                        className="shrink-0 mt-1.5 w-5 h-5 border-2 border-outline flex items-center justify-center font-bold text-xs select-none"
-                        style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
+      <div data-build-part="meta" className="border-t-4 border-outline">
+        <div
+          className="px-5 py-2 font-label-bold text-xs uppercase tracking-widest flex items-center gap-2"
+          style={style.body}
+        >
+          <FaCalendarAlt className="text-[10px]" />
+          {exp.period}
+          {exp.location && (
+            <>
+              <FaMapMarkerAlt className="text-[10px] ml-2" />
+              {exp.location}
+            </>
+          )}
+        </div>
+        <AnimatePresence initial={false}>
+          {isExpanded && (
+            <motion.div
+              style={style.body}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ ...defaultSpring, damping: 32 }}
+              className="overflow-hidden"
+            >
+              <div className="p-5 md:p-6 border-t-4 border-outline flex flex-col gap-5">
+                <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
+                  {exp.description}
+                </p>
+                {exp.responsibilities && (
+                  <ul className="flex flex-col gap-3">
+                    {exp.responsibilities.map((r, i) => (
+                      <motion.li
+                        key={i}
+                        className="font-body-md text-sm md:text-base flex items-start gap-3 text-[var(--color-on-surface)]"
+                        initial={{ opacity: 0, x: -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.05 }}
                       >
-                        →
-                      </span>
-                      <span className="grow leading-relaxed" dangerouslySetInnerHTML={{ __html: r }} />
-                    </motion.li>
-                  ))}
-                </ul>
-              )}
-              {exp.technologies && (
-                <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-outline-variant">
-                  {exp.technologies.map((tech, techIdx) => (
-                    <motion.button
-                      key={tech}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/skills?skill=${encodeURIComponent(tech)}`);
-                      }}
-                      className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                      style={style.tagBg}
-                      whileHover={{
-                        y: -4,
-                        rotate: techIdx % 2 === 0 ? 2 : -2,
-                        boxShadow: "4px 4px 0px 0px var(--shadow-color)",
-                      }}
-                      transition={defaultSpring}
-                    >
-                      {tech}
-                    </motion.button>
-                  ))}
-                </div>
-              )}
-              {exp.links?.project && (
-                <a
-                  href={exp.links.project}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-outline px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
-                  style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
-                >
-                  <FaExternalLinkAlt /> View Project
-                </a>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                        <span
+                          className="shrink-0 mt-1.5 w-5 h-5 border-2 border-outline flex items-center justify-center font-bold text-xs select-none"
+                          style={{ background: "var(--color-on-background)", color: "var(--color-primary-container)" }}
+                        >
+                          →
+                        </span>
+                        <span className="grow leading-relaxed" dangerouslySetInnerHTML={{ __html: r }} />
+                      </motion.li>
+                    ))}
+                  </ul>
+                )}
+                {exp.technologies && (
+                  <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-outline-variant">
+                    {exp.technologies.map((tech, techIdx) => (
+                      <motion.button
+                        key={tech}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/skills?skill=${encodeURIComponent(tech)}`);
+                        }}
+                        className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                        style={style.tagBg}
+                        whileHover={{
+                          y: -4,
+                          rotate: techIdx % 2 === 0 ? 2 : -2,
+                          boxShadow: "4px 4px 0px 0px var(--shadow-color)",
+                        }}
+                        transition={defaultSpring}
+                      >
+                        {tech}
+                      </motion.button>
+                    ))}
+                  </div>
+                )}
+                {exp.links?.project && (
+                  <a
+                    href={exp.links.project}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-outline px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                    style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
+                  >
+                    <FaExternalLinkAlt /> View Project
+                  </a>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 }
@@ -278,6 +299,7 @@ function Experience() {
   usePageSEO(seoData);
   const location = useLocation();
   const [expandedId, setExpandedId] = useState(experiences[0]?.id || null);
+  const scopeRef = useRef(null);
   const containerRef = useRef(null);
   const timelineFillRef = useRef(null);
 
@@ -317,18 +339,21 @@ function Experience() {
 
   return (
     <motion.div
+      ref={scopeRef}
+      data-build-grid="experience"
       className="flex flex-col gap-12 md:gap-16 relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       <PageHeader
+        build
         title="Experience"
         description="Newest work first. Current role on top, then the trail that got me here."
         className="mb-8"
       />
 
-      <section className="relative py-8 w-full" ref={containerRef}>
+      <section ref={containerRef} className="relative py-8 w-full">
         {/* Timeline track */}
         <div
           className="absolute left-5 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-0.5 md:w-2 z-0"
@@ -356,6 +381,12 @@ function Experience() {
           />
         ))}
       </section>
+
+      <CardBuildSwarm
+        storageKey="experience"
+        scopeRef={scopeRef}
+        enabled={experiences.length > 0}
+      />
     </motion.div>
   );
 }

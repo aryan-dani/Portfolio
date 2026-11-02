@@ -24,6 +24,7 @@ import StatCard from "../../components/StatCard/StatCard";
 import SkillsGraph from "../../components/SkillsGraph/SkillsGraph";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import ProgressiveImage from "../../components/ProgressiveImage/ProgressiveImage";
+import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
 
 const iconMap = {
   FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
@@ -107,7 +108,14 @@ function Skills() {
   const [selectedSkill,  setSelectedSkill]  = useState(null);
   const [viewMode, setViewMode] = useState(VIEW_MODES.GRID);
   const [sortBy,   setSortBy]   = useState("default");
+  const scopeRef = useRef(null);
+  const gridRef = useRef(null);
   const navigate = useNavigate();
+  const buildEnabled =
+    viewMode === VIEW_MODES.GRID
+    && searchTerm === ""
+    && activeCategory === "all"
+    && sortBy === "default";
 
   useEffect(() => {
     const skillParam = searchParams.get("skill");
@@ -179,6 +187,8 @@ function Skills() {
   return (
     <>
       <motion.div
+        ref={scopeRef}
+        data-build-grid="skills"
         className="flex flex-col gap-8 md:gap-10"
         initial="hidden"
         animate="visible"
@@ -186,98 +196,99 @@ function Skills() {
       >
         {/* Header */}
         <PageHeader
+          build
           title="Skills & Tools"
           description="A chaotic sticker sheet of the technologies I use to build loud, unapologetic digital experiences. Function over form, but make it look cool."
           className="!gap-5 !pb-6 !mb-0 !mt-0"
-        />
+        >
+          {/* Stats Bar */}
+          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={cardVariants}>
+            <StatCard value={totalSkills} label="Total Skills"  bg="var(--color-primary-container)" text="var(--color-on-primary-container)" shadow="var(--shadow-color)" />
+            <StatCard value={Object.keys(skills).length} label="Categories"  bg="var(--color-surface)" text="var(--color-on-surface)" shadow="var(--shadow-color)" />
+            <StatCard value={avgLevel}    label="Avg Level %"   bg="var(--color-on-background)" text="var(--color-background)" shadow="var(--shadow-accent)" />
+            <StatCard value={expertCount} label="Expert Level"  bg="var(--color-secondary)" text="var(--color-on-secondary)" shadow="var(--shadow-color)" />
+          </motion.div>
 
-        {/* Stats Bar */}
-        <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={cardVariants}>
-          <StatCard value={totalSkills} label="Total Skills"  bg="var(--color-primary-container)" text="var(--color-on-primary-container)" shadow="var(--shadow-color)" />
-          <StatCard value={Object.keys(skills).length} label="Categories"  bg="var(--color-surface)" text="var(--color-on-surface)" shadow="var(--shadow-color)" />
-          <StatCard value={avgLevel}    label="Avg Level %"   bg="var(--color-on-background)" text="var(--color-background)" shadow="var(--shadow-accent)" />
-          <StatCard value={expertCount} label="Expert Level"  bg="var(--color-secondary)" text="var(--color-on-secondary)" shadow="var(--shadow-color)" />
-        </motion.div>
-
-        {/* Controls */}
-        <motion.div className="flex flex-col gap-4 bg-hatch border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]" variants={cardVariants}>
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            <div className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
-              <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
-              <input
-                type="text"
-                aria-label="Search skills"
-                placeholder="Search skills..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent border-none outline-none w-full font-body-md text-lg text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
-              />
-              {searchTerm && (
-                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors" aria-label="Clear skill search">
-                  <FaTimes className="text-[var(--color-on-surface)]" />
-                </button>
-              )}
-            </div>
-            <div className="flex gap-3">
-              {[
-                { mode: VIEW_MODES.GRID, label: "▦ Grid" },
-                { mode: VIEW_MODES.LIST, label: "☰ List" },
-                { mode: VIEW_MODES.GRAPH, label: "◇ Graph" },
-              ].map(({ mode, label }) => (
-                <button
-                  key={mode}
-                  onClick={() => setViewMode(mode)}
-                  aria-pressed={viewMode === mode}
-                  className={`px-4 py-2 border-4 border-outline font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
-                    viewMode === mode
-                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            <div className="flex flex-wrap gap-3">
-              {skillCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  aria-pressed={activeCategory === cat.id}
-                  className={`px-5 py-2 border-4 border-outline font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
-                    activeCategory === cat.id
-                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-label-bold text-sm uppercase text-[var(--color-on-surface)]">Sort:</span>
-              <div className="flex flex-wrap gap-2">
-                {SORT_OPTIONS.map((opt) => (
+          {/* Controls */}
+          <motion.div className="flex flex-col gap-4 bg-hatch border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]" variants={cardVariants}>
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+              <div className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+                <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
+                <input
+                  type="text"
+                  aria-label="Search skills"
+                  placeholder="Search skills..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="bg-transparent border-none outline-none w-full font-body-md text-lg text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
+                />
+                {searchTerm && (
+                  <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors" aria-label="Clear skill search">
+                    <FaTimes className="text-[var(--color-on-surface)]" />
+                  </button>
+                )}
+              </div>
+              <div className="flex gap-3">
+                {[
+                  { mode: VIEW_MODES.GRID, label: "▦ Grid" },
+                  { mode: VIEW_MODES.LIST, label: "☰ List" },
+                  { mode: VIEW_MODES.GRAPH, label: "◇ Graph" },
+                ].map(({ mode, label }) => (
                   <button
-                    key={opt.id}
-                    onClick={() => setSortBy(opt.id)}
-                    aria-pressed={sortBy === opt.id}
-                    className={`px-3 py-1 border-2 border-outline font-label-bold text-xs uppercase transition-all cursor-none ${
-                      sortBy === opt.id
-                        ? "bg-[var(--color-on-background)] text-[var(--color-background)]"
+                    key={mode}
+                    onClick={() => setViewMode(mode)}
+                    aria-pressed={viewMode === mode}
+                    className={`px-4 py-2 border-4 border-outline font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                      viewMode === mode
+                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
                         : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
                     }`}
                   >
-                    {opt.label}
+                    {label}
                   </button>
                 ))}
               </div>
             </div>
-          </div>
-        </motion.div>
+
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+              <div className="flex flex-wrap gap-3">
+                {skillCategories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    aria-pressed={activeCategory === cat.id}
+                    className={`px-5 py-2 border-4 border-outline font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                      activeCategory === cat.id
+                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+                        : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-label-bold text-sm uppercase text-[var(--color-on-surface)]">Sort:</span>
+                <div className="flex flex-wrap gap-2">
+                  {SORT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.id}
+                      onClick={() => setSortBy(opt.id)}
+                      aria-pressed={sortBy === opt.id}
+                      className={`px-3 py-1 border-2 border-outline font-label-bold text-xs uppercase transition-all cursor-none ${
+                        sortBy === opt.id
+                          ? "bg-[var(--color-on-background)] text-[var(--color-background)]"
+                          : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </PageHeader>
 
         {/* Skill content */}
         <AnimatePresence mode="wait">
@@ -303,7 +314,14 @@ function Skills() {
                 : <EmptyState />}
             </motion.div>
           ) : (
-            <motion.div key="grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 overflow-visible p-2 -m-2 content-visibility-auto" variants={containerVariants} initial="hidden" animate="visible">
+            <motion.div
+              key="grid"
+              ref={gridRef}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 overflow-visible p-2 -m-2 content-visibility-auto"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
               {flatSkills.length > 0
                 ? flatSkills.map((skill) => (
                     <SkillGridCard key={skill.id} skill={skill} icon={getIcon(skill.icon)} onClick={() => setSelectedSkill(skill)} />
@@ -312,6 +330,14 @@ function Skills() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {viewMode === VIEW_MODES.GRID && (
+          <CardBuildSwarm
+            storageKey="skills"
+            scopeRef={scopeRef}
+            enabled={buildEnabled && flatSkills.length > 0}
+          />
+        )}
 
         {/* Skill Levels Overview */}
         <motion.section
@@ -440,6 +466,7 @@ function SkillGridCard({ skill, icon, onClick }) {
   return (
     <motion.button
       ref={ref}
+      data-build-card
       className="w-full text-left bg-[var(--color-surface)] border-2 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] cursor-none group flex flex-col gap-3"
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -450,7 +477,7 @@ function SkillGridCard({ skill, icon, onClick }) {
       style={{ rotateX, rotateY, transformPerspective: 900 }}
       onClick={onClick}
     >
-      <div className="flex items-center justify-between">
+      <div data-build-part="media" className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <motion.div
             className="text-xl p-2 border-2 border-outline"
@@ -460,10 +487,7 @@ function SkillGridCard({ skill, icon, onClick }) {
           >
             {icon}
           </motion.div>
-          <div>
-            <h3 className="font-headline-md text-base md:text-lg uppercase text-[var(--color-on-surface)]">{skill.name}</h3>
-            <span className="font-label-bold text-[10px] uppercase text-[var(--color-secondary)]">{skill.category}</span>
-          </div>
+          <span className="font-label-bold text-[10px] uppercase text-[var(--color-secondary)]">{skill.category}</span>
         </div>
         <div
           className="border-2 border-outline px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
@@ -473,24 +497,37 @@ function SkillGridCard({ skill, icon, onClick }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface)] overflow-hidden">
-          <motion.div
-            className="h-full w-full progress-bar-fill origin-left"
-            style={{ background: "var(--color-on-background)", willChange: "transform" }}
-            initial={{ scaleX: 0 }}
-            animate={inView ? { scaleX: skill.level / 100 } : {}}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          />
-        </div>
-        <span className="font-headline-md text-sm w-8 text-right text-[var(--color-on-surface)]">{skill.level}%</span>
-      </div>
+      <h3
+        data-build-part="title"
+        className="font-headline-md text-base md:text-lg uppercase text-[var(--color-on-surface)]"
+      >
+        {skill.name}
+      </h3>
 
-      <p className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+      <p
+        data-build-part="blurb"
+        className="font-body-md text-xs text-[var(--color-text-muted)] overflow-hidden"
+        style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}
+      >
         {skill.description}
       </p>
-      <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-80 group-hover:opacity-100 transition-opacity mt-auto pt-2 border-t-2 border-dashed border-outline-variant">
-        <FaExternalLinkAlt className="text-[10px]" /> Click for details
+
+      <div data-build-part="meta" className="flex flex-col gap-3 mt-auto">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-3 border-2 border-outline bg-[var(--color-surface)] overflow-hidden">
+            <motion.div
+              className="h-full w-full progress-bar-fill origin-left"
+              style={{ background: "var(--color-on-background)", willChange: "transform" }}
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: skill.level / 100 } : {}}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            />
+          </div>
+          <span className="font-headline-md text-sm w-8 text-right text-[var(--color-on-surface)]">{skill.level}%</span>
+        </div>
+        <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-[var(--color-secondary)] opacity-80 group-hover:opacity-100 transition-opacity pt-2 border-t-2 border-dashed border-outline-variant">
+          <FaExternalLinkAlt className="text-[10px]" /> Click for details
+        </div>
       </div>
     </motion.button>
   );

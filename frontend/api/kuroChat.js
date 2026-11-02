@@ -12,6 +12,7 @@ import {
   parseToolCalls,
   describeActions,
 } from "./kuroTools.js";
+import { resolveKuroRules } from "../src/utils/kuroRules.js";
 
 const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
 const GROQ_FALLBACK_MODEL = process.env.GROQ_FALLBACK_MODEL || "openai/gpt-oss-20b";
@@ -468,18 +469,36 @@ async function callGroqWithFallback(key, bodyFactory) {
 }
 
 export async function generateKuroReply({ message, history, currentPath, siteState }, apiKey) {
+  if (!message || typeof message !== "string" || message.length > 500) {
+    const err = new Error("Invalid message");
+    err.status = 400;
+    throw err;
+  }
+
+  // Local rules before any Groq spend.
+  const local = resolveKuroRules(message, {
+    history: Array.isArray(history)
+      ? history.map((m) => ({
+          role: m.role,
+          text: m.content || m.text || "",
+        }))
+      : [],
+    currentPath: currentPath || "/",
+  });
+  if (local) {
+    return {
+      reply: sanitizeKuroText(local.reply),
+      actions: Array.isArray(local.actions) ? local.actions : [],
+      intent: local.intent || "site_control",
+    };
+  }
+
   const key = cleanApiKey(apiKey);
   if (!key) {
     const err = new Error(
       "Kuro is not configured. Add GROQ_API_KEY to frontend/.env.local (free at console.groq.com/keys), then restart npm run dev.",
     );
     err.status = 503;
-    throw err;
-  }
-
-  if (!message || typeof message !== "string" || message.length > 500) {
-    const err = new Error("Invalid message");
-    err.status = 400;
     throw err;
   }
 

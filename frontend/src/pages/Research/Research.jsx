@@ -13,6 +13,7 @@ import { researchPapers } from "../../data/research";
 import { getAssetPath } from "../../utils/paths";
 import { usePageSEO } from "../../utils/seo";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
 import {
   containerVariants,
   cardVariants,
@@ -36,6 +37,7 @@ const detailItem = {
 function Research() {
   const [searchParams, setSearchParams] = useSearchParams();
   const detailRef = useRef(null);
+  const gridRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
 
   const seoData = useMemo(() => ({ papers: researchPapers }), []);
@@ -82,12 +84,15 @@ function Research() {
 
   return (
     <motion.section
+      ref={gridRef}
+      data-build-grid="research"
       className="flex flex-col gap-8 w-full pb-16"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       <PageHeader
+        build
         title="Research"
         count={researchPapers.length}
         description="Papers and technical write-ups. Pick a card to expand abstract, metrics, authors, and the full PDF."
@@ -108,6 +113,12 @@ function Research() {
           />
         ))}
       </motion.div>
+
+      <CardBuildSwarm
+        storageKey="research"
+        scopeRef={gridRef}
+        enabled={researchPapers.length > 0}
+      />
 
       <div ref={detailRef} className="scroll-mt-28">
         <AnimatePresence mode="wait">
@@ -139,6 +150,7 @@ const ResearchCard = memo(function ResearchCard({ paper, index, isSelected, onSe
       className="w-full h-full"
     >
       <motion.article
+        data-build-card
         role="button"
         tabIndex={0}
         aria-pressed={isSelected}
@@ -155,7 +167,10 @@ const ResearchCard = memo(function ResearchCard({ paper, index, isSelected, onSe
         }`}
         whileTap={{ scale: 0.99 }}
       >
-        <div className="border-b-4 border-outline bg-hatch p-5 md:p-6 flex flex-col gap-3 relative overflow-hidden min-h-[140px]">
+        <div
+          data-build-part="media"
+          className="border-b-4 border-outline bg-hatch p-5 md:p-6 flex flex-col gap-3 relative overflow-hidden min-h-[140px]"
+        >
           <div className="absolute inset-0 animate-shimmer opacity-20 pointer-events-none" />
           <div className="flex flex-wrap gap-2 relative z-10">
             <span className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
@@ -176,10 +191,14 @@ const ResearchCard = memo(function ResearchCard({ paper, index, isSelected, onSe
         </div>
 
         <div className="p-6 md:p-7 flex flex-col grow gap-4">
-          <h3 className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] uppercase leading-tight">
+          <h3
+            data-build-part="title"
+            className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] uppercase leading-tight"
+          >
             {paper.title}
           </h3>
           <p
+            data-build-part="blurb"
             className="font-body-md text-sm text-[var(--color-text-muted)] grow"
             style={{
               display: "-webkit-box",
@@ -190,21 +209,23 @@ const ResearchCard = memo(function ResearchCard({ paper, index, isSelected, onSe
           >
             {paper.summary}
           </p>
-          <div className="flex flex-wrap gap-2">
-            {paper.keywords.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
-              >
-                {tag}
+          <div data-build-part="meta" className="flex flex-col gap-4 mt-auto">
+            <div className="flex flex-wrap gap-2">
+              {paper.keywords.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="border-t-4 border-outline pt-4">
+              <span className="inline-flex w-full items-center justify-center gap-2 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+                {isSelected ? "Selected" : "Read paper"}
+                <FaArrowRight className="text-sm" aria-hidden="true" />
               </span>
-            ))}
-          </div>
-          <div className="border-t-4 border-outline pt-4 mt-auto">
-            <span className="inline-flex w-full items-center justify-center gap-2 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              {isSelected ? "Selected" : "Read paper"}
-              <FaArrowRight className="text-sm" aria-hidden="true" />
-            </span>
+            </div>
           </div>
         </div>
       </motion.article>

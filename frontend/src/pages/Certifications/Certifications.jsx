@@ -9,6 +9,7 @@ import { useModalLock } from "../../hooks/useModalLock";
 import { usePageSEO } from "../../utils/seo";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import ProgressiveImage from "../../components/ProgressiveImage/ProgressiveImage";
+import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
 
 function Certifications() {
   const seoData = useMemo(() => ({ certifications }), []);
@@ -16,6 +17,9 @@ function Certifications() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   const [previewImage, setPreviewImage] = useState(null);
+  const gridRef = useRef(null);
+  const scopeRef = useRef(null);
+  const buildEnabled = searchTerm === "" && activeFilter === "all";
 
   const filteredCerts = useMemo(() =>
     certifications.filter((cert) => {
@@ -37,6 +41,8 @@ function Certifications() {
   return (
     <>
       <motion.section
+        ref={scopeRef}
+        data-build-grid="certifications"
         className="flex flex-col gap-6 w-full mt-4"
         initial="hidden"
         animate="visible"
@@ -44,59 +50,61 @@ function Certifications() {
       >
         {/* Header */}
         <PageHeader
+          build
           title="Certifications"
           count={filteredCerts.length}
           description="Proof of work - industry-recognized credentials across AI, cloud, and web technologies."
-        />
+        >
+          {/* Controls */}
+          <div className="bg-hatch border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+            <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between w-full">
+              {/* Search */}
+              <motion.div
+                className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-3 w-full md:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
+                variants={cardVariants}
+              >
+                <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
+                <input
+                  type="text"
+                  aria-label="Search certifications"
+                  placeholder="Search certifications..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="bg-transparent border-none outline-none w-full font-body-md text-base text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
+                />
+                {searchTerm && (
+                  <button onClick={() => setSearchTerm("")} className="mr-1 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
+                    <FaTimes className="text-[var(--color-on-surface)]" />
+                  </button>
+                )}
+              </motion.div>
 
-        {/* Controls */}
-        <div className="bg-hatch border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-          <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between w-full">
-            {/* Search */}
-            <motion.div
-              className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-3 w-full md:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
-              variants={cardVariants}
-            >
-              <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
-              <input
-                type="text"
-                aria-label="Search certifications"
-                placeholder="Search certifications..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent border-none outline-none w-full font-body-md text-base text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
-              />
-              {searchTerm && (
-                <button onClick={() => setSearchTerm("")} className="mr-1 p-1 hover:bg-[var(--color-primary-container)] transition-colors">
-                  <FaTimes className="text-[var(--color-on-surface)]" />
-                </button>
-              )}
-            </motion.div>
-
-            {/* Filters */}
-            <motion.div className="flex flex-wrap gap-2.5" variants={cardVariants}>
-              {certificationCategories.map((cat) => (
-                <motion.button
-                  key={cat.id}
-                  onClick={() => setActiveFilter(cat.id)}
-                  className={`border-4 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
-                    activeFilter === cat.id
-                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
-                  }`}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  {cat.label}
-                </motion.button>
-              ))}
-            </motion.div>
+              {/* Filters */}
+              <motion.div className="flex flex-wrap gap-2.5" variants={cardVariants}>
+                {certificationCategories.map((cat) => (
+                  <motion.button
+                    key={cat.id}
+                    onClick={() => setActiveFilter(cat.id)}
+                    className={`border-4 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                      activeFilter === cat.id
+                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                        : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                    }`}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    {cat.label}
+                  </motion.button>
+                ))}
+              </motion.div>
+            </div>
           </div>
-        </div>
+        </PageHeader>
 
         {/* Grid */}
         <AnimatePresence mode="popLayout">
           {filteredCerts.length > 0 ? (
             <motion.div
+              ref={gridRef}
               key={activeFilter + searchTerm}
               layout
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 overflow-visible p-3 -m-3"
@@ -130,6 +138,12 @@ function Certifications() {
         </AnimatePresence>
       </motion.section>
 
+      <CardBuildSwarm
+        storageKey="certifications"
+        scopeRef={scopeRef}
+        enabled={buildEnabled && filteredCerts.length > 0}
+      />
+
       {/* Image Preview Modal */}
       <AnimatePresence>
         {previewImage && (
@@ -161,11 +175,13 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
       className="w-full h-full"
     >
       <motion.article
+        data-build-card
         className="bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col group hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[16px_16px_0px_0px_var(--shadow-color)] transition-all duration-200 h-full"
       >
         {/* Image Container */}
         <button
           type="button"
+          data-build-part="media"
           className="aspect-[4/3] w-full border-b-4 border-outline overflow-hidden relative cursor-pointer bg-[var(--color-surface)] flex items-center justify-center p-3 text-left"
           onClick={onPreview}
           aria-label={`Preview certificate image for ${cert.title}`}
@@ -199,67 +215,72 @@ const CertCard = memo(function CertCard({ cert, index, onPreview }) {
 
         {/* Content */}
         <div className="p-6 md:p-8 flex flex-col grow">
-          {/* Date badge */}
-          <span className="font-label-bold text-sm md:text-base text-[var(--color-secondary)] uppercase tracking-widest mb-2 border-2 border-outline w-fit px-2.5 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)]">
-            {cert.date}
-          </span>
-          
-          <h3 className="font-headline-md text-2xl md:text-3xl text-[var(--color-on-surface)] mb-4 uppercase mt-2 leading-tight">
+          <h3
+            data-build-part="title"
+            className="font-headline-md text-2xl md:text-3xl text-[var(--color-on-surface)] mb-4 uppercase mt-2 leading-tight"
+          >
             {cert.title}
           </h3>
-          
-          <p className="font-body-md text-base text-[var(--color-on-surface)] mb-6 grow leading-relaxed">
+
+          <p
+            data-build-part="blurb"
+            className="font-body-md text-base text-[var(--color-on-surface)] mb-6 grow leading-relaxed"
+          >
             {cert.description}
           </p>
 
-          {/* Tech Stack / Issuer Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t-4 border-outline pt-4 mb-6 gap-4 sm:gap-0">
-            <div className="flex items-center gap-3">
-              <motion.div
-                className="w-10 h-10 rounded-full border-2 border-outline overflow-hidden bg-white shrink-0"
-                initial={{ scale: 0.4, y: 8 }}
-                animate={inView ? { scale: 1, y: 0 } : {}}
-                transition={{ type: "spring", stiffness: 350, damping: 15, delay: (index % 3) * 0.05 + 0.25 }}
-              >
-                <img
-                  src={getAssetPath(cert.issuerLogo)}
-                  alt={`${cert.issuer} logo`}
-                  width="40"
-                  height="40"
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-full object-contain p-1"
-                />
-              </motion.div>
-              <span className="font-label-bold text-sm md:text-base uppercase text-[var(--color-on-surface)]">
-                {cert.issuer}
+          <div data-build-part="meta" className="flex flex-col gap-4 mt-auto">
+            <span className="font-label-bold text-sm md:text-base text-[var(--color-secondary)] uppercase tracking-widest border-2 border-outline w-fit px-2.5 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)]">
+              {cert.date}
+            </span>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t-4 border-outline pt-4 gap-4 sm:gap-0">
+              <div className="flex items-center gap-3">
+                <motion.div
+                  className="w-10 h-10 rounded-full border-2 border-outline overflow-hidden bg-white shrink-0"
+                  initial={{ scale: 0.4, y: 8 }}
+                  animate={inView ? { scale: 1, y: 0 } : {}}
+                  transition={{ type: "spring", stiffness: 350, damping: 15, delay: (index % 3) * 0.05 + 0.25 }}
+                >
+                  <img
+                    src={getAssetPath(cert.issuerLogo)}
+                    alt={`${cert.issuer} logo`}
+                    width="40"
+                    height="40"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-contain p-1"
+                  />
+                </motion.div>
+                <span className="font-label-bold text-sm md:text-base uppercase text-[var(--color-on-surface)]">
+                  {cert.issuer}
+                </span>
+              </div>
+              <span className="font-label-bold text-xs bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] text-center">
+                {cert.tag || "Credential"}
               </span>
             </div>
-            <span className="font-label-bold text-xs bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] text-center">
-              {cert.tag || "Credential"}
-            </span>
-          </div>
 
-          {/* Action Button */}
-          {cert.link && cert.link !== "#" ? (
-            <a
-              href={cert.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
-            >
-              <FaExternalLinkAlt className="text-sm" />
-              View Certificate
-            </a>
-          ) : (
-            <button
-              onClick={onPreview}
-              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-none"
-            >
-              <FaEye className="text-sm" />
-              View Certificate
-            </button>
-          )}
+            {cert.link && cert.link !== "#" ? (
+              <a
+                href={cert.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
+              >
+                <FaExternalLinkAlt className="text-sm" />
+                View Certificate
+              </a>
+            ) : (
+              <button
+                onClick={onPreview}
+                className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-3 font-label-bold text-sm md:text-base uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 w-full cursor-none"
+              >
+                <FaEye className="text-sm" />
+                View Certificate
+              </button>
+            )}
+          </div>
         </div>
       </motion.article>
     </motion.div>

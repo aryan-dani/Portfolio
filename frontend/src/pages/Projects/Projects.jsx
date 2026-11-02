@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch, FaTimes, FaChevronDown } from "react-icons/fa";
@@ -9,6 +9,7 @@ import { usePageSEO } from "../../utils/seo";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
 import { useAchievements } from "../../context/AchievementContext";
 
 function Projects() {
@@ -22,6 +23,9 @@ function Projects() {
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const navigate = useNavigate();
   const { track } = useAchievements();
+  const scopeRef = useRef(null);
+  const buildEnabled =
+    searchTerm === "" && activeFilter === "all" && selectedTags.length === 0;
 
   const openProject = useCallback(
     (project) => {
@@ -78,6 +82,8 @@ function Projects() {
   return (
     <>
       <motion.section
+        ref={scopeRef}
+        data-build-grid="projects"
         className="flex flex-col gap-12 md:gap-16 w-full"
         initial="hidden"
         animate="visible"
@@ -85,6 +91,7 @@ function Projects() {
       >
         {/* Header */}
         <PageHeader
+          build
           title="Projects"
           count={filteredProjects.length}
           description="Systems engineered to resist and adapt. Full-stack applications with modern architectures. AI-powered solutions and creative experiments."
@@ -242,6 +249,12 @@ function Projects() {
           )}
         </AnimatePresence>
       </motion.section>
+
+      <CardBuildSwarm
+        storageKey="projects"
+        scopeRef={scopeRef}
+        enabled={buildEnabled && filteredProjects.length > 0}
+      />
 
       {/* Modal */}
       <AnimatePresence>

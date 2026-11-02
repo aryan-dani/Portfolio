@@ -16,6 +16,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
       className="w-full h-full"
     >
       <motion.article
+        data-build-card
         className={`group bg-[var(--color-surface)] border-4 border-outline hover:border-secondary transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full hover-gpu ${
           isHighlighted ? "ring-4 ring-[var(--color-primary-container)] ring-offset-2" : ""
         }`}
@@ -29,7 +30,10 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
         whileTap={{ scale: 0.99 }}
       >
         {/* Image */}
-        <div className="h-48 md:h-56 border-b-4 border-outline overflow-hidden relative">
+        <div
+          data-build-part="media"
+          className="h-48 md:h-56 border-b-4 border-outline overflow-hidden relative"
+        >
           <ProgressiveImage
             src={getAssetPath(project.image)}
             alt={project.imageAlt || `${project.title} project preview by Aryan Dani`}
@@ -66,79 +70,85 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
 
         {/* Content */}
         <div className="p-6 md:p-7 flex flex-col grow">
-          <div className="mb-3 flex items-start justify-between gap-3">
-            <h3 className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] uppercase">
-              {project.title}
-            </h3>
-            <button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-                onOpenModal(project);
-              }}
-              className="shrink-0 border-2 border-outline bg-[var(--color-primary-container)] px-3 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-primary-container)] shadow-[2px_2px_0_var(--shadow-color)] transition-colors hover:bg-[var(--color-surface-variant)] hover:text-[var(--color-on-surface)] focus-visible:bg-[var(--color-surface-variant)] focus-visible:text-[var(--color-on-surface)]"
-              aria-label={`Open details for ${project.title}`}
-            >
-              Details
-            </button>
-          </div>
-          <div className="mb-4 flex flex-wrap gap-2">
-            {project.tags.slice(0, 2).map((tag) => (
-              <span
-                key={`lead-${tag}`}
-                className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+          <h3
+            data-build-part="title"
+            className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] uppercase mb-3"
+          >
+            {project.title}
+          </h3>
           <p
+            data-build-part="blurb"
             className="font-body-md text-sm text-[var(--color-text-muted)] mb-5 whitespace-normal"
             style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
           >
             {project.description}
           </p>
 
-          <div className="flex flex-wrap gap-2 mb-6">
-            {project.tags.slice(2, 5).map((tag) => (
-              <span
-                key={tag}
-                className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase"
+          <div data-build-part="meta" className="flex flex-col grow gap-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-wrap gap-2">
+                {project.tags.slice(0, 2).map((tag) => (
+                  <span
+                    key={`lead-${tag}`}
+                    className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onOpenModal(project);
+                }}
+                className="shrink-0 border-2 border-outline bg-[var(--color-primary-container)] px-3 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-primary-container)] shadow-[2px_2px_0_var(--shadow-color)] transition-colors hover:bg-[var(--color-surface-variant)] hover:text-[var(--color-on-surface)] focus-visible:bg-[var(--color-surface-variant)] focus-visible:text-[var(--color-on-surface)]"
+                aria-label={`Open details for ${project.title}`}
               >
-                {tag}
-              </span>
-            ))}
-            {project.tags.length > 5 && (
-              <span className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase">
-                +{project.tags.length - 5}
-              </span>
-            )}
-          </div>
+                Details
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {project.tags.slice(2, 5).map((tag) => (
+                <span
+                  key={tag}
+                  className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase"
+                >
+                  {tag}
+                </span>
+              ))}
+              {project.tags.length > 5 && (
+                <span className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase">
+                  +{project.tags.length - 5}
+                </span>
+              )}
+            </div>
 
-          <div
-            className="flex gap-3 border-t-4 border-outline pt-5 mt-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {project.links?.preview && (
-              <a
-                href={project.links.preview}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
-              >
-                <FaEye /> Live
-              </a>
-            )}
-            {project.links?.github && (
-              <a
-                href={project.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all flex justify-center items-center gap-2 cursor-none"
-              >
-                <FaGithub /> Source
-              </a>
-            )}
+            <div
+              className="flex gap-3 border-t-4 border-outline pt-5 mt-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {project.links?.preview && (
+                <a
+                  href={project.links.preview}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
+                >
+                  <FaEye /> Live
+                </a>
+              )}
+              {project.links?.github && (
+                <a
+                  href={project.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all flex justify-center items-center gap-2 cursor-none"
+                >
+                  <FaGithub /> Source
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </motion.article>
