@@ -60,11 +60,13 @@ export function apiChatDevPlugin() {
         { handleGuestbookRequest },
         { handleGitHubStatsRequest },
         { handleGitHubEventsRequest },
+        { handleFrameCheckRequest },
       ] = await Promise.all([
         import("../api/chat.js"),
         import("../api/guestbook.js"),
         import("../api/github-stats.js"),
         import("../api/github-events.js"),
+        import("../api/frameCheck.js"),
       ]);
 
       server.middlewares.use(async (req, res, next) => {
@@ -88,6 +90,19 @@ export function apiChatDevPlugin() {
             await handleGitHubStatsRequest(req, createMockResponse(res));
           } catch (error) {
             sendJson(res, 503, { error: error.message || "GitHub stats failed" });
+          }
+          return;
+        }
+
+        if (path === "/api/frame-check" && req.method === "GET") {
+          try {
+            const query = Object.fromEntries(new URL(req.url, "http://localhost").searchParams);
+            await handleFrameCheckRequest(
+              { method: "GET", url: req.url, query },
+              createMockResponse(res),
+            );
+          } catch (error) {
+            sendJson(res, 500, { embeddable: true, error: error.message || "Frame check failed" });
           }
           return;
         }

@@ -23,6 +23,7 @@ import { composeProviders } from "./utils/composeProviders";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 
 import BackToTop from "./components/BackToTop/BackToTop";
+import SiteBrowser from "./components/SiteBrowser/SiteBrowser";
 import NoiseOverlay from "./components/NoiseOverlay/NoiseOverlay";
 import PageLoader from "./components/PageLoader/PageLoader";
 import CustomCursor from "./components/CustomCursor/CustomCursor";
@@ -216,6 +217,7 @@ function App() {
                 <ChatWidget />
               </Suspense>
               <BackToTop />
+              <SiteBrowser />
               <Layout>
                 <AnimatedRoutes />
               </Layout>

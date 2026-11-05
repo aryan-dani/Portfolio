@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FaTimes, FaEye, FaGithub, FaArrowRight } from "react-icons/fa";
 import { getSkillsForProject } from "../../data/skills";
 import { getAssetPath } from "../../utils/paths";
+import { openSiteBrowser } from "../../utils/siteBrowser";
 import { modalBackdropVariants, modalContentVariants } from "../../utils/motionVariants";
 import ProgressiveImage from "../ProgressiveImage/ProgressiveImage";
 
@@ -87,6 +88,11 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   href={project.links.preview}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    openSiteBrowser({ url: project.links.preview, title: project.title });
+                  }}
                   className="flex-1 lg:flex-none bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                 >
                   Live <FaEye />

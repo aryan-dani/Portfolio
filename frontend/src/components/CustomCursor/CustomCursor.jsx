@@ -76,7 +76,9 @@ const CustomCursor = memo(function CustomCursor() {
 
   const innerRef = useRef(null);
   const outerRef = useRef(null);
+  const portalRef = useRef(null);
   const visibleRef = useRef(false);
+  const frameHiddenRef = useRef(false);
   const cursorStateRef = useRef(cursorState);
   const onDarkBgRef = useRef(onDarkBg);
   const hoverTargetRef = useRef(null);
@@ -167,7 +169,36 @@ const CustomCursor = memo(function CustomCursor() {
       }
     };
 
+    const isPreviewFrame = (node) =>
+      node?.id === "portfolio-site-frame" || !!node?.closest?.("#portfolio-site-frame");
+
+    const hideForFrame = () => {
+      if (frameHiddenRef.current) return;
+      frameHiddenRef.current = true;
+      visibleRef.current = false;
+      if (portalRef.current) portalRef.current.style.transition = "none";
+      setIsVisible(false);
+    };
+
+    const showAfterFrame = (x, y) => {
+      if (!frameHiddenRef.current) return;
+      frameHiddenRef.current = false;
+      mousePosRef.current = { x, y };
+      innerPosRef.current = { x, y };
+      outerPosRef.current = { x, y };
+      if (portalRef.current) portalRef.current.style.transition = "opacity 0.2s ease";
+      visibleRef.current = true;
+      setIsVisible(true);
+      startLoop();
+    };
+
     const onMouseMove = (e) => {
+      if (isPreviewFrame(e.target)) {
+        hideForFrame();
+        return;
+      }
+      if (frameHiddenRef.current) showAfterFrame(e.clientX, e.clientY);
+
       mousePosRef.current = { x: e.clientX, y: e.clientY };
 
       if (!visibleRef.current) {
@@ -175,6 +206,13 @@ const CustomCursor = memo(function CustomCursor() {
         setIsVisible(true);
       }
       startLoop();
+    };
+
+    const onMouseOut = (e) => {
+      const enteredFrame =
+        isPreviewFrame(e.relatedTarget) ||
+        (e.target?.id === "portfolio-site-frame" && !e.relatedTarget);
+      if (enteredFrame) hideForFrame();
     };
 
     const onMouseLeave = () => {
@@ -185,6 +223,7 @@ const CustomCursor = memo(function CustomCursor() {
     };
 
     const onMouseEnter = () => {
+      if (frameHiddenRef.current) return;
       if (!visibleRef.current) {
         visibleRef.current = true;
         setIsVisible(true);
@@ -259,6 +298,7 @@ const CustomCursor = memo(function CustomCursor() {
     };
 
     window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mouseout", onMouseOut, { passive: true });
     document.addEventListener("mouseleave", onMouseLeave);
     document.addEventListener("mouseenter", onMouseEnter);
     window.addEventListener("mouseover", handleHoverChange, { passive: true });
@@ -306,6 +346,7 @@ const CustomCursor = memo(function CustomCursor() {
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseout", onMouseOut);
       document.removeEventListener("mouseleave", onMouseLeave);
       document.removeEventListener("mouseenter", onMouseEnter);
       window.removeEventListener("mouseover", handleHoverChange);
@@ -324,6 +365,7 @@ const CustomCursor = memo(function CustomCursor() {
 
   return createPortal(
     <div
+      ref={portalRef}
       className={CUSTOM_CURSOR_PORTAL_CLASS}
       style={{
         pointerEvents: "none",

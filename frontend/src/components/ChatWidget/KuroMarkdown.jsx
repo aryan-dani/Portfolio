@@ -1,4 +1,5 @@
 import { Fragment, memo } from "react";
+import { isProjectPreviewUrl, openSiteBrowser } from "../../utils/siteBrowser";
 
 /**
  * Lightweight Kuro markdown: **bold**, `code`, [label](url), newlines.
@@ -63,6 +64,12 @@ function renderInline(text, keyPrefix) {
           target="_blank"
           rel="noopener noreferrer"
           className="underline font-label-bold"
+          onClick={(event) => {
+            if (!isProjectPreviewUrl(token.href)) return;
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            openSiteBrowser({ url: token.href, title: token.value });
+          }}
         >
           {token.value}
         </a>

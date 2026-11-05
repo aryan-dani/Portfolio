@@ -228,6 +228,11 @@ html.theme-transitioning body {
     cursor: none !important;
   }
 
+  /* Embedded previews draw their own cursor. Don't also force it off. */
+  html.custom-cursor-active:not(.native-cursor) #portfolio-site-frame {
+    cursor: auto !important;
+  }
+
   html.native-cursor,
   html.native-cursor * {
     cursor: auto !important;
