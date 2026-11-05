@@ -68,7 +68,7 @@ const PageLoader = memo(function PageLoader() {
       return undefined;
     }
 
-    const duration = 420;
+    const duration = 900;
     const startTime = performance.now();
     let animationFrameId;
 
@@ -127,15 +127,15 @@ const PageLoader = memo(function PageLoader() {
         clearInterval(memInterval);
       }
       setMemSize(currentMem);
-    }, 24);
+    }, 70);
 
     const timers = [
-      setTimeout(() => setTerminalStep(1), 40),
-      setTimeout(() => setTerminalStep(2), 120),
-      setTimeout(() => setTerminalStep(3), 220),
-      setTimeout(() => setTerminalStep(4), 320),
-      setTimeout(() => setTerminalStep(5), 420),
-      setTimeout(() => setPhase(PHASES.EXIT), 520),
+      setTimeout(() => setTerminalStep(1), 80),
+      setTimeout(() => setTerminalStep(2), 320),
+      setTimeout(() => setTerminalStep(3), 560),
+      setTimeout(() => setTerminalStep(4), 800),
+      setTimeout(() => setTerminalStep(5), 1040),
+      setTimeout(() => setPhase(PHASES.EXIT), 1200),
     ];
 
     return () => {
@@ -147,7 +147,7 @@ const PageLoader = memo(function PageLoader() {
   // Phase 3: Exit Shutter Panel Transition
   useEffect(() => {
     if (phase !== PHASES.EXIT) return;
-    const exitTimer = setTimeout(() => setIsLoading(false), 280);
+    const exitTimer = setTimeout(() => setIsLoading(false), 640);
     return () => clearTimeout(exitTimer);
   }, [phase]);
 
@@ -194,7 +194,7 @@ const PageLoader = memo(function PageLoader() {
                       className="absolute top-0 bottom-0 w-[4px] bg-[var(--color-outline)] z-20 pointer-events-none"
                       initial={{ left: "0%" }}
                       animate={{ left: "100%" }}
-                      transition={{ duration: 0.42, ease: "linear" }}
+                      transition={{ duration: 0.9, ease: "linear" }}
                       style={{ boxShadow: "0 0 12px var(--color-outline)" }}
                     />
                     {displayChars.map((item, i) => (
@@ -376,9 +376,9 @@ const PageLoader = memo(function PageLoader() {
                     initial={{ y: 0 }}
                     animate={{ y: isEven ? "-100%" : "100%" }}
                     transition={{
-                      duration: 0.38,
+                      duration: 0.5,
                       ease: [0.76, 0, 0.24, 1],
-                      delay: index * 0.03,
+                      delay: index * 0.02,
                     }}
                   />
                 );

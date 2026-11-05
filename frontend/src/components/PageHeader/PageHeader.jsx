@@ -43,13 +43,7 @@ const PageHeader = memo(function PageHeader({
         </motion.p>
       )}
 
-      {children && build ? (
-        <div data-build-part="meta" className="flex flex-col gap-6 w-full">
-          {children}
-        </div>
-      ) : (
-        children
-      )}
+      {children}
     </header>
   );
 });

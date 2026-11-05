@@ -17,11 +17,10 @@ const FAST_SWEEP_KEYS = new Set(["skills", "achievements"]);
 const ROW_TOLERANCE = 56;
 const PEN_MS = 52;
 const CHAOS_PEN_MS = 48;
-const CHAOS_FLY_MS = 160;
-const CHAOS_EDGE_STEPS = 6;
-const CHAOS_MEDIA_STEPS = 8;
-const TYPE_CHUNK = 2;
-const TYPE_MS = 32;
+const CHAOS_FLY_MS = 280;
+const STROKE_MS = 480;
+const TYPE_CHUNK = 1;
+const TYPE_MS = 55;
 const META_TAP_MS = 55;
 const IDLE_POLL_MS = 160;
 
@@ -122,6 +121,19 @@ function collectAllCards(scope) {
   });
 }
 
+function pickStarterCards(cards) {
+  const headers = cards.filter((card) => card.tagName === "HEADER");
+  const rest = cards.filter((card) => card.tagName !== "HEADER");
+  const visible = rest.filter((card) => isInViewport(card, 40));
+  const pool = visible.length ? visible : rest;
+  const firstRow = groupIntoRows(pool)[0] || [];
+  return [...headers, ...firstRow];
+}
+
+function easeOutCubic(t) {
+  return 1 - (1 - t) ** 3;
+}
+
 function groupIntoRows(cards) {
   const sorted = [...cards].sort((a, b) => {
     const dy = docTop(a) - docTop(b);
@@ -182,9 +194,13 @@ function isPlainTextPart(el) {
 }
 
 function stashOriginals(card, store) {
-  const title = card.querySelector('[data-build-part="title"]');
-  const blurb = card.querySelector('[data-build-part="blurb"]');
+  const titles = [...card.querySelectorAll('[data-build-part="title"]')];
+  const blurbs = [...card.querySelectorAll('[data-build-part="blurb"]')];
+  const title = titles[0];
+  const blurb = blurbs[0];
   store.set(card, {
+    titles: titles.map((el) => ({ text: el.textContent ?? "", plain: isPlainTextPart(el) })),
+    blurbs: blurbs.map((el) => ({ text: el.textContent ?? "", plain: isPlainTextPart(el) })),
     title: title?.textContent ?? "",
     blurb: blurb?.textContent ?? "",
     titlePlain: isPlainTextPart(title),
@@ -195,19 +211,23 @@ function stashOriginals(card, store) {
 function restoreOriginals(card, store) {
   const saved = store.get(card);
   if (!saved) return;
-  const title = card.querySelector('[data-build-part="title"]');
-  const blurb = card.querySelector('[data-build-part="blurb"]');
+  const titles = [...card.querySelectorAll('[data-build-part="title"]')];
+  const blurbs = [...card.querySelectorAll('[data-build-part="blurb"]')];
   const media = card.querySelector('[data-build-part="media"]');
-  if (title) {
-    if (saved.titlePlain) title.textContent = saved.title;
+  titles.forEach((title, index) => {
+    const part = saved.titles?.[index];
+    if (part?.plain) title.textContent = part.text;
+    else if (!saved.titles && index === 0 && saved.titlePlain) title.textContent = saved.title;
     title.removeAttribute("data-writing");
     title.setAttribute("data-written", "");
-  }
-  if (blurb) {
-    if (saved.blurbPlain) blurb.textContent = saved.blurb;
+  });
+  blurbs.forEach((blurb, index) => {
+    const part = saved.blurbs?.[index];
+    if (part?.plain) blurb.textContent = part.text;
+    else if (!saved.blurbs && index === 0 && saved.blurbPlain) blurb.textContent = saved.blurb;
     blurb.removeAttribute("data-writing");
     blurb.setAttribute("data-written", "");
-  }
+  });
   card.querySelectorAll('[data-build-part="meta"] > *').forEach((el) => {
     el.setAttribute("data-built", "");
   });
@@ -391,10 +411,18 @@ function prepareCardForBuild(card, store) {
   }
   clearBuildAttrs(card);
   resetDrawVars(card);
-  const title = card.querySelector('[data-build-part="title"]');
-  const blurb = card.querySelector('[data-build-part="blurb"]');
-  if (title && saved.titlePlain) title.textContent = "";
-  if (blurb && saved.blurbPlain) blurb.textContent = "";
+  const titles = [...card.querySelectorAll('[data-build-part="title"]')];
+  const blurbs = [...card.querySelectorAll('[data-build-part="blurb"]')];
+  titles.forEach((title, index) => {
+    const part = saved.titles?.[index];
+    const plain = part ? part.plain : index === 0 && saved.titlePlain;
+    if (plain) title.textContent = "";
+  });
+  blurbs.forEach((blurb, index) => {
+    const part = saved.blurbs?.[index];
+    const plain = part ? part.plain : index === 0 && saved.blurbPlain;
+    if (plain) blurb.textContent = "";
+  });
   const media = card.querySelector('[data-build-part="media"]');
   if (media) media.style.clipPath = "inset(0 100% 0 0)";
   return saved;
@@ -431,8 +459,8 @@ function enqueueCardJobs(card, queue, progress, store, activeCards) {
   activeCards.add(card);
 
   const mediaEl = card.querySelector('[data-build-part="media"]');
-  const titleEl = card.querySelector('[data-build-part="title"]');
-  const blurbEl = card.querySelector('[data-build-part="blurb"]');
+  const titleEls = [...card.querySelectorAll('[data-build-part="title"]')];
+  const blurbEls = [...card.querySelectorAll('[data-build-part="blurb"]')];
   const metaEl = card.querySelector('[data-build-part="meta"]');
   const metaKids = metaEl ? [...metaEl.children] : [];
 
@@ -440,8 +468,10 @@ function enqueueCardJobs(card, queue, progress, store, activeCards) {
     edges: { top: false, right: false, bottom: false, left: false },
     framed: false,
     media: !mediaEl,
-    title: !titleEl,
-    blurb: !blurbEl,
+    title: titleEls.length === 0,
+    blurb: blurbEls.length === 0,
+    titleLeft: titleEls.length,
+    blurbLeft: blurbEls.length,
     metaLeft: metaKids.length,
     done: false,
     busy: 0,
@@ -453,8 +483,14 @@ function enqueueCardJobs(card, queue, progress, store, activeCards) {
     queue.push({ type: "edge", edge, card });
   }
   if (mediaEl) queue.push({ type: "media", card, el: mediaEl });
-  if (titleEl) queue.push({ type: "title", card, el: titleEl });
-  if (blurbEl) queue.push({ type: "blurb", card, el: blurbEl });
+  titleEls.forEach((el, index) => {
+    const part = saved.titles?.[index] || { text: saved.title, plain: saved.titlePlain };
+    queue.push({ type: "title", card, el, text: part.text, plain: part.plain });
+  });
+  blurbEls.forEach((el, index) => {
+    const part = saved.blurbs?.[index] || { text: saved.blurb, plain: saved.blurbPlain };
+    queue.push({ type: "blurb", card, el, text: part.text, plain: part.plain });
+  });
   metaKids.forEach((el, index) => {
     queue.push({ type: "meta", card, el, index });
   });
@@ -770,7 +806,11 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
       if (!eligibleRef.current) return;
       if (!enabledRef.current && !force) return;
 
+      const key = storageKeyFor(storageKey);
+      if (!force && sessionStorage.getItem(key)) return;
+
       await waitForBootDone();
+      await delay(200);
 
       let scope = resolveScope();
       let cards = [];
@@ -812,18 +852,6 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
           timersRef.current.push(entry);
           wakeWaiters.add(wrapped);
         });
-
-      cards.forEach((card) => {
-        stashOriginals(card, originalsRef.current);
-        clearBuildAttrs(card);
-        resetDrawVars(card);
-        setPhase(card, "blueprint");
-        const saved = originalsRef.current.get(card);
-        const title = card.querySelector('[data-build-part="title"]');
-        const blurb = card.querySelector('[data-build-part="blurb"]');
-        if (title && saved?.titlePlain) title.textContent = "";
-        if (blurb && saved?.blurbPlain) blurb.textContent = "";
-      });
 
       const stillActive = () =>
         playingRef.current && generationRef.current === generation;
@@ -874,6 +902,23 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         });
       };
 
+      const paintWhileMoving = async (agentIndex, to, ms, apply) => {
+        const paint = new Promise((resolve) => {
+          const start = performance.now();
+          const frame = (now) => {
+            const amount = easeOutCubic(Math.min(1, (now - start) / ms));
+            apply(amount);
+            if (now - start < ms && stillActive()) requestAnimationFrame(frame);
+            else resolve();
+          };
+          requestAnimationFrame(frame);
+        });
+        await Promise.all([
+          moveCursor(agentIndex, to, ms, { flight: "work" }),
+          paint,
+        ]);
+      };
+
       const docked = AGENTS.map(() => false);
 
       const dockIntoKuro = async (agentIndex) => {
@@ -911,9 +956,9 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         docked[agentIndex] = true;
       };
 
-      const emergeFromKuro = async (agentIndex) => {
-        emitKuroSwarm("launch");
-        await delay(agentIndex * KURO_STAGGER_MS);
+      const emergeFromKuro = async (agentIndex, { quiet = false } = {}) => {
+        if (!quiet) emitKuroSwarm("launch");
+        if (!quiet) await delay(agentIndex * 40);
         if (!stillActive()) return;
         const kuro = getKuroDockPoint(agentIndex);
         const lift = {
@@ -979,6 +1024,10 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
       await delay(60);
       if (!stillActive()) return;
 
+      emitKuroSwarm("launch");
+      await Promise.all(AGENTS.map((_, index) => emergeFromKuro(index, { quiet: true })));
+      if (!stillActive()) return;
+
       const tryEnqueue = (card) => {
         if (!card || enqueued.has(card) || revealedRef.current.has(card)) return;
         enqueued.add(card);
@@ -986,9 +1035,7 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         wake();
       };
 
-      cards.forEach((card) => {
-        if (isInViewport(card, 80)) tryEnqueue(card);
-      });
+      pickStarterCards(cards).forEach(tryEnqueue);
 
       observerRef.current?.disconnect();
       const observer = new IntersectionObserver(
@@ -1039,15 +1086,10 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
             };
             const [from, to, prop] = map[job.edge];
             await flyDiagonal(agentIndex, from);
-            for (let i = 0; i <= CHAOS_EDGE_STEPS; i += 1) {
-              if (!stillActive()) return;
-              const t = i / CHAOS_EDGE_STEPS;
-              card.style.setProperty(prop, `${t * 100}%`);
-              await moveCursor(agentIndex, {
-                x: from.x + (to.x - from.x) * t,
-                y: from.y + (to.y - from.y) * t,
-              });
-            }
+            if (!stillActive()) return;
+            await paintWhileMoving(agentIndex, to, STROKE_MS, (amount) => {
+              card.style.setProperty(prop, `${amount * 100}%`);
+            });
             p.edges[job.edge] = true;
             maybeFinishCard(card, progress);
             return;
@@ -1057,20 +1099,19 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
             const el = job.el;
             el.style.clipPath = "inset(0 100% 0 0)";
             const mRect = el.getBoundingClientRect();
+            const end = {
+              x: mRect.left + mRect.width,
+              y: mRect.top + mRect.height * 0.45,
+            };
             await flyDiagonal(agentIndex, {
               x: mRect.left,
               y: mRect.top + mRect.height * 0.45,
             });
-            for (let i = 0; i <= CHAOS_MEDIA_STEPS; i += 1) {
-              if (!stillActive()) return;
-              const t = i / CHAOS_MEDIA_STEPS;
-              el.style.clipPath = `inset(0 ${(1 - t) * 100}% 0 0)`;
-              card.style.setProperty("--media-reveal", `${t * 100}%`);
-              await moveCursor(agentIndex, {
-                x: mRect.left + mRect.width * t,
-                y: mRect.top + mRect.height * 0.45,
-              });
-            }
+            if (!stillActive()) return;
+            await paintWhileMoving(agentIndex, end, STROKE_MS, (amount) => {
+              el.style.clipPath = `inset(0 ${(1 - amount) * 100}% 0 0)`;
+              card.style.setProperty("--media-reveal", `${amount * 100}%`);
+            });
             el.style.clipPath = "none";
             el.setAttribute("data-media-open", "");
             p.media = true;
@@ -1080,35 +1121,9 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
 
           if (job.type === "title") {
             const el = job.el;
-            const saved = p.saved;
+            const text = job.text || "";
             el.setAttribute("data-writing", "");
-            if (saved.titlePlain) {
-              el.textContent = "";
-              await flyDiagonal(agentIndex, caretPoint(el));
-              for (let i = 0; i < saved.title.length; i += TYPE_CHUNK) {
-                if (!stillActive()) return;
-                el.textContent = saved.title.slice(0, i + TYPE_CHUNK);
-                await moveCursor(agentIndex, caretPoint(el), TYPE_MS);
-              }
-              el.textContent = saved.title;
-            } else {
-              await flyDiagonal(agentIndex, centerOf(el));
-              await moveCursor(agentIndex, centerOf(el), META_TAP_MS, { pulse: true });
-              await delay(60);
-            }
-            el.removeAttribute("data-writing");
-            el.setAttribute("data-written", "");
-            p.title = true;
-            maybeFinishCard(card, progress);
-            return;
-          }
-
-          if (job.type === "blurb") {
-            const el = job.el;
-            const saved = p.saved;
-            el.setAttribute("data-writing", "");
-            if (saved.blurbPlain) {
-              const text = truncateBlurb(saved.blurb);
+            if (job.plain && text) {
               el.textContent = "";
               await flyDiagonal(agentIndex, caretPoint(el));
               for (let i = 0; i < text.length; i += TYPE_CHUNK) {
@@ -1116,7 +1131,7 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
                 el.textContent = text.slice(0, i + TYPE_CHUNK);
                 await moveCursor(agentIndex, caretPoint(el), TYPE_MS);
               }
-              el.textContent = saved.blurb;
+              el.textContent = text;
             } else {
               await flyDiagonal(agentIndex, centerOf(el));
               await moveCursor(agentIndex, centerOf(el), META_TAP_MS, { pulse: true });
@@ -1124,7 +1139,34 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
             }
             el.removeAttribute("data-writing");
             el.setAttribute("data-written", "");
-            p.blurb = true;
+            p.titleLeft = Math.max(0, (p.titleLeft || 1) - 1);
+            p.title = p.titleLeft <= 0;
+            maybeFinishCard(card, progress);
+            return;
+          }
+
+          if (job.type === "blurb") {
+            const el = job.el;
+            el.setAttribute("data-writing", "");
+            if (job.plain && job.text) {
+              const text = truncateBlurb(job.text);
+              el.textContent = "";
+              await flyDiagonal(agentIndex, caretPoint(el));
+              for (let i = 0; i < text.length; i += TYPE_CHUNK) {
+                if (!stillActive()) return;
+                el.textContent = text.slice(0, i + TYPE_CHUNK);
+                await moveCursor(agentIndex, caretPoint(el), TYPE_MS);
+              }
+              el.textContent = job.text;
+            } else {
+              await flyDiagonal(agentIndex, centerOf(el));
+              await moveCursor(agentIndex, centerOf(el), META_TAP_MS, { pulse: true });
+              await delay(60);
+            }
+            el.removeAttribute("data-writing");
+            el.setAttribute("data-written", "");
+            p.blurbLeft = Math.max(0, (p.blurbLeft || 1) - 1);
+            p.blurb = p.blurbLeft <= 0;
             maybeFinishCard(card, progress);
             return;
           }
@@ -1143,25 +1185,26 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         }
       };
 
-      const restampWaitingBlueprints = () => {
+      const restampActiveCards = () => {
         cards.forEach((card) => {
-          if (revealedRef.current.has(card)) return;
+          if (!enqueued.has(card) || revealedRef.current.has(card)) return;
           if (progress.get(card)?.done) return;
-          if (enqueued.has(card)) {
-            // Active chaos card — React may have wiped the phase attr.
-            if (!card.getAttribute("data-build-phase")) {
-              setPhase(card, "chaos");
-              if (progress.get(card)?.framed) card.setAttribute("data-framed", "");
-            }
-            return;
+          if (!card.getAttribute("data-build-phase")) {
+            setPhase(card, "chaos");
+            if (progress.get(card)?.framed) card.setAttribute("data-framed", "");
           }
-          setPhase(card, "blueprint");
-          const saved = originalsRef.current.get(card);
-          const title = card.querySelector('[data-build-part="title"]');
-          const blurb = card.querySelector('[data-build-part="blurb"]');
-          if (title && saved?.titlePlain && title.textContent) title.textContent = "";
-          if (blurb && saved?.blurbPlain && blurb.textContent) blurb.textContent = "";
         });
+      };
+
+      let sessionMarked = false;
+      const markSession = () => {
+        if (sessionMarked || queue.length > 0) return;
+        const open = [...progress.keys()].some(
+          (card) => !revealedRef.current.has(card) && !progress.get(card)?.done,
+        );
+        if (open || progress.size === 0) return;
+        sessionMarked = true;
+        sessionStorage.setItem(key, "true");
       };
 
       const worker = async (agentIndex) => {
@@ -1188,7 +1231,8 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
           );
           if (!pending) break;
 
-          if (agentIndex === 0) restampWaitingBlueprints();
+          if (agentIndex === 0) restampActiveCards();
+          markSession();
           if (!docked[agentIndex]) {
             await dockIntoKuro(agentIndex);
             if (!stillActive()) return;
@@ -1217,9 +1261,10 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         clearBuildAttrs(card);
         setPhase(card, null);
       });
+      sessionStorage.setItem(key, "true");
       finish();
     },
-    [resolveScope, delay, clearTimers, finish],
+    [storageKey, resolveScope, delay, clearTimers, finish],
   );
 
   const runSyncBuild = useCallback(
@@ -1377,15 +1422,15 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
 
   useEffect(() => {
     if (!eligible || !enabled) return undefined;
-    if (!chaos && sessionStorage.getItem(storageKeyFor(storageKey))) {
+    if (sessionStorage.getItem(storageKeyFor(storageKey))) {
       return undefined;
     }
 
     let cancelled = false;
     const timer = window.setTimeout(() => {
       if (cancelled) return;
-      runBuild({ force: chaos });
-    }, chaos ? 60 : 180);
+      runBuild({ force: false });
+    }, 200);
 
     return () => {
       cancelled = true;
