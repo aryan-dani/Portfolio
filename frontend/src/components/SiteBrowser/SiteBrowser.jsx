@@ -87,7 +87,7 @@ export default function SiteBrowser() {
   const showFrame = session.status === "loading" || session.status === "ready";
 
   return createPortal(
-    <div className="fixed inset-0 z-[200] flex items-stretch justify-center p-2 sm:p-4 md:p-6">
+    <div className="fixed inset-0 z-[200] flex items-stretch justify-center p-2 sm:p-3">
       <motion.button
         type="button"
         aria-label="Close site browser"
@@ -100,7 +100,7 @@ export default function SiteBrowser() {
         role="dialog"
         aria-modal="true"
         aria-label={session.title ? `${session.title} preview` : "Site preview"}
-        className="relative z-10 flex h-full w-full max-w-6xl flex-col border-4 border-outline bg-[var(--color-surface)] shadow-[12px_12px_0_0_var(--shadow-color)]"
+        className="relative z-10 flex h-full w-full max-w-none flex-col border-4 border-outline bg-[var(--color-surface)] shadow-[12px_12px_0_0_var(--shadow-color)]"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}

@@ -87,14 +87,19 @@ export const socialLinks = [
     icon: "FaLinkedin",
   },
   {
-    name: "Instagram",
-    url: "https://www.instagram.com/aryandani_06/?hl=en",
-    icon: "FaInstagram",
-  },
-  {
     name: "GitHub",
     url: "https://github.com/aryan-dani",
     icon: "FaGithub",
+  },
+  {
+    name: "X",
+    url: "https://x.com/Killfall15",
+    icon: "FaTwitter",
+  },
+  {
+    name: "Instagram",
+    url: "https://www.instagram.com/aryandani_06/?hl=en",
+    icon: "FaInstagram",
   },
   {
     name: "Email",

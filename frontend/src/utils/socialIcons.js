@@ -16,4 +16,5 @@ export const socialIconMap = {
   GitHub: FaGithub,
   Instagram: FaInstagram,
   Twitter: FaTwitter,
+  X: FaTwitter,
 };

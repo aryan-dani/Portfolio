@@ -1462,7 +1462,7 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
       };
     }
 
-    const onAbort = (event) => {
+    const onAbort = (_event) => {
       if (!playingRef.current) return;
       if (ignoreAbortRef.current) return;
       abortAndReveal();

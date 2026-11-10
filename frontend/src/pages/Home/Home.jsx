@@ -15,14 +15,14 @@ import TechGlobeFallback from "../../components/TechGlobe/TechGlobeFallback";
 const TechGlobe = lazy(() => import("../../components/TechGlobe/TechGlobe"));
 
 const carouselVariants = {
-  hidden:  { opacity: 0.2, x: 24, scale: 0.99 },
+  hidden: { opacity: 0.2, x: 24, scale: 0.99 },
   visible: {
-    opacity: 1, x: 0, scale: 1,
+    opacity: 1,
+    x: 0,
+    scale: 1,
     transition: { type: "spring", stiffness: 170, damping: 28, delay: 0.08 },
   },
 };
-
-// ─── Data ─────────────────────────────────────────────────────
 
 const roles = ["Web Developer", "AI Engineer", "Agentic AI Builder", "Problem Solver"];
 
@@ -33,8 +33,6 @@ const GlobePlaceholder = () => (
   />
 );
 
-// ─── Page ─────────────────────────────────────────────────────
-
 const Home = memo(function Home() {
   usePageSEO();
   const preferLiteHero = useMediaQuery(MOBILE_LITE_QUERY);
@@ -42,10 +40,9 @@ const Home = memo(function Home() {
   const [mountGlobe, setMountGlobe] = useState(false);
   usePrefetchPortfolioImages({ enabled: !preferLiteHero && mountGlobe });
   const totalProjects = portfolioStats.projects;
-  const totalSkills   = portfolioStats.skills;
-  const totalCerts    = portfolioStats.certifications;
+  const totalSkills = portfolioStats.skills;
+  const totalCerts = portfolioStats.certifications;
 
-  // Mount the canvas globe after first paint so it never blocks FCP.
   useEffect(() => {
     let idleId = 0;
     let timeoutId = 0;
@@ -70,12 +67,9 @@ const Home = memo(function Home() {
       initial={false}
       animate="visible"
     >
-      {/* Hero row */}
+      {/* Band 1: hero + globe */}
       <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-center justify-between relative z-10">
-        {/* Text content */}
         <div className="flex-1 flex flex-col gap-3.5 lg:gap-4 max-w-2xl w-full z-10">
-
-          {/* Name heading with shimmer */}
           <motion.div variants={itemVariants}>
             <motion.h1
               className="font-headline-xl text-5xl md:text-6xl xl:text-8xl text-[var(--color-on-background)] uppercase leading-none bg-[var(--color-surface)] border-4 border-outline p-3 md:p-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] inline-block w-fit relative overflow-hidden"
@@ -91,12 +85,10 @@ const Home = memo(function Home() {
             </motion.h1>
           </motion.div>
 
-          {/* Role typewriter — plain h2 so Edge reduced-motion can't leave it at opacity ~0 */}
           <h2 className="font-headline-md text-lg md:text-2xl text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase opacity-100">
             <TypeWriter texts={roles} speed={120} deleteSpeed={60} pauseTime={3200} />
           </h2>
 
-          {/* Bio */}
           <motion.p
             className="font-body-lg text-base md:text-lg text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline p-3.5 md:p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] max-w-xl leading-snug"
             variants={itemVariants}
@@ -106,7 +98,6 @@ const Home = memo(function Home() {
             or jump straight into the CLI.
           </motion.p>
 
-          {/* CTA buttons */}
           <motion.div
             className="flex flex-wrap items-center gap-3 mt-1"
             variants={itemVariants}
@@ -121,10 +112,8 @@ const Home = memo(function Home() {
               {showCommandHint ? "or press Ctrl/Alt+K" : "or open the menu"}
             </span>
           </motion.div>
-
         </div>
 
-        {/* Signature 3D showcase */}
         <motion.div
           className="flex-1 w-full flex justify-center lg:justify-end mt-2 lg:mt-0 max-w-[560px] lg:max-w-none mx-auto lg:mx-0"
           variants={carouselVariants}
@@ -141,7 +130,28 @@ const Home = memo(function Home() {
         </motion.div>
       </div>
 
-      {/* Stats ribbon */}
+      {/* Band 2: full-width hire row */}
+      <motion.div
+        className="w-full border-4 border-outline bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col md:flex-row md:items-center gap-5 md:gap-8"
+        variants={itemVariants}
+      >
+        <div className="flex-1 flex flex-col gap-2 min-w-0">
+          <p className="font-label-bold text-xs uppercase tracking-[0.18em] opacity-80">
+            Open for freelance
+          </p>
+          <p className="font-headline-md text-xl md:text-2xl uppercase leading-tight max-w-3xl">
+            Grounded RAG and human-in-the-loop AI builds, with clear packages and starting prices.
+          </p>
+        </div>
+        <MagneticLink
+          to="/services"
+          className="shrink-0 self-start md:self-center bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-base uppercase shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all inline-block text-center"
+        >
+          Hire / Services
+        </MagneticLink>
+      </motion.div>
+
+      {/* Band 3: stats */}
       <motion.div
         className="bg-hatch border-4 border-outline p-3 md:p-4 shadow-[4px_4px_0_var(--shadow-color)] w-full"
         variants={itemVariants}

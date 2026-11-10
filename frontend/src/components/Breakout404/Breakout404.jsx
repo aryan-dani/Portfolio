@@ -186,7 +186,8 @@ function BreakoutGame({ onScore }) {
 
   useEffect(() => {
     startGame();
-    return () => loopRef.current.stop?.();
+    const loop = loopRef.current;
+    return () => loop.stop?.();
   }, [startGame]);
 
   return (

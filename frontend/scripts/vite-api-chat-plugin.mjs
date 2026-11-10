@@ -61,16 +61,35 @@ export function apiChatDevPlugin() {
         { handleGitHubStatsRequest },
         { handleGitHubEventsRequest },
         { handleFrameCheckRequest },
+        { handleContactRequest },
       ] = await Promise.all([
         import("../api/chat.js"),
         import("../api/guestbook.js"),
         import("../api/github-stats.js"),
         import("../api/github-events.js"),
         import("../api/frameCheck.js"),
+        import("../api/contact.js"),
       ]);
 
       server.middlewares.use(async (req, res, next) => {
         const path = req.url?.split("?")[0];
+
+        if (path === "/api/contact") {
+          try {
+            if (req.method !== "POST") {
+              sendJson(res, 405, { error: "Method not allowed" });
+              return;
+            }
+            const body = await readJsonBody(req);
+            await handleContactRequest(
+              { method: "POST", headers: req.headers, body },
+              createMockResponse(res),
+            );
+          } catch (error) {
+            sendJson(res, error.status || 500, { error: error.message || "Contact failed" });
+          }
+          return;
+        }
 
         if (path === "/api/guestbook") {
           try {

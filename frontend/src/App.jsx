@@ -43,6 +43,8 @@ const ChatWidget = lazy(() => import("./components/ChatWidget/ChatWidget"));
 const EasterEggs = lazy(() => import("./components/EasterEggs/EasterEggs"));
 const DevTools = lazy(() => import("./components/DevTools/DevTools"));
 const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
+const WorkCaseStudy = lazy(() => import("./pages/Work/WorkCaseStudy"));
+const Guide = lazy(() => import("./pages/Guides/Guide"));
 
 const basename = import.meta.env.BASE_URL;
 
@@ -160,6 +162,30 @@ function AnimatedRoutes() {
             }
           />
         ))}
+        <Route
+          path="work/:slug"
+          element={
+            <ErrorBoundary>
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition isFirstRender={isFirstRender} direction={direction} liteMode={liteMode}>
+                  <WorkCaseStudy />
+                </PageTransition>
+              </Suspense>
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="guides/:slug"
+          element={
+            <ErrorBoundary>
+              <Suspense fallback={<PageFallback />}>
+                <PageTransition isFirstRender={isFirstRender} direction={direction} liteMode={liteMode}>
+                  <Guide />
+                </PageTransition>
+              </Suspense>
+            </ErrorBoundary>
+          }
+        />
         <Route
           path="*"
           element={

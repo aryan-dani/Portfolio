@@ -19,6 +19,7 @@ const socialItemVariants = {
 
 const footerNavLinks = [
   { to: "/projects", label: "Projects" },
+  { to: "/services", label: "Services" },
   { to: "/research", label: "Research" },
   { to: "/about", label: "About" },
   { to: "/experience", label: "Experience" },
@@ -28,29 +29,27 @@ const footerNavLinks = [
 const Footer = memo(function Footer() {
   return (
     <motion.footer
-      className="w-full border-t-4 border-outline mt-20 relative z-10"
-      style={{ backgroundColor: "var(--color-surface)" }}
+      className="w-full border-t-4 border-outline mt-20 relative z-10 bg-[var(--color-surface)] text-[var(--color-on-surface)]"
       variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      initial={false}
+      animate="visible"
     >
       <div className="flex flex-col md:flex-row justify-between items-center py-8 px-4 md:px-8 gap-8 w-full max-w-[1440px] mx-auto">
         {/* Copyright + Internal nav */}
         <motion.div className="flex flex-col items-center md:items-start gap-3" variants={itemVariants}>
           <Link
             to="/copyright"
-            className="relative font-headline-md font-black uppercase text-base md:text-lg text-[var(--color-on-surface)] py-1 cursor-none inline-block group/copyright"
+            className="relative font-headline-md font-black uppercase text-base md:text-lg text-[var(--color-on-surface)] py-2 cursor-none inline-block group/copyright"
           >
             © {currentYear} ARYAN DANI
             <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-[var(--color-outline)] group-hover/copyright:w-full transition-all duration-300" />
           </Link>
-          <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-4 gap-y-1">
+          <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-3 gap-y-2">
             {footerNavLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="font-label-bold text-xs uppercase text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors cursor-none"
+                className="font-label-bold text-xs uppercase text-[var(--color-on-surface)] min-h-11 px-2 py-2 inline-flex items-center hover:underline underline-offset-4 transition-colors cursor-none"
               >
                 {link.label}
               </Link>

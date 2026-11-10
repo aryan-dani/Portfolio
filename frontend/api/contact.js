@@ -42,7 +42,75 @@ async function checkContactRateLimit(ip) {
   checkMemoryRateLimit(ip);
 }
 
-export default async function handler(request, response) {
+/**
+ * Pure payload builder used by the API and by scripts/check-services.mjs.
+ * Rejects a filled honeypot. Keeps the classic Contact form fields valid.
+ */
+export function buildContactPayload(body = {}) {
+  if (stripNewlines(body.companyWebsite || body.website || body.honeypot)) {
+    const error = new Error("Rejected.");
+    error.status = 400;
+    error.code = "HONEYPOT";
+    throw error;
+  }
+
+  const safeName = stripNewlines(body.name).slice(0, 120);
+  const safeEmail = stripNewlines(body.email).slice(0, 200);
+  const safeSubject = stripNewlines(body.subject || "Portfolio Contact").slice(0, 200);
+  const safeMessage = String(body.message || "").trim();
+  const organization = stripNewlines(body.organization).slice(0, 160);
+  const projectType = stripNewlines(body.projectType).slice(0, 120);
+  const budgetRange = stripNewlines(body.budgetRange).slice(0, 80);
+  const timeline = stripNewlines(body.timeline).slice(0, 80);
+  const hasExistingSite = stripNewlines(body.hasExistingSite).slice(0, 120);
+  const links = stripNewlines(body.links).slice(0, 500);
+
+  if (!safeName || !safeEmail || !safeMessage) {
+    const error = new Error("Name, email, and message are required.");
+    error.status = 400;
+    throw error;
+  }
+  if (safeMessage.length > MAX_MESSAGE_LENGTH) {
+    const error = new Error(`Message is too long (max ${MAX_MESSAGE_LENGTH} characters).`);
+    error.status = 400;
+    throw error;
+  }
+
+  const metaLines = [
+    organization && `Organization: ${organization}`,
+    projectType && `Project type: ${projectType}`,
+    budgetRange && `Budget range: ${budgetRange}`,
+    timeline && `Timeline: ${timeline}`,
+    hasExistingSite && `Existing site or domain: ${hasExistingSite}`,
+    links && `Links: ${links}`,
+  ].filter(Boolean);
+
+  const text = [
+    `Name: ${safeName}`,
+    `Email: ${safeEmail}`,
+    `Subject: ${safeSubject}`,
+    ...metaLines,
+    "",
+    "Message:",
+    safeMessage,
+  ].join("\n");
+
+  return {
+    safeName,
+    safeEmail,
+    safeSubject,
+    safeMessage,
+    organization,
+    projectType,
+    budgetRange,
+    timeline,
+    hasExistingSite,
+    links,
+    text,
+  };
+}
+
+export async function handleContactRequest(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     return response.status(405).json({ error: "Method not allowed" });
@@ -62,22 +130,13 @@ export default async function handler(request, response) {
     return response.status(error.status || 429).json({ error: error.message });
   }
 
-  const { name, email, subject, message } = request.body || {};
-  if (!name || !email || !message) {
-    return response.status(400).json({ error: "Name, email, and message are required." });
-  }
-
-  const safeName = stripNewlines(name).slice(0, 120);
-  const safeEmail = stripNewlines(email).slice(0, 200);
-  const safeSubject = stripNewlines(subject || "Portfolio Contact").slice(0, 200);
-  const safeMessage = String(message).trim();
-
-  if (!safeName || !safeEmail || !safeMessage) {
-    return response.status(400).json({ error: "Name, email, and message are required." });
-  }
-  if (safeMessage.length > MAX_MESSAGE_LENGTH) {
-    return response.status(400).json({
-      error: `Message is too long (max ${MAX_MESSAGE_LENGTH} characters).`,
+  let payload;
+  try {
+    payload = buildContactPayload(request.body || {});
+  } catch (error) {
+    return response.status(error.status || 400).json({
+      error: error.message || "Invalid request.",
+      code: error.code,
     });
   }
 
@@ -90,9 +149,9 @@ export default async function handler(request, response) {
     body: JSON.stringify({
       from: process.env.CONTACT_FROM_EMAIL || "Portfolio <onboarding@resend.dev>",
       to: [CONTACT_EMAIL],
-      reply_to: safeEmail,
-      subject: `[Portfolio] ${safeSubject} from ${safeName}`,
-      text: `Name: ${safeName}\nEmail: ${safeEmail}\nSubject: ${safeSubject}\n\nMessage:\n${safeMessage}`,
+      reply_to: payload.safeEmail,
+      subject: `[Portfolio] ${payload.safeSubject} from ${payload.safeName}`,
+      text: payload.text,
     }),
   });
 
@@ -104,4 +163,8 @@ export default async function handler(request, response) {
   }
 
   return response.status(200).json({ success: true, id: data.id });
+}
+
+export default async function handler(request, response) {
+  return handleContactRequest(request, response);
 }

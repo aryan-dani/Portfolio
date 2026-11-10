@@ -4,12 +4,32 @@
  * and structured data to maximize search visibility.
  */
 
+import { CASE_STUDIES } from "../data/caseStudies.js";
+import {
+  SERVICES_FAQ,
+  SERVICES_GUIDES,
+  SERVICES_KEYWORDS,
+  SERVICES_PACKAGES,
+  WEB_FAQ,
+  WEB_PACKAGES,
+  formatInr,
+  formatUsd,
+} from "../data/services.js";
+
 const SITE_URL = "https://www.aryandani.com";
 const SITE_NAME = "Aryan Dani Portfolio";
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.svg`;
 const TWITTER_HANDLE = "@Killfall15";
 const DEFAULT_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
 const DEFAULT_IMAGE_ALT = "Aryan Dani AI Engineer and Full Stack Developer portfolio preview";
+
+const WORK_PATHS = CASE_STUDIES.map((study) => `/work/${study.slug}`);
+const GUIDE_PATHS = SERVICES_GUIDES.map((guide) => `/guides/${guide.slug}`);
+const SERVICES_KEYWORD_LIST = [
+  ...SERVICES_KEYWORDS.primary,
+  ...SERVICES_KEYWORDS.secondary,
+];
+const MERGED_SERVICES_FAQ = [...SERVICES_FAQ, ...WEB_FAQ];
 
 export function routeOgImage(path) {
   const slug = path === "/" ? "home" : path.replace(/^\//, "").replace(/\//g, "-");
@@ -19,6 +39,9 @@ export function routeOgImage(path) {
 export const SEO_ROUTE_ORDER = [
   "/",
   "/projects",
+  "/services",
+  ...WORK_PATHS,
+  ...GUIDE_PATHS,
   "/experience",
   "/research",
   "/certifications",
@@ -34,6 +57,19 @@ export const SEO_ROUTE_ORDER = [
 export const SEO_ROUTE_META = {
   "/": { label: "Home", priority: "1.0", changefreq: "weekly" },
   "/projects": { label: "Projects", priority: "0.8", changefreq: "weekly" },
+  "/services": { label: "Services", priority: "0.9", changefreq: "weekly" },
+  ...Object.fromEntries(
+    CASE_STUDIES.map((study) => [
+      `/work/${study.slug}`,
+      { label: study.title, priority: "0.7", changefreq: "monthly" },
+    ]),
+  ),
+  ...Object.fromEntries(
+    SERVICES_GUIDES.map((guide) => [
+      `/guides/${guide.slug}`,
+      { label: guide.title, priority: "0.7", changefreq: "monthly" },
+    ]),
+  ),
   "/experience": { label: "Experience", priority: "0.8", changefreq: "monthly" },
   "/research": { label: "Research", priority: "0.8", changefreq: "monthly" },
   "/certifications": { label: "Certifications", priority: "0.8", changefreq: "monthly" },
@@ -161,6 +197,7 @@ export function buildBaseSchemas() {
         "Vector Databases",
         "Full Stack Development",
         "React",
+        "Next.js",
         "Vite",
         "React Router",
         "Tailwind CSS",
@@ -168,8 +205,12 @@ export function buildBaseSchemas() {
         "Python",
         "FastAPI",
         "LangGraph",
+        "Human-in-the-loop AI",
+        "Document intelligence",
+        "AI MVP development",
         "YOLOv11",
         "Threat Detection",
+        ...SERVICES_KEYWORD_LIST,
       ],
       sameAs: [
         "https://www.linkedin.com/in/aryandani/",
@@ -216,9 +257,9 @@ export const SEO_CONFIG = {
   "/": {
     title: "Aryan Dani - AI Engineer & Full Stack Developer Portfolio",
     description:
-      "Portfolio of Aryan Dani - AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Vite, Python, and FastAPI. Explore projects, skills, and experience.",
+      "Hire Aryan Dani for grounded RAG, LangGraph agents, and Next.js FastAPI builds. AI engineer in Pune with live demos and open source proof.",
     keywords:
-      "Aryan Dani, AI Engineer, Full Stack Developer, Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Vite, Python, Portfolio",
+      "Aryan Dani, AI Engineer for hire, freelance AI developer India, RAG developer, Next.js FastAPI developer, Portfolio",
     canonical: `${SITE_URL}/`,
     robots: DEFAULT_ROBOTS,
     imageAlt: DEFAULT_IMAGE_ALT,
@@ -230,7 +271,7 @@ export const SEO_CONFIG = {
         buildBreadcrumbs("Home", "/"),
         buildWebPage(
           "Aryan Dani - AI Engineer & Full Stack Developer Portfolio",
-          "Portfolio of Aryan Dani - AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG, React, Vite, Python, and FastAPI.",
+          "Hire Aryan Dani for grounded RAG, LangGraph agents, and Next.js FastAPI builds.",
           "/"
         ),
       ];
@@ -524,6 +565,188 @@ export const SEO_CONFIG = {
       ),
     ],
   },
+
+  "/services": {
+    title: "Websites & AI Tools | Aryan Dani, Pune",
+    description:
+      "Hire Aryan Dani in Pune for business websites and AI tools. Packages from INR 8,000. Live proof, fixed quotes, India and worldwide.",
+    keywords: SERVICES_KEYWORD_LIST.join(", "),
+    canonical: `${SITE_URL}/services`,
+    robots: DEFAULT_ROBOTS,
+    imageAlt: "Hire Aryan Dani for websites in Pune and AI product development",
+    priority: SEO_ROUTE_META["/services"].priority,
+    changefreq: SEO_ROUTE_META["/services"].changefreq,
+    ogType: "website",
+    schemas: (extraData) => {
+      const faqItems = extraData?.faqItems || MERGED_SERVICES_FAQ;
+      return [
+        buildBreadcrumbs("Services", "/services"),
+        buildWebPage(
+          "Websites & AI Tools | Aryan Dani, Pune",
+          "Hire Aryan Dani in Pune for business websites and AI tools. Packages from INR 8,000.",
+          "/services",
+        ),
+        {
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "@id": `${SITE_URL}/services#localbusiness`,
+          name: "Aryan Dani Web and AI Services",
+          url: `${SITE_URL}/services`,
+          image: routeOgImage("/services"),
+          description:
+            "Websites, web apps, and AI tools for clients in Pune, across India, and worldwide.",
+          email: "daniaryan212@gmail.com",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Pune",
+            addressRegion: "Maharashtra",
+            addressCountry: "IN",
+          },
+          areaServed: [
+            { "@type": "Country", name: "India" },
+            { "@type": "Place", name: "Worldwide" },
+          ],
+          priceRange: "₹₹-$$$",
+          provider: PERSON_REF,
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          "@id": `${SITE_URL}/services#service`,
+          name: "Aryan Dani Web and AI Engineering Services",
+          url: `${SITE_URL}/services`,
+          image: routeOgImage("/services"),
+          description:
+            "Productized website packages and AI engineering: small business sites, web apps, grounded RAG assistants, human-in-the-loop tools, audits, and retainers.",
+          provider: PERSON_REF,
+          areaServed: [
+            { "@type": "Country", name: "India" },
+            { "@type": "Place", name: "Worldwide" },
+          ],
+          knowsAbout: SERVICES_KEYWORD_LIST,
+          email: "daniaryan212@gmail.com",
+        },
+        ...SERVICES_PACKAGES.map((pack) => ({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: pack.name,
+          description: pack.forWho,
+          provider: PERSON_REF,
+          areaServed: [
+            { "@type": "Country", name: "India" },
+            { "@type": "Place", name: "Worldwide" },
+          ],
+          offers: {
+            "@type": "Offer",
+            priceCurrency: "USD",
+            description: pack.priceLabel,
+            availability: "https://schema.org/InStock",
+            url: `${SITE_URL}/services#packages-heading`,
+          },
+        })),
+        ...WEB_PACKAGES.map((pack) => ({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: pack.name,
+          description: pack.forWho,
+          provider: PERSON_REF,
+          areaServed: [
+            { "@type": "Country", name: "India" },
+            { "@type": "Place", name: "Worldwide" },
+          ],
+          offers: {
+            "@type": "Offer",
+            price: pack.priceInr,
+            priceCurrency: "INR",
+            description: `${pack.priceKind === "from" ? "From" : "Starting at"} ${formatInr(pack.priceInr)}${pack.priceSuffix || ""} · ${pack.priceKind === "from" ? "From" : "Starting at"} ${formatUsd(pack.priceUsd)}${pack.priceSuffix || ""}`,
+            availability: "https://schema.org/InStock",
+            url: `${SITE_URL}/services#web-packages-heading`,
+          },
+        })),
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((faq) => ({
+            "@type": "Question",
+            name: faq.q,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.a,
+            },
+          })),
+        },
+      ];
+    },
+  },
+
+  ...Object.fromEntries(
+    SERVICES_GUIDES.map((guide) => {
+      const path = `/guides/${guide.slug}`;
+      const title = `${guide.title} | Aryan Dani`.slice(0, 60);
+      const description = guide.description.slice(0, 155);
+      return [
+        path,
+        {
+          title,
+          description,
+          keywords: `${guide.title}, website India, Aryan Dani, Pune web developer`,
+          canonical: `${SITE_URL}${path}`,
+          robots: DEFAULT_ROBOTS,
+          imageAlt: guide.title,
+          priority: SEO_ROUTE_META[path].priority,
+          changefreq: SEO_ROUTE_META[path].changefreq,
+          ogType: "article",
+          schemas: () => [
+            buildBreadcrumbs(guide.title, path),
+            buildWebPage(title, description, path),
+            {
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: guide.title,
+              description: guide.description,
+              author: PERSON_REF,
+              url: `${SITE_URL}${path}`,
+            },
+          ],
+        },
+      ];
+    }),
+  ),
+
+  ...Object.fromEntries(
+    CASE_STUDIES.map((study) => {
+      const path = `/work/${study.slug}`;
+      const title = `${study.title} Case Study | Aryan Dani`;
+      const description = study.oneLiner.slice(0, 155);
+      return [
+        path,
+        {
+          title: title.slice(0, 60),
+          description,
+          keywords: `${study.title}, ${study.stack.join(", ")}, Aryan Dani case study`,
+          canonical: `${SITE_URL}${path}`,
+          robots: DEFAULT_ROBOTS,
+          imageAlt: `${study.title} case study by Aryan Dani`,
+          priority: SEO_ROUTE_META[path].priority,
+          changefreq: SEO_ROUTE_META[path].changefreq,
+          ogType: "article",
+          schemas: () => [
+            buildBreadcrumbs(study.title, path),
+            buildWebPage(title, description, path),
+            {
+              "@context": "https://schema.org",
+              "@type": "TechArticle",
+              headline: study.title,
+              description: study.oneLiner,
+              author: PERSON_REF,
+              url: `${SITE_URL}${path}`,
+              keywords: study.stack.join(", "),
+            },
+          ],
+        },
+      ];
+    }),
+  ),
 
   "/contact": {
     title: "Contact Aryan Dani - Hire an AI Engineer & Web Developer",
