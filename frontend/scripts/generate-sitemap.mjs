@@ -1,6 +1,6 @@
 /**
  * Build-time sitemap.xml generator.
- * Reads route meta from seoConfig + project highlight URLs from projects data.
+ * Reads route meta from seoConfig and research PDF URLs.
  * Writes frontend/public/sitemap.xml and validates against the sitemap 0.9 contract.
  */
 import { execSync } from "node:child_process";
@@ -8,7 +8,6 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { SEO_CONFIG, SEO_ROUTE_META, SEO_ROUTE_ORDER, SITE_URL } from "../src/config/seoConfig.js";
-import { projects } from "../src/data/projects.js";
 import { researchPapers } from "../src/data/research.js";
 
 const SITEMAP_PATH = new URL("../public/sitemap.xml", import.meta.url);
@@ -48,7 +47,7 @@ function isIndexableRoute(path) {
   return !/noindex/i.test(robots);
 }
 
-/** Top-level pages + deep-linkable project cards (query highlights). */
+/** Canonical routes plus research PDF assets. Query highlight URLs are omitted. */
 export function collectSitemapEntries(lastmod = resolveLastmod()) {
   const entries = SEO_ROUTE_ORDER.filter(isIndexableRoute).map((path) => {
     const meta = SEO_ROUTE_META[path] || {
@@ -63,22 +62,7 @@ export function collectSitemapEntries(lastmod = resolveLastmod()) {
     };
   });
 
-  for (const project of projects) {
-    entries.push({
-      loc: `${SITE_URL}/projects?highlight=${encodeURIComponent(project.id)}`,
-      lastmod,
-      changefreq: "monthly",
-      priority: "0.5",
-    });
-  }
-
   for (const paper of researchPapers) {
-    entries.push({
-      loc: `${SITE_URL}/research?highlight=${encodeURIComponent(paper.id)}`,
-      lastmod,
-      changefreq: "monthly",
-      priority: "0.6",
-    });
     if (paper.pdfUrl) {
       entries.push({
         loc: `${SITE_URL}${paper.pdfUrl}`,

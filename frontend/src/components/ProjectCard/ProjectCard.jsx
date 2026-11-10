@@ -1,6 +1,8 @@
 import { memo } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaEye, FaGithub } from "react-icons/fa";
+import { getCaseStudyByProjectId } from "../../data/caseStudies";
 import { getAssetPath } from "../../utils/paths";
 import { openSiteBrowser } from "../../utils/siteBrowser";
 import { cardVariants } from "../../utils/motionVariants";
@@ -9,6 +11,7 @@ import ProgressiveImage from "../ProgressiveImage/ProgressiveImage";
 const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isHighlighted }) {
   const isFeatured = project.featured || false;
   const eager = typeof index === "number" && index < 3;
+  const caseStudy = getCaseStudyByProjectId(project.id);
 
   return (
     <motion.div
@@ -97,17 +100,24 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
                   </span>
                 ))}
               </div>
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onOpenModal(project);
-                }}
-                className="shrink-0 border-2 border-outline bg-[var(--color-primary-container)] px-3 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-primary-container)] shadow-[2px_2px_0_var(--shadow-color)] transition-colors hover:bg-[var(--color-surface-variant)] hover:text-[var(--color-on-surface)] focus-visible:bg-[var(--color-surface-variant)] focus-visible:text-[var(--color-on-surface)]"
-                aria-label={`Open details for ${project.title}`}
-              >
-                Details
-              </button>
+              <div className="flex flex-col items-end gap-2 shrink-0" onClick={(event) => event.stopPropagation()}>
+                {caseStudy && (
+                  <Link
+                    to={`/work/${caseStudy.slug}`}
+                    className="border-2 border-outline bg-[var(--color-surface)] px-3 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-surface)] shadow-[2px_2px_0_var(--shadow-color)] underline-offset-2 hover:underline"
+                  >
+                    Case study
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={() => onOpenModal(project)}
+                  className="border-2 border-outline bg-[var(--color-primary-container)] px-3 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-primary-container)] shadow-[2px_2px_0_var(--shadow-color)] transition-colors hover:bg-[var(--color-surface-variant)] hover:text-[var(--color-on-surface)] focus-visible:bg-[var(--color-surface-variant)] focus-visible:text-[var(--color-on-surface)]"
+                  aria-label={`Open details for ${project.title}`}
+                >
+                  Details
+                </button>
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
               {project.tags.slice(2, 5).map((tag) => (

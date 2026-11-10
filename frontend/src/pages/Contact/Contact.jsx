@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, memo, lazy, Suspense, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaEnvelope, FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy, FaEye,
@@ -14,8 +15,14 @@ import { usePageSEO } from "../../utils/seo";
 const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 
 const SUBJECT_OPTIONS = [
-  "Freelance Project", "Collaboration", "Job Opportunity",
-  "Open Source", "Just Saying Hi",
+  "Website",
+  "Web app",
+  "AI build",
+  "Freelance Project",
+  "Collaboration",
+  "Job Opportunity",
+  "Open Source",
+  "Just Saying Hi",
 ];
 
 const FAQ_ITEMS = [
@@ -25,7 +32,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Do you freelance?",
-    a: "Yes! I'm open to freelance projects, especially full-stack web apps and AI-powered tools. Let's discuss your idea - I'd love to hear about it.",
+    a: "Yes. Available for freelance projects and consulting on websites, web apps, and AI builds. Clear packages live on the services page.",
   },
   {
     q: "What's your typical response time?",
@@ -175,8 +182,29 @@ function Contact() {
       {/* Hero */}
       <PageHeader
         title="Let's Build"
-        description="Got a project idea? Want to collaborate? Or just want to geek out about tech and anime? I'm all ears. Drop me a message and let's build something epic."
+        description="Available for freelance projects and consulting. Tell me about a website, web app, or AI build and I usually reply within 24 hours."
       />
+
+      <motion.div
+        className="border-4 border-outline bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col sm:flex-row sm:items-center gap-4"
+        variants={itemVariants}
+      >
+        <div className="flex-1 flex flex-col gap-2">
+          <p className="font-label-bold text-xs uppercase tracking-[0.16em]">Availability</p>
+          <p className="font-headline-md text-xl uppercase leading-tight">
+            Available for freelance projects & consulting
+          </p>
+          <p className="font-body-md text-sm leading-snug">
+            Prefer packaged scopes? Open the services inquiry form for websites, web apps, and AI builds.
+          </p>
+        </div>
+        <Link
+          to="/services#inquiry"
+          className="shrink-0 border-4 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] px-5 py-3 font-label-bold text-xs uppercase text-center shadow-[4px_4px_0_0_var(--shadow-color)]"
+        >
+          Services inquiry
+        </Link>
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
         {/* Contact Form */}
@@ -189,6 +217,24 @@ function Contact() {
               <FaPaperPlane className="text-2xl" />
               Send a Message
             </h2>
+
+            <div className="flex flex-wrap gap-2 mb-6" role="group" aria-label="Project scope">
+              {["Website", "Web app", "AI build"].map((pill) => (
+                <button
+                  key={pill}
+                  type="button"
+                  onClick={() => setFormData((prev) => ({ ...prev, subject: pill }))}
+                  aria-pressed={formData.subject === pill}
+                  className={`border-2 border-outline px-3 py-2 font-label-bold text-[10px] uppercase shadow-[2px_2px_0_0_var(--shadow-color)] ${
+                    formData.subject === pill
+                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+                      : "bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
+                  }`}
+                >
+                  {pill}
+                </button>
+              ))}
+            </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

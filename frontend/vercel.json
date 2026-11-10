@@ -1,4 +1,17 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "aryandani.com" }],
+      "destination": "https://www.aryandani.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/((?!resume\\.pdf|research-paper\\.pdf).*)",

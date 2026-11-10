@@ -180,6 +180,11 @@ html {
   color-scheme: light;
 }
 
+/* Crawlable prerender snapshot: visible to non-JS bots, hidden once JS boots. */
+html.js [data-prerender] {
+  display: none !important;
+}
+
 html.dark {
   color-scheme: dark;
 }

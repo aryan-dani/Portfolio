@@ -20,6 +20,7 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
     { title: "Problem", body: study.problem },
     { title: "Approach", body: study.approach },
     { title: "Architecture", body: study.architecture },
+    study.outcome ? { title: "Outcome", body: study.outcome } : null,
     study.retrospective
       ? { title: "What I would do differently", body: study.retrospective }
       : null,

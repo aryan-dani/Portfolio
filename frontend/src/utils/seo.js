@@ -73,7 +73,15 @@ export function usePageSEO(extraData, overridePath) {
         const script = document.createElement("script");
         script.type = "application/ld+json";
         script.setAttribute("data-page-seo", "true");
-        script.textContent = JSON.stringify(schemas);
+        const graph = {
+          "@context": "https://schema.org",
+          "@graph": schemas.map((schema) => {
+            if (!schema || typeof schema !== "object") return schema;
+            const { "@context": _ctx, ...rest } = schema;
+            return rest;
+          }),
+        };
+        script.textContent = JSON.stringify(graph);
         document.head.appendChild(script);
         schemaScriptRef.current = script;
       }

@@ -1,7 +1,9 @@
 import { memo } from "react";
 import { createPortal } from "react-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaTimes, FaEye, FaGithub, FaArrowRight } from "react-icons/fa";
+import { getCaseStudyByProjectId } from "../../data/caseStudies";
 import { getSkillsForProject } from "../../data/skills";
 import { getAssetPath } from "../../utils/paths";
 import { openSiteBrowser } from "../../utils/siteBrowser";
@@ -10,6 +12,7 @@ import ProgressiveImage from "../ProgressiveImage/ProgressiveImage";
 
 const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick }) {
   const projectSkills = getSkillsForProject(project.id);
+  const caseStudy = getCaseStudyByProjectId(project.id);
   const detailSections = (project.detailSections || []).filter(
     (section) => section?.title && section?.body,
   );
@@ -82,7 +85,16 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
               </h2>
             </div>
             
-            <div className="flex gap-4 w-full lg:w-auto">
+            <div className="flex flex-wrap gap-4 w-full lg:w-auto">
+              {caseStudy && (
+                <Link
+                  to={`/work/${caseStudy.slug}`}
+                  onClick={onClose}
+                  className="flex-1 lg:flex-none bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                >
+                  Case study <FaArrowRight />
+                </Link>
+              )}
               {project.links?.preview && (
                 <a
                   href={project.links.preview}

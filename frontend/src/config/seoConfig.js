@@ -21,7 +21,7 @@ const SITE_NAME = "Aryan Dani Portfolio";
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.svg`;
 const TWITTER_HANDLE = "@Killfall15";
 const DEFAULT_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
-const DEFAULT_IMAGE_ALT = "Aryan Dani AI Engineer and Full Stack Developer portfolio preview";
+const DEFAULT_IMAGE_ALT = "Aryan Dani freelance AI engineer and full-stack developer in Pune";
 
 const WORK_PATHS = CASE_STUDIES.map((study) => `/work/${study.slug}`);
 const GUIDE_PATHS = SERVICES_GUIDES.map((guide) => `/guides/${guide.slug}`);
@@ -56,12 +56,12 @@ export const SEO_ROUTE_ORDER = [
 
 export const SEO_ROUTE_META = {
   "/": { label: "Home", priority: "1.0", changefreq: "weekly" },
-  "/projects": { label: "Projects", priority: "0.8", changefreq: "weekly" },
+  "/projects": { label: "Projects", priority: "0.9", changefreq: "weekly" },
   "/services": { label: "Services", priority: "0.9", changefreq: "weekly" },
   ...Object.fromEntries(
     CASE_STUDIES.map((study) => [
       `/work/${study.slug}`,
-      { label: study.title, priority: "0.7", changefreq: "monthly" },
+      { label: study.title, priority: "0.8", changefreq: "monthly" },
     ]),
   ),
   ...Object.fromEntries(
@@ -72,7 +72,7 @@ export const SEO_ROUTE_META = {
   ),
   "/experience": { label: "Experience", priority: "0.8", changefreq: "monthly" },
   "/research": { label: "Research", priority: "0.8", changefreq: "monthly" },
-  "/certifications": { label: "Certifications", priority: "0.8", changefreq: "monthly" },
+  "/certifications": { label: "Certifications", priority: "0.5", changefreq: "monthly" },
   "/skills": { label: "Skills", priority: "0.8", changefreq: "monthly" },
   "/about": { label: "About", priority: "0.8", changefreq: "monthly" },
   "/contact": { label: "Contact", priority: "0.8", changefreq: "yearly" },
@@ -159,13 +159,14 @@ export function buildBaseSchemas() {
       "@type": "Person",
       "@id": `${SITE_URL}/#person`,
       name: "Aryan Dani",
+      alternateName: "Aryan Hardik Dani",
       givenName: "Aryan",
       familyName: "Dani",
       url: `${SITE_URL}/`,
       image: `${SITE_URL}/Images/About/pic_1.jpg`,
-      jobTitle: "AI Engineer & Full Stack Developer",
+      jobTitle: "Freelance AI Engineer & Full-Stack Developer",
       description:
-        "AI Engineer and Full Stack Developer specializing in Machine Learning, Computer Vision, Generative AI, LLMs, RAG systems, React, Vite, Python, and FastAPI. MIT-WPU student based in Pune, India.",
+        "Freelance AI engineer and full-stack developer in Pune, India. Builds custom AI agents, RAG pipelines, Next.js and React apps, and high-conversion business websites for startups and local businesses worldwide.",
       address: {
         "@type": "PostalAddress",
         addressLocality: "Pune",
@@ -215,6 +216,7 @@ export function buildBaseSchemas() {
       sameAs: [
         "https://www.linkedin.com/in/aryandani/",
         "https://github.com/aryan-dani",
+        "https://orcid.org/0009-0005-7427-0809",
         "https://x.com/Killfall15",
         "https://www.instagram.com/aryandani_06/",
       ],
@@ -225,6 +227,8 @@ export function buildBaseSchemas() {
       "@id": `${SITE_URL}/#website`,
       url: `${SITE_URL}/`,
       name: SITE_NAME,
+      description:
+        "Freelance AI engineering and full-stack web development by Aryan Dani in Pune.",
       publisher: PERSON_REF,
       inLanguage: "en-US",
       potentialAction: {
@@ -241,7 +245,7 @@ export function buildBaseSchemas() {
       "@type": "ProfilePage",
       "@id": `${SITE_URL}/#profilepage`,
       url: `${SITE_URL}/`,
-      name: "Aryan Dani - AI Engineer & Full Stack Developer Portfolio",
+      name: "Aryan Dani — Freelance AI Engineer & Full-Stack Dev",
       isPartOf: WEBSITE_REF,
       about: PERSON_REF,
       mainEntity: PERSON_REF,
@@ -255,11 +259,11 @@ export function buildBaseSchemas() {
  */
 export const SEO_CONFIG = {
   "/": {
-    title: "Aryan Dani - AI Engineer & Full Stack Developer Portfolio",
+    title: "Aryan Dani — Freelance AI Engineer & Full-Stack Dev",
     description:
-      "Hire Aryan Dani for grounded RAG, LangGraph agents, and Next.js FastAPI builds. AI engineer in Pune with live demos and open source proof.",
+      "Hire Aryan Dani for custom AI agents, RAG pipelines, and high-performance Next.js & React web applications. View live case studies and book a discovery call.",
     keywords:
-      "Aryan Dani, AI Engineer for hire, freelance AI developer India, RAG developer, Next.js FastAPI developer, Portfolio",
+      "Aryan Dani, Freelance AI Engineer India, Hire Full-Stack React Next.js Developer, Custom LLM RAG Consultant, Web Redesign Freelancer Pune",
     canonical: `${SITE_URL}/`,
     robots: DEFAULT_ROBOTS,
     imageAlt: DEFAULT_IMAGE_ALT,
@@ -270,8 +274,8 @@ export const SEO_CONFIG = {
       const schemas = [
         buildBreadcrumbs("Home", "/"),
         buildWebPage(
-          "Aryan Dani - AI Engineer & Full Stack Developer Portfolio",
-          "Hire Aryan Dani for grounded RAG, LangGraph agents, and Next.js FastAPI builds.",
+          "Aryan Dani — Freelance AI Engineer & Full-Stack Dev",
+          "Hire Aryan Dani for custom AI agents, RAG pipelines, and high-performance Next.js and React web applications.",
           "/"
         ),
       ];
@@ -603,11 +607,18 @@ export const SEO_CONFIG = {
             addressCountry: "IN",
           },
           areaServed: [
+            { "@type": "City", name: "Pune" },
             { "@type": "Country", name: "India" },
             { "@type": "Place", name: "Worldwide" },
           ],
           priceRange: "₹₹-$$$",
           provider: PERSON_REF,
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "sales",
+            email: "daniaryan212@gmail.com",
+            availableLanguage: ["English", "Hindi"],
+          },
         },
         {
           "@context": "https://schema.org",
@@ -617,14 +628,21 @@ export const SEO_CONFIG = {
           url: `${SITE_URL}/services`,
           image: routeOgImage("/services"),
           description:
-            "Productized website packages and AI engineering: small business sites, web apps, grounded RAG assistants, human-in-the-loop tools, audits, and retainers.",
+            "Custom AI agents and RAG pipelines, full-stack Next.js and React apps, computer vision systems, and high-conversion business website redesigns.",
           provider: PERSON_REF,
           areaServed: [
+            { "@type": "City", name: "Pune" },
             { "@type": "Country", name: "India" },
             { "@type": "Place", name: "Worldwide" },
           ],
           knowsAbout: SERVICES_KEYWORD_LIST,
           email: "daniaryan212@gmail.com",
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "sales",
+            email: "daniaryan212@gmail.com",
+            availableLanguage: ["English", "Hindi"],
+          },
         },
         ...SERVICES_PACKAGES.map((pack) => ({
           "@context": "https://schema.org",
