@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
@@ -146,22 +147,30 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {routeConfig.map(({ index, path, component: Component }) => (
-          <Route
-            key={path ?? "/"}
-            index={index}
-            path={path}
-            element={
-              <ErrorBoundary>
-                <Suspense fallback={<PageFallback />}>
-                  <PageTransition isFirstRender={isFirstRender} direction={direction} liteMode={liteMode}>
-                    <Component />
-                  </PageTransition>
-                </Suspense>
-              </ErrorBoundary>
-            }
-          />
-        ))}
+        {routeConfig.map(({ index, path, component: Component }) =>
+          path === "contact" ? (
+            <Route
+              key="contact"
+              path="contact"
+              element={<Navigate to="/services#inquiry" replace />}
+            />
+          ) : (
+            <Route
+              key={path ?? "/"}
+              index={index}
+              path={path}
+              element={
+                <ErrorBoundary>
+                  <Suspense fallback={<PageFallback />}>
+                    <PageTransition isFirstRender={isFirstRender} direction={direction} liteMode={liteMode}>
+                      <Component />
+                    </PageTransition>
+                  </Suspense>
+                </ErrorBoundary>
+              }
+            />
+          ),
+        )}
         <Route
           path="work/:slug"
           element={

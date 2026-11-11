@@ -400,9 +400,9 @@ function Playground() {
           { text: `  Email: ${aboutInfo.email}`, type: "text" },
           { text: "  LinkedIn: linkedin.com/in/aryandani/", type: "text" },
           { text: "  GitHub: github.com/aryan-dani", type: "text" },
-          { text: "Redirecting to contact page...", type: "success" },
+          { text: "Redirecting to services inquiry...", type: "success" },
         ]);
-        setTimeout(() => navigate("/contact"), 1500);
+        setTimeout(() => navigate("/services#inquiry"), 1500);
         break;
 
       case "socials":

@@ -1,5 +1,6 @@
 // Every skill has a unique `id` used for cross-linking with projects.
 // `projectIds` reference the `id` field in projects.js for bidirectional linking.
+import { projects } from "./projects";
 
 export const skills = {
   webdev: [
@@ -394,9 +395,37 @@ export const skillCategories = [
   { id: "devops", label: "DevOps & Tools" },
 ];
 
-// Helper: Get a flat list of all skills
+// Helper: Get a flat list of all skills, with projectIds unioned from project.skillIds
 export function getAllSkills() {
-  return Object.values(skills).flat();
+  const fromProjects = new Map();
+  for (const project of projects) {
+    for (const skillId of project.skillIds || []) {
+      if (!fromProjects.has(skillId)) fromProjects.set(skillId, new Set());
+      fromProjects.get(skillId).add(project.id);
+    }
+  }
+
+  return Object.values(skills)
+    .flat()
+    .map((skill) => {
+      const linked = fromProjects.get(skill.id);
+      if (!linked || linked.size === 0) return skill;
+      const merged = new Set([...(skill.projectIds || []), ...linked]);
+      return { ...skill, projectIds: [...merged] };
+    });
+}
+
+/** Average proficiency per skill category for overview bars. */
+export function getSkillCategoryAverages() {
+  return skillCategories
+    .filter((cat) => cat.id !== "all")
+    .map((cat) => {
+      const list = skills[cat.id] || [];
+      const level = list.length
+        ? Math.round(list.reduce((sum, skill) => sum + skill.level, 0) / list.length)
+        : 0;
+      return { label: cat.label, level };
+    });
 }
 
 // Helper: Find a skill by ID

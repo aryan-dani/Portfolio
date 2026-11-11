@@ -34,9 +34,13 @@ export const KURO_PAGE_LINES = {
     "About page! GitHub stats and the backstory live here.",
     "First time? The live GitHub feed is worth a scroll.",
   ],
+  "/services": [
+    "Hire desk! Packages, proof, and the inquiry form live here.",
+    "Want a quote? Scroll to the form, or ask me to open the inquiry.",
+  ],
   "/contact": [
-    "Contact zone! Email, form, or socials. Go say hi.",
-    "Need to reach out? Ask me for the email.",
+    "Inquiry moved to Services. Ask me to open hire, or say go to services.",
+    "Need to reach out? Ask me for the email or the services form.",
   ],
   "/playground": [
     "CLI playground! Type help and go wild.",

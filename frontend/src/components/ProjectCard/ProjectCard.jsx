@@ -1,8 +1,6 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaEye, FaGithub } from "react-icons/fa";
-import { getCaseStudyByProjectId } from "../../data/caseStudies";
 import { getAssetPath } from "../../utils/paths";
 import { openSiteBrowser } from "../../utils/siteBrowser";
 import { cardVariants } from "../../utils/motionVariants";
@@ -11,7 +9,8 @@ import ProgressiveImage from "../ProgressiveImage/ProgressiveImage";
 const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isHighlighted }) {
   const isFeatured = project.featured || false;
   const eager = typeof index === "number" && index < 3;
-  const caseStudy = getCaseStudyByProjectId(project.id);
+  const visibleTags = project.tags.slice(0, 4);
+  const extraTagCount = Math.max(0, project.tags.length - visibleTags.length);
 
   return (
     <motion.div
@@ -33,7 +32,6 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
         }}
         whileTap={{ scale: 0.99 }}
       >
-        {/* Image */}
         <div
           data-build-part="media"
           className="h-48 md:h-56 border-b-4 border-outline overflow-hidden relative"
@@ -63,7 +61,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
           {isFeatured && (
             <motion.div
               className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] z-10"
-              animate={{ rotate: [3, -3, 3] }}
+              animate={{ y: [0, -3, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
               Featured
@@ -72,7 +70,6 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[var(--color-primary-container)] opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none z-[1]" />
         </div>
 
-        {/* Content */}
         <div className="p-6 md:p-7 flex flex-col grow">
           <h3
             data-build-part="title"
@@ -83,57 +80,27 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
           <p
             data-build-part="blurb"
             className="font-body-md text-sm text-[var(--color-text-muted)] mb-5 whitespace-normal"
-            style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+            style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}
           >
             {project.description}
           </p>
 
           <div data-build-part="meta" className="flex flex-col grow gap-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex flex-wrap gap-2">
-                {project.tags.slice(0, 2).map((tag) => (
-                  <span
-                    key={`lead-${tag}`}
-                    className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <div className="flex flex-col items-end gap-2 shrink-0" onClick={(event) => event.stopPropagation()}>
-                {caseStudy && (
-                  <Link
-                    to={`/work/${caseStudy.slug}`}
-                    className="border-2 border-outline bg-[var(--color-surface)] px-3 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-surface)] shadow-[2px_2px_0_var(--shadow-color)] underline-offset-2 hover:underline"
-                  >
-                    Case study
-                  </Link>
-                )}
-                <button
-                  type="button"
-                  onClick={() => onOpenModal(project)}
-                  className="border-2 border-outline bg-[var(--color-primary-container)] px-3 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-primary-container)] shadow-[2px_2px_0_var(--shadow-color)] transition-colors hover:bg-[var(--color-surface-variant)] hover:text-[var(--color-on-surface)] focus-visible:bg-[var(--color-surface-variant)] focus-visible:text-[var(--color-on-surface)]"
-                  aria-label={`Open details for ${project.title}`}
-                >
-                  Details
-                </button>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {project.tags.slice(2, 5).map((tag) => (
-                <span
+            <ul className="flex flex-wrap gap-2" aria-label={`${project.title} stack`}>
+              {visibleTags.map((tag) => (
+                <li
                   key={tag}
-                  className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase"
+                  className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
                 >
                   {tag}
-                </span>
+                </li>
               ))}
-              {project.tags.length > 5 && (
-                <span className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase">
-                  +{project.tags.length - 5}
-                </span>
+              {extraTagCount > 0 && (
+                <li className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase">
+                  +{extraTagCount}
+                </li>
               )}
-            </div>
+            </ul>
 
             <div
               className="flex gap-3 border-t-4 border-outline pt-5 mt-auto"

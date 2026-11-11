@@ -295,6 +295,7 @@ function headingBetween(from, to) {
 
 const BOT_EASE = [0.16, 1, 0.3, 1];
 const KURO_SWARM_EVENT = "portfolio:kuro-swarm";
+const REPLAY_SWARM_EVENT = "portfolio:replay-swarm";
 const KURO_LAUNCH_MS = 720;
 const KURO_DOCK_MS = 820;
 const KURO_STAGGER_MS = 110;
@@ -1437,6 +1438,15 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
       window.clearTimeout(timer);
     };
   }, [eligible, enabled, storageKey, runBuild, chaos]);
+
+  useEffect(() => {
+    if (!eligible || !enabled) return undefined;
+    const onReplay = () => {
+      runBuild({ force: true });
+    };
+    window.addEventListener(REPLAY_SWARM_EVENT, onReplay);
+    return () => window.removeEventListener(REPLAY_SWARM_EVENT, onReplay);
+  }, [eligible, enabled, runBuild]);
 
   useEffect(() => {
     if (!enabled && playingRef.current) {

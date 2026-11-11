@@ -335,7 +335,7 @@ function CommandPalette() {
                   </span>
                   <span className="hidden md:flex items-center gap-2">
                     <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">Alt</kbd>
-                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">1-8</kbd>
+                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">1-9</kbd>
                     Navigate
                   </span>
                 </div>

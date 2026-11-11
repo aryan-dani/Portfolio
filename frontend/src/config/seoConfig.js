@@ -47,7 +47,6 @@ export const SEO_ROUTE_ORDER = [
   "/certifications",
   "/skills",
   "/about",
-  "/contact",
   "/playground",
   "/achievements",
   "/guestbook",

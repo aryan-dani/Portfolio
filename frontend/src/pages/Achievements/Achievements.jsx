@@ -57,7 +57,7 @@ const Achievements = memo(function Achievements() {
                   ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
                   : "bg-[var(--color-surface)] text-[var(--color-on-surface)] grayscale opacity-70"
               }`}
-              style={{ transform: isUnlocked ? `rotate(${achievement.id.length % 3 - 1}deg)` : undefined }}
+              style={{ transform: isUnlocked ? `translateY(${(achievement.id.length % 3 - 1) * -2}px)` : undefined }}
             >
               <div data-build-part="media" className="flex items-start justify-between gap-3">
                 <span className="text-3xl" aria-hidden="true">{achievement.icon}</span>

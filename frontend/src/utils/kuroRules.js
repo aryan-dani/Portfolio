@@ -6,17 +6,29 @@ import { getAllSkills } from "../data/skills";
 const PAGE_PATHS = {
   home: "/",
   projects: "/projects",
+  services: "/services",
   experience: "/experience",
   research: "/research",
   certifications: "/certifications",
   skills: "/skills",
   about: "/about",
-  contact: "/contact",
+  contact: "/services#inquiry",
+  hire: "/services#inquiry",
   playground: "/playground",
   achievements: "/achievements",
   guestbook: "/guestbook",
   copyright: "/copyright",
 };
+
+const SWARM_PATHS = new Set([
+  "/projects",
+  "/skills",
+  "/achievements",
+  "/certifications",
+  "/experience",
+  "/research",
+  "/services",
+]);
 
 const REACTION_ONLY =
   /^(wow|nice|crazy|damn|cool|lol|lmao|okay|ok|oh okay|yep|yeah|yup|haha|ha|omg|whoa|dang|sick|fire|lit|bet|word|true|facts|same|mood|fr|ngl|tbh|hm+|hmm+|wtf|what the fuck|what the hell|bruh|dude|bro)[\s!.?]*$/i;
@@ -39,14 +51,15 @@ const FRUSTRATION_LINES = [
 
 const PAGE_PATTERNS = [
   [/projects?/, "projects"],
-  [/experience|work|jobs?/, "experience"],
+  [/services?|hire/, "services"],
+  [/experience|jobs?/, "experience"],
   [/skills?/, "skills"],
   [/research|paper/, "research"],
   [/about/, "about"],
   [/contact/, "contact"],
   [/cert/, "certifications"],
   [/playground|terminal|cli/, "playground"],
-  [/achievements?|trophies/, "achievements"],
+  [/achievements?|trophies|badges?/, "achievements"],
   [/guestbook/, "guestbook"],
   [/home|landing/, "home"],
   [/copyright/, "copyright"],
@@ -56,6 +69,7 @@ const PROJECT_ALIASES = [
   { keys: ["utility", "utilityos", "academic os"], match: /utility/i },
   { keys: ["swiggy", "nexus", "swiggy nexus"], match: /swiggy|nexus/i },
   { keys: ["clover", "fourth clover", "the fourth clover"], match: /clover/i },
+  { keys: ["siya", "siya's portfolio", "siyas portfolio"], match: /siya/i },
   { keys: ["prism"], match: /prism/i },
   { keys: ["samiksha"], match: /samiksha/i },
   { keys: ["ishani"], match: /ishani/i },
@@ -124,16 +138,20 @@ function formatProjectReply(project) {
 function pageAction(pageId, currentPath) {
   const path = PAGE_PATHS[pageId];
   if (!path) return null;
-  if (path === currentPath) {
+  const basePath = path.split("#")[0];
+  if (basePath === currentPath && !path.includes("#")) {
     return {
       reply: `You're already on ${pageId}.`,
       actions: [],
     };
   }
-  const label = pageId.charAt(0).toUpperCase() + pageId.slice(1);
+  const label =
+    pageId === "contact" || pageId === "hire"
+      ? "Services inquiry"
+      : pageId.charAt(0).toUpperCase() + pageId.slice(1);
   return {
     reply: `Opening ${label}.`,
-    actions: [{ type: "navigate", page: pageId, path, label }],
+    actions: [{ type: "navigate", page: pageId === "hire" ? "services" : pageId, path, label }],
   };
 }
 
@@ -179,9 +197,26 @@ function trySiteControl(message, currentPath) {
     return { reply: "Opening the resume.", actions: [{ type: "open_resume" }] };
   }
 
+  if (
+    /swarm cursors|cursor swarm|animation again( on this page)?|replay (the )?(swarm|animation|cursors)|play (the )?(swarm|animation) again|run (the )?swarm again/i.test(
+      q,
+    )
+  ) {
+    if (!SWARM_PATHS.has(currentPath || "/")) {
+      return {
+        reply: "No cursor swarm on this page. Try Projects, Skills, or Services.",
+        actions: [],
+      };
+    }
+    return {
+      reply: "Running the cursor swarm again.",
+      actions: [{ type: "replay_swarm" }],
+    };
+  }
+
   const wantsNav =
     /go to|take me|navigate|open|show me|visit|bring me|head to|jump to/i.test(q) ||
-    /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|research|home|copyright)\s*[!.]?$/i.test(
+    /^(projects?|services?|hire|experience|skills?|about|contact|playground|guestbook|achievements?|badges?|certifications?|research|home|copyright)\s*[!.?]*$/i.test(
       q,
     );
 
@@ -268,7 +303,7 @@ function tryAboutContact(message) {
       actions: [],
     };
   }
-  if (/^(email|contact)\s*[?.!]*$/i.test(q)) {
+  if (/^(email)\s*[?.!]*$/i.test(q)) {
     return {
       reply: `Email: ${aboutInfo.email}. Or say copy email.`,
       actions: [],

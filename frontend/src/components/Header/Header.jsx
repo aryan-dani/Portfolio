@@ -200,7 +200,7 @@ function Header() {
               {/* Right side Actions */}
               <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 flex-shrink-0">
                 <NavLink
-                  to="/contact"
+                  to="/services"
                   className="hidden sm:flex font-headline-md text-[11px] lg:text-xs xl:text-base uppercase tracking-wide xl:tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline px-3 lg:px-4 xl:px-5 py-2 xl:py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] xl:shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] items-center justify-center whitespace-nowrap"
                 >
                   Work with me
@@ -276,7 +276,7 @@ function Header() {
 
             <motion.div variants={menuItemVariants} className="w-full max-w-sm mt-2">
               <NavLink
-                to="/contact"
+                to="/services"
                 onClick={closeMenu}
                 className="w-full flex justify-center items-center font-headline-md text-lg uppercase tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline px-4 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
               >

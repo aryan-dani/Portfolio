@@ -8,11 +8,10 @@ import { containerVariants, itemVariants } from "../../utils/motionVariants";
 const currentYear = new Date().getFullYear();
 
 const socialItemVariants = {
-  hidden: { opacity: 0, y: 24, rotate: -25 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    rotate: 0,
     transition: { type: "spring", stiffness: 300, damping: 20 },
   },
 };
@@ -23,7 +22,7 @@ const footerNavLinks = [
   { to: "/research", label: "Research" },
   { to: "/about", label: "About" },
   { to: "/experience", label: "Experience" },
-  { to: "/contact", label: "Contact" },
+  { to: "/services#inquiry", label: "Contact" },
 ];
 
 const Footer = memo(function Footer() {

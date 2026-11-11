@@ -1,6 +1,10 @@
-/** Lightweight counts for Home stats - avoids importing full data arrays on the home route. */
+import { projects } from "./projects";
+import { getAllSkills } from "./skills";
+import { certifications } from "./certifications";
+
+/** Counts for Home stats, derived from live data arrays. */
 export const portfolioStats = {
-  projects: 18,
-  skills: 42,
-  certifications: 11,
+  projects: projects.length,
+  skills: getAllSkills().length,
+  certifications: certifications.length,
 };

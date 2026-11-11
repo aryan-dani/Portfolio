@@ -88,6 +88,7 @@ const CustomCursor = memo(function CustomCursor() {
   const mousePosRef = useRef({ x: -100, y: -100 });
   const innerPosRef = useRef({ x: -100, y: -100 });
   const outerPosRef = useRef({ x: -100, y: -100 });
+  const diamondRotateRef = useRef(0);
   const loopActiveRef = useRef(false);
 
   const isHoverState = cursorState === "hover" || cursorState === "image";
@@ -144,18 +145,23 @@ const CustomCursor = memo(function CustomCursor() {
 
       outerPosRef.current = { x: ox, y: oy };
 
+      const targetRotate = isHoverStateRef.current ? 45 : 0;
+      let rot = diamondRotateRef.current;
+      rot += (targetRotate - rot) * 0.22;
+      if (Math.abs(targetRotate - rot) < 0.15) rot = targetRotate;
+      diamondRotateRef.current = rot;
+
       // Direct DOM rendering (completely bypasses React render tree)
       if (innerRef.current) {
-        innerRef.current.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
+        innerRef.current.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg)`;
       }
       if (outerRef.current) {
-        const rotateStr = isHoverStateRef.current ? "rotate(45deg)" : "rotate(0deg)";
-        outerRef.current.style.transform = `translate3d(${ox}px, ${oy}px, 0) translate(-50%, -50%) ${rotateStr}`;
+        outerRef.current.style.transform = `translate3d(${ox}px, ${oy}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg)`;
       }
 
-      // Keep animation loop ticking if coordinates are still catching up
+      // Keep animation loop ticking if position or diamond angle are still catching up
       const dist = Math.hypot(dx, dy);
-      if (dist > 0.08) {
+      if (dist > 0.08 || Math.abs(targetRotate - rot) > 0.05) {
         requestAnimationFrame(tick);
       } else {
         loopActiveRef.current = false;
@@ -341,7 +347,7 @@ const CustomCursor = memo(function CustomCursor() {
       innerRef.current.style.transform = "translate3d(-100px, -100px, 0) translate(-50%, -50%)";
     }
     if (outerRef.current) {
-      outerRef.current.style.transform = "translate3d(-100px, -100px, 0) translate(-50%, -50%) rotate(0deg)";
+      outerRef.current.style.transform = "translate3d(-100px, -100px, 0) translate(-50%, -50%)";
     }
 
     return () => {

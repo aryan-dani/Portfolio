@@ -1,8 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence, useInView, useMotionValue } from "framer-motion";
-import { isFinePointerDevice } from "../../utils/device";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { FaSearch, FaTimes, FaExternalLinkAlt, FaArrowRight, FaServer } from "react-icons/fa";
 import {
   FaHtml5, FaCss3Alt, FaSass, FaJs, FaReact, FaAngular,
@@ -14,7 +13,7 @@ import {
   SiSupabase, SiOpencv, SiDocker, SiVite, SiFirebase, SiVercel,
   SiRust, SiTauri,
 } from "react-icons/si";
-import { skills, skillCategories, getSkillById, getSkillCategory } from "../../data/skills";
+import { skills, skillCategories, getSkillById, getSkillCategory, getAllSkills, getSkillCategoryAverages } from "../../data/skills";
 import { usePageSEO } from "../../utils/seo";
 import { getProjectsForSkill, projects } from "../../data/projects";
 import { getAssetPath } from "../../utils/paths";
@@ -71,13 +70,7 @@ const SORT_OPTIONS = [
   { id: "projects-desc",label: "Most Used" },
 ];
 
-const SKILL_LEVELS_OVERVIEW = [
-  { label: "Frontend Dev",        level: 72 },
-  { label: "Backend Dev",         level: 62 },
-  { label: "AI & Machine Learning", level: 68 },
-  { label: "Agentic AI & LLMs",   level: 76 },
-  { label: "DevOps & Cloud",       level: 58 },
-];
+const SKILL_LEVELS_OVERVIEW = getSkillCategoryAverages();
 
 // ── Animated progress bar ─────────────────────────────────────
 
@@ -156,7 +149,11 @@ function Skills() {
         if (sortBy === "level-desc")   filtered = [...filtered].sort((a, b) => b.level - a.level);
         if (sortBy === "level-asc")    filtered = [...filtered].sort((a, b) => a.level - b.level);
         if (sortBy === "name-asc")     filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
-        if (sortBy === "projects-desc") filtered = [...filtered].sort((a, b) => (b.projectIds?.length || 0) - (a.projectIds?.length || 0));
+        if (sortBy === "projects-desc") {
+          const enriched = getAllSkills();
+          const countFor = (id) => enriched.find((s) => s.id === id)?.projectIds?.length || 0;
+          filtered = [...filtered].sort((a, b) => countFor(b.id) - countFor(a.id));
+        }
         if (filtered.length > 0) result[category] = filtered;
       }
     });
@@ -401,7 +398,7 @@ function SkillListItem({ skill, icon, onClick }) {
           <motion.div
             className="text-xl p-2 border-2 border-outline shrink-0"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
-            whileHover={{ scale: 1.15, rotate: 5, boxShadow: "0 0 12px var(--color-on-background)" }}
+            whileHover={{ scale: 1.15, y: -3, boxShadow: "0 0 12px var(--color-on-background)" }}
             transition={hoverSpring}
           >
             {icon}
@@ -446,23 +443,6 @@ function SkillGridCard({ skill, icon, onClick }) {
   const levelStyle = getLevelStyle(skill.level);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-
-  const handleMouseMove = (e) => {
-    if (!isFinePointerDevice() || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left - rect.width / 2;
-    const mouseY = e.clientY - rect.top - rect.height / 2;
-    rotateX.set(-(mouseY / (rect.height / 2)) * 5);
-    rotateY.set((mouseX / (rect.width / 2)) * 5);
-  };
-
-  const handleMouseLeave = () => {
-    rotateX.set(0);
-    rotateY.set(0);
-  };
-
   return (
     <motion.button
       ref={ref}
@@ -472,9 +452,6 @@ function SkillGridCard({ skill, icon, onClick }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={defaultSpring}
       whileHover={{ y: -4, x: -4, boxShadow: "10px 10px 0px 0px var(--shadow-color)", transition: hoverSpring }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
       onClick={onClick}
     >
       <div data-build-part="media" className="flex items-center justify-between">
@@ -587,8 +564,8 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
           <motion.div
             className="text-3xl p-3 border-2 border-outline shadow-[3px_3px_0px_0px_var(--shadow-accent)]"
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
-            initial={{ scale: 0.5, rotate: -10 }}
-            animate={{ scale: 1, rotate: 0 }}
+            initial={{ scale: 0.5, y: 8 }}
+            animate={{ scale: 1, y: 0 }}
             transition={hoverSpring}
           >
             {icon}

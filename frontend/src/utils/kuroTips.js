@@ -10,9 +10,10 @@ const TIP_POOL = {
   ],
   "/projects": [
     { label: "Swiggy Nexus", send: "Tell me about Swiggy Nexus" },
+    { label: "Siya", send: "Tell me about Siya's Portfolio" },
     { label: "Aegis", send: "Tell me about Aegis" },
     { label: "Samiksha", send: "What is Samiksha?" },
-    { label: "Stack match", send: "Which projects use React?" },
+    { label: "Swarm again", send: "animation again on this page" },
     { label: "Open skills", send: "go to skills" },
     { label: "Live demos", send: "Which projects have a live demo?" },
   ],
@@ -35,8 +36,13 @@ const TIP_POOL = {
   ],
   "/about": [
     { label: "GitHub stats", send: "Tell me about his GitHub" },
-    { label: "Contact", send: "go to contact" },
+    { label: "Hire", send: "go to services" },
     { label: "Email", send: "What's his email?" },
+  ],
+  "/services": [
+    { label: "Swarm again", send: "swarm cursors" },
+    { label: "Copy email", send: "What's his email?" },
+    { label: "Projects", send: "go to projects" },
   ],
   "/contact": [
     { label: "Copy email", send: "What's his email?" },

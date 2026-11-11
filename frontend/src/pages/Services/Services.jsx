@@ -1,11 +1,13 @@
-import { memo, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { memo, useEffect, useMemo, useRef, useState, lazy, Suspense } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaCheck,
   FaChevronDown,
   FaEnvelope,
+  FaEye,
   FaExternalLinkAlt,
+  FaFileDownload,
   FaGithub,
   FaPaperPlane,
 } from "react-icons/fa";
@@ -13,6 +15,9 @@ import { usePageSEO } from "../../utils/seo";
 import { useToast } from "../../context/ToastContext";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
+import { aboutInfo } from "../../data/experience";
+
+const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 import {
   CURRENCY_STORAGE_KEY,
   SCOPING_CALL_URL,
@@ -46,6 +51,7 @@ import {
 } from "../../data/services";
 import { getAssetPath } from "../../utils/paths";
 import ProgressiveImage from "../../components/ProgressiveImage/ProgressiveImage";
+import BrutalSelect from "../../components/BrutalSelect/BrutalSelect";
 
 const CONTACT_ENDPOINT = import.meta.env.VITE_CONTACT_ENDPOINT || "/api/contact";
 
@@ -97,6 +103,7 @@ const Services = memo(function Services() {
   const faqData = useMemo(() => ({ faqItems: [...SERVICES_FAQ, ...WEB_FAQ] }), []);
   usePageSEO(faqData);
   const scopeRef = useRef(null);
+  const location = useLocation();
 
   const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState("ai");
@@ -105,10 +112,19 @@ const Services = memo(function Services() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState(null);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   useEffect(() => {
     setCurrency(detectDefaultCurrency());
   }, []);
+
+  useEffect(() => {
+    if (location.hash !== "#inquiry") return;
+    const timer = window.setTimeout(() => {
+      document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+    return () => window.clearTimeout(timer);
+  }, [location.hash, location.pathname]);
 
   const setCurrencyPreference = (next) => {
     setCurrency(next);
@@ -761,85 +777,41 @@ const Services = memo(function Services() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="services-type" className="font-label-bold uppercase text-sm">
-                  Project type
-                </label>
-                <select
-                  id="services-type"
-                  name="projectType"
-                  value={formData.projectType}
-                  onChange={handleChange}
-                  className={fieldClass}
-                >
-                  <option value="">Select...</option>
-                  {INQUIRY_PROJECT_TYPES.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="services-has-site" className="font-label-bold uppercase text-sm">
-                  Do you already have a website or domain?
-                </label>
-                <select
-                  id="services-has-site"
-                  name="hasExistingSite"
-                  value={formData.hasExistingSite}
-                  onChange={handleChange}
-                  className={fieldClass}
-                >
-                  <option value="">Select...</option>
-                  {INQUIRY_HAS_SITE.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <BrutalSelect
+                id="services-type"
+                name="projectType"
+                label="Project type"
+                value={formData.projectType}
+                options={INQUIRY_PROJECT_TYPES}
+                onChange={handleChange}
+              />
+              <BrutalSelect
+                id="services-has-site"
+                name="hasExistingSite"
+                label="Do you already have a website or domain?"
+                value={formData.hasExistingSite}
+                options={INQUIRY_HAS_SITE}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="services-budget" className="font-label-bold uppercase text-sm">
-                  Budget range
-                </label>
-                <select
-                  id="services-budget"
-                  name="budgetRange"
-                  value={formData.budgetRange}
-                  onChange={handleChange}
-                  className={fieldClass}
-                >
-                  <option value="">Select...</option>
-                  {INQUIRY_BUDGET_RANGES.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="services-timeline" className="font-label-bold uppercase text-sm">
-                  Timeline
-                </label>
-                <select
-                  id="services-timeline"
-                  name="timeline"
-                  value={formData.timeline}
-                  onChange={handleChange}
-                  className={fieldClass}
-                >
-                  <option value="">Select...</option>
-                  {INQUIRY_TIMELINES.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <BrutalSelect
+                id="services-budget"
+                name="budgetRange"
+                label="Budget range"
+                value={formData.budgetRange}
+                options={INQUIRY_BUDGET_RANGES}
+                onChange={handleChange}
+              />
+              <BrutalSelect
+                id="services-timeline"
+                name="timeline"
+                label="Timeline"
+                value={formData.timeline}
+                options={INQUIRY_TIMELINES}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="flex flex-col gap-2">
@@ -893,6 +865,9 @@ const Services = memo(function Services() {
           <aside className="flex flex-col gap-4">
             <div className="border-4 border-outline bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] p-5 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4">
               <h3 className="font-headline-md text-xl uppercase">Direct email</h3>
+              <p className="font-body-md text-sm leading-snug">
+                I usually reply within 24 hours.
+              </p>
               <a
                 href={`mailto:${SERVICES_EMAIL}`}
                 className="inline-flex items-center gap-2 font-body-md text-sm break-all underline underline-offset-4"
@@ -915,9 +890,45 @@ const Services = memo(function Services() {
                 </p>
               )}
             </div>
+            <div
+              className="border-4 border-outline p-5 flex flex-col gap-4 shadow-[4px_4px_0px_0px_var(--shadow-accent)]"
+              style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
+            >
+              <div className="flex items-center gap-3 border-b-4 border-current pb-3">
+                <FaFileDownload className="text-2xl text-current" aria-hidden />
+                <div>
+                  <div className="font-headline-md text-lg uppercase">My Resume</div>
+                  <div className="font-body-md text-sm opacity-60">PDF • Latest Version</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsResumeOpen(true)}
+                  className="bg-transparent text-[var(--color-background)] border-4 border-current px-3 py-3 font-label-bold text-sm uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
+                >
+                  <FaEye className="text-lg text-current" aria-hidden />
+                  <span>View</span>
+                </button>
+                <a
+                  href={getAssetPath(aboutInfo.resumeUrl)}
+                  download="Aryan_Dani_Resume.pdf"
+                  className="bg-transparent text-[var(--color-background)] border-4 border-current px-3 py-3 font-label-bold text-sm uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full cursor-none"
+                >
+                  <FaFileDownload className="text-lg text-current" aria-hidden />
+                  <span>Download</span>
+                </a>
+              </div>
+            </div>
           </aside>
         </div>
       </motion.section>
+
+      {isResumeOpen && (
+        <Suspense fallback={null}>
+          <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+        </Suspense>
+      )}
 
       <CardBuildSwarm storageKey="services" scopeRef={scopeRef} enabled />
     </motion.section>

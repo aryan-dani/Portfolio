@@ -4,16 +4,16 @@ import { HiHome, HiCode, HiBriefcase, HiBadgeCheck, HiLightningBolt, HiUser, HiT
 export const SITE_ROUTES = [
   { id: "home", segment: null, path: "/", label: "Home", shortcut: "1", header: false, dock: true, palette: true, icon: HiHome },
   { id: "projects", segment: "projects", path: "/projects", label: "Projects", shortcut: "2", header: true, dock: true, palette: true, icon: HiCode },
-  { id: "services", segment: "services", path: "/services", label: "Services", headerLabel: "Hire", shortcut: null, header: true, dock: true, palette: true, icon: HiCash },
-  { id: "experience", segment: "experience", path: "/experience", label: "Experience", shortcut: "3", header: true, dock: true, palette: true, icon: HiBriefcase },
-  { id: "research", segment: "research", path: "/research", label: "Research", shortcut: null, header: true, dock: true, palette: true, icon: HiAcademicCap },
-  { id: "certifications", segment: "certifications", path: "/certifications", label: "Certifications", headerLabel: "Certs", shortcut: "4", header: true, dock: true, palette: true, icon: HiBadgeCheck },
-  { id: "skills", segment: "skills", path: "/skills", label: "Skills", shortcut: "5", header: true, dock: true, palette: true, icon: HiLightningBolt },
-  { id: "about", segment: "about", path: "/about", label: "About", shortcut: "6", header: true, dock: true, palette: true, icon: HiUser },
-  { id: "contact", segment: "contact", path: "/contact", label: "Contact", shortcut: null, header: false, dock: false, palette: true, icon: HiUser },
-  { id: "playground", segment: "playground", path: "/playground", label: "Playground", shortcut: "7", header: true, dock: true, palette: true, icon: HiTerminal },
-  { id: "achievements", segment: "achievements", path: "/achievements", label: "Achievements", headerLabel: "Badges", shortcut: "8", header: true, dock: true, palette: true, icon: HiStar },
-  { id: "guestbook", segment: "guestbook", path: "/guestbook", label: "Guestbook", shortcut: "9", header: false, dock: true, palette: true, icon: HiPencil },
+  { id: "services", segment: "services", path: "/services", label: "Services", headerLabel: "Hire", shortcut: "3", header: false, dock: true, palette: true, icon: HiCash },
+  { id: "experience", segment: "experience", path: "/experience", label: "Experience", shortcut: "4", header: true, dock: true, palette: true, icon: HiBriefcase },
+  { id: "research", segment: "research", path: "/research", label: "Research", shortcut: "5", header: true, dock: true, palette: true, icon: HiAcademicCap },
+  { id: "certifications", segment: "certifications", path: "/certifications", label: "Certifications", headerLabel: "Certs", shortcut: "6", header: true, dock: true, palette: true, icon: HiBadgeCheck },
+  { id: "skills", segment: "skills", path: "/skills", label: "Skills", shortcut: "7", header: true, dock: true, palette: true, icon: HiLightningBolt },
+  { id: "about", segment: "about", path: "/about", label: "About", shortcut: "8", header: true, dock: true, palette: true, icon: HiUser },
+  { id: "contact", segment: "contact", path: "/contact", label: "Contact", shortcut: null, header: false, dock: false, palette: false, icon: HiUser },
+  { id: "playground", segment: "playground", path: "/playground", label: "Playground", shortcut: "9", header: true, dock: true, palette: true, icon: HiTerminal },
+  { id: "achievements", segment: "achievements", path: "/achievements", label: "Achievements", headerLabel: "Badges", shortcut: null, header: false, dock: true, palette: true, icon: HiStar },
+  { id: "guestbook", segment: "guestbook", path: "/guestbook", label: "Guestbook", shortcut: null, header: false, dock: true, palette: true, icon: HiPencil },
   { id: "copyright", segment: "copyright", path: "/copyright", label: "Copyright", shortcut: null, header: false, dock: false, palette: true, icon: HiDocumentText },
 ];
 
@@ -44,7 +44,10 @@ export const paletteNavRoutes = SITE_ROUTES.filter((route) => route.palette).map
 }));
 
 export const playgroundRouteMap = Object.fromEntries(
-  SITE_ROUTES.map((route) => [route.id, route.path]),
+  SITE_ROUTES.map((route) => [
+    route.id,
+    route.id === "contact" ? "/services#inquiry" : route.path,
+  ]),
 );
 
 export const PAGE_IMPORTS = {

@@ -3,6 +3,7 @@ import { aboutInfo } from "../data/experience";
 import { smoothScrollToTop } from "./smoothScroll";
 
 const PALETTE_EVENT = "portfolio:open-palette";
+const REPLAY_SWARM_EVENT = "portfolio:replay-swarm";
 
 async function copyEmailToClipboard() {
   const email = aboutInfo?.email;
@@ -72,6 +73,10 @@ export function executeKuroActions(actions, handlers) {
         executed.push(action);
         break;
       }
+      case "replay_swarm":
+        window.dispatchEvent(new CustomEvent(REPLAY_SWARM_EVENT));
+        executed.push(action);
+        break;
       default:
         break;
     }
@@ -102,6 +107,8 @@ export function describeKuroActions(actions) {
           return "-> Copied email";
         case "open_resume":
           return "-> Opened resume";
+        case "replay_swarm":
+          return "-> Replayed cursor swarm";
         default:
           return "-> Done";
       }
@@ -109,4 +116,4 @@ export function describeKuroActions(actions) {
     .join(" ");
 }
 
-export { PALETTE_EVENT };
+export { PALETTE_EVENT, REPLAY_SWARM_EVENT };

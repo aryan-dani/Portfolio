@@ -2,12 +2,13 @@
 export const KURO_PAGES = [
   { id: "home", path: "/", label: "Home" },
   { id: "projects", path: "/projects", label: "Projects" },
+  { id: "services", path: "/services", label: "Services" },
   { id: "experience", path: "/experience", label: "Experience" },
   { id: "research", path: "/research", label: "Research" },
   { id: "certifications", path: "/certifications", label: "Certifications" },
   { id: "skills", path: "/skills", label: "Skills" },
   { id: "about", path: "/about", label: "About" },
-  { id: "contact", path: "/contact", label: "Contact" },
+  { id: "contact", path: "/services#inquiry", label: "Contact" },
   { id: "playground", path: "/playground", label: "Playground" },
   { id: "achievements", path: "/achievements", label: "Achievements" },
   { id: "guestbook", path: "/guestbook", label: "Guestbook" },
@@ -30,6 +31,9 @@ export const LOOKUP_TOPICS = [
   "ishani",
   "clover",
   "prism",
+  "siya",
+  "services",
+  "guides",
   "contact",
   "achievements",
   "certifications",
@@ -46,6 +50,7 @@ export const SITE_ACTION_TYPES = new Set([
   "open_palette",
   "copy_email",
   "open_resume",
+  "replay_swarm",
 ]);
 
 export const KURO_TOOLS = [
@@ -244,6 +249,8 @@ export function describeActions(actions) {
           return "Copying email...";
         case "open_resume":
           return "Opening resume...";
+        case "replay_swarm":
+          return "Replaying cursor swarm...";
         default:
           return "On it...";
       }

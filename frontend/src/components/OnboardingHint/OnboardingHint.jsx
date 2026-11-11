@@ -35,7 +35,7 @@ const OnboardingHint = memo(function OnboardingHint() {
               </p>
               <p className="mt-1 font-body-md text-sm text-[var(--color-on-surface)]">
                 Click any card to open details. Press <strong>Ctrl/Alt+K</strong> to search,
-                <strong> Alt+1-8</strong> or <strong>Alt+Arrows</strong> to navigate, or <strong>?</strong> for shortcuts.
+                <strong> Alt+1-9</strong> or <strong>Alt+Arrows</strong> to navigate, or <strong>?</strong> for shortcuts.
               </p>
             </div>
             <button

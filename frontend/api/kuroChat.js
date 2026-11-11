@@ -4,6 +4,8 @@ import { getAllSkills } from "../src/data/skills.js";
 import { ACHIEVEMENTS } from "../src/data/achievements.js";
 import { certifications } from "../src/data/certifications.js";
 import { researchPapers } from "../src/data/research.js";
+import { CASE_STUDIES } from "../src/data/caseStudies.js";
+import { SERVICES_GUIDES, SERVICES_PACKAGES, WEB_PACKAGES } from "../src/data/services.js";
 import {
   KURO_PAGES,
   KURO_TOOLS,
@@ -48,14 +50,15 @@ const SITE_CONTROL_PATTERNS = [
   /^(toggle|switch)\s+(the\s+)?(theme|dark|light)|dark mode|light mode|flip the lights/i,
   /^scroll (to )?top|back to top/i,
   /^(open|show)\s+(the\s+)?(command\s+)?palette/i,
-  /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|research|home|copyright)\s*[!.]?$/i,
+  /^(projects?|services?|hire|experience|skills?|about|contact|playground|guestbook|achievements?|badges?|certifications?|research|home|copyright)\s*[!.?]*$/i,
   /\b(copy|give me|what'?s)\s+(the\s+)?(email|e-mail)\b/i,
   /\b(open|show|download|send)\s+(the\s+)?(resume|cv)\b/i,
+  /swarm cursors|cursor swarm|animation again|replay (the )?(swarm|animation|cursors)/i,
 ];
 
 const PORTFOLIO_QA_PATTERNS = [
   /\b(what|which|tell me about|how (do|did|can)|where (is|can)|who (is|built|made))\b/i,
-  /\b(email|resume|github|stack|tech|skills?|projects?|experience|certifications?|research|paper|threat|aegis|samiksha|swiggy|nexus|utility|ishani|prism)\b/i,
+  /\b(email|resume|github|stack|tech|skills?|projects?|experience|certifications?|research|paper|threat|aegis|samiksha|swiggy|nexus|utility|ishani|prism|siya|services?|hire|guides?)\b/i,
   /\b(aryan|dani|developer|built this|portfolio)\b/i,
 ];
 
@@ -85,7 +88,8 @@ export function lookupPortfolio(topic, query = "") {
     case "utility":
     case "ishani":
     case "clover":
-    case "prism": {
+    case "prism":
+    case "siya": {
       const keyMap = {
         aegis: "aegis",
         samiksha: "samiksha",
@@ -94,10 +98,12 @@ export function lookupPortfolio(topic, query = "") {
         ishani: "ishani",
         clover: "clover",
         prism: "prism",
+        siya: "siya",
       };
       const key = keyMap[topic];
       const p = projects.find((proj) => proj.title.toLowerCase().includes(key));
       if (!p) return `${topic} not found in portfolio data.`;
+      const study = CASE_STUDIES.find((c) => c.projectId === p.id);
       const bits = [
         `${p.title} (${p.year})`,
         p.description.slice(0, 400),
@@ -107,8 +113,21 @@ export function lookupPortfolio(topic, query = "") {
         `Tags: ${(p.tags || []).join(", ")}`,
         p.links?.github ? `GitHub: ${p.links.github}` : "",
         p.links?.preview ? `Live: ${p.links.preview}` : "",
+        study ? `Case study: /work/${study.slug}` : "",
       ].filter(Boolean);
       return bits.join("\n");
+    }
+    case "services": {
+      const packages = [...SERVICES_PACKAGES, ...WEB_PACKAGES]
+        .map((pkg) => `${pkg.name}: ${pkg.timeline || ""} — ${pkg.forWho || ""}`)
+        .join("\n");
+      return `Services page: /services. Inquiry: /services#inquiry.\nPackages:\n${packages}`;
+    }
+    case "guides": {
+      const lines = SERVICES_GUIDES.map(
+        (g) => `${g.title} (/guides/${g.slug}): ${g.description || ""}`,
+      );
+      return lines.length ? lines.join("\n") : "No guides yet.";
     }
     case "skills": {
       const skills = getAllSkills()
@@ -138,7 +157,7 @@ export function lookupPortfolio(topic, query = "") {
         .filter(Boolean)
         .join("\n");
     case "contact":
-      return `Email: ${aboutInfo.email}. Resume: ${aboutInfo.resumeUrl || "/resume.pdf"}. Contact page: /contact.`;
+      return `Email: ${aboutInfo.email}. Resume: ${aboutInfo.resumeUrl || "/resume.pdf"}. Hire / inquiry: /services#inquiry.`;
     case "achievements": {
       const lines = ACHIEVEMENTS.filter((a) => !a.secret || q)
         .filter((a) => matchQuery(`${a.title} ${a.description}`, q))
@@ -305,7 +324,7 @@ function messageAllowsAction(type, message) {
     case "navigate":
       return (
         /go to|take me|navigate|open|show me|visit|bring me|head to|jump to/i.test(q) ||
-        /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|research|home|copyright)\s*[!.]?$/i.test(
+        /^(projects?|services?|hire|experience|skills?|about|contact|playground|guestbook|achievements?|badges?|certifications?|research|home|copyright)\s*[!.?]*$/i.test(
           q.trim(),
         )
       );
@@ -323,6 +342,8 @@ function messageAllowsAction(type, message) {
       return /email|e-mail|mail/i.test(q);
     case "open_resume":
       return /resume|cv/i.test(q);
+    case "replay_swarm":
+      return /swarm|animation again|replay.*(swarm|animation|cursors)|cursor swarm/i.test(q);
     default:
       return true;
   }
@@ -351,14 +372,15 @@ function inferActions(message, currentPath) {
 
   const navPatterns = [
     [/projects?/, "projects"],
-    [/experience|work|jobs?/, "experience"],
+    [/services?|hire/, "services"],
+    [/experience|jobs?/, "experience"],
     [/skills?/, "skills"],
     [/research|paper|threat detection/, "research"],
     [/about/, "about"],
     [/contact/, "contact"],
     [/cert/, "certifications"],
     [/playground|terminal|cli/, "playground"],
-    [/achievements?|trophies/, "achievements"],
+    [/achievements?|trophies|badges?/, "achievements"],
     [/guestbook/, "guestbook"],
     [/home|landing/, "home"],
     [/copyright/, "copyright"],
@@ -366,7 +388,7 @@ function inferActions(message, currentPath) {
 
   const wantsNav =
     /go to|take me|navigate|open|show me|visit|bring me|head to|jump to/i.test(q) ||
-    /^(projects?|experience|skills?|about|contact|playground|guestbook|achievements?|certifications?|research|home)\s*[!.]?$/i.test(
+    /^(projects?|services?|hire|experience|skills?|about|contact|playground|guestbook|achievements?|badges?|certifications?|research|home)\s*[!.?]*$/i.test(
       q.trim(),
     );
 
@@ -402,6 +424,9 @@ function inferActions(message, currentPath) {
   }
   if (/\b(open|show|download)\s+(the\s+)?(resume|cv)\b|\bresume\s+please\b/i.test(q)) {
     actions.push({ type: "open_resume" });
+  }
+  if (/swarm cursors|cursor swarm|animation again|replay (the )?(swarm|animation|cursors)/i.test(q)) {
+    actions.push({ type: "replay_swarm" });
   }
 
   return actions;

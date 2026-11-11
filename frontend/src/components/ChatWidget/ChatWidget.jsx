@@ -210,16 +210,16 @@ const KuroFace = memo(function KuroFace({
       aria-hidden="true"
       animate={
         asleep
-          ? { y: [0, 1.5, 0], rotate: [0, 1.2, 0, -1.2, 0] }
+          ? { y: [0, 1.5, 0] }
           : launching
-            ? { y: -3, rotate: -3, scale: 1.08 }
+            ? { y: -6, scale: 1.08 }
             : absorbing
-              ? { y: 2, rotate: 2, scale: 0.92 }
+              ? { y: 3, scale: 0.92 }
               : bliss
-                ? { y: -1.5, rotate: -2, scale: 1.04 }
+                ? { y: -4, scale: 1.04 }
                 : robot
                   ? { y: [0, -1, 0] }
-                  : { y: 0, scale: 1, rotate: 0 }
+                  : { y: 0, scale: 1 }
       }
       transition={
         asleep
@@ -239,33 +239,33 @@ const KuroFace = memo(function KuroFace({
       )}
 
       <motion.g
+        style={{ transformBox: "fill-box", transformOrigin: "50% 100%" }}
         animate={
           launching
-            ? { rotate: -36 }
+            ? { rotate: -22, y: -4 }
             : absorbing
-              ? { rotate: -14 }
+              ? { rotate: -22, y: 2 }
               : bliss
-                ? { rotate: -28 }
-                : { rotate: -22 }
+                ? { rotate: -22, y: -3 }
+                : { rotate: -22, y: 0 }
         }
         transition={{ type: "spring", stiffness: 420, damping: 24 }}
-        style={{ transformOrigin: "26px 24px", transformBox: "fill-box" }}
       >
         <rect x="21" y="14" width="11" height="20" fill={ear} stroke={OUTLINE} strokeWidth="2" />
         {robot && <rect x="24" y="18" width="5" height="8" fill={ROBOT_LED} opacity="0.85" />}
       </motion.g>
       <motion.g
+        style={{ transformBox: "fill-box", transformOrigin: "50% 100%" }}
         animate={
           launching
-            ? { rotate: 36 }
+            ? { rotate: 22, y: -4 }
             : absorbing
-              ? { rotate: 14 }
+              ? { rotate: 22, y: 2 }
               : bliss
-                ? { rotate: 28 }
-                : { rotate: 22 }
+                ? { rotate: 22, y: -3 }
+                : { rotate: 22, y: 0 }
         }
         transition={{ type: "spring", stiffness: 420, damping: 24 }}
-        style={{ transformOrigin: "70px 24px", transformBox: "fill-box" }}
       >
         <rect x="64" y="14" width="11" height="20" fill={ear} stroke={OUTLINE} strokeWidth="2" />
         {robot && <rect x="67" y="18" width="5" height="8" fill={ROBOT_LED} opacity="0.85" />}
@@ -742,13 +742,21 @@ const ChatWidget = memo(function ChatWidget() {
   }, []);
 
   useEffect(() => {
-    if (!isFullscreen) return undefined;
+    if (!chatOpen) return undefined;
     const onKey = (event) => {
-      if (event.key === "Escape") setIsFullscreen(false);
+      if (event.key !== "Escape") return;
+      if (document.querySelector('[role="dialog"][aria-modal="true"]')) return;
+      if (isFullscreen) {
+        setIsFullscreen(false);
+        return;
+      }
+      setChatOpen(false);
+      setPinned(false);
+      savePanelPrefs({ pinned: false, size: panelSize });
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isFullscreen]);
+  }, [chatOpen, isFullscreen, panelSize]);
 
   const sendMessage = async (text) => {
     const clean = text.trim();

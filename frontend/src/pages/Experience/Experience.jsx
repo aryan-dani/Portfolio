@@ -147,7 +147,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                 )}
                 {exp.technologies && (
                   <div className="flex flex-wrap gap-2 pt-2 border-t-2 border-dashed border-outline-variant">
-                    {exp.technologies.map((tech, techIdx) => (
+                    {exp.technologies.map((tech) => (
                       <motion.button
                         key={tech}
                         onClick={(e) => {
@@ -158,7 +158,6 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                         style={style.tagBg}
                         whileHover={{
                           y: -4,
-                          rotate: techIdx % 2 === 0 ? 2 : -2,
                           boxShadow: "4px 4px 0px 0px var(--shadow-color)",
                         }}
                         transition={defaultSpring}

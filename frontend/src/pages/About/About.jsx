@@ -272,7 +272,7 @@ function About() {
             </p>
             <div className="flex flex-col gap-4">
               <Link
-                to="/contact"
+                to="/services#inquiry"
                 className="btn-cta-get-in-touch px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--color-background)] transition-all w-full cursor-none"
               >
                 <FaArrowRight />
@@ -335,9 +335,9 @@ function HighlightCard({ highlight, index }) {
     >
       <motion.span
         className="text-4xl mb-4 block border-2 border-outline w-fit p-2 bg-[var(--color-surface-variant)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-        animate={inView ? { rotate: [0, -12, 12, -6, 6, 0] } : {}}
+        animate={inView ? { y: [0, -6, 0, -3, 0] } : {}}
         transition={{ duration: 0.65, delay: index * 0.12 + 0.35 }}
-        whileHover={{ rotate: [0, -10, 10, -5, 5, 0], transition: { duration: 0.5 } }}
+        whileHover={{ y: [0, -5, 0, -3, 0], transition: { duration: 0.5 } }}
       >
         {highlight.icon}
       </motion.span>
