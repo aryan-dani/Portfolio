@@ -47,6 +47,7 @@ export function usePageSEO(extraData, overridePath) {
     setMeta("property", "og:image", image);
     setMeta("property", "og:image:width", "1200");
     setMeta("property", "og:image:height", "630");
+    setMeta("property", "og:image:type", "image/png");
     setMeta("property", "og:image:alt", imageAlt);
 
     // ── Twitter Cards ──────────────────────────────────────

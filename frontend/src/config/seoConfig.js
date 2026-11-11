@@ -15,16 +15,15 @@ import {
   formatInr,
   formatUsd,
 } from "../data/services.js";
+import { GUIDE_PATHS, SEO_ROUTE_ORDER, WORK_PATHS } from "./seoKnownPaths.js";
 
 const SITE_URL = "https://www.aryandani.com";
 const SITE_NAME = "Aryan Dani Portfolio";
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.svg`;
+const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 const TWITTER_HANDLE = "@Killfall15";
 const DEFAULT_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
 const DEFAULT_IMAGE_ALT = "Aryan Dani freelance AI engineer and full-stack developer in Pune";
 
-const WORK_PATHS = CASE_STUDIES.map((study) => `/work/${study.slug}`);
-const GUIDE_PATHS = SERVICES_GUIDES.map((guide) => `/guides/${guide.slug}`);
 const SERVICES_KEYWORD_LIST = [
   ...SERVICES_KEYWORDS.primary,
   ...SERVICES_KEYWORDS.secondary,
@@ -33,25 +32,10 @@ const MERGED_SERVICES_FAQ = [...SERVICES_FAQ, ...WEB_FAQ];
 
 export function routeOgImage(path) {
   const slug = path === "/" ? "home" : path.replace(/^\//, "").replace(/\//g, "-");
-  return `${SITE_URL}/og-${slug}.svg`;
+  return `${SITE_URL}/og-${slug}.png`;
 }
 
-export const SEO_ROUTE_ORDER = [
-  "/",
-  "/projects",
-  "/services",
-  ...WORK_PATHS,
-  ...GUIDE_PATHS,
-  "/experience",
-  "/research",
-  "/certifications",
-  "/skills",
-  "/about",
-  "/playground",
-  "/achievements",
-  "/guestbook",
-  "/copyright",
-];
+export { SEO_ROUTE_ORDER, WORK_PATHS, GUIDE_PATHS };
 
 export const SEO_ROUTE_META = {
   "/": { label: "Home", priority: "1.0", changefreq: "weekly" },

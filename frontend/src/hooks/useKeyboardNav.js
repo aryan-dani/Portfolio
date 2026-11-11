@@ -3,12 +3,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { keyboardRoutes } from "../config/routes";
 
 export { keyboardRoutes };
+
 function isTypingTarget(target) {
   if (!target) return false;
   return (
     target.closest?.("input, textarea, select, [contenteditable='true']") ||
     target.getAttribute?.("role") === "textbox"
   );
+}
+
+function digitFromEvent(event) {
+  const fromCode = event.code?.match(/^Digit([1-9])$/);
+  if (fromCode) return fromCode[1];
+  if (/^[1-9]$/.test(event.key)) return event.key;
+  return null;
 }
 
 export function useKeyboardNav({ onShowShortcuts }) {
@@ -26,6 +34,7 @@ export function useKeyboardNav({ onShowShortcuts }) {
       }
 
       if (!event.altKey || event.ctrlKey || event.metaKey) return;
+
       if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
         event.preventDefault();
         const currentIndex = Math.max(0, keyboardRoutes.findIndex((item) => item.path === location.pathname));
@@ -35,7 +44,10 @@ export function useKeyboardNav({ onShowShortcuts }) {
         return;
       }
 
-      const route = keyboardRoutes.find((item) => item.key === event.key);
+      const digit = digitFromEvent(event);
+      if (!digit) return;
+
+      const route = keyboardRoutes.find((item) => item.key === digit);
       if (!route) return;
 
       event.preventDefault();

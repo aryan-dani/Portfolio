@@ -1,25 +1,8 @@
 /**
  * Edge middleware: serve the SPA shell with HTTP 404 for unknown paths.
  * Known routes and static assets pass through unchanged.
- * Paths are listed explicitly so this file stays Edge-safe (no React imports).
  */
-const KNOWN_PATHS = new Set([
-  "/",
-  "/projects",
-  "/experience",
-  "/research",
-  "/certifications",
-  "/skills",
-  "/about",
-  "/contact",
-  "/playground",
-  "/achievements",
-  "/guestbook",
-  "/copyright",
-  "/404",
-  "/resume.pdf",
-  "/research-paper.pdf",
-]);
+import { KNOWN_SEO_PATHS } from "./src/config/seoKnownPaths.js";
 
 export const config = {
   matcher: ["/((?!api/|assets/|Images/|favicons/).*)"],
@@ -35,7 +18,7 @@ export default async function middleware(request) {
   }
 
   const looksStatic = /\.[a-zA-Z0-9]{1,8}$/.test(pathname);
-  if (looksStatic || KNOWN_PATHS.has(pathname)) {
+  if (looksStatic || KNOWN_SEO_PATHS.has(pathname)) {
     return;
   }
 

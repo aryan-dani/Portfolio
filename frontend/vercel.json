@@ -71,6 +71,20 @@
       ]
     },
     {
+      "source": "/og-image.png",
+      "headers": [
+        { "key": "Content-Type", "value": "image/png" },
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+      ]
+    },
+    {
+      "source": "/og-:slug.png",
+      "headers": [
+        { "key": "Content-Type", "value": "image/png" },
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+      ]
+    },
+    {
       "source": "/Images/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }
@@ -85,7 +99,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!api/|assets/|Images/|favicons/|resume\\.pdf|research-paper\\.pdf|sitemap\\.xml|robots\\.txt|manifest\\.json|llms\\.txt|humans\\.txt|og-image\\.svg|.*\\.(?:pdf|xml|txt|json|svg|ico|png|jpg|jpeg|webp|css|js|woff2?)).*)",
+      "source": "/((?!api/|assets/|Images/|favicons/|resume\\.pdf|research-paper\\.pdf|sitemap\\.xml|robots\\.txt|manifest\\.json|llms\\.txt|humans\\.txt|og-image\\.png|og-[^/]+\\.png|.*\\.(?:pdf|xml|txt|json|svg|ico|png|jpg|jpeg|webp|css|js|woff2?)).*)",
       "destination": "/index.html"
     }
   ]

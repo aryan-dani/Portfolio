@@ -188,6 +188,7 @@ function replaceHead(html, config, graph, routePath) {
     metaProperty("og:image", image),
     metaProperty("og:image:width", "1200"),
     metaProperty("og:image:height", "630"),
+    metaProperty("og:image:type", "image/png"),
     metaProperty("og:image:alt", imageAlt),
     metaProperty("og:site_name", SITE_NAME),
     metaName("twitter:card", "summary_large_image"),
