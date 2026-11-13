@@ -162,8 +162,18 @@ export const KURO_TOOLS = [
     type: "function",
     function: {
       name: "open_resume",
-      description: "Open the resume PDF when the user asks for the resume or CV.",
-      parameters: { type: "object", properties: {} },
+      description:
+        "Open a resume PDF when the user asks for the resume or CV. Use version=latex for the LaTeX two-pager, classic for the original one-pager.",
+      parameters: {
+        type: "object",
+        properties: {
+          version: {
+            type: "string",
+            enum: ["classic", "latex"],
+            description: "Which resume to open. Defaults to classic.",
+          },
+        },
+      },
     },
   },
 ];
@@ -219,7 +229,10 @@ export function parseToolCalls(toolCalls) {
         actions.push({ type: "copy_email" });
         break;
       case "open_resume":
-        actions.push({ type: "open_resume" });
+        actions.push({
+          type: "open_resume",
+          version: args.version === "latex" ? "latex" : "classic",
+        });
         break;
       default:
         break;
@@ -248,7 +261,9 @@ export function describeActions(actions) {
         case "copy_email":
           return "Copying email...";
         case "open_resume":
-          return "Opening resume...";
+          return a.version === "latex"
+            ? "Opening LaTeX resume..."
+            : "Opening classic resume...";
         case "replay_swarm":
           return "Replaying cursor swarm...";
         default:

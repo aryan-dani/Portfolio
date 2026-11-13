@@ -25,7 +25,8 @@ const TIP_POOL = {
   ],
   "/experience": [
     { label: "Latest role", send: "Summarize his experience" },
-    { label: "Resume", send: "Where is the resume?" },
+    { label: "Resume", send: "Open the classic resume" },
+    { label: "LaTeX resume", send: "Open the LaTeX resume" },
     { label: "Research", send: "go to research" },
     { label: "Projects", send: "go to projects" },
   ],

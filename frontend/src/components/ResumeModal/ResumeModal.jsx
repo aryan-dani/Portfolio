@@ -1,23 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useModalLock } from "../../hooks/useModalLock";
 import { modalBackdropVariants, modalContentVariants } from "../../utils/motionVariants";
 import { FaExternalLinkAlt, FaFileDownload, FaTimes } from "react-icons/fa";
-import { aboutInfo } from "../../data/experience";
+import { aboutInfo, resumeVersions } from "../../data/experience";
 import { getAssetPath } from "../../utils/paths";
 
-export default function ResumeModal({ isOpen, onClose }) {
+export default function ResumeModal({ isOpen, onClose, initialVersion = "classic" }) {
   useModalLock(isOpen, onClose);
 
-  const resumePath = getAssetPath(aboutInfo.resumeUrl);
+  const versions = useMemo(
+    () => aboutInfo.resumes || resumeVersions,
+    [],
+  );
+  const [activeId, setActiveId] = useState(initialVersion);
+  const active = versions.find((v) => v.id === activeId) || versions[0];
+  const resumePath = getAssetPath(active?.url || aboutInfo.resumeUrl);
+
   const [embedSrc, setEmbedSrc] = useState("");
   const [loadState, setLoadState] = useState("idle"); // idle | loading | ready | error
+
+  useEffect(() => {
+    if (isOpen) setActiveId(initialVersion);
+  }, [isOpen, initialVersion]);
 
   // Fetch the PDF as a blob so the iframe is never a navigation the PWA SW can
   // rewrite to index.html (which is X-Frame-Options: DENY and blanked the viewer).
   useEffect(() => {
-    if (!isOpen) {
+    if (!isOpen || !resumePath) {
       setEmbedSrc("");
       setLoadState("idle");
       return undefined;
@@ -26,6 +37,7 @@ export default function ResumeModal({ isOpen, onClose }) {
     let cancelled = false;
     let objectUrl = "";
     setLoadState("loading");
+    setEmbedSrc("");
 
     (async () => {
       try {
@@ -66,6 +78,11 @@ export default function ResumeModal({ isOpen, onClose }) {
 
   if (typeof document === "undefined") return null;
 
+  const iframeMinHeight =
+    active?.id === "latex"
+      ? "min-h-[min(2800px,360vh)] h-[2800px] md:h-[3000px]"
+      : "min-h-[min(1600px,220vh)] h-[1600px] md:h-[1700px]";
+
   return createPortal(
     <AnimatePresence>
       {isOpen && (
@@ -91,41 +108,72 @@ export default function ResumeModal({ isOpen, onClose }) {
             aria-modal="true"
             aria-labelledby="resume-viewer-title"
           >
-            <div className="relative z-30 shrink-0 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-b-4 border-outline px-3 sm:px-4 py-3 flex items-center justify-between gap-3 cursor-none">
-              <span
-                id="resume-viewer-title"
-                className="font-headline-md text-sm md:text-base uppercase tracking-wider truncate pointer-events-none"
+            <div className="relative z-30 shrink-0 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-b-4 border-outline px-3 sm:px-4 py-3 flex flex-col gap-3 cursor-none">
+              <div className="flex items-center justify-between gap-3">
+                <span
+                  id="resume-viewer-title"
+                  className="font-headline-md text-sm md:text-base uppercase tracking-wider truncate pointer-events-none"
+                >
+                  DOCUMENT_VIEWER.EXE // {active?.label?.toUpperCase() || "RESUME"}.PDF
+                </span>
+                <div className="flex items-center gap-2 shrink-0 relative z-40">
+                  <a
+                    href={resumePath}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Open ${active?.label} resume in a new tab`}
+                    className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
+                  >
+                    <FaExternalLinkAlt />
+                    <span className="hidden sm:inline">Open</span>
+                  </a>
+                  <a
+                    href={resumePath}
+                    download={active?.downloadName || "Aryan_Dani_Resume.pdf"}
+                    aria-label={`Download ${active?.label} resume PDF`}
+                    className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
+                  >
+                    <FaFileDownload />
+                    <span className="hidden sm:inline">Download</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="relative z-50 bg-[var(--color-error)] text-[var(--color-on-error)] border-2 border-outline min-w-9 min-h-9 p-1.5 hover:bg-red-600 transition-colors flex items-center justify-center cursor-none"
+                    aria-label="Close viewer"
+                  >
+                    <FaTimes className="text-sm pointer-events-none" />
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className="flex flex-wrap gap-2"
+                role="tablist"
+                aria-label="Resume version"
               >
-                DOCUMENT_VIEWER.EXE // RESUME.PDF
-              </span>
-              <div className="flex items-center gap-2 shrink-0 relative z-40">
-                <a
-                  href={resumePath}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Open Aryan Dani resume in a new tab"
-                  className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
-                >
-                  <FaExternalLinkAlt />
-                  <span className="hidden sm:inline">Open</span>
-                </a>
-                <a
-                  href={resumePath}
-                  download="Aryan_Dani_Resume.pdf"
-                  aria-label="Download Aryan Dani resume PDF"
-                  className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
-                >
-                  <FaFileDownload />
-                  <span className="hidden sm:inline">Download</span>
-                </a>
-                <button
-                  type="button"
-                  onClick={handleClose}
-                  className="relative z-50 bg-[var(--color-error)] text-[var(--color-on-error)] border-2 border-outline min-w-9 min-h-9 p-1.5 hover:bg-red-600 transition-colors flex items-center justify-center cursor-none"
-                  aria-label="Close viewer"
-                >
-                  <FaTimes className="text-sm pointer-events-none" />
-                </button>
+                {versions.map((version) => {
+                  const selected = version.id === active?.id;
+                  return (
+                    <button
+                      key={version.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={selected}
+                      onClick={() => setActiveId(version.id)}
+                      className={`border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase transition-all cursor-none ${
+                        selected
+                          ? "bg-[var(--color-on-primary-container)] text-[var(--color-primary-container)] shadow-none translate-x-[1px] translate-y-[1px]"
+                          : "bg-[var(--color-surface)] text-[var(--color-on-surface)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
+                      }`}
+                    >
+                      {version.label}
+                      <span className="ml-2 opacity-60 normal-case tracking-normal hidden sm:inline">
+                        {version.blurb}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -135,7 +183,7 @@ export default function ResumeModal({ isOpen, onClose }) {
             >
               {loadState === "loading" && (
                 <div className="flex items-center justify-center min-h-[min(70vh,640px)] font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">
-                  Loading resume…
+                  Loading {active?.label || "resume"}…
                 </div>
               )}
 
@@ -150,17 +198,18 @@ export default function ResumeModal({ isOpen, onClose }) {
                     rel="noopener noreferrer"
                     className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[3px_3px_0px_0px_var(--shadow-color)] cursor-none"
                   >
-                    Open resume.pdf
+                    Open {active?.url || "resume.pdf"}
                   </a>
                 </div>
               )}
 
               {loadState === "ready" && embedSrc && (
                 <iframe
+                  key={active?.id}
                   src={embedSrc}
-                  title="Aryan Dani resume PDF"
+                  title={`Aryan Dani ${active?.label || ""} resume PDF`}
                   tabIndex={-1}
-                  className="block w-full border-0 bg-white pointer-events-none min-h-[min(1600px,220vh)] h-[1600px] md:h-[1700px]"
+                  className={`block w-full border-0 bg-white pointer-events-none ${iframeMinHeight}`}
                 />
               )}
             </div>

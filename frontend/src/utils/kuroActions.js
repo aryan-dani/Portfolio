@@ -68,7 +68,13 @@ export function executeKuroActions(actions, handlers) {
         executed.push(action);
         break;
       case "open_resume": {
-        const url = aboutInfo?.resumeUrl || "/resume.pdf";
+        const version = action?.version || "classic";
+        const match = aboutInfo?.resumes?.find((r) => r.id === version);
+        const url =
+          match?.url ||
+          (version === "latex"
+            ? aboutInfo?.resumeLatexUrl || "/resume-latex.pdf"
+            : aboutInfo?.resumeUrl || "/resume.pdf");
         window.open(url, "_blank", "noopener,noreferrer");
         executed.push(action);
         break;
@@ -106,7 +112,9 @@ export function describeKuroActions(actions) {
         case "copy_email":
           return "-> Copied email";
         case "open_resume":
-          return "-> Opened resume";
+          return a.version === "latex"
+            ? "-> Opened LaTeX resume"
+            : "-> Opened classic resume";
         case "replay_swarm":
           return "-> Replayed cursor swarm";
         default:

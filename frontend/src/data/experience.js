@@ -108,12 +108,33 @@ export const socialLinks = [
   },
 ];
 
+export const resumeVersions = [
+  {
+    id: "classic",
+    label: "Classic",
+    shortLabel: "Classic PDF",
+    url: "/resume.pdf",
+    downloadName: "Aryan_Dani_Resume.pdf",
+    blurb: "Original one-pager",
+  },
+  {
+    id: "latex",
+    label: "LaTeX",
+    shortLabel: "LaTeX PDF",
+    url: "/resume-latex.pdf",
+    downloadName: "Aryan_Dani_Resume_LaTeX.pdf",
+    blurb: "Updated two-pager",
+  },
+];
+
 export const aboutInfo = {
   name: "Aryan Dani",
   title: "Tech Enthusiast, Web Developer and AI Engineer",
   tagline: "Building the future, one line of code at a time.",
   email: "daniaryan212@gmail.com",
   resumeUrl: "/resume.pdf",
+  resumeLatexUrl: "/resume-latex.pdf",
+  resumes: resumeVersions,
   bio: `Hey, I'm Aryan Dani - a full-stack developer and AI engineer who builds sharp web products and agentic systems that actually ship. I am currently an AI/ML intern at ProvaanTech. Earlier work includes healthcare AI at Artem HealthTech and a computer-vision capstone at MIT-WPU.
 
 When I'm not wrangling CSS or LangGraph state machines, you'll find me deep in anime like Haikyu!! or experimenting with the next Gemini release. I'm also a Google Student Ambassador and a proud tea person (chai > coffee, always).

@@ -152,12 +152,13 @@ export function lookupPortfolio(topic, query = "") {
         aboutInfo.tagline,
         aboutInfo.bio.slice(0, 500),
         `Email: ${aboutInfo.email}`,
-        aboutInfo.resumeUrl ? `Resume: ${aboutInfo.resumeUrl}` : "",
+        aboutInfo.resumeUrl ? `Classic resume: ${aboutInfo.resumeUrl}` : "",
+        aboutInfo.resumeLatexUrl ? `LaTeX resume: ${aboutInfo.resumeLatexUrl}` : "",
       ]
         .filter(Boolean)
         .join("\n");
     case "contact":
-      return `Email: ${aboutInfo.email}. Resume: ${aboutInfo.resumeUrl || "/resume.pdf"}. Hire / inquiry: /services#inquiry.`;
+      return `Email: ${aboutInfo.email}. Classic resume: ${aboutInfo.resumeUrl || "/resume.pdf"}. LaTeX resume: ${aboutInfo.resumeLatexUrl || "/resume-latex.pdf"}. Hire / inquiry: /services#inquiry.`;
     case "achievements": {
       const lines = ACHIEVEMENTS.filter((a) => !a.secret || q)
         .filter((a) => matchQuery(`${a.title} ${a.description}`, q))
@@ -422,8 +423,11 @@ function inferActions(message, currentPath) {
   if (/\b(copy|give me|what'?s)\s+(the\s+)?(email|e-mail)\b|\bemail\s+please\b/i.test(q)) {
     actions.push({ type: "copy_email" });
   }
-  if (/\b(open|show|download)\s+(the\s+)?(resume|cv)\b|\bresume\s+please\b/i.test(q)) {
-    actions.push({ type: "open_resume" });
+  if (/\b(open|show|download)\s+(the\s+)?(latex\s+)?(resume|cv)\b|\bresume\s+please\b/i.test(q)) {
+    actions.push({
+      type: "open_resume",
+      version: /\blatex\b/i.test(q) ? "latex" : "classic",
+    });
   }
   if (/swarm cursors|cursor swarm|animation again|replay (the )?(swarm|animation|cursors)/i.test(q)) {
     actions.push({ type: "replay_swarm" });
@@ -462,7 +466,10 @@ export function parseActionsFromReply(text) {
         } else if (item.type === "copy_email") {
           actions.push({ type: "copy_email" });
         } else if (item.type === "open_resume") {
-          actions.push({ type: "open_resume" });
+          actions.push({
+            type: "open_resume",
+            version: item.version === "latex" ? "latex" : "classic",
+          });
         }
       }
     }

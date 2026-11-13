@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   FaEnvelope,
-  FaFileDownload, FaArrowRight, FaEye,
+  FaArrowRight,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
@@ -16,6 +16,8 @@ import ProgressiveImage from "../../components/ProgressiveImage/ProgressiveImage
 
 import GitHubTicker from "../../components/GitHubTicker/GitHubTicker";
 import GitCareerTimeline from "../../components/GitCareerTimeline/GitCareerTimeline";
+
+import ResumeActions from "../../components/ResumeModal/ResumeActions";
 
 const GitHubStats = lazy(() => import("../../components/GitHubStats/GitHubStats"));
 const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
@@ -148,6 +150,7 @@ function About() {
   usePageSEO();
   const { showToast } = useToast();
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [resumeVersion, setResumeVersion] = useState("classic");
 
   const copyEmail = () => {
     navigator.clipboard.writeText(aboutInfo.email);
@@ -278,23 +281,12 @@ function About() {
                 <FaArrowRight />
                 <span>Get In Touch</span>
               </Link>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  onClick={() => setIsResumeOpen(true)}
-                  className="bg-transparent text-[var(--color-background)] border-4 border-current px-4 py-4 font-label-bold text-sm sm:text-base uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
-                >
-                  <FaEye className="text-xl text-current" />
-                  <span>View Resume</span>
-                </button>
-                <a
-                  href={getAssetPath(aboutInfo.resumeUrl)}
-                  download="Aryan_Dani_Resume.pdf"
-                  className="bg-transparent text-[var(--color-background)] border-4 border-current px-4 py-4 font-label-bold text-sm sm:text-base uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full cursor-none"
-                >
-                  <FaFileDownload className="text-xl text-current" />
-                  <span>Download PDF</span>
-                </a>
-              </div>
+              <ResumeActions
+                onView={(id) => {
+                  setResumeVersion(id);
+                  setIsResumeOpen(true);
+                }}
+              />
             </div>
           </motion.div>
         </motion.div>
@@ -311,7 +303,11 @@ function About() {
 
       {isResumeOpen && (
         <Suspense fallback={null}>
-          <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+          <ResumeModal
+            isOpen={isResumeOpen}
+            initialVersion={resumeVersion}
+            onClose={() => setIsResumeOpen(false)}
+          />
         </Suspense>
       )}
     </motion.section>

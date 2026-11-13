@@ -193,8 +193,14 @@ function trySiteControl(message, currentPath) {
       actions: [{ type: "copy_email" }],
     };
   }
-  if (/\b(open|show|download)\s+(the\s+)?(resume|cv)\b|\bresume\s+please\b/i.test(q)) {
-    return { reply: "Opening the resume.", actions: [{ type: "open_resume" }] };
+  if (/\b(open|show|download)\s+(the\s+)?(latex\s+)?(resume|cv)\b|\bresume\s+please\b/i.test(q)) {
+    const latex = /\blatex\b/i.test(q);
+    return {
+      reply: latex
+        ? "Opening the LaTeX resume."
+        : "Opening the classic resume. Ask for the LaTeX resume if you want the two-pager.",
+      actions: [{ type: "open_resume", version: latex ? "latex" : "classic" }],
+    };
   }
 
   if (

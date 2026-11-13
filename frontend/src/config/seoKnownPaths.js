@@ -34,5 +34,6 @@ export const KNOWN_SEO_PATHS = new Set([
   "/contact",
   "/404",
   "/resume.pdf",
+  "/resume-latex.pdf",
   "/research-paper.pdf",
 ]);

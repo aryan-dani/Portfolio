@@ -1,0 +1,197 @@
+% Two-page premium resume --- classic LaTeX serif, readable hierarchy
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[margin=0.62in]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ink}{HTML}{111113}
+\definecolor{rule}{HTML}{b8b4ab}
+
+\pagestyle{empty}
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% Bigger than default \section* --- clear anchors, air under the rule
+\titleformat{\section}
+  {\LARGE\bfseries\color{ink}}
+  {}{0em}{}
+  [\vspace{5pt}{\color{rule}\titlerule[0.6pt]}\vspace{8pt}]
+\titlespacing*{\section}{0pt}{11pt}{0pt}
+
+\setlist[itemize]{
+  leftmargin=*,
+  itemsep=2pt,
+  parsep=0pt,
+  topsep=2.5pt,
+  partopsep=0pt
+}
+
+\newcommand{\sep}{\quad\textbullet\quad}
+\newcommand{\role}[4]{%
+  \noindent\textbf{#1} $|$ \textit{#2}\hfill #3\\[1pt]
+  {\small #4}\par\vspace{2pt}%
+}
+\newcommand{\proj}[4]{%
+  \noindent\textbf{#1} $|$ \textit{#2}\hfill \texttt{\href{#3}{#4}}\\[1pt]%
+}
+
+\begin{document}
+
+%====================
+% Header
+%====================
+\begin{center}
+  {\Huge\bfseries Aryan Dani}\\[6pt]
+  {\Large AI Engineer \& Full-Stack Developer}\\[5pt]
+  Email: \href{mailto:daniaryan212@gmail.com}{daniaryan212@gmail.com}\sep
+  Phone: +91\,86682\,05450\\[3pt]
+  Portfolio: \texttt{\href{https://www.aryandani.com}{www.aryandani.com}}\\[2pt]
+  GitHub: \texttt{\href{https://github.com/aryan-dani}{github.com/aryan-dani}}\sep
+  LinkedIn: \texttt{\href{https://www.linkedin.com/in/aryandani/}{linkedin.com/in/aryandani}}
+\end{center}
+
+\vspace{8pt}
+\hrule height 0.9pt
+\vspace{8pt}
+
+%====================
+\section*{Professional Summary}
+AI engineer and full-stack developer shipping agentic systems, computer vision, and production web apps.
+Currently an AI/ML intern at \textbf{ProvaanTech}; previously healthcare AI at Artem HealthTech and autonomous systems at MIT-WPU.
+Strong in Python, TypeScript/JavaScript, LangGraph, RAG, and React/Next.js --- with live demos employers can open on \texttt{aryandani.com}.
+
+%====================
+\section*{Technical Skills}
+\begin{itemize}
+  \item \textbf{Languages:} Python, TypeScript, JavaScript (ES6+), Java, C, HTML5, CSS3, SASS/SCSS
+  \item \textbf{AI / ML:} LangGraph, RAG, LLMs, MCP, Prompt Engineering, PyTorch, TensorFlow, OpenCV, MediaPipe, YOLO, Scikit-learn, Ollama, Chroma, Groq, Gemini
+  \item \textbf{Web:} React, Next.js, Vite, Angular, Node.js, Express.js, FastAPI, Tailwind, WebSockets, REST
+  \item \textbf{Data \& Infra:} Supabase, Firebase, MongoDB, PostgreSQL/SQLite, Docker, Git/GitHub, Vercel, GitHub Actions, Linux/Unix
+  \item \textbf{Data \& Visualization:} Pandas, NumPy, Matplotlib, Power BI
+  \item \textbf{Concepts:} Generative AI, Computer Vision, Object Detection, NLP, CNNs, MLOps, Agile/Scrum, HITL agents
+\end{itemize}
+
+%====================
+\section*{Experience}
+\role{AI/ML Intern}{ProvaanTech}{June 2026 -- Present}{Remote}
+\begin{itemize}
+  \item Working on live client and product AI/ML problems from day one under mentor guidance.
+  \item Applied-research cadence: experimentation and production-oriented implementation under real product constraints.
+\end{itemize}
+
+\vspace{6pt}
+\role{Autonomous Systems Lead / ML Developer}{MIT-WPU (AI Capstone Dev)}{June -- Dec 2025}{Pune, India}
+\begin{itemize}
+  \item Led multi-modal \textbf{threat detection} (YOLOv11 + EfficientNetV2) for video and X-ray; research reports mAP@0.5 of \textbf{0.960}.
+  \item Built \textbf{PosePro} (MediaPipe) with form feedback under \textbf{25\,ms} for live coaching loops.
+  \item Designed \textbf{Arbiter}, a LangGraph + Gemini CI healer running in Docker sandboxes with FastAPI/SSE streaming for live tool traces.
+\end{itemize}
+
+\vspace{6pt}
+\role{AI Engineer Intern}{Artem HealthTech Pvt.\ Ltd.}{Jan -- May 2025}{Pune, India}
+\begin{itemize}
+  \item Built a DICOM assist pipeline (CNNs/VLMs) to classify slices and describe anomalies for radiologist workflows.
+  \item Delivered low-latency speech-to-text logging (Angular + WebSockets); helped improve inference responsiveness $\sim$30\%.
+\end{itemize}
+
+%====================
+\section*{Education}
+\noindent
+\textbf{MIT World Peace University}, Pune, India \hfill 2022 -- Present\\[2pt]
+B.Tech Computer Science --- AI \& Data Science \hfill {\large\bfseries CGPA: 9.25 / 10}
+
+\begin{itemize}
+  \item Consistently top-tier academic performance across AI, systems, and full-stack coursework.
+  \item Google Student Ambassador (Dec 2025); Student Placement Representative coordinating placement ops and industry events.
+  \item First author, \textit{Real-Time Multi-Modal Threat Detection} (YOLOv11 + EfficientNetV2).
+  \item Relevant coursework: Data Structures, Algorithms, Machine Learning, Computer Vision, Full-Stack Development.
+\end{itemize}
+
+\vspace{6pt}
+\noindent
+\textbf{Lexicon International School}, Pune, India \hfill 2015 -- 2022\\[2pt]
+High School --- Science Stream (PCM + Computer Science) \hfill {\large\bfseries Class 10: 93\%}
+\begin{itemize}
+  \item Strong foundation in mathematics, science, and analytical problem-solving.
+  \item Core focus: Physics, Chemistry, Mathematics, and Computer Science fundamentals.
+\end{itemize}
+
+%====================
+\section*{Selected Projects}
+
+\noindent
+\textbf{Utility --- Academic OS with RAG} $|$ \textit{Next.js, Supabase, TypeScript, RAG}
+\hfill \texttt{\href{https://utilityos.tech}{utilityos.tech}}
+\begin{itemize}
+  \item Academic operating system with parallel document indexing, auth/storage, and study tools --- live on Vercel.
+  \item RAG-powered document intelligence so students can query notes and materials in context.
+\end{itemize}
+
+\vspace{5pt}
+\noindent
+\textbf{Swiggy Nexus --- HITL Agent over MCP} $|$ \textit{LangGraph, MCP, FastAPI, Next.js, Groq}
+\hfill \texttt{\href{https://swiggy-nexus.vercel.app/}{Live demo}}
+\begin{itemize}
+  \item Planner/Executor agent across Food, Instamart, and Dineout domains (independent POC, not affiliated with Swiggy).
+  \item Every write action blocks until human approval --- true HITL control over agent side effects.
+\end{itemize}
+
+\vspace{5pt}
+\noindent
+\textbf{The Shadow Instructor --- Dual-Agent Interviews} $|$ \textit{Gemini, Next.js, FastAPI, WebSockets}
+\hfill \texttt{\href{https://the-shadow-instructor.vercel.app/}{Live demo}}
+\begin{itemize}
+  \item Flash interviewer for low-latency dialogue paired with a Pro shadow coach for accuracy, communication, and confidence.
+  \item Real-time dual-agent loop designed to feel like a real mock interview, not a chat toy.
+\end{itemize}
+
+\vspace{5pt}
+\noindent
+\textbf{Arbiter (RIFT 2026) --- Autonomous CI Healing} $|$ \textit{Gemini, LangGraph, FastAPI, Docker}
+\hfill \texttt{\href{https://thearbiter.vercel.app/}{Live demo}}
+\begin{itemize}
+  \item Multi-agent sandbox that isolates repo failures and proposes fixes through a discover/test/debug/git state machine.
+  \item Built for RIFT 2026 --- production-shaped agent workflow, not a notebook demo.
+\end{itemize}
+
+\vspace{5pt}
+\noindent
+\textbf{Prism --- Offline RBAC RAG Agent} $|$ \textit{Ollama, Chroma, FastAPI, React}
+\hfill \texttt{\href{https://github.com/aryan-dani/Prism}{github.com/aryan-dani/Prism}}
+\begin{itemize}
+  \item Role-gated retrieval across enterprise domains; refuses weak answers and exports one grounded result in multiple formats.
+  \item Fully offline-capable stack for privacy-sensitive document Q\&A.
+\end{itemize}
+
+\vspace{5pt}
+\noindent
+\textbf{Threat Detection System} $|$ \textit{Python, YOLOv11, EfficientNetV2, OpenCV}
+\hfill \texttt{\href{https://github.com/aryan-dani}{Research / GitHub}}
+\begin{itemize}
+  \item Real-time multi-modal threat identification across video and X-ray streams.
+  \item Research-reported mAP@0.5 of \textbf{0.960} --- first-author academic work.
+\end{itemize}
+
+%====================
+\section*{Certifications \& Traits}
+\begin{itemize}
+  \item FutureSkills Prime AI \& ML (Gold)\sep NPTEL Operating Systems (Elite, Top 2\%)
+  \item IBM Data Science Professional Certificate\sep Google Cloud Vertex AI / Multimodal RAG
+  \item Generative AI Essentials (Microsoft)\sep freeCodeCamp Responsive Web Design\sep Prompt Design in Vertex AI
+  \item Soft skills: communication, collaboration, critical thinking, time management, adaptability, initiative
+\end{itemize}
+
+\vspace{4pt}
+\noindent Curious by nature and disciplined by practice --- thrives building meaningful tech in fast-paced environments.
+
+\end{document}

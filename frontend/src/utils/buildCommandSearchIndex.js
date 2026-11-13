@@ -120,16 +120,22 @@ export function buildCommandSearchIndex() {
     });
   });
 
-  if (aboutInfo.resumeUrl) {
+  const resumes = aboutInfo.resumes?.length
+    ? aboutInfo.resumes
+    : aboutInfo.resumeUrl
+      ? [{ id: "classic", label: "Resume", url: aboutInfo.resumeUrl }]
+      : [];
+
+  resumes.forEach((resume) => {
     index.push({
-      id: "doc-resume",
-      label: "Resume",
-      action: aboutInfo.resumeUrl,
+      id: `doc-resume-${resume.id}`,
+      label: resume.id === "latex" ? "Resume (LaTeX)" : "Resume (Classic)",
+      action: resume.url,
       type: "document",
       icon: HiOutlineDocumentText,
       isExternal: true,
     });
-  }
+  });
 
   return index;
 }

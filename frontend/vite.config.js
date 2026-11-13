@@ -20,6 +20,7 @@ export default defineConfig({
         navigateFallbackDenylist: [
           /^\/api\//,
           /^\/resume\.pdf(?:$|\?)/i,
+          /^\/resume-latex\.pdf(?:$|\?)/i,
           /^\/research-paper\.pdf(?:$|\?)/i,
           /^\/Images\//i,
           /^\/favicons\//i,
@@ -32,6 +33,14 @@ export default defineConfig({
             handler: "NetworkFirst",
             options: {
               cacheName: "resume-pdf",
+              expiration: { maxEntries: 1, maxAgeSeconds: 60 * 60 * 24 },
+            },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname === "/resume-latex.pdf",
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "resume-latex-pdf",
               expiration: { maxEntries: 1, maxAgeSeconds: 60 * 60 * 24 },
             },
           },

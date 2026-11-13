@@ -5,7 +5,6 @@ import {
   FaCheck,
   FaChevronDown,
   FaEnvelope,
-  FaEye,
   FaExternalLinkAlt,
   FaFileDownload,
   FaGithub,
@@ -15,7 +14,7 @@ import { usePageSEO } from "../../utils/seo";
 import { useToast } from "../../context/ToastContext";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
-import { aboutInfo } from "../../data/experience";
+import ResumeActions from "../../components/ResumeModal/ResumeActions";
 
 const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 import {
@@ -113,6 +112,7 @@ const Services = memo(function Services() {
   const [submitted, setSubmitted] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState(null);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [resumeVersion, setResumeVersion] = useState("classic");
 
   useEffect(() => {
     setCurrency(detectDefaultCurrency());
@@ -898,27 +898,15 @@ const Services = memo(function Services() {
                 <FaFileDownload className="text-2xl text-current" aria-hidden />
                 <div>
                   <div className="font-headline-md text-lg uppercase">My Resume</div>
-                  <div className="font-body-md text-sm opacity-60">PDF • Latest Version</div>
+                  <div className="font-body-md text-sm opacity-60">Classic PDF + LaTeX PDF</div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setIsResumeOpen(true)}
-                  className="bg-transparent text-[var(--color-background)] border-4 border-current px-3 py-3 font-label-bold text-sm uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
-                >
-                  <FaEye className="text-lg text-current" aria-hidden />
-                  <span>View</span>
-                </button>
-                <a
-                  href={getAssetPath(aboutInfo.resumeUrl)}
-                  download="Aryan_Dani_Resume.pdf"
-                  className="bg-transparent text-[var(--color-background)] border-4 border-current px-3 py-3 font-label-bold text-sm uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full cursor-none"
-                >
-                  <FaFileDownload className="text-lg text-current" aria-hidden />
-                  <span>Download</span>
-                </a>
-              </div>
+              <ResumeActions
+                onView={(id) => {
+                  setResumeVersion(id);
+                  setIsResumeOpen(true);
+                }}
+              />
             </div>
           </aside>
         </div>
@@ -926,7 +914,11 @@ const Services = memo(function Services() {
 
       {isResumeOpen && (
         <Suspense fallback={null}>
-          <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+          <ResumeModal
+            isOpen={isResumeOpen}
+            initialVersion={resumeVersion}
+            onClose={() => setIsResumeOpen(false)}
+          />
         </Suspense>
       )}
 

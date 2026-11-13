@@ -2,15 +2,15 @@ import { useState, useEffect, useRef, memo, lazy, Suspense, useMemo } from "reac
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FaEnvelope, FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy, FaEye,
+  FaEnvelope, FaFileDownload, FaPaperPlane, FaChevronDown, FaCheck, FaCopy,
 } from "react-icons/fa";
 import { aboutInfo, socialLinks } from "../../data/experience";
 import { useToast } from "../../context/ToastContext";
-import { getAssetPath } from "../../utils/paths";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import { socialIconMap } from "../../utils/socialIcons";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import { usePageSEO } from "../../utils/seo";
+import ResumeActions from "../../components/ResumeModal/ResumeActions";
 
 const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 
@@ -101,6 +101,7 @@ function Contact() {
   const [expandedFaq, setExpandedFaq] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [resumeVersion, setResumeVersion] = useState("classic");
   const { showToast } = useToast();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -450,26 +451,15 @@ function Contact() {
               <FaFileDownload className="text-3xl text-current" />
               <div>
                 <div className="font-headline-md text-xl uppercase">My Resume</div>
-                <div className="font-body-md text-sm opacity-60">PDF • Latest Version</div>
+                <div className="font-body-md text-sm opacity-60">Classic PDF + LaTeX PDF</div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3 mt-1">
-              <button
-                onClick={() => setIsResumeOpen(true)}
-                className="bg-transparent text-[var(--color-background)] border-4 border-current px-3 py-3.5 font-label-bold text-sm uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-none"
-              >
-                <FaEye className="text-lg text-current" />
-                <span>View</span>
-              </button>
-              <a
-                href={getAssetPath(aboutInfo.resumeUrl)}
-                download="Aryan_Dani_Resume.pdf"
-                className="bg-transparent text-[var(--color-background)] border-4 border-current px-3 py-3.5 font-label-bold text-sm uppercase flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--color-background)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all w-full cursor-none flex-1"
-              >
-                <FaFileDownload className="text-lg text-current" />
-                <span>Download</span>
-              </a>
-            </div>
+            <ResumeActions
+              onView={(id) => {
+                setResumeVersion(id);
+                setIsResumeOpen(true);
+              }}
+            />
           </motion.div>
 
           {/* FAQ */}
@@ -533,7 +523,11 @@ function Contact() {
 
       {isResumeOpen && (
         <Suspense fallback={null}>
-          <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+          <ResumeModal
+            isOpen={isResumeOpen}
+            initialVersion={resumeVersion}
+            onClose={() => setIsResumeOpen(false)}
+          />
         </Suspense>
       )}
     </motion.section>
