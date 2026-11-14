@@ -1,0 +1,4 @@
+#!/bin/sh
+# Automatically triggers IndexNow notification on every commit
+echo "[IndexNow Hook] Notifying search engines after commit..."
+npm run indexnow

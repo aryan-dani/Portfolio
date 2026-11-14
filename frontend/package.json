@@ -8,6 +8,7 @@
     "dev": "vite",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "node scripts/generate-seo-assets.mjs && vite build && node scripts/prerender-seo.mjs",
+    "postbuild": "node scripts/ping-indexnow.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "generate:seo": "node scripts/generate-seo-assets.mjs",
     "indexnow": "node scripts/ping-indexnow.mjs",

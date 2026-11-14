@@ -8,6 +8,7 @@
     "start": "npm --prefix frontend run start",
     "preview": "npm --prefix frontend run preview",
     "lint": "npm --prefix frontend run lint",
-    "indexnow": "npm --prefix frontend run indexnow"
+    "indexnow": "npm --prefix frontend run indexnow",
+    "prepare": "git config core.hooksPath .githooks || true"
   }
 }
