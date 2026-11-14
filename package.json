@@ -1,0 +1,13 @@
+{
+  "name": "aryan-dani-portfolio-root",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run start",
+    "preview": "npm --prefix frontend run preview",
+    "lint": "npm --prefix frontend run lint",
+    "indexnow": "npm --prefix frontend run indexnow"
+  }
+}
