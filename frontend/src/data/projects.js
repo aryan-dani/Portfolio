@@ -79,13 +79,14 @@ const projectEntries = [
     title: "Siya's Portfolio",
     category: "web-dev",
     year: "2026",
-    description: `Client portfolio for Pune-based UGC creator Siya Pawar: editorial landing page, selected reels, transparent rates, and a mailto inquiry flow. Built with Next.js, TypeScript, Tailwind, GSAP, and Lenis. Live at siyas-portfolio-eight.vercel.app. Private repository.`,
+    description: `Client portfolio for Pune-based UGC creator Siya Pawar: editorial landing page, selected reels, transparent rates, and a mailto inquiry flow. Built with Next.js, TypeScript, Tailwind, GSAP, and Lenis. Live at https://www.heartsfromsiya.com. Private repository.`,
     image: "/Images/Projects/Siya_Portfolio.jpg",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "GSAP", "Lenis"],
     skillIds: ["nextjs", "typescript", "tailwind", "react", "javascript", "html5", "css3", "git", "vercel"],
     links: {
-      preview: "https://siyas-portfolio-eight.vercel.app/",
+      preview: "https://www.heartsfromsiya.com",
     },
+    liveAnchor: "Siya Pawar (@heartsfromsiya) — Pune Lifestyle & UGC Portfolio",
   },
   {
     id: 19,

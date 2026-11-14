@@ -53,7 +53,7 @@ assert.match(formatWebPackagePrice(starter, "USD"), /150/);
 
 const siya = getProjectById(20);
 assert.ok(siya, "Siya portfolio project must exist");
-assert.equal(siya.links?.preview, "https://siyas-portfolio-eight.vercel.app/");
+assert.equal(siya.links?.preview, "https://www.heartsfromsiya.com");
 assert.ok(!siya.links?.github, "Siya portfolio repo is private and should omit GitHub");
 assert.ok(
   webGallery.some((site) => site.projectId === 20 && site.live === siya.links.preview),

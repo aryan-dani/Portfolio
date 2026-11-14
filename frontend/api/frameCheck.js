@@ -8,7 +8,9 @@ function previewHosts() {
     const raw = project.links?.preview;
     if (!raw) continue;
     try {
-      hosts.add(new URL(raw).hostname.toLowerCase());
+      const host = new URL(raw).hostname.toLowerCase();
+      hosts.add(host);
+      hosts.add(host.replace(/^www\./, ""));
     } catch {
       /* skip bad project urls */
     }
@@ -25,27 +27,29 @@ function parseTarget(raw) {
     return null;
   }
   if (parsed.protocol !== "https:") return null;
-  if (!previewHosts().has(parsed.hostname.toLowerCase())) return null;
+  const host = parsed.hostname.toLowerCase();
+  if (!previewHosts().has(host) && !previewHosts().has(host.replace(/^www\./, ""))) return null;
   return parsed;
 }
 
 function framingAllowsEmbed(headers) {
+  const csp = String(headers.get("content-security-policy") || "");
+  const match = csp.match(/frame-ancestors\s+([^;]+)/i);
+  if (match) {
+    const sources = match[1].trim().toLowerCase();
+    if (!sources || sources === "'none'" || sources === "none") return false;
+    if (sources.includes("*")) return true;
+    return (
+      sources.includes("aryandani.com") ||
+      sources.includes("localhost") ||
+      sources.includes("127.0.0.1")
+    );
+  }
+
   const xfo = String(headers.get("x-frame-options") || "").toLowerCase();
   if (xfo.includes("deny") || xfo.includes("sameorigin")) return false;
 
-  const csp = String(headers.get("content-security-policy") || "");
-  const match = csp.match(/frame-ancestors\s+([^;]+)/i);
-  if (!match) return true;
-
-  const sources = match[1].trim().toLowerCase();
-  if (!sources || sources === "'none'" || sources === "none") return false;
-  if (sources === "'self'" || sources === "self") return false;
-  if (sources.includes("*")) return true;
-  return (
-    sources.includes("aryandani.com") ||
-    sources.includes("localhost") ||
-    sources.includes("127.0.0.1")
-  );
+  return true;
 }
 
 async function fetchFinal(startUrl) {

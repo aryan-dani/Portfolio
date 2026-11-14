@@ -6,11 +6,12 @@ const previewHosts = new Set(
   projects
     .map((project) => project.links?.preview)
     .filter(Boolean)
-    .map((url) => {
+    .flatMap((url) => {
       try {
-        return new URL(url).hostname.toLowerCase();
+        const host = new URL(url).hostname.toLowerCase();
+        return [host, host.replace(/^www\./, "")];
       } catch {
-        return null;
+        return [];
       }
     })
     .filter(Boolean),
@@ -19,7 +20,11 @@ const previewHosts = new Set(
 export function isProjectPreviewUrl(url) {
   try {
     const parsed = new URL(url, window.location.origin);
-    return parsed.protocol === "https:" && previewHosts.has(parsed.hostname.toLowerCase());
+    const host = parsed.hostname.toLowerCase();
+    return (
+      (parsed.protocol === "https:" || parsed.protocol === "http:") &&
+      (previewHosts.has(host) || previewHosts.has(host.replace(/^www\./, "")))
+    );
   } catch {
     return false;
   }

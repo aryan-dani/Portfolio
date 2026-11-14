@@ -407,6 +407,7 @@ export function getWebGallery() {
       image: project.image,
       tags: project.tags || [],
       live: project.links?.preview || null,
+      liveAnchor: project.liveAnchor || null,
       github: project.links?.github || null,
       projectPath: `/projects?highlight=${project.id}`,
     };

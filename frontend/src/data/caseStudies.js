@@ -103,7 +103,8 @@ export const CASE_STUDIES = [
     oneLiner:
       "Client creator portfolio for a Pune UGC creator: editorial layout, reels, rates, and brand inquiry.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "GSAP", "Lenis"],
-    live: "https://siyas-portfolio-eight.vercel.app/",
+    live: "https://www.heartsfromsiya.com",
+    liveAnchor: "Siya Pawar (@heartsfromsiya) — Pune Lifestyle & UGC Portfolio",
     github: null,
     problem:
       "A UGC creator needed a branded site that shows selected reels, transparent rates, and a clear path for brand collaborations without a stiff agency template.",
@@ -111,7 +112,8 @@ export const CASE_STUDIES = [
       "An editorial single-page site with chapter themes, reel gallery, rate cards, and a mailto inquiry flow that carries the selected package into the email subject.",
     architecture:
       "Next.js App Router, TypeScript, Tailwind, GSAP motion, and Lenis smooth scrolling. Private client repository.",
-    outcome: "Live client site at siyas-portfolio-eight.vercel.app with rates and inquiry ready for brands.",
+    outcome:
+      "Live client site at heartsfromsiya.com with rates and inquiry ready for brands.",
     retrospective: "",
   },
   {

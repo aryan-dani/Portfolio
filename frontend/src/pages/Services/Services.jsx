@@ -15,6 +15,7 @@ import { useToast } from "../../context/ToastContext";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
 import ResumeActions from "../../components/ResumeModal/ResumeActions";
+import { openSiteBrowser } from "../../utils/siteBrowser";
 
 const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 import {
@@ -621,9 +622,14 @@ const Services = memo(function Services() {
                           href={site.live}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 font-label-bold text-xs uppercase border-2 border-outline px-3 py-2 shadow-[3px_3px_0_0_var(--shadow-color)]"
+                          onClick={(event) => {
+                            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                            event.preventDefault();
+                            openSiteBrowser({ url: site.live, title: site.title });
+                          }}
+                          className="inline-flex items-center gap-2 font-label-bold text-xs uppercase border-2 border-outline px-3 py-2 shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 transition-transform"
                         >
-                          Live <FaExternalLinkAlt className="text-[10px]" aria-hidden />
+                          {site.liveAnchor ? <span className="truncate max-w-[220px]">{site.liveAnchor}</span> : "Live"} <FaExternalLinkAlt className="text-[10px] shrink-0" aria-hidden />
                         </a>
                       )}
                       {site.github && (

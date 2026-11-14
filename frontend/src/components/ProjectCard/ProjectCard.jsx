@@ -111,14 +111,16 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
                   href={project.links.preview}
                   target="_blank"
                   rel="noopener noreferrer"
+                  title={project.liveAnchor || `${project.title} live demo`}
+                  aria-label={project.liveAnchor || `${project.title} live demo`}
                   onClick={(event) => {
                     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
                     event.preventDefault();
                     openSiteBrowser({ url: project.links.preview, title: project.title });
                   }}
-                  className="flex-1 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none"
+                  className="flex-1 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-xs sm:text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none px-2"
                 >
-                  <FaEye /> Live
+                  <FaEye className="shrink-0" /> <span className={project.liveAnchor ? "truncate" : ""}>{project.liveAnchor || "Live"}</span>
                 </a>
               )}
               {project.links?.github && (

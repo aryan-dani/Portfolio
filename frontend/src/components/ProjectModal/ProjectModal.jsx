@@ -100,14 +100,19 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   href={project.links.preview}
                   target="_blank"
                   rel="noopener noreferrer"
+                  title={project.liveAnchor || `${project.title} live preview`}
+                  aria-label={project.liveAnchor || `${project.title} live preview`}
                   onClick={(event) => {
                     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
                     event.preventDefault();
                     openSiteBrowser({ url: project.links.preview, title: project.title });
                   }}
-                  className="flex-1 lg:flex-none bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                  className="flex-1 lg:flex-none bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none text-xs sm:text-sm md:text-base"
                 >
-                  Live <FaEye />
+                  <span className={project.liveAnchor ? "max-w-[280px] truncate" : ""}>
+                    {project.liveAnchor ? project.liveAnchor : "Live"}
+                  </span>
+                  <FaEye className="shrink-0" />
                 </a>
               )}
               {project.links?.github && (
@@ -133,6 +138,23 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                 <p id="project-modal-description" className="font-body-lg text-lg md:text-xl leading-relaxed text-[var(--color-on-surface)] whitespace-pre-wrap">
                   {project.description}
                 </p>
+                {project.links?.preview && project.liveAnchor && (
+                  <div className="mt-4 pt-4 border-t-2 border-outline/30">
+                    <a
+                      href={project.links.preview}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => {
+                        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                        event.preventDefault();
+                        openSiteBrowser({ url: project.links.preview, title: project.title });
+                      }}
+                      className="font-label-bold text-sm uppercase underline underline-offset-4 inline-flex items-center gap-2 text-[var(--color-on-surface)] hover:text-[var(--color-primary)] cursor-none"
+                    >
+                      {project.liveAnchor} <FaEye className="text-xs shrink-0" aria-hidden />
+                    </a>
+                  </div>
+                )}
               </div>
 
               {detailSections.length > 0 && (

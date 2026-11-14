@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import { getCaseStudyBySlug } from "../../data/caseStudies";
+import { openSiteBrowser } from "../../utils/siteBrowser";
 import { usePageSEO } from "../../utils/seo";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
@@ -66,9 +67,14 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
               href={study.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border-4 border-outline bg-[var(--color-surface)] px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0_0_var(--shadow-color)]"
+              onClick={(event) => {
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                openSiteBrowser({ url: study.live, title: study.title });
+              }}
+              className="inline-flex items-center gap-2 border-4 border-outline bg-[var(--color-surface)] px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 transition-transform"
             >
-              Live demo <FaExternalLinkAlt className="text-[10px]" aria-hidden />
+              {study.liveAnchor ? study.liveAnchor : "Live demo"} <FaExternalLinkAlt className="text-[10px]" aria-hidden />
             </a>
           )}
           {study.github && (
@@ -98,6 +104,23 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
             {section.title}
           </h2>
           <p className="font-body-md text-base leading-relaxed max-w-3xl">{section.body}</p>
+          {section.title === "Outcome" && study.live && (
+            <div className="pt-2">
+              <a
+                href={study.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(event) => {
+                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                  event.preventDefault();
+                  openSiteBrowser({ url: study.live, title: study.title });
+                }}
+                className="font-label-bold text-sm uppercase underline underline-offset-4 inline-flex items-center gap-2 text-[var(--color-on-surface)] hover:text-[var(--color-primary)]"
+              >
+                {study.liveAnchor || "Visit live site"} <FaExternalLinkAlt className="text-[10px]" aria-hidden />
+              </a>
+            </div>
+          )}
         </motion.section>
       ))}
 

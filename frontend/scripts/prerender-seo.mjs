@@ -98,7 +98,13 @@ function routeExtraBody(path) {
         (project) =>
           `<li><strong>${escapeHtml(project.title)}</strong> — ${escapeHtml(
             String(project.description || "").slice(0, 160),
-          )}</li>`,
+          )}${
+            project.links?.preview
+              ? ` (<a href="${escapeHtml(project.links.preview)}">${escapeHtml(
+                  project.liveAnchor || `${project.title} live demo`,
+                )}</a>)`
+              : ""
+          }</li>`,
       )
       .join("");
     return `<h2>Selected work</h2><ul>${items}</ul>`;
@@ -124,8 +130,11 @@ function routeExtraBody(path) {
       `<h2>Problem</h2><p>${escapeHtml(study.problem)}</p>`,
       `<h2>Approach</h2><p>${escapeHtml(study.approach)}</p>`,
       `<h2>Architecture</h2><p>${escapeHtml(study.architecture)}</p>`,
+      study.outcome ? `<h2>Outcome</h2><p>${escapeHtml(study.outcome)}</p>` : "",
       study.live
-        ? `<p><a href="${escapeHtml(study.live)}">Live demo</a></p>`
+        ? `<p><a href="${escapeHtml(study.live)}">${escapeHtml(
+            study.liveAnchor || "Live demo",
+          )}</a></p>`
         : "",
     ].join("");
   }
