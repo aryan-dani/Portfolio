@@ -15,37 +15,47 @@ export default function ResumeActions({
   const isInverted = tone === "inverted";
 
   const btnBase =
-    "px-3 py-2.5 font-label-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-none select-none";
+    "px-3 py-2.5 font-label-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer select-none rounded-none";
 
   const btnView = isInverted
-    ? `${btnBase} bg-[var(--color-background)] text-[var(--color-on-background)] border-2 border-current shadow-[2px_2px_0px_0px_currentColor] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none hover:bg-white`
-    : `${btnBase} bg-[var(--color-primary)] text-[var(--color-on-primary)] border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none`;
+    ? `${btnBase} bg-white text-black border-2 border-white shadow-[3px_3px_0px_0px_rgba(255,255,255,0.35)] hover:bg-yellow-400 hover:text-black hover:border-yellow-400 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none`
+    : `${btnBase} bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-outline shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none`;
 
   const btnDownload = isInverted
-    ? `${btnBase} bg-transparent text-current border-2 border-current shadow-[2px_2px_0px_0px_currentColor] hover:bg-[var(--color-background)] hover:text-[var(--color-on-background)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none`
-    : `${btnBase} bg-transparent text-[var(--color-on-surface)] border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:bg-[var(--color-primary)] hover:text-[var(--color-on-primary)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none`;
+    ? `${btnBase} bg-transparent text-white border-2 border-white/70 shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:border-white hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none`
+    : `${btnBase} bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none`;
 
   const containerClass =
     layout === "grid"
-      ? "grid grid-cols-1 md:grid-cols-2 gap-3"
-      : "flex flex-col gap-3";
+      ? "grid grid-cols-1 md:grid-cols-2 gap-3.5"
+      : "flex flex-col gap-3.5";
 
   return (
     <div className={containerClass}>
       {versions.map((version) => (
         <div
           key={version.id}
-          className={`border-2 p-3.5 flex flex-col gap-2.5 transition-colors ${
+          className={`border-2 p-3.5 flex flex-col gap-3 transition-colors ${
             isInverted
-              ? "border-current/30 bg-white/[0.04] hover:border-current/60"
+              ? "border-white/25 bg-white/[0.04] hover:border-white/50"
               : "border-outline bg-[var(--color-surface)] hover:border-current"
           }`}
         >
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <span className="font-label-bold text-xs uppercase tracking-wider px-2 py-0.5 border border-current/40 bg-current/10">
+          <div className="flex items-center justify-between gap-2">
+            <span
+              className={`font-label-bold text-xs uppercase tracking-wider px-2 py-0.5 border ${
+                isInverted
+                  ? "border-white/30 bg-white/10 text-white"
+                  : "border-outline bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
+              }`}
+            >
               {version.shortLabel}
             </span>
-            <span className="font-body-md text-xs opacity-75">
+            <span
+              className={`font-body-md text-xs ${
+                isInverted ? "text-white/70" : "text-[var(--color-on-surface-variant)]"
+              }`}
+            >
               {version.blurb}
             </span>
           </div>

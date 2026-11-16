@@ -101,10 +101,10 @@ export const CASE_STUDIES = [
     projectId: 20,
     title: "Siya's Portfolio",
     oneLiner:
-      "Client creator portfolio for a Pune UGC creator: editorial layout, reels, rates, and brand inquiry.",
+      "Portfolio and brand collaboration hub for Pune-based UGC creator Siya Pawar, featuring D2C campaigns for Mokobara, PharmEasy, and California Burrito.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "GSAP", "Lenis"],
     live: "https://www.heartsfromsiya.com",
-    liveAnchor: "Siya Pawar (@heartsfromsiya) — Pune Lifestyle & UGC Portfolio",
+    liveAnchor: "Siya Pawar (@heartsfromsiya) — Pune UGC & Lifestyle Creator",
     github: null,
     problem:
       "A UGC creator needed a branded site that shows selected reels, transparent rates, and a clear path for brand collaborations without a stiff agency template.",
@@ -113,7 +113,7 @@ export const CASE_STUDIES = [
     architecture:
       "Next.js App Router, TypeScript, Tailwind, GSAP motion, and Lenis smooth scrolling. Private client repository.",
     outcome:
-      "Live client site at heartsfromsiya.com with rates and inquiry ready for brands.",
+      "Live client site at https://www.heartsfromsiya.com featuring D2C campaigns for Mokobara, PharmEasy, and California Burrito.",
     retrospective: "",
   },
   {
