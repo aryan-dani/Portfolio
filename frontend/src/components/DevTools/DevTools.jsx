@@ -37,9 +37,19 @@ const DevHUD = memo(function DevHUD({ xray, onToggleXray }) {
     <div className="fixed bottom-24 left-4 z-[150] w-64 border-4 border-outline bg-[var(--color-on-background)] text-[var(--color-background)] p-3 font-mono text-[10px] uppercase shadow-[6px_6px_0_var(--shadow-color)] pointer-events-auto">
       <div className="flex justify-between items-center border-b-2 border-dashed border-current pb-2 mb-2">
         <span className="font-label-bold">Dev HUD</span>
-        <button type="button" onClick={onToggleXray} className="border-2 border-current px-1">
-          XRAY {xray ? "ON" : "OFF"}
-        </button>
+        <div className="flex gap-1">
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent("replay-intro"))}
+            className="border-2 border-current px-1 hover:bg-current hover:text-[var(--color-on-background)] transition-colors"
+            title="Replay Text Match Cut Intro"
+          >
+            INTRO
+          </button>
+          <button type="button" onClick={onToggleXray} className="border-2 border-current px-1">
+            XRAY {xray ? "ON" : "OFF"}
+          </button>
+        </div>
       </div>
       <p>FPS: {fps}</p>
       <p>Route: {location.pathname}</p>
