@@ -1,5 +1,6 @@
 const GITHUB_USER = "aryan-dani";
 const API_VERSION = "2022-11-28";
+const REQUEST_TIMEOUT_MS = 8000;
 
 const memoryStore = new Map();
 
@@ -26,13 +27,29 @@ export function authHeaders(token = getGitHubToken()) {
   return headers;
 }
 
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: options.signal || controller.signal,
+    });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 export async function githubFetch(path, token = getGitHubToken()) {
-  return fetch(`https://api.github.com${path}`, { headers: authHeaders(token) });
+  return fetchWithTimeout(`https://api.github.com${path}`, {
+    headers: authHeaders(token),
+  });
 }
 
 export async function githubGraphQL(query, variables = {}, token = getGitHubToken()) {
   if (!token) return null;
-  const res = await fetch("https://api.github.com/graphql", {
+  const res = await fetchWithTimeout("https://api.github.com/graphql", {
     method: "POST",
     headers: {
       ...authHeaders(token),

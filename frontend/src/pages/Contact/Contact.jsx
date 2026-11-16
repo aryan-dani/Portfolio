@@ -187,7 +187,7 @@ function Contact() {
       />
 
       <motion.div
-        className="border-4 border-outline bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col sm:flex-row sm:items-center gap-4"
+        className="border-4 border-outline bg-primary-container text-on-primary-container p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col sm:flex-row sm:items-center gap-4"
         variants={itemVariants}
       >
         <div className="flex-1 flex flex-col gap-2">
@@ -201,7 +201,7 @@ function Contact() {
         </div>
         <Link
           to="/services#inquiry"
-          className="shrink-0 border-4 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] px-5 py-3 font-label-bold text-xs uppercase text-center shadow-[4px_4px_0_0_var(--shadow-color)]"
+          className="shrink-0 border-4 border-outline bg-surface text-on-surface px-5 py-3 font-label-bold text-xs uppercase text-center shadow-[4px_4px_0_0_var(--shadow-color)]"
         >
           Services inquiry
         </Link>
@@ -214,7 +214,7 @@ function Contact() {
             className="border-4 border-outline p-6 md:p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
             style={{ background: "var(--color-surface)" }}
           >
-            <h2 className="font-headline-md text-3xl uppercase mb-6 border-b-4 border-outline pb-4 flex items-center gap-3 text-[var(--color-on-surface)]">
+            <h2 className="font-headline-md text-3xl uppercase mb-6 border-b-4 border-outline pb-4 flex items-center gap-3 text-on-surface">
               <FaPaperPlane className="text-2xl" />
               Send a Message
             </h2>
@@ -228,8 +228,8 @@ function Contact() {
                   aria-pressed={formData.subject === pill}
                   className={`border-2 border-outline px-3 py-2 font-label-bold text-[10px] uppercase shadow-[2px_2px_0_0_var(--shadow-color)] ${
                     formData.subject === pill
-                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-                      : "bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
+                      ? "bg-primary-container text-on-primary-container"
+                      : "bg-surface-variant text-on-surface"
                   }`}
                 >
                   {pill}
@@ -244,7 +244,7 @@ function Contact() {
                   { id: "contact-email", name: "email", type: "email", label: "Your Email *", placeholder: "aryan@example.com", required: true },
                 ].map((field) => (
                   <div key={field.id} className="flex flex-col gap-2">
-                    <label htmlFor={field.id} className="font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
+                    <label htmlFor={field.id} className="font-label-bold uppercase text-sm text-on-surface">
                       {field.label}
                     </label>
                     <input
@@ -263,7 +263,7 @@ function Contact() {
               </div>
 
               <div className="flex flex-col gap-2" ref={dropdownRef}>
-                <label id="subject-label" className="font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
+                <label id="subject-label" className="font-label-bold uppercase text-sm text-on-surface">
                   What&apos;s this about?
                 </label>
                 <div className="relative">
@@ -281,13 +281,13 @@ function Contact() {
                         setIsDropdownOpen(!isDropdownOpen);
                       }
                     }}
-                    className="w-full border-4 border-outline p-4 font-body-md text-lg shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-[6px_6px_0px_0px_var(--shadow-color)] transition-all duration-200 cursor-none flex justify-between items-center bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
+                    className="w-full border-4 border-outline p-4 font-body-md text-lg shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-[6px_6px_0px_0px_var(--shadow-color)] transition-all duration-200 cursor-none flex justify-between items-center bg-surface-variant text-on-surface"
                   >
                     <span className={formData.subject ? "opacity-100" : "opacity-60"}>
                       {formData.subject || "Select a topic..."}
                     </span>
                     <motion.div animate={{ rotate: isDropdownOpen ? 180 : 0 }}>
-                      <FaChevronDown className="text-[var(--color-on-surface)]" />
+                      <FaChevronDown className="text-on-surface" />
                     </motion.div>
                   </div>
                   <AnimatePresence>
@@ -299,7 +299,7 @@ function Contact() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="absolute top-full left-0 right-0 mt-2 border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] z-50 bg-[var(--color-surface)] flex flex-col"
+                        className="absolute top-full left-0 right-0 mt-2 border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] z-50 bg-surface flex flex-col"
                       >
                         {SUBJECT_OPTIONS.map((opt) => (
                           <div
@@ -318,7 +318,7 @@ function Contact() {
                                 setIsDropdownOpen(false);
                               }
                             }}
-                            className="p-4 font-body-md text-lg hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] text-[var(--color-on-surface)] transition-colors cursor-none border-b-2 border-transparent hover:border-outline last:border-b-0 focus:outline-none focus:bg-[var(--color-primary-container)] focus:text-[var(--color-on-primary-container)]"
+                            className="p-4 font-body-md text-lg hover:bg-primary-container hover:text-on-primary-container text-on-surface transition-colors cursor-none border-b-2 border-transparent hover:border-outline last:border-b-0 focus:outline-none focus:bg-primary-container focus:text-on-primary-container"
                           >
                             {opt}
                           </div>
@@ -330,7 +330,7 @@ function Contact() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="contact-message" className="font-label-bold uppercase text-sm text-[var(--color-on-surface)]">
+                <label htmlFor="contact-message" className="font-label-bold uppercase text-sm text-on-surface">
                   Message *
                 </label>
                 <textarea
@@ -397,7 +397,7 @@ function Contact() {
             >
               <FaEnvelope className="text-xl shrink-0" />
               <div className="min-w-0 flex-1">
-                <div className="font-label-bold text-xs uppercase text-[var(--color-secondary)]">Email</div>
+                <div className="font-label-bold text-xs uppercase text-secondary">Email</div>
                 <div className="font-body-md text-sm truncate">{aboutInfo.email}</div>
               </div>
               <AnimatePresence mode="wait">
@@ -468,7 +468,7 @@ function Contact() {
             style={{ background: "var(--color-surface)" }}
             variants={itemVariants}
           >
-            <h3 className="font-headline-md text-2xl uppercase mb-4 border-b-4 border-outline pb-3 text-[var(--color-on-surface)]">
+            <h3 className="font-headline-md text-2xl uppercase mb-4 border-b-4 border-outline pb-3 text-on-surface">
               FAQ
             </h3>
             <div className="flex flex-col gap-3">
@@ -481,8 +481,8 @@ function Contact() {
                     aria-controls={`faq-panel-${i}`}
                     className={`w-full text-left p-4 font-label-bold text-sm uppercase flex items-center justify-between transition-colors cursor-none ${
                       expandedFaq === i
-                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-                        : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                        ? "bg-primary-container text-on-primary-container"
+                        : "bg-surface text-on-surface hover:bg-surface-variant"
                     }`}
                   >
                     {faq.q}
@@ -506,7 +506,7 @@ function Contact() {
                         className="overflow-hidden"
                       >
                         <div
-                          className="p-4 font-body-md text-sm border-t-2 border-outline text-[var(--color-on-surface-variant)]"
+                          className="p-4 font-body-md text-sm border-t-2 border-outline text-on-surface-variant"
                           style={{ background: "var(--color-surface-variant)" }}
                         >
                           {faq.a}

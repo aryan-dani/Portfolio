@@ -1,3 +1,5 @@
+import { readStorage, writeStorage } from "./storage";
+
 const GITHUB_USER = "aryan-dani";
 const CACHE_KEY = "portfolio_github_events";
 const DASHBOARD_CACHE_KEY = "portfolio_github_dashboard";
@@ -7,7 +9,7 @@ const DASHBOARD_CACHE_MS = 30 * 60 * 1000;
 export async function fetchGitHubEvents() {
   // Parse cache once to avoid duplicate JSON.parse calls and double-throw on corrupt entries.
   let cachedEntry = null;
-  try { cachedEntry = JSON.parse(sessionStorage.getItem(CACHE_KEY)); } catch { /* ignore */ }
+  try { cachedEntry = JSON.parse(readStorage(CACHE_KEY, null, "session")); } catch { /* ignore */ }
 
   try {
     if (cachedEntry && Date.now() - cachedEntry.ts < CACHE_MS) return cachedEntry.data;
@@ -15,7 +17,7 @@ export async function fetchGitHubEvents() {
     const res = await fetch("/api/github-events");
     if (res.ok) {
       const data = await res.json();
-      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+      writeStorage(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }), "session");
       return data;
     }
     if (cachedEntry) return cachedEntry.data;
@@ -99,7 +101,7 @@ export function formatRelativeTime(iso) {
 export async function fetchGitHubDashboard() {
   // Parse cache once to avoid duplicate JSON.parse calls and double-throw on corrupt entries.
   let cachedEntry = null;
-  try { cachedEntry = JSON.parse(sessionStorage.getItem(DASHBOARD_CACHE_KEY)); } catch { /* ignore */ }
+  try { cachedEntry = JSON.parse(readStorage(DASHBOARD_CACHE_KEY, null, "session")); } catch { /* ignore */ }
 
   try {
     if (cachedEntry && Date.now() - cachedEntry.ts < DASHBOARD_CACHE_MS) return cachedEntry.data;
@@ -107,7 +109,7 @@ export async function fetchGitHubDashboard() {
     const res = await fetch("/api/github-stats");
     const data = await res.json().catch(() => null);
     if (res.ok && data && !data.error) {
-      sessionStorage.setItem(DASHBOARD_CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+      writeStorage(DASHBOARD_CACHE_KEY, JSON.stringify({ ts: Date.now(), data }), "session");
       return data;
     }
     return cachedEntry?.data ?? null;

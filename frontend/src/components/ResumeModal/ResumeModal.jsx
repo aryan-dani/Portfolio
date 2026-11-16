@@ -86,7 +86,7 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-5 md:p-6 gpu-layer cursor-none">
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-3 sm:p-5 md:p-6 gpu-layer cursor-none">
           <motion.div
             variants={modalBackdropVariants}
             initial="hidden"
@@ -102,13 +102,13 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
             animate="visible"
             exit="exit"
             onClick={(event) => event.stopPropagation()}
-            className="relative w-full max-w-5xl xl:max-w-6xl h-[min(92vh,920px)] bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col z-10 overflow-hidden paint-isolate cursor-none"
+            className="relative w-full max-w-5xl xl:max-w-6xl h-[min(92vh,920px)] bg-surface border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col z-10 overflow-hidden paint-isolate cursor-none"
             data-lenis-prevent
             role="dialog"
             aria-modal="true"
             aria-labelledby="resume-viewer-title"
           >
-            <div className="relative z-30 shrink-0 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-b-4 border-outline px-3 sm:px-4 py-3 flex flex-col gap-3 cursor-none">
+            <div className="relative z-30 shrink-0 bg-primary-container text-on-primary-container border-b-4 border-outline px-3 sm:px-4 py-3 flex flex-col gap-3 cursor-none">
               <div className="flex items-center justify-between gap-3">
                 <span
                   id="resume-viewer-title"
@@ -122,7 +122,7 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Open ${active?.label} resume in a new tab`}
-                    className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
+                    className="bg-surface text-on-surface border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
                   >
                     <FaExternalLinkAlt />
                     <span className="hidden sm:inline">Open</span>
@@ -131,7 +131,7 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
                     href={resumePath}
                     download={active?.downloadName || "Aryan_Dani_Resume.pdf"}
                     aria-label={`Download ${active?.label} resume PDF`}
-                    className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
+                    className="bg-surface text-on-surface border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
                   >
                     <FaFileDownload />
                     <span className="hidden sm:inline">Download</span>
@@ -139,7 +139,7 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
                   <button
                     type="button"
                     onClick={handleClose}
-                    className="relative z-50 bg-[var(--color-error)] text-[var(--color-on-error)] border-2 border-outline min-w-9 min-h-9 p-1.5 hover:bg-red-600 transition-colors flex items-center justify-center cursor-none"
+                    className="relative z-50 bg-error text-on-error border-2 border-outline min-w-9 min-h-9 p-1.5 hover:bg-red-600 transition-colors flex items-center justify-center cursor-none"
                     aria-label="Close viewer"
                   >
                     <FaTimes className="text-sm pointer-events-none" />
@@ -163,8 +163,8 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
                       onClick={() => setActiveId(version.id)}
                       className={`border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase transition-all cursor-none ${
                         selected
-                          ? "bg-[var(--color-on-primary-container)] text-[var(--color-primary-container)] shadow-none translate-x-[1px] translate-y-[1px]"
-                          : "bg-[var(--color-surface)] text-[var(--color-on-surface)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
+                          ? "bg-on-primary-container text-primary-container shadow-none translate-x-[1px] translate-y-[1px]"
+                          : "bg-surface text-on-surface shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
                       }`}
                     >
                       {version.label}
@@ -178,25 +178,25 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
             </div>
 
             <div
-              className="relative z-0 grow w-full min-h-0 overflow-y-auto overscroll-contain bg-[var(--color-surface-variant)] cursor-none no-scrollbar"
+              className="relative z-0 grow w-full min-h-0 overflow-y-auto overscroll-contain bg-surface-variant cursor-none no-scrollbar"
               data-lenis-prevent
             >
               {loadState === "loading" && (
-                <div className="flex items-center justify-center min-h-[min(70vh,640px)] font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">
+                <div className="flex items-center justify-center min-h-[min(70vh,640px)] font-label-bold text-sm uppercase tracking-wider text-on-surface">
                   Loading {active?.label || "resume"}…
                 </div>
               )}
 
               {loadState === "error" && (
                 <div className="flex flex-col items-center justify-center gap-4 min-h-[min(70vh,640px)] px-6 text-center">
-                  <p className="font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">
+                  <p className="font-label-bold text-sm uppercase tracking-wider text-on-surface">
                     Could not embed the PDF in this browser.
                   </p>
                   <a
                     href={resumePath}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[3px_3px_0px_0px_var(--shadow-color)] cursor-none"
+                    className="bg-primary-container text-on-primary-container border-2 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[3px_3px_0px_0px_var(--shadow-color)] cursor-none"
                   >
                     Open {active?.url || "resume.pdf"}
                   </a>

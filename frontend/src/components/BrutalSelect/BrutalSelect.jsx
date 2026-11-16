@@ -116,7 +116,7 @@ export default function BrutalSelect({
           aria-controls={listId}
           onClick={() => setOpen((prev) => !prev)}
           onKeyDown={onTriggerKeyDown}
-          className="w-full border-4 border-outline p-3 md:p-4 font-body-md text-base md:text-lg shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-[6px_6px_0px_0px_var(--shadow-color)] focus:outline-none focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] transition-all duration-200 cursor-none flex justify-between items-center gap-3 bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] text-left"
+          className="w-full border-4 border-outline p-3 md:p-4 font-body-md text-base md:text-lg shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-[6px_6px_0px_0px_var(--shadow-color)] focus:outline-none focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] transition-all duration-200 cursor-none flex justify-between items-center gap-3 bg-surface-variant text-on-surface text-left"
         >
           <span className={value ? "opacity-100" : "opacity-60"}>{display}</span>
           <motion.span animate={{ y: open ? -2 : 0 }} transition={{ type: "spring", stiffness: 400, damping: 24 }}>
@@ -136,7 +136,7 @@ export default function BrutalSelect({
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.16 }}
               onKeyDown={onListKeyDown}
-              className="absolute top-full left-0 right-0 mt-2 z-50 border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col max-h-64 overflow-y-auto overscroll-contain"
+              className="absolute top-full left-0 right-0 mt-2 z-50 border-4 border-outline bg-surface shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col max-h-64 overflow-y-auto overscroll-contain"
             >
               {items.map((item, index) => {
                 const selected = item === value;
@@ -158,8 +158,8 @@ export default function BrutalSelect({
                     }}
                     className={`p-3 md:p-4 font-body-md text-base md:text-lg border-b-2 border-outline last:border-b-0 cursor-none transition-colors ${
                       active || selected
-                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-                        : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
+                        ? "bg-primary-container text-on-primary-container"
+                        : "bg-surface text-on-surface hover:bg-primary-container hover:text-on-primary-container"
                     }`}
                   >
                     {text}

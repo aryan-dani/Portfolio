@@ -393,7 +393,7 @@ const TechGlobe = memo(function TechGlobe() {
 
   return (
     <div ref={wrapperRef} className="relative w-full max-w-[620px] aspect-[1.24] min-h-[360px]">
-      <div className="absolute -inset-3 border-4 border-outline bg-[var(--color-surface-variant)] pointer-events-none" />
+      <div className="absolute -inset-3 border-4 border-outline bg-surface-variant pointer-events-none" />
       <div className="absolute -bottom-5 -left-5 h-20 w-20 border-l-8 border-b-8 border-outline pointer-events-none" />
       <canvas
         ref={canvasRef}
@@ -412,12 +412,12 @@ const TechGlobe = memo(function TechGlobe() {
         onPointerUp={handlePointerUp}
         onClick={handleClick}
       />
-      <div className="absolute left-7 top-7 border-4 border-outline bg-[var(--color-surface)] px-4 py-2 font-label-bold text-[10px] uppercase tracking-[0.24em] text-[var(--color-on-surface)] shadow-[4px_4px_0_var(--shadow-color)] pointer-events-none">
+      <div className="absolute left-7 top-7 border-4 border-outline bg-surface px-4 py-2 font-label-bold text-[10px] uppercase tracking-[0.24em] text-on-surface shadow-[4px_4px_0_var(--shadow-color)] pointer-events-none">
         Tech Globe
       </div>
       <div
         ref={labelRef}
-        className="absolute right-7 top-7 max-w-[42%] truncate border-4 border-outline bg-[var(--color-surface)] px-4 py-3 font-label-bold text-[10px] uppercase tracking-[0.18em] text-[var(--color-on-surface)] shadow-[4px_4px_0_var(--shadow-color)] pointer-events-none"
+        className="absolute right-7 top-7 max-w-[42%] truncate border-4 border-outline bg-surface px-4 py-3 font-label-bold text-[10px] uppercase tracking-[0.18em] text-on-surface shadow-[4px_4px_0_var(--shadow-color)] pointer-events-none"
       >
         Skills x Projects
       </div>

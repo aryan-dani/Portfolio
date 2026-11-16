@@ -47,7 +47,7 @@ const CAPABILITIES = [
 
 const GlobePlaceholder = () => (
   <div
-    className="w-full max-w-[560px] min-h-[280px] border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0_var(--shadow-color)]"
+    className="w-full max-w-[560px] min-h-[280px] border-4 border-outline bg-surface shadow-[8px_8px_0_var(--shadow-color)]"
     aria-hidden="true"
   />
 );
@@ -90,7 +90,7 @@ const Home = memo(function Home() {
         <div className="flex-1 flex flex-col gap-3.5 lg:gap-4 max-w-2xl w-full z-10">
           <motion.div variants={itemVariants}>
             <motion.h1
-              className="font-headline-xl text-5xl md:text-6xl xl:text-8xl text-[var(--color-on-background)] uppercase leading-none bg-[var(--color-surface)] border-4 border-outline p-3 md:p-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] inline-block w-fit relative overflow-hidden"
+              className="font-headline-xl text-5xl md:text-6xl xl:text-8xl text-on-background uppercase leading-none bg-surface border-4 border-outline p-3 md:p-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] inline-block w-fit relative overflow-hidden"
               whileHover={{
                 x: -2,
                 y: -2,
@@ -104,18 +104,18 @@ const Home = memo(function Home() {
           </motion.div>
 
           <motion.p
-            className="font-headline-md text-base md:text-xl text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline px-4 py-2 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase"
+            className="font-headline-md text-base md:text-xl text-on-surface bg-surface border-4 border-outline px-4 py-2 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase"
             variants={itemVariants}
           >
             Freelance AI Engineer & Full-Stack Developer
           </motion.p>
 
-          <h2 className="font-headline-md text-lg md:text-2xl text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase opacity-100">
+          <h2 className="font-headline-md text-lg md:text-2xl text-on-primary-container bg-primary-container border-4 border-outline p-2 px-4 w-fit shadow-[4px_4px_0px_0px_var(--shadow-color)] uppercase opacity-100">
             <TypeWriter texts={roles} speed={120} deleteSpeed={60} pauseTime={3200} />
           </h2>
 
           <motion.p
-            className="font-body-lg text-base md:text-lg text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline p-3.5 md:p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] max-w-xl leading-snug"
+            className="font-body-lg text-base md:text-lg text-on-surface bg-surface border-4 border-outline p-3.5 md:p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] max-w-xl leading-snug"
             variants={itemVariants}
           >
             I build custom AI agents, grounded RAG systems, and high-performance Next.js and React
@@ -130,17 +130,17 @@ const Home = memo(function Home() {
           >
             <MagneticLink
               to="/services#inquiry"
-              className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-200 inline-block animate-pulse-glow"
+              className="bg-primary-container text-on-primary-container border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-200 inline-block animate-pulse-glow"
             >
               Book a discovery call
             </MagneticLink>
             <MagneticLink
               to="/projects"
-              className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-200 inline-block"
+              className="bg-surface text-on-surface border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-label-bold uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-200 inline-block"
             >
               View case studies
             </MagneticLink>
-            <span className="hidden sm:inline font-label-bold text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+            <span className="hidden sm:inline font-label-bold text-xs uppercase tracking-[0.18em] text-text-muted">
               {showCommandHint ? "or press Ctrl/Alt+K" : "or open the menu"}
             </span>
           </motion.div>
@@ -163,7 +163,7 @@ const Home = memo(function Home() {
       </div>
 
       <motion.div
-        className="w-full border-4 border-outline bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col md:flex-row md:items-center gap-5 md:gap-8"
+        className="w-full border-4 border-outline bg-primary-container text-on-primary-container p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col md:flex-row md:items-center gap-5 md:gap-8"
         variants={itemVariants}
       >
         <div className="flex-1 flex flex-col gap-2 min-w-0">
@@ -176,7 +176,7 @@ const Home = memo(function Home() {
         </div>
         <MagneticLink
           to="/services"
-          className="shrink-0 self-start md:self-center bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-base uppercase shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all inline-block text-center"
+          className="shrink-0 self-start md:self-center bg-surface text-on-surface border-4 border-outline px-6 md:px-8 py-3 md:py-4 font-label-bold text-sm md:text-base uppercase shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all inline-block text-center"
         >
           Hire / Services
         </MagneticLink>
@@ -198,10 +198,10 @@ const Home = memo(function Home() {
             <MagneticLink
               key={item.title}
               to="/services"
-              className="border-4 border-outline bg-[var(--color-surface)] p-5 shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all flex flex-col gap-2 text-left"
+              className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all flex flex-col gap-2 text-left"
             >
               <h3 className="font-headline-md text-lg uppercase">{item.title}</h3>
-              <p className="font-body-md text-sm leading-snug text-[var(--color-on-surface)]">
+              <p className="font-body-md text-sm leading-snug text-on-surface">
                 {item.body}
               </p>
             </MagneticLink>

@@ -217,16 +217,16 @@ function CommandPalette() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.14, ease: "easeOut" }}
-            className="fixed inset-0 z-[100] bg-black/55 gpu-layer"
+            className="fixed inset-0 z-100 bg-black/55 gpu-layer"
             onClick={() => setIsOpen(false)}
           />
-          <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[8vh] sm:pt-[12vh] pointer-events-none px-4 gpu-layer">
+          <div className="fixed inset-0 z-100 flex items-start justify-center pt-[8vh] sm:pt-[12vh] pointer-events-none px-4 gpu-layer">
             <motion.div
               initial={{ opacity: 0, y: -10, clipPath: "inset(0 0 100% 0)" }}
               animate={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
               exit={{ opacity: 0, y: -8, clipPath: "inset(0 0 100% 0)" }}
               transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-2xl bg-[var(--color-surface)] border-4 border-outline shadow-[16px_16px_0px_0px_var(--shadow-color)] pointer-events-auto flex flex-col overflow-hidden paint-isolate"
+              className="w-full max-w-2xl bg-surface border-4 border-outline shadow-[16px_16px_0px_0px_var(--shadow-color)] pointer-events-auto flex flex-col overflow-hidden paint-isolate"
               role="dialog"
               aria-modal="true"
               aria-labelledby="command-palette-title"
@@ -236,8 +236,8 @@ function CommandPalette() {
                 Command palette
               </h2>
               {/* Search Input */}
-              <div className="flex items-center border-b-4 border-outline px-4 py-3 sm:py-5 bg-[var(--color-surface-variant)]">
-                <HiOutlineSearch className="text-2xl text-[var(--color-on-surface-variant)] mr-4 shrink-0" />
+              <div className="flex items-center border-b-4 border-outline px-4 py-3 sm:py-5 bg-surface-variant">
+                <HiOutlineSearch className="text-2xl text-on-surface-variant mr-4 shrink-0" />
                 <input
                   ref={inputRef}
                   type="text"
@@ -247,9 +247,9 @@ function CommandPalette() {
                   placeholder="Search projects, skills, or navigate..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="flex-1 bg-transparent outline-none border-none font-headline-md text-lg sm:text-2xl text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
+                  className="flex-1 bg-transparent outline-none border-none font-headline-md text-lg sm:text-2xl text-on-surface cursor-none placeholder:text-text-muted"
                 />
-                <div className="hidden sm:block text-xs font-bold bg-[var(--color-surface)] border-2 border-outline px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] ml-4 shrink-0 uppercase tracking-widest text-[var(--color-on-surface)]">
+                <div className="hidden sm:block text-xs font-bold bg-surface border-2 border-outline px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] ml-4 shrink-0 uppercase tracking-widest text-on-surface">
                   ESC
                 </div>
               </div>
@@ -266,7 +266,7 @@ function CommandPalette() {
                 {displayCommands.length > 0 ? (
                   groupedCommands.map((group) => (
                     <div key={group.type}>
-                      <div className="px-4 sm:px-6 py-2 font-label-bold text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-muted)] bg-[var(--color-surface)]">
+                      <div className="px-4 sm:px-6 py-2 font-label-bold text-[10px] uppercase tracking-[0.22em] text-text-muted bg-surface">
                         {group.type}
                       </div>
                       {group.items.map((cmd) => {
@@ -280,8 +280,8 @@ function CommandPalette() {
                             aria-selected={index === selectedIndex}
                             className={`flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 cursor-pointer transition-colors border-l-4 ${
                               index === selectedIndex
-                                ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-outline"
-                                : "border-transparent hover:bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
+                                ? "bg-primary-container text-on-primary-container border-outline"
+                                : "border-transparent hover:bg-surface-variant text-on-surface"
                             }`}
                             onClick={() => executeCommand(cmd)}
                             onMouseEnter={() => {
@@ -290,16 +290,16 @@ function CommandPalette() {
                             }}
                           >
                             <div className="flex items-center gap-4 min-w-0">
-                              <Icon className={`text-xl sm:text-2xl shrink-0 ${index === selectedIndex ? "text-[var(--color-on-primary-container)]" : "text-[var(--color-text-muted)]"}`} />
-                              <span className="font-headline-md text-base sm:text-xl truncate text-ellipsis w-full max-w-[200px] sm:max-w-[350px]">
+                              <Icon className={`text-xl sm:text-2xl shrink-0 ${index === selectedIndex ? "text-on-primary-container" : "text-text-muted"}`} />
+                              <span className="font-headline-md text-base sm:text-xl truncate text-ellipsis w-full max-w-50 sm:max-w-87.5">
                                 {cmd.label}
                               </span>
                             </div>
                             <div className="flex items-center gap-3 shrink-0">
                               <span className={`hidden sm:block px-2 py-1 border-2 text-[10px] sm:text-xs font-label-bold uppercase tracking-widest ${
                                 index === selectedIndex
-                                  ? "border-outline bg-[var(--color-on-primary-container)] text-[var(--color-primary-container)]"
-                                  : "border-[var(--color-outline-variant)] text-[var(--color-text-muted)]"
+                                  ? "border-outline bg-on-primary-container text-primary-container"
+                                  : "border-outline-variant text-text-muted"
                               }`}>
                                 {cmd.type}
                               </span>
@@ -313,7 +313,7 @@ function CommandPalette() {
                     </div>
                   ))
                 ) : (
-                  <div className="px-6 py-12 flex flex-col items-center text-[var(--color-text-muted)]">
+                  <div className="px-6 py-12 flex flex-col items-center text-text-muted">
                      <HiOutlineSearch className="text-4xl mb-4 opacity-50" />
                      <span className="font-headline-md text-xl">No results found.</span>
                      <span className="font-body-md text-sm mt-1">Try a different search term.</span>
@@ -322,20 +322,20 @@ function CommandPalette() {
               </div>
               
               {/* Footer */}
-              <div className="border-t-4 border-outline p-3 sm:p-4 bg-[var(--color-surface-variant)] flex items-center justify-between text-xs sm:text-sm font-label-bold text-[var(--color-on-surface-variant)] uppercase tracking-wider">
+              <div className="border-t-4 border-outline p-3 sm:p-4 bg-surface-variant flex items-center justify-between text-xs sm:text-sm font-label-bold text-on-surface-variant uppercase tracking-wider">
                 <div className="flex gap-4">
                   <span className="flex items-center gap-2">
-                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">↑</kbd>
-                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">↓</kbd>
+                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-surface text-on-surface">↑</kbd>
+                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-surface text-on-surface">↓</kbd>
                     Navigate
                   </span>
                   <span className="flex items-center gap-2">
-                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">Enter</kbd>
+                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-surface text-on-surface">Enter</kbd>
                     Select
                   </span>
                   <span className="hidden md:flex items-center gap-2">
-                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">Alt</kbd>
-                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-[var(--color-surface)] text-[var(--color-on-surface)]">1-9</kbd>
+                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-surface text-on-surface">Alt</kbd>
+                    <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-surface text-on-surface">1-9</kbd>
                     Navigate
                   </span>
                 </div>

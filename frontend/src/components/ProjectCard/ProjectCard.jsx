@@ -20,7 +20,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
     >
       <motion.article
         data-build-card
-        className={`group bg-[var(--color-surface)] border-4 border-outline hover:border-secondary transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full hover-gpu ${
+        className={`group bg-surface border-4 border-outline hover:border-secondary transition-[border-color] duration-300 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col cursor-none relative overflow-hidden h-full hover-gpu ${
           isHighlighted ? "ring-4 ring-[var(--color-primary-container)] ring-offset-2" : ""
         }`}
         onClick={() => onOpenModal(project)}
@@ -49,18 +49,18 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
             hoverScale
           />
           <div className="absolute left-3 top-3 flex flex-wrap gap-2 z-10">
-            <span className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+            <span className="bg-on-background text-background border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
               {project.year}
             </span>
             {project.category && (
-              <span className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+              <span className="bg-surface text-on-surface border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
                 {project.category}
               </span>
             )}
           </div>
           {isFeatured && (
             <motion.div
-              className="absolute top-3 right-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] z-10"
+              className="absolute top-3 right-3 bg-primary-container text-on-primary-container border-4 border-outline px-3 py-1 font-label-bold text-xs uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] z-10"
               animate={{ y: [0, -3, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -73,13 +73,13 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
         <div className="p-6 md:p-7 flex flex-col grow">
           <h3
             data-build-part="title"
-            className="font-headline-md text-xl md:text-2xl text-[var(--color-on-surface)] uppercase mb-3"
+            className="font-headline-md text-xl md:text-2xl text-on-surface uppercase mb-3"
           >
             {project.title}
           </h3>
           <p
             data-build-part="blurb"
-            className="font-body-md text-sm text-[var(--color-text-muted)] mb-5 whitespace-normal"
+            className="font-body-md text-sm text-text-muted mb-5 whitespace-normal"
             style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}
           >
             {project.description}
@@ -90,13 +90,13 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
               {visibleTags.map((tag) => (
                 <li
                   key={tag}
-                  className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
+                  className="bg-on-background text-background border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
                 >
                   {tag}
                 </li>
               ))}
               {extraTagCount > 0 && (
-                <li className="bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase">
+                <li className="bg-surface-variant text-on-surface border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase">
                   +{extraTagCount}
                 </li>
               )}
@@ -118,7 +118,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
                     event.preventDefault();
                     openSiteBrowser({ url: project.links.preview, title: project.title });
                   }}
-                  className="flex-1 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-xs sm:text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none px-2"
+                  className="flex-1 bg-primary-container text-on-primary-container border-4 border-outline text-center py-2 md:py-3 font-label-bold text-xs sm:text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex justify-center items-center gap-2 cursor-none px-2"
                 >
                   <FaEye className="shrink-0" /> <span className={project.liveAnchor ? "truncate" : ""}>{project.liveAnchor || "Live"}</span>
                 </a>
@@ -128,7 +128,7 @@ const ProjectCard = memo(function ProjectCard({ project, onOpenModal, index, isH
                   href={project.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-surface-variant)] transition-all flex justify-center items-center gap-2 cursor-none"
+                  className="flex-1 bg-surface text-on-surface border-4 border-outline text-center py-2 md:py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-surface-variant transition-all flex justify-center items-center gap-2 cursor-none"
                 >
                   <FaGithub /> Source
                 </a>

@@ -100,16 +100,16 @@ export default function SiteBrowser() {
         role="dialog"
         aria-modal="true"
         aria-label={session.title ? `${session.title} preview` : "Site preview"}
-        className="relative z-10 flex h-full w-full max-w-none flex-col border-4 border-outline bg-[var(--color-surface)] shadow-[12px_12px_0_0_var(--shadow-color)]"
+        className="relative z-10 flex h-full w-full max-w-none flex-col border-4 border-outline bg-surface shadow-[12px_12px_0_0_var(--shadow-color)]"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center gap-2 border-b-4 border-outline bg-[var(--color-surface-variant)] px-2 py-2 sm:px-3">
+        <div className="flex items-center gap-2 border-b-4 border-outline bg-surface-variant px-2 py-2 sm:px-3">
           <button
             type="button"
             onClick={close}
-            className="flex h-9 w-9 shrink-0 items-center justify-center border-2 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] shadow-[2px_2px_0_0_var(--shadow-color)] cursor-none"
+            className="flex h-9 w-9 shrink-0 items-center justify-center border-2 border-outline bg-surface text-on-surface shadow-[2px_2px_0_0_var(--shadow-color)] cursor-none"
             aria-label="Close preview"
           >
             <FaTimes />
@@ -117,7 +117,7 @@ export default function SiteBrowser() {
           <button
             type="button"
             onClick={() => browse(-1)}
-            className="hidden h-9 w-9 shrink-0 items-center justify-center border-2 border-outline bg-[var(--color-surface)] cursor-none sm:flex"
+            className="hidden h-9 w-9 shrink-0 items-center justify-center border-2 border-outline bg-surface cursor-none sm:flex"
             aria-label="Back"
           >
             <FaArrowLeft />
@@ -125,7 +125,7 @@ export default function SiteBrowser() {
           <button
             type="button"
             onClick={() => browse(1)}
-            className="hidden h-9 w-9 shrink-0 items-center justify-center border-2 border-outline bg-[var(--color-surface)] cursor-none sm:flex"
+            className="hidden h-9 w-9 shrink-0 items-center justify-center border-2 border-outline bg-surface cursor-none sm:flex"
             aria-label="Forward"
           >
             <FaArrowRight />
@@ -133,18 +133,18 @@ export default function SiteBrowser() {
           <button
             type="button"
             onClick={reload}
-            className="flex h-9 w-9 shrink-0 items-center justify-center border-2 border-outline bg-[var(--color-surface)] cursor-none"
+            className="flex h-9 w-9 shrink-0 items-center justify-center border-2 border-outline bg-surface cursor-none"
             aria-label="Reload"
           >
             <FaRedo />
           </button>
-          <div className="flex min-w-0 flex-1 items-center gap-2 border-2 border-outline bg-[var(--color-surface)] px-3 py-1.5">
+          <div className="flex min-w-0 flex-1 items-center gap-2 border-2 border-outline bg-surface px-3 py-1.5">
             {session.title ? (
-              <span className="hidden shrink-0 font-label-bold text-[10px] uppercase tracking-[0.14em] text-[var(--color-on-surface)] sm:inline">
+              <span className="hidden shrink-0 font-label-bold text-[10px] uppercase tracking-[0.14em] text-on-surface sm:inline">
                 {session.title}
               </span>
             ) : null}
-            <span className="truncate font-mono text-xs text-[var(--color-on-surface)]">
+            <span className="truncate font-mono text-xs text-on-surface">
               {displayUrl(session.url)}
             </span>
           </div>
@@ -152,33 +152,33 @@ export default function SiteBrowser() {
             href={session.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-9 shrink-0 items-center gap-2 border-2 border-outline bg-[var(--color-primary-container)] px-2.5 font-label-bold text-[10px] uppercase tracking-wide text-[var(--color-on-primary-container)] shadow-[2px_2px_0_0_var(--shadow-color)] cursor-none"
+            className="flex h-9 shrink-0 items-center gap-2 border-2 border-outline bg-primary-container px-2.5 font-label-bold text-[10px] uppercase tracking-wide text-on-primary-container shadow-[2px_2px_0_0_var(--shadow-color)] cursor-none"
           >
             <FaExternalLinkAlt aria-hidden="true" />
             <span className="hidden sm:inline">Open out</span>
           </a>
         </div>
 
-        <div className="relative min-h-0 flex-1 bg-[var(--color-background)]">
+        <div className="relative min-h-0 flex-1 bg-background">
           {session.status === "checking" || session.status === "loading" ? (
-            <div className="absolute inset-x-0 top-0 z-10 h-1 overflow-hidden bg-[var(--color-surface-variant)]">
-              <div className="h-full w-1/3 animate-[site-browser-scan_1s_ease-in-out_infinite] bg-[var(--color-primary-container)]" />
+            <div className="absolute inset-x-0 top-0 z-10 h-1 overflow-hidden bg-surface-variant">
+              <div className="h-full w-1/3 animate-[site-browser-scan_1s_ease-in-out_infinite] bg-primary-container" />
             </div>
           ) : null}
 
           {session.status === "blocked" ? (
             <div className="flex h-full flex-col items-start justify-center gap-4 p-6 sm:p-10">
-              <p className="font-headline-md text-2xl uppercase text-[var(--color-on-surface)] sm:text-4xl">
+              <p className="font-headline-md text-2xl uppercase text-on-surface sm:text-4xl">
                 This site won&apos;t load in here
               </p>
-              <p className="max-w-xl font-body-md text-base text-[var(--color-on-surface)]">
+              <p className="max-w-xl font-body-md text-base text-on-surface">
                 {session.title || "This demo"} blocks embedding, so the portfolio browser can&apos;t show it. Open it in its own tab instead.
               </p>
               <a
                 href={session.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-4 border-outline bg-[var(--color-primary-container)] px-5 py-3 font-label-bold uppercase text-[var(--color-on-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] cursor-none"
+                className="border-4 border-outline bg-primary-container px-5 py-3 font-label-bold uppercase text-on-primary-container shadow-[4px_4px_0_0_var(--shadow-color)] cursor-none"
               >
                 Open in a new tab
               </a>

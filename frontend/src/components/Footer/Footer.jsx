@@ -28,7 +28,7 @@ const footerNavLinks = [
 const Footer = memo(function Footer() {
   return (
     <motion.footer
-      className="w-full border-t-4 border-outline mt-20 relative z-10 bg-[var(--color-surface)] text-[var(--color-on-surface)]"
+      className="w-full border-t-4 border-outline mt-20 relative z-10 bg-surface text-on-surface"
       variants={containerVariants}
       initial={false}
       animate="visible"
@@ -38,17 +38,17 @@ const Footer = memo(function Footer() {
         <motion.div className="flex flex-col items-center md:items-start gap-3" variants={itemVariants}>
           <Link
             to="/copyright"
-            className="relative font-headline-md font-black uppercase text-base md:text-lg text-[var(--color-on-surface)] py-2 cursor-none inline-block group/copyright"
+            className="relative font-headline-md font-black uppercase text-base md:text-lg text-on-surface py-2 cursor-none inline-block group/copyright"
           >
             © {currentYear} ARYAN DANI
-            <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-[var(--color-outline)] group-hover/copyright:w-full transition-all duration-300" />
+            <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-outline group-hover/copyright:w-full transition-all duration-300" />
           </Link>
           <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-3 gap-y-2">
             {footerNavLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="font-label-bold text-xs uppercase text-[var(--color-on-surface)] min-h-11 px-2 py-2 inline-flex items-center hover:underline underline-offset-4 transition-colors cursor-none"
+                className="font-label-bold text-xs uppercase text-on-surface min-h-11 px-2 py-2 inline-flex items-center hover:underline underline-offset-4 transition-colors cursor-none"
               >
                 {link.label}
               </Link>
@@ -68,7 +68,7 @@ const Footer = memo(function Footer() {
             return (
               <motion.li key={link.name} variants={socialItemVariants} className="list-none">
                 <a
-                  className="text-[var(--color-on-surface)] bg-[var(--color-surface)] border-4 border-outline w-11 h-11 flex items-center justify-center text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-all duration-150"
+                  className="text-on-surface bg-surface border-4 border-outline w-11 h-11 flex items-center justify-center text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-primary-container hover:text-on-primary-container transition-all duration-150"
                   href={link.url}
                   target={link.name === "Email" ? undefined : "_blank"}
                   rel={link.name === "Email" ? undefined : "noopener noreferrer"}

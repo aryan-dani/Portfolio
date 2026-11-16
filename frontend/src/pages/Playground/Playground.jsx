@@ -626,11 +626,11 @@ function Playground() {
       {/* Terminal Header / Title bar */}
       <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b-2 border-dashed border-outline-variant pb-3 mb-4 select-none shrink-0">
         <div className="flex gap-2">
-          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-30" />
-          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-60" />
-          <span className="w-3 h-3 rounded-full border border-outline bg-[var(--color-on-background)] opacity-100" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-on-background opacity-30" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-on-background opacity-60" />
+          <span className="w-3 h-3 rounded-full border border-outline bg-on-background opacity-100" />
         </div>
-        <div className="min-w-0 text-center text-[10px] sm:text-xs font-bold font-mono text-[var(--color-on-surface-variant)] uppercase tracking-wider truncate">
+        <div className="min-w-0 text-center text-[10px] sm:text-xs font-bold font-mono text-on-surface-variant uppercase tracking-wider truncate">
           guest@aryan-dani.dev: ~ {isExpanded ? "[EXPANDED]" : "[NORMAL]"}
         </div>
         <button
@@ -641,7 +641,7 @@ function Playground() {
           }}
           aria-expanded={isExpanded}
           aria-label={isExpanded ? "Collapse CLI playground terminal" : "Expand CLI playground terminal"}
-          className="bg-[var(--color-primary-container)] border-2 border-outline text-[var(--color-on-primary-container)] px-3 py-1 text-xs font-bold uppercase cursor-none hover:bg-[var(--color-surface)] hover:text-[var(--color-on-surface)] transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+          className="bg-primary-container border-2 border-outline text-on-primary-container px-3 py-1 text-xs font-bold uppercase cursor-none hover:bg-surface hover:text-on-surface transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
         >
           {isExpanded ? "Collapse ↙" : "Expand ⛶"}
         </button>
@@ -658,7 +658,7 @@ function Playground() {
               processCommand(command);
             }}
             aria-label={`Run ${command} starter command`}
-            className="border-2 border-outline bg-[var(--color-surface-variant)] px-3 py-1 font-label-bold text-[10px] uppercase tracking-wider text-[var(--color-on-surface)] shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
+            className="border-2 border-outline bg-surface-variant px-3 py-1 font-label-bold text-[10px] uppercase tracking-wider text-on-surface shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
           >
             {command}
           </button>
@@ -685,8 +685,8 @@ function Playground() {
                 : line.type === "success"
                   ? "text-[#404040] dark:text-[#b8b8b8]"
                   : line.type === "error"
-                    ? "text-[var(--color-error)]"
-                    : "text-[var(--color-on-surface)]";
+                    ? "text-error"
+                    : "text-on-surface";
           return (
             <div
               key={index}
@@ -701,7 +701,7 @@ function Playground() {
 
       {/* Input prompt line */}
       <div className="flex items-center gap-2 border-t-2 border-dashed border-outline-variant pt-4 mt-4 relative shrink-0">
-        <span className="text-[var(--color-on-surface-variant)] font-bold text-sm md:text-base shrink-0 opacity-60">
+        <span className="text-on-surface-variant font-bold text-sm md:text-base shrink-0 opacity-60">
           guest@aryan-dani.dev:~$
         </span>
 
@@ -723,10 +723,10 @@ function Playground() {
             style={{ color: "transparent", caretColor: "transparent" }}
           />
           {/* Display overlay with typing text and custom blinking block cursor */}
-          <div className="absolute left-0 top-0 bottom-0 right-0 flex items-center font-mono text-sm md:text-base text-[var(--color-on-surface)] pointer-events-none select-none whitespace-pre">
+          <div className="absolute left-0 top-0 bottom-0 right-0 flex items-center font-mono text-sm md:text-base text-on-surface pointer-events-none select-none whitespace-pre">
             <span>{inputVal}</span>
             <span
-              className={`w-2.5 h-4.5 bg-[var(--color-primary-container)] border border-outline ml-0.5 inline-block align-middle ${
+              className={`w-2.5 h-4.5 bg-primary-container border border-outline ml-0.5 inline-block align-middle ${
                 isFocused ? "animate-blink" : "opacity-40"
               }`}
             />
@@ -747,7 +747,7 @@ function Playground() {
       {!isExpanded && (
         <motion.div
           ref={collapsedTerminalRef}
-          className="nb-cli-container border-4 border-outline bg-[var(--color-surface)] p-6 font-mono flex flex-col relative overflow-hidden min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)] paint-isolate hover-gpu"
+          className="nb-cli-container border-4 border-outline bg-surface p-6 font-mono flex flex-col relative overflow-hidden min-h-120 h-120 w-full shadow-[8px_8px_0px_0px_var(--shadow-color)] paint-isolate hover-gpu"
           onClick={focusInput}
           role="application"
           aria-label="Interactive CLI playground terminal"
@@ -774,7 +774,7 @@ function Playground() {
                 <div className="fixed inset-0 z-200 flex items-center justify-center p-3 sm:p-4 md:p-6 pointer-events-none">
                   <motion.div
                     ref={expandedTerminalRef}
-                    className="nb-cli-container pointer-events-auto bg-[var(--color-surface)] p-4 sm:p-5 md:p-6 font-mono flex flex-col relative w-full h-full max-w-[1600px] overflow-hidden border-4 border-outline shadow-[6px_6px_0_var(--shadow-color)] gpu-layer paint-isolate"
+                    className="nb-cli-container pointer-events-auto bg-surface p-4 sm:p-5 md:p-6 font-mono flex flex-col relative w-full h-full max-w-[1600px] overflow-hidden border-4 border-outline shadow-[6px_6px_0_var(--shadow-color)] gpu-layer paint-isolate"
                     onClick={focusInput}
                     role="dialog"
                     aria-modal="true"

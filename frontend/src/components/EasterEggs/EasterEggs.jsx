@@ -21,13 +21,13 @@ const StaleOverlay = memo(function StaleOverlay() {
         exit={{ opacity: 0, y: 10 }}
         transition={{ duration: 0.35, delay: 0.08 }}
       >
-        <p className="font-label-bold text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-muted)]">
+        <p className="font-label-bold text-[10px] uppercase tracking-[0.22em] text-text-muted">
           Session idle
         </p>
-        <p className="font-headline-md text-xl md:text-2xl uppercase mt-2 text-[var(--color-on-surface)] leading-tight">
+        <p className="font-headline-md text-xl md:text-2xl uppercase mt-2 text-on-surface leading-tight">
           Still here?
         </p>
-        <p className="font-body-md text-sm mt-2 text-[var(--color-text-muted)]">
+        <p className="font-body-md text-sm mt-2 text-text-muted">
           Move or click anywhere to wake the site back up.
         </p>
       </motion.div>

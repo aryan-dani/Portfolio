@@ -49,6 +49,31 @@ const Guide = lazy(() => import("./pages/Guides/Guide"));
 
 const basename = import.meta.env.BASE_URL;
 
+function useIdleMount(timeout = 1800) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    let idleId = 0;
+    let timeoutId = 0;
+    const mount = () => setMounted(true);
+
+    if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(mount, { timeout });
+    } else {
+      timeoutId = window.setTimeout(mount, timeout);
+    }
+
+    return () => {
+      if (idleId && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [timeout]);
+
+  return mounted;
+}
+
 function PageFallback() {
   return (
     <div
@@ -82,7 +107,7 @@ function PageTransition({ children, isFirstRender, direction, liteMode }) {
       {!isFirstRender && !liteMode && (
         <motion.div
           aria-hidden="true"
-          className="fixed inset-0 z-[90] pointer-events-none bg-[var(--color-background)] gpu-layer"
+          className="fixed inset-0 z-[90] pointer-events-none bg-background gpu-layer"
           initial={{ opacity: 0.92 }}
           animate={{ opacity: 0 }}
           exit={{ opacity: 0.82 }}
@@ -232,6 +257,8 @@ function CustomCursorGate() {
 const OuterProviders = composeProviders(ThemeProvider, SmoothScrollProvider, SoundProvider, ToastProvider);
 
 function App() {
+  const mountNonCriticalEnhancements = useIdleMount();
+
   return (
     // MotionConfig with reducedMotion="user" respects OS prefers-reduced-motion.
     <MotionConfig reducedMotion="user">
@@ -247,8 +274,12 @@ function App() {
             <SiteIdleProvider>
               <HackModeListener />
               <Suspense fallback={null}>
-                <EasterEggs />
-                <DevTools />
+                {mountNonCriticalEnhancements && (
+                  <>
+                    <EasterEggs />
+                    <DevTools />
+                  </>
+                )}
                 <ChatWidget />
               </Suspense>
               <BackToTop />

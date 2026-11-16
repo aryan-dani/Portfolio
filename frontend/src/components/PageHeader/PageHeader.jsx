@@ -20,14 +20,14 @@ const PageHeader = memo(function PageHeader({
         variants={cardVariants}
         {...(build ? { "data-build-part": "title" } : {})}
       >
-        <div className="bg-[var(--color-primary-container)] border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden">
+        <div className="bg-primary-container border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden">
           <div className="absolute inset-0 animate-shimmer opacity-20 pointer-events-none" />
-          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-[var(--color-on-primary-container)] uppercase tracking-tighter leading-none">
+          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-on-primary-container uppercase tracking-tighter leading-none">
             {title}
           </h1>
         </div>
         {count !== undefined && (
-          <span className="font-headline-md text-2xl md:text-3xl border-4 border-outline px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]">
+          <span className="font-headline-md text-2xl md:text-3xl border-4 border-outline px-4 py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] bg-primary-container text-on-primary-container">
             {count}
           </span>
         )}
@@ -35,7 +35,7 @@ const PageHeader = memo(function PageHeader({
 
       {description && (
         <motion.p
-          className="font-body-lg text-base md:text-lg lg:text-body-lg text-[var(--color-on-surface)] max-w-3xl bg-[var(--color-surface)] border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+          className="font-body-lg text-base md:text-lg lg:text-body-lg text-on-surface max-w-3xl bg-surface border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
           variants={cardVariants}
           {...(build ? { "data-build-part": "blurb" } : {})}
         >

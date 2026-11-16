@@ -320,7 +320,7 @@ const PageLoader = memo(function PageLoader() {
                 exit={{ opacity: 0, scale: 0.96, y: -16, filter: "blur(2px)" }}
                 transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="nb-loader max-w-[720px] w-full">
+                <div className="nb-loader max-w-180 w-full">
                   {/* BIOS Header */}
                   <div className="nb-loader__header">
                     <div className="nb-loader__header-dots">
@@ -337,7 +337,7 @@ const PageLoader = memo(function PageLoader() {
                   </div>
 
                   {/* Console Output */}
-                  <div className="nb-loader__body text-left min-h-[220px]">
+                  <div className="nb-loader__body text-left min-h-55">
                     {terminalStep >= 1 && (
                       <motion.div
                         className="nb-loader__line nb-loader__line--command"
@@ -429,7 +429,7 @@ const PageLoader = memo(function PageLoader() {
                 <button
                   type="button"
                   onClick={skipLoader}
-                  className="absolute right-4 top-4 z-30 border-2 border-outline bg-[var(--color-surface)] px-3 py-1.5 font-label-bold text-xs uppercase tracking-widest text-[var(--color-on-surface)] shadow-[3px_3px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+                  className="absolute right-4 top-4 z-30 border-2 border-outline bg-surface px-3 py-1.5 font-label-bold text-xs uppercase tracking-widest text-on-surface shadow-[3px_3px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
                 >
                   Skip
                 </button>

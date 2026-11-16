@@ -43,7 +43,7 @@ const Layout = memo(function Layout({ children }) {
     <div className="bg-background text-on-background min-h-screen flex flex-col font-body-md selection:bg-primary-container selection:text-black">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100000] focus:border-4 focus:border-outline focus:bg-[var(--color-primary-container)] focus:px-4 focus:py-3 focus:font-label-bold focus:uppercase focus:text-[var(--color-on-primary-container)] focus:shadow-[4px_4px_0_var(--shadow-color)]"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100000] focus:border-4 focus:border-outline focus:bg-primary-container focus:px-4 focus:py-3 focus:font-label-bold focus:uppercase focus:text-on-primary-container focus:shadow-[4px_4px_0_var(--shadow-color)]"
       >
         Skip to main content
       </a>

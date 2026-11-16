@@ -50,7 +50,7 @@ function renderInline(text, keyPrefix) {
       return (
         <code
           key={key}
-          className="font-mono text-[0.85em] border border-outline bg-[var(--color-surface)] px-1 py-0.5"
+          className="font-mono text-[0.85em] border border-outline bg-surface px-1 py-0.5"
         >
           {token.value}
         </code>

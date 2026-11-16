@@ -188,27 +188,27 @@ const Guestbook = memo(function Guestbook() {
     <motion.section className="flex flex-col gap-10" initial="hidden" animate="visible" variants={containerVariants}>
       <PageHeader title="Guestbook" description="Sign the wall. Leave a stamp. No coffee allowed." />
 
-      <form onSubmit={submit} className="border-4 border-outline bg-[var(--color-surface)] p-5 shadow-[6px_6px_0_var(--shadow-color)] grid gap-3 max-w-xl">
+      <form onSubmit={submit} className="border-4 border-outline bg-surface p-5 shadow-[6px_6px_0_var(--shadow-color)] grid gap-3 max-w-xl">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
-          className="border-2 border-outline px-3 py-2 bg-[var(--color-surface-variant)]"
+          className="border-2 border-outline px-3 py-2 bg-surface-variant"
           maxLength={40}
         />
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Message (140 chars)"
-          className="border-2 border-outline px-3 py-2 bg-[var(--color-surface-variant)] min-h-[80px]"
+          className="border-2 border-outline px-3 py-2 bg-surface-variant min-h-[80px]"
           maxLength={140}
         />
-        <button type="submit" className="border-4 border-outline px-4 py-3 font-label-bold uppercase bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] shadow-[4px_4px_0_var(--shadow-color)] w-fit">
+        <button type="submit" className="border-4 border-outline px-4 py-3 font-label-bold uppercase bg-primary-container text-on-primary-container shadow-[4px_4px_0_var(--shadow-color)] w-fit">
           Stamp It
         </button>
         {status && <p className="font-body-md text-sm">{status}</p>}
         {localMode && (
-          <p className="font-body-md text-xs text-[var(--color-text-muted)]">
+          <p className="font-body-md text-xs text-text-muted">
             Dev/offline mode - entries stay in this browser until Redis is reachable.
           </p>
         )}
@@ -216,7 +216,7 @@ const Guestbook = memo(function Guestbook() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 content-visibility-auto">
         {entries.length === 0 && (
-          <p className="font-body-md text-sm text-[var(--color-text-muted)] col-span-full border-4 border-dashed border-outline-variant p-8 text-center bg-[var(--color-surface-variant)]">
+          <p className="font-body-md text-sm text-text-muted col-span-full border-4 border-dashed border-outline-variant p-8 text-center bg-surface-variant">
             No stamps yet. Be the first to sign the wall.
           </p>
         )}
@@ -225,12 +225,12 @@ const Guestbook = memo(function Guestbook() {
           return (
             <article
               key={entry.id || entry.created_at}
-              className="flex flex-col border-4 border-outline bg-[var(--color-surface)] shadow-[4px_4px_0_var(--shadow-color)] overflow-hidden min-h-[140px]"
+              className="flex flex-col border-4 border-outline bg-surface shadow-[4px_4px_0_var(--shadow-color)] overflow-hidden min-h-[140px]"
             >
-              <div className="border-b-4 border-outline bg-[var(--color-surface-variant)] px-4 py-3">
+              <div className="border-b-4 border-outline bg-surface-variant px-4 py-3">
                 <p className="font-label-bold uppercase text-sm truncate">{entry.name}</p>
                 {entry.created_at && (
-                  <p className="font-mono text-[10px] uppercase text-[var(--color-text-muted)] mt-0.5">
+                  <p className="font-mono text-[10px] uppercase text-text-muted mt-0.5">
                     {formatRelativeTime(entry.created_at)}
                   </p>
                 )}
@@ -242,7 +242,7 @@ const Guestbook = memo(function Guestbook() {
                     type="button"
                     onClick={() => removeEntry(entry.id)}
                     disabled={removingId === entry.id}
-                    className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] hover:text-[var(--color-on-surface)] underline underline-offset-2 disabled:opacity-50"
+                    className="font-mono text-[10px] uppercase tracking-wider text-text-muted hover:text-on-surface underline underline-offset-2 disabled:opacity-50"
                     aria-label={`Remove your stamp from ${entry.name}`}
                   >
                     {removingId === entry.id ? "Removing…" : "Remove my stamp"}

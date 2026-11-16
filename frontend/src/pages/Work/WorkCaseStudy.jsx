@@ -45,17 +45,17 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
           <span aria-hidden> / </span>
           Case study
         </p>
-        <h1 className="font-headline-xl text-4xl md:text-6xl uppercase tracking-tighter leading-none bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[8px_8px_0_0_var(--shadow-color)] w-fit">
+        <h1 className="font-headline-xl text-4xl md:text-6xl uppercase tracking-tighter leading-none bg-surface border-4 border-outline p-4 shadow-[8px_8px_0_0_var(--shadow-color)] w-fit">
           {study.title}
         </h1>
-        <p className="font-body-lg text-base md:text-lg max-w-3xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0_0_var(--shadow-color)] leading-snug">
+        <p className="font-body-lg text-base md:text-lg max-w-3xl bg-surface border-4 border-outline p-4 shadow-[4px_4px_0_0_var(--shadow-color)] leading-snug">
           {study.oneLiner}
         </p>
         <ul className="flex flex-wrap gap-2" aria-label="Stack">
           {study.stack.map((tag) => (
             <li
               key={tag}
-              className="border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+              className="border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase bg-primary-container text-on-primary-container"
             >
               {tag}
             </li>
@@ -72,7 +72,7 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
                 event.preventDefault();
                 openSiteBrowser({ url: study.live, title: study.title });
               }}
-              className="inline-flex items-center gap-2 border-4 border-outline bg-[var(--color-surface)] px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 transition-transform"
+              className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 transition-transform"
             >
               {study.liveAnchor ? study.liveAnchor : "Live demo"} <FaExternalLinkAlt className="text-[10px]" aria-hidden />
             </a>
@@ -82,7 +82,7 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
               href={study.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border-4 border-outline bg-[var(--color-surface)] px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0_0_var(--shadow-color)]"
+              className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0_0_var(--shadow-color)]"
             >
               GitHub <FaGithub aria-hidden />
             </a>
@@ -94,7 +94,7 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
         <motion.section
           key={section.title}
           aria-labelledby={`${study.slug}-${section.title}`}
-          className="border-4 border-outline bg-[var(--color-surface)] p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-3"
+          className="border-4 border-outline bg-surface p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-3"
           variants={itemVariants}
         >
           <h2
@@ -115,7 +115,7 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
                   event.preventDefault();
                   openSiteBrowser({ url: study.live, title: study.title });
                 }}
-                className="font-label-bold text-sm uppercase underline underline-offset-4 inline-flex items-center gap-2 text-[var(--color-on-surface)] hover:text-[var(--color-primary)]"
+                className="font-label-bold text-sm uppercase underline underline-offset-4 inline-flex items-center gap-2 text-on-surface hover:text-primary"
               >
                 {study.liveAnchor || "Visit live site"} <FaExternalLinkAlt className="text-[10px]" aria-hidden />
               </a>

@@ -67,7 +67,7 @@ function PhotoCarousel() {
     >
         {/* Main frame */}
         <div
-          className="relative aspect-square border-4 border-outline bg-[var(--color-surface)] shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden animate-pulse-glow"
+          className="relative aspect-square border-4 border-outline bg-surface shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden animate-pulse-glow"
           style={{ userSelect: "none" }}
         >
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -110,7 +110,7 @@ function PhotoCarousel() {
           </button>
 
           {/* Index badge */}
-          <div className="absolute top-2 right-2 z-20 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-outline px-2 py-0.5 text-xs font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+          <div className="absolute top-2 right-2 z-20 bg-primary-container text-on-primary-container border-2 border-outline px-2 py-0.5 text-xs font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_var(--shadow-color)]">
             {index + 1} / {photos.length}
           </div>
         </div>
@@ -124,17 +124,17 @@ function PhotoCarousel() {
               aria-label={`Go to photo ${i + 1}`}
               className={`border-2 border-outline transition-all duration-200 ${
                 i === index
-                  ? "w-6 h-4 bg-[var(--color-primary-container)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                  : "w-4 h-4 bg-[var(--color-surface)] hover:bg-[var(--color-surface-variant)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                  ? "w-6 h-4 bg-primary-container shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                  : "w-4 h-4 bg-surface hover:bg-surface-variant shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
               }`}
             />
           ))}
         </div>
 
         {/* Progress bar */}
-        <div className="mt-3 h-1.5 bg-[var(--color-surface)] border-2 border-outline overflow-hidden shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+        <div className="mt-3 h-1.5 bg-surface border-2 border-outline overflow-hidden shadow-[2px_2px_0px_0px_var(--shadow-color)]">
           <motion.div
-            className="h-full w-full bg-[var(--color-primary-container)] progress-bar-fill origin-left"
+            className="h-full w-full bg-primary-container progress-bar-fill origin-left"
             style={{ willChange: "transform" }}
             key={`progress-${index}`}
             initial={{ scaleX: 0 }}
@@ -190,13 +190,13 @@ function About() {
 
           {/* Bio */}
           <motion.div
-            className="bg-[var(--color-surface)] border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] mt-8"
+            className="bg-surface border-4 border-outline p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)] mt-8"
             variants={itemVariants}
           >
-            <h2 className="font-headline-md text-3xl uppercase mb-6 border-b-4 border-outline pb-4 text-[var(--color-on-surface)]">
+            <h2 className="font-headline-md text-3xl uppercase mb-6 border-b-4 border-outline pb-4 text-on-surface">
               The Story
             </h2>
-            <div className="font-body-md text-lg space-y-4 text-[var(--color-on-surface-variant)]">
+            <div className="font-body-md text-lg space-y-4 text-on-surface-variant">
               {aboutInfo.bio.split("\n\n").map((paragraph, i) => (
                 <p key={i} className="leading-relaxed">{paragraph}</p>
               ))}
@@ -220,7 +220,7 @@ function About() {
               <motion.button
                 type="button"
                 onClick={copyEmail}
-                className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline h-12 px-4 flex items-center justify-center gap-2 text-sm font-label-bold uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] transition-all cursor-none"
+                className="bg-surface text-on-surface border-4 border-outline h-12 px-4 flex items-center justify-center gap-2 text-sm font-label-bold uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-primary-container hover:text-on-primary-container transition-all cursor-none"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -235,7 +235,7 @@ function About() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-12 h-12 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-all cursor-none"
+                    className="bg-surface text-on-surface border-4 border-outline w-12 h-12 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none hover:bg-on-background hover:text-background transition-all cursor-none"
                     aria-label={link.name}
                     title={link.name}
                     whileHover={{ scale: 1.05 }}
@@ -250,7 +250,7 @@ function About() {
 
           {/* Highlights */}
           <div className="flex flex-col gap-6">
-            <motion.h2 className="font-headline-md text-3xl uppercase text-[var(--color-on-surface)]" variants={itemVariants}>
+            <motion.h2 className="font-headline-md text-3xl uppercase text-on-surface" variants={itemVariants}>
               Why work with me
             </motion.h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch overflow-visible p-3 -m-3">
@@ -323,24 +323,24 @@ function HighlightCard({ highlight, index }) {
   return (
     <motion.div
       ref={ref}
-      className="bg-[var(--color-surface)] border-4 border-outline p-6 shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col h-full"
+      className="bg-surface border-4 border-outline p-6 shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col h-full"
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ type: "spring", stiffness: 280, damping: 22, delay: index * 0.08 }}
       whileHover={{ y: -4, x: -4, boxShadow: "12px 12px 0px 0px var(--shadow-color)", transition: { type: "spring", stiffness: 400, damping: 20 } }}
     >
       <motion.span
-        className="text-4xl mb-4 block border-2 border-outline w-fit p-2 bg-[var(--color-surface-variant)] shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+        className="text-4xl mb-4 block border-2 border-outline w-fit p-2 bg-surface-variant shadow-[2px_2px_0px_0px_var(--shadow-color)]"
         animate={inView ? { y: [0, -6, 0, -3, 0] } : {}}
         transition={{ duration: 0.65, delay: index * 0.12 + 0.35 }}
         whileHover={{ y: [0, -5, 0, -3, 0], transition: { duration: 0.5 } }}
       >
         {highlight.icon}
       </motion.span>
-      <h4 className="font-headline-md text-xl uppercase mb-2 text-[var(--color-on-surface)]">
+      <h4 className="font-headline-md text-xl uppercase mb-2 text-on-surface">
         {highlight.title}
       </h4>
-      <p className="font-body-md text-base text-[var(--color-on-surface-variant)]">
+      <p className="font-body-md text-base text-on-surface-variant">
         {highlight.description}
       </p>
     </motion.div>

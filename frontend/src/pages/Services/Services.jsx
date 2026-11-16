@@ -91,13 +91,13 @@ function openMailtoFallback(payload) {
 }
 
 const fieldClass =
-  "border-4 border-outline p-3 md:p-4 font-body-md text-base md:text-lg focus:outline-none focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all duration-200 bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] w-full";
+  "border-4 border-outline p-3 md:p-4 font-body-md text-base md:text-lg focus:outline-none focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all duration-200 bg-surface-variant text-on-surface w-full";
 
 const tabButtonClass = (active) =>
   `border-4 border-outline px-4 py-3 font-label-bold text-xs md:text-sm uppercase shadow-[4px_4px_0_0_var(--shadow-color)] transition-all ${
     active
-      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:translate-x-0.5 hover:translate-y-0.5"
+      ? "bg-primary-container text-on-primary-container"
+      : "bg-surface text-on-surface hover:translate-x-0.5 hover:translate-y-0.5"
   }`;
 
 const Services = memo(function Services() {
@@ -205,42 +205,42 @@ const Services = memo(function Services() {
         className="relative isolate overflow-hidden border-b-8 border-outline pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col gap-6"
         variants={itemVariants}
       >
-        <p className="font-label-bold text-xs md:text-sm uppercase tracking-[0.16em] text-[var(--color-secondary)]">
+        <p className="font-label-bold text-xs md:text-sm uppercase tracking-[0.16em] text-secondary">
           {SERVICES_HERO.eyebrow}
         </p>
         <h1
           data-build-part="title"
-          className="font-headline-xl text-3xl md:text-5xl lg:text-6xl uppercase tracking-tighter leading-tight text-[var(--color-on-surface)] max-w-4xl bg-[var(--color-surface)] border-4 border-outline p-4 md:p-5 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+          className="font-headline-xl text-3xl md:text-5xl lg:text-6xl uppercase tracking-tighter leading-tight text-on-surface max-w-4xl bg-surface border-4 border-outline p-4 md:p-5 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
         >
           {SERVICES_HERO.headline}
         </h1>
         <p
           data-build-part="blurb"
-          className="font-body-lg text-base md:text-lg text-[var(--color-on-surface)] max-w-3xl bg-[var(--color-surface)] border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] leading-snug"
+          className="font-body-lg text-base md:text-lg text-on-surface max-w-3xl bg-surface border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] leading-snug"
         >
           {SERVICES_HERO.subline}
         </p>
         <div className="flex flex-wrap gap-3">
           <a
             href="#inquiry"
-            className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
+            className="bg-primary-container text-on-primary-container border-4 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
           >
             Request a quote
           </a>
           <Link
             to="/projects"
-            className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
+            className="bg-surface text-on-surface border-4 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
           >
             View projects
           </Link>
         </div>
-        <p className="font-label-bold text-sm uppercase tracking-wide text-[var(--color-on-surface)]">
+        <p className="font-label-bold text-sm uppercase tracking-wide text-on-surface">
           {SERVICES_HERO.availability}
         </p>
       </motion.header>
 
       <motion.div
-        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[4px_4px_0_0_var(--shadow-color)]"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)]"
         variants={itemVariants}
       >
         <div className="flex flex-wrap gap-2" role="tablist" aria-label="Services line">
@@ -287,7 +287,7 @@ const Services = memo(function Services() {
                 <article
                   key={project.id}
                   data-build-card=""
-                  className="border-4 border-outline bg-[var(--color-surface)] p-5 shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col gap-4"
+                  className="border-4 border-outline bg-surface p-5 shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col gap-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <h3 data-build-part="title" className="font-headline-md text-xl uppercase">
@@ -302,7 +302,7 @@ const Services = memo(function Services() {
                   </div>
                   <p
                     data-build-part="blurb"
-                    className="font-body-md text-sm md:text-base leading-snug text-[var(--color-on-surface)]"
+                    className="font-body-md text-sm md:text-base leading-snug text-on-surface"
                   >
                     {project.outcome}
                   </p>
@@ -311,7 +311,7 @@ const Services = memo(function Services() {
                       {project.stack.map((tag) => (
                         <li
                           key={tag}
-                          className="border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+                          className="border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase bg-primary-container text-on-primary-container"
                         >
                           {tag}
                         </li>
@@ -356,8 +356,8 @@ const Services = memo(function Services() {
                   data-build-card=""
                   className={`border-4 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col gap-4 ${
                     pack.flagship
-                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] lg:col-span-2"
-                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)]"
+                      ? "bg-primary-container text-on-primary-container lg:col-span-2"
+                      : "bg-surface text-on-surface"
                   }`}
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-3">
@@ -393,7 +393,7 @@ const Services = memo(function Services() {
                 </article>
               ))}
             </div>
-            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl">
+            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl">
               {SERVICES_PRICE_NOTE}
             </p>
           </motion.section>
@@ -406,7 +406,7 @@ const Services = memo(function Services() {
               {SERVICES_PROCESS.map((step, index) => (
                 <li
                   key={step}
-                  className="border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-3"
+                  className="border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-3"
                 >
                   <span className="font-headline-md text-xl shrink-0">{String(index + 1).padStart(2, "0")}</span>
                   <span className="font-body-md text-sm md:text-base leading-snug">{step}</span>
@@ -423,7 +423,7 @@ const Services = memo(function Services() {
               {SERVICES_TECH_APPROACH.map((item) => (
                 <li
                   key={item}
-                  className="border-4 border-outline bg-[var(--color-surface)] p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)]"
+                  className="border-4 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)]"
                 >
                   {item}
                 </li>
@@ -439,7 +439,7 @@ const Services = memo(function Services() {
               {SERVICES_AUDIENCES.map((audience) => (
                 <article
                   key={audience.title}
-                  className="border-4 border-outline bg-[var(--color-surface)] p-5 shadow-[4px_4px_0_0_var(--shadow-color)]"
+                  className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)]"
                 >
                   <h3 className="font-headline-md text-lg uppercase mb-2">{audience.title}</h3>
                   <p className="font-body-md text-sm leading-snug">{audience.body}</p>
@@ -461,8 +461,8 @@ const Services = memo(function Services() {
                   data-build-card=""
                   className={`border-4 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col gap-4 ${
                     pack.flagship
-                      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] lg:col-span-2"
-                      : "bg-[var(--color-surface)] text-[var(--color-on-surface)]"
+                      ? "bg-primary-container text-on-primary-container lg:col-span-2"
+                      : "bg-surface text-on-surface"
                   }`}
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-3">
@@ -497,7 +497,7 @@ const Services = memo(function Services() {
                 </article>
               ))}
             </div>
-            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl">
+            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl">
               {SERVICES_PRICE_NOTE}
             </p>
           </motion.section>
@@ -510,7 +510,7 @@ const Services = memo(function Services() {
               {WEB_EVERY_SITE.map((item) => (
                 <li
                   key={item}
-                  className="border-4 border-outline bg-[var(--color-surface)] p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-2"
+                  className="border-4 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-2"
                 >
                   <FaCheck className="mt-1 shrink-0 text-xs" aria-hidden />
                   <span>{item}</span>
@@ -527,7 +527,7 @@ const Services = memo(function Services() {
               {WEB_PROCESS.map((step, index) => (
                 <li
                   key={step}
-                  className="border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-3"
+                  className="border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-3"
                 >
                   <span className="font-headline-md text-xl shrink-0">{String(index + 1).padStart(2, "0")}</span>
                   <span className="font-body-md text-sm md:text-base leading-snug">{step}</span>
@@ -535,7 +535,7 @@ const Services = memo(function Services() {
               ))}
             </ol>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <article className="border-4 border-outline bg-[var(--color-surface)] p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2">
+              <article className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2">
                 <h3 className="font-headline-md text-lg uppercase">Revisions vs change requests</h3>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.revisions}</p>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.changeRequests}</p>
@@ -543,7 +543,7 @@ const Services = memo(function Services() {
                   Included review rounds: {WEB_REVIEW_ROUNDS}
                 </p>
               </article>
-              <article className="border-4 border-outline bg-[var(--color-surface)] p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2">
+              <article className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2">
                 <h3 className="font-headline-md text-lg uppercase">Payment and handover</h3>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.paymentSmall}</p>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.paymentApp}</p>
@@ -556,7 +556,7 @@ const Services = memo(function Services() {
             <h2 id="wix-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
               {WEB_WIX_NOTE.title}
             </h2>
-            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl leading-snug">
+            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl leading-snug">
               {WEB_WIX_NOTE.body}
             </p>
           </motion.section>
@@ -569,7 +569,7 @@ const Services = memo(function Services() {
               {WEB_ADDONS.map((item) => (
                 <li
                   key={item}
-                  className="border-4 border-outline bg-[var(--color-surface)] p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)]"
+                  className="border-4 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)]"
                 >
                   {item}
                 </li>
@@ -586,7 +586,7 @@ const Services = memo(function Services() {
                 <article
                   key={site.id}
                   data-build-card=""
-                  className="border-4 border-outline bg-[var(--color-surface)] shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
+                  className="border-4 border-outline bg-surface shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
                 >
                   {site.image && (
                     <div data-build-part="media" className="h-40 border-b-4 border-outline overflow-hidden">
@@ -658,7 +658,7 @@ const Services = memo(function Services() {
                 <Link
                   key={guide.slug}
                   to={`/guides/${guide.slug}`}
-                  className="border-4 border-outline bg-[var(--color-surface)] p-5 shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all flex flex-col gap-2"
+                  className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all flex flex-col gap-2"
                 >
                   <h3 className="font-headline-md text-lg uppercase">{guide.title}</h3>
                   <p className="font-body-md text-sm leading-snug">{guide.description}</p>
@@ -677,7 +677,7 @@ const Services = memo(function Services() {
           {visibleFaq.map((item, index) => {
             const open = expandedFaq === index;
             return (
-              <div key={item.q} className="border-4 border-outline bg-[var(--color-surface)] shadow-[4px_4px_0_0_var(--shadow-color)]">
+              <div key={item.q} className="border-4 border-outline bg-surface shadow-[4px_4px_0_0_var(--shadow-color)]">
                 <button
                   type="button"
                   className="w-full flex items-center justify-between gap-4 p-4 text-left font-label-bold uppercase text-sm md:text-base"
@@ -720,7 +720,7 @@ const Services = memo(function Services() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <form
             onSubmit={handleSubmit}
-            className="lg:col-span-2 border-4 border-outline bg-[var(--color-surface)] p-5 md:p-6 shadow-[8px_8px_0_0_var(--shadow-color)] flex flex-col gap-4 relative"
+            className="lg:col-span-2 border-4 border-outline bg-surface p-5 md:p-6 shadow-[8px_8px_0_0_var(--shadow-color)] flex flex-col gap-4 relative"
             noValidate
           >
             <div
@@ -852,7 +852,7 @@ const Services = memo(function Services() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full border-4 border-outline px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all disabled:opacity-70"
+              className="w-full border-4 border-outline px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 bg-primary-container text-on-primary-container shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all disabled:opacity-70"
             >
               {isSubmitting ? (
                 "Sending..."
@@ -869,7 +869,7 @@ const Services = memo(function Services() {
           </form>
 
           <aside className="flex flex-col gap-4">
-            <div className="border-4 border-outline bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] p-5 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4">
+            <div className="border-4 border-outline bg-primary-container text-on-primary-container p-5 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4">
               <div className="flex items-center gap-2.5 border-b-2 border-current/30 pb-3">
                 <FaEnvelope className="text-xl text-current shrink-0" aria-hidden />
                 <h3 className="font-headline-md text-xl uppercase tracking-wide">Direct email</h3>
@@ -895,7 +895,7 @@ const Services = memo(function Services() {
                       window.location.href = `mailto:${SERVICES_EMAIL}`;
                     }
                   }}
-                  className="px-2.5 py-1 text-[11px] font-label-bold uppercase border border-current/40 bg-current/10 hover:bg-current hover:text-[var(--color-on-background)] transition-colors cursor-none shrink-0 flex items-center gap-1.5"
+                  className="px-2.5 py-1 text-[11px] font-label-bold uppercase border border-current/40 bg-current/10 hover:bg-current hover:text-on-background transition-colors cursor-none shrink-0 flex items-center gap-1.5"
                 >
                   <FaCopy aria-hidden className="text-[10px]" />
                   <span>Copy</span>
@@ -906,7 +906,7 @@ const Services = memo(function Services() {
                   href={SCOPING_CALL_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-2 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-none"
+                  className="border-2 border-outline bg-surface text-on-surface px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-none"
                 >
                   <span>Book a 20 minute scoping call</span>
                   <FaExternalLinkAlt className="text-xs" aria-hidden />
@@ -918,7 +918,7 @@ const Services = memo(function Services() {
                     e.preventDefault();
                     document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="border-2 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-none"
+                  className="border-2 border-outline bg-surface text-on-surface px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-none"
                 >
                   <FaPaperPlane className="text-xs" aria-hidden />
                   <span>Jump to inquiry form</span>

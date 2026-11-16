@@ -18,7 +18,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
   );
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 gpu-layer">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-8 gpu-layer">
       <motion.div
         className="absolute inset-0 backdrop-blur-md"
         style={{ background: "color-mix(in srgb, var(--color-background) 85%, transparent)" }}
@@ -29,7 +29,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         onClick={onClose}
       />
       <motion.div
-        className="bg-[var(--color-surface)] border-8 border-outline shadow-[24px_24px_0px_0px_var(--shadow-color)] w-full max-w-5xl max-h-[90vh] overflow-y-auto overscroll-contain relative z-10 flex flex-col no-scrollbar paint-isolate"
+        className="bg-surface border-8 border-outline shadow-[24px_24px_0px_0px_var(--shadow-color)] w-full max-w-5xl max-h-[90vh] overflow-y-auto overscroll-contain relative z-10 flex flex-col no-scrollbar paint-isolate"
         data-lenis-prevent
         role="dialog"
         aria-modal="true"
@@ -44,7 +44,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
         {/* Sticky close — inset so it isn't glued to the modal corner */}
         <div className="sticky top-0 z-50 w-full flex justify-end h-0 pointer-events-none">
           <button
-            className="pointer-events-auto m-3 md:m-4 bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-11 md:w-12 h-11 md:h-12 flex items-center justify-center text-lg md:text-xl shadow-[4px_4px_0_0_var(--shadow-color)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-none"
+            className="pointer-events-auto m-3 md:m-4 bg-surface text-on-surface border-4 border-outline w-11 md:w-12 h-11 md:h-12 flex items-center justify-center text-lg md:text-xl shadow-[4px_4px_0_0_var(--shadow-color)] hover:bg-primary-container hover:text-on-primary-container hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-none"
             onClick={onClose}
             aria-label="Close modal"
           >
@@ -68,19 +68,19 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
 
         <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-6 md:gap-8 bg-hatch">
           {/* Main Header Card */}
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 bg-[var(--color-surface)] border-4 border-outline p-5 sm:p-6 md:p-8 shadow-[4px_4px_0px_0px_var(--shadow-color)] md:shadow-[8px_8px_0px_0px_var(--shadow-color)] -mt-12 sm:-mt-16 md:-mt-24 z-10 relative">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 bg-surface border-4 border-outline p-5 sm:p-6 md:p-8 shadow-[4px_4px_0px_0px_var(--shadow-color)] md:shadow-[8px_8px_0px_0px_var(--shadow-color)] -mt-12 sm:-mt-16 md:-mt-24 z-10 relative">
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
-                <span className="bg-[var(--color-on-background)] text-[var(--color-background)] font-label-bold px-3 py-1 border-2 border-outline uppercase shadow-[2px_2px_0px_0px_var(--shadow-accent)]">
+                <span className="bg-on-background text-background font-label-bold px-3 py-1 border-2 border-outline uppercase shadow-[2px_2px_0px_0px_var(--shadow-accent)]">
                   {project.year}
                 </span>
                 {project.category && (
-                  <span className="bg-[var(--color-secondary)] text-[var(--color-on-secondary)] font-label-bold px-3 py-1 border-2 border-outline uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+                  <span className="bg-secondary text-on-secondary font-label-bold px-3 py-1 border-2 border-outline uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
                     {project.category}
                   </span>
                 )}
               </div>
-              <h2 id="project-modal-title" className="font-headline-xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-none tracking-tighter text-[var(--color-on-surface)] break-words w-full" style={{ wordBreak: 'break-word' }}>
+              <h2 id="project-modal-title" className="font-headline-xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-none tracking-tighter text-on-surface break-words w-full" style={{ wordBreak: 'break-word' }}>
                 {project.title}
               </h2>
             </div>
@@ -90,7 +90,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                 <Link
                   to={`/work/${caseStudy.slug}`}
                   onClick={onClose}
-                  className="flex-1 lg:flex-none bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                  className="flex-1 lg:flex-none bg-surface text-on-surface border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                 >
                   Case study <FaArrowRight />
                 </Link>
@@ -107,7 +107,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                     event.preventDefault();
                     openSiteBrowser({ url: project.links.preview, title: project.title });
                   }}
-                  className="flex-1 lg:flex-none bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none text-xs sm:text-sm md:text-base"
+                  className="flex-1 lg:flex-none bg-primary-container text-on-primary-container border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none text-xs sm:text-sm md:text-base"
                 >
                   <span className={project.liveAnchor ? "max-w-[280px] truncate" : ""}>
                     {project.liveAnchor ? project.liveAnchor : "Live"}
@@ -120,7 +120,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   href={project.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 lg:flex-none bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                  className="flex-1 lg:flex-none bg-surface-variant text-on-surface border-4 border-outline px-6 py-3 font-headline-md uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                 >
                   Source <FaGithub />
                 </a>
@@ -131,11 +131,11 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)] gap-6 md:gap-8 items-start">
             <div className="flex flex-col gap-5 md:gap-6">
               {/* Description */}
-              <div className="bg-[var(--color-surface)] border-4 border-outline p-6 md:p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
-                <h3 className="font-headline-md text-2xl uppercase border-b-4 border-outline pb-3 mb-6 text-[var(--color-on-surface)] inline-block">
+              <div className="bg-surface border-4 border-outline p-6 md:p-8 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
+                <h3 className="font-headline-md text-2xl uppercase border-b-4 border-outline pb-3 mb-6 text-on-surface inline-block">
                   Overview
                 </h3>
-                <p id="project-modal-description" className="font-body-lg text-lg md:text-xl leading-relaxed text-[var(--color-on-surface)] whitespace-pre-wrap">
+                <p id="project-modal-description" className="font-body-lg text-lg md:text-xl leading-relaxed text-on-surface whitespace-pre-wrap">
                   {project.description}
                 </p>
                 {project.links?.preview && project.liveAnchor && (
@@ -149,7 +149,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                         event.preventDefault();
                         openSiteBrowser({ url: project.links.preview, title: project.title });
                       }}
-                      className="font-label-bold text-sm uppercase underline underline-offset-4 inline-flex items-center gap-2 text-[var(--color-on-surface)] hover:text-[var(--color-primary)] cursor-none"
+                      className="font-label-bold text-sm uppercase underline underline-offset-4 inline-flex items-center gap-2 text-on-surface hover:text-primary cursor-none"
                     >
                       {project.liveAnchor} <FaEye className="text-xs shrink-0" aria-hidden />
                     </a>
@@ -162,12 +162,12 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                   {detailSections.map((section) => (
                     <article
                       key={section.title}
-                      className="bg-[var(--color-surface)] border-4 border-outline p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+                      className="bg-surface border-4 border-outline p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
                     >
-                      <h3 className="font-headline-md text-xl uppercase border-b-2 border-outline pb-2 mb-3 text-[var(--color-on-surface)]">
+                      <h3 className="font-headline-md text-xl uppercase border-b-2 border-outline pb-2 mb-3 text-on-surface">
                         {section.title}
                       </h3>
-                      <p className="font-body-md text-sm leading-relaxed text-[var(--color-on-surface)]">
+                      <p className="font-body-md text-sm leading-relaxed text-on-surface">
                         {section.body}
                       </p>
                     </article>
@@ -179,12 +179,12 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
             <aside className="flex flex-col gap-5 lg:sticky lg:top-6">
               {/* Skills */}
               {projectSkills.length > 0 && (
-                <div className="bg-[var(--color-surface)] border-4 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
+                <div className="bg-surface border-4 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)]">
                   <div className="flex items-center justify-between gap-3 border-b-4 border-outline pb-3 mb-5">
-                    <h3 className="font-headline-md text-xl uppercase text-[var(--color-on-surface)]">
+                    <h3 className="font-headline-md text-xl uppercase text-on-surface">
                       Tech Stack
                     </h3>
-                    <span className="bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase">
+                    <span className="bg-primary-container text-on-primary-container border-2 border-outline px-2 py-1 font-label-bold text-xs uppercase">
                       {projectSkills.length}
                     </span>
                   </div>
@@ -193,7 +193,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
                       <motion.button
                         key={skill.id}
                         onClick={() => onSkillClick(skill.id)}
-                        className="bg-[var(--color-surface-variant)] border-2 border-outline px-4 py-2 font-label-bold text-sm uppercase flex items-center justify-between hover:bg-[var(--color-on-background)] hover:text-[var(--color-background)] transition-colors shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none group cursor-none w-full"
+                        className="bg-surface-variant border-2 border-outline px-4 py-2 font-label-bold text-sm uppercase flex items-center justify-between hover:bg-on-background hover:text-background transition-colors shadow-[3px_3px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none group cursor-none w-full"
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -212,15 +212,15 @@ const ProjectModal = memo(function ProjectModal({ project, onClose, onSkillClick
 
               {/* Tags */}
               {project.tags?.length > 0 && (
-                <div className="bg-[var(--color-surface)] border-4 border-outline p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-                  <h3 className="font-headline-md text-lg uppercase border-b-2 border-outline pb-2 mb-4 text-[var(--color-on-surface)]">
+                <div className="bg-surface border-4 border-outline p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+                  <h3 className="font-headline-md text-lg uppercase border-b-2 border-outline pb-2 mb-4 text-on-surface">
                     Project Tags
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="bg-[var(--color-on-background)] text-[var(--color-background)] border-2 border-outline px-3 py-1 font-label-bold text-xs uppercase"
+                        className="bg-on-background text-background border-2 border-outline px-3 py-1 font-label-bold text-xs uppercase"
                       >
                         {tag}
                       </span>

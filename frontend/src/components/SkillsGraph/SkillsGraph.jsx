@@ -47,12 +47,12 @@ function GraphPanel({ graph, hoveredId, setHoveredId, onSkillClick, onProjectCli
   );
 
   return (
-    <div className="border-4 border-outline bg-[var(--color-surface)] p-5 md:p-7 shadow-[8px_8px_0_var(--shadow-color)]">
+    <div className="border-4 border-outline bg-surface p-5 md:p-7 shadow-[8px_8px_0_var(--shadow-color)]">
       <div className="mb-5 flex items-center justify-between border-b-4 border-outline pb-4">
-        <h3 className="font-headline-md text-2xl uppercase text-[var(--color-on-surface)]">
+        <h3 className="font-headline-md text-2xl uppercase text-on-surface">
           Knowledge Graph
         </h3>
-        <span className="border-2 border-outline bg-[var(--color-primary-container)] px-2 py-1 font-label-bold text-[10px] uppercase text-[var(--color-on-primary-container)]">
+        <span className="border-2 border-outline bg-primary-container px-2 py-1 font-label-bold text-[10px] uppercase text-on-primary-container">
           Linked Data
         </span>
       </div>
@@ -65,7 +65,7 @@ function GraphPanel({ graph, hoveredId, setHoveredId, onSkillClick, onProjectCli
               onClick={() => onSkillClick(node.item)}
               onMouseEnter={() => setHoveredId(node.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className="border-2 border-outline bg-[var(--color-primary-container)] px-3 py-2 font-label-bold text-xs uppercase text-[var(--color-on-primary-container)] shadow-[2px_2px_0_var(--shadow-color)] transition-transform duration-200 hover:-translate-y-0.5"
+              className="border-2 border-outline bg-primary-container px-3 py-2 font-label-bold text-xs uppercase text-on-primary-container shadow-[2px_2px_0_var(--shadow-color)] transition-transform duration-200 hover:-translate-y-0.5"
             >
               {node.label}
             </button>
@@ -81,8 +81,8 @@ function GraphPanel({ graph, hoveredId, setHoveredId, onSkillClick, onProjectCli
               onMouseLeave={() => setHoveredId(null)}
               className={`border-2 border-outline px-3 py-2 font-label-bold text-xs uppercase shadow-[2px_2px_0_var(--shadow-color)] transition-[background-color,color,transform] duration-200 hover:-translate-y-0.5 ${
                 activeProjectIds.has(node.id) || hoveredId === node.id
-                  ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-                  : "bg-[var(--color-on-background)] text-[var(--color-background)]"
+                  ? "bg-primary-container text-on-primary-container"
+                  : "bg-on-background text-background"
               }`}
             >
               {node.label}
@@ -107,10 +107,10 @@ const SkillsGraph = memo(function SkillsGraph({ skills, projects, onSkillClick, 
         onSkillClick={onSkillClick}
         onProjectClick={onProjectClick}
       />
-      <div className="absolute left-4 top-4 border-4 border-outline bg-[var(--color-surface)] px-3 py-2 font-label-bold text-[10px] uppercase tracking-[0.22em] text-[var(--color-on-surface)] shadow-[4px_4px_0_var(--shadow-color)]">
-        Skills <span className="text-[var(--color-on-background)]">x</span> Projects
+      <div className="absolute left-4 top-4 border-4 border-outline bg-surface px-3 py-2 font-label-bold text-[10px] uppercase tracking-[0.22em] text-on-surface shadow-[4px_4px_0_var(--shadow-color)]">
+        Skills <span className="text-on-background">x</span> Projects
       </div>
-      <div className="absolute bottom-4 right-4 border-4 border-outline bg-[var(--color-on-background)] px-3 py-2 font-label-bold text-[10px] uppercase tracking-[0.22em] text-[var(--color-background)]">
+      <div className="absolute bottom-4 right-4 border-4 border-outline bg-on-background px-3 py-2 font-label-bold text-[10px] uppercase tracking-[0.22em] text-background">
         Hover + Click Nodes
       </div>
     </section>

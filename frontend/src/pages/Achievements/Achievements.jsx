@@ -26,16 +26,16 @@ const Achievements = memo(function Achievements() {
         title="Achievements"
         description={`${unlocked.length} / ${achievements.length} unlocked - explore the site like a game.`}
       >
-        <div className="border-4 border-outline bg-[var(--color-surface)] p-4 shadow-[6px_6px_0_var(--shadow-color)]">
-          <div className="h-4 border-2 border-outline bg-[var(--color-surface-variant)] overflow-hidden">
+        <div className="border-4 border-outline bg-surface p-4 shadow-[6px_6px_0_var(--shadow-color)]">
+          <div className="h-4 border-2 border-outline bg-surface-variant overflow-hidden">
             <motion.div
-              className="h-full bg-[var(--color-primary-container)] origin-left"
+              className="h-full bg-primary-container origin-left"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: progress }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             />
           </div>
-          <p className="mt-2 font-label-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)]">
+          <p className="mt-2 font-label-bold text-xs uppercase tracking-widest text-text-muted">
             Trophy progress {Math.round(progress * 100)}%
           </p>
         </div>
@@ -54,8 +54,8 @@ const Achievements = memo(function Achievements() {
               variants={cardVariants}
               className={`border-4 border-outline p-5 shadow-[6px_6px_0_var(--shadow-color)] ${
                 isUnlocked
-                  ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-                  : "bg-[var(--color-surface)] text-[var(--color-on-surface)] grayscale opacity-70"
+                  ? "bg-primary-container text-on-primary-container"
+                  : "bg-surface text-on-surface grayscale opacity-70"
               }`}
               style={{ transform: isUnlocked ? `translateY(${(achievement.id.length % 3 - 1) * -2}px)` : undefined }}
             >

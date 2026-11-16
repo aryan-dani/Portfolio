@@ -121,7 +121,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
               className="overflow-hidden"
             >
               <div className="p-5 md:p-6 border-t-4 border-outline flex flex-col gap-5">
-                <p className="font-body-md text-base leading-relaxed text-[var(--color-on-surface-variant)]">
+                <p className="font-body-md text-base leading-relaxed text-on-surface-variant">
                   {exp.description}
                 </p>
                 {exp.responsibilities && (
@@ -129,7 +129,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                     {exp.responsibilities.map((r, i) => (
                       <motion.li
                         key={i}
-                        className="font-body-md text-sm md:text-base flex items-start gap-3 text-[var(--color-on-surface)]"
+                        className="font-body-md text-sm md:text-base flex items-start gap-3 text-on-surface"
                         initial={{ opacity: 0, x: -12 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.05 }}

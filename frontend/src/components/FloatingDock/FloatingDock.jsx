@@ -91,27 +91,27 @@ function FloatingDock() {
                   to={item.path}
                   className={`relative isolate flex items-center justify-center p-2 sm:p-3 transition-all duration-200 select-none group shrink-0 hover-gpu ${
                     isActive
-                      ? "text-[var(--color-on-primary-container)]"
-                      : "text-[var(--color-on-surface)] hover:text-[var(--color-primary)]"
+                      ? "text-on-primary-container"
+                      : "text-on-surface hover:text-primary"
                   }`}
                   aria-label={item.label}
                 >
                   {isActive && (
                     <motion.div
-                      className="absolute inset-0 -z-10 bg-[var(--color-primary-container)] border-2 sm:border-[3px] border-outline shadow-[2px_2px_0_0_var(--shadow-color)]"
+                      className="absolute inset-0 -z-10 bg-primary-container border-2 sm:border-[3px] border-outline shadow-[2px_2px_0_0_var(--shadow-color)]"
                       initial={false}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.16, ease: "easeOut" }}
                     />
                   )}
                   {!isActive && (
-                    <div className="absolute inset-0 border-2 sm:border-[3px] border-transparent group-hover:border-outline group-hover:bg-[var(--color-surface-variant)] -z-10 transition-all duration-200" />
+                    <div className="absolute inset-0 border-2 sm:border-[3px] border-transparent group-hover:border-outline group-hover:bg-surface-variant -z-10 transition-all duration-200" />
                   )}
                   
                   <Icon className="text-lg sm:text-xl relative z-10" />
                   
                   {/* Tooltip on hover for desktop */}
-                  <span className={`absolute -top-12 scale-0 group-hover:scale-100 transition-transform bg-[var(--color-on-background)] text-[var(--color-background)] text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block ${index === dockNavItems.length - 1 ? 'right-0 origin-bottom-right' : 'left-1/2 -translate-x-1/2 origin-bottom'}`}>
+                  <span className={`absolute -top-12 scale-0 group-hover:scale-100 transition-transform bg-on-background text-background text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block ${index === dockNavItems.length - 1 ? 'right-0 origin-bottom-right' : 'left-1/2 -translate-x-1/2 origin-bottom'}`}>
                     {item.label}{item.shortcut ? <span className="opacity-60 ml-1">{item.shortcut}</span> : null}
                   </span>
                 </NavLink>
@@ -125,8 +125,8 @@ function FloatingDock() {
               }}
               className={`relative isolate flex items-center justify-center p-2 sm:p-3 transition-all duration-200 select-none group shrink-0 hover-gpu ${
                 soundEnabled
-                  ? "text-[var(--color-on-primary-container)]"
-                  : "text-[var(--color-on-surface)] hover:text-[var(--color-on-surface)]"
+                  ? "text-on-primary-container"
+                  : "text-on-surface hover:text-on-surface"
               }`}
               aria-label={soundEnabled ? "Disable interface sounds" : "Enable interface sounds"}
               title={soundEnabled ? "Sound on" : "Sound off"}
@@ -134,19 +134,19 @@ function FloatingDock() {
               <div
                 className={`absolute inset-0 border-2 sm:border-[3px] border-outline -z-10 shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-200 ${
                   soundEnabled
-                    ? "bg-[var(--color-primary-container)]"
-                    : "bg-[var(--color-surface)] group-hover:bg-[var(--color-on-background)]"
+                    ? "bg-primary-container"
+                    : "bg-surface group-hover:bg-on-background"
                 }`}
               />
               {!soundEnabled && (
-                <div className="absolute h-[3px] w-8 rotate-45 bg-[var(--color-outline)] group-hover:bg-[var(--color-background)] z-20 pointer-events-none" />
+                <div className="absolute h-[3px] w-8 rotate-45 bg-outline group-hover:bg-background z-20 pointer-events-none" />
               )}
               {soundEnabled ? (
-                <HiVolumeUp className="text-lg sm:text-xl relative z-10 text-[var(--color-on-primary-container)]" />
+                <HiVolumeUp className="text-lg sm:text-xl relative z-10 text-on-primary-container" />
               ) : (
-                <HiVolumeOff className="text-lg sm:text-xl relative z-10 group-hover:text-[var(--color-background)]" />
+                <HiVolumeOff className="text-lg sm:text-xl relative z-10 group-hover:text-background" />
               )}
-              <span className="absolute -top-12 right-0 origin-bottom-right scale-0 group-hover:scale-100 transition-transform bg-[var(--color-on-background)] text-[var(--color-background)] text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block">
+              <span className="absolute -top-12 right-0 origin-bottom-right scale-0 group-hover:scale-100 transition-transform bg-on-background text-background text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block">
                 Sound {soundEnabled ? "On" : "Off"}
               </span>
             </button>

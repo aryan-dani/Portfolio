@@ -37,8 +37,8 @@ const menuItemVariants = {
 const mobileNavClass = ({ isActive }) =>
   `block w-full text-center py-3 px-4 border-4 transition-all ${
     isActive
-      ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] border-outline shadow-[4px_4px_0_0_var(--shadow-color)]"
-      : "bg-[var(--color-surface)] text-[var(--color-on-surface)] border-outline shadow-[3px_3px_0_0_var(--shadow-color)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
+      ? "bg-primary-container text-on-primary-container border-outline shadow-[4px_4px_0_0_var(--shadow-color)]"
+      : "bg-surface text-on-surface border-outline shadow-[3px_3px_0_0_var(--shadow-color)] hover:bg-primary-container hover:text-on-primary-container"
   }`;
 
 // Fix #6: Extract shared ThemeToggleButton to eliminate 40-line duplication between desktop and mobile
@@ -166,38 +166,38 @@ function Header() {
         style={{ backgroundColor: "color-mix(in srgb, var(--color-surface) 96%, transparent)" }}
       >
             <div
-              className="flex justify-between items-center gap-2 px-3 md:px-6 lg:px-5 xl:px-8 w-full h-16 md:h-[4.25rem] xl:h-20 min-w-0"
+              className="flex justify-between items-center gap-2 px-3 md:px-6 lg:px-5 xl:px-8 w-full h-16 md:h-17 xl:h-20 min-w-0"
             >
               {/* Logo */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <NavLink
                   to="/"
                   onClick={closeMenu}
-                  className="block text-base lg:text-lg xl:text-2xl font-black tracking-tighter text-[var(--color-on-primary-container)] border-4 border-outline px-2.5 lg:px-3 xl:px-4 py-1.5 lg:py-2 bg-[var(--color-primary-container)] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none whitespace-nowrap hover-gpu"
+                  className="block text-base lg:text-lg xl:text-2xl font-black tracking-tighter text-on-primary-container border-4 border-outline px-2.5 lg:px-3 xl:px-4 py-1.5 lg:py-2 bg-primary-container shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all duration-220 ease-out-smooth select-none whitespace-nowrap hover-gpu"
                 >
                   ARYAN DANI
                 </NavLink>
               </div>
 
               {/* Desktop Navigation */}
-              <div className="hidden lg:flex items-center gap-0 xl:gap-1 mx-auto min-w-0 flex-1 justify-center max-w-[52rem]">
+              <div className="hidden lg:flex items-center gap-0 xl:gap-1 mx-auto min-w-0 flex-1 justify-center max-w-208">
                 {headerNavItems.map((item) => {
                   const isActive = location.pathname === item.path;
                   return (
                     <NavLink
                       key={item.path}
                       to={item.path}
-                      className={`relative isolate font-bold px-1.5 lg:px-2 xl:px-3 py-1.5 border-4 border-transparent transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] select-none uppercase text-[10px] lg:text-[11px] xl:text-sm tracking-wide xl:tracking-widest hover-gpu whitespace-nowrap ${
+                      className={`relative isolate font-bold px-1.5 lg:px-2 xl:px-3 py-1.5 border-4 border-transparent transition-all duration-220 ease-out-smooth select-none uppercase text-[10px] lg:text-[11px] xl:text-sm tracking-wide xl:tracking-widest hover-gpu whitespace-nowrap ${
                         isActive
-                          ? "text-[var(--color-on-primary-container)]"
-                          : "text-[var(--color-on-surface)] hover:border-outline hover:bg-[var(--color-surface-variant)]"
+                          ? "text-on-primary-container"
+                          : "text-on-surface hover:border-outline hover:bg-surface-variant"
                       }`}
                     >
                       {isActive && (
                         <div className="absolute -inset-[4px] -z-10">
                           <motion.div
                             layoutId="activeNav"
-                            className="w-full h-full bg-[var(--color-primary-container)] border-4 border-outline shadow-[2px_2px_0_0_var(--shadow-color)] overflow-hidden"
+                            className="w-full h-full bg-primary-container border-4 border-outline shadow-[2px_2px_0_0_var(--shadow-color)] overflow-hidden"
                             transition={defaultSpring}
                           >
                             <div className="absolute inset-0 animate-shimmer opacity-35" />
@@ -211,10 +211,10 @@ function Header() {
               </div>
 
               {/* Right side Actions */}
-              <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 flex-shrink-0">
+              <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 shrink-0">
                 <NavLink
                   to="/services"
-                  className="hidden sm:flex font-headline-md text-[11px] lg:text-xs xl:text-base uppercase tracking-wide xl:tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline px-3 lg:px-4 xl:px-5 py-2 xl:py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] xl:shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] items-center justify-center whitespace-nowrap"
+                  className="hidden sm:flex font-headline-md text-[11px] lg:text-xs xl:text-base uppercase tracking-wide xl:tracking-widest font-black text-on-primary-container bg-primary-container border-4 border-outline px-3 lg:px-4 xl:px-5 py-2 xl:py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] xl:shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-220 ease-out-smooth items-center justify-center whitespace-nowrap"
                 >
                   Work with me
                 </NavLink>
@@ -223,7 +223,7 @@ function Header() {
                 <ThemeToggleButton
                   theme={theme}
                   onToggle={handleToggleTheme}
-                  className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-10 h-10 xl:w-12 xl:h-12 flex items-center justify-center text-base xl:text-lg shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] cursor-none overflow-hidden"
+                  className="bg-surface text-on-surface border-4 border-outline w-10 h-10 xl:w-12 xl:h-12 flex items-center justify-center text-base xl:text-lg shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-220 ease-out-smooth cursor-none overflow-hidden"
                   springConfig={snappySpring}
                 />
               </div>
@@ -234,13 +234,13 @@ function Header() {
                 <ThemeToggleButton
                   theme={theme}
                   onToggle={handleToggleTheme}
-                  className="bg-[var(--color-surface)] text-[var(--color-on-surface)] border-4 border-outline w-10 h-10 flex items-center justify-center text-base shadow-[2px_2px_0_0_var(--shadow-color)] hover:shadow-none transition-all cursor-none overflow-hidden"
+                  className="bg-surface text-on-surface border-4 border-outline w-10 h-10 flex items-center justify-center text-base shadow-[2px_2px_0_0_var(--shadow-color)] hover:shadow-none transition-all cursor-none overflow-hidden"
                   springConfig={{ duration: 0.28, ease: motionEase.out }}
                 />
 
                 <button
                   ref={menuButtonRef}
-                  className="text-[var(--color-on-surface)] p-2 hover:bg-[var(--color-surface-variant)] transition-colors rounded-sm"
+                  className="text-on-surface p-2 hover:bg-surface-variant transition-colors rounded-sm"
                   onClick={() => setIsMenuOpen((p) => !p)}
                   aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
                   aria-expanded={isMenuOpen}
@@ -268,7 +268,7 @@ function Header() {
           <motion.div
             ref={mobileMenuRef}
             id="mobile-navigation"
-            className="lg:hidden fixed inset-x-0 bottom-0 top-16 md:top-[4.25rem] z-[60] flex flex-col items-center px-4 pt-6 pb-28 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-3 overflow-y-auto overscroll-contain bg-[var(--color-background)]"
+            className="lg:hidden fixed inset-x-0 bottom-0 top-16 md:top-17 z-60 flex flex-col items-center px-4 pt-6 pb-28 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-3 overflow-y-auto overscroll-contain bg-background"
             variants={menuVariants}
             initial="hidden"
             animate="visible"
@@ -295,7 +295,7 @@ function Header() {
               <NavLink
                 to="/services"
                 onClick={closeMenu}
-                className="w-full flex justify-center items-center font-headline-md text-lg uppercase tracking-widest font-black text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] border-4 border-outline px-4 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                className="w-full flex justify-center items-center font-headline-md text-lg uppercase tracking-widest font-black text-on-primary-container bg-primary-container border-4 border-outline px-4 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
               >
                 Work with me
               </NavLink>

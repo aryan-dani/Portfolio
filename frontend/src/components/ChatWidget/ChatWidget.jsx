@@ -153,7 +153,7 @@ function SleepSnores({ active, onPop, robot = false }) {
             className={`absolute font-label-bold leading-none select-none pointer-events-auto border-2 border-outline px-1 shadow-[2px_2px_0_var(--shadow-color)] ${
               robot
                 ? "bg-[#0d1a10] text-[#39ff14]"
-                : "bg-[var(--color-surface)] text-[var(--color-on-surface)]"
+                : "bg-surface text-on-surface"
             }`}
             style={{ left: snore.x, bottom: "62%", fontSize: snore.size }}
             initial={{ opacity: 0, y: 6, x: 0, scale: 0.7, rotate: snore.rotate }}
@@ -392,15 +392,15 @@ const KuroFace = memo(function KuroFace({
 function RouteBubble({ text }) {
   return (
     <motion.div
-      className="absolute bottom-full left-0 mb-3 w-[min(260px,calc(100vw-2.5rem))] border-2 border-outline bg-[var(--color-surface)] px-3 py-2.5 shadow-[4px_4px_0_var(--shadow-color)] z-0 pointer-events-none"
+      className="absolute bottom-full left-0 mb-3 w-[min(260px,calc(100vw-2.5rem))] border-2 border-outline bg-surface px-3 py-2.5 shadow-[4px_4px_0_var(--shadow-color)] z-0 pointer-events-none"
       initial={{ opacity: 0, y: 8, scale: 0.94 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 6, scale: 0.96 }}
       transition={{ type: "spring", stiffness: 380, damping: 28 }}
     >
-      <p className="font-body-md text-sm text-[var(--color-on-surface)] leading-snug whitespace-normal">{text}</p>
+      <p className="font-body-md text-sm text-on-surface leading-snug whitespace-normal">{text}</p>
       <span
-        className="absolute -bottom-2 left-8 h-3 w-3 rotate-45 border-r-2 border-b-2 border-outline bg-[var(--color-surface)]"
+        className="absolute -bottom-2 left-8 h-3 w-3 rotate-45 border-r-2 border-b-2 border-outline bg-surface"
         aria-hidden="true"
       />
     </motion.div>
@@ -413,7 +413,7 @@ function ThinkingDots() {
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          className="block h-1.5 w-1.5 bg-[var(--color-on-surface)]"
+          className="block h-1.5 w-1.5 bg-on-surface"
           animate={{ opacity: [0.25, 1, 0.25], y: [0, -2, 0] }}
           transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
         />
@@ -840,14 +840,14 @@ const ChatWidget = memo(function ChatWidget() {
 
   const panelBody = (
     <>
-      <div className="flex items-center gap-2 sm:gap-3 border-b-4 border-outline px-3 py-2.5 sm:px-3.5 sm:py-3 bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] shrink-0">
+      <div className="flex items-center gap-2 sm:gap-3 border-b-4 border-outline px-3 py-2.5 sm:px-3.5 sm:py-3 bg-primary-container text-on-primary-container shrink-0">
         <div className="relative shrink-0">
-          <div className="border-2 border-[var(--color-on-primary-container)] bg-[var(--color-surface)] p-0.5">
+          <div className="border-2 border-on-primary-container bg-surface p-0.5">
             <KuroFace pupilsRef={null} mood={mood} bliss={false} sleeping={false} robot={crtMode} size={36} />
           </div>
           <span
-            className={`absolute -right-1 -bottom-1 h-2.5 w-2.5 border-2 border-[var(--color-primary-container)] ${
-              loading ? "bg-[var(--color-surface-variant)] animate-pulse" : "bg-[#7dcea0]"
+            className={`absolute -right-1 -bottom-1 h-2.5 w-2.5 border-2 border-primary-container ${
+              loading ? "bg-surface-variant animate-pulse" : "bg-[#7dcea0]"
             }`}
             aria-hidden="true"
           />
@@ -867,10 +867,10 @@ const ChatWidget = memo(function ChatWidget() {
           <button
             type="button"
             onClick={togglePinned}
-            className={`h-8 min-w-8 px-1.5 border-2 border-[var(--color-on-primary-container)] font-mono text-[10px] uppercase hover:translate-x-px hover:translate-y-px transition-transform ${
+            className={`h-8 min-w-8 px-1.5 border-2 border-on-primary-container font-mono text-[10px] uppercase hover:translate-x-px hover:translate-y-px transition-transform ${
               pinned
-                ? "bg-[var(--color-on-primary-container)] text-[var(--color-primary-container)]"
-                : "bg-[var(--color-surface)] text-[var(--color-on-surface)]"
+                ? "bg-on-primary-container text-primary-container"
+                : "bg-surface text-on-surface"
             }`}
             aria-pressed={pinned}
             aria-label={pinned ? "Unpin chat" : "Pin chat"}
@@ -881,7 +881,7 @@ const ChatWidget = memo(function ChatWidget() {
           <button
             type="button"
             onClick={toggleFullscreen}
-            className="h-8 min-w-8 px-1.5 border-2 border-[var(--color-on-primary-container)] bg-[var(--color-surface)] text-[var(--color-on-surface)] font-mono text-[10px] uppercase hover:translate-x-px hover:translate-y-px transition-transform"
+            className="h-8 min-w-8 px-1.5 border-2 border-on-primary-container bg-surface text-on-surface font-mono text-[10px] uppercase hover:translate-x-px hover:translate-y-px transition-transform"
             aria-pressed={isFullscreen}
             aria-label={isFullscreen ? "Exit fullscreen" : "Fullscreen chat"}
             title={isFullscreen ? "Collapse" : "Fullscreen"}
@@ -891,7 +891,7 @@ const ChatWidget = memo(function ChatWidget() {
           <button
             type="button"
             onClick={forceCloseChat}
-            className="h-8 w-8 border-2 border-[var(--color-on-primary-container)] bg-[var(--color-surface)] text-[var(--color-on-surface)] font-label-bold text-xs hover:translate-x-px hover:translate-y-px transition-transform"
+            className="h-8 w-8 border-2 border-on-primary-container bg-surface text-on-surface font-label-bold text-xs hover:translate-x-px hover:translate-y-px transition-transform"
             aria-label="Close chat"
           >
             ✕
@@ -900,11 +900,11 @@ const ChatWidget = memo(function ChatWidget() {
       </div>
 
       <div
-        className="flex-1 overflow-y-auto px-3.5 py-3.5 space-y-3.5 text-sm min-h-0 bg-[var(--color-surface)]"
+        className="flex-1 overflow-y-auto px-3.5 py-3.5 space-y-3.5 text-sm min-h-0 bg-surface"
         data-lenis-prevent
       >
         {hasStoredChat.current && messages.length > 1 && (
-          <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--color-text-muted)] text-center">
+          <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-text-muted text-center">
             Kuro remembers this visit
           </p>
         )}
@@ -919,20 +919,20 @@ const ChatWidget = memo(function ChatWidget() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 400, damping: 28 }}
             >
-              <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--color-text-muted)] px-0.5">
+              <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted px-0.5">
                 {isUser ? "You" : "Kuro"}
               </span>
               <div
                 className={`max-w-[92%] border-2 border-outline px-3 py-2.5 leading-snug shadow-[3px_3px_0_var(--shadow-color)] ${
                   isUser
-                    ? "bg-[var(--color-on-background)] text-[var(--color-background)]"
-                    : "bg-[var(--color-surface-variant)] text-[var(--color-on-surface)]"
+                    ? "bg-on-background text-background"
+                    : "bg-surface-variant text-on-surface"
                 }`}
               >
                 {isUser ? msg.text : <KuroMarkdown text={msg.text} />}
               </div>
               {msg.actionLabel && (
-                <p className="font-mono text-[9px] uppercase tracking-[0.1em] text-[var(--color-text-muted)] px-0.5">
+                <p className="font-mono text-[9px] uppercase tracking-[0.1em] text-text-muted px-0.5">
                   {msg.actionLabel}
                 </p>
               )}
@@ -946,11 +946,11 @@ const ChatWidget = memo(function ChatWidget() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--color-text-muted)] px-0.5">
+            <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted px-0.5">
               Kuro
             </span>
-            <div className="inline-flex items-center border-2 border-outline bg-[var(--color-surface-variant)] px-3 py-2.5 shadow-[3px_3px_0_var(--shadow-color)]">
-              <span className="font-mono text-xs text-[var(--color-text-muted)]">{thinkingLine}</span>
+            <div className="inline-flex items-center border-2 border-outline bg-surface-variant px-3 py-2.5 shadow-[3px_3px_0_var(--shadow-color)]">
+              <span className="font-mono text-xs text-text-muted">{thinkingLine}</span>
               <ThinkingDots />
             </div>
           </motion.div>
@@ -966,7 +966,7 @@ const ChatWidget = memo(function ChatWidget() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <span className="w-full pt-2.5 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
+            <span className="w-full pt-2.5 font-mono text-[9px] uppercase tracking-[0.16em] text-text-muted">
               Try saying
             </span>
             {suggestionChips.map((chip) => (
@@ -974,7 +974,7 @@ const ChatWidget = memo(function ChatWidget() {
                 key={chip.label}
                 type="button"
                 onClick={() => sendMessage(chip.send)}
-                className="border-2 border-outline px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-wide bg-[var(--color-surface)] text-[var(--color-on-surface)] shadow-[2px_2px_0_var(--shadow-color)] hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)] hover:translate-x-px hover:translate-y-px hover:shadow-[1px_1px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                className="border-2 border-outline px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-wide bg-surface text-on-surface shadow-[2px_2px_0_var(--shadow-color)] hover:bg-primary-container hover:text-on-primary-container hover:translate-x-px hover:translate-y-px hover:shadow-[1px_1px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
               >
                 {chip.label}
               </button>
@@ -983,9 +983,9 @@ const ChatWidget = memo(function ChatWidget() {
         )}
       </AnimatePresence>
 
-      <div className="border-t-4 border-outline p-2.5 bg-[var(--color-surface-variant)] shrink-0">
+      <div className="border-t-4 border-outline p-2.5 bg-surface-variant shrink-0">
         <div
-          className={`flex gap-2 border-2 border-outline bg-[var(--color-surface)] p-1.5 shadow-[3px_3px_0_var(--shadow-color)] transition-shadow ${
+          className={`flex gap-2 border-2 border-outline bg-surface p-1.5 shadow-[3px_3px_0_var(--shadow-color)] transition-shadow ${
             inputFocused ? "shadow-[4px_4px_0_var(--shadow-color)]" : ""
           }`}
         >
@@ -997,7 +997,7 @@ const ChatWidget = memo(function ChatWidget() {
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             placeholder={placeholder}
-            className="flex-1 min-w-0 bg-transparent px-2 py-2 font-body-md text-sm text-[var(--color-on-surface)] placeholder:text-[var(--color-text-muted)] outline-none"
+            className="flex-1 min-w-0 bg-transparent px-2 py-2 font-body-md text-sm text-on-surface placeholder:text-text-muted outline-none"
             aria-label="Message Kuro"
           />
           <button
@@ -1006,8 +1006,8 @@ const ChatWidget = memo(function ChatWidget() {
             disabled={!canSend}
             className={`shrink-0 border-2 border-outline px-3.5 py-2 font-label-bold uppercase text-xs tracking-wide transition-all ${
               canSend
-                ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-px hover:translate-y-px hover:shadow-none"
-                : "bg-[var(--color-surface)] text-[var(--color-on-surface)] cursor-not-allowed"
+                ? "bg-primary-container text-on-primary-container shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-px hover:translate-y-px hover:shadow-none"
+                : "bg-surface text-on-surface cursor-not-allowed"
             }`}
           >
             Send
@@ -1048,7 +1048,7 @@ const ChatWidget = memo(function ChatWidget() {
             <AnimatePresence>
               {chatOpen && !isFullscreen && (
                 <motion.div
-                  className="relative z-20 mb-3 flex flex-col border-4 border-outline bg-[var(--color-surface)] shadow-[10px_10px_0_var(--shadow-color)] overflow-hidden"
+                  className="relative z-20 mb-3 flex flex-col border-4 border-outline bg-surface shadow-[10px_10px_0_var(--shadow-color)] overflow-hidden"
                   style={{ width: dockedWidth, height: dockedHeight, maxWidth: "calc(100vw - 2rem)" }}
                   initial={{ opacity: 0, y: 14, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -1134,7 +1134,7 @@ const ChatWidget = memo(function ChatWidget() {
               onClick={() => setIsFullscreen(false)}
             />
             <motion.div
-              className="relative z-10 flex flex-col w-[min(920px,calc(100vw-2rem))] h-[min(860px,calc(100vh-3rem))] border-4 border-outline bg-[var(--color-surface)] shadow-[12px_12px_0_var(--shadow-color)] overflow-hidden"
+              className="relative z-10 flex flex-col w-[min(920px,calc(100vw-2rem))] h-[min(860px,calc(100vh-3rem))] border-4 border-outline bg-surface shadow-[12px_12px_0_var(--shadow-color)] overflow-hidden"
               initial={{ opacity: 0, y: 18, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 12, scale: 0.98 }}

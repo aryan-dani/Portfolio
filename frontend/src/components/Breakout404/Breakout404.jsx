@@ -191,7 +191,7 @@ function BreakoutGame({ onScore }) {
   }, [startGame]);
 
   return (
-    <div className="w-full max-w-xl mx-auto border-4 border-outline bg-[var(--color-surface)] p-3 shadow-[8px_8px_0_var(--shadow-color)]">
+    <div className="w-full max-w-xl mx-auto border-4 border-outline bg-surface p-3 shadow-[8px_8px_0_var(--shadow-color)]">
       <div className="flex justify-between font-label-bold text-xs uppercase mb-2">
         <span>Score: {score}</span>
         <span>High: {high}</span>
@@ -204,7 +204,7 @@ function BreakoutGame({ onScore }) {
         aria-label="404 breakout game. Move the pointer or use arrow keys to control the paddle."
       />
       {gameOver && (
-        <p className="mt-2 font-body-md text-sm text-[var(--color-on-surface)]">
+        <p className="mt-2 font-body-md text-sm text-on-surface">
           {score >= 80 ? "Even my 404 ships features." : "Press restart or go home."}
         </p>
       )}
@@ -212,7 +212,7 @@ function BreakoutGame({ onScore }) {
         <button
           type="button"
           onClick={startGame}
-          className="border-2 border-outline px-3 py-2 font-label-bold uppercase text-xs bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
+          className="border-2 border-outline px-3 py-2 font-label-bold uppercase text-xs bg-primary-container text-on-primary-container"
         >
           Restart
         </button>

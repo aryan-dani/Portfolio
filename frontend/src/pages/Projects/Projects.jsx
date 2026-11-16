@@ -101,19 +101,19 @@ function Projects() {
             className="flex flex-col xl:flex-row gap-6 w-full justify-between items-stretch xl:items-center mt-4"
             variants={cardVariants}
           >
-            <div className="flex items-center bg-[var(--color-surface)] border-4 border-outline p-2 w-full xl:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
-              <FaSearch className="text-xl ml-2 mr-3 text-[var(--color-on-surface)]" />
+            <div className="flex items-center bg-surface border-4 border-outline p-2 w-full xl:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+              <FaSearch className="text-xl ml-2 mr-3 text-on-surface" />
               <input
                 type="text"
                 aria-label="Search projects"
                 placeholder="Search projects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent border-none outline-none w-full font-body-md text-lg text-[var(--color-on-surface)] cursor-none placeholder:text-[var(--color-text-muted)]"
+                className="bg-transparent border-none outline-none w-full font-body-md text-lg text-on-surface cursor-none placeholder:text-text-muted"
               />
               {searchTerm && (
-                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-[var(--color-primary-container)] transition-colors" aria-label="Clear project search">
-                  <FaTimes className="text-[var(--color-on-surface)]" />
+                <button onClick={() => setSearchTerm("")} className="mr-2 p-1 hover:bg-primary-container transition-colors" aria-label="Clear project search">
+                  <FaTimes className="text-on-surface" />
                 </button>
               )}
             </div>
@@ -126,8 +126,8 @@ function Projects() {
                     key={category.id}
                     className={`border-4 border-outline px-4 py-2 font-label-bold text-sm md:text-base uppercase transition-all cursor-none ${
                       isSelected
-                        ? "bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[2px] translate-y-[2px]"
-                        : "bg-[var(--color-surface)] text-[var(--color-on-surface)] shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 hover:bg-[var(--color-surface-variant)]"
+                        ? "bg-primary-container text-on-primary-container shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[2px] translate-y-[2px]"
+                        : "bg-surface text-on-surface shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 hover:bg-surface-variant"
                     }`}
                     onClick={() => setActiveFilter(category.id)}
                     aria-pressed={isSelected}
@@ -142,10 +142,10 @@ function Projects() {
 
           {/* Tech tag matrix */}
           <motion.div
-            className="w-full bg-[var(--color-surface)] border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
+            className="w-full bg-surface border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
             variants={cardVariants}
           >
-            <div className={`flex items-center justify-between bg-[var(--color-surface)] ${isFilterExpanded ? 'border-b-4 border-outline' : ''}`}>
+            <div className={`flex items-center justify-between bg-surface ${isFilterExpanded ? 'border-b-4 border-outline' : ''}`}>
               <button
                 type="button"
                 className="flex flex-1 items-center gap-3 px-6 py-4 text-left cursor-pointer"
@@ -153,7 +153,7 @@ function Projects() {
                 aria-expanded={isFilterExpanded}
                 aria-controls="project-tech-filters"
               >
-                <span className="font-label-bold text-sm uppercase tracking-wider text-[var(--color-on-surface)]">
+                <span className="font-label-bold text-sm uppercase tracking-wider text-on-surface">
                   Filter by Tech Stack {selectedTags.length > 0 && `(${selectedTags.length})`}
                 </span>
                 <motion.div animate={{ rotate: isFilterExpanded ? 180 : 0 }}>
@@ -195,8 +195,8 @@ function Projects() {
                           aria-pressed={isSelected}
                           className={`px-3 py-1 text-xs uppercase font-label-bold border-2 border-outline transition-all cursor-none ${
                             isSelected
-                              ? "bg-[var(--color-on-background)] text-[var(--color-background)] shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[1px] translate-y-[1px]"
-                              : "bg-[var(--color-surface-variant)] text-[var(--color-on-surface)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-0.5 hover:translate-x-0.5 hover:bg-[var(--color-primary-container)] hover:text-[var(--color-on-primary-container)]"
+                              ? "bg-on-background text-background shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[1px] translate-y-[1px]"
+                              : "bg-surface-variant text-on-surface shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-0.5 hover:translate-x-0.5 hover:bg-primary-container hover:text-on-primary-container"
                           }`}
                           whileTap={{ scale: 0.96 }}
                         >
@@ -232,7 +232,7 @@ function Projects() {
             </motion.div>
           ) : (
             <motion.div
-              className="bg-[var(--color-surface)] border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] p-12 text-center flex flex-col items-center gap-4 w-full"
+              className="bg-surface border-4 border-outline shadow-[8px_8px_0px_0px_var(--shadow-color)] p-12 text-center flex flex-col items-center gap-4 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -241,10 +241,10 @@ function Projects() {
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               >
-                <FaSearch className="text-5xl text-[var(--color-on-surface)]" />
+                <FaSearch className="text-5xl text-on-surface" />
               </motion.div>
-              <h3 className="font-headline-md text-3xl uppercase text-[var(--color-on-surface)]">No projects found</h3>
-              <p className="font-body-md text-lg text-[var(--color-text-muted)]">Try adjusting your search terms or filters.</p>
+              <h3 className="font-headline-md text-3xl uppercase text-on-surface">No projects found</h3>
+              <p className="font-body-md text-lg text-text-muted">Try adjusting your search terms or filters.</p>
             </motion.div>
           )}
         </AnimatePresence>

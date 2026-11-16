@@ -35,7 +35,7 @@ const ProgressiveImage = memo(function ProgressiveImage({
   const errored = status === "error";
 
   return (
-    <div className={`relative overflow-hidden bg-[var(--color-surface-variant)] ${className}`}>
+    <div className={`relative overflow-hidden bg-surface-variant ${className}`}>
       {!loaded && !errored && (
         <div
           className="absolute inset-0 bg-hatch animate-pulse pointer-events-none"
@@ -45,7 +45,7 @@ const ProgressiveImage = memo(function ProgressiveImage({
 
       {errored ? (
         <div className="absolute inset-0 flex items-center justify-center p-3">
-          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--color-text-muted)] text-center">
+          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted text-center">
             Image unavailable
           </span>
         </div>
