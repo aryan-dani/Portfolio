@@ -11,20 +11,18 @@ function shouldSkipBootLoader() {
 }
 
 /**
- * 8 Rapid-Fire, Authentic Newspaper Match-Cuts.
- * Each cut is a real newspaper headline about Aryan Dani's real engineering work:
- * 1. MIT-WPU Computer Vision & YOLOv11 Capstone
- * 2. ProvaanTech Applied AI/ML & Agentic Architectures
- * 3. Artem HealthTech Clinical Telemetry & HIPAA Systems
- * 4. Google Student Ambassador & Gemini Advocacy
- * 5. Arbiter Autonomous Testing Agents
- * 6. High-Performance Neo-Brutalist Web Development
- * 7. Client & Startup Production Shipping
- * 8. Final Climax: "Building the future, one line of code at a time — Aryan Dani"
+ * 16 Rapid-Fire, Authentic Newspaper Match-Cuts.
+ * Alternates between Headline Broadsheet Views and Extreme Macro Paragraph Views
+ * at ~110ms-130ms per cut, matching the kinetic speed of high-end video edits.
+ * All headlines and macro snippets speak to Aryan Dani's real engineering work:
+ * MIT-WPU Computer Vision, ProvaanTech AI/ML, Artem HealthTech, Google Student Ambassador,
+ * Arbiter Testing Agents, and Full-Stack Tactile Neo-Brutalism.
  */
 const NEWSPAPER_CUTS = [
+  // Cut 0: Headline - Autonomous Systems
   {
-    id: "cut-1",
+    id: "cut-0",
+    type: "headline",
     masthead: "THE CHRONICLE OF AUTONOMOUS SYSTEMS",
     section: "RESEARCH BENCHMARK • VOL. 24",
     dateline: "PUNE, INDIA // MIT-WPU LABS",
@@ -33,14 +31,26 @@ const NEWSPAPER_CUTS = [
     suffix: " achieved sub-25ms autonomous threat detection.",
     byline: "— The Autonomous Systems Review // MIT-WPU Capstone Report",
     topBody:
-      "Engineering teams in Pune confirmed that the newly benchmarked pipeline achieved sustained sub-25ms inference latency across high-throughput security scanner streams. Initial field tests confirmed zero frame loss during high-concurrency object classification trials.",
+      "Engineering teams in Pune confirmed that the benchmarked vision pipeline achieved sustained sub-25ms inference latency across high-throughput surveillance streams. Initial field tests verified zero frame loss during high-concurrency object classification trials.",
     bottomBody:
-      "The integrated vision system couples YOLOv11 weapon profiling with PosePro computer vision motion telemetry, tracking joint angle kinematics under real-world lighting conditions. Faculty advisors commended the architecture for production-ready reliability.",
-    tilt: -0.5,
-    duration: 220,
+      "The integrated vision system couples YOLOv11 weapon profiling with PosePro computer vision motion telemetry, tracking joint kinematics under real-world conditions. Advisors commended the architecture for production-ready reliability.",
+    tilt: -0.4,
+    duration: 130,
   },
+  // Cut 1: Macro - YOLOv11 Pipeline
+  {
+    id: "cut-1",
+    type: "macro",
+    beforeText: "Real-time surveillance feeds confirmed sub-25ms response latency. Benchmark evaluations demonstrated that ",
+    anchor: "Aryan Dani",
+    afterText: " deployed the YOLOv11 threat detection model without dropped frames across enterprise camera arrays.",
+    tilt: 0.5,
+    duration: 110,
+  },
+  // Cut 2: Headline - ProvaanTech AI/ML
   {
     id: "cut-2",
+    type: "headline",
     masthead: "THE APPLIED INTELLIGENCE QUARTERLY",
     section: "ENTERPRISE MACHINE LEARNING • VOL. 25",
     dateline: "SYSTEMS LABS // PROVAANTECH",
@@ -49,14 +59,36 @@ const NEWSPAPER_CUTS = [
     suffix: " deploys multi-agent production pipelines.",
     byline: "— Applied Intelligence Dispatch // ProvaanTech AI/ML",
     topBody:
-      "Client systems deploying custom agentic workflows reported significant reductions in manual data processing overhead. The system uses LangGraph cyclic graphs paired with structured tool calling to route business inquiries directly into deterministic workflows.",
+      "Client systems deploying custom agentic workflows reported significant reductions in manual processing overhead. The system uses LangGraph cyclic graphs paired with structured tool calling to route business inquiries directly into deterministic workflows.",
     bottomBody:
       "Operating on a daily self-directed research cadence, the engineering team prioritizes deployable production prototypes over academic theory. RAG indexers and vector stores are actively verified against real enterprise datasets.",
-    tilt: 0.6,
-    duration: 190,
+    tilt: 0.4,
+    duration: 120,
   },
+  // Cut 3: Macro - LangGraph & Agent Loops
   {
     id: "cut-3",
+    type: "macro",
+    beforeText: "Operating on a daily client shipping cadence, AI engineering lead ",
+    anchor: "Aryan Dani",
+    afterText: " engineered LangGraph state machines and retrieval-augmented generation architectures for production client systems.",
+    tilt: -0.5,
+    duration: 110,
+  },
+  // Cut 4: Macro - Healthcare Data
+  {
+    id: "cut-4",
+    type: "macro",
+    beforeText: "Audits of clinical informatics and diagnostic telemetry confirmed that ",
+    anchor: "Aryan Dani",
+    afterText: " maintained end-to-end HIPAA data isolation while delivering real-time patient analytics across cloud dashboards.",
+    tilt: 0.4,
+    duration: 110,
+  },
+  // Cut 5: Headline - Artem HealthTech
+  {
+    id: "cut-5",
+    type: "headline",
     masthead: "HEALTHCARE TECH CHRONICLE",
     section: "CLINICAL DATA SYSTEMS • VOL. 26",
     dateline: "CLINICAL INFORMATICS // ARTEM HEALTHTECH",
@@ -69,10 +101,22 @@ const NEWSPAPER_CUTS = [
     bottomBody:
       "Predictive indicators and vital statistics are indexed in real time to provide diagnostic support for medical professionals. Audits confirmed that end-to-end encryption maintained full regulatory compliance across all testing facilities.",
     tilt: -0.4,
-    duration: 190,
+    duration: 120,
   },
+  // Cut 6: Macro - PosePro Motion Analysis
   {
-    id: "cut-4",
+    id: "cut-6",
+    type: "macro",
+    beforeText: "Under 25ms joint angle kinematics and biomechanical symmetry tracking, developer ",
+    anchor: "Aryan Dani",
+    afterText: " implemented the PosePro computer vision engine utilizing custom MediaPipe landmark pipelines.",
+    tilt: 0.5,
+    duration: 110,
+  },
+  // Cut 7: Headline - Google Student Ambassador
+  {
+    id: "cut-7",
+    type: "headline",
     masthead: "GLOBAL DEVELOPER DISPATCH",
     section: "COMMUNITY ADVOCACY • VOL. 27",
     dateline: "DEVELOPER ECOSYSTEM // GOOGLE DEVELOPERS",
@@ -84,11 +128,33 @@ const NEWSPAPER_CUTS = [
       "Student developer communities gathered across Pune for hands-on multimodal AI workshops exploring the Gemini Live and Decisions APIs. The initiative focuses on bridging academic curricula with real-world developer tooling.",
     bottomBody:
       "Attendees built prototype agentic applications using modern SDKs and participated in live code reviews. Organizers commended the clear, practical demonstrations of agent architectures and function calling.",
-    tilt: 0.5,
-    duration: 190,
+    tilt: 0.4,
+    duration: 120,
   },
+  // Cut 8: Macro - Google Ambassador Hackathons
   {
-    id: "cut-5",
+    id: "cut-8",
+    type: "macro",
+    beforeText: "Representing Google as Student Ambassador (Dec 2025), ",
+    anchor: "Aryan Dani",
+    afterText: " mentored emerging student developers through hands-on multimodal AI workshops and hackathon code reviews.",
+    tilt: -0.4,
+    duration: 110,
+  },
+  // Cut 9: Macro - Arbiter Autonomous Agents
+  {
+    id: "cut-9",
+    type: "macro",
+    beforeText: "Eliminating testing bottlenecks in continuous integration pipelines, engineer ",
+    anchor: "Aryan Dani",
+    afterText: " architected Arbiter autonomous testing agents to autonomously heal brittle end-to-end regression test suites.",
+    tilt: 0.5,
+    duration: 110,
+  },
+  // Cut 10: Headline - Systems Architecture & Arbiter
+  {
+    id: "cut-10",
+    type: "headline",
     masthead: "SYSTEMS ARCHITECTURE & CI/CD REVIEW",
     section: "AUTONOMOUS AGENTS • VOL. 28",
     dateline: "SOFTWARE QUALITY INITIATIVE // ARBITER",
@@ -100,11 +166,23 @@ const NEWSPAPER_CUTS = [
       "Automated test suites utilizing autonomous agent loops resolved brittle end-to-end testing cycles in continuous deployment pipelines. The agent autonomously diagnoses broken selectors, generates fix recommendations, and verifies patches.",
     bottomBody:
       "Engineering leaders reported an 80% decrease in manual QA triage time following integration. The architecture operates entirely within sandboxed headless execution environments for deterministic validation.",
-    tilt: -0.6,
-    duration: 190,
+    tilt: -0.5,
+    duration: 120,
   },
+  // Cut 11: Macro - Web Engineering Craft
   {
-    id: "cut-6",
+    id: "cut-11",
+    type: "macro",
+    beforeText: "Audits across mobile and desktop runtimes confirmed 0ms cumulative layout shifts where ",
+    anchor: "Aryan Dani",
+    afterText: " delivered tactile neo-brutalist web engineering with sub-second TTFB and 60fps interaction responsiveness.",
+    tilt: 0.4,
+    duration: 110,
+  },
+  // Cut 12: Headline - Digital Craft Review
+  {
+    id: "cut-12",
+    type: "headline",
     masthead: "MODERN WEB CRAFT & EDITORIAL",
     section: "DIGITAL ARCHITECTURE • VOL. 29",
     dateline: "HIGH-PERFORMANCE FRONTEND // PUNE",
@@ -116,11 +194,23 @@ const NEWSPAPER_CUTS = [
       "Rejecting sterile cookie-cutter templates, modern web creators are embracing tactile neo-brutalism paired with fluid micro-interactions. The engineering blueprint achieves top-tier Lighthouse scores across performance, SEO, and accessibility.",
     bottomBody:
       "Combining React 18, Vite, Framer Motion, and Tailwind CSS, the application delivers smooth 60fps animations with zero cumulative layout shifts. PWA precaching ensures offline readiness across all modern mobile browsers.",
-    tilt: 0.4,
-    duration: 190,
+    tilt: 0.3,
+    duration: 120,
   },
+  // Cut 13: Macro - Startup Delivery
   {
-    id: "cut-7",
+    id: "cut-13",
+    type: "macro",
+    beforeText: "Founders partnering for rapid product development verified that full-stack developer ",
+    anchor: "Aryan Dani",
+    afterText: " bridges deep learning backends with polished, high-converting React and Next.js commercial web applications.",
+    tilt: -0.4,
+    duration: 110,
+  },
+  // Cut 14: Headline - Startup Founders Weekly
+  {
+    id: "cut-14",
+    type: "headline",
     masthead: "TECH FOUNDERS WEEKLY",
     section: "VENTURE & ENGINEERING • VOL. 30",
     dateline: "FOUNDER ECOSYSTEM // CLIENT SYSTEMS",
@@ -133,10 +223,12 @@ const NEWSPAPER_CUTS = [
     bottomBody:
       "Live production case studies illustrate end-to-end product launches spanning custom LLM agents, interactive portfolio engines, and high-converting commercial landing pages.",
     tilt: -0.3,
-    duration: 210,
+    duration: 130,
   },
+  // Cut 15: Final Climax Frame - Smooth Handoff into Website
   {
-    id: "cut-8",
+    id: "cut-15",
+    type: "headline",
     masthead: "THE CHRONICLE OF MODERN SYSTEMS",
     section: "VERIFIED DEPLOYMENT // SHIP READY",
     dateline: "PUNE, INDIA // WORLDWIDE REMOTE",
@@ -149,7 +241,7 @@ const NEWSPAPER_CUTS = [
     bottomBody:
       "Tactile neo-brutalist interface hydrated. 0ms layout shifts, sub-second TTFB, agentic intelligence, and verified dofollow case studies active.",
     tilt: 0,
-    duration: 520,
+    duration: 420,
   },
 ];
 
@@ -178,7 +270,7 @@ const PageLoader = memo(function PageLoader() {
     }
     setTimeout(() => {
       setIsLoading(false);
-    }, 420);
+    }, 380);
   }, []);
 
   // Allow replaying intro on custom event
@@ -192,7 +284,7 @@ const PageLoader = memo(function PageLoader() {
     return () => window.removeEventListener("replay-intro", handleReplay);
   }, []);
 
-  // Rapid match-cut sequencer
+  // Rapid match-cut sequencer (~110ms-130ms per cut)
   useEffect(() => {
     if (!isLoading) return undefined;
     if (reduceMotion) {
@@ -231,37 +323,38 @@ const PageLoader = memo(function PageLoader() {
   if (!isLoading) return null;
 
   const cut = NEWSPAPER_CUTS[cutIndex] || NEWSPAPER_CUTS[0];
+  const isMacro = cut.type === "macro";
 
   return (
     <AnimatePresence>
       <motion.div
         className="page-loader fixed inset-0 z-[99999] flex flex-col items-center justify-center select-none overflow-hidden"
         style={{
-          // Authentic vintage newspaper paper color with subtle vignette
-          background: "radial-gradient(circle at 50% 50%, #fbfaf5 40%, #eee9dc 100%)",
+          // Authentic newsprint tone with subtle paper vignette
+          background: "radial-gradient(circle at 50% 50%, #fbfaf5 40%, #eee8db 100%)",
           color: "#18181b",
         }}
         initial={{ opacity: 1 }}
         animate={{
           opacity: isExiting ? 0 : 1,
-          scale: isExiting ? 1.12 : 1,
+          scale: isExiting ? 1.25 : 1,
           filter: isExiting ? "blur(8px)" : "none",
         }}
         exit={{ opacity: 0 }}
-        transition={{ duration: isExiting ? 0.42 : 0.04, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: isExiting ? 0.38 : 0.03, ease: [0.22, 1, 0.36, 1] }}
         aria-live="polite"
         aria-label="Aryan Dani Portfolio Loading Sequence"
       >
-        {/* Soft Macro-Lens Depth of Field Blur on Top and Bottom edges */}
-        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 pointer-events-none z-20 backdrop-blur-[2px] bg-gradient-to-b from-[#eee9dc]/80 via-[#eee9dc]/40 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 h-24 sm:h-32 pointer-events-none z-20 backdrop-blur-[2px] bg-gradient-to-t from-[#eee9dc]/80 via-[#eee9dc]/40 to-transparent" />
+        {/* Optical Macro-Lens Tilt-Shift Blur on Top and Bottom margins */}
+        <div className="absolute top-0 inset-x-0 h-28 sm:h-36 pointer-events-none z-30 backdrop-blur-[2px] bg-gradient-to-b from-[#eee8db]/85 via-[#eee8db]/40 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-28 sm:h-36 pointer-events-none z-30 backdrop-blur-[2px] bg-gradient-to-t from-[#eee8db]/85 via-[#eee8db]/40 to-transparent" />
 
         {/* Global Progress Line across the top */}
         <div className="absolute top-0 inset-x-0 h-1 bg-neutral-300/80 z-40">
           <motion.div
             className="h-full bg-neutral-900"
             style={{ width: `${((cutIndex + 1) / NEWSPAPER_CUTS.length) * 100}%` }}
-            transition={{ duration: 0.1, ease: "linear" }}
+            transition={{ duration: 0.08, ease: "linear" }}
           />
         </div>
 
@@ -276,57 +369,130 @@ const PageLoader = memo(function PageLoader() {
         </button>
 
         {/* ═══════════════════════════════════════════════════════════════
-            AUTHENTIC NEWSPAPER BROADSHEET ARTICLE CONTAINER
+            MODE A: HEADLINE BROADSHEET VIEW
             ═══════════════════════════════════════════════════════════════ */}
-        <motion.div
-          key={cut.id}
-          initial={{ scale: 1.015, opacity: 0.96 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.06, ease: "easeOut" }}
-          className="relative z-10 max-w-4xl w-full px-5 sm:px-8 md:px-12 py-6 flex flex-col justify-center min-h-[520px] pointer-events-none"
-        >
-          {/* Newspaper Masthead & Dateline Banner */}
-          <div className="border-b border-neutral-900/80 pb-1.5 mb-2.5 flex items-center justify-between font-mono text-[9px] sm:text-xs text-neutral-600 uppercase tracking-widest">
-            <span>{cut.section}</span>
-            <span className="hidden sm:inline text-neutral-800 font-semibold">{cut.dateline}</span>
-            <span>PRICE: 1 LINE OF CODE</span>
-          </div>
+        {!isMacro ? (
+          <motion.div
+            key={cut.id}
+            initial={{ scale: 1.02, opacity: 0.95 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.05, ease: "easeOut" }}
+            className="relative z-10 max-w-4xl w-full px-5 sm:px-8 md:px-12 py-6 flex flex-col justify-center min-h-[520px] pointer-events-none"
+          >
+            {/* Newspaper Masthead & Dateline Banner */}
+            <div className="border-b border-neutral-900/80 pb-1.5 mb-2.5 flex items-center justify-between font-mono text-[9px] sm:text-xs text-neutral-600 uppercase tracking-widest">
+              <span>{cut.section}</span>
+              <span className="hidden sm:inline text-neutral-800 font-semibold">{cut.dateline}</span>
+              <span>PRICE: 1 LINE OF CODE</span>
+            </div>
 
-          <div className="border-b-2 border-neutral-900 pb-2 mb-3.5 flex items-baseline justify-between">
-            <h1
-              className="font-serif font-black tracking-tight uppercase text-base sm:text-xl md:text-2xl text-neutral-950"
+            <div className="border-b-2 border-neutral-900 pb-2 mb-3.5 flex items-baseline justify-between">
+              <h1
+                className="font-serif font-black tracking-tight uppercase text-base sm:text-xl md:text-2xl text-neutral-950"
+                style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
+              >
+                {cut.masthead}
+              </h1>
+              <span className="font-mono text-[9px] sm:text-[11px] text-neutral-500 uppercase tracking-wider">
+                PRINTED IN PUNE
+              </span>
+            </div>
+
+            {/* Dense Multi-Paragraph Newspaper Columns Above Headline */}
+            <div className="hidden sm:block text-[11px] sm:text-xs md:text-[13px] leading-relaxed text-neutral-600 text-justify font-serif space-y-1 mb-3 opacity-75">
+              <p style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+                {cut.topBody}
+              </p>
+            </div>
+
+            {/* Center Headline Section with Embedded Yellow Highlighter */}
+            <div className="my-1 sm:my-2 border-y-2 border-neutral-900 py-3 sm:py-4 flex flex-col items-center justify-center text-center">
+              <h2
+                className="font-serif font-black text-xl sm:text-2xl md:text-4xl lg:text-5xl text-neutral-950 leading-[1.2] tracking-tight max-w-3xl"
+                style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
+              >
+                <span>{cut.prefix}</span>
+                {/* Genuine Physical Highlighter Pen Stroke */}
+                <span
+                  className="relative inline-block px-2 sm:px-3 py-0.5 mx-1 font-bold text-neutral-950 rounded-[2px]"
+                  style={{
+                    backgroundColor: "#fde047",
+                    boxShadow: "0 0 12px rgba(253, 224, 71, 0.8)",
+                    transform: `rotate(${cut.tilt}deg)`,
+                    mixBlendMode: "multiply",
+                    display: "inline-block",
+                  }}
+                >
+                  {cut.anchor}
+                </span>
+                <span>{cut.suffix}</span>
+              </h2>
+
+              <p
+                className="font-serif italic text-xs sm:text-sm text-neutral-700 mt-2 tracking-normal"
+                style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
+              >
+                {cut.byline}
+              </p>
+            </div>
+
+            {/* Dense Multi-Paragraph Newspaper Columns Below Headline */}
+            <div className="hidden sm:block text-[11px] sm:text-xs md:text-[13px] leading-relaxed text-neutral-600 text-justify font-serif space-y-1 mt-3 opacity-75">
+              <p style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+                {cut.bottomBody}
+              </p>
+            </div>
+
+            {/* Newspaper Footer Rule with Cut Counter */}
+            <div className="border-t border-neutral-900/80 pt-2 mt-3 flex items-center justify-between font-mono text-[9px] sm:text-xs text-neutral-600 uppercase tracking-wider">
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-2 h-2 bg-neutral-900 rounded-none animate-pulse" />
+                <span>CUT {cutIndex + 1} OF {NEWSPAPER_CUTS.length}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                {NEWSPAPER_CUTS.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`inline-block h-1 transition-all duration-75 ${
+                      i === cutIndex ? "w-4 bg-neutral-950" : i < cutIndex ? "w-2 bg-neutral-400" : "w-1 bg-neutral-300"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span>CIRCULATION WORLDWIDE • PRODUCTION VERIFIED</span>
+            </div>
+          </motion.div>
+        ) : (
+          /* ═══════════════════════════════════════════════════════════════
+             MODE B: EXTREME MACRO PARAGRAPH VIEW (Camera Zoomed 2.2x In)
+             ═══════════════════════════════════════════════════════════════ */
+          <motion.div
+            key={cut.id}
+            initial={{ scale: 1.03, opacity: 0.95 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.05, ease: "easeOut" }}
+            className="relative z-10 max-w-4xl w-full px-6 sm:px-12 py-8 flex flex-col justify-center items-center min-h-[520px] pointer-events-none text-center"
+          >
+            {/* Top faded newspaper lines (Optical Shallow Depth of Field) */}
+            <p
+              className="font-serif text-sm sm:text-lg md:text-xl text-neutral-500/50 leading-relaxed mb-4 blur-[0.8px] line-clamp-2 select-none"
               style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
             >
-              {cut.masthead}
-            </h1>
-            <span className="font-mono text-[9px] sm:text-[11px] text-neutral-500 uppercase tracking-wider">
-              PRINTED IN PUNE
-            </span>
-          </div>
-
-          {/* Dense Multi-Paragraph Newspaper Columns Above Headline */}
-          <div className="hidden sm:block text-[11px] sm:text-xs md:text-[13px] leading-relaxed text-neutral-600 text-justify font-serif space-y-1 mb-3 opacity-75">
-            <p style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-              {cut.topBody}
+              The verified metrics were submitted to continuous evaluation clusters. Benchmarks recorded sustained high concurrency with zero regression or memory degradation.
             </p>
-          </div>
 
-          {/* ═════════════════════════════════════════════════════════════
-              THE CENTER HEADLINE WITH EMBEDDED YELLOW HIGHLIGHTER
-              "Aryan Dani" is locked at exact horizontal & vertical center
-              ═════════════════════════════════════════════════════════════ */}
-          <div className="my-1 sm:my-2 border-y-2 border-neutral-900 py-3 sm:py-4 flex flex-col items-center justify-center text-center">
-            <h2
-              className="font-serif font-black text-xl sm:text-2xl md:text-4xl lg:text-5xl text-neutral-950 leading-[1.2] tracking-tight max-w-3xl"
+            {/* Central Macro Sentence with Locked Highlighter */}
+            <p
+              className="font-serif text-xl sm:text-3xl md:text-4xl lg:text-5xl text-neutral-900 leading-[1.3] tracking-tight my-2"
               style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
             >
-              <span>{cut.prefix}</span>
-              {/* REAL PHYSICAL HIGHLIGHTER PEN STROKE */}
+              <span>{cut.beforeText}</span>
+              {/* Center Highlighted Text */}
               <span
-                className="relative inline-block px-2 sm:px-3 py-0.5 mx-1 font-bold text-neutral-950 rounded-[2px]"
+                className="relative inline-block px-2 sm:px-3 py-0.5 mx-1.5 font-bold text-neutral-950 rounded-[2px]"
                 style={{
-                  backgroundColor: "#fde047", // Vivid fluorescent highlighter marker ink
-                  boxShadow: "0 0 12px rgba(253, 224, 71, 0.75)",
+                  backgroundColor: "#fde047",
+                  boxShadow: "0 0 14px rgba(253, 224, 71, 0.85)",
                   transform: `rotate(${cut.tilt}deg)`,
                   mixBlendMode: "multiply",
                   display: "inline-block",
@@ -334,44 +500,23 @@ const PageLoader = memo(function PageLoader() {
               >
                 {cut.anchor}
               </span>
-              <span>{cut.suffix}</span>
-            </h2>
+              <span>{cut.afterText}</span>
+            </p>
 
-            {/* Newspaper Byline / Attribution */}
+            {/* Bottom faded newspaper lines (Optical Shallow Depth of Field) */}
             <p
-              className="font-serif italic text-xs sm:text-sm text-neutral-700 mt-2 tracking-normal"
+              className="font-serif text-sm sm:text-lg md:text-xl text-neutral-500/50 leading-relaxed mt-4 blur-[0.8px] line-clamp-2 select-none"
               style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
             >
-              {cut.byline}
+              Officials confirmed that all testing telemetry was archived into public repositories. Cross-functional engineering teams confirmed full production deployment clearance.
             </p>
-          </div>
 
-          {/* Dense Multi-Paragraph Newspaper Columns Below Headline */}
-          <div className="hidden sm:block text-[11px] sm:text-xs md:text-[13px] leading-relaxed text-neutral-600 text-justify font-serif space-y-1 mt-3 opacity-75">
-            <p style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-              {cut.bottomBody}
-            </p>
-          </div>
-
-          {/* Newspaper Footer Rule with Cut Counter */}
-          <div className="border-t border-neutral-900/80 pt-2 mt-3 flex items-center justify-between font-mono text-[9px] sm:text-xs text-neutral-600 uppercase tracking-wider">
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-2 h-2 bg-neutral-900 rounded-none animate-pulse" />
-              <span>CUT {cutIndex + 1} OF {NEWSPAPER_CUTS.length}</span>
+            {/* Macro Cut Status Stamp */}
+            <div className="font-mono text-[9px] sm:text-xs text-neutral-500 uppercase tracking-widest mt-6">
+              CUT {cutIndex + 1} OF {NEWSPAPER_CUTS.length} • MACRO TELEMETRY DISPATCH
             </div>
-            <div className="flex items-center gap-1">
-              {NEWSPAPER_CUTS.map((_, i) => (
-                <span
-                  key={i}
-                  className={`inline-block h-1 transition-all duration-100 ${
-                    i === cutIndex ? "w-5 bg-neutral-950" : i < cutIndex ? "w-2.5 bg-neutral-400" : "w-1.5 bg-neutral-300"
-                  }`}
-                />
-              ))}
-            </div>
-            <span>CIRCULATION WORLDWIDE • PRODUCTION VERIFIED</span>
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
       </motion.div>
     </AnimatePresence>
   );
