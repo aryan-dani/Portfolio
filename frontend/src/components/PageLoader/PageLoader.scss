@@ -5,7 +5,7 @@
 .page-loader {
   position: fixed;
   inset: 0;
-  background: #f9f9f9; // Matching website background color
+  background: var(--color-background);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,6 +15,150 @@
   &--exit {
     background: transparent;
   }
+
+  .page-loader__video-stage {
+    width: 100vw !important;
+    height: 100dvh !important;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--color-background) 96%, transparent), transparent),
+      var(--color-background);
+    isolation: isolate;
+  }
+
+  .page-loader__video-stage video {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    border: 0;
+    filter: saturate(0.82) contrast(1.05);
+  }
+
+  .page-loader__video-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.58), transparent 22%, transparent 72%, rgba(0, 0, 0, 0.68)),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.42), transparent 28%, transparent 72%, rgba(0, 0, 0, 0.25));
+  }
+
+  .page-loader__video-brand {
+    position: absolute;
+    left: clamp(1rem, 4vw, 4rem);
+    bottom: clamp(3.5rem, 9vh, 7rem);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+  }
+
+  .page-loader__video-title {
+    width: fit-content;
+    border: 3px solid #fff;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.35rem 0.65rem;
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .page-loader__video-title {
+    background: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+    font-size: clamp(1rem, 2.4vw, 2.2rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .page-loader__controls {
+    max-width: calc(100vw - 2rem);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .page-loader__control {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.7rem 0.9rem;
+    border: 2px solid #fff;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.78);
+    box-shadow: 3px 3px 0 rgba(255, 255, 255, 0.88);
+    font-family: var(--font-label-bold);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+    transition:
+      transform 220ms var(--ease-out-smooth),
+      box-shadow 220ms var(--ease-out-smooth),
+      background-color 220ms var(--ease-out-smooth),
+      color 220ms var(--ease-out-smooth);
+    cursor: pointer;
+
+    &:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.88);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-primary-container);
+      outline-offset: 4px;
+    }
+
+    &:active {
+      transform: translate(3px, 3px);
+      box-shadow: none;
+    }
+  }
+
+  .page-loader__control--primary {
+    background: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+    border-color: var(--color-primary-container);
+    box-shadow: 3px 3px 0 #fff;
+
+    &:hover {
+      background: var(--color-primary-fixed);
+      box-shadow: 1px 1px 0 #fff;
+    }
+  }
+
+  .page-loader__control--quiet {
+    border-color: rgba(255, 255, 255, 0.45);
+    color: rgba(255, 255, 255, 0.86);
+    box-shadow: none;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.95);
+      color: #fff;
+    }
+  }
+
+  .page-loader__control--skip {
+    background: #fff;
+    border-color: #fff;
+    color: #111113;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.82);
+
+    &:hover {
+      background: var(--color-primary-container);
+      color: var(--color-on-primary-container);
+      box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.82);
+    }
+  }
+
 }
 
 // ── Subtle Dot Grid Backdrop ───────────────────
@@ -44,7 +188,7 @@
   font-size: clamp(3rem, 10vw, 8rem);
   font-weight: 900;
   letter-spacing: -0.05em;
-  color: #000000;
+  color: var(--color-on-background);
   text-transform: uppercase;
   line-height: 1;
 }
@@ -53,12 +197,12 @@
   display: inline-block;
 
   &--resolved {
-    color: #000000;
+    color: var(--color-on-background);
   }
 
   &--scrambling {
-    color: #ffffff;
-    background: #000000; // Neo-brutalist inverse box look
+    color: var(--color-on-primary-container);
+    background: var(--color-primary-container);
     padding: 0 4px;
     margin: 0 2px;
     animation: char-flash 0.1s step-end infinite;
@@ -66,21 +210,21 @@
 }
 
 @keyframes char-flash {
-  0%, 100% { color: #ffffff; background: #000000; }
-  50% { color: #000000; background: #f0ff00; }
+  0%, 100% { color: var(--color-on-primary-container); background: var(--color-primary-container); }
+  50% { color: var(--color-on-primary-container); background: var(--color-primary-container); }
 }
 
 .page-loader__glitch-subtitle {
   font-family: "Space Grotesk", sans-serif;
   font-size: clamp(0.75rem, 2vw, 1.1rem);
   font-weight: 800;
-  color: #000000;
+  color: var(--color-on-primary-container);
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  background: #f0ff00;
+  background: var(--color-primary-container);
   padding: 4px 12px;
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
+  border: 2px solid var(--color-outline);
+  box-shadow: 3px 3px 0px var(--shadow-color);
 }
 
 // ── Phase 2: Neo-Brutalist Console Modal ─────
@@ -88,9 +232,9 @@
   position: absolute;
   width: 90%;
   max-width: 600px;
-  background: #ffffff;
-  border: 4px solid #000000;
-  box-shadow: 10px 10px 0px #f0ff00; // Thick flat brand shadow
+  background: var(--color-surface);
+  border: 4px solid var(--color-outline);
+  box-shadow: 10px 10px 0px var(--shadow-color);
   font-family: "Space Grotesk", monospace;
   overflow: hidden;
   z-index: 5;
@@ -100,8 +244,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 20px;
-    background: #f0ff00;
-    border-bottom: 4px solid #000000;
+    background: var(--color-primary-container);
+    border-bottom: 4px solid var(--color-outline);
   }
 
   &__header-dots {
@@ -113,17 +257,17 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: 2px solid #000000;
-    background: #ffffff;
+    border: 2px solid var(--color-outline);
+    background: var(--color-surface);
 
     &:nth-child(1) { background: #ff5f56; }
-    &:nth-child(2) { background: #ffbd2e; }
-    &:nth-child(3) { background: #27c93f; }
+    &:nth-child(2) { background: var(--color-surface-variant); }
+    &:nth-child(3) { background: var(--color-primary-container); }
   }
 
   &__title {
     font-size: 0.8rem;
-    color: #000000;
+    color: var(--color-on-primary-container);
     font-weight: 800;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -131,11 +275,11 @@
 
   &__badge {
     font-size: 0.7rem;
-    color: #ffffff;
-    background: #000000;
+    color: var(--color-on-primary-container);
+    background: var(--color-primary-container);
     font-weight: 900;
     padding: 2px 10px;
-    border: 2px solid #000000;
+    border: 2px solid var(--color-outline);
     letter-spacing: 0.05em;
   }
 
@@ -145,32 +289,32 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: #ffffff;
+    background: var(--color-surface);
   }
 
   &__line {
     font-size: 0.88rem;
     line-height: 1.5;
-    color: #000000;
+    color: var(--color-on-surface);
     font-weight: 700;
 
     &--command {
-      color: #131316;
+      color: var(--color-on-surface);
     }
 
     &--success {
-      color: #000000;
+      color: var(--color-on-surface);
     }
 
     &--final {
-      color: #000000;
-      background: #f0ff00;
-      border: 3px solid #000000;
+      color: var(--color-on-primary-container);
+      background: var(--color-primary-container);
+      border: 3px solid var(--color-outline);
       padding: 8px 14px;
       display: inline-block;
       align-self: flex-start;
       margin-top: 10px;
-      box-shadow: 4px 4px 0px #000000;
+      box-shadow: 4px 4px 0px var(--shadow-color);
     }
   }
 
@@ -182,7 +326,7 @@
     display: inline-block;
     width: 8px;
     height: 1.1em;
-    background: #000000;
+    background: var(--color-outline);
     margin-left: 6px;
     animation: blink-cursor 0.8s step-end infinite;
   }
@@ -191,14 +335,14 @@
 // ── Progress Bar ──────────────────────────────
 .nb-loader__progress-track {
   height: 12px;
-  background: #ffffff;
-  border-top: 4px solid #000000;
+  background: var(--color-surface);
+  border-top: 4px solid var(--color-outline);
   width: 100%;
 
   .nb-loader__progress-fill {
     height: 100%;
-    background: #f0ff00;
-    border-right: 4px solid #000000;
+    background: var(--color-primary-container);
+    border-right: 4px solid var(--color-outline);
     transition: width 0.25s ease;
   }
 }
@@ -209,14 +353,14 @@
   left: 0;
   width: 100%;
   height: 8px;
-  background: #ffffff;
-  border-top: 2px solid #000000;
+  background: var(--color-surface);
+  border-top: 2px solid var(--color-outline);
   z-index: 20;
 }
 
 .page-loader__global-progress-fill {
   height: 100%;
-  background: #f0ff00;
+  background: var(--color-primary-container);
   transition: width 0.25s ease;
 }
 
@@ -226,26 +370,36 @@
   top: 0;
   width: 50%;
   height: 100%;
-  background: #f9f9f9;
+  background: var(--color-background);
   z-index: 4;
 
   &--left {
     left: 0;
-    border-right: 3px solid #000000;
+    border-right: 3px solid var(--color-outline);
   }
 
   &--right {
     right: 0;
-    border-left: 3px solid #000000;
+    border-left: 3px solid var(--color-outline);
   }
 }
 
 
 // ── Mobile Responsive ────────────────────────
 @media (max-width: 576px) {
+  .page-loader__video-brand {
+    left: 1rem;
+    bottom: 4rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .page-loader__video-title {
+    font-size: 1.15rem;
+  }
+
   .nb-loader {
     width: 92%;
-    box-shadow: 6px 6px 0px #f0ff00;
+    box-shadow: 6px 6px 0px var(--shadow-color);
 
     &__header {
       padding: 10px 14px;

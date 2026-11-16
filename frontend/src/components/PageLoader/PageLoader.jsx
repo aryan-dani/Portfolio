@@ -3,8 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaVolumeMute, FaVolumeUp, FaForward } from "react-icons/fa";
 import { getAssetPath } from "../../utils/paths";
 import { readStorage, writeStorage, removeStorage } from "../../utils/storage";
+import { useSound } from "../../context/SoundContext";
+import "./PageLoader.scss";
 
 const SESSION_KEY = "portfolio_visited";
+const VIDEO_PLAYBACK_RATE = 1.08;
 const PHASES = {
   VIDEO: 0,
   TERMINAL: 1,
@@ -23,12 +26,13 @@ const PageLoader = memo(function PageLoader() {
   const skipBoot = shouldSkipBootLoader();
   const hasVisited =
     skipBoot || Boolean(readStorage(SESSION_KEY, null, "session"));
+  const { enabled: soundEnabled, toggleSound, unlockAudio } = useSound();
   const [isLoading, setIsLoading] = useState(!hasVisited);
   const [phase, setPhase] = useState(hasVisited ? PHASES.DONE : PHASES.VIDEO);
 
   // Video State: unmuted by default
   const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(() => !soundEnabled);
   const [videoProgress, setVideoProgress] = useState(0);
 
   // Terminal State
@@ -66,11 +70,13 @@ const PageLoader = memo(function PageLoader() {
       videoRef.current.pause();
     }
     setPhase(PHASES.EXIT);
-    setTimeout(() => {
-      setIsLoading(false);
-      setPhase(PHASES.DONE);
-      writeStorage(SESSION_KEY, "true", "session");
-    }, 400);
+  }, []);
+
+  const completeLoader = useCallback(() => {
+    window.dispatchEvent(new CustomEvent("portfolio-intro-complete"));
+    setIsLoading(false);
+    setPhase(PHASES.DONE);
+    writeStorage(SESSION_KEY, "true", "session");
   }, []);
 
   // Listen for replay-intro custom event
@@ -82,16 +88,17 @@ const PageLoader = memo(function PageLoader() {
       setTerminalStep(0);
       setMemSize(0);
       setVideoProgress(0);
-      setIsMuted(false);
+      setIsMuted(!soundEnabled);
       if (videoRef.current) {
         videoRef.current.currentTime = 0;
-        videoRef.current.muted = false;
+        videoRef.current.playbackRate = VIDEO_PLAYBACK_RATE;
+        videoRef.current.muted = !soundEnabled;
         videoRef.current.play().catch(() => {});
       }
     };
     window.addEventListener("replay-intro", handleReplay);
     return () => window.removeEventListener("replay-intro", handleReplay);
-  }, []);
+  }, [soundEnabled]);
 
   // Keyboard shortcut: Escape to skip
   useEffect(() => {
@@ -121,7 +128,8 @@ const PageLoader = memo(function PageLoader() {
     const vid = videoRef.current;
     if (vid) {
       vid.currentTime = 0;
-      vid.muted = false; // Attempt unmuted by default
+      vid.playbackRate = VIDEO_PLAYBACK_RATE;
+      vid.muted = !soundEnabled;
 
       const playPromise = vid.play();
       if (playPromise !== undefined) {
@@ -145,7 +153,16 @@ const PageLoader = memo(function PageLoader() {
     return () => {
       clearTimeout(fallbackTimer);
     };
-  }, [phase, hasVisited, reduceMotion, advanceToTerminal]);
+  }, [phase, hasVisited, reduceMotion, soundEnabled, advanceToTerminal]);
+
+  useEffect(() => {
+    if (!isLoading) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isLoading]);
 
   // Phase 1: TERMINAL BIOS BOOTING
   useEffect(() => {
@@ -181,20 +198,27 @@ const PageLoader = memo(function PageLoader() {
   useEffect(() => {
     if (phase !== PHASES.EXIT) return;
     const exitTimer = setTimeout(() => {
-      setIsLoading(false);
-      setPhase(PHASES.DONE);
-      writeStorage(SESSION_KEY, "true", "session");
+      completeLoader();
     }, 620);
 
     return () => clearTimeout(exitTimer);
-  }, [phase]);
+  }, [phase, completeLoader]);
 
-  const toggleSound = (e) => {
+  const toggleIntroSound = async (e) => {
     e?.stopPropagation();
     if (videoRef.current) {
-      const nextMuted = !videoRef.current.muted;
-      videoRef.current.muted = nextMuted;
-      setIsMuted(nextMuted);
+      if (videoRef.current.muted) {
+        if (!soundEnabled) toggleSound();
+        await unlockAudio({ allowDisabled: true });
+        videoRef.current.muted = false;
+        setIsMuted(false);
+        videoRef.current.play().catch(() => {});
+        return;
+      }
+
+      videoRef.current.muted = true;
+      setIsMuted(true);
+      if (soundEnabled) toggleSound();
     }
   };
 
@@ -242,7 +266,7 @@ const PageLoader = memo(function PageLoader() {
             {phase === PHASES.VIDEO && (
               <motion.div
                 key="video-fullscreen-stage"
-                className="fixed inset-0 z-30 w-full h-full bg-black flex items-center justify-center overflow-hidden"
+                className="page-loader__video-stage fixed inset-0 z-30 w-full h-full flex items-center justify-center overflow-hidden"
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0, scale: 1.02 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -260,50 +284,57 @@ const PageLoader = memo(function PageLoader() {
                   className="w-full h-full object-cover"
                 />
 
+                <div className="page-loader__video-vignette" aria-hidden="true" />
+                <div className="page-loader__video-brand" aria-hidden="true">
+                  <span className="page-loader__video-title">BUILDING USEFUL INTELLIGENCE</span>
+                </div>
+
                 {/* Minimal Fullscreen Floating Controls */}
-                <div className="absolute top-4 right-4 z-40 flex items-center gap-2.5">
+                <motion.div
+                  className="page-loader__controls absolute top-4 right-4 z-40 flex items-center gap-2"
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.42, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                >
                   {isMuted && (
                     <button
                       type="button"
-                      onClick={toggleSound}
-                      className="border-2 border-white/70 bg-black/75 hover:bg-black text-white px-3 py-1.5 font-mono text-xs uppercase tracking-wider backdrop-blur-md shadow-[3px_3px_0_0_#fff] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+                      onClick={toggleIntroSound}
+                      className="page-loader__control page-loader__control--primary"
                       aria-label="Unmute audio"
                     >
                       <FaVolumeMute className="text-yellow-400" />
-                      <span>Unmute</span>
+                      <span>Enable sound</span>
                     </button>
                   )}
                   {!isMuted && (
                     <button
                       type="button"
-                      onClick={toggleSound}
-                      className="border border-white/30 bg-black/50 hover:bg-black text-white/80 px-2.5 py-1.5 font-mono text-xs uppercase tracking-wider backdrop-blur-md hover:text-white transition-all cursor-pointer flex items-center gap-1.5"
+                      onClick={toggleIntroSound}
+                      className="page-loader__control page-loader__control--quiet"
                       aria-label="Mute audio"
                     >
                       <FaVolumeUp className="text-green-400" />
-                      <span className="hidden sm:inline">Mute</span>
+                      <span>Sound on</span>
                     </button>
                   )}
                   <button
                     type="button"
                     onClick={skipLoader}
-                    className="border-2 border-white/80 bg-black/80 hover:bg-white hover:text-black text-white px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider shadow-[3px_3px_0_0_#fff] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+                    className="page-loader__control page-loader__control--skip"
                     aria-label="Skip intro"
                   >
-                    <span>Skip</span>
+                    <span>Enter site</span>
                     <FaForward className="text-[10px]" />
                   </button>
-                </div>
+                </motion.div>
 
                 {/* Corner Video HUD Badges */}
-                <span className="absolute bottom-4 left-4 z-40 text-[10px] font-mono text-white/50 tracking-wider select-none bg-black/40 px-2 py-0.5 backdrop-blur-xs">
-                  [+ 16:9 FULLSCREEN // MATCH-CUT ARCHIVE]
-                </span>
-
                 {/* Bottom Scrub Progress Line */}
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-40">
                   <div
-                    className="h-full origin-left bg-yellow-400 transition-transform duration-100 ease-linear"
+                    className="h-full origin-left bg-white transition-transform duration-100 ease-linear"
                     style={{ transform: `scaleX(${videoProgress / 100})` }}
                   />
                 </div>

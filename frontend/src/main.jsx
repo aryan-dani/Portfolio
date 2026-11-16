@@ -11,16 +11,39 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>,
 );
 
-// Register the service worker after first paint so it does not contend with FCP.
+// Register immediately so returning visitors can detect a deployment without
+// waiting for an idle callback or a hard refresh.
 if (typeof window !== "undefined") {
   const register = () => {
     import("virtual:pwa-register")
-      .then(({ registerSW }) => registerSW({ immediate: true }))
-      .catch(() => {});
+      .then(({ registerSW }) => {
+        let registration;
+
+        const checkForUpdate = () => {
+          if (document.visibilityState !== "visible" || !registration) return;
+          registration.update().catch((error) => {
+            console.warn("Service worker update check failed:", error);
+          });
+        };
+
+        const onRegisteredSW = (_swUrl, currentRegistration) => {
+          registration = currentRegistration;
+          if (!registration) return;
+
+          checkForUpdate();
+          window.setInterval(checkForUpdate, 5 * 60 * 1000);
+          window.addEventListener("focus", checkForUpdate);
+          document.addEventListener("visibilitychange", checkForUpdate);
+        };
+
+        registerSW({
+          immediate: true,
+          onRegisteredSW,
+        });
+      })
+      .catch((error) => {
+        console.warn("Service worker registration failed:", error);
+      });
   };
-  if ("requestIdleCallback" in window) {
-    window.requestIdleCallback(register, { timeout: 4000 });
-  } else {
-    window.setTimeout(register, 2000);
-  }
+  register();
 }

@@ -11,6 +11,7 @@ import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { MOBILE_LITE_QUERY, FINE_POINTER_QUERY } from "../../utils/device";
 import { usePrefetchPortfolioImages } from "../../hooks/usePrefetchPortfolioImages";
 import TechGlobeFallback from "../../components/TechGlobe/TechGlobeFallback";
+import { readStorage } from "../../utils/storage";
 
 const TechGlobe = lazy(() => import("../../components/TechGlobe/TechGlobe"));
 
@@ -56,11 +57,20 @@ const Home = memo(function Home() {
   usePageSEO();
   const preferLiteHero = useMediaQuery(MOBILE_LITE_QUERY);
   const showCommandHint = useMediaQuery(FINE_POINTER_QUERY);
+  const [introReady, setIntroReady] = useState(() =>
+    Boolean(readStorage("portfolio_visited", null, "session")),
+  );
   const [mountGlobe, setMountGlobe] = useState(false);
   usePrefetchPortfolioImages({ enabled: !preferLiteHero && mountGlobe });
   const totalProjects = portfolioStats.projects;
   const totalSkills = portfolioStats.skills;
   const totalCerts = portfolioStats.certifications;
+
+  useEffect(() => {
+    const onIntroComplete = () => setIntroReady(true);
+    window.addEventListener("portfolio-intro-complete", onIntroComplete);
+    return () => window.removeEventListener("portfolio-intro-complete", onIntroComplete);
+  }, []);
 
   useEffect(() => {
     let idleId = 0;
@@ -83,7 +93,7 @@ const Home = memo(function Home() {
     <motion.section
       className="flex flex-col gap-8 lg:gap-10 w-full relative pb-4"
       variants={containerVariants}
-      initial={false}
+      initial={introReady ? false : "hidden"}
       animate="visible"
     >
       <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-center justify-between relative z-10">

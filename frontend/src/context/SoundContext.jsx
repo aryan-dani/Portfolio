@@ -8,7 +8,7 @@ const STORAGE_KEY = "portfolio_sound_enabled";
 const HOVER_COOLDOWN_MS = 72;
 
 export function SoundProvider({ children }) {
-  const [enabled, setEnabled] = useState(() => readStorage(STORAGE_KEY) === "true");
+  const [enabled, setEnabled] = useState(() => readStorage(STORAGE_KEY) !== "false");
   const audioRef = useRef(null);
   const masterRef = useRef(null);
   const unlockedRef = useRef(false);
@@ -22,8 +22,8 @@ export function SoundProvider({ children }) {
   }, []);
 
   /** Create/resume AudioContext only after a real user gesture (click/keydown). */
-  const unlockAudio = useCallback(async () => {
-    if (!enabled) return null;
+  const unlockAudio = useCallback(async ({ allowDisabled = false } = {}) => {
+    if (!enabled && !allowDisabled) return null;
 
     try {
       if (!audioRef.current) {
@@ -73,7 +73,7 @@ export function SoundProvider({ children }) {
       if (next) {
         // Toggle is a user gesture — unlock immediately.
         queueMicrotask(() => {
-          void unlockAudio();
+          void unlockAudio({ allowDisabled: true });
         });
       } else if (audioRef.current) {
         unlockedRef.current = false;
