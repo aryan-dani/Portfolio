@@ -1,13 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { playUiSound } from "../utils/uiSounds";
 import { isFinePointerDevice } from "../utils/device";
+import { readStorage, writeStorage } from "../utils/storage";
 
 const SoundContext = createContext(null);
 const STORAGE_KEY = "portfolio_sound_enabled";
 const HOVER_COOLDOWN_MS = 72;
 
 export function SoundProvider({ children }) {
-  const [enabled, setEnabled] = useState(() => localStorage.getItem(STORAGE_KEY) === "true");
+  const [enabled, setEnabled] = useState(() => readStorage(STORAGE_KEY) === "true");
   const audioRef = useRef(null);
   const masterRef = useRef(null);
   const unlockedRef = useRef(false);
@@ -68,7 +69,7 @@ export function SoundProvider({ children }) {
   const toggleSound = useCallback(() => {
     setEnabled((current) => {
       const next = !current;
-      localStorage.setItem(STORAGE_KEY, String(next));
+      writeStorage(STORAGE_KEY, String(next));
       if (next) {
         // Toggle is a user gesture — unlock immediately.
         queueMicrotask(() => {

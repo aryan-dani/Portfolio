@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ACCENT_PALETTES, ACCENT_STORAGE_KEY } from "../data/accentPalettes";
+import { readStorage, writeStorage } from "../utils/storage";
 
 const ThemeContext = createContext(null);
 
@@ -13,19 +14,19 @@ function applyAccent(paletteId) {
 
   const resolved = ACCENT_PALETTES[paletteId] ? paletteId : "mono";
   root.classList.add(`accent-${resolved}`);
-  localStorage.setItem(ACCENT_STORAGE_KEY, resolved);
+  writeStorage(ACCENT_STORAGE_KEY, resolved);
 }
 
 function getInitialAccent() {
-  const stored = localStorage.getItem(ACCENT_STORAGE_KEY);
+  const stored = readStorage(ACCENT_STORAGE_KEY);
   if (stored && ACCENT_PALETTES[stored]) return stored;
   return "mono";
 }
 
 export function ThemeProvider({ children }) {
   const transitionTimeoutRef = useRef(null);
-  const [theme, setTheme] = useState(() => localStorage.getItem("portfolio_theme") || "light");
-  const [crtMode, setCrtModeState] = useState(() => localStorage.getItem("portfolio_crt") === "true");
+  const [theme, setTheme] = useState(() => readStorage("portfolio_theme", "light"));
+  const [crtMode, setCrtModeState] = useState(() => readStorage("portfolio_crt") === "true");
   const [accent, setAccentState] = useState(getInitialAccent);
 
   useLayoutEffect(() => {
@@ -37,8 +38,8 @@ export function ThemeProvider({ children }) {
     root.classList.toggle("crt", crtMode);
     root.style.colorScheme = crtMode ? "dark" : isDark ? "dark" : "light";
 
-    localStorage.setItem("portfolio_theme", theme);
-    localStorage.setItem("portfolio_crt", String(crtMode));
+    writeStorage("portfolio_theme", theme);
+    writeStorage("portfolio_crt", String(crtMode));
   }, [theme, crtMode]);
 
   useLayoutEffect(() => {

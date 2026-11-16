@@ -1,11 +1,12 @@
 import { memo, useEffect, useState } from "react";
 import { useSiteIdleState } from "../../context/SiteIdleContext";
+import { readStorage, writeStorage } from "../../utils/storage";
 
 const InstallPrompt = memo(function InstallPrompt() {
   const { hideChrome } = useSiteIdleState();
   const [deferred, setDeferred] = useState(null);
   const [dismissed, setDismissed] = useState(
-    () => localStorage.getItem("portfolio_pwa_dismissed") === "true",
+    () => readStorage("portfolio_pwa_dismissed") === "true",
   );
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const InstallPrompt = memo(function InstallPrompt() {
           type="button"
           className="border-2 border-outline px-3 py-2 font-label-bold uppercase text-[10px]"
           onClick={() => {
-            localStorage.setItem("portfolio_pwa_dismissed", "true");
+            writeStorage("portfolio_pwa_dismissed", "true");
             setDismissed(true);
           }}
         >

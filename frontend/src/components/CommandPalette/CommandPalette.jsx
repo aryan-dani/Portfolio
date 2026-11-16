@@ -128,7 +128,7 @@ function CommandPalette() {
       } else if (cmd.action === "COPY_EMAIL") {
         navigator.clipboard?.writeText(aboutInfo.email);
       } else if (cmd.isExternal) {
-        window.open(cmd.action, "_blank");
+        window.open(cmd.action, "_blank", "noopener,noreferrer");
       } else {
         navigate(cmd.action);
       }

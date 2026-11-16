@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, memo } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "../../context/ThemeContext";
+import { readStorage, writeStorage } from "../../utils/storage";
 
 /* ────────────────────────────────────────────────────────────
    High-Performance Custom Cursor
@@ -71,7 +72,7 @@ const CustomCursor = memo(function CustomCursor() {
   const [onDarkBg, setOnDarkBg] = useState(isDark);
   const [isVisible, setIsVisible] = useState(false);
   const [nativeCursor, setNativeCursor] = useState(
-    () => localStorage.getItem(NATIVE_CURSOR_KEY) === "true",
+    () => readStorage(NATIVE_CURSOR_KEY) === "true",
   );
 
   const innerRef = useRef(null);
@@ -104,7 +105,7 @@ const CustomCursor = memo(function CustomCursor() {
   useEffect(() => {
     document.documentElement.classList.toggle("native-cursor", nativeCursor);
     document.documentElement.classList.toggle(CUSTOM_CURSOR_CLASS, !nativeCursor);
-    localStorage.setItem(NATIVE_CURSOR_KEY, String(nativeCursor));
+    writeStorage(NATIVE_CURSOR_KEY, String(nativeCursor));
     return () => {
       document.documentElement.classList.remove(CUSTOM_CURSOR_CLASS);
     };

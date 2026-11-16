@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTerminal, FaVolumeMute, FaVolumeUp, FaForward } from "react-icons/fa";
+import { FaVolumeMute, FaVolumeUp, FaForward } from "react-icons/fa";
 import { getAssetPath } from "../../utils/paths";
+import { readStorage, writeStorage, removeStorage } from "../../utils/storage";
 
 const SESSION_KEY = "portfolio_visited";
 const PHASES = {
@@ -20,13 +21,14 @@ function shouldSkipBootLoader() {
 
 const PageLoader = memo(function PageLoader() {
   const skipBoot = shouldSkipBootLoader();
-  const hasVisited = skipBoot || (typeof window !== "undefined" && Boolean(sessionStorage.getItem(SESSION_KEY)));
+  const hasVisited =
+    skipBoot || Boolean(readStorage(SESSION_KEY, null, "session"));
   const [isLoading, setIsLoading] = useState(!hasVisited);
   const [phase, setPhase] = useState(hasVisited ? PHASES.DONE : PHASES.VIDEO);
 
-  // Video State
+  // Video State: unmuted by default
   const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [videoProgress, setVideoProgress] = useState(0);
 
   // Terminal State
@@ -46,7 +48,7 @@ const PageLoader = memo(function PageLoader() {
   // Save session on finish
   useEffect(() => {
     if (!isLoading && !hasVisited) {
-      sessionStorage.setItem(SESSION_KEY, "true");
+      writeStorage(SESSION_KEY, "true", "session");
     }
   }, [isLoading, hasVisited]);
 
@@ -67,21 +69,23 @@ const PageLoader = memo(function PageLoader() {
     setTimeout(() => {
       setIsLoading(false);
       setPhase(PHASES.DONE);
-      sessionStorage.setItem(SESSION_KEY, "true");
-    }, 350);
+      writeStorage(SESSION_KEY, "true", "session");
+    }, 400);
   }, []);
 
   // Listen for replay-intro custom event
   useEffect(() => {
     const handleReplay = () => {
-      sessionStorage.removeItem(SESSION_KEY);
+      removeStorage(SESSION_KEY, "session");
       setPhase(PHASES.VIDEO);
       setIsLoading(true);
       setTerminalStep(0);
       setMemSize(0);
       setVideoProgress(0);
+      setIsMuted(false);
       if (videoRef.current) {
         videoRef.current.currentTime = 0;
+        videoRef.current.muted = false;
         videoRef.current.play().catch(() => {});
       }
     };
@@ -100,7 +104,7 @@ const PageLoader = memo(function PageLoader() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLoading, skipLoader]);
 
-  // Phase 0: VIDEO PLAYBACK
+  // Phase 0: VIDEO PLAYBACK (Fullscreen & Unmuted)
   useEffect(() => {
     if (phase !== PHASES.VIDEO) return;
     if (hasVisited) {
@@ -117,20 +121,23 @@ const PageLoader = memo(function PageLoader() {
     const vid = videoRef.current;
     if (vid) {
       vid.currentTime = 0;
+      vid.muted = false; // Attempt unmuted by default
+
       const playPromise = vid.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Autoplay was prevented (e.g. low power mode), continue muted
+        playPromise.catch((err) => {
+          // If browser blocks unmuted autoplay without prior interaction, fallback to muted so it doesn't freeze
+          console.warn("Autoplay with sound was blocked by browser policy, continuing muted with unmute badge:", err);
           vid.muted = true;
+          setIsMuted(true);
           vid.play().catch(() => {
-            // If still blocked, advance directly to terminal after brief pause
-            setTimeout(advanceToTerminal, 600);
+            advanceToTerminal();
           });
         });
       }
     }
 
-    // Safety timeout: video is ~4.8s, fallback after 5.5s so user is never stuck
+    // Safety timeout: video is ~4.8s, fallback after 5.5s so loader never hangs
     const fallbackTimer = setTimeout(() => {
       advanceToTerminal();
     }, 5500);
@@ -161,7 +168,7 @@ const PageLoader = memo(function PageLoader() {
       setTimeout(() => setTerminalStep(3), 560),
       setTimeout(() => setTerminalStep(4), 800),
       setTimeout(() => setTerminalStep(5), 1040),
-      setTimeout(() => setPhase(PHASES.EXIT), 1320),
+      setTimeout(() => setPhase(PHASES.EXIT), 1350),
     ];
 
     return () => {
@@ -176,13 +183,14 @@ const PageLoader = memo(function PageLoader() {
     const exitTimer = setTimeout(() => {
       setIsLoading(false);
       setPhase(PHASES.DONE);
-      sessionStorage.setItem(SESSION_KEY, "true");
+      writeStorage(SESSION_KEY, "true", "session");
     }, 620);
 
     return () => clearTimeout(exitTimer);
   }, [phase]);
 
-  const toggleSound = () => {
+  const toggleSound = (e) => {
+    e?.stopPropagation();
     if (videoRef.current) {
       const nextMuted = !videoRef.current.muted;
       videoRef.current.muted = nextMuted;
@@ -193,7 +201,10 @@ const PageLoader = memo(function PageLoader() {
   const handleTimeUpdate = () => {
     if (videoRef.current && videoRef.current.duration) {
       const pct = (videoRef.current.currentTime / videoRef.current.duration) * 100;
-      setVideoProgress(Math.min(pct, 100));
+      const nextProgress = Math.min(Math.round(pct), 100);
+      setVideoProgress((previousProgress) =>
+        previousProgress === nextProgress ? previousProgress : nextProgress,
+      );
     }
   };
 
@@ -201,81 +212,41 @@ const PageLoader = memo(function PageLoader() {
     return null;
   }
 
-  const terminalProgress = Math.min((terminalStep / 5) * 100, 100);
+  const terminalProgress = Math.round((Math.min(terminalStep, 5) / 5) * 100);
+  const globalProgress =
+    phase === PHASES.VIDEO
+      ? Math.round(videoProgress * 0.5)
+      : phase === PHASES.TERMINAL
+      ? Math.round(50 + (Math.min(terminalStep, 5) / 5) * 50)
+      : 100;
 
   return (
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 z-99999 flex items-center justify-center bg-[#070707] text-[#f4f4f0] select-none overflow-hidden"
+          className={`page-loader ${phase === PHASES.EXIT ? "page-loader--exit" : ""}`}
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          exit={{ opacity: 0, transition: { duration: 0.35, ease: "easeInOut" } }}
           role="status"
           aria-live="polite"
           aria-label="Aryan Dani Portfolio Loading Sequence"
         >
-          {/* Subtle CRT scanline overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-20 z-10"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04))",
-              backgroundSize: "100% 3px, 6px 100%",
-            }}
-          />
+          {/* Authentic neo-brutalist animated backgrounds */}
+          <div className="page-loader__grid" />
+          <div className="page-loader__scanline" />
+          <div className="page-loader__orbital" aria-hidden="true" />
 
-          {/* Top Header Bar */}
-          <header className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 sm:px-6 py-3 border-b-2 border-white/10 bg-black/70 backdrop-blur-md">
-            <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse" />
-              <span className="font-mono text-xs uppercase tracking-widest text-white/90">
-                ARYAN_DANI // {phase === PHASES.VIDEO ? "MATCH_CUT_INTRO" : "SYSTEM_BIOS_V4.0"}
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              {phase === PHASES.VIDEO && (
-                <button
-                  type="button"
-                  onClick={toggleSound}
-                  className="border border-white/20 hover:border-white/60 bg-white/5 hover:bg-white/10 px-2.5 py-1 text-xs font-mono uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer"
-                  aria-label={isMuted ? "Unmute video sound" : "Mute video sound"}
-                >
-                  {isMuted ? (
-                    <>
-                      <FaVolumeMute className="text-red-400" />
-                      <span className="hidden sm:inline">Unmute</span>
-                    </>
-                  ) : (
-                    <>
-                      <FaVolumeUp className="text-green-400" />
-                      <span className="hidden sm:inline">Muted off</span>
-                    </>
-                  )}
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={skipLoader}
-                className="border-2 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] px-3 py-1.5 font-label-bold text-xs uppercase tracking-wider shadow-[3px_3px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
-                aria-label="Skip introduction animation"
+          {/* Central Stage with mode="wait" for smooth crossfade */}
+          <AnimatePresence mode="wait">
+            {/* STAGE 1: FULLSCREEN UNMUTED 16:9 MATCH-CUT VIDEO */}
+            {phase === PHASES.VIDEO && (
+              <motion.div
+                key="video-fullscreen-stage"
+                className="fixed inset-0 z-30 w-full h-full bg-black flex items-center justify-center overflow-hidden"
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 1.02 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               >
-                <span>Skip</span>
-                <FaForward className="text-[10px]" />
-              </button>
-            </div>
-          </header>
-
-          {/* STAGE 1: 16:9 MATCH-CUT VIDEO */}
-          {phase === PHASES.VIDEO && (
-            <motion.div
-              className="relative z-20 w-full max-w-5xl px-4 flex flex-col items-center justify-center"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-            >
-              <div className="relative w-full aspect-video max-h-[75vh] border-4 border-white/20 bg-black shadow-[12px_12px_0_0_#000] overflow-hidden group">
                 <video
                   ref={videoRef}
                   src={getAssetPath("/videos/textmatchcut.mp4")}
@@ -286,143 +257,185 @@ const PageLoader = memo(function PageLoader() {
                   onTimeUpdate={handleTimeUpdate}
                   onEnded={advanceToTerminal}
                   onError={advanceToTerminal}
-                  className="w-full h-full object-contain bg-black"
+                  className="w-full h-full object-cover"
                 />
 
-                {/* 16:9 Corner Reticles */}
-                <span className="absolute top-2 left-2 text-[10px] font-mono text-white/40 select-none">
-                  [+ 16:9 REC]
-                </span>
-                <span className="absolute top-2 right-2 text-[10px] font-mono text-white/40 select-none">
-                  [1080P // 30FPS]
-                </span>
-                <span className="absolute bottom-2 left-2 text-[10px] font-mono text-white/40 select-none">
-                  [CHRONICLE_CUT]
-                </span>
-                <span className="absolute bottom-2 right-2 text-[10px] font-mono text-white/40 select-none">
-                  [OPTICAL_LOCK]
+                {/* Minimal Fullscreen Floating Controls */}
+                <div className="absolute top-4 right-4 z-40 flex items-center gap-2.5">
+                  {isMuted && (
+                    <button
+                      type="button"
+                      onClick={toggleSound}
+                      className="border-2 border-white/70 bg-black/75 hover:bg-black text-white px-3 py-1.5 font-mono text-xs uppercase tracking-wider backdrop-blur-md shadow-[3px_3px_0_0_#fff] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+                      aria-label="Unmute audio"
+                    >
+                      <FaVolumeMute className="text-yellow-400" />
+                      <span>Unmute</span>
+                    </button>
+                  )}
+                  {!isMuted && (
+                    <button
+                      type="button"
+                      onClick={toggleSound}
+                      className="border border-white/30 bg-black/50 hover:bg-black text-white/80 px-2.5 py-1.5 font-mono text-xs uppercase tracking-wider backdrop-blur-md hover:text-white transition-all cursor-pointer flex items-center gap-1.5"
+                      aria-label="Mute audio"
+                    >
+                      <FaVolumeUp className="text-green-400" />
+                      <span className="hidden sm:inline">Mute</span>
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={skipLoader}
+                    className="border-2 border-white/80 bg-black/80 hover:bg-white hover:text-black text-white px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider shadow-[3px_3px_0_0_#fff] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+                    aria-label="Skip intro"
+                  >
+                    <span>Skip</span>
+                    <FaForward className="text-[10px]" />
+                  </button>
+                </div>
+
+                {/* Corner Video HUD Badges */}
+                <span className="absolute bottom-4 left-4 z-40 text-[10px] font-mono text-white/50 tracking-wider select-none bg-black/40 px-2 py-0.5 backdrop-blur-xs">
+                  [+ 16:9 FULLSCREEN // MATCH-CUT ARCHIVE]
                 </span>
 
                 {/* Bottom Scrub Progress Line */}
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-40">
                   <div
-                    className="h-full bg-yellow-400 transition-all duration-100 ease-linear"
-                    style={{ width: `${videoProgress}%` }}
+                    className="h-full origin-left bg-yellow-400 transition-transform duration-100 ease-linear"
+                    style={{ transform: `scaleX(${videoProgress / 100})` }}
                   />
                 </div>
-              </div>
+              </motion.div>
+            )}
 
-              {/* Sub-bar captions */}
-              <div className="w-full flex items-center justify-between mt-3 text-xs font-mono text-white/60">
-                <span>PRESS ESC TO SKIP</span>
-                <span className="uppercase tracking-widest text-yellow-400 font-semibold">
-                  MATCH CUT BROADSHEET ARCHIVE
-                </span>
-                <span>STAGE 1 / 3</span>
-              </div>
-            </motion.div>
-          )}
+            {/* STAGE 2: ORIGINAL TERMINAL BIOS BOOT WITH THEME BACKGROUND */}
+            {phase === PHASES.TERMINAL && (
+              <motion.div
+                key="terminal-stage"
+                className="w-full h-full flex items-center justify-center relative z-10 p-4"
+                initial={{ opacity: 0, scale: 0.94, y: 16 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: -16, filter: "blur(2px)" }}
+                transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className="nb-loader max-w-[720px] w-full">
+                  {/* BIOS Header */}
+                  <div className="nb-loader__header">
+                    <div className="nb-loader__header-dots">
+                      <span className="nb-loader__header-dot" />
+                      <span className="nb-loader__header-dot" />
+                      <span className="nb-loader__header-dot" />
+                    </div>
+                    <span className="nb-loader__title">
+                      ARYAN_DANI // SYSTEM_BIOS_V4.0
+                    </span>
+                    <span className="nb-loader__badge">
+                      BOOTING
+                    </span>
+                  </div>
 
-          {/* STAGE 2: ORIGINAL TERMINAL BIOS BOOT */}
-          {phase === PHASES.TERMINAL && (
-            <motion.div
-              className="relative z-20 w-full max-w-2xl px-4"
-              initial={{ opacity: 0, y: 12, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.03 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-            >
-              <div className="nb-loader shadow-[12px_12px_0_0_#000]">
-                {/* BIOS Header */}
-                <div className="nb-loader__header">
-                  <div className="nb-loader__header-dots">
-                    <span className="nb-loader__header-dot" />
-                    <span className="nb-loader__header-dot" />
-                    <span className="nb-loader__header-dot" />
+                  {/* Console Output */}
+                  <div className="nb-loader__body text-left min-h-[220px]">
+                    {terminalStep >= 1 && (
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--command"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                      >
+                        &gt; INITIALIZING SYSTEM BOOT SEQUENCE...
+                      </motion.div>
+                    )}
+
+                    {terminalStep >= 1 && (
+                      <motion.div
+                        className="nb-loader__line text-xs opacity-75 ml-4"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18, delay: 0.04, ease: "easeOut" }}
+                      >
+                        ↳ SYSTEM MEMORY CHECK: {memSize}MB / 1024MB OK
+                      </motion.div>
+                    )}
+
+                    {terminalStep >= 2 && (
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--success"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                      >
+                        ✔ HYDRATING CORE COMPONENT REGISTRY... DONE
+                      </motion.div>
+                    )}
+                    {terminalStep >= 2 && (
+                      <motion.div
+                        className="nb-loader__line text-xs opacity-75 ml-4"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18, delay: 0.04, ease: "easeOut" }}
+                      >
+                        ↳ [React v18.2.0, Framer Motion v11.0.0, Tailwind v4.0.0]
+                      </motion.div>
+                    )}
+                    {terminalStep >= 3 && (
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--success"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                      >
+                        ✔ SPINNING UP DATA LAYERS & PLAYGROUND SANDBOX... DONE
+                      </motion.div>
+                    )}
+                    {terminalStep >= 4 && (
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--success"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                      >
+                        ✔ SPARKING NEURAL HANDSHAKE ACCELERATORS... DONE
+                      </motion.div>
+                    )}
+                    {terminalStep >= 5 && (
+                      <motion.div
+                        className="nb-loader__line nb-loader__line--final w-full text-yellow-300 font-bold"
+                        initial={{ opacity: 0, scale: 0.96, y: 6 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                      >
+                        [ SYSTEM ONLINE ] Boot sequence successful. Redirecting to portfolio...
+                      </motion.div>
+                    )}
+                    {terminalStep < 5 && <span className="nb-loader__cursor" />}
                   </div>
-                  <div className="nb-loader__title">
-                    <FaTerminal className="text-sm shrink-0" />
-                    <span>ARYAN_DANI // SYSTEM_BIOS_V4.0</span>
+
+                  {/* Progress fill */}
+                  <div className="nb-loader__progress-track">
+                    <div
+                      className="nb-loader__progress-fill"
+                      style={{
+                        transform: `translateX(${terminalProgress - 100}%)`,
+                        willChange: "transform",
+                      }}
+                    />
                   </div>
-                  <div className="nb-loader__badge">BOOTING</div>
                 </div>
 
-                {/* Console Output */}
-                <div className="nb-loader__body min-h-[200px]">
-                  <div className="nb-loader__line nb-loader__line--command">
-                    &gt; INITIALIZING SYSTEM BOOT SEQUENCE...
-                  </div>
-
-                  <div className="nb-loader__line">
-                    ↳ SYSTEM MEMORY CHECK: {memSize}MB OK
-                  </div>
-
-                  {terminalStep >= 1 && (
-                    <motion.div
-                      className="nb-loader__line nb-loader__line--success"
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                    >
-                      ✔ HYDRATING CORE COMPONENT REGISTRY... DONE
-                    </motion.div>
-                  )}
-                  {terminalStep >= 2 && (
-                    <motion.div
-                      className="nb-loader__line text-xs opacity-70 ml-4"
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.18, delay: 0.04, ease: "easeOut" }}
-                    >
-                      ↳ [React v18.2.0, Framer Motion v11.0.0, Tailwind v4.0.0]
-                    </motion.div>
-                  )}
-                  {terminalStep >= 3 && (
-                    <motion.div
-                      className="nb-loader__line nb-loader__line--success"
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                    >
-                      ✔ SPINNING UP DATA LAYERS & PLAYGROUND SANDBOX... DONE
-                    </motion.div>
-                  )}
-                  {terminalStep >= 4 && (
-                    <motion.div
-                      className="nb-loader__line nb-loader__line--success"
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                    >
-                      ✔ SPARKING NEURAL HANDSHAKE ACCELERATORS... DONE
-                    </motion.div>
-                  )}
-                  {terminalStep >= 5 && (
-                    <motion.div
-                      className="nb-loader__line nb-loader__line--final w-full text-yellow-300 font-bold"
-                      initial={{ opacity: 0, scale: 0.96, y: 6 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                    >
-                      [ SYSTEM ONLINE ] Boot sequence successful. Redirecting to portfolio...
-                    </motion.div>
-                  )}
-                  {terminalStep < 5 && <span className="nb-loader__cursor" />}
-                </div>
-
-                {/* Progress fill */}
-                <div className="nb-loader__progress-track">
-                  <div
-                    className="nb-loader__progress-fill"
-                    style={{
-                      transform: `translateX(${terminalProgress - 100}%)`,
-                      willChange: "transform",
-                    }}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          )}
+                {/* Skip button on terminal stage */}
+                <button
+                  type="button"
+                  onClick={skipLoader}
+                  className="absolute right-4 top-4 z-30 border-2 border-outline bg-[var(--color-surface)] px-3 py-1.5 font-label-bold text-xs uppercase tracking-widest text-[var(--color-on-surface)] shadow-[3px_3px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+                >
+                  Skip
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* STAGE 3: SHUTTER EXIT TRANSITION PANELS */}
           {phase === PHASES.EXIT && (
@@ -449,6 +462,16 @@ const PageLoader = memo(function PageLoader() {
               })}
             </div>
           )}
+
+          {/* Global progress tracker */}
+          <div className="page-loader__global-progress">
+            <motion.div
+              className="page-loader__global-progress-fill w-full origin-left"
+              style={{ willChange: "transform" }}
+              animate={{ scaleX: globalProgress / 100 }}
+              transition={{ duration: 0.2 }}
+            />
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

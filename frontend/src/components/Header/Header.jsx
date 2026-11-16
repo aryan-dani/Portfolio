@@ -68,6 +68,9 @@ function ThemeToggleButton({ theme, onToggle, className, springConfig }) {
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const menuWasOpenRef = useRef(false);
   const { theme, toggleTheme } = useTheme();
   const { track } = useAchievements();
   const location = useLocation();
@@ -108,6 +111,16 @@ function Header() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      const firstFocusable = mobileMenuRef.current?.querySelector("a, button");
+      firstFocusable?.focus();
+    } else if (menuWasOpenRef.current) {
+      menuButtonRef.current?.focus();
+    }
+    menuWasOpenRef.current = isMenuOpen;
   }, [isMenuOpen]);
 
   useEffect(() => {
@@ -226,10 +239,12 @@ function Header() {
                 />
 
                 <button
+                  ref={menuButtonRef}
                   className="text-[var(--color-on-surface)] p-2 hover:bg-[var(--color-surface-variant)] transition-colors rounded-sm"
                   onClick={() => setIsMenuOpen((p) => !p)}
                   aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
                   aria-expanded={isMenuOpen}
+                  aria-controls="mobile-navigation"
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.span
@@ -251,6 +266,8 @@ function Header() {
       <AnimatePresence>
         {isMenuOpen && showChrome && (
           <motion.div
+            ref={mobileMenuRef}
+            id="mobile-navigation"
             className="lg:hidden fixed inset-x-0 bottom-0 top-16 md:top-[4.25rem] z-[60] flex flex-col items-center px-4 pt-6 pb-28 border-t-4 border-outline font-headline-md uppercase font-bold text-xl gap-3 overflow-y-auto overscroll-contain bg-[var(--color-background)]"
             variants={menuVariants}
             initial="hidden"

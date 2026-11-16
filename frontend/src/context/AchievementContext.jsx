@@ -12,13 +12,14 @@ import { ACHIEVEMENTS, ALL_PAGE_PATHS } from "../data/achievements";
 import { useToast } from "./ToastContext";
 import { useSound } from "./SoundContext";
 import { subscribePortfolioScroll, getPortfolioScrollY } from "../utils/smoothScroll";
+import { readStorage, writeStorage } from "../utils/storage";
 
 const STORAGE_KEY = "portfolio_achievements_v1";
 const AchievementContext = createContext(null);
 
 function loadState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = readStorage(STORAGE_KEY);
     if (!raw) return { unlocked: [], stats: {} };
     return JSON.parse(raw);
   } catch {
@@ -27,7 +28,7 @@ function loadState() {
 }
 
 function saveState(unlocked, stats) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ unlocked, stats }));
+  writeStorage(STORAGE_KEY, JSON.stringify({ unlocked, stats }));
 }
 
 export function AchievementProvider({ children }) {
