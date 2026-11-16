@@ -222,6 +222,11 @@ const PageLoader = memo(function PageLoader() {
     }
   };
 
+  const handleVideoInteraction = (e) => {
+    if (e.target.closest?.("button") || !videoRef.current?.muted) return;
+    void toggleIntroSound(e);
+  };
+
   const handleTimeUpdate = () => {
     if (videoRef.current && videoRef.current.duration) {
       const pct = (videoRef.current.currentTime / videoRef.current.duration) * 100;
@@ -267,6 +272,7 @@ const PageLoader = memo(function PageLoader() {
               <motion.div
                 key="video-fullscreen-stage"
                 className="page-loader__video-stage fixed inset-0 z-30 w-full h-full flex items-center justify-center overflow-hidden"
+                onPointerDown={handleVideoInteraction}
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0, scale: 1.02 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
