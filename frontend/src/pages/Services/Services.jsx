@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FaCheck,
   FaChevronDown,
+  FaCopy,
   FaEnvelope,
   FaExternalLinkAlt,
   FaFileDownload,
@@ -188,7 +189,6 @@ const Services = memo(function Services() {
     }
   };
 
-  const scopingHref = SCOPING_CALL_URL || "#inquiry";
   const visibleFaq = activeTab === "web" ? WEB_FAQ : SERVICES_FAQ;
   const webGallery = useMemo(() => getWebGallery(), []);
 
@@ -870,41 +870,70 @@ const Services = memo(function Services() {
 
           <aside className="flex flex-col gap-4">
             <div className="border-4 border-outline bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] p-5 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4">
-              <h3 className="font-headline-md text-xl uppercase">Direct email</h3>
-              <p className="font-body-md text-sm leading-snug">
-                I usually reply within 24 hours.
+              <div className="flex items-center gap-2.5 border-b-2 border-current/30 pb-3">
+                <FaEnvelope className="text-xl text-current shrink-0" aria-hidden />
+                <h3 className="font-headline-md text-xl uppercase tracking-wide">Direct email</h3>
+              </div>
+              <p className="font-body-md text-sm leading-relaxed opacity-90">
+                Have a quick question or urgent project? I typically respond within 24 hours.
               </p>
-              <a
-                href={`mailto:${SERVICES_EMAIL}`}
-                className="inline-flex items-center gap-2 font-body-md text-sm break-all underline underline-offset-4"
-              >
-                <FaEnvelope aria-hidden />
-                {SERVICES_EMAIL}
-              </a>
-              <a
-                href={scopingHref}
-                {...(SCOPING_CALL_URL
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="border-4 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[4px_4px_0_0_var(--shadow-color)]"
-              >
-                Book a 20 minute scoping call
-              </a>
-              {!SCOPING_CALL_URL && (
-                <p className="font-body-md text-xs leading-snug opacity-90">
-                  Booking link not set yet. The button jumps to the form on this page.
-                </p>
+              <div className="flex items-center justify-between gap-2 p-3 border-2 border-current/40 bg-current/5">
+                <a
+                  href={`mailto:${SERVICES_EMAIL}`}
+                  className="font-body-md text-sm font-semibold truncate hover:underline underline-offset-4 text-current"
+                  title={SERVICES_EMAIL}
+                >
+                  {SERVICES_EMAIL}
+                </a>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(SERVICES_EMAIL);
+                      showToast?.("Email copied to clipboard!", "success");
+                    } catch {
+                      window.location.href = `mailto:${SERVICES_EMAIL}`;
+                    }
+                  }}
+                  className="px-2.5 py-1 text-[11px] font-label-bold uppercase border border-current/40 bg-current/10 hover:bg-current hover:text-[var(--color-on-background)] transition-colors cursor-none shrink-0 flex items-center gap-1.5"
+                >
+                  <FaCopy aria-hidden className="text-[10px]" />
+                  <span>Copy</span>
+                </button>
+              </div>
+              {SCOPING_CALL_URL ? (
+                <a
+                  href={SCOPING_CALL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-none"
+                >
+                  <span>Book a 20 minute scoping call</span>
+                  <FaExternalLinkAlt className="text-xs" aria-hidden />
+                </a>
+              ) : (
+                <a
+                  href="#inquiry"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="border-2 border-outline bg-[var(--color-surface)] text-[var(--color-on-surface)] px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-none"
+                >
+                  <FaPaperPlane className="text-xs" aria-hidden />
+                  <span>Jump to inquiry form</span>
+                </a>
               )}
             </div>
             <div
-              className="border-4 border-outline p-5 flex flex-col gap-4 shadow-[4px_4px_0px_0px_var(--shadow-accent)]"
+              className="border-4 border-outline p-5 flex flex-col gap-4 shadow-[6px_6px_0_0_var(--shadow-color)]"
               style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             >
-              <div className="flex items-center gap-3 border-b-4 border-current pb-3">
-                <FaFileDownload className="text-2xl text-current" aria-hidden />
+              <div className="flex items-center gap-3 border-b-2 border-current/30 pb-3">
+                <FaFileDownload className="text-2xl text-current shrink-0" aria-hidden />
                 <div>
-                  <div className="font-headline-md text-lg uppercase">My Resume</div>
-                  <div className="font-body-md text-sm opacity-60">Classic PDF + LaTeX PDF</div>
+                  <div className="font-headline-md text-lg uppercase tracking-wide">My Resume</div>
+                  <div className="font-body-md text-xs opacity-75">Classic PDF + LaTeX PDF</div>
                 </div>
               </div>
               <ResumeActions

@@ -447,11 +447,11 @@ function Contact() {
             style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             variants={itemVariants}
           >
-            <div className="flex items-center gap-3 border-b-4 border-current pb-3">
-              <FaFileDownload className="text-3xl text-current" />
+            <div className="flex items-center gap-3 border-b-2 border-current/30 pb-3">
+              <FaFileDownload className="text-2xl text-current shrink-0" />
               <div>
-                <div className="font-headline-md text-xl uppercase">My Resume</div>
-                <div className="font-body-md text-sm opacity-60">Classic PDF + LaTeX PDF</div>
+                <div className="font-headline-md text-xl uppercase tracking-wide">My Resume</div>
+                <div className="font-body-md text-sm opacity-75">Classic PDF + LaTeX PDF</div>
               </div>
             </div>
             <ResumeActions
