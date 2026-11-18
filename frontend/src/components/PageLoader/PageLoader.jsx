@@ -145,6 +145,22 @@ const PageLoader = memo(function PageLoader() {
       }
     }
 
+    const enableSoundFromGesture = () => {
+      if (!videoRef.current?.muted) return;
+      if (!soundEnabled) toggleSound();
+      void unlockAudio({ allowDisabled: true }).then((ctx) => {
+        if (!ctx || !videoRef.current) return;
+        videoRef.current.muted = false;
+        setIsMuted(false);
+      });
+    };
+
+    const onIntroKeyDown = (event) => {
+      if (event.key === "Enter" || event.key === " ") enableSoundFromGesture();
+    };
+
+    document.addEventListener("keydown", onIntroKeyDown);
+
     // Safety timeout: video is ~4.8s, fallback after 5.5s so loader never hangs
     const fallbackTimer = setTimeout(() => {
       advanceToTerminal();
@@ -152,8 +168,9 @@ const PageLoader = memo(function PageLoader() {
 
     return () => {
       clearTimeout(fallbackTimer);
+      document.removeEventListener("keydown", onIntroKeyDown);
     };
-  }, [phase, hasVisited, reduceMotion, soundEnabled, advanceToTerminal]);
+  }, [phase, hasVisited, reduceMotion, soundEnabled, advanceToTerminal, toggleSound, unlockAudio]);
 
   useEffect(() => {
     if (!isLoading) return undefined;

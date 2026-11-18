@@ -8,7 +8,14 @@ const STORAGE_KEY = "portfolio_sound_enabled";
 const HOVER_COOLDOWN_MS = 72;
 
 export function SoundProvider({ children }) {
-  const [enabled, setEnabled] = useState(() => readStorage(STORAGE_KEY) !== "false");
+  const [enabled, setEnabled] = useState(() => {
+    const stored = readStorage(STORAGE_KEY);
+    if (stored === null) {
+      writeStorage(STORAGE_KEY, "true");
+      return true;
+    }
+    return stored !== "false";
+  });
   const audioRef = useRef(null);
   const masterRef = useRef(null);
   const unlockedRef = useRef(false);
