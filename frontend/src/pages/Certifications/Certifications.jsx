@@ -19,8 +19,6 @@ function Certifications() {
   const [previewImage, setPreviewImage] = useState(null);
   const gridRef = useRef(null);
   const scopeRef = useRef(null);
-  const buildEnabled = searchTerm === "" && activeFilter === "all";
-
   const filteredCerts = useMemo(() =>
     certifications.filter((cert) => {
       const matchesCategory = activeFilter === "all" || cert.category === activeFilter;
@@ -141,7 +139,7 @@ function Certifications() {
       <CardBuildSwarm
         storageKey="certifications"
         scopeRef={scopeRef}
-        enabled={buildEnabled && filteredCerts.length > 0}
+        enabled={searchTerm === "" && activeFilter === "all" && filteredCerts.length > 0}
       />
 
       {/* Image Preview Modal */}

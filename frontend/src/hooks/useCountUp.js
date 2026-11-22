@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from "react";
  * Animated counter that counts from `start` to `end` when triggered.
  * Returns the current display value.
  *
+ * Initial paint uses `end` to avoid CLS (no flash of 0).
+ * Under prefers-reduced-motion, the final value is shown immediately.
+ *
  * @param {number} end - Target number
  * @param {object} options
  * @param {number} options.start - Starting number (default 0)
@@ -12,24 +15,31 @@ import { useState, useEffect, useRef } from "react";
  * @param {string} options.suffix - Suffix to append (e.g. "+", "%")
  */
 export function useCountUp(end, { start = 0, duration = 2000, trigger = true, suffix = "" } = {}) {
-  const [value, setValue] = useState(start);
+  const [value, setValue] = useState(end);
   const startTime = useRef(null);
   const animRef = useRef(null);
 
   useEffect(() => {
-    if (!trigger) {
-      setValue(start);
-      return;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!trigger || reduced) {
+      setValue(end);
+      return undefined;
     }
+
+    setValue(start);
+    startTime.current = null;
 
     const animate = (timestamp) => {
       if (!startTime.current) startTime.current = timestamp;
       const progress = Math.min((timestamp - startTime.current) / duration, 1);
-      
+
       // Ease-out cubic for satisfying deceleration
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = Math.round(start + (end - start) * eased);
-      
+
       setValue(current);
 
       if (progress < 1) {
@@ -37,7 +47,6 @@ export function useCountUp(end, { start = 0, duration = 2000, trigger = true, su
       }
     };
 
-    startTime.current = null;
     animRef.current = requestAnimationFrame(animate);
 
     return () => {

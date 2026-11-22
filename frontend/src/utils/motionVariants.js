@@ -50,37 +50,28 @@ export const containerVariants = {
 
 /** Slide-up item - soft reveal without starting fully invisible on first paint. */
 export const itemVariants = {
-  hidden: { opacity: 0.01, y: 6 },
+  hidden: { opacity: 0.01, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: defaultSpring,
+    transition: { duration: 0.38, ease: motionEase.out },
   },
 };
 
 /** Card variant - alias of itemVariants for grid children */
 export const cardVariants = itemVariants;
 
-/** Route/page transition - directional slide with soft spring */
+/** Route/page transition — enter-only opacity fade (no x/y exit). */
 export const pageVariants = {
-  initial: (direction = 1) => ({
-    opacity: 0,
-    x: direction > 0 ? 18 : -18,
-    y: 8,
-  }),
+  initial: { opacity: 0 },
   animate: {
     opacity: 1,
-    x: 0,
-    y: 0,
-    transitionEnd: { transform: "none" },
-    transition: { duration: 0.24, ease: motionEase.out },
+    transition: { duration: 0.2, ease: motionEase.out },
   },
-  exit: (direction = 1) => ({
-    opacity: 0,
-    x: direction > 0 ? -14 : 14,
-    y: -4,
-    transition: { duration: 0.16, ease: motionEase.in },
-  }),
+  exit: {
+    opacity: 1,
+    transition: { duration: 0 },
+  },
 };
 
 /** Modal backdrop - smooth opacity fade */

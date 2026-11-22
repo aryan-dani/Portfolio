@@ -1,3 +1,26 @@
+/**
+ * Phase 7 — real build-time content snapshots for crawlers (Vite SPA middle path).
+ *
+ * Full React SSR is intentionally not used. After `vite build`, this script copies
+ * dist/index.html per SEO route and injects:
+ *   1) route-specific <head> meta + JSON-LD (@graph from seoConfig)
+ *   2) a visible <article id="prerender-content" data-prerender="true"> sibling
+ *      placed before #root with semantic HTML from the same data modules the app uses
+ *
+ * Priority bodies (full page content for view-source / non-JS crawlers):
+ *   - /services — packages + prices, process, FAQ, inquiry heading
+ *   - /work/:slug — full case study sections
+ *   - /guides/:slug — full guide sections
+ * Lighter summaries for /about, /projects, and most list pages. Home stays thin.
+ *
+ * Runtime: main.jsx removes #prerender-content (and [data-prerender]) after React
+ * mounts so users do not see duplicate content. index.css also hides [data-prerender]
+ * once html.js is set. Crawlers that skip JS keep the full article in the HTML file.
+ *
+ * Phase 6 note: head injection uses a </head> replacer function so `$` in prices
+ * is never treated as a RegExp substitution token.
+ */
+
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,13 +36,25 @@ import {
 } from "../src/config/seoConfig.js";
 import { projects } from "../src/data/projects.js";
 import { certifications } from "../src/data/certifications.js";
-import { experiences } from "../src/data/experience.js";
+import { aboutInfo, experiences } from "../src/data/experience.js";
 import { CASE_STUDIES } from "../src/data/caseStudies.js";
+import { researchPapers } from "../src/data/research.js";
+import { AVAILABILITY, PRIMARY_CTA } from "../src/data/availability.js";
 import {
   SERVICES_FAQ,
+  SERVICES_GUIDES,
+  SERVICES_HERO,
   SERVICES_PACKAGES,
+  SERVICES_PRICE_NOTE,
+  SERVICES_PROCESS,
+  WEB_ADDONS,
+  WEB_EVERY_SITE,
   WEB_FAQ,
   WEB_PACKAGES,
+  WEB_PROCESS,
+  SERVICE_LANDINGS,
+  formatInr,
+  formatUsd,
 } from "../src/data/services.js";
 
 const distDir = new URL("../dist/", import.meta.url);
@@ -30,19 +65,8 @@ const EXTRA_DATA = {
   "/projects": { projects },
   "/experience": { experiences },
   "/certifications": { certifications },
+  "/research": { papers: researchPapers },
   "/services": { faqItems: [...SERVICES_FAQ, ...WEB_FAQ] },
-  "/contact": {
-    faqItems: [
-      {
-        q: "Is Aryan Dani available for freelance projects?",
-        a: "Yes. Aryan Dani is open to freelance web development, AI engineering, and full-stack collaboration opportunities.",
-      },
-      {
-        q: "What does Aryan Dani specialize in?",
-        a: "Aryan Dani specializes in AI agents, RAG pipelines, computer vision, and full-stack Next.js and React applications for startups and local businesses.",
-      },
-    ],
-  },
 };
 
 function escapeHtml(value) {
@@ -90,14 +114,140 @@ function routeLinks(currentPath) {
     .join("");
 }
 
+function listItems(items) {
+  return items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+}
+
+function packageBlock(pack, { priceLine }) {
+  const includes = Array.isArray(pack.includes) ? listItems(pack.includes) : "";
+  return `<section>
+  <h3>${escapeHtml(pack.name)}</h3>
+  <p><strong>Price:</strong> ${escapeHtml(priceLine)}</p>
+  ${pack.timeline ? `<p><strong>Timeline:</strong> ${escapeHtml(pack.timeline)}</p>` : ""}
+  ${pack.forWho ? `<p>${escapeHtml(pack.forWho)}</p>` : ""}
+  ${pack.priceDetail ? `<p>${escapeHtml(pack.priceDetail)}</p>` : ""}
+  ${includes ? `<ul>${includes}</ul>` : ""}
+</section>`;
+}
+
+function webPriceLine(pack) {
+  const prefix = pack.priceKind === "from" ? "From" : "Starting at";
+  const suffix = pack.priceSuffix || "";
+  return `${prefix} ${formatInr(pack.priceInr)}${suffix} · ${prefix} ${formatUsd(pack.priceUsd)}${suffix}`;
+}
+
+function aiPriceLine(pack) {
+  // priceLabel already pairs USD + INR; fall back to separate labels when needed.
+  if (pack.priceLabel) return pack.priceLabel;
+  return [pack.priceLabelUsd, pack.priceLabelInr].filter(Boolean).join(" · ");
+}
+
+/** Full Services page body: packages, process, FAQ, inquiry — visible in view-source. */
+function servicesFullBody() {
+  const webBlocks = WEB_PACKAGES.map((pack) =>
+    packageBlock(pack, { priceLine: webPriceLine(pack) }),
+  ).join("");
+  const aiBlocks = SERVICES_PACKAGES.map((pack) =>
+    packageBlock(pack, { priceLine: aiPriceLine(pack) }),
+  ).join("");
+  const faq = [...SERVICES_FAQ, ...WEB_FAQ]
+    .map(
+      (item) =>
+        `<dt>${escapeHtml(item.q)}</dt><dd>${escapeHtml(item.a)}</dd>`,
+    )
+    .join("");
+
+  return [
+    `<p class="eyebrow">${escapeHtml(SERVICES_HERO.eyebrow)}</p>`,
+    `<p>${escapeHtml(SERVICES_HERO.subline)}</p>`,
+    `<p><strong>Availability:</strong> ${escapeHtml(AVAILABILITY.label)}. ${escapeHtml(AVAILABILITY.detail)}</p>`,
+    `<p><a href="#inquiry">${escapeHtml(PRIMARY_CTA.label)}</a></p>`,
+    `<h2>Website packages</h2>`,
+    webBlocks,
+    `<h2>Included with every website</h2><ul>${listItems(WEB_EVERY_SITE)}</ul>`,
+    `<h2>Optional add-ons</h2><ul>${listItems(WEB_ADDONS)}</ul>`,
+    `<h2>Website process</h2><ol>${listItems(WEB_PROCESS)}</ol>`,
+    `<h2>AI packages</h2>`,
+    aiBlocks,
+    `<p>${escapeHtml(SERVICES_PRICE_NOTE)}</p>`,
+    `<h2>AI process</h2><ol>${listItems(SERVICES_PROCESS)}</ol>`,
+    `<h2>FAQ</h2><dl>${faq}</dl>`,
+    `<h2 id="inquiry">${escapeHtml(PRIMARY_CTA.label)}</h2>`,
+    `<p>Send a project brief for a clear scope outline. ${escapeHtml(AVAILABILITY.detail)}</p>`,
+  ].join("");
+}
+
+/** Full case study body from CASE_STUDIES data. */
+function caseStudyFullBody(study) {
+  return [
+    study.oneLiner ? `<p>${escapeHtml(study.oneLiner)}</p>` : "",
+    study.stack?.length
+      ? `<p><strong>Stack:</strong> ${escapeHtml(study.stack.join(", "))}</p>`
+      : "",
+    `<h2>Problem</h2><p>${escapeHtml(study.problem)}</p>`,
+    `<h2>Approach</h2><p>${escapeHtml(study.approach)}</p>`,
+    `<h2>Architecture</h2><p>${escapeHtml(study.architecture)}</p>`,
+    study.outcome ? `<h2>Outcome</h2><p>${escapeHtml(study.outcome)}</p>` : "",
+    study.retrospective
+      ? `<h2>What I would do differently</h2><p>${escapeHtml(study.retrospective)}</p>`
+      : "",
+    study.live
+      ? `<p><a href="${escapeHtml(study.live)}">${escapeHtml(
+          study.liveAnchor || "Live demo",
+        )}</a></p>`
+      : "",
+    study.github
+      ? `<p><a href="${escapeHtml(study.github)}">Source repository</a></p>`
+      : "",
+    `<p><a href="/services">Back to services</a> · <a href="${escapeHtml(PRIMARY_CTA.to)}">${escapeHtml(PRIMARY_CTA.label)}</a></p>`,
+  ].join("");
+}
+
+/** Full service landing body from SERVICE_LANDINGS data. */
+function serviceLandingFullBody(landing) {
+  const process = listItems(landing.process || []);
+  const faq = (landing.faq || [])
+    .map(
+      (item) =>
+        `<dt>${escapeHtml(item.q)}</dt><dd>${escapeHtml(item.a)}</dd>`,
+    )
+    .join("");
+  return [
+    landing.description ? `<p>${escapeHtml(landing.description)}</p>` : "",
+    process ? `<h2>Process</h2><ol>${process}</ol>` : "",
+    faq ? `<h2>FAQ</h2><dl>${faq}</dl>` : "",
+    `<p><a href="/services#inquiry">Request a quote</a></p>`,
+  ].join("");
+}
+
+/** Full guide body from SERVICES_GUIDES data. */
+function guideFullBody(guide) {
+  const sections = (guide.sections || [])
+    .map(
+      (section) =>
+        `<h2>${escapeHtml(section.title)}</h2><p>${escapeHtml(section.body)}</p>`,
+    )
+    .join("");
+  return [
+    guide.description ? `<p>${escapeHtml(guide.description)}</p>` : "",
+    sections,
+    `<p><a href="/services#inquiry">Request a quote</a></p>`,
+  ].join("");
+}
+
 function routeExtraBody(path) {
-  if (path === "/" || path === "/projects") {
+  if (path === "/") {
+    // Home stays thin — brand + description in the article shell is enough.
+    return `<p><a href="/services">${escapeHtml(PRIMARY_CTA.label)}</a> · <a href="/projects">View projects</a></p>`;
+  }
+
+  if (path === "/projects") {
     const items = projects
       .slice(0, 12)
       .map(
         (project) =>
           `<li><strong>${escapeHtml(project.title)}</strong> — ${escapeHtml(
-            String(project.description || "").slice(0, 160),
+            String(project.description || ""),
           )}${
             project.links?.preview
               ? ` (<a href="${escapeHtml(project.links.preview)}">${escapeHtml(
@@ -110,44 +260,110 @@ function routeExtraBody(path) {
     return `<h2>Selected work</h2><ul>${items}</ul>`;
   }
 
-  if (path === "/services") {
-    const packs = [...WEB_PACKAGES, ...SERVICES_PACKAGES]
+  if (path === "/about") {
+    const bio = String(aboutInfo.bio || "")
+      .split(/\n\n+/)
+      .map((para) => `<p>${escapeHtml(para)}</p>`)
+      .join("");
+    const highlights = (aboutInfo.highlights || [])
       .map(
-        (pack) =>
-          `<li><strong>${escapeHtml(pack.name)}</strong> — ${escapeHtml(
-            pack.forWho || pack.priceLabel || "",
-          )}</li>`,
+        (item) =>
+          `<li><strong>${escapeHtml(item.title)}:</strong> ${escapeHtml(item.description)}</li>`,
       )
       .join("");
-    return `<h2>Packages</h2><ul>${packs}</ul>`;
+    return [
+      `<p><strong>${escapeHtml(aboutInfo.title)}</strong> — ${escapeHtml(aboutInfo.tagline)}</p>`,
+      bio,
+      highlights ? `<h2>Highlights</h2><ul>${highlights}</ul>` : "",
+      aboutInfo.email
+        ? `<p><a href="mailto:${escapeHtml(aboutInfo.email)}">${escapeHtml(aboutInfo.email)}</a></p>`
+        : "",
+    ].join("");
+  }
+
+  if (path === "/services") {
+    return servicesFullBody();
   }
 
   if (path.startsWith("/work/")) {
     const slug = path.replace("/work/", "");
     const study = CASE_STUDIES.find((entry) => entry.slug === slug);
     if (!study) return "";
-    return [
-      `<h2>Problem</h2><p>${escapeHtml(study.problem)}</p>`,
-      `<h2>Approach</h2><p>${escapeHtml(study.approach)}</p>`,
-      `<h2>Architecture</h2><p>${escapeHtml(study.architecture)}</p>`,
-      study.outcome ? `<h2>Outcome</h2><p>${escapeHtml(study.outcome)}</p>` : "",
-      study.live
-        ? `<p><a href="${escapeHtml(study.live)}">${escapeHtml(
-            study.liveAnchor || "Live demo",
-          )}</a></p>`
-        : "",
-    ].join("");
+    return caseStudyFullBody(study);
+  }
+
+  if (path.startsWith("/guides/")) {
+    const slug = path.replace("/guides/", "");
+    const guide = SERVICES_GUIDES.find((entry) => entry.slug === slug);
+    if (!guide) return "";
+    return guideFullBody(guide);
+  }
+
+  if (path.startsWith("/services/")) {
+    const slug = path.replace("/services/", "");
+    const landing = SERVICE_LANDINGS.find((entry) => entry.slug === slug);
+    if (!landing) return "";
+    return serviceLandingFullBody(landing);
+  }
+
+  if (path === "/research") {
+    return researchPapers
+      .map((paper) => {
+        const highlights = (paper.highlights || [])
+          .map(
+            (item) =>
+              `<li><strong>${escapeHtml(item.label)}:</strong> ${escapeHtml(item.value)}${
+                item.detail ? ` — ${escapeHtml(item.detail)}` : ""
+              }</li>`,
+          )
+          .join("");
+        const sections = (paper.sections || [])
+          .map(
+            (section) =>
+              `<h3>${escapeHtml(section.title)}</h3><p>${escapeHtml(section.body)}</p>`,
+          )
+          .join("");
+        return [
+          `<section>`,
+          `<h2>${escapeHtml(paper.title)}${paper.subtitle ? `: ${escapeHtml(paper.subtitle)}` : ""}</h2>`,
+          `<p>${escapeHtml(paper.summary || paper.abstract || "")}</p>`,
+          paper.abstract && paper.summary
+            ? `<p>${escapeHtml(paper.abstract)}</p>`
+            : "",
+          highlights ? `<ul>${highlights}</ul>` : "",
+          sections,
+          paper.pdfUrl
+            ? `<p><a href="${escapeHtml(paper.pdfUrl)}">Read the full PDF</a></p>`
+            : "",
+          `</section>`,
+        ].join("");
+      })
+      .join("");
   }
 
   if (path === "/certifications") {
     const items = certifications
-      .slice(0, 12)
       .map(
         (cert) =>
           `<li><strong>${escapeHtml(cert.title)}</strong> — ${escapeHtml(cert.issuer)}</li>`,
       )
       .join("");
     return `<h2>Credentials</h2><ul>${items}</ul>`;
+  }
+
+  if (path === "/experience") {
+    return experiences
+      .map((exp) => {
+        const points = (exp.responsibilities || [])
+          .map((point) => `<li>${escapeHtml(point)}</li>`)
+          .join("");
+        return `<section>
+  <h2>${escapeHtml(exp.position)} · ${escapeHtml(exp.company)}</h2>
+  <p>${escapeHtml(exp.period)}${exp.location ? ` · ${escapeHtml(exp.location)}` : ""}</p>
+  ${points ? `<ul>${points}</ul>` : ""}
+</section>`;
+      })
+      .join("");
   }
 
   return "";
@@ -157,10 +373,21 @@ function routeArticle(path, config) {
   const heading =
     path === "/"
       ? "Aryan Dani — Freelance AI Engineer & Full-Stack Developer"
-      : config.title;
+      : path === "/services"
+        ? SERVICES_HERO.headline
+        : path.startsWith("/work/")
+          ? CASE_STUDIES.find((s) => s.slug === path.replace("/work/", ""))?.title || config.title
+          : path.startsWith("/guides/")
+            ? SERVICES_GUIDES.find((g) => g.slug === path.replace("/guides/", ""))?.title ||
+              config.title
+            : path.startsWith("/services/")
+              ? SERVICE_LANDINGS.find((l) => l.slug === path.replace("/services/", ""))?.title ||
+                config.title
+              : config.title;
   const extra = routeExtraBody(path);
 
-  return `<article data-prerender="true">
+  // Visible in the HTML file (view-source / non-JS). Hidden/removed after React mounts.
+  return `<article id="prerender-content" data-prerender="true">
   <main>
     <h1>${escapeHtml(heading)}</h1>
     <p>${escapeHtml(config.description)}</p>
@@ -213,6 +440,8 @@ function replaceHead(html, config, graph, routePath) {
     .filter(Boolean)
     .join("\n    ");
 
+  // Keep charset/viewport first; place route meta + JSON-LD before </head> (ahead of body scripts).
+  // Use a replacer function so `$` in prices is not treated as a RegExp substitution.
   return html
     .replace(/<title>[\s\S]*?<\/title>/, "")
     .replace(
@@ -220,8 +449,9 @@ function replaceHead(html, config, graph, routePath) {
       "",
     )
     .replace(/<link rel="canonical"[\s\S]*?>/g, "")
+    .replace(/<!--\s*Structured Data[\s\S]*?-->/g, "")
     .replace(/<script type="application\/ld\+json"[\s\S]*?<\/script>/g, "")
-    .replace("</head>", `    ${headMeta}\n  </head>`);
+    .replace(/<\/head>/i, () => `    ${headMeta}\n  </head>`);
 }
 
 async function writeRouteHtml(routePath, html) {
@@ -231,7 +461,11 @@ async function writeRouteHtml(routePath, html) {
   await writeFile(outputUrl, html, "utf8");
 }
 
-const baseHtml = await readFile(baseHtmlPath, "utf8");
+const rawBaseHtml = await readFile(baseHtmlPath, "utf8");
+// Strip prior snapshots if dist/index.html was already prerendered (safe re-runs).
+const baseHtml = rawBaseHtml
+  .replace(/<article\s+id="prerender-content"[\s\S]*?<\/article>\s*/gi, "")
+  .replace(/<article\s+id="seo-prerender"[\s\S]*?<\/article>\s*/gi, "");
 
 for (const routePath of SEO_ROUTE_ORDER) {
   const config = SEO_CONFIG[routePath];

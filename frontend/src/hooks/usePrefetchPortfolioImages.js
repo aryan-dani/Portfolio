@@ -3,7 +3,7 @@ import { projects } from "../data/projects";
 import { getAssetPath } from "../utils/paths";
 
 const ABOUT_FIRST = "Images/About/pic_1.jpg";
-const PREFETCH_COUNT = 6;
+const PREFETCH_COUNT = 2;
 
 function shouldPrefetch() {
   if (typeof navigator === "undefined") return false;

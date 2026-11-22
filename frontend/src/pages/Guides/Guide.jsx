@@ -1,9 +1,15 @@
 import { memo } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
 import { getGuideBySlug } from "../../data/services";
+import { PRIMARY_CTA } from "../../data/availability";
+import {
+  Button,
+  Eyebrow,
+  Reveal,
+  Rule,
+  Section,
+} from "../../components/ui";
 import { usePageSEO } from "../../utils/seo";
-import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 const Guide = memo(function Guide() {
   const { slug } = useParams();
@@ -16,53 +22,45 @@ const Guide = memo(function Guide() {
   }
 
   return (
-    <motion.article
-      className="flex flex-col gap-10 md:gap-14 w-full pb-8"
-      initial={false}
-      animate="visible"
-      variants={containerVariants}
-    >
-      <motion.header
-        className="mt-4 border-4 border-outline bg-hatch p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4"
-        variants={itemVariants}
-      >
-        <p className="font-label-bold text-xs uppercase tracking-[0.16em]">
-          <Link to="/services" className="underline underline-offset-4">
-            Services
-          </Link>
-          <span aria-hidden> / </span>
-          Guide
-        </p>
-        <h1 className="font-headline-xl text-3xl md:text-5xl uppercase tracking-tighter leading-tight bg-surface border-4 border-outline p-4 shadow-[8px_8px_0_0_var(--shadow-color)] w-fit max-w-4xl">
-          {guide.title}
-        </h1>
-        <p className="font-body-lg text-base md:text-lg max-w-3xl bg-surface border-4 border-outline p-4 shadow-[4px_4px_0_0_var(--shadow-color)] leading-snug">
-          {guide.description}
-        </p>
-      </motion.header>
+    <article className="flex flex-col gap-12 md:gap-14 w-full pb-8">
+      <Reveal>
+        <header className="flex flex-col gap-4 mt-2">
+          <Eyebrow>
+            <Link to="/services" className="underline underline-offset-4">
+              Services
+            </Link>
+            <span aria-hidden> / </span>
+            Guide
+          </Eyebrow>
+          <h1 className="font-headline-xl text-[clamp(2rem,5vw,3.5rem)] leading-[1] tracking-tight normal-case max-w-4xl w-fit bg-surface border-4 border-outline p-4 md:p-6 shadow-[8px_8px_0_0_var(--shadow-color)]">
+            {guide.title}
+          </h1>
+          <p className="font-body-lg text-base md:text-lg max-w-3xl text-on-surface-variant leading-snug">
+            {guide.description}
+          </p>
+          <Rule />
+        </header>
+      </Reveal>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8 max-w-3xl">
         {guide.sections.map((section) => (
-          <motion.section
-            key={section.title}
-            className="border-4 border-outline bg-surface p-5 md:p-6 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-3"
-            variants={itemVariants}
-          >
-            <h2 className="font-headline-md text-xl md:text-2xl uppercase">{section.title}</h2>
-            <p className="font-body-md text-sm md:text-base leading-snug">{section.body}</p>
-          </motion.section>
+          <Reveal key={section.title}>
+            <Section>
+              <h2 className="font-headline-md text-xl md:text-2xl normal-case tracking-tight">
+                {section.title}
+              </h2>
+              <p className="font-body-md text-base leading-relaxed text-on-surface-variant">
+                {section.body}
+              </p>
+            </Section>
+          </Reveal>
         ))}
       </div>
 
-      <motion.div variants={itemVariants}>
-        <Link
-          to="/services#inquiry"
-          className="inline-flex border-4 border-outline bg-primary-container text-on-primary-container px-6 py-3 font-label-bold text-sm uppercase shadow-[6px_6px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0_0_var(--shadow-color)] transition-all"
-        >
-          Request a quote
-        </Link>
-      </motion.div>
-    </motion.article>
+      <Reveal>
+        <Button to={PRIMARY_CTA.to}>{PRIMARY_CTA.label}</Button>
+      </Reveal>
+    </article>
   );
 });
 

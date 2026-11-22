@@ -10,7 +10,11 @@ import {
   SERVICES_GUIDES,
   SERVICES_PACKAGES,
   SERVICES_PROOF,
+  BOOKING_CALL_URL,
   SCOPING_CALL_URL,
+  SERVICE_LANDINGS,
+  getServiceLandingBySlug,
+  serviceLandingPaths,
   USD_TO_INR,
   WEB_FAQ,
   WEB_PACKAGES,
@@ -67,7 +71,7 @@ for (const site of webGallery) {
   assert.equal(getProjectById(site.projectId)?.title, site.title, `${site.title} must match projects.js`);
 }
 
-assert.equal(SERVICES_GUIDES.length, 2, "expected two guides");
+assert.equal(SERVICES_GUIDES.length, 5, "expected five guides");
 for (const guide of SERVICES_GUIDES) {
   assert.ok(getGuideBySlug(guide.slug), `guide lookup failed for ${guide.slug}`);
   const path = `/guides/${guide.slug}`;
@@ -117,6 +121,16 @@ assert.throws(
   "filled honeypot must be rejected",
 );
 
+assert.equal(typeof BOOKING_CALL_URL, "string", "BOOKING_CALL_URL must be a string");
 assert.equal(typeof SCOPING_CALL_URL, "string", "SCOPING_CALL_URL must be a string");
+assert.equal(SERVICE_LANDINGS.length, 4, "expected four service landings");
+for (const landing of SERVICE_LANDINGS) {
+  assert.ok(getServiceLandingBySlug(landing.slug), `landing lookup failed for ${landing.slug}`);
+  const path = `/services/${landing.slug}`;
+  assert.ok(serviceLandingPaths().includes(path), `${path} missing from serviceLandingPaths()`);
+  assert.ok(SEO_ROUTE_ORDER.includes(path), `${path} missing from SEO_ROUTE_ORDER`);
+  assert.ok(SEO_CONFIG[path], `${path} missing from SEO_CONFIG`);
+  assert.ok(landing.faq.length >= 3, `${landing.slug} needs at least three FAQ items`);
+}
 
 console.log("check-services: ok");

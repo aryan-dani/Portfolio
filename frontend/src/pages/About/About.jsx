@@ -1,4 +1,4 @@
-import { useState, useRef, memo, useEffect, useCallback, lazy, Suspense } from "react";
+import { useState, useRef, memo, useCallback, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
@@ -18,6 +18,8 @@ import GitHubTicker from "../../components/GitHubTicker/GitHubTicker";
 import GitCareerTimeline from "../../components/GitCareerTimeline/GitCareerTimeline";
 
 import ResumeActions from "../../components/ResumeModal/ResumeActions";
+import { AVAILABILITY, PRIMARY_CTA } from "../../data/availability";
+import { trackActionClick } from "../../utils/funnel";
 
 const GitHubStats = lazy(() => import("../../components/GitHubStats/GitHubStats"));
 const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
@@ -34,12 +36,9 @@ const photos = [
   { src: "Images/About/pic_3.jpg", alt: `${aboutInfo.name} – photo 3` },
 ];
 
-const INTERVAL_MS = 3800;
-
 function PhotoCarousel() {
-  const [index, setIndex]     = useState(0);
+  const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [isPaused, setIsPaused]   = useState(false);
 
   const go = useCallback(
     (next) => {
@@ -47,101 +46,73 @@ function PhotoCarousel() {
       setDirection(next > index ? 1 : -1);
       setIndex(nextIdx);
     },
-    [index]
+    [index],
   );
 
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      setDirection(1);
-      setIndex((prev) => (prev + 1) % photos.length);
-    }, INTERVAL_MS);
-    return () => clearInterval(timer);
-  }, [isPaused]);
-
   return (
-    <div
-      className="relative w-full"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-        {/* Main frame */}
-        <div
-          className="relative aspect-square border-4 border-outline bg-surface shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden animate-pulse-glow"
-          style={{ userSelect: "none" }}
-        >
-          <AnimatePresence initial={false} custom={direction} mode="popLayout">
-            <motion.div
-              key={index}
-              className="absolute inset-0"
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-            >
-              <ProgressiveImage
-                src={getAssetPath(photos[index].src)}
-                alt={photos[index].alt}
-                width="720"
-                height="720"
-                sizes="(min-width: 1024px) 40vw, 100vw"
-                className="w-full h-full"
-                loading={index === 0 ? "eager" : "lazy"}
-                fetchPriority={index === 0 ? "high" : undefined}
-              />
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Arrow buttons */}
-          <button
-            onClick={() => go(index - 1)}
-            aria-label="Previous photo"
-            className="nb-carousel-arrow absolute left-2 top-1/2 -translate-y-1/2 z-20"
-          >
-            ‹
-          </button>
-          <button
-            onClick={() => go(index + 1)}
-            aria-label="Next photo"
-            className="nb-carousel-arrow absolute right-2 top-1/2 -translate-y-1/2 z-20"
-          >
-            ›
-          </button>
-
-          {/* Index badge */}
-          <div className="absolute top-2 right-2 z-20 bg-primary-container text-on-primary-container border-2 border-outline px-2 py-0.5 text-xs font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_var(--shadow-color)]">
-            {index + 1} / {photos.length}
-          </div>
-        </div>
-
-        {/* Dot navigation */}
-        <div className="flex items-center justify-center gap-3 mt-4">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => go(i)}
-              aria-label={`Go to photo ${i + 1}`}
-              className={`border-2 border-outline transition-all duration-200 ${
-                i === index
-                  ? "w-6 h-4 bg-primary-container shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                  : "w-4 h-4 bg-surface hover:bg-surface-variant shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-3 h-1.5 bg-surface border-2 border-outline overflow-hidden shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+    <div className="relative w-full">
+      {/* Main frame — manual navigation only (no auto-advance) */}
+      <div
+        className="relative aspect-square border-4 border-outline bg-surface shadow-[8px_8px_0px_0px_var(--shadow-color)] overflow-hidden"
+        style={{ userSelect: "none" }}
+      >
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
           <motion.div
-            className="h-full w-full bg-primary-container progress-bar-fill origin-left"
-            style={{ willChange: "transform" }}
-            key={`progress-${index}`}
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: isPaused ? undefined : 1 }}
-            transition={{ duration: INTERVAL_MS / 1000, ease: "linear" }}
-          />
+            key={index}
+            className="absolute inset-0"
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+          >
+            <ProgressiveImage
+              src={getAssetPath(photos[index].src)}
+              alt={photos[index].alt}
+              width="720"
+              height="720"
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              className="w-full h-full"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : undefined}
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        <button
+          onClick={() => go(index - 1)}
+          aria-label="Previous photo"
+          className="nb-carousel-arrow absolute left-2 top-1/2 -translate-y-1/2 z-20"
+        >
+          ‹
+        </button>
+        <button
+          onClick={() => go(index + 1)}
+          aria-label="Next photo"
+          className="nb-carousel-arrow absolute right-2 top-1/2 -translate-y-1/2 z-20"
+        >
+          ›
+        </button>
+
+        <div className="absolute top-2 right-2 z-20 bg-primary-container text-on-primary-container border-2 border-outline px-2 py-0.5 text-xs font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+          {index + 1} / {photos.length}
         </div>
+      </div>
+
+      <div className="flex items-center justify-center gap-3 mt-4">
+        {photos.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => go(i)}
+            aria-label={`Go to photo ${i + 1}`}
+            className={`border-2 border-outline transition-all duration-200 ${
+              i === index
+                ? "w-6 h-4 bg-primary-container shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                : "w-4 h-4 bg-surface hover:bg-surface-variant shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -269,18 +240,24 @@ function About() {
           >
 
             <h3 className="font-headline-md text-3xl uppercase mb-4">Let&apos;s Connect</h3>
-            <p className="font-body-md text-lg mb-6 opacity-70">
-              I&apos;m always open to discussing new projects, creative ideas,
-              or opportunities to be part of your visions.
+            <p className="font-body-md text-lg mb-3 opacity-70">
+              {AVAILABILITY.label}. Open to client projects and thoughtful collaborations.
+            </p>
+            <p className="font-body-md text-base mb-6 opacity-70">
+              {AVAILABILITY.detail}
             </p>
             <div className="flex flex-col gap-4">
               <Link
-                to="/services#inquiry"
+                to={PRIMARY_CTA.to}
+                onClick={() => trackActionClick(PRIMARY_CTA.label, PRIMARY_CTA.to)}
                 className="btn-cta-get-in-touch px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--color-background)] transition-all w-full cursor-none"
               >
                 <FaArrowRight />
-                <span>Get In Touch</span>
+                <span>{PRIMARY_CTA.label}</span>
               </Link>
+              <p className="font-body-md text-sm opacity-70">
+                Recruiters: download the resume below.
+              </p>
               <ResumeActions
                 onView={(id) => {
                   setResumeVersion(id);

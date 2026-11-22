@@ -162,7 +162,11 @@ export async function handleContactRequest(request, response) {
     });
   }
 
-  return response.status(200).json({ success: true, id: data.id });
+  return response.status(200).json({
+    success: true,
+    id: data.id,
+    message: "Inquiry received. Expect a reply within 24 hours.",
+  });
 }
 
 export default async function handler(request, response) {

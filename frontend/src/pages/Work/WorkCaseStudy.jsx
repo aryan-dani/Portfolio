@@ -1,15 +1,26 @@
 import { memo } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import { getCaseStudyBySlug } from "../../data/caseStudies";
+import { getProjectById } from "../../data/projects";
+import { PRIMARY_CTA } from "../../data/availability";
 import { openSiteBrowser } from "../../utils/siteBrowser";
+import ProgressiveImage from "../../components/ProgressiveImage/ProgressiveImage";
+import {
+  Button,
+  Card,
+  Eyebrow,
+  Reveal,
+  Rule,
+  Section,
+  Tag,
+} from "../../components/ui";
 import { usePageSEO } from "../../utils/seo";
-import { containerVariants, itemVariants } from "../../utils/motionVariants";
 
 const WorkCaseStudy = memo(function WorkCaseStudy() {
   const { slug } = useParams();
   const study = getCaseStudyBySlug(slug);
+  const project = study ? getProjectById(study.projectId) : null;
   const seoPath = study ? `/work/${study.slug}` : null;
   usePageSEO(undefined, seoPath || undefined);
 
@@ -21,91 +32,106 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
     { title: "Problem", body: study.problem },
     { title: "Approach", body: study.approach },
     { title: "Architecture", body: study.architecture },
-    study.outcome ? { title: "Outcome", body: study.outcome } : null,
+    study.outcome ? { title: "Outcome", body: study.outcome, pull: true } : null,
     study.retrospective
       ? { title: "What I would do differently", body: study.retrospective }
       : null,
   ].filter(Boolean);
 
   return (
-    <motion.article
-      className="flex flex-col gap-10 md:gap-14 w-full pb-8"
-      initial={false}
-      animate="visible"
-      variants={containerVariants}
-    >
-      <motion.header
-        className="mt-4 border-4 border-outline bg-hatch p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4"
-        variants={itemVariants}
-      >
-        <p className="font-label-bold text-xs uppercase tracking-[0.16em]">
-          <Link to="/services" className="underline underline-offset-4">
-            Services
-          </Link>
-          <span aria-hidden> / </span>
-          Case study
-        </p>
-        <h1 className="font-headline-xl text-4xl md:text-6xl uppercase tracking-tighter leading-none bg-surface border-4 border-outline p-4 shadow-[8px_8px_0_0_var(--shadow-color)] w-fit">
-          {study.title}
-        </h1>
-        <p className="font-body-lg text-base md:text-lg max-w-3xl bg-surface border-4 border-outline p-4 shadow-[4px_4px_0_0_var(--shadow-color)] leading-snug">
-          {study.oneLiner}
-        </p>
-        <ul className="flex flex-wrap gap-2" aria-label="Stack">
-          {study.stack.map((tag) => (
-            <li
-              key={tag}
-              className="border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase bg-primary-container text-on-primary-container"
-            >
-              {tag}
-            </li>
-          ))}
-        </ul>
-        <div className="flex flex-wrap gap-3">
-          {study.live && (
-            <a
-              href={study.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(event) => {
-                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-                event.preventDefault();
-                openSiteBrowser({ url: study.live, title: study.title });
-              }}
-              className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 transition-transform"
-            >
-              {study.liveAnchor ? study.liveAnchor : "Live demo"} <FaExternalLinkAlt className="text-[10px]" aria-hidden />
-            </a>
-          )}
-          {study.github && (
-            <a
-              href={study.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-2 font-label-bold text-xs uppercase shadow-[4px_4px_0_0_var(--shadow-color)]"
-            >
-              GitHub <FaGithub aria-hidden />
-            </a>
-          )}
-        </div>
-      </motion.header>
+    <article className="flex flex-col gap-12 md:gap-16 w-full pb-8">
+      <Reveal>
+        <header className="flex flex-col gap-5 mt-2">
+          <Eyebrow>
+            <Link to="/projects" className="underline underline-offset-4">
+              Projects
+            </Link>
+            <span aria-hidden> / </span>
+            Case study
+          </Eyebrow>
+          <h1 className="font-headline-xl text-[clamp(2.5rem,6vw,4.5rem)] leading-none tracking-tight uppercase max-w-4xl w-fit bg-surface border-4 border-outline p-3 md:p-5 shadow-[8px_8px_0_0_var(--shadow-color)]">
+            {study.title}
+          </h1>
+          <p className="font-body-lg text-base md:text-lg max-w-3xl text-on-surface-variant leading-snug">
+            {study.oneLiner}
+          </p>
+          <Rule />
+          <div className="flex flex-wrap gap-x-6 gap-y-2 font-label-bold text-[10px] uppercase tracking-[0.14em] text-text-muted">
+            {project?.year ? <span>{project.year}</span> : null}
+            {study.live ? <span>Live</span> : <span>Private / offline demo</span>}
+            <span>{study.stack.length} stack tags</span>
+          </div>
+          <ul className="flex flex-wrap gap-2" aria-label="Stack">
+            {study.stack.map((tag) => (
+              <li key={tag}>
+                <Tag tone="solid">{tag}</Tag>
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-wrap gap-3">
+            {study.live && (
+              <Button
+                as="a"
+                href={study.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="secondary"
+                onClick={(event) => {
+                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                  event.preventDefault();
+                  openSiteBrowser({ url: study.live, title: study.title });
+                }}
+              >
+                {study.liveAnchor || "Live demo"} <FaExternalLinkAlt className="text-[10px]" aria-hidden />
+              </Button>
+            )}
+            {study.github && (
+              <Button as="a" href={study.github} target="_blank" rel="noopener noreferrer" variant="quiet">
+                GitHub <FaGithub aria-hidden />
+              </Button>
+            )}
+          </div>
+        </header>
+      </Reveal>
+
+      {project?.image ? (
+        <Reveal>
+          <ProgressiveImage
+            src={project.image}
+            alt={`${study.title} screenshot`}
+            className="w-full aspect-[16/9] border border-outline-variant bg-surface"
+            imgClassName="w-full h-full object-cover"
+            loading="eager"
+          />
+        </Reveal>
+      ) : null}
 
       {sections.map((section) => (
-        <motion.section
-          key={section.title}
-          aria-labelledby={`${study.slug}-${section.title}`}
-          className="border-4 border-outline bg-surface p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-3"
-          variants={itemVariants}
-        >
-          <h2
-            id={`${study.slug}-${section.title}`}
-            className="font-headline-md text-xl md:text-2xl uppercase border-b-4 border-outline pb-2 w-fit"
-          >
-            {section.title}
-          </h2>
-          <p className="font-body-md text-base leading-relaxed max-w-3xl">{section.body}</p>
-          {section.title === "Outcome" && study.live && (
-            <div className="pt-2">
+        <Reveal key={section.title}>
+          <Section aria-labelledby={`${study.slug}-${section.title}`}>
+            <Eyebrow>{section.title}</Eyebrow>
+            {section.pull ? (
+              <blockquote
+                id={`${study.slug}-${section.title}`}
+                className="font-serif text-xl md:text-2xl leading-snug max-w-3xl text-on-background border-l-2 border-[var(--color-brand-accent)] pl-5 mt-2"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {section.body}
+              </blockquote>
+            ) : (
+              <>
+                <h2
+                  id={`${study.slug}-${section.title}`}
+                  className="font-headline-md text-xl md:text-2xl normal-case tracking-tight"
+                >
+                  {section.title}
+                </h2>
+                <p className="font-body-md text-base leading-relaxed max-w-3xl text-on-surface-variant">
+                  {section.body}
+                </p>
+              </>
+            )}
+            {section.title === "Outcome" && study.live ? (
               <a
                 href={study.live}
                 target="_blank"
@@ -115,21 +141,24 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
                   event.preventDefault();
                   openSiteBrowser({ url: study.live, title: study.title });
                 }}
-                className="font-label-bold text-sm uppercase underline underline-offset-4 inline-flex items-center gap-2 text-on-surface hover:text-primary"
+                className="font-label-bold text-[11px] uppercase tracking-[0.14em] underline underline-offset-4 inline-flex items-center gap-2"
               >
                 {study.liveAnchor || "Visit live site"} <FaExternalLinkAlt className="text-[10px]" aria-hidden />
               </a>
-            </div>
-          )}
-        </motion.section>
+            ) : null}
+          </Section>
+        </Reveal>
       ))}
 
-      <motion.p variants={itemVariants} className="font-body-md text-sm">
-        <Link to="/services" className="underline underline-offset-4 font-label-bold uppercase">
-          Back to services
-        </Link>
-      </motion.p>
-    </motion.article>
+      <Reveal>
+        <Card className="p-5 flex flex-wrap items-center gap-4 justify-between">
+          <Link to="/projects" className="font-label-bold text-[11px] uppercase tracking-[0.14em] underline underline-offset-4">
+            Back to projects
+          </Link>
+          <Button to={PRIMARY_CTA.to}>{PRIMARY_CTA.label}</Button>
+        </Card>
+      </Reveal>
+    </article>
   );
 });
 

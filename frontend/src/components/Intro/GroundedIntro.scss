@@ -1,0 +1,269 @@
+// Grounded intro. Layout is static; only transform and opacity are animated
+// (from GroundedIntro.jsx, via the Web Animations API).
+
+$serif: "Source Serif 4 Variable", "Source Serif 4", Georgia, serif;
+$mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+
+.gi {
+  --gi-size: clamp(2.1rem, 5.2vw, 6rem);
+  --gi-leading: 1.3;
+
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  color: var(--color-on-background);
+  cursor: default;
+  user-select: none;
+  contain: layout style;
+}
+
+// Opaque stage: the page underneath is fully rendered but never shows through
+// until the stage lifts.
+.gi__stage {
+  position: absolute;
+  inset: 0;
+  background: var(--color-background);
+  overflow: hidden;
+}
+
+// ── Retrieved documents ──────────────────────────────────────────────────
+.gi__docs {
+  position: absolute;
+  inset: 0;
+  // Text runs off both edges like a page seen through a loupe.
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%);
+}
+
+.gi__doc {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  visibility: hidden;
+  font-family: $serif;
+  font-size: var(--gi-size);
+  line-height: var(--gi-leading);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+
+  &.is-active {
+    visibility: visible;
+  }
+}
+
+.gi__line,
+.gi__row {
+  margin: 0;
+  white-space: nowrap;
+  height: calc(var(--gi-size) * var(--gi-leading));
+}
+
+.gi__line {
+  display: flex;
+  justify-content: center;
+
+  &--near {
+    opacity: 0.34;
+  }
+
+  &--far {
+    opacity: 0.16;
+  }
+}
+
+// Each document sets its lines at a different offset so cuts read as new pages.
+.gi__doc[data-variant="0"] .gi__line--far { transform: translateX(-6%); }
+.gi__doc[data-variant="0"] .gi__line--near { transform: translateX(4%); }
+.gi__doc[data-variant="1"] .gi__line--far { transform: translateX(7%); }
+.gi__doc[data-variant="1"] .gi__line--near { transform: translateX(-5%); }
+.gi__doc[data-variant="2"] .gi__line--far { transform: translateX(-2%); }
+.gi__doc[data-variant="2"] .gi__line--near { transform: translateX(9%); }
+
+// The name slot sits dead centre; the sentence either side hugs it.
+.gi__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: 0.32em;
+}
+
+.gi__slot {
+  visibility: hidden;
+}
+
+.gi__side {
+  display: flex;
+  overflow: hidden;
+  opacity: 0.72;
+
+  &--before {
+    justify-content: flex-end;
+  }
+
+  &--after {
+    justify-content: flex-start;
+  }
+
+  > span {
+    flex: none;
+  }
+}
+
+// ── The name: rendered once, never moves between cuts ────────────────────
+.gi__name-anchor {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.gi__name {
+  position: relative;
+  display: inline-block;
+  font-family: $serif;
+  font-size: var(--gi-size);
+  line-height: var(--gi-leading);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  visibility: hidden;
+
+  &.is-visible {
+    visibility: visible;
+  }
+}
+
+.gi__name-text {
+  display: block;
+}
+
+// ── Query line and source label ──────────────────────────────────────────
+.gi__hud {
+  position: absolute;
+  margin: 0;
+  left: clamp(1rem, 3vw, 2.5rem);
+  font-family: $mono;
+  font-size: clamp(0.72rem, 1vw, 0.9rem);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+
+  &--query {
+    top: clamp(1rem, 3vw, 2.25rem);
+  }
+
+  &--source {
+    bottom: clamp(1rem, 3vw, 2.25rem);
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: clamp(0.62rem, 0.8vw, 0.75rem);
+  }
+}
+
+.gi__caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 0.15em;
+  vertical-align: text-bottom;
+  background: currentColor;
+  animation: gi-blink 0.7s steps(1) infinite;
+}
+
+@keyframes gi-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+// ── Travelling layers (created at fly time) ──────────────────────────────
+.gi__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gi__fly {
+  position: fixed;
+  left: 0;
+  top: 0;
+  margin: 0;
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.gi__fly-plate {
+  background: var(--color-surface);
+  box-shadow: 8px 8px 0 0 var(--shadow-color);
+}
+
+.gi__fly-serif,
+.gi__fly-heading {
+  color: var(--color-on-surface);
+  white-space: nowrap;
+}
+
+.gi__fly-serif {
+  font-family: $serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+// The query line lifts off as a solid label so it stays legible over the page.
+.gi__fly-query {
+  padding: 3px 8px;
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  border: 2px solid var(--color-outline);
+  box-shadow: 3px 3px 0 0 var(--shadow-color);
+  font-family: $mono;
+  font-size: clamp(0.72rem, 1vw, 0.9rem);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.gi__edge {
+  background: var(--color-outline);
+}
+
+// Same look as the build-swarm agents on the Projects page.
+.gi__agent-dot {
+  position: absolute;
+  left: -7px;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  background: #131316;
+  border: 2px solid #f4f3ef;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.35);
+}
+
+.gi__agent-label {
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  padding: 2px 6px;
+  background: #f4f3ef;
+  color: #131316;
+  border: 2px solid #131316;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.35);
+  font-family: $mono;
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+// ── Hero handoff ─────────────────────────────────────────────────────────
+// The heading is laid out (so it can be measured) but invisible until the
+// travelling name lands on it.
+html.intro-v2-playing [data-intro-name-target] {
+  opacity: 0;
+}

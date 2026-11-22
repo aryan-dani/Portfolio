@@ -104,12 +104,6 @@ function Skills() {
   const scopeRef = useRef(null);
   const gridRef = useRef(null);
   const navigate = useNavigate();
-  const buildEnabled =
-    viewMode === VIEW_MODES.GRID
-    && searchTerm === ""
-    && activeCategory === "all"
-    && sortBy === "default";
-
   useEffect(() => {
     const skillParam = searchParams.get("skill");
     if (skillParam) {
@@ -168,6 +162,12 @@ function Skills() {
     });
     return all;
   }, [filteredAndSorted]);
+
+  const buildEnabled =
+    viewMode === VIEW_MODES.GRID
+    && searchTerm === ""
+    && activeCategory === "all"
+    && sortBy === "default";
 
   const totalSkills = useMemo(() => Object.values(skills).reduce((s, c) => s + c.length, 0), []);
   const avgLevel    = useMemo(() => {

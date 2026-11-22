@@ -10,12 +10,22 @@ import {
   SERVICES_GUIDES,
   SERVICES_KEYWORDS,
   SERVICES_PACKAGES,
+  SERVICE_LANDINGS,
+  SEO_GUIDE_DATE_MODIFIED,
+  SEO_GUIDE_DATE_PUBLISHED,
   WEB_FAQ,
   WEB_PACKAGES,
   formatInr,
   formatUsd,
+  getPackagesByIds,
 } from "../data/services.js";
-import { GUIDE_PATHS, SEO_ROUTE_ORDER, WORK_PATHS } from "./seoKnownPaths.js";
+import { getProjectById } from "../data/projects.js";
+import {
+  GUIDE_PATHS,
+  SEO_ROUTE_ORDER,
+  SERVICE_LANDING_PATHS,
+  WORK_PATHS,
+} from "./seoKnownPaths.js";
 
 const SITE_URL = "https://www.aryandani.com";
 const SITE_NAME = "Aryan Dani Portfolio";
@@ -35,7 +45,7 @@ export function routeOgImage(path) {
   return `${SITE_URL}/og-${slug}.png`;
 }
 
-export { SEO_ROUTE_ORDER, WORK_PATHS, GUIDE_PATHS };
+export { SEO_ROUTE_ORDER, WORK_PATHS, GUIDE_PATHS, SERVICE_LANDING_PATHS };
 
 export const SEO_ROUTE_META = {
   "/": { label: "Home", priority: "1.0", changefreq: "weekly" },
@@ -53,19 +63,24 @@ export const SEO_ROUTE_META = {
       { label: guide.title, priority: "0.7", changefreq: "monthly" },
     ]),
   ),
+  ...Object.fromEntries(
+    SERVICE_LANDINGS.map((landing) => [
+      `/services/${landing.slug}`,
+      { label: landing.title, priority: "0.85", changefreq: "monthly" },
+    ]),
+  ),
   "/experience": { label: "Experience", priority: "0.8", changefreq: "monthly" },
   "/research": { label: "Research", priority: "0.8", changefreq: "monthly" },
   "/certifications": { label: "Certifications", priority: "0.5", changefreq: "monthly" },
   "/skills": { label: "Skills", priority: "0.8", changefreq: "monthly" },
   "/about": { label: "About", priority: "0.8", changefreq: "monthly" },
-  "/contact": { label: "Contact", priority: "0.8", changefreq: "yearly" },
   "/playground": { label: "CLI Playground", priority: "0.5", changefreq: "yearly" },
   "/achievements": { label: "Achievements", priority: "0.5", changefreq: "monthly" },
   "/guestbook": { label: "Guestbook", priority: "0.5", changefreq: "weekly" },
   "/copyright": { label: "Copyright", priority: "0.5", changefreq: "yearly" },
 };
 
-/** Shared Person schema reference (defined once in index.html) */
+/** Shared Person / WebSite entity references (nodes live in buildBaseSchemas()). */
 const PERSON_REF = { "@id": `${SITE_URL}/#person` };
 const WEBSITE_REF = { "@id": `${SITE_URL}/#website` };
 
@@ -97,6 +112,47 @@ function buildBreadcrumbs(pageName, pagePath) {
     "@type": "BreadcrumbList",
     itemListElement: items,
   };
+}
+
+function buildThreeLevelBreadcrumbs(middleName, middlePath, currentName, currentPath) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: middleName,
+        item: `${SITE_URL}${middlePath}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: currentName,
+        item: `${SITE_URL}${currentPath}`,
+      },
+    ],
+  };
+}
+
+function caseStudyBreadcrumbParent(study) {
+  const project = study.projectId ? getProjectById(study.projectId) : null;
+  if (project?.category === "web-dev") {
+    return { name: "Projects", path: "/projects" };
+  }
+  return { name: "Services", path: "/services" };
+}
+
+function caseStudyOgImage(study) {
+  const project = study.projectId ? getProjectById(study.projectId) : null;
+  if (project?.image) return `${SITE_URL}${project.image}`;
+  return routeOgImage(`/work/${study.slug}`);
 }
 
 /**
@@ -133,6 +189,30 @@ function softwareApplicationFromProject(project) {
     keywords: project.tags?.join(", "),
     image: project.image ? `${SITE_URL}${project.image}` : DEFAULT_IMAGE,
   };
+}
+
+function buildProfilePageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${SITE_URL}/about#profilepage`,
+    url: `${SITE_URL}/about`,
+    name: "About Aryan Dani - AI Engineer, Full Stack Developer, Pune",
+    isPartOf: WEBSITE_REF,
+    about: PERSON_REF,
+    mainEntity: PERSON_REF,
+    inLanguage: "en-US",
+  };
+}
+
+/** Starting USD amount for Offer.price when the package only has a label. */
+function aiOfferPrice(pack) {
+  const label = pack.priceLabelUsd || pack.priceLabel || "";
+  const amounts = [...label.matchAll(/USD\s*([\d,]+(?:\.\d+)?)/gi)].map((m) =>
+    Number(m[1].replace(/,/g, "")),
+  );
+  if (!amounts.length) return undefined;
+  return String(Math.min(...amounts));
 }
 
 export function buildBaseSchemas() {
@@ -223,17 +303,6 @@ export function buildBaseSchemas() {
         "query-input": "required name=search_term_string",
       },
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfilePage",
-      "@id": `${SITE_URL}/#profilepage`,
-      url: `${SITE_URL}/`,
-      name: "Aryan Dani — Freelance AI Engineer & Full-Stack Dev",
-      isPartOf: WEBSITE_REF,
-      about: PERSON_REF,
-      mainEntity: PERSON_REF,
-      inLanguage: "en-US",
-    },
   ];
 }
 
@@ -242,11 +311,11 @@ export function buildBaseSchemas() {
  */
 export const SEO_CONFIG = {
   "/": {
-    title: "Aryan Dani — Freelance AI Engineer & Full-Stack Dev",
+    title: "Hire Web Developer Pune | AI & Next.js — Aryan Dani",
     description:
-      "Hire Aryan Dani for custom AI agents, RAG pipelines, and high-performance Next.js & React web applications. View live case studies and book a discovery call.",
+      "Hire a freelance web developer in Pune for business sites and MVPs from INR 8,000, plus optional RAG chatbots and Next.js apps. Fixed quotes after a written brief.",
     keywords:
-      "Aryan Dani, Freelance AI Engineer India, Hire Full-Stack React Next.js Developer, Custom LLM RAG Consultant, Web Redesign Freelancer Pune",
+      "hire web developer Pune, freelance web developer India, Aryan Dani, Next.js developer for hire, RAG developer, website developer Pune, AI engineer India",
     canonical: `${SITE_URL}/`,
     robots: DEFAULT_ROBOTS,
     imageAlt: DEFAULT_IMAGE_ALT,
@@ -257,8 +326,8 @@ export const SEO_CONFIG = {
       const schemas = [
         buildBreadcrumbs("Home", "/"),
         buildWebPage(
-          "Aryan Dani — Freelance AI Engineer & Full-Stack Dev",
-          "Hire Aryan Dani for custom AI agents, RAG pipelines, and high-performance Next.js and React web applications.",
+          "Hire Web Developer Pune | AI & Next.js — Aryan Dani",
+          "Hire a freelance web developer in Pune for sites and MVPs, plus optional AI and RAG tools.",
           "/"
         ),
       ];
@@ -287,7 +356,7 @@ export const SEO_CONFIG = {
   "/projects": {
     title: "Projects - Aryan Dani | AI & Web Development Portfolio",
     description:
-      "Explore Aryan Dani's portfolio of AI and web development projects including Computer Vision systems, LLM-powered applications, and full-stack apps with React, Vite, FastAPI, and more.",
+      "Explore Aryan Dani's AI and web projects: computer vision, LLM apps, and full-stack builds with React, Vite, FastAPI, and more.",
     keywords:
       "AI portfolio, Machine Learning portfolio, Computer Vision projects, web development projects, React projects, Python projects, Generative AI portfolio",
     canonical: `${SITE_URL}/projects`,
@@ -338,7 +407,7 @@ export const SEO_CONFIG = {
   "/experience": {
     title: "Experience - Aryan Dani | AI Engineer & Web Developer",
     description:
-      "Professional experience of Aryan Dani as an AI Engineer. Includes an AI/ML internship at ProvaanTech, work at Artem HealthTech, and the MIT-WPU AI capstone.",
+      "Aryan Dani's experience as an AI engineer: ProvaanTech AI/ML internship, Artem HealthTech, and the MIT-WPU AI capstone.",
     keywords:
       "Aryan Dani experience, AI Engineer Pune, MIT WPU AI student, web developer experience, machine learning engineer",
     canonical: `${SITE_URL}/experience`,
@@ -393,7 +462,7 @@ export const SEO_CONFIG = {
   "/research": {
     title: "Research - Aryan Dani | Papers & Technical Write-ups",
     description:
-      "Research by Aryan Dani — computer vision and AI papers including Real-Time Multi-Modal Threat Detection with YOLOv11 and EfficientNetV2. Browse abstracts, metrics, and full PDFs.",
+      "Research by Aryan Dani: computer vision papers including YOLOv11 threat detection and EfficientNetV2. Abstracts, metrics, and PDFs.",
     keywords:
       "Aryan Dani research, YOLOv11 threat detection, EfficientNetV2 X-ray, MIT WPU capstone, computer vision papers, AI research Pune",
     canonical: `${SITE_URL}/research`,
@@ -461,7 +530,7 @@ export const SEO_CONFIG = {
   "/certifications": {
     title: "Certifications - Aryan Dani | AI & Cloud Credentials",
     description:
-      "Industry certifications earned by Aryan Dani across AI, cloud, and web, including NPTEL Elite, FutureSkills Prime Gold, Google Cloud, and IBM. On this site.",
+      "Certifications earned by Aryan Dani across AI, cloud, and web — NPTEL Elite, FutureSkills Prime Gold, Google Cloud, and IBM.",
     keywords:
       "Aryan Dani certifications, AI certifications, cloud certifications, Google certifications, developer credentials",
     canonical: `${SITE_URL}/certifications`,
@@ -512,7 +581,7 @@ export const SEO_CONFIG = {
   "/skills": {
     title: "Skills & Tools - Aryan Dani | Tech Stack & Expertise",
     description:
-      "Complete technical skill set of Aryan Dani including Python, React, Vite, FastAPI, LangGraph, TensorFlow, PyTorch, Computer Vision, Generative AI, LLMs, RAG, Docker, and 30+ technologies.",
+      "Aryan Dani's stack: Python, React, Vite, FastAPI, LangGraph, TensorFlow, PyTorch, computer vision, generative AI, LLMs, RAG, and Docker.",
     keywords:
       "Python developer, React developer, Vite, FastAPI, Generative AI, LLMs, RAG, Vector Database, Computer Vision, Full Stack Developer",
     canonical: `${SITE_URL}/skills`,
@@ -534,7 +603,7 @@ export const SEO_CONFIG = {
   "/about": {
     title: "About Aryan Dani - AI Engineer, Full Stack Developer, Pune",
     description:
-      "Learn about Aryan Dani - an AI Engineer and Full Stack Developer from Pune, India. MIT-WPU student specializing in Machine Learning, Computer Vision, Generative AI, and modern web development.",
+      "About Aryan Dani — AI engineer and full-stack developer in Pune. MIT-WPU student focused on ML, computer vision, generative AI, and the web.",
     keywords:
       "Aryan Dani, Aryan Dani developer, Aryan Dani AI, AI Engineer Pune, MIT WPU AI student, Full Stack Developer India",
     canonical: `${SITE_URL}/about`,
@@ -550,13 +619,14 @@ export const SEO_CONFIG = {
         "Learn about Aryan Dani - an AI Engineer and Full Stack Developer from Pune, India.",
         "/about"
       ),
+      buildProfilePageSchema(),
     ],
   },
 
   "/services": {
-    title: "Websites & AI Tools | Aryan Dani, Pune",
+    title: "Hire Web Developer | Sites & AI | Pune",
     description:
-      "Hire Aryan Dani in Pune for business websites and AI tools. Packages from INR 8,000. Live proof, fixed quotes, India and worldwide.",
+      "Hire for websites, redesigns, and web app MVPs from INR 8,000, plus grounded RAG chatbots. Pune-based, remote worldwide, fixed quotes.",
     keywords: SERVICES_KEYWORD_LIST.join(", "),
     canonical: `${SITE_URL}/services`,
     robots: DEFAULT_ROBOTS,
@@ -569,20 +639,22 @@ export const SEO_CONFIG = {
       return [
         buildBreadcrumbs("Services", "/services"),
         buildWebPage(
-          "Websites & AI Tools | Aryan Dani, Pune",
-          "Hire Aryan Dani in Pune for business websites and AI tools. Packages from INR 8,000.",
+          "Hire Web Developer | Sites & AI | Pune",
+          "Hire for business websites, MVPs, redesigns, and grounded AI tools. Packages from INR 8,000.",
           "/services",
         ),
         {
           "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "@id": `${SITE_URL}/services#localbusiness`,
+          "@type": "ProfessionalService",
+          "@id": `${SITE_URL}/services#service`,
           name: "Aryan Dani Web and AI Services",
           url: `${SITE_URL}/services`,
           image: routeOgImage("/services"),
           description:
             "Websites, web apps, and AI tools for clients in Pune, across India, and worldwide.",
+          provider: PERSON_REF,
           email: "daniaryan212@gmail.com",
+          priceRange: "₹₹-$$$",
           address: {
             "@type": "PostalAddress",
             addressLocality: "Pune",
@@ -594,57 +666,29 @@ export const SEO_CONFIG = {
             { "@type": "Country", name: "India" },
             { "@type": "Place", name: "Worldwide" },
           ],
-          priceRange: "₹₹-$$$",
-          provider: PERSON_REF,
-          contactPoint: {
-            "@type": "ContactPoint",
-            contactType: "sales",
-            email: "daniaryan212@gmail.com",
-            availableLanguage: ["English", "Hindi"],
-          },
         },
-        {
-          "@context": "https://schema.org",
-          "@type": "ProfessionalService",
-          "@id": `${SITE_URL}/services#service`,
-          name: "Aryan Dani Web and AI Engineering Services",
-          url: `${SITE_URL}/services`,
-          image: routeOgImage("/services"),
-          description:
-            "Custom AI agents and RAG pipelines, full-stack Next.js and React apps, computer vision systems, and high-conversion business website redesigns.",
-          provider: PERSON_REF,
-          areaServed: [
-            { "@type": "City", name: "Pune" },
-            { "@type": "Country", name: "India" },
-            { "@type": "Place", name: "Worldwide" },
-          ],
-          knowsAbout: SERVICES_KEYWORD_LIST,
-          email: "daniaryan212@gmail.com",
-          contactPoint: {
-            "@type": "ContactPoint",
-            contactType: "sales",
-            email: "daniaryan212@gmail.com",
-            availableLanguage: ["English", "Hindi"],
-          },
-        },
-        ...SERVICES_PACKAGES.map((pack) => ({
-          "@context": "https://schema.org",
-          "@type": "Service",
-          name: pack.name,
-          description: pack.forWho,
-          provider: PERSON_REF,
-          areaServed: [
-            { "@type": "Country", name: "India" },
-            { "@type": "Place", name: "Worldwide" },
-          ],
-          offers: {
-            "@type": "Offer",
-            priceCurrency: "USD",
-            description: pack.priceLabel,
-            availability: "https://schema.org/InStock",
-            url: `${SITE_URL}/services#packages-heading`,
-          },
-        })),
+        ...SERVICES_PACKAGES.map((pack) => {
+          const price = aiOfferPrice(pack);
+          return {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: pack.name,
+            description: pack.forWho,
+            provider: PERSON_REF,
+            areaServed: [
+              { "@type": "Country", name: "India" },
+              { "@type": "Place", name: "Worldwide" },
+            ],
+            offers: {
+              "@type": "Offer",
+              ...(price ? { price } : {}),
+              priceCurrency: "USD",
+              description: pack.priceLabel,
+              availability: "https://schema.org/InStock",
+              url: `${SITE_URL}/services#packages-heading`,
+            },
+          };
+        }),
         ...WEB_PACKAGES.map((pack) => ({
           "@context": "https://schema.org",
           "@type": "Service",
@@ -657,7 +701,7 @@ export const SEO_CONFIG = {
           ],
           offers: {
             "@type": "Offer",
-            price: pack.priceInr,
+            price: String(pack.priceInr),
             priceCurrency: "INR",
             description: `${pack.priceKind === "from" ? "From" : "Starting at"} ${formatInr(pack.priceInr)}${pack.priceSuffix || ""} · ${pack.priceKind === "from" ? "From" : "Starting at"} ${formatUsd(pack.priceUsd)}${pack.priceSuffix || ""}`,
             availability: "https://schema.org/InStock",
@@ -698,7 +742,7 @@ export const SEO_CONFIG = {
           changefreq: SEO_ROUTE_META[path].changefreq,
           ogType: "article",
           schemas: () => [
-            buildBreadcrumbs(guide.title, path),
+            buildThreeLevelBreadcrumbs("Services", "/services", guide.title, path),
             buildWebPage(title, description, path),
             {
               "@context": "https://schema.org",
@@ -707,6 +751,78 @@ export const SEO_CONFIG = {
               description: guide.description,
               author: PERSON_REF,
               url: `${SITE_URL}${path}`,
+              datePublished: SEO_GUIDE_DATE_PUBLISHED,
+              dateModified: SEO_GUIDE_DATE_MODIFIED,
+            },
+          ],
+        },
+      ];
+    }),
+  ),
+
+  ...Object.fromEntries(
+    SERVICE_LANDINGS.map((landing) => {
+      const path = `/services/${landing.slug}`;
+      const title = `${landing.title} | Hire Aryan Dani`.slice(0, 60);
+      const description = landing.description.slice(0, 160);
+      const packages = getPackagesByIds(landing.relatedPackageIds);
+      return [
+        path,
+        {
+          title,
+          description,
+          keywords: landing.keywords.join(", "),
+          canonical: `${SITE_URL}${path}`,
+          robots: DEFAULT_ROBOTS,
+          imageAlt: landing.title,
+          priority: SEO_ROUTE_META[path].priority,
+          changefreq: SEO_ROUTE_META[path].changefreq,
+          ogType: "website",
+          schemas: () => [
+            buildThreeLevelBreadcrumbs("Services", "/services", landing.title, path),
+            buildWebPage(title, description, path),
+            {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              name: landing.title,
+              description: landing.description,
+              url: `${SITE_URL}${path}`,
+              provider: PERSON_REF,
+              areaServed: [
+                { "@type": "City", name: "Pune" },
+                { "@type": "Country", name: "India" },
+                { "@type": "Place", name: "Worldwide" },
+              ],
+              offers: packages.map((pack) => {
+                if (pack.priceInr != null) {
+                  return {
+                    "@type": "Offer",
+                    price: String(pack.priceInr),
+                    priceCurrency: "INR",
+                    description: pack.name,
+                    url: `${SITE_URL}/services#packages-heading`,
+                  };
+                }
+                const price = aiOfferPrice(pack);
+                return {
+                  "@type": "Offer",
+                  ...(price ? { price, priceCurrency: "USD" } : {}),
+                  description: pack.priceLabel,
+                  url: `${SITE_URL}/services#packages-heading`,
+                };
+              }),
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: landing.faq.map((item) => ({
+                "@type": "Question",
+                name: item.q,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: item.a,
+                },
+              })),
             },
           ],
         },
@@ -719,6 +835,8 @@ export const SEO_CONFIG = {
       const path = `/work/${study.slug}`;
       const title = `${study.title} Case Study | Aryan Dani`;
       const description = study.oneLiner.slice(0, 155);
+      const parent = caseStudyBreadcrumbParent(study);
+      const ogImage = caseStudyOgImage(study);
       return [
         path,
         {
@@ -728,11 +846,12 @@ export const SEO_CONFIG = {
           canonical: `${SITE_URL}${path}`,
           robots: DEFAULT_ROBOTS,
           imageAlt: `${study.title} case study by Aryan Dani`,
+          ogImage,
           priority: SEO_ROUTE_META[path].priority,
           changefreq: SEO_ROUTE_META[path].changefreq,
           ogType: "article",
           schemas: () => [
-            buildBreadcrumbs(study.title, path),
+            buildThreeLevelBreadcrumbs(parent.name, parent.path, study.title, path),
             buildWebPage(title, description, path),
             {
               "@context": "https://schema.org",
@@ -742,6 +861,7 @@ export const SEO_CONFIG = {
               author: PERSON_REF,
               url: `${SITE_URL}${path}`,
               keywords: study.stack.join(", "),
+              image: ogImage,
             },
           ],
         },
@@ -749,52 +869,10 @@ export const SEO_CONFIG = {
     }),
   ),
 
-  "/contact": {
-    title: "Contact Aryan Dani - Hire an AI Engineer & Web Developer",
-    description:
-      "Get in touch with Aryan Dani for freelance projects, job opportunities, collaborations, or open source contributions. AI Engineer and Full Stack Developer available for hire.",
-    keywords:
-      "hire Aryan Dani, contact developer, freelance AI engineer, hire web developer, collaboration",
-    canonical: `${SITE_URL}/contact`,
-    robots: DEFAULT_ROBOTS,
-    imageAlt: "Contact Aryan Dani for AI engineering web development and collaboration",
-    priority: SEO_ROUTE_META["/contact"].priority,
-    changefreq: SEO_ROUTE_META["/contact"].changefreq,
-    ogType: "website",
-    schemas: (extraData) => {
-      const schemas = [
-        buildBreadcrumbs("Contact", "/contact"),
-        buildWebPage(
-          "Contact Aryan Dani - Hire an AI Engineer & Web Developer",
-          "Get in touch with Aryan Dani for freelance projects, collaborations, or job opportunities.",
-          "/contact"
-        ),
-      ];
-
-      // FAQ structured data from the contact page
-      if (extraData?.faqItems) {
-        schemas.push({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: extraData.faqItems.map((faq) => ({
-            "@type": "Question",
-            name: faq.q,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: faq.a,
-            },
-          })),
-        });
-      }
-
-      return schemas;
-    },
-  },
-
   "/playground": {
     title: "CLI Playground - Aryan Dani Portfolio | Interactive Terminal",
     description:
-      "Explore Aryan Dani's portfolio through an interactive command-line interface. Query projects, list skills, navigate pages, and discover features using terminal commands.",
+      "Explore Aryan Dani's portfolio via an interactive CLI. Query projects, list skills, navigate pages, and discover hidden features.",
     keywords:
       "interactive portfolio, CLI portfolio, developer terminal, Aryan Dani playground",
     canonical: `${SITE_URL}/playground`,
@@ -816,7 +894,7 @@ export const SEO_CONFIG = {
   "/achievements": {
     title: "Achievements - Aryan Dani Portfolio | Trophy Wall",
     description:
-      "Aryan Dani portfolio trophy wall. Unlock achievements by running CLI commands, finding easter eggs, and discovering hidden modes throughout this site.",
+      "Aryan Dani portfolio trophy wall. Unlock achievements via CLI commands, easter eggs, and hidden modes on this site.",
     keywords: "portfolio achievements, gamified portfolio, Aryan Dani",
     canonical: `${SITE_URL}/achievements`,
     robots: DEFAULT_ROBOTS,
@@ -833,7 +911,7 @@ export const SEO_CONFIG = {
   "/guestbook": {
     title: "Guestbook - Aryan Dani Portfolio | Sign The Wall",
     description:
-      "Leave a public note on Aryan Dani's portfolio guestbook wall. Share a hello, project feedback, or a short reaction with other visitors who stop by today.",
+      "Leave a public note on Aryan Dani's guestbook. Share a hello, project feedback, or a short reaction with other visitors.",
     keywords: "portfolio guestbook, Aryan Dani",
     canonical: `${SITE_URL}/guestbook`,
     robots: DEFAULT_ROBOTS,
@@ -850,7 +928,7 @@ export const SEO_CONFIG = {
   "/copyright": {
     title: "Copyright & License - Aryan Dani Portfolio",
     description:
-      "MIT License and copyright terms for Aryan Dani's portfolio website source code. See what you can reuse, share, and modify in this open-source project.",
+      "MIT License and copyright for Aryan Dani's portfolio source. See what you can reuse, share, and modify in this project.",
     keywords: "Aryan Dani copyright, MIT License, portfolio license",
     canonical: `${SITE_URL}/copyright`,
     robots: DEFAULT_ROBOTS,
@@ -870,7 +948,7 @@ export const SEO_CONFIG = {
   "/404": {
     title: "Page Not Found - Aryan Dani Portfolio",
     description:
-      "The requested page could not be found. Return to Aryan Dani's AI Engineer and Full Stack Developer portfolio to explore projects, skills, experience, and contact details.",
+      "Page not found. Return to Aryan Dani's portfolio to explore projects, skills, experience, and how to get in touch.",
     keywords: "Aryan Dani portfolio 404",
     canonical: `${SITE_URL}/404`,
     robots: "noindex, follow",

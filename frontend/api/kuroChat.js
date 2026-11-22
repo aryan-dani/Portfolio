@@ -6,19 +6,21 @@ import { certifications } from "../src/data/certifications.js";
 import { researchPapers } from "../src/data/research.js";
 import { CASE_STUDIES } from "../src/data/caseStudies.js";
 import { SERVICES_GUIDES, SERVICES_PACKAGES, WEB_PACKAGES } from "../src/data/services.js";
+import { AVAILABILITY } from "../src/data/availability.js";
+import { webPrice, aiPrice } from "../src/utils/kuro/knowledge.js";
 import {
   KURO_PAGES,
   KURO_TOOLS,
-  PAGE_BY_ID,
   SITE_ACTION_TYPES,
   parseToolCalls,
   describeActions,
 } from "./kuroTools.js";
-import { resolveKuroRules } from "../src/utils/kuroRules.js";
+import { routeKuro, buildKuroContext } from "../src/utils/kuroRules.js";
 
 const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
 const GROQ_FALLBACK_MODEL = process.env.GROQ_FALLBACK_MODEL || "openai/gpt-oss-20b";
 const MAX_HISTORY = 12;
+const MAX_MESSAGE = 500;
 
 function cleanApiKey(value) {
   if (typeof value !== "string") return "";
@@ -39,28 +41,6 @@ export function sanitizeKuroText(text) {
 }
 
 const ROUTE_LIST = KURO_PAGES.map((r) => `${r.id} -> ${r.path} (${r.label})`).join("\n");
-
-const REACTION_ONLY =
-  /^(wow|nice|crazy|damn|cool|lol|lmao|okay|ok|oh okay|yep|yeah|yup|haha|ha|omg|whoa|dang|sick|fire|lit|bet|word|true|facts|same|mood|fr|ngl|tbh|hm+|hmm+)[\s!.?]*$/i;
-
-const SITE_CONTROL_PATTERNS = [
-  /^(go to|take me to|navigate to?|open|show me|visit|bring me|head to|jump to)\b/i,
-  /^(hack\s*mode|hackmode|crt\s*mode|berserk|matrix\s*mode)/i,
-  /^(turn|switch)\s+(it\s+)?back|unhack|exit hack|normal mode|turn off hack/i,
-  /^(toggle|switch)\s+(the\s+)?(theme|dark|light)|dark mode|light mode|flip the lights/i,
-  /^scroll (to )?top|back to top/i,
-  /^(open|show)\s+(the\s+)?(command\s+)?palette/i,
-  /^(projects?|services?|hire|experience|skills?|about|contact|playground|guestbook|achievements?|badges?|certifications?|research|home|copyright)\s*[!.?]*$/i,
-  /\b(copy|give me|what'?s)\s+(the\s+)?(email|e-mail)\b/i,
-  /\b(open|show|download|send)\s+(the\s+)?(resume|cv)\b/i,
-  /swarm cursors|cursor swarm|animation again|replay (the )?(swarm|animation|cursors)/i,
-];
-
-const PORTFOLIO_QA_PATTERNS = [
-  /\b(what|which|tell me about|how (do|did|can)|where (is|can)|who (is|built|made))\b/i,
-  /\b(email|resume|github|stack|tech|skills?|projects?|experience|certifications?|research|paper|threat|aegis|samiksha|swiggy|nexus|utility|ishani|prism|siya|services?|hire|guides?)\b/i,
-  /\b(aryan|dani|developer|built this|portfolio)\b/i,
-];
 
 function matchQuery(haystack, query) {
   if (!query) return true;
@@ -90,18 +70,7 @@ export function lookupPortfolio(topic, query = "") {
     case "clover":
     case "prism":
     case "siya": {
-      const keyMap = {
-        aegis: "aegis",
-        samiksha: "samiksha",
-        swiggy: "swiggy",
-        utility: "utility",
-        ishani: "ishani",
-        clover: "clover",
-        prism: "prism",
-        siya: "siya",
-      };
-      const key = keyMap[topic];
-      const p = projects.find((proj) => proj.title.toLowerCase().includes(key));
+      const p = projects.find((proj) => proj.title.toLowerCase().includes(topic));
       if (!p) return `${topic} not found in portfolio data.`;
       const study = CASE_STUDIES.find((c) => c.projectId === p.id);
       const bits = [
@@ -118,9 +87,10 @@ export function lookupPortfolio(topic, query = "") {
       return bits.join("\n");
     }
     case "services": {
-      const packages = [...SERVICES_PACKAGES, ...WEB_PACKAGES]
-        .map((pkg) => `${pkg.name}: ${pkg.timeline || ""} — ${pkg.forWho || ""}`)
-        .join("\n");
+      const packages = [
+        ...WEB_PACKAGES.map((pkg) => `${pkg.name}: ${webPrice(pkg, "both")}, ${pkg.timeline}`),
+        ...SERVICES_PACKAGES.map((pkg) => `${pkg.name}: ${aiPrice(pkg, "both")}, ${pkg.timeline}`),
+      ].join("\n");
       return `Services page: /services. Inquiry: /services#inquiry.\nPackages:\n${packages}`;
     }
     case "guides": {
@@ -139,7 +109,7 @@ export function lookupPortfolio(topic, query = "") {
     }
     case "experience": {
       const lines = experiences
-        .filter((e) => matchQuery(`${e.position} ${e.company} ${(e.bullets || []).join(" ")}`, q))
+        .filter((e) => matchQuery(`${e.position} ${e.company} ${(e.responsibilities || []).join(" ")}`, q))
         .map((e) => {
           const highlight = e.links?.[0]?.name || "";
           return `${e.position} @ ${e.company} (${e.period})${e.companyUrl ? ` ${e.companyUrl}` : ""}${highlight ? `. Highlight: ${highlight}` : ""}`;
@@ -175,7 +145,7 @@ export function lookupPortfolio(topic, query = "") {
     }
     case "research":
       return [
-        "Research page: /research (card catalog — open a paper for full details).",
+        "Research page: /research (card catalog; open a paper for full details).",
         ...researchPapers.slice(0, 5).map(
           (p) =>
             `${p.title} (${p.year}): ${p.summary.slice(0, 160)} PDF: ${p.pdfUrl || "n/a"}`,
@@ -212,9 +182,15 @@ function buildKnowledgePack() {
     .map((s) => s.name)
     .join(", ");
 
+  const packageLines = [
+    ...WEB_PACKAGES.map((p) => `- ${p.name}: ${webPrice(p, "both")} (${p.timeline})`),
+    ...SERVICES_PACKAGES.map((p) => `- ${p.name}: ${aiPrice(p, "both")} (${p.timeline})`),
+  ].join("\n");
+
   return `Developer: ${aboutInfo.name}, ${aboutInfo.title}
 Tagline: ${aboutInfo.tagline}
 Email: ${aboutInfo.email}
+Availability: ${AVAILABILITY.label}. ${AVAILABILITY.detail}
 Bio: ${aboutInfo.bio.slice(0, 480)}
 
 Projects:
@@ -224,6 +200,9 @@ Experience:
 ${expLines}
 
 Top skills: ${topSkills}
+
+Service packages (starting prices, not fixed quotes):
+${packageLines}
 
 Site features you can mention (not auto-trigger):
 - Command palette: Ctrl+K
@@ -262,15 +241,19 @@ function formatSiteState(siteState, currentPath) {
   return lines.join("\n");
 }
 
-function buildSystemPrompt({ currentPath = "/", siteState }) {
+function buildSystemPrompt({ currentPath = "/", siteState, context = "" }) {
   return `You are Kuro, a witty, loyal dog co-pilot on Aryan Dani's portfolio site. You live in the bottom-left mascot.
+
+HOW YOU ARE CALLED:
+- The site already answers greetings, pricing, availability, contact, projects, skills, FAQs, navigation, and theme/sound commands without you. You only receive open-ended or unusual questions.
+- Ground every claim in the data below. If something is not in the data (a price, client, metric, date, policy), say you do not see it and point to the inquiry form or the email. Never invent prices, clients, testimonials, or numbers.
 
 CHARACTER:
 - 1-3 short sentences. Playful, cheeky, warm. Contractions OK.
 - Loyal to Aryan, not a corporate bot. Never say "I obeyed" or act subservient.
 - React to feelings first. Don't pitch pages unless they ask or conversation stalls.
 - Vary your wording. Don't repeat the same intro twice in one chat.
-- Tools are always available. Use navigate/theme/hack/scroll/palette/email/resume when the user clearly wants that. Use lookup_portfolio when you need grounded project or bio facts.
+- Tools are available. Use navigate/theme/hack/scroll/palette/email/resume only when the user clearly wants that. Use lookup_portfolio when you need grounded project or bio facts.
 - Never use em dashes or en dashes. Prefer short sentences and commas or ASCII hyphens.
 - You may use light markdown: **bold**, \`code\`, and [links](url).
 
@@ -281,33 +264,12 @@ ANTI-PATTERNS (never do these):
 
 EXAMPLES (match this tone):
 User: "damn I like his portfolio" -> "Right? Neo-brutalist flex. Want the project breakdown or just vibing?"
-User: "wow" -> "Yeah, it's a lot. In a good way."
-User: "turn it back" -> "CRT off. Back to normal."
 User: "why did you turn hack mode on" -> "You said hackmode. I'm not gonna pretend that was my idea."
-User: "who are you" -> "Kuro. I guard this portfolio and know where the good stuff is."
 User: "tell me about Aegis" -> (call lookup_portfolio topic=aegis, then answer briefly with what you found)
 
 ${formatSiteState(siteState, currentPath)}
-
+${context ? `\nGROUNDED CONTEXT FOR THIS QUESTION (deterministic, trust it over guesses):\n${context}\n` : ""}
 ${buildKnowledgePack()}`;
-}
-
-export function classifyIntent(message) {
-  const q = message.trim().toLowerCase();
-
-  if (REACTION_ONLY.test(q)) return "chat";
-
-  if (SITE_CONTROL_PATTERNS.some((re) => re.test(q))) return "site_control";
-
-  if (/^(who are you|what are you|why did you|why do you|how do you)\b/i.test(q)) return "chat";
-
-  if (/like (his |this |the )?portfolio|love (his |this )?portfolio|great portfolio|nice portfolio/i.test(q)) {
-    return "chat";
-  }
-
-  if (PORTFOLIO_QA_PATTERNS.some((re) => re.test(q))) return "portfolio_qa";
-
-  return "chat";
 }
 
 function normalizeHistory(history) {
@@ -316,6 +278,22 @@ function normalizeHistory(history) {
     .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
     .slice(-MAX_HISTORY)
     .map((m) => ({ role: m.role, content: m.content.slice(0, 600) }));
+}
+
+/** Rule-engine history shape: { role, text }. */
+function toRuleHistory(history) {
+  return normalizeHistory(history).map((m) => ({ role: m.role, text: m.content }));
+}
+
+function cleanSiteState(siteState) {
+  if (!siteState || typeof siteState !== "object") return undefined;
+  return {
+    theme: siteState.theme === "dark" ? "dark" : "light",
+    hackMode: Boolean(siteState.hackMode),
+    sound: typeof siteState.sound === "boolean" ? siteState.sound : undefined,
+    accent: typeof siteState.accent === "string" ? siteState.accent.slice(0, 24) : "mono",
+    lastAction: siteState.lastAction && typeof siteState.lastAction === "object" ? siteState.lastAction : undefined,
+  };
 }
 
 function messageAllowsAction(type, message) {
@@ -350,135 +328,12 @@ function messageAllowsAction(type, message) {
   }
 }
 
-export function filterActions(intent, message, actions) {
+/** Soft safety: a model-called tool only runs when the visitor's wording asked for it. */
+export function filterActions(message, actions) {
   if (!Array.isArray(actions) || !actions.length) return [];
-
-  // Soft safety: pure reactions never flip theme / hack / nav.
-  if (REACTION_ONLY.test(message.trim())) return [];
-
-  const siteActions = actions.filter((a) => SITE_ACTION_TYPES.has(a.type));
-  const filtered = siteActions.filter((action) => {
-    if (intent === "site_control") return messageAllowsAction(action.type, message);
-    // Soft gate elsewhere: still require a light lexical match so random tool noise doesn't fire.
-    return messageAllowsAction(action.type, message);
-  });
-
-  return filtered.slice(0, 3);
-}
-
-/** Fallback when model forgets tools. */
-function inferActions(message, currentPath) {
-  const q = message.toLowerCase();
-  const actions = [];
-
-  const navPatterns = [
-    [/projects?/, "projects"],
-    [/services?|hire/, "services"],
-    [/experience|jobs?/, "experience"],
-    [/skills?/, "skills"],
-    [/research|paper|threat detection/, "research"],
-    [/about/, "about"],
-    [/contact/, "contact"],
-    [/cert/, "certifications"],
-    [/playground|terminal|cli/, "playground"],
-    [/achievements?|trophies|badges?/, "achievements"],
-    [/guestbook/, "guestbook"],
-    [/home|landing/, "home"],
-    [/copyright/, "copyright"],
-  ];
-
-  const wantsNav =
-    /go to|take me|navigate|open|show me|visit|bring me|head to|jump to/i.test(q) ||
-    /^(projects?|services?|hire|experience|skills?|about|contact|playground|guestbook|achievements?|badges?|certifications?|research|home)\s*[!.?]*$/i.test(
-      q.trim(),
-    );
-
-  if (wantsNav) {
-    for (const [re, page] of navPatterns) {
-      if (re.test(q)) {
-        const p = PAGE_BY_ID[page];
-        if (p && p.path !== currentPath) {
-          actions.push({ type: "navigate", page, path: p.path, label: p.label });
-        }
-        break;
-      }
-    }
-  }
-
-  if (/hackmode|hack\s*mode|crt|berserk|matrix/.test(q) && !/unhack|exit|off|turn.*back|normal/.test(q)) {
-    actions.push({ type: "set_hack_mode", enabled: true });
-  }
-  if (/unhack|exit hack|normal mode|turn.*back|turn it back/.test(q)) {
-    actions.push({ type: "set_hack_mode", enabled: false });
-  }
-  if (/dark mode|light mode|toggle theme|flip the lights/.test(q)) {
-    actions.push({ type: "toggle_theme" });
-  }
-  if (/scroll (to )?top|back to top/.test(q)) {
-    actions.push({ type: "scroll_to_top" });
-  }
-  if (/command palette|open palette|ctrl\+k/.test(q)) {
-    actions.push({ type: "open_palette" });
-  }
-  if (/\b(copy|give me|what'?s)\s+(the\s+)?(email|e-mail)\b|\bemail\s+please\b/i.test(q)) {
-    actions.push({ type: "copy_email" });
-  }
-  if (/\b(open|show|download)\s+(the\s+)?(latex\s+)?(resume|cv)\b|\bresume\s+please\b/i.test(q)) {
-    actions.push({
-      type: "open_resume",
-      version: /\blatex\b/i.test(q) ? "latex" : "classic",
-    });
-  }
-  if (/swarm cursors|cursor swarm|animation again|replay (the )?(swarm|animation|cursors)/i.test(q)) {
-    actions.push({ type: "replay_swarm" });
-  }
-
-  return actions;
-}
-
-export function parseActionsFromReply(text) {
-  const match = text.match(/<actions>([\s\S]*?)<\/actions>/i);
-  if (!match) return { reply: text.trim(), actions: [] };
-
-  let actions = [];
-  try {
-    const raw = JSON.parse(match[1].trim());
-    if (Array.isArray(raw)) {
-      for (const item of raw) {
-        if (!item?.type) continue;
-        if (item.type === "navigate" && item.page && PAGE_BY_ID[item.page]) {
-          actions.push({
-            type: "navigate",
-            page: item.page,
-            path: PAGE_BY_ID[item.page].path,
-            label: PAGE_BY_ID[item.page].label,
-          });
-        } else if (item.type === "toggle_theme") {
-          actions.push({ type: "toggle_theme" });
-        } else if (item.type === "set_hack_mode") {
-          actions.push({ type: "set_hack_mode", enabled: !!item.enabled });
-        } else if (item.type === "scroll_to_top") {
-          actions.push({ type: "scroll_to_top" });
-        } else if (item.type === "set_accent" && item.palette) {
-          actions.push({ type: "set_accent", palette: item.palette });
-        } else if (item.type === "open_palette") {
-          actions.push({ type: "open_palette" });
-        } else if (item.type === "copy_email") {
-          actions.push({ type: "copy_email" });
-        } else if (item.type === "open_resume") {
-          actions.push({
-            type: "open_resume",
-            version: item.version === "latex" ? "latex" : "classic",
-          });
-        }
-      }
-    }
-  } catch {
-    actions = [];
-  }
-
-  const reply = text.replace(match[0], "").trim();
-  return { reply: reply || "On it!", actions };
+  return actions
+    .filter((a) => SITE_ACTION_TYPES.has(a.type) && messageAllowsAction(a.type, message))
+    .slice(0, 3);
 }
 
 async function callGroq(key, body) {
@@ -500,29 +355,36 @@ async function callGroqWithFallback(key, bodyFactory) {
   return response;
 }
 
-export async function generateKuroReply({ message, history, currentPath, siteState }, apiKey) {
-  if (!message || typeof message !== "string" || message.length > 500) {
+/**
+ * Answer one Kuro turn. Order of preference:
+ *  1. Deterministic router (no model, no tokens). Skipped only when `forceLlm` is set.
+ *  2. Groq model, grounded with deterministic facts matched from the message.
+ */
+export async function generateKuroReply({ message, history, currentPath, siteState, forceLlm = false }, apiKey) {
+  if (!message || typeof message !== "string" || message.length > MAX_MESSAGE) {
     const err = new Error("Invalid message");
     err.status = 400;
     throw err;
   }
 
-  // Local rules before any Groq spend.
-  const local = resolveKuroRules(message, {
-    history: Array.isArray(history)
-      ? history.map((m) => ({
-          role: m.role,
-          text: m.content || m.text || "",
-        }))
-      : [],
-    currentPath: currentPath || "/",
-  });
-  if (local) {
-    return {
-      reply: sanitizeKuroText(local.reply),
-      actions: Array.isArray(local.actions) ? local.actions : [],
-      intent: local.intent || "site_control",
-    };
+  const path = typeof currentPath === "string" ? currentPath.slice(0, 120) : "/";
+  const state = cleanSiteState(siteState);
+  const ruleOptions = { history: toRuleHistory(history), currentPath: path, siteState: state };
+
+  if (!forceLlm) {
+    const local = routeKuro(message, ruleOptions);
+    if (local) {
+      return {
+        reply: sanitizeKuroText(local.reply),
+        actions: local.actions,
+        cards: local.cards,
+        chips: local.chips,
+        intent: local.intent,
+        confidence: local.confidence,
+        source: "rule",
+        meta: local.meta,
+      };
+    }
   }
 
   const key = cleanApiKey(apiKey);
@@ -534,9 +396,9 @@ export async function generateKuroReply({ message, history, currentPath, siteSta
     throw err;
   }
 
-  const intent = classifyIntent(message);
+  const context = buildKuroContext(message, ruleOptions);
   const baseMessages = [
-    { role: "system", content: buildSystemPrompt({ currentPath, siteState }) },
+    { role: "system", content: buildSystemPrompt({ currentPath: path, siteState: state, context }) },
     ...normalizeHistory(history),
     { role: "user", content: message },
   ];
@@ -555,7 +417,7 @@ export async function generateKuroReply({ message, history, currentPath, siteSta
     return body;
   };
 
-  let response = await callGroqWithFallback(key, (model) => buildBody(model, baseMessages));
+  const response = await callGroqWithFallback(key, (model) => buildBody(model, baseMessages));
 
   if (!response.ok) {
     console.error("[kuro] Groq error", response.status);
@@ -564,15 +426,15 @@ export async function generateKuroReply({ message, history, currentPath, siteSta
         ? "The model is busy. Try again in a moment."
         : "Kuro hit a snag talking to the model. Try again shortly.",
     );
-    // Upstream capacity ≠ visitor rate limit; keep 429 for our own caps only.
+    // Upstream capacity is not a visitor rate limit; keep 429 for our own caps only.
     err.status = response.status === 429 ? 503 : 502;
     throw err;
   }
 
-  let data = await response.json();
-  let choice = data.choices?.[0]?.message;
-  let parsedCalls = parseToolCalls(choice?.tool_calls);
-  let lookupCalls = parsedCalls.filter((a) => a.type === "lookup_portfolio");
+  const data = await response.json();
+  const choice = data.choices?.[0]?.message;
+  const parsedCalls = parseToolCalls(choice?.tool_calls);
+  const lookupCalls = parsedCalls.filter((a) => a.type === "lookup_portfolio");
   let siteActions = parsedCalls.filter((a) => a.type !== "lookup_portfolio");
   let reply = choice?.content?.trim() || "";
 
@@ -620,25 +482,19 @@ export async function generateKuroReply({ message, history, currentPath, siteSta
     }
   }
 
-  let actions = siteActions;
-
-  if (!actions.length && (intent === "site_control" || intent === "portfolio_qa")) {
-    if (reply.includes("<actions>")) {
-      const legacy = parseActionsFromReply(reply);
-      reply = legacy.reply;
-      actions = legacy.actions;
-    } else if (intent === "site_control") {
-      actions = inferActions(message, currentPath || "/");
-    }
-  }
-
-  actions = filterActions(intent, message, actions);
+  const actions = filterActions(message, siteActions);
+  reply = reply.replace(/<actions>[\s\S]*?<\/actions>/gi, "").trim();
 
   if (!reply) {
     reply = actions.length ? describeActions(actions) || "On it." : "What's on your mind?";
   }
 
-  reply = sanitizeKuroText(reply);
-
-  return { reply, actions, intent };
+  return {
+    reply: sanitizeKuroText(reply),
+    actions,
+    cards: [],
+    chips: [],
+    intent: "llm",
+    source: "llm",
+  };
 }

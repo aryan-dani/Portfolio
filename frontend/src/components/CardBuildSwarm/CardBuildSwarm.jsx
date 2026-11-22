@@ -45,7 +45,7 @@ function isAutomationClient() {
 function waitForBootDone() {
   return new Promise((resolve) => {
     const check = () => {
-      if (!document.querySelector(".page-loader")) {
+      if (!document.querySelector(".page-loader, .grounded-intro")) {
         resolve();
         return;
       }
@@ -299,6 +299,12 @@ const REPLAY_SWARM_EVENT = "portfolio:replay-swarm";
 const KURO_LAUNCH_MS = 720;
 const KURO_DOCK_MS = 820;
 const KURO_STAGGER_MS = 110;
+/** Afterimages that lag behind each working bot, giving the swarm a visible wake. */
+const GHOSTS = [
+  { lag: 1.7, opacity: 0.38, scale: 0.8 },
+  { lag: 2.7, opacity: 0.22, scale: 0.62 },
+  { lag: 3.8, opacity: 0.12, scale: 0.46 },
+];
 
 function emitKuroSwarm(phase) {
   window.dispatchEvent(
@@ -349,6 +355,24 @@ function AgentCursorSprite({
   const duration = Math.max(0.08, (moveMs || 140) / 1000);
 
   return (
+    <>
+      {!flying
+        && GHOSTS.map((ghost, i) => (
+          <motion.div
+            key={i}
+            className="fixed top-0 left-0 pointer-events-none will-change-transform"
+            style={{ zIndex: INTRO_Z - 1 }}
+            initial={false}
+            animate={{ x, y, opacity: opacity * ghost.opacity, scale: scale * ghost.scale }}
+            transition={{ duration: duration * ghost.lag, ease: BOT_EASE }}
+          >
+            <div
+              className="-translate-x-1/2 -translate-y-1/2 h-3.5 w-3.5"
+              style={{ background: accent || CURSOR_DARK }}
+              aria-hidden="true"
+            />
+          </motion.div>
+        ))}
     <motion.div
       className="fixed top-0 left-0 pointer-events-none will-change-transform"
       style={{ zIndex: INTRO_Z }}
@@ -396,6 +420,7 @@ function AgentCursorSprite({
         )}
       </div>
     </motion.div>
+    </>
   );
 }
 
@@ -450,6 +475,17 @@ function maybeFinishCard(card, progress) {
   ) {
     p.done = true;
     setPhase(card, "done");
+    // Settle: the finished card gives one small, hard press.
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      card.animate(
+        [
+          { transform: "translate(-4px, -4px)" },
+          { transform: "translate(1px, 1px)", offset: 0.55 },
+          { transform: "translate(0, 0)" },
+        ],
+        { duration: 340, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+      );
+    }
   }
 }
 

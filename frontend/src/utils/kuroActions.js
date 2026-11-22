@@ -1,6 +1,6 @@
 import { playgroundRouteMap } from "../config/routes";
 import { aboutInfo } from "../data/experience";
-import { smoothScrollToTop } from "./smoothScroll";
+import { smoothScrollTo, smoothScrollToTop } from "./smoothScroll";
 
 const PALETTE_EVENT = "portfolio:open-palette";
 const REPLAY_SWARM_EVENT = "portfolio:replay-swarm";
@@ -16,17 +16,20 @@ async function copyEmailToClipboard() {
   }
 }
 
+/** Only http(s) and mailto links may be opened from a chat action. */
+function isSafeExternalUrl(url) {
+  return typeof url === "string" && /^(https?:\/\/|mailto:)/i.test(url);
+}
+
+/**
+ * Run Kuro site actions. Handlers come from the widget: navigate, toggleTheme, setTheme,
+ * setSound, setCrtMode, setAccent, petKuro, track, onAction.
+ * @returns {object[]} the actions that were executed
+ */
 export function executeKuroActions(actions, handlers) {
   if (!Array.isArray(actions) || !actions.length) return [];
 
-  const {
-    navigate,
-    toggleTheme,
-    setCrtMode,
-    setAccent,
-    track,
-    onAction,
-  } = handlers;
+  const { navigate, toggleTheme, setTheme, setSound, setCrtMode, setAccent, petKuro, track, onAction } = handlers;
 
   const executed = [];
 
@@ -42,6 +45,14 @@ export function executeKuroActions(actions, handlers) {
         toggleTheme?.();
         executed.push(action);
         break;
+      case "set_theme":
+        if (action.theme === "dark" || action.theme === "light") setTheme?.(action.theme);
+        executed.push(action);
+        break;
+      case "set_sound":
+        setSound?.(typeof action.enabled === "boolean" ? action.enabled : undefined);
+        executed.push(action);
+        break;
       case "set_hack_mode":
         if (action.enabled) {
           track?.("hack");
@@ -53,6 +64,10 @@ export function executeKuroActions(actions, handlers) {
         break;
       case "scroll_to_top":
         smoothScrollToTop();
+        executed.push(action);
+        break;
+      case "scroll_to_bottom":
+        smoothScrollTo(Math.max(0, document.documentElement.scrollHeight - window.innerHeight));
         executed.push(action);
         break;
       case "set_accent":
@@ -79,9 +94,17 @@ export function executeKuroActions(actions, handlers) {
         executed.push(action);
         break;
       }
+      case "open_url":
+        if (isSafeExternalUrl(action.url)) window.open(action.url, "_blank", "noopener,noreferrer");
+        executed.push(action);
+        break;
       case "replay_swarm":
         window.dispatchEvent(new CustomEvent(REPLAY_SWARM_EVENT));
         executed.push(action);
+        break;
+      case "pet_kuro":
+        petKuro?.();
+        // Cosmetic only: not worth an "action" caption in the transcript.
         break;
       default:
         break;
@@ -92,35 +115,27 @@ export function executeKuroActions(actions, handlers) {
   return executed;
 }
 
+const DESCRIPTIONS = {
+  navigate: (a) => `-> Opened ${a.label || a.page}`,
+  toggle_theme: () => "-> Toggled theme",
+  set_theme: (a) => `-> ${a.theme === "dark" ? "Dark" : "Light"} mode`,
+  set_sound: (a) => (a.enabled === true ? "-> Sound on" : a.enabled === false ? "-> Sound off" : "-> Toggled sound"),
+  set_hack_mode: (a) => (a.enabled ? "-> Hack mode on" : "-> Hack mode off"),
+  scroll_to_top: () => "-> Scrolled to top",
+  scroll_to_bottom: () => "-> Scrolled to bottom",
+  set_accent: (a) => `-> Accent: ${a.palette}`,
+  open_palette: () => "-> Opened command palette",
+  copy_email: () => "-> Copied email",
+  open_resume: (a) => (a.version === "latex" ? "-> Opened LaTeX resume" : "-> Opened classic resume"),
+  open_url: (a) => `-> Opened ${a.label || "link"}`,
+  replay_swarm: () => "-> Replayed cursor swarm",
+};
+
 export function describeKuroActions(actions) {
   if (!Array.isArray(actions) || !actions.length) return "";
   return actions
-    .map((a) => {
-      switch (a.type) {
-        case "navigate":
-          return `-> Opened ${a.label || a.page}`;
-        case "toggle_theme":
-          return "-> Toggled theme";
-        case "set_hack_mode":
-          return a.enabled ? "-> Hack mode on" : "-> Hack mode off";
-        case "scroll_to_top":
-          return "-> Scrolled to top";
-        case "set_accent":
-          return `-> Accent: ${a.palette}`;
-        case "open_palette":
-          return "-> Opened command palette";
-        case "copy_email":
-          return "-> Copied email";
-        case "open_resume":
-          return a.version === "latex"
-            ? "-> Opened LaTeX resume"
-            : "-> Opened classic resume";
-        case "replay_swarm":
-          return "-> Replayed cursor swarm";
-        default:
-          return "-> Done";
-      }
-    })
+    .filter((a) => a.type !== "pet_kuro")
+    .map((a) => (DESCRIPTIONS[a.type] || (() => "-> Done"))(a))
     .join(" ");
 }
 

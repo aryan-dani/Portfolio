@@ -1,6 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { SEO_CONFIG, SITE_NAME, DEFAULT_IMAGE, TWITTER_HANDLE, DEFAULT_IMAGE_ALT, routeOgImage } from "../config/seoConfig";
+import {
+  SEO_CONFIG,
+  SITE_NAME,
+  DEFAULT_IMAGE,
+  TWITTER_HANDLE,
+  DEFAULT_IMAGE_ALT,
+  routeOgImage,
+  buildBaseSchemas,
+} from "../config/seoConfig";
 
 /**
  * SEO hook - updates document <title>, meta tags, canonical URL,
@@ -61,31 +69,27 @@ export function usePageSEO(extraData, overridePath) {
     setMeta("name", "twitter:site", TWITTER_HANDLE);
     setMeta("name", "twitter:creator", TWITTER_HANDLE);
 
-    // ── Per-page JSON-LD structured data ───────────────────
-    if (config.schemas) {
-      const schemas = config.schemas(extraData);
-      if (schemas && schemas.length > 0) {
-        // Remove previous per-page schema
-        if (schemaScriptRef.current) {
-          schemaScriptRef.current.remove();
-          schemaScriptRef.current = null;
-        }
-
-        const script = document.createElement("script");
-        script.type = "application/ld+json";
-        script.setAttribute("data-page-seo", "true");
-        const graph = {
-          "@context": "https://schema.org",
-          "@graph": schemas.map((schema) => {
-            if (!schema || typeof schema !== "object") return schema;
-            const { "@context": _ctx, ...rest } = schema;
-            return rest;
-          }),
-        };
-        script.textContent = JSON.stringify(graph);
-        document.head.appendChild(script);
-        schemaScriptRef.current = script;
+    // ── JSON-LD: Person + WebSite once, then per-page schemas ──
+    {
+      if (schemaScriptRef.current) {
+        schemaScriptRef.current.remove();
+        schemaScriptRef.current = null;
       }
+      const pageSchemas = typeof config.schemas === "function" ? config.schemas(extraData) || [] : [];
+      const schemas = [...buildBaseSchemas(), ...pageSchemas];
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.setAttribute("data-page-seo", "true");
+      script.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": schemas.map((schema) => {
+          if (!schema || typeof schema !== "object") return schema;
+          const { "@context": _ctx, ...rest } = schema;
+          return rest;
+        }),
+      });
+      document.head.appendChild(script);
+      schemaScriptRef.current = script;
     }
 
     // Cleanup: remove per-page schema on unmount / route change

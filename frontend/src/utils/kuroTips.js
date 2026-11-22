@@ -1,12 +1,16 @@
+/**
+ * Page-aware suggestion chips. Every `send` here must resolve through the deterministic router
+ * (checked by scripts/check-kuro.mjs), so tapping a tip never costs a model call.
+ */
 const TIP_POOL = {
   "/": [
-    { label: "Projects", send: "go to projects" },
+    { label: "Projects", send: "Show me the projects" },
+    { label: "Pricing", send: "What are your prices?" },
     { label: "Hack mode", send: "hack mode" },
     { label: "Who built this?", send: "Who built this?" },
     { label: "Swiggy Nexus", send: "Tell me about Swiggy Nexus" },
-    { label: "Prism", send: "Tell me about Prism" },
     { label: "Aegis vault", send: "Tell me about Aegis" },
-    { label: "Pet tip", send: "What can you do?" },
+    { label: "Tech stack", send: "What is the tech stack?" },
   ],
   "/projects": [
     { label: "Swiggy Nexus", send: "Tell me about Swiggy Nexus" },
@@ -14,17 +18,18 @@ const TIP_POOL = {
     { label: "Aegis", send: "Tell me about Aegis" },
     { label: "Samiksha", send: "What is Samiksha?" },
     { label: "Swarm again", send: "animation again on this page" },
-    { label: "Open skills", send: "go to skills" },
     { label: "Live demos", send: "Which projects have a live demo?" },
+    { label: "Case studies", send: "Show case studies" },
+    { label: "AI projects", send: "AI projects" },
   ],
   "/skills": [
     { label: "Rust / Tauri", send: "Does he use Rust?" },
     { label: "AI stack", send: "What AI tools does he use?" },
+    { label: "React projects", send: "Which projects use React?" },
     { label: "See projects", send: "go to projects" },
-    { label: "Who built this?", send: "Who built this?" },
   ],
   "/experience": [
-    { label: "Latest role", send: "Summarize his experience" },
+    { label: "Latest role", send: "What is his current role?" },
     { label: "Resume", send: "Open the classic resume" },
     { label: "LaTeX resume", send: "Open the LaTeX resume" },
     { label: "Research", send: "go to research" },
@@ -36,18 +41,21 @@ const TIP_POOL = {
     { label: "Projects", send: "go to projects" },
   ],
   "/about": [
-    { label: "GitHub stats", send: "Tell me about his GitHub" },
-    { label: "Hire", send: "go to services" },
+    { label: "GitHub", send: "Tell me about his GitHub" },
+    { label: "How to hire", send: "How do I hire Aryan?" },
     { label: "Email", send: "What's his email?" },
+    { label: "Location", send: "Where are you based?" },
   ],
   "/services": [
+    { label: "Pricing", send: "What are your prices?" },
+    { label: "Availability", send: "Are you available?" },
+    { label: "Process", send: "What is the process?" },
+    { label: "Copy email", send: "Copy email" },
     { label: "Swarm again", send: "swarm cursors" },
-    { label: "Copy email", send: "What's his email?" },
-    { label: "Projects", send: "go to projects" },
   ],
   "/contact": [
-    { label: "Copy email", send: "What's his email?" },
-    { label: "Projects", send: "go to projects" },
+    { label: "Copy email", send: "Copy email" },
+    { label: "Availability", send: "Are you available?" },
     { label: "Guestbook", send: "go to guestbook" },
   ],
   "/playground": [
@@ -67,22 +75,28 @@ const TIP_POOL = {
 };
 
 const FALLBACK_TIPS = [
-  { label: "Projects", send: "go to projects" },
+  { label: "Projects", send: "Show me the projects" },
   { label: "Hack mode", send: "hack mode" },
   { label: "Who built this?", send: "Who built this?" },
   { label: "Aegis", send: "Tell me about Aegis" },
   { label: "Swiggy Nexus", send: "Tell me about Swiggy Nexus" },
   { label: "Skills", send: "go to skills" },
   { label: "Email", send: "What's his email?" },
+  { label: "Pricing", send: "What are your prices?" },
 ];
 
 const PLACEHOLDERS = [
-  "Ask about Aryan, or say go to projects",
-  "Try: who built this?",
+  "Ask about Aryan, pricing, or availability",
+  "Try: are you available in January?",
   "Try: tell me about Swiggy Nexus",
-  "Try: tell me about Aegis",
+  "Try: how much for a website?",
   "Try: take me to skills",
-  "Try: how do I enable hack mode?",
+  "Try: dark mode",
+];
+
+/** Every tip utterance, for tests. */
+export const KURO_TIP_SENDS = [
+  ...new Set([...Object.values(TIP_POOL).flat(), ...FALLBACK_TIPS].map((tip) => tip.send)),
 ];
 
 const RECENT_KEY = "portfolio_kuro_tip_recent";
@@ -114,19 +128,19 @@ function writeRecent(labels) {
   }
 }
 
-/** Pick 3 suggestion chips for the current path, avoiding recently shown labels. */
-export function getDynamicSuggestionChips(pathname = "/") {
+/** Pick suggestion chips for the current path, avoiding recently shown labels. */
+export function getDynamicSuggestionChips(pathname = "/", count = 3) {
   const pool = [...(TIP_POOL[pathname] || []), ...FALLBACK_TIPS];
   const recent = new Set(readRecent());
   const fresh = pool.filter((tip) => !recent.has(tip.label));
-  const source = fresh.length >= 3 ? fresh : pool;
+  const source = fresh.length >= count ? fresh : pool;
   const unique = [];
   const seen = new Set();
   for (const tip of shuffle(source)) {
     if (seen.has(tip.label)) continue;
     seen.add(tip.label);
     unique.push(tip);
-    if (unique.length >= 3) break;
+    if (unique.length >= count) break;
   }
   writeRecent([...readRecent(), ...unique.map((t) => t.label)]);
   return unique;

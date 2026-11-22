@@ -3,10 +3,20 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const STORAGE_KEY = "portfolio_onboarding_hint_dismissed";
 
+function isTouchOrCoarsePointer() {
+  if (typeof window === "undefined") return true;
+  return (
+    window.matchMedia("(pointer: coarse)").matches
+    || window.matchMedia("(hover: none)").matches
+  );
+}
+
 const OnboardingHint = memo(function OnboardingHint() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Never cover primary CTAs on touch devices; Phase 1 removes the hint there entirely.
+    if (isTouchOrCoarsePointer()) return undefined;
     const dismissed = localStorage.getItem(STORAGE_KEY) === "true";
     if (dismissed) return undefined;
     const timer = setTimeout(() => setIsVisible(true), 1800);
@@ -22,20 +32,22 @@ const OnboardingHint = memo(function OnboardingHint() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed left-4 right-4 bottom-24 sm:left-auto sm:right-6 sm:bottom-28 z-[60] max-w-md border-4 border-outline bg-surface p-4 shadow-[8px_8px_0_var(--shadow-color)]"
+          className="fixed left-auto right-6 bottom-36 z-[60] max-w-sm border-4 border-outline bg-surface p-4 shadow-[8px_8px_0_var(--shadow-color)] pointer-events-auto"
           initial={{ opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.98 }}
           transition={{ type: "spring", stiffness: 260, damping: 28 }}
+          role="status"
         >
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="font-label-bold text-[10px] uppercase tracking-[0.24em] text-text-muted">
-                First time here?
+                Tip
               </p>
               <p className="mt-1 font-body-md text-sm text-on-surface">
-                Click any card to open details. Press <strong>Ctrl/Alt+K</strong> to search,
-                <strong> Alt+1-9</strong> or <strong>Alt+Arrows</strong> to navigate, or <strong>?</strong> for shortcuts.
+                Press <strong>Ctrl/Alt+K</strong> to search,{" "}
+                <strong>Alt+1–9</strong> or <strong>Alt+Arrows</strong> to navigate, or{" "}
+                <strong>?</strong> for shortcuts.
               </p>
             </div>
             <button

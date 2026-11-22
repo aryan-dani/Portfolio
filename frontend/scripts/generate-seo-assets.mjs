@@ -1,9 +1,17 @@
-import { mkdir, readdir, readFile, unlink, writeFile } from "node:fs/promises";
+import { mkdir, readdir, unlink, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
-import { SEO_ROUTE_ORDER, SITE_URL } from "../src/config/seoConfig.js";
+import { SEO_CONFIG, SEO_ROUTE_ORDER, SITE_URL } from "../src/config/seoConfig.js";
+import { AVAILABILITY } from "../src/data/availability.js";
 import { CASE_STUDIES } from "../src/data/caseStudies.js";
-import { SERVICES_GUIDES } from "../src/data/services.js";
+import { researchPapers } from "../src/data/research.js";
+import {
+  SERVICES_GUIDES,
+  SERVICES_PACKAGES,
+  WEB_PACKAGES,
+  formatInr,
+  formatUsd,
+} from "../src/data/services.js";
 import { INDEXNOW_KEY } from "./indexnow-key.mjs";
 import { writeSitemap } from "./generate-sitemap.mjs";
 
@@ -144,11 +152,6 @@ const STATIC_OG_COPY = {
     headline: "Copyright &\nMIT terms",
     subline: "What you can reuse, share, and modify in this open project.",
   },
-  "/contact": {
-    kicker: "CONTACT",
-    headline: "Start a\nproject",
-    subline: "Freelance AI engineering, web builds, and collaborations.",
-  },
 };
 
 function ogCopyForPath(path) {
@@ -270,25 +273,60 @@ Sitemap: ${SITE_URL}/sitemap.xml
 `;
 }
 
+function webPriceLine(pack) {
+  const prefix = pack.priceKind === "from" ? "From" : "Starting at";
+  const suffix = pack.priceSuffix || "";
+  return `${prefix} ${formatInr(pack.priceInr)}${suffix} / ${prefix} ${formatUsd(pack.priceUsd)}${suffix}`;
+}
+
 function buildLlmsTxt() {
+  const routeLines = SEO_ROUTE_ORDER.map((routePath) => {
+    const config = SEO_CONFIG[routePath];
+    const label = config?.title || routePath;
+    const blurb = config?.description || "";
+    const href = routePath === "/" ? `${SITE_URL}/` : `${SITE_URL}${routePath}`;
+    return `- [${label}](${href}): ${blurb}`;
+  }).join("\n");
+
+  const webPricing = WEB_PACKAGES.map(
+    (pack) => `- ${pack.name}: ${webPriceLine(pack)} (${pack.timeline})`,
+  ).join("\n");
+  const aiPricing = SERVICES_PACKAGES.map(
+    (pack) => `- ${pack.name}: ${pack.priceLabel} (${pack.timeline})`,
+  ).join("\n");
+
+  const researchLines = researchPapers
+    .filter((paper) => paper.pdfUrl)
+    .map(
+      (paper) =>
+        `- [${paper.title}](${SITE_URL}${paper.pdfUrl}): ${paper.summary || paper.abstract || "Research PDF"}`,
+    )
+    .join("\n");
+
   return `# Aryan Dani
 
 > AI Engineer and Full Stack Developer in Pune, India (MIT-WPU). Builds agentic AI, computer vision, RAG, and production web apps. This portfolio site runs on React, Vite, React Router, Tailwind CSS, and Framer Motion.
 
-## Site
-- [Portfolio home](${SITE_URL}/): Overview, stats, and entry points to projects and contact
-- [Projects](${SITE_URL}/projects): Shipped AI and full-stack work (Utility, Arbiter, Shadow Instructor, Democrazy, and more)
-- [Services](${SITE_URL}/services): Websites and AI tools with fixed quotes from INR 8,000
-- [Experience](${SITE_URL}/experience): ProvaanTech AI/ML intern, Artem HealthTech, MIT-WPU capstone
-- [Research](${SITE_URL}/research): Research papers and technical write-ups (card catalog + PDFs)
-- [Skills](${SITE_URL}/skills): Stack across Python, LLMs, LangGraph, React, Vite, FastAPI, CV, and cloud
-- [About](${SITE_URL}/about): Bio, Google Student Ambassador, resume PDF
-- [Contact](${SITE_URL}/contact): Email and hire/collaboration form
+## Availability
+- ${AVAILABILITY.label}
+- ${AVAILABILITY.detail}
+- Start a project: ${SITE_URL}/services#inquiry
+
+## Live routes
+${routeLines}
+
+## Website packages
+${webPricing}
+
+## AI packages
+${aiPricing}
+
+## Documents
 - [Resume PDF](${SITE_URL}/resume.pdf): Downloadable CV
-- [Research PDF](${SITE_URL}/research-paper.pdf): Full threat-detection research paper
+- [Resume (LaTeX)](${SITE_URL}/resume-latex.pdf): Alternate CV layout
+${researchLines}
 
 ## Also useful
-- [Certifications](${SITE_URL}/certifications): Google, IBM, and related credentials
 - [GitHub](https://github.com/aryan-dani): Source repositories
 - [LinkedIn](https://www.linkedin.com/in/aryandani/): Professional profile
 `;

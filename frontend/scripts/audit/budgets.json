@@ -1,0 +1,15 @@
+{
+  "baseUrl": "http://127.0.0.1:4173",
+  "firstVisitHomeTransferKb": 600,
+  "servicesHeadlineReadableMs": 1500,
+  "servicesHeadlineNeverErased": true,
+  "introCompleteMs": 2500,
+  "idleStyleRecalcsPerSec": 2,
+  "idleMainThreadBusyPct": 2,
+  "clsHome": 0.02,
+  "clsServices": 0.02,
+  "clsProjects": 0.02,
+  "eagerJsCssGzipKb": 160,
+  "fpsScrollAvg": 55,
+  "maxFrameMsWhileScrolling": 50
+}

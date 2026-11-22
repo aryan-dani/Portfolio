@@ -1,9 +1,8 @@
 import { memo, useEffect, useMemo, useRef, useState, lazy, Suspense } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FaCheck,
-  FaChevronDown,
   FaCopy,
   FaEnvelope,
   FaExternalLinkAlt,
@@ -14,13 +13,17 @@ import {
 import { usePageSEO } from "../../utils/seo";
 import { useToast } from "../../context/ToastContext";
 import { containerVariants, itemVariants } from "../../utils/motionVariants";
-import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
 import ResumeActions from "../../components/ResumeModal/ResumeActions";
 import { openSiteBrowser } from "../../utils/siteBrowser";
+import { trackActionClick, trackInquirySubmitted } from "../../utils/funnel";
+import { consumeBriefPrefill } from "../../utils/briefPrefill";
+import { AVAILABILITY, PRIMARY_CTA } from "../../data/availability";
 
 const ResumeModal = lazy(() => import("../../components/ResumeModal/ResumeModal"));
 import {
   CURRENCY_STORAGE_KEY,
+  BOOKING_CALL_URL,
+  BOOKING_CALL_LABEL,
   SCOPING_CALL_URL,
   SERVICES_AUDIENCES,
   SERVICES_EMAIL,
@@ -69,7 +72,10 @@ const emptyForm = {
   companyWebsite: "",
 };
 
+const FORM_KEYS = Object.keys(emptyForm);
+
 function openMailtoFallback(payload) {
+  if (typeof window === "undefined") return;
   const body = [
     `Name: ${payload.name}`,
     `Email: ${payload.email}`,
@@ -91,10 +97,10 @@ function openMailtoFallback(payload) {
 }
 
 const fieldClass =
-  "border-4 border-outline p-3 md:p-4 font-body-md text-base md:text-lg focus:outline-none focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all duration-200 bg-surface-variant text-on-surface w-full";
+  "border-2 border-outline p-3 md:p-4 font-body-md text-base md:text-lg focus:outline-none focus:shadow-[6px_6px_0px_0px_var(--shadow-color)] shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all duration-200 bg-surface-variant text-on-surface w-full";
 
 const tabButtonClass = (active) =>
-  `border-4 border-outline px-4 py-3 font-label-bold text-xs md:text-sm uppercase shadow-[4px_4px_0_0_var(--shadow-color)] transition-all ${
+  `border-2 border-outline px-4 py-3 font-label-bold text-xs md:text-sm uppercase shadow-[4px_4px_0_0_var(--shadow-color)] transition-all ${
     active
       ? "bg-primary-container text-on-primary-container"
       : "bg-surface text-on-surface hover:translate-x-0.5 hover:translate-y-0.5"
@@ -103,22 +109,54 @@ const tabButtonClass = (active) =>
 const Services = memo(function Services() {
   const faqData = useMemo(() => ({ faqItems: [...SERVICES_FAQ, ...WEB_FAQ] }), []);
   usePageSEO(faqData);
-  const scopeRef = useRef(null);
   const location = useLocation();
 
   const { showToast } = useToast();
-  const [activeTab, setActiveTab] = useState("ai");
+  const [activeTab, setActiveTab] = useState("web");
   const [currency, setCurrency] = useState("INR");
   const [formData, setFormData] = useState(emptyForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [expandedFaq, setExpandedFaq] = useState(null);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [resumeVersion, setResumeVersion] = useState("classic");
+  const [showMobileCta, setShowMobileCta] = useState(false);
+  const inquiryRef = useRef(null);
+  const heroCtaRef = useRef(null);
 
   useEffect(() => {
     setCurrency(detectDefaultCurrency());
   }, []);
+
+  useEffect(() => {
+    const fromStorage = consumeBriefPrefill();
+    const params = new URLSearchParams(location.search);
+    const fromQuery = {
+      projectType: params.get("projectType") || "",
+      timeline: params.get("timeline") || "",
+      budgetRange: params.get("budgetRange") || "",
+      message: params.get("message") || "",
+    };
+    const merged = {
+      ...(fromStorage && typeof fromStorage === "object" ? fromStorage : {}),
+      ...Object.fromEntries(
+        Object.entries(fromQuery).filter(([, value]) => Boolean(value)),
+      ),
+    };
+    const hasAny = FORM_KEYS.some(
+      (key) => key !== "companyWebsite" && typeof merged[key] === "string" && merged[key],
+    );
+    if (!hasAny) return;
+    setFormData((prev) => {
+      const next = { ...prev };
+      for (const key of FORM_KEYS) {
+        if (key === "companyWebsite") continue;
+        if (typeof merged[key] === "string" && merged[key]) {
+          next[key] = merged[key];
+        }
+      }
+      return next;
+    });
+  }, [location.search]);
 
   useEffect(() => {
     if (location.hash !== "#inquiry") return;
@@ -128,8 +166,37 @@ const Services = memo(function Services() {
     return () => window.clearTimeout(timer);
   }, [location.hash, location.pathname]);
 
+  // Sticky mobile action: only between the hero's own button and the form.
+  // Showing it while either is on screen puts two identical buttons on top
+  // of each other.
+  useEffect(() => {
+    const hero = heroCtaRef.current;
+    const inquiry = inquiryRef.current;
+    if (!hero || !inquiry || typeof IntersectionObserver === "undefined") return undefined;
+    const seen = { hero: true, inquiry: false };
+    const update = () => setShowMobileCta(!seen.hero && !seen.inquiry);
+    const heroObserver = new IntersectionObserver(([entry]) => {
+      seen.hero = Boolean(entry?.isIntersecting);
+      update();
+    });
+    const inquiryObserver = new IntersectionObserver(
+      ([entry]) => {
+        seen.inquiry = Boolean(entry?.isIntersecting);
+        update();
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    heroObserver.observe(hero);
+    inquiryObserver.observe(inquiry);
+    return () => {
+      heroObserver.disconnect();
+      inquiryObserver.disconnect();
+    };
+  }, []);
+
   const setCurrencyPreference = (next) => {
     setCurrency(next);
+    if (typeof window === "undefined") return;
     try {
       window.localStorage.setItem(CURRENCY_STORAGE_KEY, next);
     } catch {
@@ -145,6 +212,10 @@ const Services = memo(function Services() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.companyWebsite) return;
+    if (!formData.projectType) {
+      showToast("Please select a project type.", "error");
+      return;
+    }
     setIsSubmitting(true);
 
     const payload = {
@@ -173,10 +244,12 @@ const Services = memo(function Services() {
 
       if (response.ok && result.success === true) {
         setSubmitted(true);
-        showToast("Inquiry sent. I will reply soon.", "success");
+        trackInquirySubmitted("services_form");
+        showToast(result.message || "Inquiry sent. I will reply soon.", "success");
         setFormData(emptyForm);
       } else if (response.status === 503 || result.code === "EMAIL_NOT_CONFIGURED") {
         openMailtoFallback(payload);
+        trackInquirySubmitted("services_mailto_fallback");
         showToast("Opening your email app so the message still goes through.", "success");
       } else {
         throw new Error(result.error || "Could not send just now. Use the email link below.");
@@ -185,8 +258,12 @@ const Services = memo(function Services() {
       showToast(error.message || "Could not send just now. Use the email link below.", "error");
     } finally {
       setIsSubmitting(false);
-      window.setTimeout(() => setSubmitted(false), 4000);
     }
+  };
+
+  const goToInquiry = () => {
+    trackActionClick(PRIMARY_CTA.label, PRIMARY_CTA.to);
+    document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const visibleFaq = activeTab === "web" ? WEB_FAQ : SERVICES_FAQ;
@@ -194,7 +271,6 @@ const Services = memo(function Services() {
 
   return (
     <motion.section
-      ref={scopeRef}
       className="flex flex-col gap-14 md:gap-20 w-full pb-8"
       initial={false}
       animate="visible"
@@ -202,7 +278,7 @@ const Services = memo(function Services() {
     >
       <motion.header
         data-build-card=""
-        className="relative isolate overflow-hidden border-b-8 border-outline pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col gap-6"
+        className="relative isolate overflow-hidden border-b-2 border-outline pb-8 mt-4 flex flex-col gap-5"
         variants={itemVariants}
       >
         <p className="font-label-bold text-xs md:text-sm uppercase tracking-[0.16em] text-secondary">
@@ -210,37 +286,45 @@ const Services = memo(function Services() {
         </p>
         <h1
           data-build-part="title"
-          className="font-headline-xl text-3xl md:text-5xl lg:text-6xl uppercase tracking-tighter leading-tight text-on-surface max-w-4xl bg-surface border-4 border-outline p-4 md:p-5 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
+          className="font-headline-xl text-3xl md:text-5xl lg:text-6xl normal-case tracking-tight leading-[1] text-on-surface max-w-4xl w-fit bg-surface border-4 border-outline p-4 md:p-6 shadow-[8px_8px_0_0_var(--shadow-color)]"
         >
           {SERVICES_HERO.headline}
         </h1>
         <p
           data-build-part="blurb"
-          className="font-body-lg text-base md:text-lg text-on-surface max-w-3xl bg-surface border-4 border-outline p-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] leading-snug"
+          className="font-body-lg text-base md:text-lg text-on-surface-variant max-w-3xl leading-snug"
         >
           {SERVICES_HERO.subline}
         </p>
         <div className="flex flex-wrap gap-3">
           <a
+            ref={heroCtaRef}
             href="#inquiry"
-            className="bg-primary-container text-on-primary-container border-4 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
+            onClick={(e) => {
+              e.preventDefault();
+              goToInquiry();
+            }}
+            className="bg-primary-container text-on-primary-container border-2 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
           >
-            Request a quote
+            {PRIMARY_CTA.label}
           </a>
           <Link
             to="/projects"
-            className="bg-surface text-on-surface border-4 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
+            className="bg-surface text-on-surface border-2 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[8px_8px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
           >
             View projects
           </Link>
         </div>
         <p className="font-label-bold text-sm uppercase tracking-wide text-on-surface">
-          {SERVICES_HERO.availability}
+          {AVAILABILITY.label}
+          <span className="block font-body-md text-xs md:text-sm normal-case tracking-normal mt-1 opacity-80">
+            {AVAILABILITY.detail}
+          </span>
         </p>
       </motion.header>
 
       <motion.div
-        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)]"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-2 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)]"
         variants={itemVariants}
       >
         <div className="flex flex-wrap gap-2" role="tablist" aria-label="Services line">
@@ -251,10 +335,7 @@ const Services = memo(function Services() {
               role="tab"
               aria-selected={activeTab === tab.id}
               className={tabButtonClass(activeTab === tab.id)}
-              onClick={() => {
-                setActiveTab(tab.id);
-                setExpandedFaq(null);
-              }}
+              onClick={() => setActiveTab(tab.id)}
             >
               {tab.label}
             </button>
@@ -278,8 +359,61 @@ const Services = memo(function Services() {
 
       {activeTab === "ai" ? (
         <>
+          <motion.section aria-labelledby="packages-heading" className="flex flex-col gap-6" variants={itemVariants}>
+            <h2 id="packages-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
+              AI packages
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {SERVICES_PACKAGES.map((pack) => (
+                <article
+                  key={pack.id}
+                  data-build-card=""
+                  className={`border-2 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col gap-4 ${
+                    pack.flagship
+                      ? "bg-primary-container text-on-primary-container lg:col-span-2"
+                      : "bg-surface text-on-surface"
+                  }`}
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-3">
+                    <h3 data-build-part="title" className="font-headline-md text-xl md:text-2xl normal-case">
+                      {pack.name}
+                    </h3>
+                    {pack.flagship && (
+                      <span className="font-label-bold text-xs uppercase border-2 border-current px-2 py-1">
+                        Flagship
+                      </span>
+                    )}
+                  </div>
+                  <p className="font-label-bold text-sm md:text-base uppercase tracking-wide">
+                    {formatAiPackagePrice(pack, currency)}
+                  </p>
+                  {pack.priceDetail && <p className="font-body-md text-sm leading-snug">{pack.priceDetail}</p>}
+                  <p className="font-body-md text-sm">
+                    <span className="font-label-bold uppercase text-xs">Timeline: </span>
+                    {pack.timeline}
+                  </p>
+                  <p data-build-part="blurb" className="font-body-md text-sm leading-snug">
+                    <span className="font-label-bold uppercase text-xs">For: </span>
+                    {pack.forWho}
+                  </p>
+                  <ul data-build-part="meta" className="flex flex-col gap-2">
+                    {pack.includes.map((item) => (
+                      <li key={item} className="flex gap-2 font-body-md text-sm leading-snug">
+                        <FaCheck className="mt-1 shrink-0 text-xs" aria-hidden />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            <p className="font-body-md text-sm md:text-base border-2 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl">
+              {SERVICES_PRICE_NOTE}
+            </p>
+          </motion.section>
+
           <motion.section aria-labelledby="proof-heading" className="flex flex-col gap-6" variants={itemVariants}>
-            <h2 id="proof-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="proof-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               Proof you can open
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -287,10 +421,10 @@ const Services = memo(function Services() {
                 <article
                   key={project.id}
                   data-build-card=""
-                  className="border-4 border-outline bg-surface p-5 shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col gap-4"
+                  className="border-2 border-outline bg-surface p-5 shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col gap-4"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <h3 data-build-part="title" className="font-headline-md text-xl uppercase">
+                    <h3 data-build-part="title" className="font-headline-md text-xl normal-case">
                       {project.title}
                     </h3>
                     <Link
@@ -345,68 +479,15 @@ const Services = memo(function Services() {
             </div>
           </motion.section>
 
-          <motion.section aria-labelledby="packages-heading" className="flex flex-col gap-6" variants={itemVariants}>
-            <h2 id="packages-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
-              AI packages
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {SERVICES_PACKAGES.map((pack) => (
-                <article
-                  key={pack.id}
-                  data-build-card=""
-                  className={`border-4 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col gap-4 ${
-                    pack.flagship
-                      ? "bg-primary-container text-on-primary-container lg:col-span-2"
-                      : "bg-surface text-on-surface"
-                  }`}
-                >
-                  <div className="flex flex-wrap items-baseline justify-between gap-3">
-                    <h3 data-build-part="title" className="font-headline-md text-xl md:text-2xl uppercase">
-                      {pack.name}
-                    </h3>
-                    {pack.flagship && (
-                      <span className="font-label-bold text-xs uppercase border-2 border-current px-2 py-1">
-                        Flagship
-                      </span>
-                    )}
-                  </div>
-                  <p className="font-label-bold text-sm md:text-base uppercase tracking-wide">
-                    {formatAiPackagePrice(pack, currency)}
-                  </p>
-                  {pack.priceDetail && <p className="font-body-md text-sm leading-snug">{pack.priceDetail}</p>}
-                  <p className="font-body-md text-sm">
-                    <span className="font-label-bold uppercase text-xs">Timeline: </span>
-                    {pack.timeline}
-                  </p>
-                  <p data-build-part="blurb" className="font-body-md text-sm leading-snug">
-                    <span className="font-label-bold uppercase text-xs">For: </span>
-                    {pack.forWho}
-                  </p>
-                  <ul data-build-part="meta" className="flex flex-col gap-2">
-                    {pack.includes.map((item) => (
-                      <li key={item} className="flex gap-2 font-body-md text-sm leading-snug">
-                        <FaCheck className="mt-1 shrink-0 text-xs" aria-hidden />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
-            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl">
-              {SERVICES_PRICE_NOTE}
-            </p>
-          </motion.section>
-
           <motion.section aria-labelledby="process-heading" className="flex flex-col gap-5" variants={itemVariants}>
-            <h2 id="process-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="process-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               How I work
             </h2>
             <ol className="grid grid-cols-1 md:grid-cols-2 gap-3 list-none">
               {SERVICES_PROCESS.map((step, index) => (
                 <li
                   key={step}
-                  className="border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-3"
+                  className="border-2 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-3"
                 >
                   <span className="font-headline-md text-xl shrink-0">{String(index + 1).padStart(2, "0")}</span>
                   <span className="font-body-md text-sm md:text-base leading-snug">{step}</span>
@@ -416,14 +497,14 @@ const Services = memo(function Services() {
           </motion.section>
 
           <motion.section aria-labelledby="tech-heading" className="flex flex-col gap-5" variants={itemVariants}>
-            <h2 id="tech-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="tech-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               Technical approach
             </h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {SERVICES_TECH_APPROACH.map((item) => (
                 <li
                   key={item}
-                  className="border-4 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)]"
+                  className="border-2 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)]"
                 >
                   {item}
                 </li>
@@ -432,16 +513,16 @@ const Services = memo(function Services() {
           </motion.section>
 
           <motion.section aria-labelledby="audience-heading" className="flex flex-col gap-5" variants={itemVariants}>
-            <h2 id="audience-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="audience-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               Who this is for
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {SERVICES_AUDIENCES.map((audience) => (
                 <article
                   key={audience.title}
-                  className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)]"
+                  className="border-2 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)]"
                 >
-                  <h3 className="font-headline-md text-lg uppercase mb-2">{audience.title}</h3>
+                  <h3 className="font-headline-md text-lg normal-case mb-2">{audience.title}</h3>
                   <p className="font-body-md text-sm leading-snug">{audience.body}</p>
                 </article>
               ))}
@@ -451,7 +532,7 @@ const Services = memo(function Services() {
       ) : (
         <>
           <motion.section aria-labelledby="web-packages-heading" className="flex flex-col gap-6" variants={itemVariants}>
-            <h2 id="web-packages-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="web-packages-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               Website packages
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -459,14 +540,14 @@ const Services = memo(function Services() {
                 <article
                   key={pack.id}
                   data-build-card=""
-                  className={`border-4 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col gap-4 ${
+                  className={`border-2 border-outline p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col gap-4 ${
                     pack.flagship
                       ? "bg-primary-container text-on-primary-container lg:col-span-2"
                       : "bg-surface text-on-surface"
                   }`}
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-3">
-                    <h3 data-build-part="title" className="font-headline-md text-xl md:text-2xl uppercase">
+                    <h3 data-build-part="title" className="font-headline-md text-xl md:text-2xl normal-case">
                       {pack.name}
                     </h3>
                     {pack.flagship && (
@@ -497,20 +578,20 @@ const Services = memo(function Services() {
                 </article>
               ))}
             </div>
-            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl">
+            <p className="font-body-md text-sm md:text-base border-2 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl">
               {SERVICES_PRICE_NOTE}
             </p>
           </motion.section>
 
           <motion.section aria-labelledby="every-site-heading" className="flex flex-col gap-5" variants={itemVariants}>
-            <h2 id="every-site-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="every-site-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               What you get with every site
             </h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {WEB_EVERY_SITE.map((item) => (
                 <li
                   key={item}
-                  className="border-4 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-2"
+                  className="border-2 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-2"
                 >
                   <FaCheck className="mt-1 shrink-0 text-xs" aria-hidden />
                   <span>{item}</span>
@@ -520,14 +601,14 @@ const Services = memo(function Services() {
           </motion.section>
 
           <motion.section aria-labelledby="web-process-heading" className="flex flex-col gap-5" variants={itemVariants}>
-            <h2 id="web-process-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="web-process-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               How a website project works
             </h2>
             <ol className="grid grid-cols-1 md:grid-cols-2 gap-3 list-none">
               {WEB_PROCESS.map((step, index) => (
                 <li
                   key={step}
-                  className="border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-3"
+                  className="border-2 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex gap-3"
                 >
                   <span className="font-headline-md text-xl shrink-0">{String(index + 1).padStart(2, "0")}</span>
                   <span className="font-body-md text-sm md:text-base leading-snug">{step}</span>
@@ -535,16 +616,16 @@ const Services = memo(function Services() {
               ))}
             </ol>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <article className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2">
-                <h3 className="font-headline-md text-lg uppercase">Revisions vs change requests</h3>
+              <article className="border-2 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2">
+                <h3 className="font-headline-md text-lg normal-case">Revisions vs change requests</h3>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.revisions}</p>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.changeRequests}</p>
                 <p className="font-label-bold text-xs uppercase pt-1">
                   Included review rounds: {WEB_REVIEW_ROUNDS}
                 </p>
               </article>
-              <article className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2">
-                <h3 className="font-headline-md text-lg uppercase">Payment and handover</h3>
+              <article className="border-2 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2">
+                <h3 className="font-headline-md text-lg normal-case">Payment and handover</h3>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.paymentSmall}</p>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.paymentApp}</p>
                 <p className="font-body-md text-sm leading-snug">{WEB_COMMERCIAL.handover}</p>
@@ -553,23 +634,23 @@ const Services = memo(function Services() {
           </motion.section>
 
           <motion.section aria-labelledby="wix-heading" className="flex flex-col gap-4" variants={itemVariants}>
-            <h2 id="wix-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="wix-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               {WEB_WIX_NOTE.title}
             </h2>
-            <p className="font-body-md text-sm md:text-base border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl leading-snug">
+            <p className="font-body-md text-sm md:text-base border-2 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] max-w-4xl leading-snug">
               {WEB_WIX_NOTE.body}
             </p>
           </motion.section>
 
           <motion.section aria-labelledby="addons-heading" className="flex flex-col gap-5" variants={itemVariants}>
-            <h2 id="addons-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="addons-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               Optional add-ons
             </h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {WEB_ADDONS.map((item) => (
                 <li
                   key={item}
-                  className="border-4 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)]"
+                  className="border-2 border-outline bg-surface p-4 font-body-md text-sm md:text-base leading-snug shadow-[4px_4px_0_0_var(--shadow-color)]"
                 >
                   {item}
                 </li>
@@ -578,7 +659,7 @@ const Services = memo(function Services() {
           </motion.section>
 
           <motion.section aria-labelledby="web-gallery-heading" className="flex flex-col gap-6" variants={itemVariants}>
-            <h2 id="web-gallery-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="web-gallery-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               Live sites you can open
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -586,7 +667,7 @@ const Services = memo(function Services() {
                 <article
                   key={site.id}
                   data-build-card=""
-                  className="border-4 border-outline bg-surface shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
+                  className="border-2 border-outline bg-surface shadow-[6px_6px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
                 >
                   {site.image && (
                     <div data-build-part="media" className="h-40 border-b-4 border-outline overflow-hidden">
@@ -603,7 +684,7 @@ const Services = memo(function Services() {
                   )}
                   <div className="p-5 flex flex-col gap-4 grow">
                     <div className="flex items-start justify-between gap-3">
-                      <h3 data-build-part="title" className="font-headline-md text-xl uppercase">
+                      <h3 data-build-part="title" className="font-headline-md text-xl normal-case">
                         {site.title}
                       </h3>
                       <Link
@@ -650,7 +731,7 @@ const Services = memo(function Services() {
           </motion.section>
 
           <motion.section aria-labelledby="guides-heading" className="flex flex-col gap-4" variants={itemVariants}>
-            <h2 id="guides-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+            <h2 id="guides-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
               Short guides
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -658,9 +739,9 @@ const Services = memo(function Services() {
                 <Link
                   key={guide.slug}
                   to={`/guides/${guide.slug}`}
-                  className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all flex flex-col gap-2"
+                  className="border-2 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all flex flex-col gap-2"
                 >
-                  <h3 className="font-headline-md text-lg uppercase">{guide.title}</h3>
+                  <h3 className="font-headline-md text-lg normal-case">{guide.title}</h3>
                   <p className="font-body-md text-sm leading-snug">{guide.description}</p>
                 </Link>
               ))}
@@ -670,209 +751,214 @@ const Services = memo(function Services() {
       )}
 
       <motion.section aria-labelledby="faq-heading" className="flex flex-col gap-5" variants={itemVariants}>
-        <h2 id="faq-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
+        <h2 id="faq-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
           FAQ
         </h2>
         <div className="flex flex-col gap-3">
-          {visibleFaq.map((item, index) => {
-            const open = expandedFaq === index;
-            return (
-              <div key={item.q} className="border-4 border-outline bg-surface shadow-[4px_4px_0_0_var(--shadow-color)]">
-                <button
-                  type="button"
-                  className="w-full flex items-center justify-between gap-4 p-4 text-left font-label-bold uppercase text-sm md:text-base"
-                  aria-expanded={open}
-                  onClick={() => setExpandedFaq(open ? null : index)}
-                >
-                  <span>{item.q}</span>
-                  <FaChevronDown className={`shrink-0 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden />
-                </button>
-                <AnimatePresence initial={false}>
-                  {open && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="px-4 pb-4 font-body-md text-sm md:text-base leading-snug border-t-4 border-outline pt-3">
-                        {item.a}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+          {visibleFaq.map((item) => (
+            <div
+              key={item.q}
+              className="border-2 border-outline bg-surface shadow-[4px_4px_0_0_var(--shadow-color)] p-4 flex flex-col gap-3"
+            >
+              <h3 className="font-label-bold uppercase text-sm md:text-base">{item.q}</h3>
+              <p className="font-body-md text-sm md:text-base leading-snug border-t-4 border-outline pt-3">
+                {item.a}
+              </p>
+            </div>
+          ))}
         </div>
       </motion.section>
 
       <motion.section
         id="inquiry"
+        ref={inquiryRef}
         aria-labelledby="inquiry-heading"
         className="flex flex-col gap-6 scroll-mt-24"
         variants={itemVariants}
       >
-        <h2 id="inquiry-heading" className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit">
-          Request a quote
+        <h2 id="inquiry-heading" className="font-headline-md text-2xl md:text-3xl normal-case border-b border-outline pb-2 w-fit">
+          {PRIMARY_CTA.label}
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <form
-            onSubmit={handleSubmit}
-            className="lg:col-span-2 border-4 border-outline bg-surface p-5 md:p-6 shadow-[8px_8px_0_0_var(--shadow-color)] flex flex-col gap-4 relative"
-            noValidate
-          >
-            <div
-              className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden"
-              aria-hidden="true"
+          {submitted ? (
+            <div className="lg:col-span-2 border-2 border-outline bg-surface p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4">
+              <p className="font-headline-md text-xl normal-case flex items-center gap-3">
+                <FaCheck aria-hidden /> Inquiry sent
+              </p>
+              <p className="font-body-md text-sm md:text-base leading-snug">
+                I reply within 24 hours with next steps and a clear scope outline.
+              </p>
+              <p className="font-body-md text-sm md:text-base leading-snug opacity-80">
+                {AVAILABILITY.detail}
+              </p>
+              {(BOOKING_CALL_URL || SCOPING_CALL_URL) ? (
+                <a
+                  href={BOOKING_CALL_URL || SCOPING_CALL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 border-2 border-outline bg-primary-container text-on-primary-container px-5 py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0_0_var(--shadow-color)] w-fit"
+                >
+                  {BOOKING_CALL_LABEL}
+                  <FaExternalLinkAlt className="text-xs" aria-hidden />
+                </a>
+              ) : null}
+            </div>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="lg:col-span-2 border-2 border-outline bg-surface p-5 md:p-6 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4 relative"
+              noValidate
             >
-              <label htmlFor="companyWebsite">Company website</label>
-              <input
-                id="companyWebsite"
-                name="companyWebsite"
-                type="text"
-                tabIndex={-1}
-                autoComplete="off"
-                value={formData.companyWebsite}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="services-name" className="font-label-bold uppercase text-sm">
-                  Name *
-                </label>
+              <div
+                className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden"
+                aria-hidden="true"
+              >
+                <label htmlFor="companyWebsite">Company website</label>
                 <input
-                  id="services-name"
-                  name="name"
-                  required
-                  value={formData.name}
+                  id="companyWebsite"
+                  name="companyWebsite"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formData.companyWebsite}
                   onChange={handleChange}
-                  className={fieldClass}
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="services-email" className="font-label-bold uppercase text-sm">
-                  Email *
-                </label>
-                <input
-                  id="services-email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={fieldClass}
-                />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="services-name" className="font-label-bold uppercase text-sm">
+                    Name *
+                  </label>
+                  <input
+                    id="services-name"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={fieldClass}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="services-email" className="font-label-bold uppercase text-sm">
+                    Email *
+                  </label>
+                  <input
+                    id="services-email"
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={fieldClass}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="services-org" className="font-label-bold uppercase text-sm">
-                Organization
-              </label>
-              <input
-                id="services-org"
-                name="organization"
-                value={formData.organization}
-                onChange={handleChange}
-                className={fieldClass}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <BrutalSelect
                 id="services-type"
                 name="projectType"
-                label="Project type"
+                label="Project type *"
                 value={formData.projectType}
                 options={INQUIRY_PROJECT_TYPES}
                 onChange={handleChange}
               />
-              <BrutalSelect
-                id="services-has-site"
-                name="hasExistingSite"
-                label="Do you already have a website or domain?"
-                value={formData.hasExistingSite}
-                options={INQUIRY_HAS_SITE}
-                onChange={handleChange}
-              />
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <BrutalSelect
-                id="services-budget"
-                name="budgetRange"
-                label="Budget range"
-                value={formData.budgetRange}
-                options={INQUIRY_BUDGET_RANGES}
-                onChange={handleChange}
-              />
-              <BrutalSelect
-                id="services-timeline"
-                name="timeline"
-                label="Timeline"
-                value={formData.timeline}
-                options={INQUIRY_TIMELINES}
-                onChange={handleChange}
-              />
-            </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="services-message" className="font-label-bold uppercase text-sm">
+                  Project description * (about 3 sentences)
+                </label>
+                <textarea
+                  id="services-message"
+                  name="message"
+                  required
+                  rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
+                  className={`${fieldClass} resize-y min-h-[8rem]`}
+                />
+              </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="services-message" className="font-label-bold uppercase text-sm">
-                Project description * (about 3 sentences)
-              </label>
-              <textarea
-                id="services-message"
-                name="message"
-                required
-                rows={5}
-                value={formData.message}
-                onChange={handleChange}
-                className={`${fieldClass} resize-y min-h-[8rem]`}
-              />
-            </div>
+              <details className="border-2 border-outline bg-surface-variant/40 open:bg-surface">
+                <summary className="cursor-pointer font-label-bold uppercase text-sm p-4 select-none">
+                  More detail (optional)
+                </summary>
+                <div className="flex flex-col gap-4 p-4 pt-0 border-t-4 border-outline">
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="services-org" className="font-label-bold uppercase text-sm">
+                      Organization
+                    </label>
+                    <input
+                      id="services-org"
+                      name="organization"
+                      value={formData.organization}
+                      onChange={handleChange}
+                      className={fieldClass}
+                    />
+                  </div>
+                  <BrutalSelect
+                    id="services-has-site"
+                    name="hasExistingSite"
+                    label="Do you already have a website or domain?"
+                    value={formData.hasExistingSite}
+                    options={INQUIRY_HAS_SITE}
+                    onChange={handleChange}
+                  />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <BrutalSelect
+                      id="services-budget"
+                      name="budgetRange"
+                      label="Budget range"
+                      value={formData.budgetRange}
+                      options={INQUIRY_BUDGET_RANGES}
+                      onChange={handleChange}
+                    />
+                    <BrutalSelect
+                      id="services-timeline"
+                      name="timeline"
+                      label="Timeline"
+                      value={formData.timeline}
+                      options={INQUIRY_TIMELINES}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="services-links" className="font-label-bold uppercase text-sm">
+                      Links
+                    </label>
+                    <input
+                      id="services-links"
+                      name="links"
+                      value={formData.links}
+                      onChange={handleChange}
+                      placeholder="Docs, Figma, repo, brief, current site"
+                      className={fieldClass}
+                    />
+                  </div>
+                </div>
+              </details>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="services-links" className="font-label-bold uppercase text-sm">
-                Optional links
-              </label>
-              <input
-                id="services-links"
-                name="links"
-                value={formData.links}
-                onChange={handleChange}
-                placeholder="Docs, Figma, repo, brief, current site"
-                className={fieldClass}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full border-4 border-outline px-6 py-4 font-headline-md text-xl uppercase flex items-center justify-center gap-3 bg-primary-container text-on-primary-container shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all disabled:opacity-70"
-            >
-              {isSubmitting ? (
-                "Sending..."
-              ) : submitted ? (
-                <>
-                  <FaCheck aria-hidden /> Sent
-                </>
-              ) : (
-                <>
-                  <FaPaperPlane aria-hidden /> Send inquiry
-                </>
-              )}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full border-2 border-outline px-6 py-4 font-headline-md text-xl normal-case flex items-center justify-center gap-3 bg-primary-container text-on-primary-container shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all disabled:opacity-70"
+              >
+                {isSubmitting ? (
+                  "Sending..."
+                ) : (
+                  <>
+                    <FaPaperPlane aria-hidden /> Send inquiry
+                  </>
+                )}
+              </button>
+            </form>
+          )}
 
           <aside className="flex flex-col gap-4">
-            <div className="border-4 border-outline bg-primary-container text-on-primary-container p-5 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4">
+            <div className="border-2 border-outline bg-primary-container text-on-primary-container p-5 shadow-[6px_6px_0_0_var(--shadow-color)] flex flex-col gap-4">
               <div className="flex items-center gap-2.5 border-b-2 border-current/30 pb-3">
                 <FaEnvelope className="text-xl text-current shrink-0" aria-hidden />
-                <h3 className="font-headline-md text-xl uppercase tracking-wide">Direct email</h3>
+                <h3 className="font-headline-md text-xl normal-case tracking-wide">Direct email</h3>
               </div>
               <p className="font-body-md text-sm leading-relaxed opacity-90">
                 Have a quick question or urgent project? I typically respond within 24 hours.
@@ -892,7 +978,9 @@ const Services = memo(function Services() {
                       await navigator.clipboard.writeText(SERVICES_EMAIL);
                       showToast?.("Email copied to clipboard!", "success");
                     } catch {
-                      window.location.href = `mailto:${SERVICES_EMAIL}`;
+                      if (typeof window !== "undefined") {
+                        window.location.href = `mailto:${SERVICES_EMAIL}`;
+                      }
                     }
                   }}
                   className="px-2.5 py-1 text-[11px] font-label-bold uppercase border border-current/40 bg-current/10 hover:bg-current hover:text-on-background transition-colors cursor-none shrink-0 flex items-center gap-1.5"
@@ -901,38 +989,34 @@ const Services = memo(function Services() {
                   <span>Copy</span>
                 </button>
               </div>
-              {SCOPING_CALL_URL ? (
+              {(BOOKING_CALL_URL || SCOPING_CALL_URL) ? (
                 <a
-                  href={SCOPING_CALL_URL}
+                  href={BOOKING_CALL_URL || SCOPING_CALL_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border-2 border-outline bg-surface text-on-surface px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-none"
                 >
-                  <span>Book a 20 minute scoping call</span>
+                  <span>{BOOKING_CALL_LABEL}</span>
                   <FaExternalLinkAlt className="text-xs" aria-hidden />
                 </a>
               ) : (
                 <a
-                  href="#inquiry"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth" });
-                  }}
+                  href={`mailto:${SERVICES_EMAIL}`}
                   className="border-2 border-outline bg-surface text-on-surface px-4 py-3 font-label-bold text-xs uppercase text-center shadow-[3px_3px_0_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-none"
                 >
                   <FaPaperPlane className="text-xs" aria-hidden />
-                  <span>Jump to inquiry form</span>
+                  <span>Open in your email app</span>
                 </a>
               )}
             </div>
             <div
-              className="border-4 border-outline p-5 flex flex-col gap-4 shadow-[6px_6px_0_0_var(--shadow-color)]"
+              className="border-2 border-outline p-5 flex flex-col gap-4 shadow-[6px_6px_0_0_var(--shadow-color)]"
               style={{ background: "var(--color-on-background)", color: "var(--color-background)" }}
             >
               <div className="flex items-center gap-3 border-b-2 border-current/30 pb-3">
                 <FaFileDownload className="text-2xl text-current shrink-0" aria-hidden />
                 <div>
-                  <div className="font-headline-md text-lg uppercase tracking-wide">My Resume</div>
+                  <div className="font-headline-md text-lg normal-case tracking-wide">My Resume</div>
                   <div className="font-body-md text-xs opacity-75">Classic PDF + LaTeX PDF</div>
                 </div>
               </div>
@@ -947,6 +1031,26 @@ const Services = memo(function Services() {
         </div>
       </motion.section>
 
+      {showMobileCta && (
+        <div
+          className="lg:hidden fixed inset-x-0 z-40 px-3 pointer-events-none"
+          style={{
+            bottom: "max(5rem, calc(env(safe-area-inset-bottom, 0px) + 4.5rem))",
+          }}
+        >
+          <a
+            href="#inquiry"
+            onClick={(e) => {
+              e.preventDefault();
+              goToInquiry();
+            }}
+            className="pointer-events-auto mx-auto max-w-lg flex items-center justify-center border-2 border-outline bg-primary-container text-on-primary-container px-5 py-3 font-label-bold text-sm uppercase shadow-[6px_6px_0_0_var(--shadow-color)]"
+          >
+            {PRIMARY_CTA.label}
+          </a>
+        </div>
+      )}
+
       {isResumeOpen && (
         <Suspense fallback={null}>
           <ResumeModal
@@ -957,7 +1061,6 @@ const Services = memo(function Services() {
         </Suspense>
       )}
 
-      <CardBuildSwarm storageKey="services" scopeRef={scopeRef} enabled />
     </motion.section>
   );
 });

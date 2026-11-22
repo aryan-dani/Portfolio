@@ -19,6 +19,9 @@ const CUSTOM_CURSOR_PORTAL_CLASS = "portfolio-custom-cursor";
 /** Above shortcuts overlay (100011) so the cursor stays visible on modals */
 const CURSOR_Z_INDEX = 100020;
 
+/** Chase speed of each follower (0-1 per frame); slower means farther behind. */
+const TRAIL_FACTORS = [0.17, 0.115, 0.075];
+
 const parseColor = (str) => {
   if (!str || str === "transparent" || str === "rgba(0, 0, 0, 0)") return null;
   const m = str.match(/rgba?\(\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/);
@@ -84,13 +87,21 @@ const CustomCursor = memo(function CustomCursor() {
   const onDarkBgRef = useRef(onDarkBg);
   const hoverTargetRef = useRef(null);
   const hoverRafRef = useRef(0);
+  const luminanceCacheRef = useRef(new WeakMap());
+  const lastLuminanceElRef = useRef(null);
+  const lastLuminanceValRef = useRef(null);
 
   // Position tracking refs
   const mousePosRef = useRef({ x: -100, y: -100 });
   const innerPosRef = useRef({ x: -100, y: -100 });
   const outerPosRef = useRef({ x: -100, y: -100 });
   const diamondRotateRef = useRef(0);
+  const clickScaleInnerRef = useRef(1);
+  const clickScaleOuterRef = useRef(1);
   const loopActiveRef = useRef(false);
+  // A small swarm of followers: each chases the one before it, a little slower.
+  const trailRefs = useRef([]);
+  const trailPosRef = useRef(TRAIL_FACTORS.map(() => ({ x: -100, y: -100 })));
 
   const isHoverState = cursorState === "hover" || cursorState === "image";
   const shouldRenderCursor = cursorState !== "hidden";
@@ -152,17 +163,50 @@ const CustomCursor = memo(function CustomCursor() {
       if (Math.abs(targetRotate - rot) < 0.15) rot = targetRotate;
       diamondRotateRef.current = rot;
 
+      // Ease click scale back to 1 (compositor-friendly; no width/height WAAPI)
+      clickScaleInnerRef.current += (1 - clickScaleInnerRef.current) * 0.28;
+      clickScaleOuterRef.current += (1 - clickScaleOuterRef.current) * 0.22;
+      if (Math.abs(clickScaleInnerRef.current - 1) < 0.01) clickScaleInnerRef.current = 1;
+      if (Math.abs(clickScaleOuterRef.current - 1) < 0.01) clickScaleOuterRef.current = 1;
+      const innerScale = clickScaleInnerRef.current;
+      const outerScale = clickScaleOuterRef.current;
+
       // Direct DOM rendering (completely bypasses React render tree)
       if (innerRef.current) {
-        innerRef.current.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg)`;
+        innerRef.current.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg) scale(${innerScale.toFixed(3)})`;
       }
       if (outerRef.current) {
-        outerRef.current.style.transform = `translate3d(${ox}px, ${oy}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg)`;
+        outerRef.current.style.transform = `translate3d(${ox}px, ${oy}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg) scale(${outerScale.toFixed(3)})`;
       }
 
-      // Keep animation loop ticking if position or diamond angle are still catching up
+      // Followers: each chases the leader before it.
+      let leadX = targetX;
+      let leadY = targetY;
+      let trailSettled = true;
+      trailPosRef.current.forEach((pos, i) => {
+        pos.x += (leadX - pos.x) * TRAIL_FACTORS[i];
+        pos.y += (leadY - pos.y) * TRAIL_FACTORS[i];
+        const remaining = Math.hypot(leadX - pos.x, leadY - pos.y);
+        if (remaining > 0.4) trailSettled = false;
+        const node = trailRefs.current[i];
+        if (node) {
+          const stretch = Math.min(1 + remaining / 90, 1.8);
+          const angle = Math.atan2(leadY - pos.y, leadX - pos.x) * (180 / Math.PI);
+          node.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%) rotate(${(remaining > 1 ? angle : 0).toFixed(1)}deg) scale(${stretch.toFixed(3)}, ${(1 / Math.sqrt(stretch)).toFixed(3)})`;
+        }
+        leadX = pos.x;
+        leadY = pos.y;
+      });
+
+      // Keep animation loop ticking if position, diamond angle, or click scale are catching up
       const dist = Math.hypot(dx, dy);
-      if (dist > 0.08 || Math.abs(targetRotate - rot) > 0.05) {
+      if (
+        dist > 0.08
+        || !trailSettled
+        || Math.abs(targetRotate - rot) > 0.05
+        || innerScale !== 1
+        || outerScale !== 1
+      ) {
         requestAnimationFrame(tick);
       } else {
         loopActiveRef.current = false;
@@ -210,6 +254,11 @@ const CustomCursor = memo(function CustomCursor() {
 
       if (!visibleRef.current) {
         visibleRef.current = true;
+        // Entering from offscreen: followers appear at the pointer, not at (-100, -100).
+        trailPosRef.current.forEach((pos) => {
+          pos.x = e.clientX;
+          pos.y = e.clientY;
+        });
         setIsVisible(true);
       }
       startLoop();
@@ -282,7 +331,19 @@ const CustomCursor = memo(function CustomCursor() {
 
       let resolvedDark = isDark;
       if (!el && !img && !input) {
-        const lum = getEffectiveBgLuminance(target);
+        let lum = null;
+        if (lastLuminanceElRef.current === target && lastLuminanceValRef.current != null) {
+          lum = lastLuminanceValRef.current;
+        } else if (luminanceCacheRef.current.has(target)) {
+          lum = luminanceCacheRef.current.get(target);
+          lastLuminanceElRef.current = target;
+          lastLuminanceValRef.current = lum;
+        } else {
+          lum = getEffectiveBgLuminance(target);
+          luminanceCacheRef.current.set(target, lum);
+          lastLuminanceElRef.current = target;
+          lastLuminanceValRef.current = lum;
+        }
         resolvedDark = lum !== null ? lum < 0.4 : isDark;
       } else if (crtMode) {
         resolvedDark = true;
@@ -312,33 +373,39 @@ const CustomCursor = memo(function CustomCursor() {
 
     const onPointerDown = (e) => {
       if (e.button !== 0) return;
-      const inner = innerRef.current;
-      const outer = outerRef.current;
-      if (!inner) return;
-
-      const innerW = inner.offsetWidth;
-      const innerH = inner.offsetHeight;
-      inner.animate(
-        [
-          { width: `${innerW}px`, height: `${innerH}px` },
-          { width: `${Math.max(6, innerW * 0.55)}px`, height: `${Math.max(6, innerH * 0.55)}px` },
-          { width: `${innerW}px`, height: `${innerH}px` },
-        ],
-        { duration: 160, easing: "ease-out" },
-      );
-
-      if (outer && cursorStateRef.current !== "text") {
-        const outerW = outer.offsetWidth;
-        const outerH = outer.offsetHeight;
-        outer.animate(
-          [
-            { width: `${outerW}px`, height: `${outerH}px`, opacity: 1 },
-            { width: `${outerW + 6}px`, height: `${outerH + 6}px`, opacity: 0.45 },
-            { width: `${outerW}px`, height: `${outerH}px`, opacity: 1 },
-          ],
-          { duration: 200, easing: "ease-out" },
-        );
+      if (!innerRef.current) return;
+      // Scale-only click feedback — no width/height WAAPI.
+      clickScaleInnerRef.current = 0.55;
+      if (cursorStateRef.current !== "text") {
+        clickScaleOuterRef.current = 1.12;
       }
+      // Square burst: one ring leaves the pointer and fades.
+      const host = portalRef.current;
+      if (host && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const burst = document.createElement("div");
+        const { primary } = resolveColors(onDarkBgRef.current, cursorStateRef.current);
+        Object.assign(burst.style, {
+          position: "absolute",
+          left: `${e.clientX}px`,
+          top: `${e.clientY}px`,
+          width: "18px",
+          height: "18px",
+          marginLeft: "-9px",
+          marginTop: "-9px",
+          border: `2px solid ${primary}`,
+          pointerEvents: "none",
+        });
+        host.appendChild(burst);
+        const anim = burst.animate(
+          [
+            { transform: "rotate(0deg) scale(0.6)", opacity: 0.85 },
+            { transform: "rotate(45deg) scale(3.4)", opacity: 0 },
+          ],
+          { duration: 520, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+        );
+        anim.onfinish = () => burst.remove();
+      }
+      startLoop();
     };
 
     window.addEventListener("pointerdown", onPointerDown, { passive: true });
@@ -386,6 +453,28 @@ const CustomCursor = memo(function CustomCursor() {
         transition: "opacity 0.2s ease",
       }}
     >
+      {/* Follower swarm */}
+      {TRAIL_FACTORS.map((_, i) => (
+        <div
+          key={i}
+          ref={(node) => {
+            trailRefs.current[i] = node;
+          }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: `${9 - i * 2}px`,
+            height: `${9 - i * 2}px`,
+            background: primaryColor,
+            opacity: cursorState === "text" ? 0 : 0.6 - i * 0.16,
+            transformOrigin: "center",
+            transition: "opacity 0.2s ease, background 0.12s",
+            willChange: "transform",
+          }}
+        />
+      ))}
+
       {/* Inner dot (no hardcoded transform in React style object) */}
       <div
         ref={innerRef}

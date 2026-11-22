@@ -1,6 +1,7 @@
 import { lazy, memo, Suspense, useCallback, useEffect, useState } from "react";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import ScrollProgress from "../ScrollProgress/ScrollProgress";
 import FloatingDock from "../FloatingDock/FloatingDock";
 import ShortcutsOverlay from "../ShortcutsOverlay/ShortcutsOverlay";
 import OnboardingHint from "../OnboardingHint/OnboardingHint";
@@ -40,13 +41,14 @@ const Layout = memo(function Layout({ children }) {
   }, []);
 
   return (
-    <div className="bg-background text-on-background min-h-screen flex flex-col font-body-md selection:bg-primary-container selection:text-black">
+    <div className="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-clip selection:bg-primary-container selection:text-black">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100000] focus:border-4 focus:border-outline focus:bg-primary-container focus:px-4 focus:py-3 focus:font-label-bold focus:uppercase focus:text-on-primary-container focus:shadow-[4px_4px_0_var(--shadow-color)]"
       >
         Skip to main content
       </a>
+      <ScrollProgress />
       <Header />
       <main id="main-content" className="grow w-full max-w-[1440px] mx-auto px-4 md:px-8 py-8 md:py-10 pb-24 md:pb-28 flex flex-col gap-12 md:gap-section-gap relative z-10 mt-6 md:mt-0">
         {children}

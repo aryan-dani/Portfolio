@@ -22,13 +22,56 @@ function shouldSkipBootLoader() {
   return /bot|crawl|spider|lighthouse|pagespeed|chrome-lighthouse|headless/i.test(ua);
 }
 
+function forceIntroFromQuery() {
+  if (typeof window === "undefined") return false;
+  try {
+    return new URLSearchParams(window.location.search).get("intro") === "1";
+  } catch {
+    return false;
+  }
+}
+
+function isHomePathname() {
+  if (typeof window === "undefined") return false;
+  const basename = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
+  const path = window.location.pathname.replace(/\/$/, "") || "/";
+  return path === "/" || path === basename || path === "";
+}
+
+function shouldSkipIntroOnMobile() {
+  if (typeof window === "undefined") return true;
+  return (
+    window.matchMedia("(pointer: coarse)").matches
+    || window.matchMedia("(max-width: 768px)").matches
+  );
+}
+
+function prefersReducedMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function shouldShowIntro() {
+  if (typeof window === "undefined") return false;
+  if (shouldSkipBootLoader()) return false;
+  if (forceIntroFromQuery()) return true;
+  if (!isHomePathname()) return false;
+  if (readStorage(SESSION_KEY)) return false;
+  if (shouldSkipIntroOnMobile()) return false;
+  return true;
+}
+
 const PageLoader = memo(function PageLoader() {
-  const skipBoot = shouldSkipBootLoader();
-  const hasVisited =
-    skipBoot || Boolean(readStorage(SESSION_KEY, null, "session"));
+  const forceIntro = forceIntroFromQuery();
+  const showIntro = shouldShowIntro();
+  const reduceMotionInitial = prefersReducedMotion();
   const { enabled: soundEnabled, toggleSound, unlockAudio } = useSound();
-  const [isLoading, setIsLoading] = useState(!hasVisited);
-  const [phase, setPhase] = useState(hasVisited ? PHASES.DONE : PHASES.VIDEO);
+  const [isLoading, setIsLoading] = useState(showIntro);
+  const [phase, setPhase] = useState(() => {
+    if (!showIntro) return PHASES.DONE;
+    if (reduceMotionInitial) return PHASES.TERMINAL;
+    return PHASES.VIDEO;
+  });
 
   // Video State: unmuted by default
   const videoRef = useRef(null);
@@ -38,7 +81,7 @@ const PageLoader = memo(function PageLoader() {
   // Terminal State
   const [terminalStep, setTerminalStep] = useState(0);
   const [memSize, setMemSize] = useState(0);
-  const [reduceMotion, setReduceMotion] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(reduceMotionInitial);
 
   // Prefers-reduced-motion check
   useEffect(() => {
@@ -49,12 +92,19 @@ const PageLoader = memo(function PageLoader() {
     return () => media.removeEventListener("change", update);
   }, []);
 
-  // Save session on finish
+  // Persist visit once per browser (localStorage)
   useEffect(() => {
-    if (!isLoading && !hasVisited) {
-      writeStorage(SESSION_KEY, "true", "session");
+    if (!isLoading && showIntro && !forceIntro) {
+      writeStorage(SESSION_KEY, "true");
     }
-  }, [isLoading, hasVisited]);
+  }, [isLoading, showIntro, forceIntro]);
+
+  // When intro is skipped, unblock home animations (and any other listeners)
+  useEffect(() => {
+    if (!showIntro) {
+      window.dispatchEvent(new CustomEvent("portfolio-intro-complete"));
+    }
+  }, [showIntro]);
 
   const advanceToTerminal = useCallback(() => {
     setPhase((prev) => {
@@ -76,20 +126,22 @@ const PageLoader = memo(function PageLoader() {
     window.dispatchEvent(new CustomEvent("portfolio-intro-complete"));
     setIsLoading(false);
     setPhase(PHASES.DONE);
-    writeStorage(SESSION_KEY, "true", "session");
+    writeStorage(SESSION_KEY, "true");
   }, []);
 
   // Listen for replay-intro custom event
   useEffect(() => {
     const handleReplay = () => {
-      removeStorage(SESSION_KEY, "session");
-      setPhase(PHASES.VIDEO);
+      removeStorage(SESSION_KEY);
+      const skipVideo = prefersReducedMotion();
+      setReduceMotion(skipVideo);
+      setPhase(skipVideo ? PHASES.TERMINAL : PHASES.VIDEO);
       setIsLoading(true);
       setTerminalStep(0);
       setMemSize(0);
       setVideoProgress(0);
       setIsMuted(!soundEnabled);
-      if (videoRef.current) {
+      if (!skipVideo && videoRef.current) {
         videoRef.current.currentTime = 0;
         videoRef.current.playbackRate = VIDEO_PLAYBACK_RATE;
         videoRef.current.muted = !soundEnabled;
@@ -111,10 +163,10 @@ const PageLoader = memo(function PageLoader() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLoading, skipLoader]);
 
-  // Phase 0: VIDEO PLAYBACK (Fullscreen & Unmuted)
+  // Phase 0: VIDEO PLAYBACK (Fullscreen & Unmuted) — skipped when reduced motion
   useEffect(() => {
     if (phase !== PHASES.VIDEO) return;
-    if (hasVisited) {
+    if (!showIntro && !forceIntro) {
       setPhase(PHASES.DONE);
       setIsLoading(false);
       return;
@@ -170,7 +222,7 @@ const PageLoader = memo(function PageLoader() {
       clearTimeout(fallbackTimer);
       document.removeEventListener("keydown", onIntroKeyDown);
     };
-  }, [phase, hasVisited, reduceMotion, soundEnabled, advanceToTerminal, toggleSound, unlockAudio]);
+  }, [phase, showIntro, forceIntro, reduceMotion, soundEnabled, advanceToTerminal, toggleSound, unlockAudio]);
 
   useEffect(() => {
     if (!isLoading) return undefined;
@@ -266,6 +318,8 @@ const PageLoader = memo(function PageLoader() {
       ? Math.round(50 + (Math.min(terminalStep, 5) / 5) * 50)
       : 100;
 
+  const showVideoStage = phase === PHASES.VIDEO && !reduceMotion;
+
   return (
     <AnimatePresence>
       {isLoading && (
@@ -284,8 +338,8 @@ const PageLoader = memo(function PageLoader() {
 
           {/* Central Stage with mode="wait" for smooth crossfade */}
           <AnimatePresence mode="wait">
-            {/* STAGE 1: FULLSCREEN UNMUTED 16:9 MATCH-CUT VIDEO */}
-            {phase === PHASES.VIDEO && (
+            {/* STAGE 1: FULLSCREEN UNMUTED 16:9 MATCH-CUT VIDEO — not mounted when reduced motion */}
+            {showVideoStage && (
               <motion.div
                 key="video-fullscreen-stage"
                 className="page-loader__video-stage fixed inset-0 z-30 w-full h-full flex items-center justify-center overflow-hidden"

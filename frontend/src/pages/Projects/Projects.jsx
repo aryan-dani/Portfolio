@@ -9,8 +9,10 @@ import { usePageSEO } from "../../utils/seo";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
 import PageHeader from "../../components/PageHeader/PageHeader";
-import CardBuildSwarm from "../../components/CardBuildSwarm/CardBuildSwarm";
+import CardBuildSwarm from "../../components/Swarm";
+import MagneticLink from "../../components/MagneticLink/MagneticLink";
 import { useAchievements } from "../../context/AchievementContext";
+import { PRIMARY_CTA } from "../../data/availability";
 
 function Projects() {
   usePageSEO(useMemo(() => ({ projects }), []));
@@ -24,8 +26,16 @@ function Projects() {
   const navigate = useNavigate();
   const { track } = useAchievements();
   const scopeRef = useRef(null);
+  const [swarmEnabled, setSwarmEnabled] = useState(true);
   const buildEnabled =
     searchTerm === "" && activeFilter === "all" && selectedTags.length === 0;
+
+  const replaySwarm = useCallback(() => {
+    setSwarmEnabled(true);
+    window.setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("portfolio:replay-swarm"));
+    }, 50);
+  }, []);
 
   const openProject = useCallback(
     (project) => {
@@ -101,7 +111,7 @@ function Projects() {
             className="flex flex-col xl:flex-row gap-6 w-full justify-between items-stretch xl:items-center mt-4"
             variants={cardVariants}
           >
-            <div className="flex items-center bg-surface border-4 border-outline p-2 w-full xl:w-80 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+            <div className="flex items-center bg-surface border-2 border-outline p-2 w-full xl:w-80 shadow-[4px_4px_0_0_var(--shadow-color)] focus-within:shadow-[4px_4px_0_0_var(--color-brand-accent)] transition-all">
               <FaSearch className="text-xl ml-2 mr-3 text-on-surface" />
               <input
                 type="text"
@@ -118,16 +128,16 @@ function Projects() {
               )}
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 items-center">
               {projectCategories.map((category) => {
                 const isSelected = activeFilter === category.id;
                 return (
                   <motion.button
                     key={category.id}
-                    className={`border-4 border-outline px-4 py-2 font-label-bold text-sm md:text-base uppercase transition-all cursor-none ${
+                    className={`border-2 border-outline px-4 py-2 font-label-bold text-[11px] uppercase tracking-[0.12em] transition-all cursor-none ${
                       isSelected
-                        ? "bg-primary-container text-on-primary-container shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[2px] translate-y-[2px]"
-                        : "bg-surface text-on-surface shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 hover:bg-surface-variant"
+                        ? "bg-primary-container text-on-primary-container shadow-[2px_2px_0_0_var(--shadow-color)] translate-x-px translate-y-px"
+                        : "bg-surface text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] hover:shadow-none hover:translate-y-px hover:translate-x-px hover:bg-surface-variant"
                     }`}
                     onClick={() => setActiveFilter(category.id)}
                     aria-pressed={isSelected}
@@ -137,12 +147,21 @@ function Projects() {
                   </motion.button>
                 );
               })}
+              {buildEnabled && (
+                <button
+                  type="button"
+                  onClick={replaySwarm}
+                  className="border-2 border-outline bg-surface text-on-surface px-3 py-2 font-label-bold text-[11px] uppercase tracking-[0.12em] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all cursor-none"
+                >
+                  Replay build
+                </button>
+              )}
             </div>
           </motion.div>
 
           {/* Tech tag matrix */}
           <motion.div
-            className="w-full bg-surface border-4 border-outline shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col overflow-hidden"
+            className="w-full bg-surface border border-outline-variant flex flex-col overflow-hidden"
             variants={cardVariants}
           >
             <div className={`flex items-center justify-between bg-surface ${isFilterExpanded ? 'border-b-4 border-outline' : ''}`}>
@@ -248,12 +267,29 @@ function Projects() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <motion.div
+          className="w-full border-4 border-outline bg-primary-container text-on-primary-container p-5 md:p-6 shadow-[8px_8px_0px_0px_var(--shadow-color)] flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6"
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <p className="flex-1 font-headline-md text-lg md:text-xl uppercase leading-tight">
+            Ready to build something similar?
+          </p>
+          <MagneticLink
+            to={PRIMARY_CTA.to}
+            className="shrink-0 self-start sm:self-center bg-surface text-on-surface border-4 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all inline-block text-center"
+          >
+            {PRIMARY_CTA.label}
+          </MagneticLink>
+        </motion.div>
       </motion.section>
 
       <CardBuildSwarm
         storageKey="projects"
         scopeRef={scopeRef}
-        enabled={buildEnabled && filteredProjects.length > 0}
+        enabled={swarmEnabled && buildEnabled && filteredProjects.length > 0}
       />
 
       {/* Modal */}

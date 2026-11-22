@@ -22,7 +22,7 @@ const footerNavLinks = [
   { to: "/research", label: "Research" },
   { to: "/about", label: "About" },
   { to: "/experience", label: "Experience" },
-  { to: "/services#inquiry", label: "Contact" },
+  { to: "/services#inquiry", label: "Start a project" },
 ];
 
 const Footer = memo(function Footer() {

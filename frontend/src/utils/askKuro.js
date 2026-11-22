@@ -58,7 +58,14 @@ export function kuroVoiceError(error) {
   return "Hmm, that didn't land. Try again in a moment.";
 }
 
-export async function askKuro(message, { history = [], currentPath = "/", siteState = null } = {}) {
+/**
+ * Ask the server. The API runs the same deterministic router first, so basic questions never
+ * reach a model; `forceLlm` is only set by the "Ask the AI" chip.
+ */
+export async function askKuro(
+  message,
+  { history = [], currentPath = "/", siteState = null, forceLlm = false } = {},
+) {
   let response;
   try {
     response = await fetch("/api/chat", {
@@ -69,6 +76,7 @@ export async function askKuro(message, { history = [], currentPath = "/", siteSt
         history: history.map((m) => ({ role: m.role, content: m.text })),
         currentPath,
         siteState,
+        forceLlm,
       }),
     });
   } catch (error) {
@@ -84,6 +92,10 @@ export async function askKuro(message, { history = [], currentPath = "/", siteSt
   return {
     reply: data.reply || "No response.",
     actions: Array.isArray(data.actions) ? data.actions : [],
+    cards: Array.isArray(data.cards) ? data.cards : [],
+    chips: Array.isArray(data.chips) ? data.chips : [],
     intent: data.intent,
+    source: data.source === "rule" ? "rule" : "llm",
+    meta: data.meta,
   };
 }

@@ -5,9 +5,14 @@
  */
 
 import { getProjectById } from "./projects.js";
+import { AVAILABILITY } from "./availability.js";
 
-export const SCOPING_CALL_URL = "";
-// Replace SCOPING_CALL_URL with your Calendly / booking link when ready.
+/** Optional Calendly or booking URL. Inquiry form is the default path when empty. */
+export const BOOKING_CALL_URL = "";
+/** @deprecated Use BOOKING_CALL_URL */
+export const SCOPING_CALL_URL = BOOKING_CALL_URL;
+
+export const BOOKING_CALL_LABEL = "Book a short project briefing";
 
 export const SERVICES_EMAIL = "daniaryan212@gmail.com";
 
@@ -77,7 +82,7 @@ export const SERVICES_HERO = {
     "I build fast websites for local businesses and AI tools people can trust.",
   subline:
     "Next.js, React, FastAPI, Node, PostgreSQL, and Tailwind, deployed on Vercel. Based in Pune. Open to clients across India and worldwide. AI features are optional: chatbots that answer from your own content, document search, or smart forms when they help.",
-  availability: "Open to part-time freelance projects from 2027",
+  availability: AVAILABILITY.label,
 };
 
 export const SERVICES_TABS = [
@@ -249,7 +254,7 @@ export const SERVICES_PACKAGES = [
 ];
 
 export const SERVICES_PRICE_NOTE =
-  "Prices are starting ranges, not fixed quotes. Domain, hosting, model-API usage, and paid third-party services are billed at cost. A fixed quote follows a short scoping call.";
+  "Prices are starting ranges, not fixed quotes. Domain, hosting, model-API usage, and paid third-party services are billed at cost. A fixed quote follows a short written brief.";
 
 export const WEB_PACKAGES = [
   {
@@ -343,7 +348,7 @@ export const WEB_EVERY_SITE = [
 ];
 
 export const WEB_PROCESS = [
-  "Discovery call to learn the business and goals",
+  "Short written brief to learn the business and goals",
   "Written scope and a fixed quote",
   "Design preview in a few days",
   "Build against that approved preview",
@@ -418,7 +423,7 @@ export function getWebGallery() {
 export const WEB_GALLERY = getWebGallery();
 
 export const SERVICES_PROCESS = [
-  "Scope call to lock outcomes, inputs, and constraints",
+  "Short written brief to lock outcomes, inputs, and constraints",
   "Written estimate with hours by workstream",
   "Milestone demos every 2 to 4 weeks",
   "GitHub repository owned by the client from the first commit",
@@ -463,7 +468,7 @@ export const SERVICES_FAQ = [
   },
   {
     q: "Can you take work while you are still a student?",
-    a: "Yes. I take part-time freelance work and am open to projects from 2027 on that schedule. I will flag academic conflicts early.",
+    a: `Yes. ${AVAILABILITY.label}. ${AVAILABILITY.detail}. I will flag academic conflicts early.`,
   },
   {
     q: "Do you work with international clients?",
@@ -487,7 +492,7 @@ export const SERVICES_FAQ = [
   },
   {
     q: "How do I start?",
-    a: "Send the inquiry form on this page or email daniaryan212@gmail.com. We do a short scoping call, then I send a written estimate. No chargeable work starts without a written agreement.",
+    a: "Send the inquiry form on this page or email daniaryan212@gmail.com. I reply with clarifying questions, then a written estimate. No chargeable work starts without a written agreement.",
   },
 ];
 
@@ -587,9 +592,189 @@ export const SERVICES_GUIDES = [
       },
       {
         title: "How to get a fixed number",
-        body: "Send a short brief or book a scoping call. You get a written scope and a fixed quote before any chargeable work starts.",
+        body: "Send a short brief through the inquiry form. You get a written scope and a fixed quote before any chargeable work starts.",
       },
     ],
+  },
+  {
+    slug: "hire-web-developer-pune",
+    title: "How to hire a freelance web developer in Pune",
+    description:
+      "What to prepare, realistic timelines, and starting prices when you hire a freelance Next.js developer in Pune for a business site or MVP.",
+    sections: [
+      {
+        title: "When a freelance developer fits",
+        body: "You need a custom layout, speed, or features a template cannot handle. You want to own the code and domain. You are fine sharing text, photos, and goals in a written brief instead of long workshop calls.",
+      },
+      {
+        title: "What to send in a brief",
+        body: "Business name, what you sell, target customers, pages you need, example sites you like, logo and photos if you have them, deadline, and budget range. I reply with clarifying questions, then a written scope and fixed quote.",
+      },
+      {
+        title: "Timelines you can plan around",
+        body: "Starter sites: 3 to 7 days. Business or creator sites: 1 to 2 weeks. Custom web apps: 3 to 6 weeks with milestone demos. Chargeable work starts only after you accept the written agreement.",
+      },
+      {
+        title: "Starting prices (2026)",
+        body: `Starter from ${formatInr(8000)} or ${formatUsd(150)}. Business from ${formatInr(15000)} or ${formatUsd(299)}. Creator from ${formatInr(10000)} or ${formatUsd(199)}. Web app MVP from ${formatInr(35000)} or ${formatUsd(699)}. Domain and hosting are billed at cost.`,
+      },
+      {
+        title: "How we start",
+        body: "Use the inquiry form on the Services page or email daniaryan212@gmail.com. If a calendar link is published on Services, you can book a short briefing; otherwise everything starts in writing.",
+      },
+    ],
+  },
+  {
+    slug: "web-app-mvp-process",
+    title: "Web app MVP process and milestone payments",
+    description:
+      "How a fixed-scope MVP is scoped, built, and paid for when you hire for Next.js plus a backend in India.",
+    sections: [
+      {
+        title: "Scope before code",
+        body: "We agree on users, core flows, data you already have, integrations, and what is out of scope for v1. You get hours by workstream and milestone dates before the first commit.",
+      },
+      {
+        title: "Typical stack",
+        body: "Next.js on the frontend, FastAPI or Node on the API, PostgreSQL or Supabase for data, auth when needed, deployed on Vercel or your host. AI features are optional and scoped separately.",
+      },
+      {
+        title: "Milestone rhythm",
+        body: "Demos every 2 to 4 weeks: auth and shell, core feature, polish and deploy. You pay per milestone after you review the demo, not upfront for the whole build.",
+      },
+      {
+        title: "What starts at INR 35,000",
+        body: `The Custom Web App or MVP package starts at ${formatInr(35000)} or ${formatUsd(699)} for a focused v1 with dashboard, database, and deployment. Payments, heavy integrations, or mobile apps are quoted as add-ons.`,
+      },
+      {
+        title: "Handover",
+        body: "GitHub repo in your org, environment notes, and a walkthrough at launch. A short warranty covers agreed checklist bugs after handover.",
+      },
+    ],
+  },
+  {
+    slug: "rag-chatbot-business",
+    title: "RAG chatbot for your business content",
+    description:
+      "When a grounded chatbot is worth it, what it costs to start, and how answers stay tied to your documents.",
+    sections: [
+      {
+        title: "When RAG helps",
+        body: "You have PDFs, policies, menus, or help docs and people ask the same questions repeatedly. You need answers with source links, not a generic ChatGPT skin.",
+      },
+      {
+        title: "When to skip it",
+        body: "A simple FAQ page or contact form is enough. You cannot keep source material updated. You need guaranteed legal advice or medical diagnosis from a bot.",
+      },
+      {
+        title: "What I build",
+        body: "Ingestion for your files, retrieval with citations, refusal when confidence is low, and optional human review for sensitive actions. Stack is usually React or Next.js with FastAPI and a vector store.",
+      },
+      {
+        title: "Starting prices",
+        body: `AI Prototype Sprint from USD 799 (about ${aboutInrFromUsd(799)}) for a demo. Grounded AI Assistant MVP from USD 2,000 (about ${aboutInrFromUsd(2000)}) for a production-shaped assistant. Model API usage and hosting are at cost.`,
+      },
+      {
+        title: "Proof in this portfolio",
+        body: "See the Prism and Utility case studies for grounded Q and A patterns. Start with the inquiry form and mention your documents and roles.",
+      },
+    ],
+  },
+];
+
+/** Placeholder publication dates for guide Article schema (Phase 7). */
+export const SEO_GUIDE_DATE_PUBLISHED = "2026-01-12";
+export const SEO_GUIDE_DATE_MODIFIED = "2026-11-01";
+
+export const SERVICE_LANDINGS = [
+  {
+    slug: "website-development-pune",
+    title: "Website development in Pune",
+    description:
+      "Hire a freelance website developer in Pune for fast, mobile-first business sites. Starter packages from INR 8,000 with contact, maps, SEO basics, and code you own.",
+    keywords: [
+      "website developer Pune",
+      "freelance web developer Pune",
+      "business website Pune",
+      "small business website India",
+      "affordable business website Pune",
+    ],
+    relatedPackageIds: ["starter-website", "business-website", "portfolio-creator"],
+    relatedCaseStudySlugs: ["siya-portfolio", "fourth-clover"],
+    faq: [
+      WEB_FAQ.find((item) => item.q === "How long does a website take?"),
+      WEB_FAQ.find((item) => item.q === "How much does a website cost?"),
+      WEB_FAQ.find((item) => item.q === "Who owns the site and the domain?"),
+      WEB_FAQ.find((item) => item.q === "Will the site show up on Google?"),
+      WEB_FAQ.find((item) => item.q === "Do I need to provide content?"),
+    ].filter(Boolean),
+    process: WEB_PROCESS,
+  },
+  {
+    slug: "web-app-mvp-development",
+    title: "Web app and MVP development",
+    description:
+      "Hire for a custom web app or startup MVP: Next.js, backend, database, auth, and milestone demos. Starting at INR 35,000 with clear handover.",
+    keywords: [
+      "web app development India",
+      "MVP development startup India",
+      "Next.js developer for hire",
+      "custom web application developer",
+      "freelance full stack developer India",
+    ],
+    relatedPackageIds: ["custom-web-app"],
+    relatedCaseStudySlugs: ["utility", "swiggy-nexus", "fourth-clover"],
+    faq: [
+      WEB_FAQ.find((item) => item.q === "How long does a website take?"),
+      SERVICES_FAQ.find((item) => item.q === "How does payment work for AI projects?"),
+      WEB_FAQ.find((item) => item.q === "Who owns the site and the domain?"),
+      SERVICES_FAQ.find((item) => item.q === "Who owns the code and can it be open source?"),
+    ].filter(Boolean),
+    process: SERVICES_PROCESS,
+  },
+  {
+    slug: "website-redesign",
+    title: "Website redesign and refresh",
+    description:
+      "Rebuild a slow or outdated site with modern Next.js, better mobile performance, and SEO basics. Migration help and fixed quotes after a short brief.",
+    keywords: [
+      "website redesign",
+      "website redesign India",
+      "migrate website to Next.js",
+      "fast website for local business",
+      "website refresh Pune",
+    ],
+    relatedPackageIds: ["business-website", "website-care"],
+    relatedCaseStudySlugs: ["siya-portfolio"],
+    faq: [
+      WEB_FAQ.find((item) => item.q === "Can you move my existing site?"),
+      WEB_FAQ.find((item) => item.q === "How much does a website cost?"),
+      WEB_FAQ.find((item) => item.q === "What about maintenance after launch?"),
+      WEB_FAQ.find((item) => item.q === "Will the site show up on Google?"),
+    ].filter(Boolean),
+    process: WEB_PROCESS,
+  },
+  {
+    slug: "rag-chatbot-development",
+    title: "RAG chatbot development",
+    description:
+      "Hire for a grounded RAG chatbot that answers from your documents with citations and refuses when retrieval is weak. MVP packages from USD 799.",
+    keywords: [
+      "RAG developer",
+      "RAG chatbot development",
+      "freelance AI developer India",
+      "LLM application developer",
+      "retrieval augmented generation consultant",
+    ],
+    relatedPackageIds: ["prototype-sprint", "grounded-mvp", "code-audit"],
+    relatedCaseStudySlugs: ["prism", "utility"],
+    faq: [
+      SERVICES_FAQ.find((item) => item.q === "How long does a typical AI project take?"),
+      SERVICES_FAQ.find((item) => item.q === "What happens to my data with third-party AI APIs?"),
+      SERVICES_FAQ.find((item) => item.q === "What is excluded from the AI package prices?"),
+      SERVICES_FAQ.find((item) => item.q === "How does payment work for AI projects?"),
+    ].filter(Boolean),
+    process: SERVICES_PROCESS,
   },
 ];
 
@@ -599,6 +784,20 @@ export function getGuideBySlug(slug) {
 
 export function guidePaths() {
   return SERVICES_GUIDES.map((guide) => `/guides/${guide.slug}`);
+}
+
+export function getServiceLandingBySlug(slug) {
+  return SERVICE_LANDINGS.find((landing) => landing.slug === slug) || null;
+}
+
+export function serviceLandingPaths() {
+  return SERVICE_LANDINGS.map((landing) => `/services/${landing.slug}`);
+}
+
+export function getPackagesByIds(ids) {
+  const web = WEB_PACKAGES.filter((pack) => ids.includes(pack.id));
+  const ai = SERVICES_PACKAGES.filter((pack) => ids.includes(pack.id));
+  return [...web, ...ai];
 }
 
 export const INQUIRY_PROJECT_TYPES = [

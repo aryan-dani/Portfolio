@@ -2,8 +2,9 @@ import { useRef, useState, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { defaultSpring } from "../../utils/motionVariants";
+import { trackActionClick } from "../../utils/funnel";
 
-function MagneticLink({ to, className, children }) {
+function MagneticLink({ to, className, children, trackLabel }) {
   const ref = useRef(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
@@ -21,6 +22,10 @@ function MagneticLink({ to, className, children }) {
     setOffset({ x: 0, y: 0 });
   }, []);
 
+  const handleClick = useCallback(() => {
+    if (trackLabel) trackActionClick(trackLabel, to);
+  }, [trackLabel, to]);
+
   return (
     <motion.div
       ref={ref}
@@ -29,7 +34,7 @@ function MagneticLink({ to, className, children }) {
       animate={{ x: offset.x, y: offset.y }}
       transition={{ ...defaultSpring, stiffness: 350, damping: 20 }}
     >
-      <Link to={to} className={className}>
+      <Link to={to} className={className} onClick={handleClick}>
         {children}
       </Link>
     </motion.div>

@@ -4,7 +4,7 @@ import { HiHome, HiCode, HiBriefcase, HiBadgeCheck, HiLightningBolt, HiUser, HiT
 export const SITE_ROUTES = [
   { id: "home", segment: null, path: "/", label: "Home", shortcut: "1", header: false, dock: true, palette: true, icon: HiHome },
   { id: "projects", segment: "projects", path: "/projects", label: "Projects", shortcut: "2", header: true, dock: true, palette: true, icon: HiCode },
-  { id: "services", segment: "services", path: "/services", label: "Services", headerLabel: "Hire", shortcut: "3", header: false, dock: true, palette: true, icon: HiCash },
+  { id: "services", segment: "services", path: "/services", label: "Services", shortcut: "3", header: true, dock: true, palette: true, icon: HiCash },
   { id: "experience", segment: "experience", path: "/experience", label: "Experience", shortcut: "4", header: true, dock: true, palette: true, icon: HiBriefcase },
   { id: "research", segment: "research", path: "/research", label: "Research", shortcut: "5", header: true, dock: true, palette: true, icon: HiAcademicCap },
   { id: "certifications", segment: "certifications", path: "/certifications", label: "Certifications", headerLabel: "Certs", shortcut: "6", header: true, dock: true, palette: true, icon: HiBadgeCheck },
@@ -58,7 +58,7 @@ export const PAGE_IMPORTS = {
   certifications: () => import("../pages/Certifications/Certifications"),
   skills: () => import("../pages/Skills/Skills"),
   about: () => import("../pages/About/About"),
-  contact: () => import("../pages/Contact/Contact"),
+  // /contact redirects to /services#inquiry (see App.jsx Navigate) — no page bundle.
   playground: () => import("../pages/Playground/Playground"),
   achievements: () => import("../pages/Achievements/Achievements"),
   guestbook: () => import("../pages/Guestbook/Guestbook"),

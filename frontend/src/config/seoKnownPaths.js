@@ -8,6 +8,17 @@ import { CASE_STUDIES } from "../data/caseStudies.js";
 export const GUIDE_PATHS = [
   "/guides/small-business-website",
   "/guides/website-cost-india",
+  "/guides/hire-web-developer-pune",
+  "/guides/web-app-mvp-process",
+  "/guides/rag-chatbot-business",
+];
+
+/** Keep in sync with SERVICE_LANDINGS slugs in data/services.js */
+export const SERVICE_LANDING_PATHS = [
+  "/services/website-development-pune",
+  "/services/web-app-mvp-development",
+  "/services/website-redesign",
+  "/services/rag-chatbot-development",
 ];
 
 export const WORK_PATHS = CASE_STUDIES.map((study) => `/work/${study.slug}`);
@@ -16,6 +27,7 @@ export const SEO_ROUTE_ORDER = [
   "/",
   "/projects",
   "/services",
+  ...SERVICE_LANDING_PATHS,
   ...WORK_PATHS,
   ...GUIDE_PATHS,
   "/experience",
@@ -31,7 +43,6 @@ export const SEO_ROUTE_ORDER = [
 
 export const KNOWN_SEO_PATHS = new Set([
   ...SEO_ROUTE_ORDER,
-  "/contact",
   "/404",
   "/resume.pdf",
   "/resume-latex.pdf",

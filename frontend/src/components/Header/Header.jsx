@@ -12,6 +12,8 @@ import { useSiteIdleState } from "../../context/SiteIdleContext";
 import { useInertWhenHidden } from "../../hooks/useInertWhenHidden";
 
 import { headerNavItems } from "../../config/routes";
+import { AVAILABILITY, PRIMARY_CTA } from "../../data/availability";
+import { trackActionClick } from "../../utils/funnel";
 
 const menuVariants = {
   hidden: { opacity: 0, y: -20 },
@@ -212,11 +214,19 @@ function Header() {
 
               {/* Right side Actions */}
               <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 shrink-0">
+                <span
+                  data-availability-chip
+                  className="hidden min-[1680px]:inline-flex border-2 border-outline bg-surface px-2.5 py-1.5 font-label-bold text-[10px] uppercase tracking-wide text-on-surface leading-tight whitespace-nowrap"
+                  title={AVAILABILITY.heroBanner}
+                >
+                  {AVAILABILITY.chip}
+                </span>
                 <NavLink
-                  to="/services"
+                  to={PRIMARY_CTA.to}
+                  onClick={() => trackActionClick(PRIMARY_CTA.label, PRIMARY_CTA.to)}
                   className="hidden sm:flex font-headline-md text-[11px] lg:text-xs xl:text-base uppercase tracking-wide xl:tracking-widest font-black text-on-primary-container bg-primary-container border-4 border-outline px-3 lg:px-4 xl:px-5 py-2 xl:py-3 shadow-[4px_4px_0px_0px_var(--shadow-color)] xl:shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-all duration-220 ease-out-smooth items-center justify-center whitespace-nowrap"
                 >
-                  Work with me
+                  {PRIMARY_CTA.label}
                 </NavLink>
 
                 {/* Desktop Theme Toggle */}
@@ -293,11 +303,14 @@ function Header() {
 
             <motion.div variants={menuItemVariants} className="w-full max-w-sm mt-2">
               <NavLink
-                to="/services"
-                onClick={closeMenu}
+                to={PRIMARY_CTA.to}
+                onClick={() => {
+                  trackActionClick(PRIMARY_CTA.label, PRIMARY_CTA.to);
+                  closeMenu();
+                }}
                 className="w-full flex justify-center items-center font-headline-md text-lg uppercase tracking-widest font-black text-on-primary-container bg-primary-container border-4 border-outline px-4 py-3 shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
               >
-                Work with me
+                {PRIMARY_CTA.label}
               </NavLink>
             </motion.div>
           </motion.div>

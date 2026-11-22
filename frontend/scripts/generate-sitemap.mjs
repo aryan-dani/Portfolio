@@ -4,12 +4,14 @@
  * Writes frontend/public/sitemap.xml and validates against the sitemap 0.9 contract.
  */
 import { execSync } from "node:child_process";
+import { statSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { SEO_CONFIG, SEO_ROUTE_META, SEO_ROUTE_ORDER, SITE_URL } from "../src/config/seoConfig.js";
 import { researchPapers } from "../src/data/research.js";
 
+const ROOT = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const SITEMAP_PATH = new URL("../public/sitemap.xml", import.meta.url);
 const CHANGEFREQ = new Set([
   "always",
@@ -29,11 +31,12 @@ function xmlEscape(value) {
     .replaceAll('"', "&quot;");
 }
 
-function resolveLastmod() {
+function resolveBuildDate() {
   try {
     const gitDate = execSync("git log -1 --format=%cs", {
       encoding: "utf8",
       stdio: ["ignore", "pipe", "ignore"],
+      cwd: ROOT,
     }).trim();
     if (/^\d{4}-\d{2}-\d{2}$/.test(gitDate)) return gitDate;
   } catch {
@@ -42,21 +45,61 @@ function resolveLastmod() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function isIndexableRoute(path) {
-  const robots = SEO_CONFIG[path]?.robots || "";
+function fileMtimeDate(...relativePaths) {
+  let latest = 0;
+  for (const relativePath of relativePaths) {
+    try {
+      const mtimeMs = statSync(path.join(ROOT, relativePath)).mtimeMs;
+      if (mtimeMs > latest) latest = mtimeMs;
+    } catch {
+      /* missing file — skip */
+    }
+  }
+  return latest ? new Date(latest).toISOString().slice(0, 10) : null;
+}
+
+/** Source files that meaningfully change each route's content. */
+function sourcesForRoute(routePath) {
+  if (routePath === "/") {
+    return ["src/data/projects.js", "src/data/stats.js", "src/data/availability.js", "src/config/seoConfig.js"];
+  }
+  if (routePath === "/projects") return ["src/data/projects.js", "src/config/seoConfig.js"];
+  if (routePath === "/services") {
+    return ["src/data/services.js", "src/data/availability.js", "src/config/seoConfig.js"];
+  }
+  if (routePath.startsWith("/work/")) return ["src/data/caseStudies.js", "src/config/seoConfig.js"];
+  if (routePath.startsWith("/guides/")) return ["src/data/services.js", "src/config/seoConfig.js"];
+  if (routePath.startsWith("/services/")) return ["src/data/services.js", "src/config/seoConfig.js"];
+  if (routePath === "/experience") return ["src/data/experience.js", "src/config/seoConfig.js"];
+  if (routePath === "/research") return ["src/data/research.js", "src/config/seoConfig.js"];
+  if (routePath === "/certifications") return ["src/data/certifications.js", "src/config/seoConfig.js"];
+  if (routePath === "/skills") return ["src/data/skills.js", "src/config/seoConfig.js"];
+  if (routePath === "/about") {
+    return ["src/data/availability.js", "src/config/seoConfig.js", "public/resume.pdf"];
+  }
+  if (routePath === "/achievements") return ["src/data/achievements.js", "src/config/seoConfig.js"];
+  return ["src/config/seoConfig.js"];
+}
+
+function resolveRouteLastmod(routePath, fallback = resolveBuildDate()) {
+  return fileMtimeDate(...sourcesForRoute(routePath)) || fallback;
+}
+
+function isIndexableRoute(routePath) {
+  const robots = SEO_CONFIG[routePath]?.robots || "";
   return !/noindex/i.test(robots);
 }
 
-/** Canonical routes plus research PDF assets. Query highlight URLs are omitted. */
-export function collectSitemapEntries(lastmod = resolveLastmod()) {
-  const entries = SEO_ROUTE_ORDER.filter(isIndexableRoute).map((path) => {
-    const meta = SEO_ROUTE_META[path] || {
-      priority: path === "/" ? "1.0" : "0.8",
+/** Canonical routes plus research / resume PDF assets. Query highlight URLs are omitted. */
+export function collectSitemapEntries(fallbackLastmod = resolveBuildDate()) {
+  const entries = SEO_ROUTE_ORDER.filter(isIndexableRoute).map((routePath) => {
+    const meta = SEO_ROUTE_META[routePath] || {
+      priority: routePath === "/" ? "1.0" : "0.8",
       changefreq: "monthly",
     };
     return {
-      loc: path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`,
-      lastmod,
+      loc: routePath === "/" ? `${SITE_URL}/` : `${SITE_URL}${routePath}`,
+      lastmod: resolveRouteLastmod(routePath, fallbackLastmod),
       changefreq: meta.changefreq,
       priority: String(meta.priority),
     };
@@ -64,13 +107,26 @@ export function collectSitemapEntries(lastmod = resolveLastmod()) {
 
   for (const paper of researchPapers) {
     if (paper.pdfUrl) {
+      const publicPath = paper.pdfUrl.replace(/^\//, "");
       entries.push({
         loc: `${SITE_URL}${paper.pdfUrl}`,
-        lastmod,
+        lastmod: fileMtimeDate(`public/${publicPath}`) || fallbackLastmod,
         changefreq: "yearly",
         priority: "0.7",
       });
     }
+  }
+
+  for (const resume of [
+    { loc: "/resume.pdf", priority: "0.6" },
+    { loc: "/resume-latex.pdf", priority: "0.5" },
+  ]) {
+    entries.push({
+      loc: `${SITE_URL}${resume.loc}`,
+      lastmod: fileMtimeDate(`public${resume.loc}`) || fallbackLastmod,
+      changefreq: "monthly",
+      priority: resume.priority,
+    });
   }
 
   return entries;

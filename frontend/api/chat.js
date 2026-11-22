@@ -69,12 +69,13 @@ export async function handleChatRequest(req, res) {
     return;
   }
 
-  const { message, history, currentPath, siteState } = req.body || {};
+  const { message, history, currentPath, siteState, forceLlm } = req.body || {};
 
   try {
     await checkChatRateLimit(getClientIp(req));
+    // The router answers basics before any model call; `forceLlm` is the "Ask the AI" chip.
     const result = await generateKuroReply(
-      { message, history, currentPath, siteState },
+      { message, history, currentPath, siteState, forceLlm: forceLlm === true },
       process.env.GROQ_API_KEY,
     );
     res.status(200).json(result);

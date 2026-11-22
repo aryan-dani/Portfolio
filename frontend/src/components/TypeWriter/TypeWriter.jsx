@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, memo } from "react";
 
 /**
  * Role typewriter — plain timers (no Framer Motion).
- * Survives Edge "Animation effects" off / prefers-reduced-motion.
+ * Under prefers-reduced-motion, shows the first string statically.
  */
 const TypeWriter = memo(function TypeWriter({
   texts = [],
@@ -11,7 +11,12 @@ const TypeWriter = memo(function TypeWriter({
   pauseTime = 3200,
   className = "",
 }) {
-  const [displayText, setDisplayText] = useState("");
+  const prefersReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const firstText = Array.isArray(texts) && texts.length ? texts[0] : "";
+  const [displayText, setDisplayText] = useState(prefersReduced ? firstText : "");
   const indexRef = useRef(0);
   const phaseRef = useRef("typing"); // typing | pausing | deleting
   const textRef = useRef("");
@@ -21,6 +26,12 @@ const TypeWriter = memo(function TypeWriter({
   useEffect(() => {
     const roles = textsRef.current;
     if (!Array.isArray(roles) || roles.length === 0) return undefined;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setDisplayText(roles[0] || "");
+      return undefined;
+    }
 
     let timer = 0;
     textRef.current = "";
@@ -85,9 +96,11 @@ const TypeWriter = memo(function TypeWriter({
   return (
     <span className={`typewriter ${className}`} aria-live="polite">
       <span className="typewriter__text">{displayText || "\u00A0"}</span>
-      <span className="typewriter__cursor" aria-hidden="true">
-        |
-      </span>
+      {!prefersReduced && (
+        <span className="typewriter__cursor" aria-hidden="true">
+          |
+        </span>
+      )}
     </span>
   );
 });

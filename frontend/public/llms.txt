@@ -2,19 +2,61 @@
 
 > AI Engineer and Full Stack Developer in Pune, India (MIT-WPU). Builds agentic AI, computer vision, RAG, and production web apps. This portfolio site runs on React, Vite, React Router, Tailwind CSS, and Framer Motion.
 
-## Site
-- [Portfolio home](https://www.aryandani.com/): Overview, stats, and entry points to projects and contact
-- [Projects](https://www.aryandani.com/projects): Shipped AI and full-stack work (Utility, Arbiter, Shadow Instructor, Democrazy, and more)
-- [Services](https://www.aryandani.com/services): Websites and AI tools with fixed quotes from INR 8,000
-- [Experience](https://www.aryandani.com/experience): ProvaanTech AI/ML intern, Artem HealthTech, MIT-WPU capstone
-- [Research](https://www.aryandani.com/research): Research papers and technical write-ups (card catalog + PDFs)
-- [Skills](https://www.aryandani.com/skills): Stack across Python, LLMs, LangGraph, React, Vite, FastAPI, CV, and cloud
-- [About](https://www.aryandani.com/about): Bio, Google Student Ambassador, resume PDF
-- [Contact](https://www.aryandani.com/contact): Email and hire/collaboration form
+## Availability
+- Booking projects from January 2027
+- Part-time · IST · Replies within 24 hours
+- Start a project: https://www.aryandani.com/services#inquiry
+
+## Live routes
+- [Hire Web Developer Pune | AI & Next.js — Aryan Dani](https://www.aryandani.com/): Hire a freelance web developer in Pune for business sites and MVPs from INR 8,000, plus optional RAG chatbots and Next.js apps. Fixed quotes after a written brief.
+- [Projects - Aryan Dani | AI & Web Development Portfolio](https://www.aryandani.com/projects): Explore Aryan Dani's AI and web projects: computer vision, LLM apps, and full-stack builds with React, Vite, FastAPI, and more.
+- [Hire Web Developer | Sites & AI | Pune](https://www.aryandani.com/services): Hire for websites, redesigns, and web app MVPs from INR 8,000, plus grounded RAG chatbots. Pune-based, remote worldwide, fixed quotes.
+- [Website development in Pune | Hire Aryan Dani](https://www.aryandani.com/services/website-development-pune): Hire a freelance website developer in Pune for fast, mobile-first business sites. Starter packages from INR 8,000 with contact, maps, SEO basics, and code you o
+- [Web app and MVP development | Hire Aryan Dani](https://www.aryandani.com/services/web-app-mvp-development): Hire for a custom web app or startup MVP: Next.js, backend, database, auth, and milestone demos. Starting at INR 35,000 with clear handover.
+- [Website redesign and refresh | Hire Aryan Dani](https://www.aryandani.com/services/website-redesign): Rebuild a slow or outdated site with modern Next.js, better mobile performance, and SEO basics. Migration help and fixed quotes after a short brief.
+- [RAG chatbot development | Hire Aryan Dani](https://www.aryandani.com/services/rag-chatbot-development): Hire for a grounded RAG chatbot that answers from your documents with citations and refuses when retrieval is weak. MVP packages from USD 799.
+- [Prism Case Study | Aryan Dani](https://www.aryandani.com/work/prism): A local enterprise AI agent that answers only from retrieved passages and refuses when support is weak.
+- [Swiggy Nexus Case Study | Aryan Dani](https://www.aryandani.com/work/swiggy-nexus): A LangGraph agent that stages food, grocery, and dining actions and blocks every write until a human approves.
+- [Utility Case Study | Aryan Dani](https://www.aryandani.com/work/utility): A live academic OS with document intelligence, RAG, auth, and study tools.
+- [The Shadow Instructor Case Study | Aryan Dani](https://www.aryandani.com/work/shadow-instructor): A dual-agent mock interview platform where one agent speaks and a second agent only reviews.
+- [The Fourth Clover Case Study | Aryan Dani](https://www.aryandani.com/work/fourth-clover): A writing and editor product with drafts, comments, auth, and image upload.
+- [Siya's Portfolio Case Study | Aryan Dani](https://www.aryandani.com/work/siya-portfolio): Portfolio and brand collaboration hub for Pune-based UGC creator Siya Pawar, featuring D2C campaigns for Mokobara, PharmEasy, and California Burrito.
+- [Arbiter: RIFT 2026 Case Study | Aryan Dani](https://www.aryandani.com/work/arbiter): An autonomous CI/CD healing agent built for RIFT 2026 with a multi-agent Gemini pipeline.
+- [DebateBot Case Study | Aryan Dani](https://www.aryandani.com/work/debatebot): A debating platform with dual-AI stages, live arena challenges, and scored feedback on argument quality.
+- [What a small business website should include | Aryan Dani](https://www.aryandani.com/guides/small-business-website): A plain checklist for restaurants, shops, clinics, and coaches in India who need a clear first website.
+- [How much does a website cost in India | Aryan Dani](https://www.aryandani.com/guides/website-cost-india): Honest starting ranges for small business sites and custom web apps, in INR and USD, based on the packages I sell.
+- [How to hire a freelance web developer in Pune | Aryan Dani](https://www.aryandani.com/guides/hire-web-developer-pune): What to prepare, realistic timelines, and starting prices when you hire a freelance Next.js developer in Pune for a business site or MVP.
+- [Web app MVP process and milestone payments | Aryan Dani](https://www.aryandani.com/guides/web-app-mvp-process): How a fixed-scope MVP is scoped, built, and paid for when you hire for Next.js plus a backend in India.
+- [RAG chatbot for your business content | Aryan Dani](https://www.aryandani.com/guides/rag-chatbot-business): When a grounded chatbot is worth it, what it costs to start, and how answers stay tied to your documents.
+- [Experience - Aryan Dani | AI Engineer & Web Developer](https://www.aryandani.com/experience): Aryan Dani's experience as an AI engineer: ProvaanTech AI/ML internship, Artem HealthTech, and the MIT-WPU AI capstone.
+- [Research - Aryan Dani | Papers & Technical Write-ups](https://www.aryandani.com/research): Research by Aryan Dani: computer vision papers including YOLOv11 threat detection and EfficientNetV2. Abstracts, metrics, and PDFs.
+- [Certifications - Aryan Dani | AI & Cloud Credentials](https://www.aryandani.com/certifications): Certifications earned by Aryan Dani across AI, cloud, and web — NPTEL Elite, FutureSkills Prime Gold, Google Cloud, and IBM.
+- [Skills & Tools - Aryan Dani | Tech Stack & Expertise](https://www.aryandani.com/skills): Aryan Dani's stack: Python, React, Vite, FastAPI, LangGraph, TensorFlow, PyTorch, computer vision, generative AI, LLMs, RAG, and Docker.
+- [About Aryan Dani - AI Engineer, Full Stack Developer, Pune](https://www.aryandani.com/about): About Aryan Dani — AI engineer and full-stack developer in Pune. MIT-WPU student focused on ML, computer vision, generative AI, and the web.
+- [CLI Playground - Aryan Dani Portfolio | Interactive Terminal](https://www.aryandani.com/playground): Explore Aryan Dani's portfolio via an interactive CLI. Query projects, list skills, navigate pages, and discover hidden features.
+- [Achievements - Aryan Dani Portfolio | Trophy Wall](https://www.aryandani.com/achievements): Aryan Dani portfolio trophy wall. Unlock achievements via CLI commands, easter eggs, and hidden modes on this site.
+- [Guestbook - Aryan Dani Portfolio | Sign The Wall](https://www.aryandani.com/guestbook): Leave a public note on Aryan Dani's guestbook. Share a hello, project feedback, or a short reaction with other visitors.
+- [Copyright & License - Aryan Dani Portfolio](https://www.aryandani.com/copyright): MIT License and copyright for Aryan Dani's portfolio source. See what you can reuse, share, and modify in this project.
+
+## Website packages
+- Starter Website: Starting at ₹8,000 / Starting at $150 (3 to 7 days)
+- Business Website: Starting at ₹15,000 / Starting at $299 (1 to 2 weeks)
+- Portfolio or Creator Site: Starting at ₹10,000 / Starting at $199 (1 to 2 weeks)
+- Custom Web App or MVP: Starting at ₹35,000 / Starting at $699 (3 to 6 weeks, milestone based)
+- Website Care Plan: From ₹999 a month / From $15 a month (Month to month)
+
+## AI packages
+- AI Prototype Sprint: Starting at USD 799 · about ₹68,000 (1 to 2 weeks)
+- Grounded AI Assistant MVP: Starting at USD 2,000 · about ₹1,70,000 (3 to 5 weeks)
+- Human-in-the-Loop Workflow Tool: Essential USD 6,000 to 9,000 · about ₹5,00,000 to ₹8,00,000 · Full USD 12,000 to 16,000 · about ₹10,00,000 to ₹14,00,000 (Aligned to your milestone calendar)
+- AI Feature or Code Audit: Starting at USD 399 · about ₹34,000 (3 to 7 days)
+- Monthly Retainer: From USD 25/hour · about ₹2,100/hour (Month to month)
+
+## Documents
 - [Resume PDF](https://www.aryandani.com/resume.pdf): Downloadable CV
-- [Research PDF](https://www.aryandani.com/research-paper.pdf): Full threat-detection research paper
+- [Resume (LaTeX)](https://www.aryandani.com/resume-latex.pdf): Alternate CV layout
+- [Real-Time Multi-Modal Threat Detection](https://www.aryandani.com/research-paper.pdf): Adaptive multi-modal surveillance: YOLOv11 for live weapon detection and EfficientNetV2 for X-ray classification, wrapped in an Angular operator console.
 
 ## Also useful
-- [Certifications](https://www.aryandani.com/certifications): Google, IBM, and related credentials
 - [GitHub](https://github.com/aryan-dani): Source repositories
 - [LinkedIn](https://www.linkedin.com/in/aryandani/): Professional profile
