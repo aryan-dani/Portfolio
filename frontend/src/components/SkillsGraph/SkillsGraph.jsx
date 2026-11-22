@@ -3,11 +3,13 @@ import { useMotionPolicy } from "../../hooks/useMotionPolicy";
 
 const MAX_SKILLS = 18;
 const MAX_PROJECTS = 12;
-const WIDTH = 960;
-const HEIGHT = 520;
-const PAD_Y = 36;
-const SKILL_X = 160;
-const PROJECT_X = 800;
+const WIDTH = 1000;
+const HEIGHT = 540;
+const PAD_Y = 40;
+const SKILL_X = Math.round(WIDTH * 0.22);
+const PROJECT_X = Math.round(WIDTH * 0.78);
+const NODE_W = { skill: 148, project: 168 };
+const NODE_H = 28;
 
 function buildGraph(skills, projects) {
   const skillSlice = skills.slice(0, MAX_SKILLS);
@@ -131,9 +133,10 @@ function SvgGraph({ laidOut, edges, hoveredId, setHoveredId, onSkillClick, onPro
   return (
     <svg
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      className="w-full h-auto min-h-[320px] touch-manipulation"
+      className="mx-auto block w-full h-auto min-h-[320px] touch-manipulation"
       role="img"
       aria-label="Skills linked to projects"
+      preserveAspectRatio="xMidYMid meet"
     >
       <title>Skills linked to projects</title>
       {edges.map((edge) => {
@@ -141,10 +144,12 @@ function SvgGraph({ laidOut, edges, hoveredId, setHoveredId, onSkillClick, onPro
         const b = byId.get(edge.target);
         if (!a || !b) return null;
         const active = !linked || (linked.has(edge.source) && linked.has(edge.target));
+        const ax = a.x + (NODE_W.skill / 2 - 4);
+        const bx = b.x - (NODE_W.project / 2 - 4);
         return (
           <path
             key={`${edge.source}-${edge.target}`}
-            d={`M ${a.x} ${a.y} C ${(a.x + b.x) / 2} ${a.y}, ${(a.x + b.x) / 2} ${b.y}, ${b.x} ${b.y}`}
+            d={`M ${ax} ${a.y} C ${(ax + bx) / 2} ${a.y}, ${(ax + bx) / 2} ${b.y}, ${bx} ${b.y}`}
             fill="none"
             stroke="var(--color-outline)"
             strokeWidth={active ? 2.5 : 1}
@@ -155,8 +160,13 @@ function SvgGraph({ laidOut, edges, hoveredId, setHoveredId, onSkillClick, onPro
       {laidOut.map((node) => {
         const isSkill = node.type === "skill";
         const active = !linked || linked.has(node.id);
-        const w = Math.min(168, 18 + node.label.length * 7.2);
-        const h = 28;
+        const w = isSkill ? NODE_W.skill : NODE_W.project;
+        const h = NODE_H;
+        const maxChars = isSkill ? 16 : 18;
+        const label =
+          node.label.length > maxChars
+            ? `${node.label.slice(0, maxChars - 1)}…`
+            : node.label;
         return (
           <g
             key={node.id}
@@ -207,7 +217,7 @@ function SvgGraph({ laidOut, edges, hoveredId, setHoveredId, onSkillClick, onPro
                 pointerEvents: "none",
               }}
             >
-              {node.label.length > 18 ? `${node.label.slice(0, 16)}…` : node.label}
+              {label}
             </text>
           </g>
         );
@@ -224,8 +234,8 @@ const SkillsGraph = memo(function SkillsGraph({ skills, projects, onSkillClick, 
   const lite = policy !== "full";
 
   return (
-    <section className="relative border-4 border-outline bg-surface p-5 md:p-7 shadow-[8px_8px_0_var(--shadow-color)]">
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b-4 border-outline pb-4">
+    <section className="relative w-full border-4 border-outline bg-surface p-5 md:p-7 shadow-[8px_8px_0_var(--shadow-color)]">
+      <div className="mb-5 flex w-full flex-wrap items-center justify-between gap-3 border-b-4 border-outline pb-4">
         <h3 className="font-headline-md text-2xl text-on-surface">Skills × Projects</h3>
         <span className="border-2 border-outline bg-primary-container px-2 py-1 font-label-bold text-[10px] text-on-primary-container">
           {lite ? "Linked list" : "Hover + click nodes"}

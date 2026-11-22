@@ -54,11 +54,11 @@ function Certifications() {
           description="Proof of work - industry-recognized credentials across AI, cloud, and web technologies."
         >
           {/* Controls */}
-          <div className="bg-hatch border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+          <div className="w-full bg-background border-4 border-outline p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
             <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between w-full">
               {/* Search */}
               <motion.div
-                className="flex items-center bg-surface border-4 border-outline p-3 w-full md:flex-1 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
+                className="flex items-center bg-surface border-4 border-outline p-3 w-full md:flex-1 min-w-0 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all"
                 variants={cardVariants}
               >
                 <FaSearch className="text-xl ml-2 mr-3 text-on-surface" />

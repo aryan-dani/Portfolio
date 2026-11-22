@@ -199,7 +199,7 @@ function Skills() {
           className="!gap-5 !pb-6 !mb-0 !mt-0"
         >
           {/* Stats Bar */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={cardVariants}>
+          <motion.div className="grid w-full grid-cols-2 md:grid-cols-4 gap-4" variants={cardVariants}>
             <StatCard value={totalSkills} label="Total Skills"  bg="var(--color-primary-container)" text="var(--color-on-primary-container)" shadow="var(--shadow-color)" />
             <StatCard value={Object.keys(skills).length} label="Categories"  bg="var(--color-surface)" text="var(--color-on-surface)" shadow="var(--shadow-color)" />
             <StatCard value={avgLevel}    label="Avg Level %"   bg="var(--color-on-background)" text="var(--color-background)" shadow="var(--shadow-accent)" />
@@ -207,9 +207,9 @@ function Skills() {
           </motion.div>
 
           {/* Controls */}
-          <motion.div className="flex flex-col gap-4 bg-hatch border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]" variants={cardVariants}>
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-              <div className="flex items-center bg-surface border-4 border-outline p-2 w-full md:flex-1 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+          <motion.div className="flex w-full flex-col gap-4 bg-background border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]" variants={cardVariants}>
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between w-full">
+              <div className="flex items-center bg-surface border-4 border-outline p-2 w-full md:flex-1 min-w-0 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
                 <FaSearch className="text-xl ml-2 mr-3 text-on-surface" />
                 <input
                   type="text"
@@ -247,7 +247,7 @@ function Skills() {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+            <div className="flex w-full flex-col md:flex-row gap-4 items-start md:items-center justify-between">
               <div className="flex flex-wrap gap-3">
                 {skillCategories.map((cat) => (
                   <button

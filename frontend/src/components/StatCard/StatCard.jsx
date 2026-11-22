@@ -32,8 +32,8 @@ function StatCard({ value, isPlus, label, bg, text, shadow, to, compact = false 
 
   const hoverShadow = `6px 6px 0px 0px ${shadowValue}`;
   const shellClass = compact
-    ? "relative border-4 border-outline px-4 py-2.5 md:py-3 text-center"
-    : "relative border-4 border-outline px-4 py-3 md:px-5 md:py-3.5 text-center";
+    ? "relative w-full border-4 border-outline px-4 py-2.5 md:py-3 text-center"
+    : "relative w-full border-4 border-outline px-4 py-3 md:px-5 md:py-3.5 text-center";
 
   const valueClass = compact
     ? "font-headline-xl text-2xl md:text-3xl font-black leading-none"

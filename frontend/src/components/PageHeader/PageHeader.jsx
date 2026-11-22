@@ -13,16 +13,16 @@ const PageHeader = memo(function PageHeader({
   return (
     <header
       {...(build ? { "data-build-card": "" } : {})}
-      className={`relative isolate overflow-hidden mb-4 border-b-8 border-outline pb-8 mt-4 bg-hatch p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col items-start gap-6 ${className}`}
+      className={`relative isolate overflow-hidden mb-4 border-b-8 border-outline pb-8 mt-4 bg-surface p-4 md:p-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] flex flex-col items-stretch gap-6 w-full ${className}`}
     >
       <motion.div
-        className="flex items-center gap-4 flex-wrap"
+        className="flex w-full items-center justify-center gap-4 flex-wrap"
         variants={cardVariants}
         {...(build ? { "data-build-part": "title" } : {})}
       >
         <div className="bg-primary-container border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden">
           <div className="absolute inset-0 animate-shimmer opacity-20 pointer-events-none" />
-          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-on-primary-container  tracking-tighter leading-none">
+          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-on-primary-container tracking-tighter leading-none">
             {title}
           </h1>
         </div>
@@ -35,7 +35,7 @@ const PageHeader = memo(function PageHeader({
 
       {description && (
         <motion.p
-          className="font-body-lg text-base md:text-lg lg:text-body-lg text-on-surface max-w-3xl bg-surface border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+          className="font-body-lg text-base md:text-lg lg:text-body-lg text-on-surface w-full max-w-3xl mx-auto text-center bg-background border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
           variants={cardVariants}
           {...(build ? { "data-build-part": "blurb" } : {})}
         >
@@ -43,7 +43,7 @@ const PageHeader = memo(function PageHeader({
         </motion.p>
       )}
 
-      {children}
+      {children ? <div className="flex w-full flex-col gap-6">{children}</div> : null}
     </header>
   );
 });
