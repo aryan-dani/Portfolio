@@ -11,7 +11,13 @@ import { experiences, aboutInfo } from "../../data/experience";
 import { useTheme } from "../../context/ThemeContext";
 import { useAchievements } from "../../context/AchievementContext";
 import { useSound } from "../../context/SoundContext";
-import { askKuro } from "../../utils/askKuro";
+import { askKuro, kuroVoiceError } from "../../utils/askKuro";
+
+let kuroRouterPromise = null;
+const loadKuroRouter = () => {
+  kuroRouterPromise ||= import("../../utils/kuroRules");
+  return kuroRouterPromise;
+};
 import { useModalLock } from "../../hooks/useModalLock";
 import { usePageSEO } from "../../utils/seo";
 import PageHeader from "../../components/PageHeader/PageHeader";
@@ -585,18 +591,38 @@ function Playground() {
         }
         track("ai_ask");
         setHistory((prev) => [...prev, { text: "Kuro is thinking...", type: "info" }]);
-        askKuro(question, { currentPath: window.location.pathname })
-          .then(({ reply, actions }) => {
+        (async () => {
+          try {
+            const { routeKuro } = await loadKuroRouter();
+            const local = routeKuro(question, {
+              history: [],
+              currentPath: window.location.pathname,
+            });
+            if (local?.reply) {
+              setHistory((prev) => [...prev, { text: local.reply, type: "success" }]);
+              if (local.actions?.length) {
+                local.actions.forEach((a) => {
+                  if (a.type === "navigate" && a.path) navigate(a.path);
+                });
+              }
+              return;
+            }
+            const { reply, actions } = await askKuro(question, {
+              currentPath: window.location.pathname,
+            });
             setHistory((prev) => [...prev, { text: reply, type: "success" }]);
             if (actions?.length) {
               actions.forEach((a) => {
                 if (a.type === "navigate" && a.path) navigate(a.path);
               });
             }
-          })
-          .catch((err) => {
-            setHistory((prev) => [...prev, { text: err.message, type: "error" }]);
-          });
+          } catch (err) {
+            setHistory((prev) => [
+              ...prev,
+              { text: kuroVoiceError(err), type: "error" },
+            ]);
+          }
+        })();
         break;
       }
 
@@ -632,7 +658,7 @@ function Playground() {
           <span className="w-3 h-3 rounded-full border border-outline bg-on-background opacity-60" />
           <span className="w-3 h-3 rounded-full border border-outline bg-on-background opacity-100" />
         </div>
-        <div className="min-w-0 text-center text-[10px] sm:text-xs font-bold font-mono text-on-surface-variant uppercase tracking-wider truncate">
+        <div className="min-w-0 text-center text-[10px] sm:text-xs font-bold font-mono text-on-surface-variant  tracking-wider truncate">
           guest@aryan-dani.dev: ~ {isExpanded ? "[EXPANDED]" : "[NORMAL]"}
         </div>
         <button
@@ -643,7 +669,7 @@ function Playground() {
           }}
           aria-expanded={isExpanded}
           aria-label={isExpanded ? "Collapse CLI playground terminal" : "Expand CLI playground terminal"}
-          className="bg-primary-container border-2 border-outline text-on-primary-container px-3 py-1 text-xs font-bold uppercase cursor-none hover:bg-surface hover:text-on-surface transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+          className="bg-primary-container border-2 border-outline text-on-primary-container px-3 py-1 text-xs font-bold  cursor-none hover:bg-surface hover:text-on-surface transition-colors active:translate-y-0.5 active:translate-x-0.5 active:shadow-none shadow-[2px_2px_0px_0px_var(--shadow-color)]"
         >
           {isExpanded ? "Collapse ↙" : "Expand ⛶"}
         </button>
@@ -660,7 +686,7 @@ function Playground() {
               processCommand(command);
             }}
             aria-label={`Run ${command} starter command`}
-            className="border-2 border-outline bg-surface-variant px-3 py-1 font-label-bold text-[10px] uppercase tracking-wider text-on-surface shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
+            className="border-2 border-outline bg-surface-variant px-3 py-1 font-label-bold text-[10px]  tracking-wider text-on-surface shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
           >
             {command}
           </button>

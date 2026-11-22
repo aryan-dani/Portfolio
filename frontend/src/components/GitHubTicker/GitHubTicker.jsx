@@ -41,7 +41,7 @@ const GitHubTicker = memo(function GitHubTicker() {
               <span className="absolute -right-1 -top-1 h-3 w-3 border-2 border-outline bg-[#7ee787] animate-pulse" />
             </div>
             <div>
-              <p className="font-label-bold text-xs uppercase tracking-[0.22em] text-on-surface">
+              <p className="font-label-bold text-xs  tracking-[0.22em] text-on-surface">
                 Live from GitHub
               </p>
               <a
@@ -54,7 +54,7 @@ const GitHubTicker = memo(function GitHubTicker() {
               </a>
             </div>
           </div>
-          <span className="font-mono text-[10px] uppercase border-2 border-outline px-2 py-1 bg-surface-variant text-text-muted">
+          <span className="font-mono text-[10px]  border-2 border-outline px-2 py-1 bg-surface-variant text-text-muted">
             cached 10m
           </span>
         </div>
@@ -69,7 +69,7 @@ const GitHubTicker = memo(function GitHubTicker() {
             ))}
           </div>
         ) : events.length === 0 ? (
-          <p className="font-mono text-xs uppercase text-text-muted py-4">
+          <p className="font-mono text-xs  text-text-muted py-4">
             No recent public events - check back soon.
           </p>
         ) : (
@@ -86,7 +86,7 @@ const GitHubTicker = memo(function GitHubTicker() {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span
-                      className="font-label-bold text-[9px] uppercase tracking-widest px-2 py-0.5 border-2 border-outline text-[#131316]"
+                      className="font-label-bold text-[9px]  tracking-widest px-2 py-0.5 border-2 border-outline text-[#131316]"
                       style={{ background: style.bg }}
                     >
                       {style.label}
@@ -95,7 +95,7 @@ const GitHubTicker = memo(function GitHubTicker() {
                       {formatRelativeTime(ev.time)}
                     </time>
                   </div>
-                  <p className="font-label-bold text-xs uppercase text-on-surface truncate">
+                  <p className="font-label-bold text-xs  text-on-surface truncate">
                     {ev.repo}
                   </p>
                   <p className="font-mono text-[11px] leading-snug text-on-surface-variant line-clamp-2 group-hover:text-on-surface">

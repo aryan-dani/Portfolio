@@ -238,8 +238,8 @@ const projectEntries = [
     tags: ["Python", "FastAPI", "React", "LangGraph", "LLaMA 3.3"],
     skillIds: ["python", "fastapi", "react", "langgraph", "llms", "prompt-engineering", "rest-api", "git"],
     links: {
-      github: "https://github.com/aryan-dani/DebateBot",
-      preview: "https://debate-bot-psi.vercel.app",
+      github: "https://github.com/aryan-dani/debate-bot",
+      preview: "https://debate-bot-psi.vercel.app/",
     },
   },
   {

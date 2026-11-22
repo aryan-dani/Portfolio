@@ -134,7 +134,7 @@ function Projects() {
                 return (
                   <motion.button
                     key={category.id}
-                    className={`border-2 border-outline px-4 py-2 font-label-bold text-[11px] uppercase tracking-[0.12em] transition-all cursor-none ${
+                    className={`border-2 border-outline px-4 py-2 font-label-bold text-[11px]  tracking-[0.12em] transition-all cursor-none ${
                       isSelected
                         ? "bg-primary-container text-on-primary-container shadow-[2px_2px_0_0_var(--shadow-color)] translate-x-px translate-y-px"
                         : "bg-surface text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] hover:shadow-none hover:translate-y-px hover:translate-x-px hover:bg-surface-variant"
@@ -151,7 +151,7 @@ function Projects() {
                 <button
                   type="button"
                   onClick={replaySwarm}
-                  className="border-2 border-outline bg-surface text-on-surface px-3 py-2 font-label-bold text-[11px] uppercase tracking-[0.12em] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all cursor-none"
+                  className="border-2 border-outline bg-surface text-on-surface px-3 py-2 font-label-bold text-[11px]  tracking-[0.12em] shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0_0_var(--shadow-color)] transition-all cursor-none"
                 >
                   Replay build
                 </button>
@@ -172,7 +172,7 @@ function Projects() {
                 aria-expanded={isFilterExpanded}
                 aria-controls="project-tech-filters"
               >
-                <span className="font-label-bold text-sm uppercase tracking-wider text-on-surface">
+                <span className="font-label-bold text-sm  tracking-wider text-on-surface">
                   Filter by Tech Stack {selectedTags.length > 0 && `(${selectedTags.length})`}
                 </span>
                 <motion.div animate={{ rotate: isFilterExpanded ? 180 : 0 }}>
@@ -183,7 +183,7 @@ function Projects() {
                 <button
                   type="button"
                   onClick={() => setSelectedTags([])}
-                  className="mr-6 text-xs uppercase font-label-bold text-red-500 hover:underline cursor-none"
+                  className="mr-6 text-xs  font-label-bold text-red-500 hover:underline cursor-none"
                   aria-label="Clear selected project technology filters"
                 >
                   Clear
@@ -212,7 +212,7 @@ function Projects() {
                           key={tag}
                           onClick={() => toggleTag(tag)}
                           aria-pressed={isSelected}
-                          className={`px-3 py-1 text-xs uppercase font-label-bold border-2 border-outline transition-all cursor-none ${
+                          className={`px-3 py-1 text-xs  font-label-bold border-2 border-outline transition-all cursor-none ${
                             isSelected
                               ? "bg-on-background text-background shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-x-[1px] translate-y-[1px]"
                               : "bg-surface-variant text-on-surface shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:shadow-none hover:translate-y-0.5 hover:translate-x-0.5 hover:bg-primary-container hover:text-on-primary-container"
@@ -262,7 +262,7 @@ function Projects() {
               >
                 <FaSearch className="text-5xl text-on-surface" />
               </motion.div>
-              <h3 className="font-headline-md text-3xl uppercase text-on-surface">No projects found</h3>
+              <h3 className="font-headline-md text-3xl  text-on-surface">No projects found</h3>
               <p className="font-body-md text-lg text-text-muted">Try adjusting your search terms or filters.</p>
             </motion.div>
           )}
@@ -274,12 +274,12 @@ function Projects() {
           initial="hidden"
           animate="visible"
         >
-          <p className="flex-1 font-headline-md text-lg md:text-xl uppercase leading-tight">
+          <p className="flex-1 font-headline-md text-lg md:text-xl  leading-tight">
             Ready to build something similar?
           </p>
           <MagneticLink
             to={PRIMARY_CTA.to}
-            className="shrink-0 self-start sm:self-center bg-surface text-on-surface border-4 border-outline px-6 py-3 font-label-bold text-sm uppercase shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all inline-block text-center"
+            className="shrink-0 self-start sm:self-center bg-surface text-on-surface border-4 border-outline px-6 py-3 font-label-bold text-sm  shadow-[6px_6px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all inline-block text-center"
           >
             {PRIMARY_CTA.label}
           </MagneticLink>

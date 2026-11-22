@@ -7,7 +7,7 @@ const Stat = memo(function Stat({ value, label, marked = true, className = "" })
       <p className="font-headline-md text-3xl md:text-4xl leading-none tracking-tight">
         {marked ? <Mark>{value}</Mark> : value}
       </p>
-      <p className="font-label-bold text-[10px] uppercase tracking-[0.16em] text-text-muted">
+      <p className="font-label-bold text-[10px]  tracking-[0.16em] text-text-muted">
         {label}
       </p>
     </div>

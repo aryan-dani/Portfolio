@@ -22,7 +22,7 @@ const PageHeader = memo(function PageHeader({
       >
         <div className="bg-primary-container border-4 border-outline px-6 py-4 shadow-[8px_8px_0px_0px_var(--shadow-color)] relative overflow-hidden">
           <div className="absolute inset-0 animate-shimmer opacity-20 pointer-events-none" />
-          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-on-primary-container uppercase tracking-tighter leading-none">
+          <h1 className="font-headline-xl text-5xl md:text-7xl lg:text-headline-xl text-on-primary-container  tracking-tighter leading-none">
             {title}
           </h1>
         </div>

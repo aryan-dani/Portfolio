@@ -141,8 +141,8 @@ export const CASE_STUDIES = [
     oneLiner:
       "A debating platform with dual-AI stages, live arena challenges, and scored feedback on argument quality.",
     stack: ["Python", "FastAPI", "React", "LangGraph", "LLaMA 3.3"],
-    live: "https://debate-bot-psi.vercel.app",
-    github: "https://github.com/aryan-dani/DebateBot",
+    live: "https://debate-bot-psi.vercel.app/",
+    github: "https://github.com/aryan-dani/debate-bot",
     problem:
       "Practice debates need structured stages and feedback on coherence, evidence, and fallacies, not a free-form chatbot.",
     approach:

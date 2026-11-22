@@ -173,19 +173,19 @@ const ResearchCard = memo(function ResearchCard({ paper, index, isSelected, onSe
         >
           <div className="absolute inset-0 animate-shimmer opacity-20 pointer-events-none" />
           <div className="flex flex-wrap gap-2 relative z-10">
-            <span className="bg-on-background text-background border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+            <span className="bg-on-background text-background border-2 border-outline px-2 py-1 font-label-bold text-[10px]  shadow-[2px_2px_0px_0px_var(--shadow-color)]">
               {paper.year}
             </span>
-            <span className="bg-surface text-on-surface border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+            <span className="bg-surface text-on-surface border-2 border-outline px-2 py-1 font-label-bold text-[10px]  shadow-[2px_2px_0px_0px_var(--shadow-color)]">
               {paper.category}
             </span>
             {paper.status && (
-              <span className="bg-primary-container text-on-primary-container border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+              <span className="bg-primary-container text-on-primary-container border-2 border-outline px-2 py-1 font-label-bold text-[10px]  shadow-[2px_2px_0px_0px_var(--shadow-color)]">
                 {paper.status}
               </span>
             )}
           </div>
-          <p className="font-label-bold text-xs uppercase tracking-widest text-on-surface-variant relative z-10">
+          <p className="font-label-bold text-xs  tracking-widest text-on-surface-variant relative z-10">
             {paper.venue}
           </p>
         </div>
@@ -193,7 +193,7 @@ const ResearchCard = memo(function ResearchCard({ paper, index, isSelected, onSe
         <div className="p-6 md:p-7 flex flex-col grow gap-4">
           <h3
             data-build-part="title"
-            className="font-headline-md text-xl md:text-2xl text-on-surface uppercase leading-tight"
+            className="font-headline-md text-xl md:text-2xl text-on-surface  leading-tight"
           >
             {paper.title}
           </h3>
@@ -214,14 +214,14 @@ const ResearchCard = memo(function ResearchCard({ paper, index, isSelected, onSe
               {paper.keywords.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="bg-surface-variant text-on-surface border-2 border-outline px-2 py-1 font-label-bold text-[10px] uppercase"
+                  className="bg-surface-variant text-on-surface border-2 border-outline px-2 py-1 font-label-bold text-[10px] "
                 >
                   {tag}
                 </span>
               ))}
             </div>
             <div className="border-t-4 border-outline pt-4">
-              <span className="inline-flex w-full items-center justify-center gap-2 bg-primary-container text-on-primary-container border-4 border-outline py-3 font-label-bold text-sm uppercase shadow-[4px_4px_0px_0px_var(--shadow-color)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+              <span className="inline-flex w-full items-center justify-center gap-2 bg-primary-container text-on-primary-container border-4 border-outline py-3 font-label-bold text-sm  shadow-[4px_4px_0px_0px_var(--shadow-color)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
                 {isSelected ? "Selected" : "Read paper"}
                 <FaArrowRight className="text-sm" aria-hidden="true" />
               </span>
@@ -252,20 +252,20 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
       >
         <div className="flex flex-col gap-3 min-w-0">
           <div className="flex flex-wrap gap-2">
-            <span className="border-2 border-outline bg-primary-container px-3 py-1 font-label-bold text-xs uppercase text-on-primary-container">
+            <span className="border-2 border-outline bg-primary-container px-3 py-1 font-label-bold text-xs  text-on-primary-container">
               {paper.year}
             </span>
-            <span className="border-2 border-outline bg-surface-variant px-3 py-1 font-label-bold text-xs uppercase text-on-surface">
+            <span className="border-2 border-outline bg-surface-variant px-3 py-1 font-label-bold text-xs  text-on-surface">
               {paper.venue}
             </span>
           </div>
-          <h2 className="font-headline-md text-2xl md:text-4xl uppercase tracking-tight text-on-surface leading-tight">
+          <h2 className="font-headline-md text-2xl md:text-4xl  tracking-tight text-on-surface leading-tight">
             {paper.title}
           </h2>
           <p className="font-body-md text-base md:text-lg text-on-surface-variant max-w-3xl">
             {paper.subtitle}
           </p>
-          <p className="font-label-bold text-xs uppercase tracking-widest text-on-surface-variant">
+          <p className="font-label-bold text-xs  tracking-widest text-on-surface-variant">
             {paper.affiliation}
           </p>
         </div>
@@ -283,7 +283,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
         <a
           href={pdfSrc}
           download={paper.pdfFileName || "research-paper.pdf"}
-          className="inline-flex items-center gap-2 border-4 border-outline bg-primary-container px-4 py-3 font-label-bold text-sm uppercase text-on-primary-container shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className="inline-flex items-center gap-2 border-4 border-outline bg-primary-container px-4 py-3 font-label-bold text-sm  text-on-primary-container shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <FaFileDownload aria-hidden="true" />
           Download PDF
@@ -292,7 +292,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
           href={pdfSrc}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-3 font-label-bold text-sm uppercase text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-3 font-label-bold text-sm  text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <FaEye aria-hidden="true" />
           Open PDF
@@ -302,7 +302,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
             href={paper.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-3 font-label-bold text-sm uppercase text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+            className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-3 font-label-bold text-sm  text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
           >
             <FaGithub aria-hidden="true" />
             Code
@@ -313,7 +313,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
             href={paper.projectUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-3 font-label-bold text-sm uppercase text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+            className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-3 font-label-bold text-sm  text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
           >
             <FaExternalLinkAlt aria-hidden="true" />
             Live demo
@@ -322,7 +322,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
         {paper.projectId != null && (
           <Link
             to={`/projects?highlight=${paper.projectId}`}
-            className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-3 font-label-bold text-sm uppercase text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+            className="inline-flex items-center gap-2 border-4 border-outline bg-surface px-4 py-3 font-label-bold text-sm  text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
           >
             Related project
             <FaArrowRight aria-hidden="true" />
@@ -339,7 +339,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
             key={stat.label}
             className="border-4 border-outline bg-surface p-5 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-2"
           >
-            <span className="font-label-bold text-[10px] uppercase tracking-widest text-on-surface-variant">
+            <span className="font-label-bold text-[10px]  tracking-widest text-on-surface-variant">
               {stat.label}
             </span>
             <span className="font-headline-md text-3xl md:text-4xl text-on-surface leading-none">
@@ -356,7 +356,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
         className="border-4 border-outline bg-hatch p-6 md:p-8 shadow-[6px_6px_0_0_var(--shadow-color)]"
         variants={detailItem}
       >
-        <h3 className="font-headline-md text-2xl uppercase border-b-4 border-outline pb-2 mb-4 w-fit text-on-surface">
+        <h3 className="font-headline-md text-2xl  border-b-4 border-outline pb-2 mb-4 w-fit text-on-surface">
           Abstract
         </h3>
         <p className="font-body-lg text-base md:text-lg text-on-surface max-w-4xl leading-relaxed bg-surface border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0_0_var(--shadow-color)]">
@@ -365,7 +365,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
       </motion.div>
 
       <motion.div className="flex flex-col gap-4" variants={detailItem}>
-        <h3 className="font-headline-md text-2xl uppercase text-on-surface">
+        <h3 className="font-headline-md text-2xl  text-on-surface">
           Authors
         </h3>
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none m-0 p-0">
@@ -374,10 +374,10 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
               key={author.email}
               className="border-4 border-outline bg-surface p-4 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-1"
             >
-              <span className="font-label-bold text-[10px] uppercase tracking-widest text-on-surface-variant">
+              <span className="font-label-bold text-[10px]  tracking-widest text-on-surface-variant">
                 {author.role}
               </span>
-              <span className="font-headline-md text-lg uppercase text-on-surface">
+              <span className="font-headline-md text-lg  text-on-surface">
                 {author.name}
               </span>
               <a
@@ -397,7 +397,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
             key={section.title}
             className="border-4 border-outline bg-surface p-5 md:p-6 shadow-[4px_4px_0_0_var(--shadow-color)] flex flex-col gap-3"
           >
-            <h3 className="font-headline-md text-xl uppercase border-b-4 border-outline pb-2 w-fit text-on-surface">
+            <h3 className="font-headline-md text-xl  border-b-4 border-outline pb-2 w-fit text-on-surface">
               {section.title}
             </h3>
             <p className="font-body-md text-base text-on-surface leading-relaxed">
@@ -411,7 +411,7 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
         {paper.keywords.map((kw) => (
           <span
             key={kw}
-            className="border-2 border-outline bg-surface-variant px-3 py-1.5 font-label-bold text-xs uppercase text-on-surface"
+            className="border-2 border-outline bg-surface-variant px-3 py-1.5 font-label-bold text-xs  text-on-surface"
           >
             {kw}
           </span>
@@ -423,14 +423,14 @@ const PaperDetail = memo(function PaperDetail({ paper, onClose }) {
         variants={detailItem}
       >
         <div className="flex flex-wrap items-center justify-between gap-3 border-b-4 border-outline bg-primary-container px-4 py-3">
-          <h3 className="font-headline-md text-lg md:text-xl uppercase text-on-primary-container">
+          <h3 className="font-headline-md text-lg md:text-xl  text-on-primary-container">
             Full paper
           </h3>
           <a
             href={pdfSrc}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-label-bold text-xs uppercase text-on-primary-container underline-offset-2 hover:underline"
+            className="inline-flex items-center gap-2 font-label-bold text-xs  text-on-primary-container underline-offset-2 hover:underline"
           >
             Open in new tab
             <FaArrowRight aria-hidden="true" />

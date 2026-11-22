@@ -57,10 +57,10 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
         onClick={() => onToggle(exp.id)}
       >
         <div className="text-left">
-          <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl uppercase">
+          <h2 className="font-headline-md text-xl md:text-2xl lg:text-3xl ">
             <span data-build-part="title">{exp.position}</span>
           </h2>
-          <h3 className="font-label-bold text-sm uppercase mt-1 flex items-center gap-2 flex-wrap">
+          <h3 className="font-label-bold text-sm  mt-1 flex items-center gap-2 flex-wrap">
             {exp.companyUrl ? (
               <a
                 href={exp.companyUrl}
@@ -81,7 +81,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
               </span>
             )}
           </h3>
-          <div className="md:hidden mt-2 flex items-center gap-2 opacity-60 text-xs font-label-bold uppercase">
+          <div className="md:hidden mt-2 flex items-center gap-2 opacity-60 text-xs font-label-bold ">
             <FaCalendarAlt />
             {exp.period}
             {exp.location && <><FaMapMarkerAlt />{exp.location}</>}
@@ -98,7 +98,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
 
       <div data-build-part="meta" className="border-t-4 border-outline">
         <div
-          className="px-5 py-2 font-label-bold text-xs uppercase tracking-widest flex items-center gap-2"
+          className="px-5 py-2 font-label-bold text-xs  tracking-widest flex items-center gap-2"
           style={style.body}
         >
           <FaCalendarAlt className="text-[10px]" />
@@ -154,7 +154,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                           e.stopPropagation();
                           navigate(`/skills?skill=${encodeURIComponent(tech)}`);
                         }}
-                        className="px-3 py-1 font-label-bold text-xs uppercase border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                        className="px-3 py-1 font-label-bold text-xs  border-2 border-outline shadow-[2px_2px_0px_0px_var(--shadow-color)]"
                         style={style.tagBg}
                         whileHover={{
                           y: -4,
@@ -172,7 +172,7 @@ function CardContent({ exp, style, isExpanded, onToggle }) {
                     href={exp.links.project}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="self-start flex items-center gap-2 font-label-bold text-xs uppercase border-4 border-outline px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
+                    className="self-start flex items-center gap-2 font-label-bold text-xs  border-4 border-outline px-4 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none"
                     style={{ background: "var(--color-primary-container)", color: "var(--color-on-primary-container)" }}
                   >
                     <FaExternalLinkAlt /> View Project
@@ -201,7 +201,7 @@ function PeriodBadge({ exp, alignRight = false }) {
         transition: hoverSpring,
       }}
     >
-      <p className="font-headline-md text-lg uppercase">
+      <p className="font-headline-md text-lg ">
         {exp.period}
         {exp.current && (
           <span className="ml-2 align-middle inline-block border-2 border-current px-1.5 py-0.5 text-[9px] tracking-[0.14em]">

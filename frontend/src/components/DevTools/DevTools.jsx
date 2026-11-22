@@ -34,7 +34,7 @@ const DevHUD = memo(function DevHUD({ xray, onToggleXray }) {
   const sessionMin = Math.floor((Date.now() - startRef.current) / 60000);
 
   return createPortal(
-    <div className="fixed bottom-24 left-4 z-[150] w-64 border-4 border-outline bg-on-background text-background p-3 font-mono text-[10px] uppercase shadow-[6px_6px_0_var(--shadow-color)] pointer-events-auto">
+    <div className="fixed bottom-24 left-4 z-[150] w-64 border-4 border-outline bg-on-background text-background p-3 font-mono text-[10px]  shadow-[6px_6px_0_var(--shadow-color)] pointer-events-auto">
       <div className="flex justify-between items-center border-b-2 border-dashed border-current pb-2 mb-2">
         <span className="font-label-bold">Dev HUD</span>
         <div className="flex gap-1">

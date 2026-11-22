@@ -203,7 +203,7 @@ const Guestbook = memo(function Guestbook() {
           className="border-2 border-outline px-3 py-2 bg-surface-variant min-h-[80px]"
           maxLength={140}
         />
-        <button type="submit" className="border-4 border-outline px-4 py-3 font-label-bold uppercase bg-primary-container text-on-primary-container shadow-[4px_4px_0_var(--shadow-color)] w-fit">
+        <button type="submit" className="border-4 border-outline px-4 py-3 font-label-bold  bg-primary-container text-on-primary-container shadow-[4px_4px_0_var(--shadow-color)] w-fit">
           Stamp It
         </button>
         {status && <p className="font-body-md text-sm">{status}</p>}
@@ -228,9 +228,9 @@ const Guestbook = memo(function Guestbook() {
               className="flex flex-col border-4 border-outline bg-surface shadow-[4px_4px_0_var(--shadow-color)] overflow-hidden min-h-[140px]"
             >
               <div className="border-b-4 border-outline bg-surface-variant px-4 py-3">
-                <p className="font-label-bold uppercase text-sm truncate">{entry.name}</p>
+                <p className="font-label-bold  text-sm truncate">{entry.name}</p>
                 {entry.created_at && (
-                  <p className="font-mono text-[10px] uppercase text-text-muted mt-0.5">
+                  <p className="font-mono text-[10px]  text-text-muted mt-0.5">
                     {formatRelativeTime(entry.created_at)}
                   </p>
                 )}
@@ -242,7 +242,7 @@ const Guestbook = memo(function Guestbook() {
                     type="button"
                     onClick={() => removeEntry(entry.id)}
                     disabled={removingId === entry.id}
-                    className="font-mono text-[10px] uppercase tracking-wider text-text-muted hover:text-on-surface underline underline-offset-2 disabled:opacity-50"
+                    className="font-mono text-[10px]  tracking-wider text-text-muted hover:text-on-surface underline underline-offset-2 disabled:opacity-50"
                     aria-label={`Remove your stamp from ${entry.name}`}
                   >
                     {removingId === entry.id ? "Removing…" : "Remove my stamp"}

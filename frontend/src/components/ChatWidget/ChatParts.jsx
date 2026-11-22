@@ -5,7 +5,7 @@ import { KuroFace } from "./KuroFace";
 
 const SPRING = { type: "spring", stiffness: 420, damping: 30 };
 const chipBase =
-  "border-2 border-outline px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-wide shadow-[2px_2px_0_var(--shadow-color)] transition-[background-color,color,box-shadow,transform] hover:translate-x-px hover:translate-y-px hover:shadow-[1px_1px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface";
+  "border-2 border-outline px-2.5 py-1.5 font-mono text-[10px]  tracking-wide shadow-[2px_2px_0_var(--shadow-color)] transition-[background-color,color,box-shadow,transform] hover:translate-x-px hover:translate-y-px hover:shadow-[1px_1px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface";
 
 /* ---------------------------------------------------------------- typing */
 
@@ -14,7 +14,7 @@ export function TypingIndicator({ policy, label }) {
   const animated = policy !== "reduced";
   return (
     <div className="flex flex-col items-start gap-1" role="status">
-      <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted px-0.5">Kuro</span>
+      <span className="font-mono text-[9px]  tracking-[0.14em] text-text-muted px-0.5">Kuro</span>
       <div className="inline-flex items-center gap-2 border-2 border-outline bg-surface-variant px-3 py-3 shadow-[3px_3px_0_var(--shadow-color)]">
         {label && <span className="font-mono text-xs text-text-muted">{label}</span>}
         <span className="inline-flex items-end gap-1" aria-hidden="true">
@@ -76,7 +76,7 @@ function StreamedMarkdown({ text, animate, onDone, onNavigate }) {
 /* ------------------------------------------------------------------ cards */
 
 function CardButton({ children, onClick, href, primary = false }) {
-  const cls = `border-2 border-outline px-2 py-1 font-mono text-[9px] uppercase tracking-wide transition-[background-color,color,transform] hover:translate-x-px hover:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface ${
+  const cls = `border-2 border-outline px-2 py-1 font-mono text-[9px]  tracking-wide transition-[background-color,color,transform] hover:translate-x-px hover:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface ${
     primary ? "bg-primary-container text-on-primary-container" : "bg-surface text-on-surface hover:bg-surface-variant"
   }`;
   if (href) {
@@ -109,14 +109,14 @@ const ProjectCard = memo(function ProjectCard({ card, onNavigate, onOpenUrl }) {
       )}
       <div className="space-y-2 p-2.5">
         <div className="flex items-baseline justify-between gap-2">
-          <h3 className="font-label-bold text-xs uppercase tracking-[0.1em]">{card.title}</h3>
+          <h3 className="font-label-bold text-xs  tracking-[0.1em]">{card.title}</h3>
           <span className="shrink-0 font-mono text-[9px] text-text-muted">{card.year}</span>
         </div>
         {card.blurb && <p className="line-clamp-2 text-xs leading-snug text-text-muted">{card.blurb}</p>}
         {card.tags?.length > 0 && (
           <ul className="flex flex-wrap gap-1" aria-label="Tags">
             {card.tags.slice(0, 3).map((tag) => (
-              <li key={tag} className="border border-outline px-1.5 py-0.5 font-mono text-[9px] uppercase">
+              <li key={tag} className="border border-outline px-1.5 py-0.5 font-mono text-[9px] ">
                 {tag}
               </li>
             ))}
@@ -147,11 +147,11 @@ const PackageCard = memo(function PackageCard({ card, onNavigate }) {
   return (
     <article className="w-full max-w-[92%] border-2 border-outline bg-surface text-on-surface shadow-[3px_3px_0_var(--shadow-color)]">
       <div className="border-b-2 border-outline bg-primary-container px-2.5 py-1.5 text-on-primary-container">
-        <h3 className="font-label-bold text-xs uppercase tracking-[0.1em]">{card.name}</h3>
+        <h3 className="font-label-bold text-xs  tracking-[0.1em]">{card.name}</h3>
       </div>
       <div className="space-y-1.5 p-2.5">
         <p className="font-mono text-[11px] leading-snug">{card.price}</p>
-        <p className="font-mono text-[9px] uppercase tracking-wide text-text-muted">{card.timeline}</p>
+        <p className="font-mono text-[9px]  tracking-wide text-text-muted">{card.timeline}</p>
         {card.forWho && <p className="text-xs leading-snug text-text-muted">{card.forWho}</p>}
         <CardButton primary onClick={() => onNavigate(card.path)}>
           Start a project
@@ -237,7 +237,7 @@ export const MessageBubble = memo(function MessageBubble({
       transition={{ type: "spring", stiffness: 420, damping: 28, delay: staggerDelay }}
       style={{ transformOrigin: isUser ? "100% 100%" : "0% 100%" }}
     >
-      <span className="px-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted">
+      <span className="px-0.5 font-mono text-[9px]  tracking-[0.14em] text-text-muted">
         {isUser ? "You" : "Kuro"}
       </span>
       <div
@@ -257,7 +257,7 @@ export const MessageBubble = memo(function MessageBubble({
         )}
       </div>
       {message.actionLabel && (
-        <p className="px-0.5 font-mono text-[9px] uppercase tracking-[0.1em] text-text-muted">{message.actionLabel}</p>
+        <p className="px-0.5 font-mono text-[9px]  tracking-[0.1em] text-text-muted">{message.actionLabel}</p>
       )}
       {!isUser && <CardList cards={message.cards} policy={policy} onNavigate={onNavigate} onOpenUrl={onOpenUrl} />}
       {!isUser && isLast && !message.stream && (
@@ -281,9 +281,9 @@ export function EmptyState({ welcome, chips, policy, crtMode, onChip }) {
         <KuroFace pupilsRef={null} mood="excited" bliss={false} sleeping={false} robot={crtMode} size={56} />
       </motion.div>
       <div className="space-y-1.5">
-        <h3 className="font-label-bold text-sm uppercase tracking-[0.16em]">Ask Kuro</h3>
+        <h3 className="font-label-bold text-sm  tracking-[0.16em]">Ask Kuro</h3>
         <p className="mx-auto max-w-[17rem] text-sm leading-snug text-on-surface">{welcome}</p>
-        <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted">
+        <p className="font-mono text-[9px]  tracking-[0.14em] text-text-muted">
           Instant answers from Aryan&apos;s real data
         </p>
       </div>

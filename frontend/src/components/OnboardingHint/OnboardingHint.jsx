@@ -41,7 +41,7 @@ const OnboardingHint = memo(function OnboardingHint() {
         >
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="font-label-bold text-[10px] uppercase tracking-[0.24em] text-text-muted">
+              <p className="font-label-bold text-[10px]  tracking-[0.24em] text-text-muted">
                 Tip
               </p>
               <p className="mt-1 font-body-md text-sm text-on-surface">
@@ -53,7 +53,7 @@ const OnboardingHint = memo(function OnboardingHint() {
             <button
               type="button"
               onClick={dismiss}
-              className="shrink-0 border-2 border-outline bg-primary-container px-2 py-1 font-label-bold text-xs uppercase text-on-primary-container shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
+              className="shrink-0 border-2 border-outline bg-primary-container px-2 py-1 font-label-bold text-xs  text-on-primary-container shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-none"
             >
               Got it
             </button>

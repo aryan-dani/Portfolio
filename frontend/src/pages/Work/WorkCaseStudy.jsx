@@ -49,14 +49,14 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
             <span aria-hidden> / </span>
             Case study
           </Eyebrow>
-          <h1 className="font-headline-xl text-[clamp(2.5rem,6vw,4.5rem)] leading-none tracking-tight uppercase max-w-4xl w-fit bg-surface border-4 border-outline p-3 md:p-5 shadow-[8px_8px_0_0_var(--shadow-color)]">
+          <h1 className="font-headline-xl text-[clamp(2.5rem,6vw,4.5rem)] leading-none tracking-tight  max-w-4xl w-fit bg-surface border-4 border-outline p-3 md:p-5 shadow-[8px_8px_0_0_var(--shadow-color)]">
             {study.title}
           </h1>
           <p className="font-body-lg text-base md:text-lg max-w-3xl text-on-surface-variant leading-snug">
             {study.oneLiner}
           </p>
           <Rule />
-          <div className="flex flex-wrap gap-x-6 gap-y-2 font-label-bold text-[10px] uppercase tracking-[0.14em] text-text-muted">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 font-label-bold text-[10px]  tracking-[0.14em] text-text-muted">
             {project?.year ? <span>{project.year}</span> : null}
             {study.live ? <span>Live</span> : <span>Private / offline demo</span>}
             <span>{study.stack.length} stack tags</span>
@@ -141,7 +141,7 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
                   event.preventDefault();
                   openSiteBrowser({ url: study.live, title: study.title });
                 }}
-                className="font-label-bold text-[11px] uppercase tracking-[0.14em] underline underline-offset-4 inline-flex items-center gap-2"
+                className="font-label-bold text-[11px]  tracking-[0.14em] underline underline-offset-4 inline-flex items-center gap-2"
               >
                 {study.liveAnchor || "Visit live site"} <FaExternalLinkAlt className="text-[10px]" aria-hidden />
               </a>
@@ -152,7 +152,7 @@ const WorkCaseStudy = memo(function WorkCaseStudy() {
 
       <Reveal>
         <Card className="p-5 flex flex-wrap items-center gap-4 justify-between">
-          <Link to="/projects" className="font-label-bold text-[11px] uppercase tracking-[0.14em] underline underline-offset-4">
+          <Link to="/projects" className="font-label-bold text-[11px]  tracking-[0.14em] underline underline-offset-4">
             Back to projects
           </Link>
           <Button to={PRIMARY_CTA.to}>{PRIMARY_CTA.label}</Button>

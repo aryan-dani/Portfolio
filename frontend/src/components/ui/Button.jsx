@@ -35,7 +35,7 @@ const Button = memo(
     ref,
   ) {
     const base =
-      "btn-sheen relative isolate inline-flex items-center justify-center gap-2 overflow-hidden font-label-bold uppercase tracking-wide transition-[transform,box-shadow,background-color,border-color] duration-200 ease-[var(--ease-spring)] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus-ring)] disabled:opacity-45 disabled:pointer-events-none";
+      "btn-sheen relative isolate inline-flex items-center justify-center gap-2 overflow-hidden font-label-bold  tracking-wide transition-[transform,box-shadow,background-color,border-color] duration-200 ease-[var(--ease-spring)] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus-ring)] disabled:opacity-45 disabled:pointer-events-none";
     const classes = `${base} ${SIZES[size] || SIZES.md} ${VARIANTS[variant] || VARIANTS.primary} ${className}`.trim();
 
     if (to) {

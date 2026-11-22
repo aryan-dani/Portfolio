@@ -249,7 +249,7 @@ function CommandPalette() {
                   onChange={(e) => setQuery(e.target.value)}
                   className="flex-1 bg-transparent outline-none border-none font-headline-md text-lg sm:text-2xl text-on-surface cursor-none placeholder:text-text-muted"
                 />
-                <div className="hidden sm:block text-xs font-bold bg-surface border-2 border-outline px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] ml-4 shrink-0 uppercase tracking-widest text-on-surface">
+                <div className="hidden sm:block text-xs font-bold bg-surface border-2 border-outline px-2 py-1 shadow-[2px_2px_0px_0px_var(--shadow-color)] ml-4 shrink-0  tracking-widest text-on-surface">
                   ESC
                 </div>
               </div>
@@ -266,7 +266,7 @@ function CommandPalette() {
                 {displayCommands.length > 0 ? (
                   groupedCommands.map((group) => (
                     <div key={group.type}>
-                      <div className="px-4 sm:px-6 py-2 font-label-bold text-[10px] uppercase tracking-[0.22em] text-text-muted bg-surface">
+                      <div className="px-4 sm:px-6 py-2 font-label-bold text-[10px]  tracking-[0.22em] text-text-muted bg-surface">
                         {group.type}
                       </div>
                       {group.items.map((cmd) => {
@@ -296,7 +296,7 @@ function CommandPalette() {
                               </span>
                             </div>
                             <div className="flex items-center gap-3 shrink-0">
-                              <span className={`hidden sm:block px-2 py-1 border-2 text-[10px] sm:text-xs font-label-bold uppercase tracking-widest ${
+                              <span className={`hidden sm:block px-2 py-1 border-2 text-[10px] sm:text-xs font-label-bold  tracking-widest ${
                                 index === selectedIndex
                                   ? "border-outline bg-on-primary-container text-primary-container"
                                   : "border-outline-variant text-text-muted"
@@ -322,7 +322,7 @@ function CommandPalette() {
               </div>
               
               {/* Footer */}
-              <div className="border-t-4 border-outline p-3 sm:p-4 bg-surface-variant flex items-center justify-between text-xs sm:text-sm font-label-bold text-on-surface-variant uppercase tracking-wider">
+              <div className="border-t-4 border-outline p-3 sm:p-4 bg-surface-variant flex items-center justify-between text-xs sm:text-sm font-label-bold text-on-surface-variant  tracking-wider">
                 <div className="flex gap-4">
                   <span className="flex items-center gap-2">
                     <kbd className="font-sans border-2 border-outline px-1.5 py-0.5 shadow-[1px_1px_0px_0px_var(--shadow-color)] bg-surface text-on-surface">↑</kbd>

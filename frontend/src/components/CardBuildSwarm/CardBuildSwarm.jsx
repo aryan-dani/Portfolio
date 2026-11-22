@@ -405,7 +405,7 @@ function AgentCursorSprite({
               transition={{ duration: 0.22, ease: BOT_EASE }}
             />
             <motion.div
-              className="absolute left-3.5 top-3.5 whitespace-nowrap border-2 px-1.5 py-0.5 font-label-bold text-[10px] uppercase tracking-[0.14em] shadow-[2px_2px_0_0_rgba(0,0,0,0.35)]"
+              className="absolute left-3.5 top-3.5 whitespace-nowrap border-2 px-1.5 py-0.5 font-label-bold text-[10px]  tracking-[0.14em] shadow-[2px_2px_0_0_rgba(0,0,0,0.35)]"
               style={{
                 background: CURSOR_LIGHT,
                 color: CURSOR_DARK,
@@ -894,31 +894,50 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         playingRef.current && generationRef.current === generation;
 
       const moveCursor = async (agentIndex, point, ms = CHAOS_PEN_MS, opts = {}) => {
-        const from = cursorPosRef.current[agentIndex] || point;
-        const rotate = opts.rotate ?? headingBetween(from, point);
-        cursorPosRef.current[agentIndex] = { x: point.x, y: point.y, rotate };
-        setCursors((prev) =>
-          prev.map((c, idx) => {
-            if (idx !== agentIndex) return c;
-            return {
-              ...c,
-              x: point.x,
-              y: point.y,
-              opacity: opts.opacity ?? 1,
-              scale: opts.scale ?? c.scale ?? 1,
-              rotate,
-              pulse: Boolean(opts.pulse),
-              flight: opts.flight ?? c.flight ?? "work",
-              moveMs: ms,
-            };
-          }),
-        );
-        await delay(ms);
-        if (opts.pulse) {
+        const resolvePoint = () => {
+          if (typeof opts.live === "function") {
+            try {
+              return opts.live() || point;
+            } catch {
+              return point;
+            }
+          }
+          return point;
+        };
+        const applyPos = (target, { pulse = Boolean(opts.pulse), final = false } = {}) => {
+          const from = cursorPosRef.current[agentIndex] || target;
+          const rotate = opts.rotate ?? headingBetween(from, target);
+          cursorPosRef.current[agentIndex] = { x: target.x, y: target.y, rotate };
           setCursors((prev) =>
-            prev.map((c, idx) => (idx === agentIndex ? { ...c, pulse: false } : c)),
+            prev.map((c, idx) => {
+              if (idx !== agentIndex) return c;
+              return {
+                ...c,
+                x: target.x,
+                y: target.y,
+                opacity: opts.opacity ?? 1,
+                scale: opts.scale ?? c.scale ?? 1,
+                rotate,
+                pulse: final ? false : pulse,
+                flight: opts.flight ?? c.flight ?? "work",
+                moveMs: ms,
+              };
+            }),
           );
+        };
+
+        applyPos(resolvePoint());
+        // Keep the agent glued to a live DOM target while scrolling mid-tween.
+        // setTimeout (not rAF) so background tabs keep making progress.
+        const started = performance.now();
+        while (performance.now() - started < ms) {
+          if (!stillActive()) return;
+          if (opts.live) applyPos(resolvePoint());
+          const left = ms - (performance.now() - started);
+          if (left <= 0) break;
+          await delay(Math.min(32, left));
         }
+        applyPos(resolvePoint(), { pulse: false, final: true });
       };
 
       const flyDiagonal = async (agentIndex, to, flight = "work") => {
@@ -939,19 +958,24 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
         });
       };
 
-      const paintWhileMoving = async (agentIndex, to, ms, apply) => {
+      const paintWhileMoving = async (agentIndex, to, ms, apply, live) => {
         const paint = new Promise((resolve) => {
           const start = performance.now();
-          const frame = (now) => {
+          const tick = () => {
+            const now = performance.now();
             const amount = easeOutCubic(Math.min(1, (now - start) / ms));
             apply(amount);
-            if (now - start < ms && stillActive()) requestAnimationFrame(frame);
-            else resolve();
+            if (now - start < ms && stillActive()) {
+              // Prefer setTimeout so builds continue when the tab is hidden.
+              window.setTimeout(tick, document.hidden ? 48 : 16);
+            } else {
+              resolve();
+            }
           };
-          requestAnimationFrame(frame);
+          tick();
         });
         await Promise.all([
-          moveCursor(agentIndex, to, ms, { flight: "work" }),
+          moveCursor(agentIndex, to, ms, { flight: "work", live }),
           paint,
         ]);
       };
@@ -1122,11 +1146,27 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
               ],
             };
             const [from, to, prop] = map[job.edge];
+            const liveEnd = () => {
+              const r = card.getBoundingClientRect();
+              const liveMap = {
+                top: { x: r.right - pad, y: r.top + pad },
+                right: { x: r.right - pad, y: r.bottom - pad },
+                bottom: { x: r.left + pad, y: r.bottom - pad },
+                left: { x: r.left + pad, y: r.top + pad },
+              };
+              return liveMap[job.edge] || to;
+            };
             await flyDiagonal(agentIndex, from);
             if (!stillActive()) return;
-            await paintWhileMoving(agentIndex, to, STROKE_MS, (amount) => {
-              card.style.setProperty(prop, `${amount * 100}%`);
-            });
+            await paintWhileMoving(
+              agentIndex,
+              to,
+              STROKE_MS,
+              (amount) => {
+                card.style.setProperty(prop, `${amount * 100}%`);
+              },
+              liveEnd,
+            );
             p.edges[job.edge] = true;
             maybeFinishCard(card, progress);
             return;
@@ -1135,20 +1175,26 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
           if (job.type === "media") {
             const el = job.el;
             el.style.clipPath = "inset(0 100% 0 0)";
-            const mRect = el.getBoundingClientRect();
-            const end = {
-              x: mRect.left + mRect.width,
-              y: mRect.top + mRect.height * 0.45,
+            const liveStart = () => {
+              const m = el.getBoundingClientRect();
+              return { x: m.left, y: m.top + m.height * 0.45 };
             };
-            await flyDiagonal(agentIndex, {
-              x: mRect.left,
-              y: mRect.top + mRect.height * 0.45,
-            });
+            const liveEnd = () => {
+              const m = el.getBoundingClientRect();
+              return { x: m.left + m.width, y: m.top + m.height * 0.45 };
+            };
+            await flyDiagonal(agentIndex, liveStart());
             if (!stillActive()) return;
-            await paintWhileMoving(agentIndex, end, STROKE_MS, (amount) => {
-              el.style.clipPath = `inset(0 ${(1 - amount) * 100}% 0 0)`;
-              card.style.setProperty("--media-reveal", `${amount * 100}%`);
-            });
+            await paintWhileMoving(
+              agentIndex,
+              liveEnd(),
+              STROKE_MS,
+              (amount) => {
+                el.style.clipPath = `inset(0 ${(1 - amount) * 100}% 0 0)`;
+                card.style.setProperty("--media-reveal", `${amount * 100}%`);
+              },
+              liveEnd,
+            );
             el.style.clipPath = "none";
             el.setAttribute("data-media-open", "");
             p.media = true;
@@ -1166,12 +1212,17 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
               for (let i = 0; i < text.length; i += TYPE_CHUNK) {
                 if (!stillActive()) return;
                 el.textContent = text.slice(0, i + TYPE_CHUNK);
-                await moveCursor(agentIndex, caretPoint(el), TYPE_MS);
+                await moveCursor(agentIndex, caretPoint(el), TYPE_MS, {
+                  live: () => caretPoint(el),
+                });
               }
               el.textContent = text;
             } else {
               await flyDiagonal(agentIndex, centerOf(el));
-              await moveCursor(agentIndex, centerOf(el), META_TAP_MS, { pulse: true });
+              await moveCursor(agentIndex, centerOf(el), META_TAP_MS, {
+                pulse: true,
+                live: () => centerOf(el),
+              });
               await delay(60);
             }
             el.removeAttribute("data-writing");
@@ -1192,12 +1243,17 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
               for (let i = 0; i < text.length; i += TYPE_CHUNK) {
                 if (!stillActive()) return;
                 el.textContent = text.slice(0, i + TYPE_CHUNK);
-                await moveCursor(agentIndex, caretPoint(el), TYPE_MS);
+                await moveCursor(agentIndex, caretPoint(el), TYPE_MS, {
+                  live: () => caretPoint(el),
+                });
               }
               el.textContent = job.text;
             } else {
               await flyDiagonal(agentIndex, centerOf(el));
-              await moveCursor(agentIndex, centerOf(el), META_TAP_MS, { pulse: true });
+              await moveCursor(agentIndex, centerOf(el), META_TAP_MS, {
+                pulse: true,
+                live: () => centerOf(el),
+              });
               await delay(60);
             }
             el.removeAttribute("data-writing");
@@ -1211,7 +1267,11 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
           if (job.type === "meta") {
             await flyDiagonal(agentIndex, centerOf(job.el));
             if (!stillActive()) return;
-            await moveCursor(agentIndex, centerOf(job.el), META_TAP_MS, { pulse: true, scale: 1.08 });
+            await moveCursor(agentIndex, centerOf(job.el), META_TAP_MS, {
+              pulse: true,
+              scale: 1.08,
+              live: () => centerOf(job.el),
+            });
             job.el.setAttribute("data-built", "");
             p.metaLeft = Math.max(0, p.metaLeft - 1);
             await delay(40);
@@ -1459,7 +1519,9 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
 
   useEffect(() => {
     if (!eligible || !enabled) return undefined;
+    // Already played this tab session — show finished cards, never auto-replay on menu nav.
     if (sessionStorage.getItem(storageKeyFor(storageKey))) {
+      revealAll(resolveScope());
       return undefined;
     }
 
@@ -1473,7 +1535,7 @@ const CardBuildSwarm = memo(function CardBuildSwarm({
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [eligible, enabled, storageKey, runBuild, chaos]);
+  }, [eligible, enabled, storageKey, runBuild, chaos, revealAll, resolveScope]);
 
   useEffect(() => {
     if (!eligible || !enabled) return undefined;

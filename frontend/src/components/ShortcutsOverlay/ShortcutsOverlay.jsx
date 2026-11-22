@@ -52,11 +52,11 @@ function Section({ title, hint, children }) {
   return (
     <section>
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="font-label-bold text-xs uppercase tracking-[0.22em] text-on-surface">
+        <h3 className="font-label-bold text-xs  tracking-[0.22em] text-on-surface">
           {title}
         </h3>
         {hint && (
-          <span className="font-mono text-[10px] uppercase text-text-muted">{hint}</span>
+          <span className="font-mono text-[10px]  text-text-muted">{hint}</span>
         )}
       </div>
       <div className="grid gap-2">{children}</div>
@@ -96,17 +96,17 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ isOpen, onClose }) {
             >
               <header className="flex shrink-0 items-start justify-between gap-4 border-b-4 border-outline bg-primary-container px-5 py-4 text-on-primary-container">
                 <div>
-                  <p className="font-label-bold text-[10px] uppercase tracking-[0.28em] opacity-75">
+                  <p className="font-label-bold text-[10px]  tracking-[0.28em] opacity-75">
                     Press ? anytime
                   </p>
-                  <h2 className="font-headline-md text-2xl md:text-3xl uppercase leading-none">
+                  <h2 className="font-headline-md text-2xl md:text-3xl  leading-none">
                     Shortcuts
                   </h2>
                 </div>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="shrink-0 border-4 border-outline bg-surface px-3 py-2 font-label-bold text-xs uppercase text-on-surface shadow-[3px_3px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                  className="shrink-0 border-4 border-outline bg-surface px-3 py-2 font-label-bold text-xs  text-on-surface shadow-[3px_3px_0_var(--shadow-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
                 >
                   Esc
                 </button>
@@ -120,7 +120,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ isOpen, onClose }) {
                         key={route.key}
                         className="flex items-center justify-between gap-2 border-2 border-outline bg-surface-variant px-3 py-2.5"
                       >
-                        <span className="font-label-bold text-xs uppercase text-on-surface truncate">
+                        <span className="font-label-bold text-xs  text-on-surface truncate">
                           {route.label}
                         </span>
                         <Kbd>Alt+{route.key}</Kbd>

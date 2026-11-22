@@ -128,18 +128,18 @@ export default function ChatPanel({
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-2">
-            <h2 className="font-label-bold text-sm uppercase tracking-[0.14em]">Kuro</h2>
-            <span className="font-mono text-[9px] uppercase opacity-65" aria-live="off">
+            <h2 className="font-label-bold text-sm  tracking-[0.14em]">Kuro</h2>
+            <span className="font-mono text-[9px]  opacity-65" aria-live="off">
               {loading ? "typing" : pinned ? "pinned" : "online"}
             </span>
           </div>
-          <p className="truncate font-mono text-[9px] uppercase tracking-[0.12em] opacity-70">copilot</p>
+          <p className="truncate font-mono text-[9px]  tracking-[0.12em] opacity-70">copilot</p>
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
           <button
             type="button"
             onClick={onTogglePin}
-            className={`h-8 min-w-8 border-2 border-on-primary-container px-1.5 font-mono text-[10px] uppercase transition-transform hover:translate-x-px hover:translate-y-px ${
+            className={`h-8 min-w-8 border-2 border-on-primary-container px-1.5 font-mono text-[10px]  transition-transform hover:translate-x-px hover:translate-y-px ${
               pinned ? "bg-on-primary-container text-primary-container" : "bg-surface text-on-surface"
             }`}
             aria-pressed={pinned}
@@ -151,7 +151,7 @@ export default function ChatPanel({
           <button
             type="button"
             onClick={onToggleFullscreen}
-            className="h-8 min-w-8 border-2 border-on-primary-container bg-surface px-1.5 font-mono text-[10px] uppercase text-on-surface transition-transform hover:translate-x-px hover:translate-y-px"
+            className="h-8 min-w-8 border-2 border-on-primary-container bg-surface px-1.5 font-mono text-[10px]  text-on-surface transition-transform hover:translate-x-px hover:translate-y-px"
             aria-pressed={isFullscreen}
             aria-label={isFullscreen ? "Exit fullscreen" : "Fullscreen chat"}
             title={isFullscreen ? "Collapse" : "Fullscreen"}
@@ -186,7 +186,7 @@ export default function ChatPanel({
           ) : (
             <>
               {hadStoredChat && messages.length > 1 && (
-                <p className="text-center font-mono text-[9px] uppercase tracking-[0.16em] text-text-muted">
+                <p className="text-center font-mono text-[9px]  tracking-[0.16em] text-text-muted">
                   Kuro remembers this visit
                 </p>
               )}
@@ -242,7 +242,7 @@ export default function ChatPanel({
           <button
             type="submit"
             disabled={!canSend}
-            className={`shrink-0 border-2 border-outline px-3.5 py-2 font-label-bold text-xs uppercase tracking-wide transition-[background-color,color,transform,box-shadow] ${
+            className={`shrink-0 border-2 border-outline px-3.5 py-2 font-label-bold text-xs  tracking-wide transition-[background-color,color,transform,box-shadow] ${
               canSend
                 ? "bg-primary-container text-on-primary-container shadow-[2px_2px_0_var(--shadow-color)] hover:translate-x-px hover:translate-y-px hover:shadow-none"
                 : "cursor-not-allowed bg-surface text-text-muted"

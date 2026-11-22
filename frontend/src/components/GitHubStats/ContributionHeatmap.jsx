@@ -68,7 +68,7 @@ function ContributionHeatmap({ contributions = [], source = "repo-stats" }) {
   if (empty) {
     return (
       <div className="p-4 flex flex-col items-center text-center min-h-[140px] justify-center">
-        <p className="font-mono text-xs uppercase text-text-muted">
+        <p className="font-mono text-xs  text-text-muted">
           Contribution data unavailable right now.
         </p>
       </div>
@@ -89,7 +89,7 @@ function ContributionHeatmap({ contributions = [], source = "repo-stats" }) {
           aria-label="GitHub contribution heatmap"
         />
       </div>
-      <div className="flex items-center gap-2 font-mono text-[9px] uppercase text-text-muted">
+      <div className="flex items-center gap-2 font-mono text-[9px]  text-text-muted">
         <span>Less</span>
         {[0, 1, 2, 3, 4].map((level) => (
           <span
@@ -102,7 +102,7 @@ function ContributionHeatmap({ contributions = [], source = "repo-stats" }) {
         ))}
         <span>More</span>
       </div>
-      <p className="font-mono text-[10px] uppercase text-text-muted text-center max-w-lg">
+      <p className="font-mono text-[10px]  text-text-muted text-center max-w-lg">
         {caption}
       </p>
     </div>

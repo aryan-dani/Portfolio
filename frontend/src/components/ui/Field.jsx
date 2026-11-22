@@ -9,7 +9,7 @@ const Field = memo(
     return (
       <label className="flex flex-col gap-2 w-full">
         {label ? (
-          <span className="font-label-bold text-xs uppercase tracking-[0.16em] text-text-muted">
+          <span className="font-label-bold text-xs  tracking-[0.16em] text-text-muted">
             {label}
           </span>
         ) : null}

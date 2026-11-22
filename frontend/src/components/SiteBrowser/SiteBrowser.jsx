@@ -140,7 +140,7 @@ export default function SiteBrowser() {
           </button>
           <div className="flex min-w-0 flex-1 items-center gap-2 border-2 border-outline bg-surface px-3 py-1.5">
             {session.title ? (
-              <span className="hidden shrink-0 font-label-bold text-[10px] uppercase tracking-[0.14em] text-on-surface sm:inline">
+              <span className="hidden shrink-0 font-label-bold text-[10px]  tracking-[0.14em] text-on-surface sm:inline">
                 {session.title}
               </span>
             ) : null}
@@ -152,7 +152,7 @@ export default function SiteBrowser() {
             href={session.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-9 shrink-0 items-center gap-2 border-2 border-outline bg-primary-container px-2.5 font-label-bold text-[10px] uppercase tracking-wide text-on-primary-container shadow-[2px_2px_0_0_var(--shadow-color)] cursor-none"
+            className="flex h-9 shrink-0 items-center gap-2 border-2 border-outline bg-primary-container px-2.5 font-label-bold text-[10px]  tracking-wide text-on-primary-container shadow-[2px_2px_0_0_var(--shadow-color)] cursor-none"
           >
             <FaExternalLinkAlt aria-hidden="true" />
             <span className="hidden sm:inline">Open out</span>
@@ -168,7 +168,7 @@ export default function SiteBrowser() {
 
           {session.status === "blocked" ? (
             <div className="flex h-full flex-col items-start justify-center gap-4 p-6 sm:p-10">
-              <p className="font-headline-md text-2xl uppercase text-on-surface sm:text-4xl">
+              <p className="font-headline-md text-2xl  text-on-surface sm:text-4xl">
                 This site won&apos;t load in here
               </p>
               <p className="max-w-xl font-body-md text-base text-on-surface">
@@ -178,7 +178,7 @@ export default function SiteBrowser() {
                 href={session.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-4 border-outline bg-primary-container px-5 py-3 font-label-bold uppercase text-on-primary-container shadow-[4px_4px_0_0_var(--shadow-color)] cursor-none"
+                className="border-4 border-outline bg-primary-container px-5 py-3 font-label-bold  text-on-primary-container shadow-[4px_4px_0_0_var(--shadow-color)] cursor-none"
               >
                 Open in a new tab
               </a>

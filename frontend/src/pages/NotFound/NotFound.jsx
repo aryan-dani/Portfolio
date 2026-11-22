@@ -16,10 +16,10 @@ export default function NotFound() {
       transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="border-4 border-outline bg-primary-container px-6 py-4 text-on-primary-container shadow-[8px_8px_0_var(--shadow-color)]">
-        <h1 className="font-headline-xl text-5xl uppercase md:text-7xl">404</h1>
+        <h1 className="font-headline-xl text-5xl  md:text-7xl">404</h1>
       </div>
       <div className="w-full max-w-xl border-4 border-outline bg-surface p-6 text-left shadow-[6px_6px_0_var(--shadow-color)]">
-        <h2 className="font-headline-md text-3xl uppercase text-on-surface">
+        <h2 className="font-headline-md text-3xl  text-on-surface">
           Page Not Found - Play Breakout Instead
         </h2>
         <p className="mt-4 font-body-lg text-on-surface">
@@ -36,7 +36,7 @@ export default function NotFound() {
           <Link
             key={to}
             to={to}
-            className="border-4 border-outline bg-surface px-4 py-3 font-label-bold uppercase text-on-surface shadow-[4px_4px_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+            className="border-4 border-outline bg-surface px-4 py-3 font-label-bold  text-on-surface shadow-[4px_4px_0_var(--shadow-color)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
           >
             {label}
           </Link>

@@ -35,7 +35,7 @@ const Achievements = memo(function Achievements() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             />
           </div>
-          <p className="mt-2 font-label-bold text-xs uppercase tracking-widest text-text-muted">
+          <p className="mt-2 font-label-bold text-xs  tracking-widest text-text-muted">
             Trophy progress {Math.round(progress * 100)}%
           </p>
         </div>
@@ -62,14 +62,14 @@ const Achievements = memo(function Achievements() {
               <div data-build-part="media" className="flex items-start justify-between gap-3">
                 <span className="text-3xl" aria-hidden="true">{achievement.icon}</span>
                 {achievement.secret && (
-                  <span className="font-label-bold text-[10px] uppercase border-2 border-current px-2 py-0.5">
+                  <span className="font-label-bold text-[10px]  border-2 border-current px-2 py-0.5">
                     Secret
                   </span>
                 )}
               </div>
               <h2
                 data-build-part="title"
-                className="font-headline-md text-xl uppercase mt-3"
+                className="font-headline-md text-xl  mt-3"
               >
                 {achievement.title}
               </h2>
@@ -80,7 +80,7 @@ const Achievements = memo(function Achievements() {
                 {achievement.description}
               </p>
               <div data-build-part="meta" className="mt-4">
-                <p className="font-label-bold text-[10px] uppercase tracking-widest opacity-70">
+                <p className="font-label-bold text-[10px]  tracking-widest opacity-70">
                   {isUnlocked ? "Unlocked" : "Locked"}
                 </p>
               </div>

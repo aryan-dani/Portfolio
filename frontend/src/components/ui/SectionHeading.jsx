@@ -17,7 +17,7 @@ const SectionHeading = memo(function SectionHeading({
           {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
           <TitleTag
             id={id}
-            className="font-headline-md text-2xl md:text-3xl uppercase border-b-4 border-outline pb-2 w-fit"
+            className="font-headline-md text-2xl md:text-3xl  border-b-4 border-outline pb-2 w-fit"
           >
             {title}
           </TitleTag>

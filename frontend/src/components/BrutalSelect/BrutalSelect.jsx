@@ -102,7 +102,7 @@ export default function BrutalSelect({
   return (
     <div className={`flex flex-col gap-2 ${className}`} ref={rootRef}>
       {label && (
-        <label id={labelId} htmlFor={id} className="font-label-bold uppercase text-sm">
+        <label id={labelId} htmlFor={id} className="font-label-bold  text-sm">
           {label}
         </label>
       )}

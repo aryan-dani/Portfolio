@@ -29,8 +29,6 @@ import NoiseOverlay from "./components/NoiseOverlay/NoiseOverlay";
 import GroundedIntro from "./components/Intro/GroundedIntro";
 import CustomCursor from "./components/CustomCursor/CustomCursor";
 import HackModeListener from "./components/HackModeListener/HackModeListener";
-import { readStorage } from "./utils/storage";
-
 const lazyPages = Object.fromEntries(
   SITE_ROUTES.filter((route) => PAGE_IMPORTS[route.id]).map((route) => [
     route.id,
@@ -265,16 +263,18 @@ function chooseIntro() {
   const q = introQueryValue();
   // Film is opt-in only (?intro=1). Native Grounded intro is the default.
   if (q === "1") return "film";
+  // Force grounded even when reduced-motion would otherwise skip.
+  if (q === "v2") return "grounded";
 
   if (!isHomePathname()) return "skip";
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "skip";
-  // Force replay with ?intro=v2; otherwise once per browser.
-  if (q !== "v2" && readStorage("portfolio_visited")) return "skip";
+  // Every full reload of home plays the intro. SPA navigations keep BootIntro
+  // mounted once, so leaving and returning via the menu does not replay.
   return "grounded";
 }
 
 /**
- * Default: GroundedIntro on first home visit.
+ * Default: GroundedIntro on every home page load.
  * Film: ?intro=1 only (lazy-loaded so normal visits never pay for the video).
  */
 function BootIntro() {

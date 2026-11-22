@@ -1,4 +1,4 @@
-import { memo, useRef, useEffect, useCallback } from "react";
+import { memo, useRef, useEffect, useCallback, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { HiVolumeUp, HiVolumeOff } from "react-icons/hi";
@@ -14,9 +14,11 @@ function FloatingDock() {
   const dockRef = useRef(null);
   const { enabled: soundEnabled, toggleSound, play } = useSound();
   const { hideChrome, wake } = useSiteIdleState();
+  const [footerInView, setFooterInView] = useState(false);
   const revealDock = useCallback(() => {
+    if (footerInView) return;
     wake();
-  }, [wake]);
+  }, [wake, footerInView]);
 
   const { isVisible, reveal } = useScrollVisibility({
     topThreshold: 80,
@@ -25,11 +27,27 @@ function FloatingDock() {
     bottomProximity: 160,
     onBottomProximity: revealDock,
   });
-  const showDock = isVisible && !hideChrome;
+  const showDock = isVisible && !hideChrome && !footerInView;
   useInertWhenHidden(dockRef, !showDock);
   const wasVisibleRef = useRef(isVisible);
 
-  const revealDockFull = useCallback(() => {
+  const revealDockFull = useCallback((event) => {
+    const target = event?.target;
+    // Don't steal clicks aimed at the footer or other interactive chrome.
+    if (
+      target?.closest?.(
+        "footer, a, button, input, textarea, select, [role='button'], [contenteditable='true']",
+      )
+    ) {
+      return;
+    }
+    // Only wake when the pointer is near the dock's center band, not the whole width.
+    if (typeof event?.clientX === "number") {
+      const mid = window.innerWidth / 2;
+      if (Math.abs(event.clientX - mid) > Math.min(280, window.innerWidth * 0.42)) {
+        return;
+      }
+    }
     wake();
     reveal();
   }, [wake, reveal]);
@@ -58,11 +76,22 @@ function FloatingDock() {
     };
   }, [showDock, wake]);
 
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => setFooterInView(Boolean(entry?.isIntersecting)),
+      { threshold: 0.08, rootMargin: "0px 0px -12% 0px" },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
   return (
     <>
-      {!showDock && (
+      {!showDock && !footerInView && (
         <div
-          className="fixed inset-x-0 bottom-0 z-40 h-28 sm:h-36 pointer-events-auto"
+          className="fixed left-1/2 -translate-x-1/2 bottom-0 z-40 h-24 sm:h-28 w-[min(560px,90vw)] pointer-events-auto"
           onPointerEnter={revealDockFull}
           onPointerMove={revealDockFull}
           onMouseEnter={revealDockFull}
@@ -111,7 +140,7 @@ function FloatingDock() {
                   <Icon className="text-lg sm:text-xl relative z-10" />
                   
                   {/* Tooltip on hover for desktop */}
-                  <span className={`absolute -top-12 scale-0 group-hover:scale-100 transition-transform bg-on-background text-background text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block ${index === dockNavItems.length - 1 ? 'right-0 origin-bottom-right' : 'left-1/2 -translate-x-1/2 origin-bottom'}`}>
+                  <span className={`absolute -top-12 scale-0 group-hover:scale-100 transition-transform bg-on-background text-background text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold tracking-wide hidden sm:block ${index === dockNavItems.length - 1 ? 'right-0 origin-bottom-right' : 'left-1/2 -translate-x-1/2 origin-bottom'}`}>
                     {item.label}{item.shortcut ? <span className="opacity-60 ml-1">{item.shortcut}</span> : null}
                   </span>
                 </NavLink>
@@ -146,7 +175,7 @@ function FloatingDock() {
               ) : (
                 <HiVolumeOff className="text-lg sm:text-xl relative z-10 group-hover:text-background" />
               )}
-              <span className="absolute -top-12 right-0 origin-bottom-right scale-0 group-hover:scale-100 transition-transform bg-on-background text-background text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold uppercase tracking-wider hidden sm:block">
+              <span className="absolute -top-12 right-0 origin-bottom-right scale-0 group-hover:scale-100 transition-transform bg-on-background text-background text-xs font-bold px-3 py-1.5 border-2 border-outline whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_var(--shadow-accent)] z-50 font-label-bold tracking-wide hidden sm:block">
                 Sound {soundEnabled ? "On" : "Off"}
               </span>
             </button>

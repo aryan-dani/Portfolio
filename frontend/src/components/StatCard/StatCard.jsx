@@ -44,7 +44,7 @@ function StatCard({ value, isPlus, label, bg, text, shadow, to, compact = false 
       <div className={valueClass}>
         {displayVal}{isPlus && "+"}
       </div>
-      <div className="font-label-bold text-[10px] md:text-xs uppercase opacity-80 tracking-wider">
+      <div className="font-label-bold text-[10px] md:text-xs  opacity-80 tracking-wider">
         {label}
       </div>
     </div>
@@ -53,14 +53,14 @@ function StatCard({ value, isPlus, label, bg, text, shadow, to, compact = false 
       <div className={valueClass}>
         {displayVal}{isPlus && "+"}
       </div>
-      <div className="font-label-bold text-[10px] md:text-xs uppercase mt-0.5 opacity-80 tracking-wider">
+      <div className="font-label-bold text-[10px] md:text-xs  mt-0.5 opacity-80 tracking-wider">
         {label}
       </div>
     </>
   );
 
   const openHint = to ? (
-    <div className="absolute bottom-1 right-2 font-label-bold text-[9px] uppercase tracking-[0.18em] opacity-0 group-hover:opacity-70 transition-opacity pointer-events-none">
+    <div className="absolute bottom-1 right-2 font-label-bold text-[9px]  tracking-[0.18em] opacity-0 group-hover:opacity-70 transition-opacity pointer-events-none">
       Open
     </div>
   ) : null;

@@ -385,7 +385,7 @@ const TechGlobeWebGL = memo(function TechGlobeWebGL() {
         data-intro-globe-target
       />
       <div className="pointer-events-none absolute left-0 top-0 flex flex-col gap-2">
-        <span className="font-label-bold text-[10px] uppercase tracking-[0.2em] text-text-muted">
+        <span className="font-label-bold text-[10px]  tracking-[0.2em] text-text-muted">
           Live stack
         </span>
         <span
@@ -395,7 +395,7 @@ const TechGlobeWebGL = memo(function TechGlobeWebGL() {
           Skills × projects
         </span>
       </div>
-      <p className="pointer-events-none absolute bottom-0 left-0 font-label-bold text-[10px] uppercase tracking-[0.16em] text-text-muted">
+      <p className="pointer-events-none absolute bottom-0 left-0 font-label-bold text-[10px]  tracking-[0.16em] text-text-muted">
         Drag · click a node
       </p>
     </div>

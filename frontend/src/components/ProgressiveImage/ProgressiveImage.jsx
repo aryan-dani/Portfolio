@@ -45,7 +45,7 @@ const ProgressiveImage = memo(function ProgressiveImage({
 
       {errored ? (
         <div className="absolute inset-0 flex items-center justify-center p-3">
-          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted text-center">
+          <span className="font-mono text-[9px]  tracking-[0.14em] text-text-muted text-center">
             Image unavailable
           </span>
         </div>

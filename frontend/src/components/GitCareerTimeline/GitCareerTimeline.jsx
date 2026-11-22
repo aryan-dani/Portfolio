@@ -20,10 +20,10 @@ const GitCareerTimeline = memo(function GitCareerTimeline({ onSelectExperience }
   return (
     <motion.section className="flex flex-col gap-6" variants={itemVariants}>
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 border-b-4 border-outline pb-4">
-        <h2 className="font-headline-md text-3xl md:text-4xl uppercase text-on-surface">
+        <h2 className="font-headline-md text-3xl md:text-4xl  text-on-surface">
           Career Timeline
         </h2>
-        <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
+        <p className="font-mono text-[10px]  tracking-widest text-text-muted">
           {roles.length} roles · git-style log
         </p>
       </div>
@@ -41,17 +41,17 @@ const GitCareerTimeline = memo(function GitCareerTimeline({ onSelectExperience }
             transition={{ delay: index * 0.08, type: "spring", stiffness: 280, damping: 22 }}
           >
             <div className="flex items-center justify-between gap-3 border-b-4 border-outline bg-surface-variant px-4 py-3">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-on-surface opacity-70">
+              <span className="font-mono text-[10px]  tracking-wider text-on-surface opacity-70">
                 {role.branch}
               </span>
-              <span className="font-mono text-[10px] uppercase text-text-muted whitespace-nowrap">
+              <span className="font-mono text-[10px]  text-text-muted whitespace-nowrap">
                 {role.current ? "Now · " : ""}
                 {role.period}
               </span>
             </div>
 
             <div className="p-5 flex flex-col flex-1 gap-2">
-              <h3 className="font-label-bold text-sm uppercase leading-snug text-on-surface">
+              <h3 className="font-label-bold text-sm  leading-snug text-on-surface">
                 {role.position}
               </h3>
               {role.companyUrl ? (
@@ -82,7 +82,7 @@ const GitCareerTimeline = memo(function GitCareerTimeline({ onSelectExperience }
         ))}
       </div>
 
-      <p className="font-mono text-[10px] uppercase text-text-muted text-center">
+      <p className="font-mono text-[10px]  text-text-muted text-center">
         Click a role to open the full experience · not live GitHub data
       </p>
     </motion.section>

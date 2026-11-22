@@ -80,7 +80,7 @@ const ServiceLanding = memo(function ServiceLanding() {
           <ol className="list-none flex flex-col gap-3 font-body-md text-sm md:text-base leading-snug max-w-3xl">
             {landing.process.map((step, index) => (
               <li key={step} className="flex gap-3 border-l-2 border-outline pl-4">
-                <span className="font-label-bold text-[10px] uppercase tracking-[0.14em] text-text-muted shrink-0">
+                <span className="font-label-bold text-[10px]  tracking-[0.14em] text-text-muted shrink-0">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span>{step}</span>
@@ -105,7 +105,7 @@ const ServiceLanding = memo(function ServiceLanding() {
                   <p className="font-body-md text-sm text-on-surface-variant leading-snug">
                     {pack.summary || pack.bestFor}
                   </p>
-                  <p className="font-label-bold text-[11px] uppercase tracking-[0.14em] mt-auto pt-2">
+                  <p className="font-label-bold text-[11px]  tracking-[0.14em] mt-auto pt-2">
                     From {packagePrice(pack, currency)}
                   </p>
                 </Card>

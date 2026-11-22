@@ -6,7 +6,7 @@ const Testimonials = memo(function Testimonials() {
 
   return (
     <section aria-labelledby="testimonials-heading" className="flex flex-col gap-4 w-full">
-      <h2 id="testimonials-heading" className="font-headline-md text-xl uppercase">
+      <h2 id="testimonials-heading" className="font-headline-md text-xl ">
         Client notes
       </h2>
       <ul className="flex flex-col gap-3">
@@ -17,7 +17,7 @@ const Testimonials = memo(function Testimonials() {
           >
             <blockquote className="font-body-md text-sm leading-snug">{entry.quote}</blockquote>
             {entry.attribution ? (
-              <p className="font-label-bold text-xs uppercase mt-2">{entry.attribution}</p>
+              <p className="font-label-bold text-xs  mt-2">{entry.attribution}</p>
             ) : null}
           </li>
         ))}

@@ -25,7 +25,7 @@ function GHCard({ header, children, className = "" }) {
         transition: { type: "spring", stiffness: 350, damping: 22 },
       }}
     >
-      <div className="px-4 py-2.5 font-label-bold text-sm uppercase flex items-center justify-between border-b-4 border-outline bg-surface-variant text-on-surface">
+      <div className="px-4 py-2.5 font-label-bold text-sm  flex items-center justify-between border-b-4 border-outline bg-surface-variant text-on-surface">
         {header}
       </div>
       {children}
@@ -37,7 +37,7 @@ function StatTile({ label, value }) {
   return (
     <div className="border-4 border-outline bg-surface-variant px-4 py-8 md:py-10 min-h-[128px] md:min-h-[148px] flex flex-col items-center justify-center text-center shadow-[4px_4px_0px_0px_var(--shadow-color)]">
       <p className="font-headline-md text-3xl md:text-4xl lg:text-5xl leading-none text-on-surface">{value}</p>
-      <p className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-text-muted mt-3">{label}</p>
+      <p className="font-mono text-[10px] md:text-xs  tracking-widest text-text-muted mt-3">{label}</p>
     </div>
   );
 }
@@ -45,7 +45,7 @@ function StatTile({ label, value }) {
 function LanguageBars({ languages = [] }) {
   if (!languages.length) {
     return (
-      <p className="p-4 font-mono text-xs uppercase text-text-muted text-center">
+      <p className="p-4 font-mono text-xs  text-text-muted text-center">
         Language breakdown unavailable.
       </p>
     );
@@ -55,7 +55,7 @@ function LanguageBars({ languages = [] }) {
     <div className="p-4 flex flex-col gap-3">
       {languages.map((lang) => (
         <div key={lang.name}>
-          <div className="flex justify-between font-mono text-xs uppercase mb-1">
+          <div className="flex justify-between font-mono text-xs  mb-1">
             <span>{lang.name}</span>
             <span className="text-text-muted">{lang.percent}%</span>
           </div>
@@ -74,7 +74,7 @@ function LanguageBars({ languages = [] }) {
 function WeeklyActivityChart({ weeklyCommits = [] }) {
   if (!weeklyCommits.length) {
     return (
-      <p className="p-4 font-mono text-xs uppercase text-text-muted text-center">
+      <p className="p-4 font-mono text-xs  text-text-muted text-center">
         Weekly activity unavailable.
       </p>
     );
@@ -95,7 +95,7 @@ function WeeklyActivityChart({ weeklyCommits = [] }) {
           />
         ))}
       </div>
-      <p className="mt-2 font-mono text-[10px] uppercase text-text-muted text-center">
+      <p className="mt-2 font-mono text-[10px]  text-text-muted text-center">
         Last 26 weeks · aggregated repo participation
       </p>
     </div>
@@ -116,7 +116,7 @@ function LoadingBlock({ label }) {
   return (
     <div className="p-4 flex flex-col items-center min-h-[120px] justify-center">
       <div className="h-20 w-full max-w-md border-4 border-dashed border-outline-variant bg-surface-variant animate-pulse" />
-      <p className="mt-2 font-mono text-[10px] uppercase text-text-muted">{label}</p>
+      <p className="mt-2 font-mono text-[10px]  text-text-muted">{label}</p>
     </div>
   );
 }
@@ -154,7 +154,7 @@ const GitHubStats = memo(function GitHubStats() {
       viewport={{ once: true, margin: "-50px" }}
     >
       <motion.h2
-        className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-outline pb-4 text-on-surface"
+        className="font-headline-md text-3xl md:text-4xl  border-b-4 border-outline pb-4 text-on-surface"
         variants={itemVariants}
       >
         GitHub Activity
@@ -173,7 +173,7 @@ const GitHubStats = memo(function GitHubStats() {
       {dashboard && (
         <>
           {dashboard.stale && (
-            <p className="font-mono text-[10px] uppercase text-text-muted text-center -mb-4">
+            <p className="font-mono text-[10px]  text-text-muted text-center -mb-4">
               Showing cached GitHub data while the API cools down.
             </p>
           )}
@@ -251,7 +251,7 @@ const GitHubStats = memo(function GitHubStats() {
           </GHCard>
 
           {dashboard.activityRepos?.length > 0 && (
-            <p className="font-mono text-[10px] uppercase text-text-muted text-center -mt-4">
+            <p className="font-mono text-[10px]  text-text-muted text-center -mt-4">
               Activity from {dashboard.activityRepos.length} recent repos · cached 30m · official GitHub REST API
             </p>
           )}
@@ -262,7 +262,7 @@ const GitHubStats = memo(function GitHubStats() {
         href={`https://github.com/${GITHUB_USERNAME}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-primary-container text-on-primary-container border-4 border-outline px-6 py-4 font-label-bold text-lg uppercase flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all w-full md:w-fit cursor-none"
+        className="bg-primary-container text-on-primary-container border-4 border-outline px-6 py-4 font-label-bold text-lg flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_var(--shadow-accent)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all w-full md:w-fit self-center mx-auto cursor-none"
         variants={itemVariants}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}

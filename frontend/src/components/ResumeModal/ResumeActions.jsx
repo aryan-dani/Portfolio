@@ -15,7 +15,7 @@ export default function ResumeActions({
   const isInverted = tone === "inverted";
 
   const btnBase =
-    "px-3 py-2.5 font-label-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer select-none rounded-none";
+    "px-3 py-2.5 font-label-bold text-xs  tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer select-none rounded-none";
 
   const btnView = isInverted
     ? `${btnBase} bg-white text-black border-2 border-white shadow-[3px_3px_0px_0px_rgba(255,255,255,0.35)] hover:bg-yellow-400 hover:text-black hover:border-yellow-400 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none`
@@ -43,7 +43,7 @@ export default function ResumeActions({
         >
           <div className="flex items-center justify-between gap-2">
             <span
-              className={`font-label-bold text-xs uppercase tracking-wider px-2 py-0.5 border ${
+              className={`font-label-bold text-xs  tracking-wider px-2 py-0.5 border ${
                 isInverted
                   ? "border-white/30 bg-white/10 text-white"
                   : "border-outline bg-surface-variant text-on-surface"

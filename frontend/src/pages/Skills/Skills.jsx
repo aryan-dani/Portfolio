@@ -209,7 +209,7 @@ function Skills() {
           {/* Controls */}
           <motion.div className="flex flex-col gap-4 bg-hatch border-4 border-outline p-4 md:p-5 shadow-[4px_4px_0px_0px_var(--shadow-color)]" variants={cardVariants}>
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-              <div className="flex items-center bg-surface border-4 border-outline p-2 w-full md:w-96 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
+              <div className="flex items-center bg-surface border-4 border-outline p-2 w-full md:flex-1 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:shadow-[4px_4px_0px_0px_var(--shadow-accent)] transition-all">
                 <FaSearch className="text-xl ml-2 mr-3 text-on-surface" />
                 <input
                   type="text"
@@ -235,7 +235,7 @@ function Skills() {
                     key={mode}
                     onClick={() => setViewMode(mode)}
                     aria-pressed={viewMode === mode}
-                    className={`px-4 py-2 border-4 border-outline font-label-bold uppercase text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                    className={`px-4 py-2 border-4 border-outline font-label-bold  text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
                       viewMode === mode
                         ? "bg-primary-container text-on-primary-container"
                         : "bg-surface text-on-surface hover:bg-surface-variant"
@@ -254,7 +254,7 @@ function Skills() {
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
                     aria-pressed={activeCategory === cat.id}
-                    className={`px-5 py-2 border-4 border-outline font-label-bold uppercase text-sm md:text-base shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
+                    className={`px-5 py-2 border-4 border-outline font-label-bold  text-sm md:text-base shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-none ${
                       activeCategory === cat.id
                         ? "bg-primary-container text-on-primary-container"
                         : "bg-surface text-on-surface hover:bg-surface-variant"
@@ -265,14 +265,14 @@ function Skills() {
                 ))}
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-label-bold text-sm uppercase text-on-surface">Sort:</span>
+                <span className="font-label-bold text-sm  text-on-surface">Sort:</span>
                 <div className="flex flex-wrap gap-2">
                   {SORT_OPTIONS.map((opt) => (
                     <button
                       key={opt.id}
                       onClick={() => setSortBy(opt.id)}
                       aria-pressed={sortBy === opt.id}
-                      className={`px-3 py-1 border-2 border-outline font-label-bold text-xs uppercase transition-all cursor-none ${
+                      className={`px-3 py-1 border-2 border-outline font-label-bold text-xs  transition-all cursor-none ${
                         sortBy === opt.id
                           ? "bg-on-background text-background"
                           : "bg-surface text-on-surface hover:bg-surface-variant"
@@ -341,7 +341,7 @@ function Skills() {
           className="bg-surface border-4 border-outline p-8 md:p-10 shadow-[8px_8px_0px_0px_var(--shadow-color)]"
           variants={cardVariants}
         >
-          <h2 className="font-headline-md text-3xl md:text-4xl uppercase border-b-4 border-outline pb-4 mb-8 text-on-surface">
+          <h2 className="font-headline-md text-3xl md:text-4xl  border-b-4 border-outline pb-4 mb-8 text-on-surface">
             Skill Levels
           </h2>
           <div className="flex flex-col gap-7">
@@ -350,7 +350,7 @@ function Skills() {
               return (
                 <div key={item.label} className="flex flex-col gap-2">
                   <div className="flex justify-between items-center">
-                    <span className="font-label-bold uppercase text-sm md:text-base text-on-surface">{item.label}</span>
+                    <span className="font-label-bold  text-sm md:text-base text-on-surface">{item.label}</span>
                     <span className="font-headline-md text-lg md:text-xl text-on-surface">{item.level}%</span>
                   </div>
                   <AnimatedBar level={item.level} delay={i * 0.08} color={levelStyle.bar} />
@@ -404,8 +404,8 @@ function SkillListItem({ skill, icon, onClick }) {
             {icon}
           </motion.div>
           <div className="min-w-0">
-            <h3 className="font-headline-md text-base md:text-lg uppercase truncate text-on-surface">{skill.name}</h3>
-            <span className="font-label-bold text-[10px] uppercase text-secondary">{skill.category}</span>
+            <h3 className="font-headline-md text-base md:text-lg  truncate text-on-surface">{skill.name}</h3>
+            <span className="font-label-bold text-[10px]  text-secondary">{skill.category}</span>
           </div>
         </div>
 
@@ -423,13 +423,13 @@ function SkillListItem({ skill, icon, onClick }) {
         </div>
 
         <div
-          className="border-2 border-outline px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)] shrink-0 ml-auto"
+          className="border-2 border-outline px-2 py-0.5 font-label-bold text-[10px]  shadow-[2px_2px_0px_0px_var(--shadow-color)] shrink-0 ml-auto"
           style={{ background: levelStyle.bg, color: levelStyle.text }}
         >
           {getProficiencyLabel(skill.level)}
         </div>
 
-        <span className="hidden md:block border-2 border-outline bg-surface-variant px-2 py-1 font-label-bold text-[10px] uppercase text-on-surface shadow-[2px_2px_0_var(--shadow-color)] group-hover:bg-primary-container group-hover:text-on-primary-container transition-all">
+        <span className="hidden md:block border-2 border-outline bg-surface-variant px-2 py-1 font-label-bold text-[10px]  text-on-surface shadow-[2px_2px_0_var(--shadow-color)] group-hover:bg-primary-container group-hover:text-on-primary-container transition-all">
           View
         </span>
       </div>
@@ -464,10 +464,10 @@ function SkillGridCard({ skill, icon, onClick }) {
           >
             {icon}
           </motion.div>
-          <span className="font-label-bold text-[10px] uppercase text-secondary">{skill.category}</span>
+          <span className="font-label-bold text-[10px]  text-secondary">{skill.category}</span>
         </div>
         <div
-          className="border-2 border-outline px-2 py-0.5 font-label-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+          className="border-2 border-outline px-2 py-0.5 font-label-bold text-[10px]  shadow-[2px_2px_0px_0px_var(--shadow-color)]"
           style={{ background: levelStyle.bg, color: levelStyle.text }}
         >
           {getProficiencyLabel(skill.level)}
@@ -476,7 +476,7 @@ function SkillGridCard({ skill, icon, onClick }) {
 
       <h3
         data-build-part="title"
-        className="font-headline-md text-base md:text-lg uppercase text-on-surface"
+        className="font-headline-md text-base md:text-lg  text-on-surface"
       >
         {skill.name}
       </h3>
@@ -502,7 +502,7 @@ function SkillGridCard({ skill, icon, onClick }) {
           </div>
           <span className="font-headline-md text-sm w-8 text-right text-on-surface">{skill.level}%</span>
         </div>
-        <div className="flex items-center gap-2 font-label-bold text-[10px] uppercase text-secondary opacity-80 group-hover:opacity-100 transition-opacity pt-2 border-t-2 border-dashed border-outline-variant">
+        <div className="flex items-center gap-2 font-label-bold text-[10px]  text-secondary opacity-80 group-hover:opacity-100 transition-opacity pt-2 border-t-2 border-dashed border-outline-variant">
           <FaExternalLinkAlt className="text-[10px]" /> Click for details
         </div>
       </div>
@@ -518,7 +518,7 @@ function EmptyState() {
       <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
         <FaSearch className="text-3xl mx-auto mb-3 text-on-surface" />
       </motion.div>
-      <h3 className="font-headline-md text-xl uppercase text-on-surface">No skills found</h3>
+      <h3 className="font-headline-md text-xl  text-on-surface">No skills found</h3>
       <p className="font-body-md text-sm mt-2 text-text-muted">Try a different search term or category.</p>
     </div>
   );
@@ -571,14 +571,14 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
             {icon}
           </motion.div>
           <div>
-            <h2 id="skill-modal-title" className="font-headline-xl text-2xl md:text-3xl uppercase text-on-surface">{skill.name}</h2>
+            <h2 id="skill-modal-title" className="font-headline-xl text-2xl md:text-3xl  text-on-surface">{skill.name}</h2>
             <span className="font-label-bold bg-secondary text-on-secondary px-2 py-0.5 text-xs border-2 border-outline inline-block mt-1">{category}</span>
           </div>
         </div>
 
         {/* Proficiency bar */}
         <div className="flex flex-col gap-2">
-          <div className="flex justify-between font-label-bold uppercase text-sm text-on-surface">
+          <div className="flex justify-between font-label-bold  text-sm text-on-surface">
             <span>Proficiency</span>
             <span>{skill.level}% - {getProficiencyLabel(skill.level)}</span>
           </div>
@@ -602,7 +602,7 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
         {/* Related projects */}
         {relatedProjects.length > 0 && (
           <div className="flex flex-col gap-4">
-            <h4 className="font-headline-md text-xl uppercase border-b-2 border-outline inline-block w-fit pb-1 text-on-surface">
+            <h4 className="font-headline-md text-xl  border-b-2 border-outline inline-block w-fit pb-1 text-on-surface">
               Used in {relatedProjects.length} {relatedProjects.length === 1 ? "Project" : "Projects"}
             </h4>
             <div className="flex flex-col gap-3">
@@ -624,9 +624,9 @@ function SkillModal({ skill, icon, onClose, onProjectClick }) {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h5 className="font-headline-md text-sm uppercase truncate text-on-surface">{project.title}</h5>
+                    <h5 className="font-headline-md text-sm  truncate text-on-surface">{project.title}</h5>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="font-label-bold text-[10px] text-secondary uppercase">{project.year}</span>
+                      <span className="font-label-bold text-[10px] text-secondary ">{project.year}</span>
                     </div>
                   </div>
                   <FaArrowRight className="text-sm shrink-0 group-hover:translate-x-1 transition-transform text-on-surface" />

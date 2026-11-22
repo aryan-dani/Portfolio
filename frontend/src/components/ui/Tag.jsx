@@ -9,7 +9,7 @@ const TONES = {
 const Tag = memo(function Tag({ children, className = "", tone = "default", ...rest }) {
   return (
     <span
-      className={`inline-flex items-center border-2 px-2 py-1 font-label-bold text-[10px] uppercase tracking-[0.14em] ${TONES[tone] || TONES.default} ${className}`.trim()}
+      className={`inline-flex items-center border-2 px-2 py-1 font-label-bold text-[10px]  tracking-[0.14em] ${TONES[tone] || TONES.default} ${className}`.trim()}
       {...rest}
     >
       {children}

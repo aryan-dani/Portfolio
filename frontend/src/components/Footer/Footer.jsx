@@ -33,22 +33,24 @@ const Footer = memo(function Footer() {
       initial={false}
       animate="visible"
     >
-      <div className="flex flex-col md:flex-row justify-between items-center py-8 px-4 md:px-8 gap-8 w-full max-w-[1440px] mx-auto">
-        {/* Copyright + Internal nav */}
-        <motion.div className="flex flex-col items-center md:items-start gap-3" variants={itemVariants}>
+      <div className="flex flex-col md:flex-row justify-between items-center py-8 px-4 md:px-8 gap-6 md:gap-8 w-full max-w-[1440px] mx-auto">
+        <motion.div
+          className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 items-center md:items-center min-w-0"
+          variants={itemVariants}
+        >
           <Link
             to="/copyright"
-            className="relative font-headline-md font-black uppercase text-base md:text-lg text-on-surface py-2 cursor-none inline-block group/copyright"
+            className="relative font-headline-md font-black text-base md:text-lg text-on-surface py-2 cursor-none inline-block group/copyright shrink-0"
           >
-            © {currentYear} ARYAN DANI
+            © {currentYear} Aryan Dani
             <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-outline group-hover/copyright:w-full transition-all duration-300" />
           </Link>
-          <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-3 gap-y-2">
+          <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-3 gap-y-1 justify-center md:justify-start">
             {footerNavLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="font-label-bold text-xs uppercase text-on-surface min-h-11 px-2 py-2 inline-flex items-center hover:underline underline-offset-4 transition-colors cursor-none"
+                className="font-label-bold text-xs text-on-surface min-h-11 px-2 py-2 inline-flex items-center hover:underline underline-offset-4 transition-colors cursor-none"
               >
                 {link.label}
               </Link>
@@ -56,9 +58,8 @@ const Footer = memo(function Footer() {
           </nav>
         </motion.div>
 
-        {/* Social icons */}
         <motion.ul
-          className="flex flex-wrap gap-3 justify-center list-none m-0 p-0"
+          className="flex flex-wrap gap-3 justify-center md:justify-end list-none m-0 p-0 items-center"
           aria-label="Social media links"
           variants={containerVariants}
         >

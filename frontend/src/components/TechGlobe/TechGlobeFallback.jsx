@@ -22,14 +22,14 @@ const TechGlobeFallback = memo(function TechGlobeFallback() {
     >
       <div className="flex items-end justify-between gap-3 border-b border-outline pb-3">
         <div className="flex flex-col gap-1">
-          <span className="font-label-bold text-[10px] uppercase tracking-[0.2em] text-text-muted">
+          <span className="font-label-bold text-[10px]  tracking-[0.2em] text-text-muted">
             Live stack
           </span>
           <span className="font-headline-md text-base normal-case tracking-tight">
             Skills × projects
           </span>
         </div>
-        <span className="font-label-bold text-[10px] uppercase tracking-[0.16em] text-text-muted">
+        <span className="font-label-bold text-[10px]  tracking-[0.16em] text-text-muted">
           Tap a skill
         </span>
       </div>

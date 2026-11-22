@@ -111,7 +111,7 @@ const BriefBuilder = memo(function BriefBuilder({ className = "" }) {
       <div className="flex flex-col gap-2">
         <p
           id={labelId}
-          className="font-label-bold text-xs uppercase tracking-[0.18em] text-text-muted"
+          className="font-label-bold text-xs  tracking-[0.18em] text-text-muted"
         >
           What do you need?
         </p>
@@ -124,7 +124,7 @@ const BriefBuilder = memo(function BriefBuilder({ className = "" }) {
                 type="button"
                 aria-pressed={selected}
                 onClick={() => handleChip(item.id)}
-                className={`border-4 border-outline px-3 py-2 font-label-bold text-xs md:text-sm uppercase transition-all cursor-none ${
+                className={`border-4 border-outline px-3 py-2 font-label-bold text-xs md:text-sm  transition-all cursor-none ${
                   selected
                     ? "bg-primary-container text-on-primary-container shadow-[2px_2px_0_0_var(--shadow-color)] translate-x-[2px] translate-y-[2px]"
                     : "bg-surface text-on-surface shadow-[4px_4px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)]"
@@ -159,7 +159,7 @@ const BriefBuilder = memo(function BriefBuilder({ className = "" }) {
                   ? { duration: 0 }
                   : { delay: index * 0.08, type: "spring", stiffness: 320, damping: 22 }
               }
-              className={`w-16 h-10 border-4 border-outline flex items-center justify-center font-label-bold text-[10px] uppercase ${
+              className={`w-16 h-10 border-4 border-outline flex items-center justify-center font-label-bold text-[10px]  ${
                 hasValue
                   ? "bg-primary-container text-on-primary-container"
                   : "bg-surface text-on-surface"
@@ -177,7 +177,7 @@ const BriefBuilder = memo(function BriefBuilder({ className = "" }) {
         className="border-4 border-outline bg-surface p-4 md:p-5 shadow-[6px_6px_0_0_var(--shadow-color)] min-h-[280px] md:min-h-[300px] flex flex-col gap-3"
         aria-live="polite"
       >
-        <p className="font-label-bold text-xs uppercase tracking-[0.16em] text-text-muted">
+        <p className="font-label-bold text-xs  tracking-[0.16em] text-text-muted">
           Scoped brief
         </p>
         {!chip ? (
@@ -187,13 +187,13 @@ const BriefBuilder = memo(function BriefBuilder({ className = "" }) {
           </p>
         ) : (
           <>
-            <h3 className="font-headline-md text-lg md:text-xl uppercase leading-tight">
+            <h3 className="font-headline-md text-lg md:text-xl  leading-tight">
               {chip.packageName}
             </h3>
             <dl className="grid grid-cols-1 gap-2.5 flex-1">
               {FILL_ORDER.map((key) => (
                 <div key={key} className="min-h-[2.75rem]">
-                  <dt className="font-label-bold text-[10px] uppercase tracking-[0.14em] text-text-muted">
+                  <dt className="font-label-bold text-[10px]  tracking-[0.14em] text-text-muted">
                     {key}
                   </dt>
                   <dd className="font-body-md text-sm md:text-base leading-snug text-on-surface">
@@ -215,7 +215,7 @@ const BriefBuilder = memo(function BriefBuilder({ className = "" }) {
           type="button"
           disabled={!briefReady}
           onClick={handleSend}
-          className={`mt-auto self-start border-4 border-outline px-5 py-3 font-label-bold text-sm uppercase transition-all cursor-none ${
+          className={`mt-auto self-start border-4 border-outline px-5 py-3 font-label-bold text-sm  transition-all cursor-none ${
             briefReady
               ? "bg-primary-container text-on-primary-container shadow-[6px_6px_0_0_var(--shadow-color)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_var(--shadow-color)]"
               : "bg-surface-variant text-text-muted opacity-60 cursor-not-allowed shadow-none"

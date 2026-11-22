@@ -112,7 +112,7 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
               <div className="flex items-center justify-between gap-3">
                 <span
                   id="resume-viewer-title"
-                  className="font-headline-md text-sm md:text-base uppercase tracking-wider truncate pointer-events-none"
+                  className="font-headline-md text-sm md:text-base  tracking-wider truncate pointer-events-none"
                 >
                   DOCUMENT_VIEWER.EXE // {active?.label?.toUpperCase() || "RESUME"}.PDF
                 </span>
@@ -122,7 +122,7 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Open ${active?.label} resume in a new tab`}
-                    className="bg-surface text-on-surface border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
+                    className="bg-surface text-on-surface border-2 border-outline px-3 py-1.5 font-label-bold text-xs  flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
                   >
                     <FaExternalLinkAlt />
                     <span className="hidden sm:inline">Open</span>
@@ -131,7 +131,7 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
                     href={resumePath}
                     download={active?.downloadName || "Aryan_Dani_Resume.pdf"}
                     aria-label={`Download ${active?.label} resume PDF`}
-                    className="bg-surface text-on-surface border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
+                    className="bg-surface text-on-surface border-2 border-outline px-3 py-1.5 font-label-bold text-xs  flex items-center gap-2 shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-none"
                   >
                     <FaFileDownload />
                     <span className="hidden sm:inline">Download</span>
@@ -161,7 +161,7 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
                       role="tab"
                       aria-selected={selected}
                       onClick={() => setActiveId(version.id)}
-                      className={`border-2 border-outline px-3 py-1.5 font-label-bold text-xs uppercase transition-all cursor-none ${
+                      className={`border-2 border-outline px-3 py-1.5 font-label-bold text-xs  transition-all cursor-none ${
                         selected
                           ? "bg-on-primary-container text-primary-container shadow-none translate-x-[1px] translate-y-[1px]"
                           : "bg-surface text-on-surface shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
@@ -182,21 +182,21 @@ export default function ResumeModal({ isOpen, onClose, initialVersion = "classic
               data-lenis-prevent
             >
               {loadState === "loading" && (
-                <div className="flex items-center justify-center min-h-[min(70vh,640px)] font-label-bold text-sm uppercase tracking-wider text-on-surface">
+                <div className="flex items-center justify-center min-h-[min(70vh,640px)] font-label-bold text-sm  tracking-wider text-on-surface">
                   Loading {active?.label || "resume"}…
                 </div>
               )}
 
               {loadState === "error" && (
                 <div className="flex flex-col items-center justify-center gap-4 min-h-[min(70vh,640px)] px-6 text-center">
-                  <p className="font-label-bold text-sm uppercase tracking-wider text-on-surface">
+                  <p className="font-label-bold text-sm  tracking-wider text-on-surface">
                     Could not embed the PDF in this browser.
                   </p>
                   <a
                     href={resumePath}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-primary-container text-on-primary-container border-2 border-outline px-4 py-2 font-label-bold text-xs uppercase shadow-[3px_3px_0px_0px_var(--shadow-color)] cursor-none"
+                    className="bg-primary-container text-on-primary-container border-2 border-outline px-4 py-2 font-label-bold text-xs  shadow-[3px_3px_0px_0px_var(--shadow-color)] cursor-none"
                   >
                     Open {active?.url || "resume.pdf"}
                   </a>
