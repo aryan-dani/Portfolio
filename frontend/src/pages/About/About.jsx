@@ -32,9 +32,11 @@ const slideVariants = {
 };
 
 const photos = [
-  { src: "Images/About/pic_1.jpg", alt: `${aboutInfo.name} – photo 1` },
-  { src: "Images/About/pic_2.jpg", alt: `${aboutInfo.name} – photo 2` },
-  { src: "Images/About/pic_3.jpg", alt: `${aboutInfo.name} – photo 3` },
+  { src: "Images/About/pic_2.jpg", alt: `${aboutInfo.name} – photo 1` },
+  { src: "Images/About/pic_3.jpg", alt: `${aboutInfo.name} – photo 2` },
+  { src: "Images/About/pic_4.jpg", alt: `${aboutInfo.name} at Universal Studios Singapore` },
+  { src: "Images/About/pic_5.jpg", alt: `${aboutInfo.name} – portrait` },
+  { src: "Images/About/pic_6.jpg", alt: `${aboutInfo.name} – photo 5` },
 ];
 
 function PhotoCarousel() {

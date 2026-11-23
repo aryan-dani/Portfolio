@@ -226,7 +226,7 @@ export function buildBaseSchemas() {
       givenName: "Aryan",
       familyName: "Dani",
       url: `${SITE_URL}/`,
-      image: `${SITE_URL}/Images/About/pic_1.jpg`,
+      image: `${SITE_URL}/Images/About/pic_2.jpg`,
       jobTitle: "Freelance AI Engineer & Full-Stack Developer",
       description:
         "Freelance AI engineer and full-stack developer in Pune, India. Builds custom AI agents, RAG pipelines, Next.js and React apps, and high-conversion business websites for startups and local businesses worldwide.",

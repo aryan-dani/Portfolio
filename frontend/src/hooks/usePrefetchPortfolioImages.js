@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { projects } from "../data/projects";
 import { getAssetPath } from "../utils/paths";
 
-const ABOUT_FIRST = "Images/About/pic_1.jpg";
+const ABOUT_FIRST = "Images/About/pic_2.jpg";
 const PREFETCH_COUNT = 2;
 
 function shouldPrefetch() {
